@@ -4,8 +4,9 @@ SH3PHERD's design system, extracted for reuse across projects. **Dark-first**:
 the base theme lives on `:root`, light is an opt-in override. Built to the same
 bar as the app — strict TypeScript, tested to the contract.
 
-Right now this package ships **design tokens only**. Components follow, one at a
-time, once the token foundation is locked. See [`TODO.md`](./TODO.md).
+It ships **design tokens** + a growing set of **standalone Angular components**,
+extracted one at a time as the app proves the need. See [`TODO.md`](./TODO.md)
+for the roadmap.
 
 ## Consuming the tokens
 
@@ -109,3 +110,57 @@ Deliberately small — we grow it together, one confirmed role at a time.
 | `--sh3-color-primary`           | Primary / accent (brand teal) |
 | `--sh3-color-primary-strong`    | Primary hover / active        |
 | `--sh3-color-on-primary`        | Text / icon on a primary fill |
+
+(plus the status families, neutral surfaces, `surface-card`, glass, and the
+radius / text / blur scales — see `tokens.catalog.ts` for the full, typed set.)
+
+## Components
+
+All standalone, signals-first, styled against the semantic tokens. Import from
+the package root.
+
+| Component                          | Selector              | What it is                                                   |
+| ---------------------------------- | --------------------- | ------------------------------------------------------------ |
+| `AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).    |
+| `PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
+| `CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
+| `BadgeComponent`                   | `sh3-badge`           | Status / count pill.                                         |
+| `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
+| `TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
+| `AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
+| `ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `ToastService`).                            |
+| `PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `PanelHostService`).            |
+
+## Auto-colour
+
+`sh3-avatar` (and any entity that needs a stable, recognisable colour) draws
+from **one app-wide palette** via `PaletteRegistry` — a root singleton. Reading
+from a single source is the point: the same seed (name / id) is the **same
+colour everywhere**, so people/entities stay recognisable across screens.
+
+Consumers never touch the palette arrays or the hash — they call `colorFor`:
+
+```ts
+private readonly palette = inject(PaletteRegistry);
+readonly color = computed(() => this.palette.colorFor(this.seed())); // reactive
+```
+
+**Choose the palette once, at bootstrap** (like `provideRouter`):
+
+```ts
+// app.config.ts — a built-in name, or your own colour list
+providers: [providePalette("vivid")]; // 'vivid' (default) | 'extended' | 'pastel'
+providers: [providePalette(MY_BRAND_COLOURS)]; // readonly string[]
+```
+
+**Or switch it live** — every avatar recolours in the same frame:
+
+```ts
+inject(PaletteRegistry).use("pastel");
+inject(PaletteRegistry).use(MY_BRAND_COLOURS);
+```
+
+Palettes are **categorical data**, not semantic tokens (qualitative hues to tell
+entities apart, theme-invariant), so they live in TS (`AUTO_PALETTES`), consumed
+by a hash — not in the token CSS. Add a curated palette by adding one entry to
+`AUTO_PALETTES`; it becomes a typed `AutoPaletteName` everywhere.
