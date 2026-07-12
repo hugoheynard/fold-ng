@@ -12,7 +12,7 @@ locked before a single component is extracted.
 - [x] Typed catalogue + `sh3ColorVar()` helper.
 - [x] Contract test: theme parity, no dangling refs, no drift, no dead palette.
 - [x] First confirmed tokens: `bg-page`, `bg-header`, `bg-rail-{primary,
-  secondary,tertiary}`, `primary`, `primary-strong`, `on-primary`.
+secondary,tertiary}`, `primary`, `primary-strong`, `on-primary`.
       (Rail depth values are a first proposal — confirm against the ref.)
 - [ ] Wire ESLint (`@sh3pherd/eslint-config`) + Prettier for the package.
 - [ ] Add the package to CI (lint + test) and pre-push.
@@ -33,7 +33,9 @@ Add roles only once we're certain of their usage.
       (driven by ChoiceRow). on-bright / on-dark deferred.
 - [x] Neutral surfaces + border: `surface-subtle` / `surface-raised` /
       `border` (white-alpha on dark, black-alpha on light, via color-mix).
-- [ ] Named surfaces: card, panel, popover.
+- [x] Named surface: `surface-card` (solid raised content surface — opaque,
+      unlike the alpha overlays). New `--sh3-ref-ink-800` primitive; the app's
+      `--card-color` bridges onto it. Drives `sh3-card`. panel/popover remain.
 - [ ] Dividers; `text-faded`; on-bright / on-dark.
 - [ ] Scales: space + motion (deferred — ChoiceRow inlines its few constants;
       promote when a 2nd component needs them), shadows, z-index.
@@ -81,6 +83,19 @@ Add roles only once we're certain of their usage.
       `info` keeps the app's brand-teal tone. First consumer of the `success`
       family. 8 specs. App's 51 `ToastService` sites keep their import path via a
       re-export shim; the single `<sh3-toast-container>` render site is repointed.
+
+- [x] **Card** (`sh3-card`) — the canonical raised surface: `surface-card` bg +
+      hairline border + consistent radius (`radius`/`padding`/`interactive`
+      inputs). Fixes the "pill radius" drift — the app's `--radius-lg` means
+      _pill_, so the ref's `var(--radius-lg, 14px)` cards rendered as capsules;
+      `sh3-card` uses the package `--sh3-radius-lg` (14px). 3 specs. First
+      consumer: the Intégrations cards (next).
+- [x] **Page layout** (`sh3-page-layout` + `sh3-page-section`) — the shared
+      settings/admin page scaffold (title + description + `[pageActions]` slot;
+      titled sub-sections). Extracted on the 2nd+ real use (the company
+      Administration panes: Facturation, Détails, Intégrations, Zone dangereuse),
+      per the "generalize on the 2nd usage" rule — the app panes dropped their
+      inlined `.sh3-page*` CSS onto it. 7 specs.
 
 Next components, one at a time, each with tests + a usage story. Lock order
 tracks what the app already reuses:

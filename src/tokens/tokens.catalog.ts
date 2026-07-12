@@ -73,6 +73,8 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "text-faded",
 
   /* ── Neutral surfaces + border ────────────────────────────── */
+  /** Solid raised content surface (cards, panels). */
+  "surface-card",
   /** Faint tinted fill (idle chips, subtle rows). */
   "surface-subtle",
   /** Slightly stronger fill (raised). */
