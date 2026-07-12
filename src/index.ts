@@ -4,6 +4,7 @@
 // This entry point exposes the typed token catalogue + helpers so call
 // sites get autocomplete and a compile error on a misspelt token.
 
+export { AppShellComponent } from "./components/app-shell/app-shell.component";
 export { BadgeComponent } from "./components/badge/badge.component";
 export { ChoiceRowComponent } from "./components/choice-row/choice-row.component";
 export type { ChoiceOption } from "./components/choice-row/choice-row.component";
@@ -14,13 +15,16 @@ export {
   SH3_SEMANTIC_COLOR_TOKENS,
   SH3_RADIUS_TOKENS,
   SH3_TEXT_TOKENS,
+  SH3_BLUR_TOKENS,
   sh3ColorProperty,
   sh3ColorVar,
   sh3RadiusVar,
   sh3TextVar,
+  sh3BlurVar,
 } from "./tokens/tokens.catalog";
 export type {
   Sh3SemanticColorToken,
   Sh3RadiusToken,
   Sh3TextToken,
+  Sh3BlurToken,
 } from "./tokens/tokens.catalog";
