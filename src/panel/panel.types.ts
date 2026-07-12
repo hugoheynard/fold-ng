@@ -65,6 +65,11 @@ export interface PanelConfig<TData> {
   readonly width?: number;
   /** Extra providers added to the panel's injector (panel-scoped data bus, etc.). */
   readonly providers?: Provider[];
+  /**
+   * Keep any already-open panels instead of replacing them. Default `false`:
+   * one panel at a time — opening a new panel closes the current one.
+   */
+  readonly stack?: boolean;
 }
 
 /** Handle returned by `present()`; the caller dismisses via `dismiss()`. */

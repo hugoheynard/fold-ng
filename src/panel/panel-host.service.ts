@@ -63,17 +63,35 @@ export class PanelHostService {
       injector,
       onClose: () => ref.close(),
     };
+    if (!config.stack) {
+      this.closeExisting();
+    }
     this.add(descriptor);
     return ref;
   }
 
-  /** Register a declarative (projected-template) panel; returns a handle. */
+  /**
+   * Register a declarative (projected-template) panel; returns a handle. These
+   * are self-managed by their `<sh3-side-panel>`'s `[open]` binding, so they are
+   * not subject to the imperative single-panel replacement.
+   */
   present(
     descriptor: Omit<TemplatePanelDescriptor, "id" | "kind">,
   ): PanelHandle {
     const id = this.takeId();
     this.add({ ...descriptor, kind: "template", id });
     return { id, dismiss: () => this.dismiss(id) };
+  }
+
+  /**
+   * Close every open panel through its own `onClose` — so each opener's
+   * `PanelRef`/toggle settles — before a new single panel takes over. Iterates
+   * a snapshot, so the `onClose`-driven removals don't disturb the loop.
+   */
+  private closeExisting(): void {
+    for (const panel of this._panels()) {
+      panel.onClose();
+    }
   }
 
   /** Remove a panel by id (idempotent — dismissing twice is safe). */

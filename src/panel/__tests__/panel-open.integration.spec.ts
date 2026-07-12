@@ -89,4 +89,30 @@ describe("Panel open() — imperative component path", () => {
     await expect(ref.closed).resolves.toBeUndefined();
     expect(root.querySelector(".panel")).toBeNull();
   });
+
+  it("replaces the open panel by default — one at a time", async () => {
+    const { fixture, root } = render();
+    const first = host.open<DemoData, string>(DemoPanelComponent, {
+      data: { label: "A" },
+    });
+    fixture.detectChanges();
+    host.open<DemoData, string>(DemoPanelComponent, { data: { label: "B" } });
+    fixture.detectChanges();
+
+    expect(root.querySelectorAll(".panel").length).toBe(1);
+    await expect(first.closed).resolves.toBeUndefined();
+  });
+
+  it("keeps the prior panel open with stack: true", () => {
+    const { fixture, root } = render();
+    host.open<DemoData, string>(DemoPanelComponent, { data: { label: "A" } });
+    fixture.detectChanges();
+    host.open<DemoData, string>(DemoPanelComponent, {
+      data: { label: "B" },
+      stack: true,
+    });
+    fixture.detectChanges();
+
+    expect(root.querySelectorAll(".panel").length).toBe(2);
+  });
 });
