@@ -56,6 +56,12 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "alert-surface",
   "alert-border",
 
+  /* ── Success (green) ──────────────────────────────────────── */
+  "success",
+  "success-text",
+  "success-surface",
+  "success-border",
+
   /* ── Text ─────────────────────────────────────────────────── */
   /** Default body text. */
   "text",

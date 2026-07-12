@@ -100,6 +100,20 @@
     transparent
   );
 
+  /* Success (green) */
+  --sh3-color-success: var(--sh3-ref-green-500);
+  --sh3-color-success-text: var(--sh3-ref-green-300);
+  --sh3-color-success-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-green-500) 14%,
+    transparent
+  );
+  --sh3-color-success-border: color-mix(
+    in srgb,
+    var(--sh3-ref-green-300) 30%,
+    transparent
+  );
+
   /* Text */
   --sh3-color-text: var(--sh3-ref-slate-50);
   --sh3-color-text-secondary: var(--sh3-ref-slate-400);
@@ -201,6 +215,20 @@
   --sh3-color-alert-border: color-mix(
     in srgb,
     var(--sh3-ref-red-600) 22%,
+    transparent
+  );
+
+  /* Success (green) — base holds across themes; tint + surfaces soften on light */
+  --sh3-color-success: var(--sh3-ref-green-500);
+  --sh3-color-success-text: var(--sh3-ref-green-550);
+  --sh3-color-success-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-green-500) 10%,
+    transparent
+  );
+  --sh3-color-success-border: color-mix(
+    in srgb,
+    var(--sh3-ref-green-500) 25%,
     transparent
   );
 
