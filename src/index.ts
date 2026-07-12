@@ -10,6 +10,9 @@ export { ChoiceRowComponent } from "./components/choice-row/choice-row.component
 export type { ChoiceOption } from "./components/choice-row/choice-row.component";
 export { TabNavComponent } from "./components/tab-nav/tab-nav.component";
 export type { TabNavItem } from "./components/tab-nav/tab-nav.component";
+export { ToastContainerComponent } from "./components/toast/toast-container.component";
+export { ToastService } from "./components/toast/toast.service";
+export type { Toast, ToastVariant } from "./components/toast/toast.service";
 
 // ── Panels (overlay system) ──────────────────────────────────
 export { PanelHostComponent } from "./panel/panel-host.component";
