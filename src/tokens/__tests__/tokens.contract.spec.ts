@@ -6,6 +6,7 @@ import {
   SH3_SEMANTIC_COLOR_TOKENS,
   SH3_RADIUS_TOKENS,
   SH3_TEXT_TOKENS,
+  SH3_BLUR_TOKENS,
 } from "../tokens.catalog";
 
 /**
@@ -74,6 +75,7 @@ describe("token contract · catalogue ↔ CSS", () => {
     const expected = [
       ...SH3_RADIUS_TOKENS.map((t) => `--sh3-radius-${t}`),
       ...SH3_TEXT_TOKENS.map((t) => `--sh3-text-${t}`),
+      ...SH3_BLUR_TOKENS.map((t) => `--sh3-blur-${t}`),
     ];
     expect(new Set(declared)).toEqual(new Set(expected));
   });

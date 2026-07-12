@@ -119,6 +119,18 @@
   );
   --sh3-color-surface-hover: var(--sh3-ref-ink-700); /* solid raised hover */
   --sh3-color-border: color-mix(in srgb, var(--sh3-ref-white) 8%, transparent);
+
+  /* Glass — translucent frosted overlay (panels, floating menus) */
+  --sh3-color-glass: color-mix(
+    in srgb,
+    var(--sh3-ref-ink-950) 55%,
+    transparent
+  );
+  --sh3-color-glass-border: color-mix(
+    in srgb,
+    var(--sh3-ref-white) 13%,
+    transparent
+  );
 }
 
 /* ── Override theme: LIGHT ────────────────────────────────── */
@@ -211,4 +223,12 @@
   );
   --sh3-color-surface-hover: var(--sh3-ref-cloud-150); /* solid raised hover */
   --sh3-color-border: color-mix(in srgb, var(--sh3-ref-black) 8%, transparent);
+
+  /* Glass — translucent frosted overlay (panels, floating menus) */
+  --sh3-color-glass: color-mix(in srgb, var(--sh3-ref-white) 65%, transparent);
+  --sh3-color-glass-border: color-mix(
+    in srgb,
+    var(--sh3-ref-black) 12%,
+    transparent
+  );
 }

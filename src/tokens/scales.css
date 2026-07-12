@@ -26,4 +26,7 @@
   --sh3-text-md: 14px;
   --sh3-text-lg: 16px;
   --sh3-text-xl: 20px;
+
+  /* Backdrop-blur radii (for frosted `--sh3-color-glass` surfaces). */
+  --sh3-blur-glass: 20px;
 }

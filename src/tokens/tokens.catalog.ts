@@ -75,6 +75,12 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "surface-hover",
   /** Neutral hairline border. */
   "border",
+
+  /* ── Glass ────────────────────────────────────────────────── */
+  /** Translucent frosted overlay (panels, floating menus). */
+  "glass",
+  /** Hairline border on a glass surface. */
+  "glass-border",
 ] as const;
 
 export type Sh3SemanticColorToken = (typeof SH3_SEMANTIC_COLOR_TOKENS)[number];
@@ -96,6 +102,11 @@ export const SH3_TEXT_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
 export type Sh3TextToken = (typeof SH3_TEXT_TOKENS)[number];
 
+/** Backdrop-blur radii (`--sh3-blur-*`). */
+export const SH3_BLUR_TOKENS = ["glass"] as const;
+
+export type Sh3BlurToken = (typeof SH3_BLUR_TOKENS)[number];
+
 /** The full custom-property name for a semantic colour token. */
 export function sh3ColorProperty(token: Sh3SemanticColorToken): string {
   return `--sh3-color-${token}`;
@@ -114,4 +125,9 @@ export function sh3RadiusVar(token: Sh3RadiusToken): string {
 /** A ready-to-use `var(--sh3-text-…)` reference. */
 export function sh3TextVar(token: Sh3TextToken): string {
   return `var(--sh3-text-${token})`;
+}
+
+/** A ready-to-use `var(--sh3-blur-…)` reference. */
+export function sh3BlurVar(token: Sh3BlurToken): string {
+  return `var(--sh3-blur-${token})`;
 }
