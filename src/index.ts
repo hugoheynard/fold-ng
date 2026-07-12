@@ -11,6 +11,25 @@ export type { ChoiceOption } from "./components/choice-row/choice-row.component"
 export { TabNavComponent } from "./components/tab-nav/tab-nav.component";
 export type { TabNavItem } from "./components/tab-nav/tab-nav.component";
 
+// ── Panels (overlay system) ──────────────────────────────────
+export { PanelHostComponent } from "./panel/panel-host.component";
+export { PanelHostService } from "./panel/panel-host.service";
+export { PanelRef } from "./panel/panel-ref";
+export { PanelToggle } from "./panel/panel-toggle";
+export { PanelComponentOutletDirective } from "./panel/panel-component-outlet.directive";
+export type {
+  PanelSide,
+  PanelContent,
+  PanelConfig,
+  PanelHandle,
+  PanelDescriptor,
+  TemplatePanelDescriptor,
+  ComponentPanelDescriptor,
+} from "./panel/panel.types";
+
+// NB: FocusTrapDirective + ScrollLockService stay package-internal — the panel
+// host is their only consumer. Promote to the public API when one appears.
+
 export {
   SH3_SEMANTIC_COLOR_TOKENS,
   SH3_RADIUS_TOKENS,
