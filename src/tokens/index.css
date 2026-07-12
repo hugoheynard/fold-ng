@@ -1,0 +1,14 @@
+/* ============================================================
+   SH3PHERD · Design tokens — entry point
+   ------------------------------------------------------------
+   The single file an app imports to get the whole token set:
+
+     @import '@sh3pherd/ui/tokens.css';
+
+   Order matters: primitives first (they define the raw palette),
+   then the semantic layer that points at them.
+   ============================================================ */
+
+@import "./primitives.css";
+@import "./scales.css";
+@import "./semantic.css";

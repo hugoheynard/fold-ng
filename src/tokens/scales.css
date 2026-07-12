@@ -1,0 +1,29 @@
+/* ============================================================
+   SH3PHERD · Design tokens — SCALES (radius, type)
+   ------------------------------------------------------------
+   Non-colour scales. These are single-tier: a radius or a font
+   size IS its value, there's nothing to theme, so there is no
+   primitive/semantic split — just the scale, on :root.
+   ============================================================ */
+
+:root {
+  /* Radius scale.
+     NB: `lg` is a real large radius and `pill` is the capsule —
+     two separate tokens. (The app historically overloaded a single
+     `--radius-lg` as the pill, which left no token for a card's
+     ~14px corner. Fixed here.) */
+  --sh3-radius-xs: 3px;
+  --sh3-radius-sm: 6px;
+  --sh3-radius-md: 10px;
+  --sh3-radius-lg: 14px;
+  --sh3-radius-pill: 9999px;
+  --sh3-radius-round: 50%;
+
+  /* Type scale — absolute px, matching claudeDesign-ref exactly (the app root
+     is 14px, so rem would render ~12% small; px is root-independent). */
+  --sh3-text-xs: 11px;
+  --sh3-text-sm: 12px;
+  --sh3-text-md: 14px;
+  --sh3-text-lg: 16px;
+  --sh3-text-xl: 20px;
+}
