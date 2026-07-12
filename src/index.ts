@@ -5,6 +5,8 @@
 // sites get autocomplete and a compile error on a misspelt token.
 
 export { AppShellComponent } from "./components/app-shell/app-shell.component";
+export { AvatarComponent } from "./components/avatar/avatar.component";
+export { AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
 export { BadgeComponent } from "./components/badge/badge.component";
 export { CardComponent } from "./components/card/card.component";
 export { ChoiceRowComponent } from "./components/choice-row/choice-row.component";
@@ -35,6 +37,15 @@ export type {
 
 // NB: FocusTrapDirective + ScrollLockService stay package-internal — the panel
 // host is their only consumer. Promote to the public API when one appears.
+
+// ── Auto-colour (categorical palettes + the app-wide registry) ─
+export {
+  PaletteRegistry,
+  providePalette,
+  PALETTE_DEFAULT,
+} from "./color/palette-registry.service";
+export { AUTO_PALETTES, hashSeed, resolvePalette } from "./color/palettes";
+export type { AutoPaletteName, PaletteInput } from "./color/palettes";
 
 export {
   SH3_SEMANTIC_COLOR_TOKENS,

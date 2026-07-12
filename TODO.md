@@ -90,6 +90,16 @@ Add roles only once we're certain of their usage.
       _pill_, so the ref's `var(--radius-lg, 14px)` cards rendered as capsules;
       `sh3-card` uses the package `--sh3-radius-lg` (14px). 3 specs. First
       consumer: the Intégrations cards (next).
+- [x] **Auto-colour registry** — `PaletteRegistry` (root singleton) + curated
+      `AUTO_PALETTES` (`vivid`/`extended`/`pastel`) + `providePalette()`. One
+      active palette app-wide ⇒ a seed maps to the same colour everywhere;
+      `use(name | customColours)` switches it reactively. Byte-identical hash to
+      the app's old avatar/org-member logic (zero recolour). 8 specs.
+- [x] **Avatar** (`sh3-avatar`) + **AvatarDetail** (`sh3-avatar-detail`) —
+      repatriated from `app/shared/`, wired to `PaletteRegistry.colorFor()` (the
+      local 10-colour `PALETTE` is gone). App keeps its import sites via
+      re-export shims; `orgchart-palette` (`NODE_PALETTE`) now re-exports the
+      package `extended` palette. 8 specs.
 - [x] **Page layout** (`sh3-page-layout` + `sh3-page-section`) — the shared
       settings/admin page scaffold (title + description + `[pageActions]` slot;
       titled sub-sections). Extracted on the 2nd+ real use (the company
