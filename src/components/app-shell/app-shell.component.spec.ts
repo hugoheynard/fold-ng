@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { AppShellComponent } from "./app-shell.component";
@@ -14,6 +14,16 @@ import { AppShellComponent } from "./app-shell.component";
   </sh3-app-shell>`,
 })
 class HostComponent {}
+
+@Component({
+  standalone: true,
+  imports: [AppShellComponent],
+  template: `<sh3-app-shell [railWidth]="rail()" [headerHeight]="header()" />`,
+})
+class SizedHostComponent {
+  readonly rail = signal<number | undefined>(72);
+  readonly header = signal<number | undefined>(undefined);
+}
 
 function setup() {
   const fixture = TestBed.createComponent(HostComponent);
@@ -41,5 +51,30 @@ describe("AppShellComponent", () => {
     expect(host.querySelector(".header [data-t='hd']")).not.toBeNull();
     // Unattributed content falls through to the default (content) slot.
     expect(host.querySelector(".content [data-t='content']")).not.toBeNull();
+  });
+
+  it("maps a set sizing input to its CSS variable, leaves an unset one inheritable", () => {
+    const fixture = TestBed.createComponent(SizedHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    // Set input → the var is written on the host, overriding the stylesheet.
+    expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("72px");
+    // Unset input → no inline var, so the stylesheet default keeps winning.
+    expect(shell.style.getPropertyValue("--sh3-shell-header-height")).toBe("");
+  });
+
+  it("drops the CSS variable again when the input is cleared", () => {
+    const fixture = TestBed.createComponent(SizedHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    fixture.componentInstance.rail.set(undefined);
+    fixture.detectChanges();
+    expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("");
   });
 });

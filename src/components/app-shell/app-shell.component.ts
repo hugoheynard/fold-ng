@@ -1,13 +1,20 @@
-import { Component } from "@angular/core";
+import { Component, computed, input } from "@angular/core";
 
 /**
  * `<sh3-app-shell>` — the responsive application skeleton.
  *
- * A pure structural grid with four content slots and nothing else: it owns the
- * layout and the responsive collapse, the app owns what fills the slots (nav,
- * header, routed content, overlays) and all state/routing. No inputs, no logic
- * — re-theme/re-size it via CSS variables, drive rail visibility from the
- * projected rail component itself.
+ * A pure structural grid with four content slots: it owns the layout and the
+ * responsive collapse, the app owns what fills the slots (nav, header, routed
+ * content, overlays) and all state/routing. Rail visibility is driven from the
+ * projected rail component itself (an empty `railSecondary` self-collapses).
+ *
+ * Sizing has two ergonomic paths that compose:
+ * - **Typed inputs** (`railWidth`, `headerHeight`, `headerHeightMobile`) for the
+ *   common case — plain px numbers, discoverable and type-checked in the
+ *   template.
+ * - **CSS variables** for the theming case — set `--sh3-shell-*` on any ancestor
+ *   to compose tokens (`var(--w-appMenu)`) or drive it from a media query. An
+ *   unset input inherits the variable, so the two never fight.
  *
  * ```
  * ┌────────┬──────────────┬─────────────────────┐
@@ -29,18 +36,18 @@ import { Component } from "@angular/core";
  * | `header`         | Top bar (content column).                 |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. |
  *
- * ## CSS knobs (set on the element)
- * | Variable                           | Default | Meaning                    |
- * |------------------------------------|---------|----------------------------|
- * | `--sh3-shell-rail-width`           | `64px`  | Primary-rail column width. |
- * | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
- * | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
+ * ## Sizing knobs
+ * | Input                | CSS variable                       | Default | Meaning                    |
+ * |----------------------|------------------------------------|---------|----------------------------|
+ * | `railWidth`          | `--sh3-shell-rail-width`           | `64px`  | Primary-rail column width. |
+ * | `headerHeight`       | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
+ * | `headerHeightMobile` | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
  *
  * @selector `sh3-app-shell`
  *
  * @example
  * ```html
- * <sh3-app-shell>
+ * <sh3-app-shell [railWidth]="72">
  *   <app-menu railPrimary />
  *   <app-workspace-rail railSecondary />
  *   <app-header header />
@@ -52,6 +59,11 @@ import { Component } from "@angular/core";
 @Component({
   selector: "sh3-app-shell",
   standalone: true,
+  host: {
+    "[style.--sh3-shell-rail-width]": "railWidthVar()",
+    "[style.--sh3-shell-header-height]": "headerHeightVar()",
+    "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
+  },
   template: `<div class="rail-primary">
       <ng-content select="[railPrimary]" />
     </div>
@@ -114,4 +126,26 @@ import { Component } from "@angular/core";
     }
   `,
 })
-export class AppShellComponent {}
+export class AppShellComponent {
+  /** Primary-rail column width in px. Omit to inherit `--sh3-shell-rail-width` (64). */
+  readonly railWidth = input<number>();
+  /** Header row height in px. Omit to inherit `--sh3-shell-header-height` (56). */
+  readonly headerHeight = input<number>();
+  /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
+  readonly headerHeightMobile = input<number>();
+
+  /* Map each input to its CSS var — `null` when unset so the stylesheet
+     variable (or its fallback default) keeps winning; a set input overrides it. */
+  protected readonly railWidthVar = computed(() => pxVar(this.railWidth()));
+  protected readonly headerHeightVar = computed(() =>
+    pxVar(this.headerHeight()),
+  );
+  protected readonly headerHeightMobileVar = computed(() =>
+    pxVar(this.headerHeightMobile()),
+  );
+}
+
+/** A px length for a host CSS-var binding, or `null` to leave the var unset. */
+function pxVar(value: number | undefined): string | null {
+  return value === undefined ? null : `${value}px`;
+}
