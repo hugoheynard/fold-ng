@@ -91,6 +91,12 @@ import type { PanelDescriptor } from "./panel.types";
     </div>
   }`,
   styles: `
+    /* The host must not take layout — it's a sibling in the content flex row.
+       display:contents removes its box so an opening panel can't nudge the
+       main content; the absolute dock still anchors to the content region. */
+    :host {
+      display: contents;
+    }
     /* Invisible, click-capturing dock — no dark scrim. position:absolute so it
        fills the content region (its positioned host), not the viewport: the
        panel floats over the page but stays below the header + rails. */
