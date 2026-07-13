@@ -1,6 +1,20 @@
 import { DOCUMENT } from "@angular/common";
 import { Directive, ElementRef, effect, inject, input } from "@angular/core";
 
+/**
+ * A matched element is only truly focusable if it's rendered — `display:none`
+ * and `visibility:hidden` descendants match the selector but can't take focus,
+ * and focusing one would drop focus to the body. `offsetParent === null` catches
+ * `display:none`; the size check catches a zero-box element still in flow.
+ */
+function isVisible(el: HTMLElement): boolean {
+  if (el.hidden) {
+    return false;
+  }
+  const rects = el.getClientRects();
+  return el.offsetParent !== null || rects.length > 0;
+}
+
 /** Elements that can receive keyboard focus, minus explicitly-skipped ones. */
 const FOCUSABLE_SELECTOR = [
   "a[href]",
@@ -79,8 +93,12 @@ export class FocusTrapDirective {
   }
 
   private focusable(): HTMLElement[] {
-    return Array.from(
+    const all = Array.from(
       this.host.nativeElement.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
     );
+    const visible = all.filter(isVisible);
+    // A non-rendering environment (SSR / jsdom) reports every element as
+    // zero-box; don't over-filter there — fall back to the raw matches.
+    return visible.length > 0 ? visible : all;
   }
 }
