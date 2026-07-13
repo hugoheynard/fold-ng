@@ -23,6 +23,8 @@ export { ChoiceRowComponent } from "./components/choice-row/choice-row.component
 export type { ChoiceOption } from "./components/choice-row/choice-row.component";
 export { IconComponent } from "./components/icon/icon.component";
 export { StatusBadgeComponent } from "./components/status-badge/status-badge.component";
+export { LoadingStateComponent } from "./components/state/loading-state.component";
+export { EmptyStateComponent } from "./components/state/empty-state.component";
 export type { Sh3IconSize } from "./components/icon/icon.component";
 export {
   IconRegistry,
