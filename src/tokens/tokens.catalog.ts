@@ -110,6 +110,16 @@ export const SH3_TEXT_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
 export type Sh3TextToken = (typeof SH3_TEXT_TOKENS)[number];
 
+/** Space (gap / padding / margin) scale. */
+export const SH3_SPACE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
+
+export type Sh3SpaceToken = (typeof SH3_SPACE_TOKENS)[number];
+
+/** Motion scale — `transition` shorthands (duration + easing). */
+export const SH3_MOTION_TOKENS = ["fast", "base", "slow"] as const;
+
+export type Sh3MotionToken = (typeof SH3_MOTION_TOKENS)[number];
+
 /** Backdrop-blur radii (`--sh3-blur-*`). */
 export const SH3_BLUR_TOKENS = ["glass"] as const;
 
@@ -133,6 +143,16 @@ export function sh3RadiusVar(token: Sh3RadiusToken): string {
 /** A ready-to-use `var(--sh3-text-…)` reference. */
 export function sh3TextVar(token: Sh3TextToken): string {
   return `var(--sh3-text-${token})`;
+}
+
+/** A ready-to-use `var(--sh3-space-…)` reference. */
+export function sh3SpaceVar(token: Sh3SpaceToken): string {
+  return `var(--sh3-space-${token})`;
+}
+
+/** A ready-to-use `var(--sh3-motion-…)` reference. */
+export function sh3MotionVar(token: Sh3MotionToken): string {
+  return `var(--sh3-motion-${token})`;
 }
 
 /** A ready-to-use `var(--sh3-blur-…)` reference. */

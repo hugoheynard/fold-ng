@@ -37,8 +37,12 @@ Add roles only once we're certain of their usage.
       unlike the alpha overlays). New `--sh3-ref-ink-800` primitive; the app's
       `--card-color` bridges onto it. Drives `sh3-card`. panel/popover remain.
 - [ ] Dividers; `text-faded`; on-bright / on-dark.
-- [ ] Scales: space + motion (deferred — ChoiceRow inlines its few constants;
-      promote when a 2nd component needs them), shadows, z-index.
+- [x] Scales: **space** (`--sh3-space-{xs,sm,md,lg,xl}`) + **motion**
+      (`--sh3-motion-{fast,base,slow}`) — promoted once the next candidates (icon,
+      paginator, panel-header, data-table) all needed them. Catalogue + contract
+      test + `sh3SpaceVar`/`sh3MotionVar` helpers; the app's `--gap-*` / `--t-*`
+      bridge onto them 1:1 (identical values, zero-regression). Radii already had
+      `xs..pill` (no gap). Shadows + z-index still deferred (no consumer yet).
 - [x] Success status family (green) — driven by its first consumer, the toast.
       New `--sh3-ref-green-*` primitives + full triad, both themes; the app's
       `--color-success*` now bridge onto it (its last local status literal, gone).

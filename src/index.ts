@@ -51,16 +51,22 @@ export {
   SH3_SEMANTIC_COLOR_TOKENS,
   SH3_RADIUS_TOKENS,
   SH3_TEXT_TOKENS,
+  SH3_SPACE_TOKENS,
+  SH3_MOTION_TOKENS,
   SH3_BLUR_TOKENS,
   sh3ColorProperty,
   sh3ColorVar,
   sh3RadiusVar,
   sh3TextVar,
+  sh3SpaceVar,
+  sh3MotionVar,
   sh3BlurVar,
 } from "./tokens/tokens.catalog";
 export type {
   Sh3SemanticColorToken,
   Sh3RadiusToken,
   Sh3TextToken,
+  Sh3SpaceToken,
+  Sh3MotionToken,
   Sh3BlurToken,
 } from "./tokens/tokens.catalog";
