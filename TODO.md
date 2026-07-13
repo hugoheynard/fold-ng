@@ -115,7 +115,12 @@ Add roles only once we're certain of their usage.
 Next components, one at a time, each with tests + a usage story. Lock order
 tracks what the app already reuses (✓ = landed):
 `Button` · `StatusBadge` · ~~`Avatar`~~✓ · ~~`Icon`~~✓ · ~~`Sh3DataTable`~~✓ ·
-~~`Paginator`~~✓ · **`PanelHeader`** · …
+~~`Paginator`~~✓ · ~~`PanelHeader`~~✓ · …
+
+`app/shared/panel/` now holds only the panel-open integration spec — every
+panel primitive lives in the package. Remaining app/shared candidates are the
+smaller primitives (`Button`, `StatusBadge`, state/empty/loading views) when
+they earn the move.
 
 **Confirmed candidates + their dependency chain** (from `app/shared/`):
 
@@ -142,8 +147,12 @@ tracks what the app already reuses (✓ = landed):
       token). Fixed a latent `var(--t-fast) ease` double-easing bug (the motion
       token already carries the easing). Its one importer (contracts-tab)
       repointed; app copy deleted. 7 specs.
-- **`PanelHeader`** (`sh3-panel-header`) — needs `Icon` ✓; already wired to the
-  package `PanelRef`. Last real component left under `app/shared/panel/`.
+- [x] **`PanelHeader`** (`sh3-panel-header`) — **landed** in `src/panel/`
+      alongside the overlay system. Inline styles, all tokens mapped: the header
+      border → `glass-border` (it's a header on a glass panel), the close-button
+      hover → `surface-hover` (both exact matches), no new token. Wired to the
+      package `PanelRef` (self-closing). 13 app importers repointed; app copy +
+      its 2 specs deleted (consolidated into 7 package specs).
 
 Harness note: a plain **`.css` `styleUrl` resolves fine** in the analog test env
 (only **SCSS** `styleUrl` needs a preprocessor it lacks). So a component with a

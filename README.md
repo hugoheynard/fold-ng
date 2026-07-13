@@ -135,6 +135,7 @@ the package root.
 | `AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
 | `ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `ToastService`).                            |
 | `PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `PanelHostService`).            |
+| `PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).         |
 
 ## Icons
 

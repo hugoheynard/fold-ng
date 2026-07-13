@@ -44,6 +44,7 @@ export type { Toast, ToastVariant } from "./components/toast/toast.service";
 
 // ── Panels (overlay system) ──────────────────────────────────
 export { PanelHostComponent } from "./panel/panel-host.component";
+export { PanelHeaderComponent } from "./panel/panel-header.component";
 export { PanelHostService } from "./panel/panel-host.service";
 export { PanelRef } from "./panel/panel-ref";
 export { PanelToggle } from "./panel/panel-toggle";
