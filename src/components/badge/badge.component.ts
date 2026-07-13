@@ -54,6 +54,11 @@ import { Component, input } from "@angular/core";
       border: 1px solid var(--sh3-color-alert-border);
       color: var(--sh3-color-alert-text);
     }
+    :host(.success) {
+      background: var(--sh3-color-success-surface);
+      border: 1px solid var(--sh3-color-success-border);
+      color: var(--sh3-color-success-text);
+    }
   `,
   host: {
     "[class]": 'variant() + " " + radius()',
@@ -76,6 +81,9 @@ export class BadgeComponent {
    * - `info` — purple, informative / categorical
    * - `warning` — amber, attention needed
    * - `alert` — red, critical / error
+   * - `success` — green, positive / complete
    */
-  readonly variant = input<"accent" | "info" | "warning" | "alert">("accent");
+  readonly variant = input<"accent" | "info" | "warning" | "alert" | "success">(
+    "accent",
+  );
 }
