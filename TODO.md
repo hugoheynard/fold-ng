@@ -179,11 +179,16 @@ not forgotten.
 - **`PanelHostComponent :host { display: contents }`** landed as layout hygiene
   (the overlay host claims no layout box); whether it also settles the open-panel
   glitch is unverified — revisit once the glitch is diagnosed.
-- **Re-export shims.** ~40 app consumers still import panels from
-  `app/shared/panel/*`, and ~50 import the toast from `app/shared/toast/*`, via
-  shims that re-export `@sh3pherd/ui`. Collapse them to direct `@sh3pherd/ui`
-  imports once each API is stable.
+- [x] **Re-export shims — paid back.** The `app/shared/{panel,toast,avatar,
+avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
+      consumers now import `@sh3pherd/ui` directly (duplicate imports merged). Only
+      real app components remain under `app/shared/panel/` (`panel-header`).
 - **Package is outside the quality gates.** No ESLint / CI / pre-push yet
   (cross-ref Phase 0) — the package's own tests run, but nothing enforces them.
 - **App-local leftovers.** `rating` tokens aren't in the package yet — waiting on
   a first consumer to justify the role. (`success` landed with the toast.)
+- **Orphaned icon assets.** With `Icon` inlined into the package, the app's ~100
+  `src/assets/icons/**/*.svg`, `shared/icon/svg.d.ts`, and the `angular.json`
+  `".svg": "text"` loader are now unused (nothing imports `.svg`). Harmless but
+  cruft — delete them (and the loader) in a follow-up once the package icon set
+  is confirmed as the single source of truth.
