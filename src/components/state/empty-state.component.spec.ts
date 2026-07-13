@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { EmptyStateComponent } from "./empty-state.component";
+import { Sh3EmptyStateComponent } from "./empty-state.component";
 
 @Component({
   standalone: true,
-  imports: [EmptyStateComponent],
+  imports: [Sh3EmptyStateComponent],
   template: `<sh3-empty-state
     [title]="title"
     [subtitle]="subtitle"
@@ -31,7 +31,7 @@ function render(patch: Partial<HostComponent> = {}): HTMLElement {
   return fixture.nativeElement.querySelector("sh3-empty-state") as HTMLElement;
 }
 
-describe("EmptyStateComponent", () => {
+describe("Sh3EmptyStateComponent", () => {
   it("renders the title", () => {
     expect(render().querySelector(".empty-title")?.textContent).toContain(
       "No company yet",

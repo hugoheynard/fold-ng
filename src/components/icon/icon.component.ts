@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from "@angular/core";
 import { DomSanitizer, type SafeHtml } from "@angular/platform-browser";
-import { IconRegistry } from "./icon-registry.service";
+import { Sh3IconRegistry } from "./icon-registry.service";
 import type { Sh3IconName } from "./icon.registry";
 
 /** Size presets map to a pixel length; a number is interpreted as pixels. */
@@ -17,7 +17,7 @@ const SIZE_PX: Record<Exclude<Sh3IconSize, number>, string> = {
 /**
  * `sh3-icon` — the single surface for all SVG icons.
  *
- * Icons resolve through the {@link IconRegistry} (built-in set + any the
+ * Icons resolve through the {@link Sh3IconRegistry} (built-in set + any the
  * consumer registered), keyed by a typed {@link Sh3IconName}. The raw SVG is
  * sanitised once and rendered via `[innerHTML]`; colour + size come from CSS
  * (`currentColor` + a `--icon-size` custom property), so the SVG inherits
@@ -78,7 +78,7 @@ const SIZE_PX: Record<Exclude<Sh3IconSize, number>, string> = {
     `,
   ],
 })
-export class IconComponent {
+export class Sh3IconComponent {
   /** Icon name — a built-in (autocompleted) or a consumer-registered string. */
   readonly name = input.required<Sh3IconName>();
 
@@ -89,7 +89,7 @@ export class IconComponent {
   readonly title = input<string>();
 
   private readonly sanitizer = inject(DomSanitizer);
-  private readonly registry = inject(IconRegistry);
+  private readonly registry = inject(Sh3IconRegistry);
 
   /** Sanitised SVG markup ready for `[innerHTML]`. Reactive on registration. */
   readonly svg = computed<SafeHtml>(() => {

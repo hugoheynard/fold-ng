@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output } from "@angular/core";
-import { IconComponent } from "../components/icon/icon.component";
+import { Sh3IconComponent } from "../components/icon/icon.component";
 import type { Sh3IconName } from "../components/icon/icon.registry";
-import { PanelRef } from "./panel-ref";
+import { Sh3PanelRef } from "./panel-ref";
 
 /**
  * Standard header for an **imperative** panel component (`panels.open()`), which
@@ -16,14 +16,14 @@ import { PanelRef } from "./panel-ref";
  *   panels (a page-like entity with cross-navigation): `icon` + short label,
  *   with header actions sitting inline before the close.
  *
- * **Icon.** Optional leading `icon` (an {@link IconComponent} name), shown in
+ * **Icon.** Optional leading `icon` (an {@link Sh3IconComponent} name), shown in
  * both variants — muted in `eyebrow`.
  *
  * **Actions slot.** Project buttons into `[actions]` to sit left of the close
  * button (e.g. a cross-page-nav, an "open full page" button). The default,
  * unselected slot still feeds the description line (backwards compatible).
  *
- * **Self-closing.** The header injects its panel's {@link PanelRef} (optional,
+ * **Self-closing.** The header injects its panel's {@link Sh3PanelRef} (optional,
  * so it stays a pure presentational component in tests/storybook) and dismisses
  * the panel itself on close — no `(closed)="ref.close()"` wiring needed. The
  * `(closed)` output still fires *before* the dismiss, for side-effects
@@ -53,7 +53,7 @@ import { PanelRef } from "./panel-ref";
 @Component({
   selector: "sh3-panel-header",
   standalone: true,
-  imports: [IconComponent],
+  imports: [Sh3IconComponent],
   template: `
     <header class="ph" [class.ph--eyebrow]="variant() === 'eyebrow'">
       <div class="ph__titles">
@@ -187,10 +187,10 @@ import { PanelRef } from "./panel-ref";
     `,
   ],
 })
-export class PanelHeaderComponent {
+export class Sh3PanelHeaderComponent {
   readonly title = input.required<string>();
   readonly subtitle = input<string>("");
-  /** Optional leading icon (an {@link IconComponent} name). */
+  /** Optional leading icon (an {@link Sh3IconComponent} name). */
   readonly icon = input<Sh3IconName | undefined>(undefined);
   /** `title` (large descriptive) or `eyebrow` (compact uppercased label). */
   readonly variant = input<"title" | "eyebrow">("title");
@@ -208,7 +208,7 @@ export class PanelHeaderComponent {
    * The panel this header lives in. Optional: outside a panel (tests,
    * storybook) it resolves to `null` and the header simply emits `(closed)`.
    */
-  private readonly panelRef = inject(PanelRef, { optional: true });
+  private readonly panelRef = inject(Sh3PanelRef, { optional: true });
 
   protected onClose(): void {
     this.closed.emit();

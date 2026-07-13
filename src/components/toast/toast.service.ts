@@ -1,13 +1,13 @@
 import { Service, signal } from "@angular/core";
 
 /** The tone of a toast — drives its accent colour + icon. */
-export type ToastVariant = "success" | "info" | "warning" | "error";
+export type Sh3ToastVariant = "success" | "info" | "warning" | "error";
 
 /** A single transient notification. */
-export type Toast = {
+export type Sh3Toast = {
   id: string;
   message: string;
-  variant: ToastVariant;
+  variant: Sh3ToastVariant;
   durationMs: number;
 };
 
@@ -17,24 +17,24 @@ export type Toast = {
  * after `durationMs`, or on click.
  *
  * ```ts
- * const toast = inject(ToastService);
+ * const toast = inject(Sh3ToastService);
  * toast.show("Track uploaded", "success");
  * toast.show("Analysis failed", "error", 5000);
  * ```
  */
 @Service()
-export class ToastService {
-  private readonly _toasts = signal<Toast[]>([]);
+export class Sh3ToastService {
+  private readonly _toasts = signal<Sh3Toast[]>([]);
 
   /** The active toasts, oldest first. Read by the container. */
   readonly toasts = this._toasts.asReadonly();
 
   show(
     message: string,
-    variant: ToastVariant = "info",
+    variant: Sh3ToastVariant = "info",
     durationMs = 3000,
   ): void {
-    const toast: Toast = {
+    const toast: Sh3Toast = {
       id: crypto.randomUUID(),
       message,
       variant,

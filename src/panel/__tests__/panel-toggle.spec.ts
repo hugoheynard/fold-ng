@@ -1,26 +1,26 @@
 import { Component, inject, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { PanelHostComponent } from "../panel-host.component";
-import { PanelHostService } from "../panel-host.service";
-import { PanelRef } from "../panel-ref";
-import { PanelToggle } from "../panel-toggle";
-import type { PanelContent } from "../panel.types";
+import { Sh3PanelHostComponent } from "../panel-host.component";
+import { Sh3PanelHostService } from "../panel-host.service";
+import { Sh3PanelRef } from "../panel-ref";
+import { Sh3PanelToggle } from "../panel-toggle";
+import type { Sh3PanelContent } from "../panel.types";
 
 @Component({ selector: "test-toggle-panel", template: `{{ data().n }}` })
-class TogglePanelComponent implements PanelContent<{ n: number }> {
+class TogglePanelComponent implements Sh3PanelContent<{ n: number }> {
   readonly data = input.required<{ n: number }>();
-  readonly ref = inject(PanelRef);
+  readonly ref = inject(Sh3PanelRef);
 }
 
 @Component({
-  imports: [PanelHostComponent],
+  imports: [Sh3PanelHostComponent],
   template: `<sh3-panel-host />`,
 })
 class HostComponent {}
 
-describe("PanelToggle", () => {
-  let host: PanelHostService;
+describe("Sh3PanelToggle", () => {
+  let host: Sh3PanelHostService;
 
   function render() {
     const fixture = TestBed.createComponent(HostComponent);
@@ -30,13 +30,13 @@ describe("PanelToggle", () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [PanelHostService] });
-    host = TestBed.inject(PanelHostService);
+    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
+    host = TestBed.inject(Sh3PanelHostService);
   });
 
   it("opens on first toggle and closes on the second", async () => {
     const { fixture, root } = render();
-    const toggle = new PanelToggle(host, TogglePanelComponent);
+    const toggle = new Sh3PanelToggle(host, TogglePanelComponent);
 
     toggle.toggle({ n: 1 });
     fixture.detectChanges();
@@ -52,7 +52,7 @@ describe("PanelToggle", () => {
 
   it("re-syncs isOpen when the panel closes from the inside (Escape)", async () => {
     const { fixture } = render();
-    const toggle = new PanelToggle(host, TogglePanelComponent);
+    const toggle = new Sh3PanelToggle(host, TogglePanelComponent);
 
     toggle.toggle({ n: 2 });
     fixture.detectChanges();

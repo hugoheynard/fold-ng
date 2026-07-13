@@ -1,11 +1,11 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { PageLayoutComponent } from "./page-layout.component";
+import { Sh3PageLayoutComponent } from "./page-layout.component";
 
 @Component({
   standalone: true,
-  imports: [PageLayoutComponent],
+  imports: [Sh3PageLayoutComponent],
   template: `<sh3-page-layout
     [title]="title()"
     [description]="description()"
@@ -27,7 +27,7 @@ function render() {
   return { fixture, root: fixture.nativeElement as HTMLElement };
 }
 
-describe("PageLayoutComponent", () => {
+describe("Sh3PageLayoutComponent", () => {
   it("renders the title + description", () => {
     const { root } = render();
     expect(root.querySelector(".page-title")?.textContent?.trim()).toBe(

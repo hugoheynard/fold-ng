@@ -1,11 +1,14 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { ChoiceRowComponent, type ChoiceOption } from "./choice-row.component";
+import {
+  Sh3ChoiceRowComponent,
+  type Sh3ChoiceOption,
+} from "./choice-row.component";
 
 @Component({
   standalone: true,
-  imports: [ChoiceRowComponent],
+  imports: [Sh3ChoiceRowComponent],
   template: `<sh3-choice-row
     [options]="options"
     [activeKey]="activeKey"
@@ -15,7 +18,7 @@ import { ChoiceRowComponent, type ChoiceOption } from "./choice-row.component";
   />`,
 })
 class HostComponent {
-  options: readonly ChoiceOption[] = [
+  options: readonly Sh3ChoiceOption[] = [
     { key: "a", label: "Alpha" },
     { key: "b", label: "Beta" },
   ];
@@ -38,7 +41,7 @@ function setup(patch: Partial<HostComponent> = {}) {
   };
 }
 
-describe("ChoiceRowComponent", () => {
+describe("Sh3ChoiceRowComponent", () => {
   it("renders one button per option with its label", () => {
     const { buttons } = setup();
     expect(buttons.map((b) => b.textContent?.trim())).toEqual([

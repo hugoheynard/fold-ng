@@ -90,10 +90,8 @@ _(Consistent today.)_
 `Sh3`-prefixed (`Sh3CardComponent`, `Sh3ToastService`, `Sh3PanelConfig`,
 `Sh3PageItem`, `Sh3IconName`). The prefix protects a consumer's namespace from
 generic names (`Toast`, `PageItem`, `Card`, `IconSet`) and matches the design-
-system norm (`Mat*`, `Nb*`).
-⚠️ _In progress:_ the package is currently split — ~16 exports are `Sh3`-prefixed,
-~28 are bare. **Target = prefix everything.** Blocked on an app-wide import
-migration (`IconComponent` alone is used in ~95 files); tracked in `TODO.md`.
+system norm (`Mat*`, `Nb*`). Const values use `SH3_`, functions `sh3`/`provideSh3`.
+_(Applied across the package + ~200 app files, 2026-07.)_
 
 ---
 
@@ -227,7 +225,7 @@ accepted-with-rationale.
 | 2   | `avatar.onColor` fixed `#1a202c` → unreadable on dark custom palettes | 6.3     | ✅     |
 | 3   | Focus-trap matched hidden elements                                    | 6.2     | ✅     |
 | 4   | No elevation/shadow tokens → per-component `rgba` shadows             | 1.4     | ✅     |
-| 5   | TS exports half `Sh3`-prefixed                                        | 3.3     | ⏳     |
+| 5   | TS exports half `Sh3`-prefixed                                        | 3.3     | ✅     |
 | 6   | Hard-coded French aria/labels in a "reusable" package                 | 5.1     | ⏳     |
 | 7   | `--sh3-space/motion` scales exist but ~unused                         | 1.5     | ⏳     |
 | 8   | Focus-trap doesn't `inert` the background                             | 6.2     | ⏳     |

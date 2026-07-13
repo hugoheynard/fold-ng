@@ -126,7 +126,7 @@ import { Component, computed, input } from "@angular/core";
     }
   `,
 })
-export class AppShellComponent {
+export class Sh3AppShellComponent {
   /** Primary-rail column width in px. Omit to inherit `--sh3-shell-rail-width` (64). */
   readonly railWidth = input<number>();
   /** Header row height in px. Omit to inherit `--sh3-shell-header-height` (56). */

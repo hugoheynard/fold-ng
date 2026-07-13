@@ -1,20 +1,20 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, beforeEach } from "vitest";
-import { ToastContainerComponent } from "./toast-container.component";
-import { ToastService } from "./toast.service";
+import { Sh3ToastContainerComponent } from "./toast-container.component";
+import { Sh3ToastService } from "./toast.service";
 
-describe("ToastContainerComponent", () => {
-  let service: ToastService;
+describe("Sh3ToastContainerComponent", () => {
+  let service: Sh3ToastService;
 
   function render() {
-    const fixture = TestBed.createComponent(ToastContainerComponent);
+    const fixture = TestBed.createComponent(Sh3ToastContainerComponent);
     fixture.detectChanges();
     return { fixture, root: fixture.nativeElement as HTMLElement };
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [ToastService] });
-    service = TestBed.inject(ToastService);
+    TestBed.configureTestingModule({ providers: [Sh3ToastService] });
+    service = TestBed.inject(Sh3ToastService);
   });
 
   it("renders nothing when the queue is empty", () => {

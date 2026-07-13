@@ -1,6 +1,6 @@
 import { Component, input, output } from "@angular/core";
 
-export type TabNavItem = {
+export type Sh3TabNavItem = {
   /** Unique key — identifies the tab and is emitted on click. */
   key: string;
   /** Display label. */
@@ -274,9 +274,9 @@ export type TabNavItem = {
     }
   `,
 })
-export class TabNavComponent {
+export class Sh3TabNavComponent {
   /** The tabs to render, in order. */
-  readonly tabs = input.required<TabNavItem[]>();
+  readonly tabs = input.required<Sh3TabNavItem[]>();
 
   /** The `key` of the currently active tab. */
   readonly activeKey = input.required<string>();

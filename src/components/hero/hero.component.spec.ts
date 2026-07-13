@@ -1,11 +1,11 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { HeroComponent } from "./hero.component";
+import { Sh3HeroComponent } from "./hero.component";
 
 @Component({
   standalone: true,
-  imports: [HeroComponent],
+  imports: [Sh3HeroComponent],
   template: `<sh3-hero
     [tone]="tone()"
     [padding]="padding()"
@@ -29,7 +29,7 @@ function render() {
   return { fixture, hero };
 }
 
-describe("HeroComponent", () => {
+describe("Sh3HeroComponent", () => {
   it("projects its content", () => {
     expect(render().hero.querySelector(".body")?.textContent).toBe("Content");
   });

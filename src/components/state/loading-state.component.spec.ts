@@ -1,10 +1,10 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { LoadingStateComponent } from "./loading-state.component";
+import { Sh3LoadingStateComponent } from "./loading-state.component";
 
-describe("LoadingStateComponent", () => {
+describe("Sh3LoadingStateComponent", () => {
   it("shows the default message", () => {
-    const fixture = TestBed.createComponent(LoadingStateComponent);
+    const fixture = TestBed.createComponent(Sh3LoadingStateComponent);
     fixture.detectChanges();
     expect((fixture.nativeElement as HTMLElement).textContent).toContain(
       "Loading...",
@@ -12,7 +12,7 @@ describe("LoadingStateComponent", () => {
   });
 
   it("shows a custom message", () => {
-    const fixture = TestBed.createComponent(LoadingStateComponent);
+    const fixture = TestBed.createComponent(Sh3LoadingStateComponent);
     fixture.componentRef.setInput("message", "Chargement…");
     fixture.detectChanges();
     expect((fixture.nativeElement as HTMLElement).textContent).toContain(

@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from "@angular/core";
-import { PaletteRegistry } from "../../color/palette-registry.service";
+import { Sh3PaletteRegistry } from "../../color/palette-registry.service";
 
 /** Ink for text on a light vs dark categorical fill. */
 const DARK_INK = "#1a202c";
@@ -7,7 +7,7 @@ const LIGHT_INK = "#ffffff";
 
 /**
  * Pick a readable ink for text drawn on `fill`, from its relative luminance —
- * so a custom (dark) palette supplied via `providePalette` still gets legible
+ * so a custom (dark) palette supplied via `provideSh3Palette` still gets legible
  * initials instead of the fixed dark ink. Non-hex fills fall back to dark ink.
  */
 function readableInk(fill: string): string {
@@ -35,7 +35,7 @@ function readableInk(fill: string): string {
  * `<sh3-avatar>` — a user/entity avatar with initials or an image.
  *
  * With `imageUrl` it shows the image; otherwise it shows initials on a
- * deterministic background colour taken from the app-wide {@link PaletteRegistry}
+ * deterministic background colour taken from the app-wide {@link Sh3PaletteRegistry}
  * (so the same seed is the same colour everywhere, and one `registry.use(...)`
  * recolours every avatar).
  *
@@ -129,8 +129,8 @@ function readableInk(fill: string): string {
     }
   `,
 })
-export class AvatarComponent {
-  private readonly palette = inject(PaletteRegistry);
+export class Sh3AvatarComponent {
+  private readonly palette = inject(Sh3PaletteRegistry);
 
   readonly name = input.required<string>();
   readonly size = input<"sm" | "md" | "lg">("md");

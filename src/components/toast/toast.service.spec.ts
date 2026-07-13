@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ToastService } from "./toast.service";
+import { Sh3ToastService } from "./toast.service";
 
-describe("ToastService", () => {
-  let service: ToastService;
+describe("Sh3ToastService", () => {
+  let service: Sh3ToastService;
 
   beforeEach(() => {
     vi.useFakeTimers();
-    service = new ToastService();
+    service = new Sh3ToastService();
   });
 
   afterEach(() => {

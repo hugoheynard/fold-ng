@@ -241,8 +241,6 @@ Done in the review pass: elevation tokens + the component-usage colour guard
 (rule 1.3/1.4), avatar luminance ink (6.3), focus-trap visible-only (6.2). Still
 open:
 
-- **Prefix every TS export `Sh3`** (rule 3.3). ~28 bare exports → `Sh3*`; big
-  app-wide import migration (`IconComponent` ~95 files, `ToastService` ~57).
 - **Extract hard-coded strings to inputs** (rule 5.1). `sh3-paginator` + panel
   host/header carry French aria/labels; make them `input()`s with EN defaults,
   the app supplies French once. Flips the app's a11y language → coordinate.

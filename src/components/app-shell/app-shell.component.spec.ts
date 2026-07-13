@@ -1,11 +1,11 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { AppShellComponent } from "./app-shell.component";
+import { Sh3AppShellComponent } from "./app-shell.component";
 
 @Component({
   standalone: true,
-  imports: [AppShellComponent],
+  imports: [Sh3AppShellComponent],
   template: `<sh3-app-shell>
     <nav railPrimary data-t="rp">rail one</nav>
     <nav railSecondary data-t="rs">rail two</nav>
@@ -17,7 +17,7 @@ class HostComponent {}
 
 @Component({
   standalone: true,
-  imports: [AppShellComponent],
+  imports: [Sh3AppShellComponent],
   template: `<sh3-app-shell [railWidth]="rail()" [headerHeight]="header()" />`,
 })
 class SizedHostComponent {
@@ -31,7 +31,7 @@ function setup() {
   return fixture.nativeElement as HTMLElement;
 }
 
-describe("AppShellComponent", () => {
+describe("Sh3AppShellComponent", () => {
   it("renders the four structural cells", () => {
     const host = setup();
     for (const cell of [

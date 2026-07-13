@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
 
 /**
- * `<sh3-page-section>` — a titled sub-section inside a {@link PageLayoutComponent}:
+ * `<sh3-page-section>` — a titled sub-section inside a {@link Sh3PageLayoutComponent}:
  * an optional uppercase `title` + `description`, an optional right-aligned
  * actions slot, and the section content below.
  *
@@ -81,7 +81,7 @@ import { Component, input } from "@angular/core";
     }
   `,
 })
-export class PageSectionComponent {
+export class Sh3PageSectionComponent {
   /** The section heading (rendered small + uppercase). */
   readonly title = input<string>();
   /** A one-line description under the title. */

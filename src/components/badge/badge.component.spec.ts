@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { BadgeComponent } from "./badge.component";
+import { Sh3BadgeComponent } from "./badge.component";
 
 /**
  * A host binds the inputs in its template, so the required `content` always has
@@ -10,7 +10,7 @@ import { BadgeComponent } from "./badge.component";
  */
 @Component({
   standalone: true,
-  imports: [BadgeComponent],
+  imports: [Sh3BadgeComponent],
   template: `<sh3-badge
     [content]="content"
     [variant]="variant"
@@ -32,7 +32,7 @@ function render(
   return fixture.nativeElement.querySelector("sh3-badge") as HTMLElement;
 }
 
-describe("BadgeComponent", () => {
+describe("Sh3BadgeComponent", () => {
   it("renders the content text", () => {
     expect(render().textContent?.trim()).toBe("In repertoire");
   });

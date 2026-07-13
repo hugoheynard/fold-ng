@@ -1,10 +1,10 @@
 import { Component, inject, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { PanelHostComponent } from "../panel-host.component";
-import { PanelHostService } from "../panel-host.service";
-import { PanelRef } from "../panel-ref";
-import type { PanelContent } from "../panel.types";
+import { Sh3PanelHostComponent } from "../panel-host.component";
+import { Sh3PanelHostService } from "../panel-host.service";
+import { Sh3PanelRef } from "../panel-ref";
+import type { Sh3PanelContent } from "../panel.types";
 
 type DemoData = {
   readonly label: string;
@@ -19,19 +19,19 @@ type DemoData = {
     </button>
   `,
 })
-class DemoPanelComponent implements PanelContent<DemoData> {
+class DemoPanelComponent implements Sh3PanelContent<DemoData> {
   readonly data = input.required<DemoData>();
-  readonly ref = inject<PanelRef<string>>(PanelRef);
+  readonly ref = inject<Sh3PanelRef<string>>(Sh3PanelRef);
 }
 
 @Component({
-  imports: [PanelHostComponent],
+  imports: [Sh3PanelHostComponent],
   template: `<sh3-panel-host />`,
 })
 class HostComponent {}
 
 describe("Panel open() — imperative component path", () => {
-  let host: PanelHostService;
+  let host: Sh3PanelHostService;
 
   function render() {
     const fixture = TestBed.createComponent(HostComponent);
@@ -41,8 +41,8 @@ describe("Panel open() — imperative component path", () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [PanelHostService] });
-    host = TestBed.inject(PanelHostService);
+    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
+    host = TestBed.inject(Sh3PanelHostService);
   });
 
   it("mounts the component and sets its typed data input", () => {
@@ -59,7 +59,7 @@ describe("Panel open() — imperative component path", () => {
     expect(root.querySelector(".panel-header")).toBeNull();
   });
 
-  it("the component can close itself via injected PanelRef, returning a result", async () => {
+  it("the component can close itself via injected Sh3PanelRef, returning a result", async () => {
     const { fixture, root } = render();
     const ref = host.open<DemoData, string>(DemoPanelComponent, {
       data: { label: "x" },

@@ -1,8 +1,8 @@
 import { Component, inject } from "@angular/core";
-import { ToastService } from "./toast.service";
+import { Sh3ToastService } from "./toast.service";
 
 /**
- * `<sh3-toast-container>` — renders the {@link ToastService} queue as a stack of
+ * `<sh3-toast-container>` — renders the {@link Sh3ToastService} queue as a stack of
  * frosted glass snackbars, bottom-right, above everything. Mount it **once**
  * (typically in the app shell's content region). Each toast is click-to-dismiss;
  * the service handles auto-expiry.
@@ -124,6 +124,6 @@ import { ToastService } from "./toast.service";
     }
   `,
 })
-export class ToastContainerComponent {
-  readonly toastService = inject(ToastService);
+export class Sh3ToastContainerComponent {
+  readonly toastService = inject(Sh3ToastService);
 }

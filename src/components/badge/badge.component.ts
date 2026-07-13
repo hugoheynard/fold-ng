@@ -64,7 +64,7 @@ import { Component, input } from "@angular/core";
     "[class]": 'variant() + " " + radius()',
   },
 })
-export class BadgeComponent {
+export class Sh3BadgeComponent {
   /** Text displayed inside the badge. */
   readonly content = input.required<string>();
 

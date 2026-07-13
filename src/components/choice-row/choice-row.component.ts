@@ -1,6 +1,6 @@
 import { Component, input, output } from "@angular/core";
 
-export type ChoiceOption = {
+export type Sh3ChoiceOption = {
   key: string;
   label: string;
   /** Optional trailing count badge (e.g. how many rows match this filter). */
@@ -138,9 +138,9 @@ export type ChoiceOption = {
     }
   `,
 })
-export class ChoiceRowComponent {
+export class Sh3ChoiceRowComponent {
   /** The selectable options, in display order. */
-  readonly options = input.required<readonly ChoiceOption[]>();
+  readonly options = input.required<readonly Sh3ChoiceOption[]>();
 
   /** The `key` of the currently selected option. */
   readonly activeKey = input.required<string>();

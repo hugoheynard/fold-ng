@@ -1,25 +1,25 @@
 import { Component, type TemplateRef, ViewChild, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { PanelHostComponent } from "../panel-host.component";
-import { PanelHostService } from "../panel-host.service";
-import type { PanelSide, TemplatePanelDescriptor } from "../panel.types";
+import { Sh3PanelHostComponent } from "../panel-host.component";
+import { Sh3PanelHostService } from "../panel-host.service";
+import type { Sh3PanelSide, Sh3TemplatePanelDescriptor } from "../panel.types";
 
 @Component({ template: `<ng-template #t>x</ng-template>` })
 class TplHostComponent {
   @ViewChild("t", { static: true }) tpl!: TemplateRef<unknown>;
 }
 
-describe("PanelHostComponent", () => {
-  let host: PanelHostService;
+describe("Sh3PanelHostComponent", () => {
+  let host: Sh3PanelHostService;
   let tpl: TemplateRef<unknown>;
 
   function present(
     title: string,
-    side: PanelSide,
+    side: Sh3PanelSide,
     onClose: () => void = () => undefined,
   ): void {
-    const descriptor: Omit<TemplatePanelDescriptor, "id" | "kind"> = {
+    const descriptor: Omit<Sh3TemplatePanelDescriptor, "id" | "kind"> = {
       templateRef: tpl,
       side,
       title: signal(title),
@@ -31,15 +31,15 @@ describe("PanelHostComponent", () => {
   }
 
   function render() {
-    const fixture = TestBed.createComponent(PanelHostComponent);
+    const fixture = TestBed.createComponent(Sh3PanelHostComponent);
     fixture.detectChanges();
     const root: HTMLElement = fixture.nativeElement;
     return { fixture, root };
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [PanelHostService] });
-    host = TestBed.inject(PanelHostService);
+    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
+    host = TestBed.inject(Sh3PanelHostService);
     const tplFixture = TestBed.createComponent(TplHostComponent);
     tplFixture.detectChanges();
     tpl = tplFixture.componentInstance.tpl;

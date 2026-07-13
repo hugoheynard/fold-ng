@@ -1,11 +1,11 @@
 import { Component, computed, input, output } from "@angular/core";
-import { IconComponent } from "../icon/icon.component";
+import { Sh3IconComponent } from "../icon/icon.component";
 
 /**
  * Item representing one slot in the page navigation bar.
  * Either a concrete page number (1-indexed) or an ellipsis gap.
  */
-export type PageItem = { kind: "page"; page: number } | { kind: "gap" };
+export type Sh3PageItem = { kind: "page"; page: number } | { kind: "gap" };
 
 /**
  * `sh3-paginator` — presentational, fully controlled.
@@ -29,7 +29,7 @@ export type PageItem = { kind: "page"; page: number } | { kind: "gap" };
 @Component({
   selector: "sh3-paginator",
   standalone: true,
-  imports: [IconComponent],
+  imports: [Sh3IconComponent],
   template: `
     @let options = pageSizeOptions();
 
@@ -103,7 +103,7 @@ export type PageItem = { kind: "page"; page: number } | { kind: "gap" };
   `,
   styleUrl: "./paginator.component.css",
 })
-export class PaginatorComponent {
+export class Sh3PaginatorComponent {
   /** 1-indexed current page. */
   readonly currentPage = input.required<number>();
 
@@ -171,7 +171,7 @@ export class PaginatorComponent {
    * pages on each side of the current page; insert a single `gap` between
    * any two non-contiguous blocks.
    */
-  readonly pageItems = computed<PageItem[]>(() => {
+  readonly pageItems = computed<Sh3PageItem[]>(() => {
     const total = this.totalPages();
     const current = this.currentPage();
     const sibs = Math.max(0, this.siblingCount());
@@ -191,7 +191,7 @@ export class PaginatorComponent {
     const showLeftGap = leftSibling > 2;
     const showRightGap = rightSibling < total - 1;
 
-    const items: PageItem[] = [{ kind: "page", page: 1 }];
+    const items: Sh3PageItem[] = [{ kind: "page", page: 1 }];
 
     if (showLeftGap) {
       items.push({ kind: "gap" });

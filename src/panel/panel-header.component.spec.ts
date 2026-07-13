@@ -1,13 +1,13 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { PanelHeaderComponent } from "./panel-header.component";
-import { PanelRef } from "./panel-ref";
+import { Sh3PanelHeaderComponent } from "./panel-header.component";
+import { Sh3PanelRef } from "./panel-ref";
 import type { Sh3IconName } from "../components/icon/icon.registry";
 
 @Component({
   standalone: true,
-  imports: [PanelHeaderComponent],
+  imports: [Sh3PanelHeaderComponent],
   template: `
     <sh3-panel-header
       [title]="title"
@@ -37,12 +37,12 @@ class HostComponent {
 
 function setup(
   patch: Partial<HostComponent> = {},
-  panelRef?: PanelRef,
+  panelRef?: Sh3PanelRef,
 ): { cmp: HostComponent; host: HTMLElement } {
   TestBed.resetTestingModule(); // allow multiple setups within one test
   TestBed.configureTestingModule({
     imports: [HostComponent],
-    providers: panelRef ? [{ provide: PanelRef, useValue: panelRef }] : [],
+    providers: panelRef ? [{ provide: Sh3PanelRef, useValue: panelRef }] : [],
   });
   const fixture = TestBed.createComponent(HostComponent);
   Object.assign(fixture.componentInstance, patch);
@@ -53,7 +53,7 @@ function setup(
   };
 }
 
-describe("PanelHeaderComponent", () => {
+describe("Sh3PanelHeaderComponent", () => {
   it("renders the title; hides the subtitle until set", () => {
     const { host } = setup();
     expect(host.querySelector(".ph__title")?.textContent?.trim()).toBe("Titre");
@@ -101,9 +101,9 @@ describe("PanelHeaderComponent", () => {
     );
   });
 
-  it("self-closes via the injected PanelRef and emits (closed) first", () => {
+  it("self-closes via the injected Sh3PanelRef and emits (closed) first", () => {
     const dismiss = vi.fn();
-    const { cmp, host } = setup({}, new PanelRef(dismiss));
+    const { cmp, host } = setup({}, new Sh3PanelRef(dismiss));
     host.querySelector<HTMLButtonElement>(".ph__close")!.click();
     expect(cmp.closedCount).toBe(1);
     expect(dismiss).toHaveBeenCalledTimes(1);

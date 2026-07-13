@@ -5,7 +5,7 @@
  * apart (avatars, org nodes…), theme-invariant, never a role. They live in TS
  * because a hash consumes them — they don't belong in the token CSS.
  *
- * The active palette is chosen once, app-wide, via {@link PaletteRegistry} so a
+ * The active palette is chosen once, app-wide, via {@link Sh3PaletteRegistry} so a
  * given seed maps to the SAME colour everywhere (recognition). Consumers never
  * touch these arrays directly — they call `registry.colorFor(seed)`.
  */
@@ -14,7 +14,7 @@
  * The seed→hash used to pick a palette index. Kept byte-identical to the app's
  * historical avatar/org-member hash so migrating changes no existing colour.
  */
-export function hashSeed(seed: string): number {
+export function sh3HashSeed(seed: string): number {
   let hash = 0;
   for (let i = 0; i < seed.length; i += 1) {
     hash = seed.charCodeAt(i) + ((hash << 5) - hash);
@@ -66,23 +66,23 @@ const PASTEL = [
 
 /**
  * The curated named palettes. Add an entry → it becomes a usable, typed
- * {@link AutoPaletteName} everywhere. `extended` deliberately starts with the
+ * {@link Sh3AutoPaletteName} everywhere. `extended` deliberately starts with the
  * full `vivid` set so switching between them never recolours the first 10.
  */
-export const AUTO_PALETTES = {
+export const SH3_AUTO_PALETTES = {
   vivid: VIVID,
   extended: [...VIVID, ...VIVID_EXTRA],
   pastel: PASTEL,
 } as const satisfies Record<string, readonly string[]>;
 
 /** A built-in palette name. */
-export type AutoPaletteName = keyof typeof AUTO_PALETTES;
+export type Sh3AutoPaletteName = keyof typeof SH3_AUTO_PALETTES;
 
 /** A palette to apply: a built-in name, or a consumer's own colour list. */
-export type PaletteInput = AutoPaletteName | readonly string[];
+export type Sh3PaletteInput = Sh3AutoPaletteName | readonly string[];
 
 /** Resolve a name or a raw list to a colour array (empty lists fall back to vivid). */
-export function resolvePalette(input: PaletteInput): readonly string[] {
-  const palette = typeof input === "string" ? AUTO_PALETTES[input] : input;
-  return palette.length > 0 ? palette : AUTO_PALETTES.vivid;
+export function sh3ResolvePalette(input: Sh3PaletteInput): readonly string[] {
+  const palette = typeof input === "string" ? SH3_AUTO_PALETTES[input] : input;
+  return palette.length > 0 ? palette : SH3_AUTO_PALETTES.vivid;
 }

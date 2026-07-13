@@ -2,7 +2,7 @@ import { Component, computed, input } from "@angular/core";
 
 /**
  * `<sh3-status-badge>` — a coloured badge indicating a status. Unlike the
- * generic {@link BadgeComponent}, this maps a **status key** to a colour, so
+ * generic {@link Sh3BadgeComponent}, this maps a **status key** to a colour, so
  * call sites pass a domain status rather than choosing a variant.
  *
  * **Supported statuses**
@@ -69,7 +69,7 @@ import { Component, computed, input } from "@angular/core";
     }
   `,
 })
-export class StatusBadgeComponent {
+export class Sh3StatusBadgeComponent {
   /** The status key that determines the colour. */
   readonly status = input.required<string>();
   /** Display text — defaults to the raw `status` value. */

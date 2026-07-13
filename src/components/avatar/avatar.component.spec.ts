@@ -1,7 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { AvatarComponent } from "./avatar.component";
-import { PaletteRegistry } from "../../color/palette-registry.service";
+import { Sh3AvatarComponent } from "./avatar.component";
+import { Sh3PaletteRegistry } from "../../color/palette-registry.service";
 
 /** jsdom serialises an inline hex fill to `rgb(...)`; compare in that form. */
 function hexToRgb(hex: string): string {
@@ -14,7 +14,7 @@ function mount(inputs: {
   variant?: "solid" | "ghost";
   imageUrl?: string;
 }) {
-  const fixture = TestBed.createComponent(AvatarComponent);
+  const fixture = TestBed.createComponent(Sh3AvatarComponent);
   fixture.componentRef.setInput("name", inputs.name);
   if (inputs.variant) {
     fixture.componentRef.setInput("variant", inputs.variant);
@@ -27,7 +27,7 @@ function mount(inputs: {
   return { fixture, el };
 }
 
-describe("AvatarComponent", () => {
+describe("Sh3AvatarComponent", () => {
   it("derives initials (two words, one word, empty)", () => {
     expect(mount({ name: "Hugo Heynard" }).el.textContent?.trim()).toBe("HH");
     expect(mount({ name: "Solo" }).el.textContent?.trim()).toBe("SO");
@@ -35,13 +35,13 @@ describe("AvatarComponent", () => {
   });
 
   it("fills a solid avatar with the registry's colour for the seed", () => {
-    const reg = TestBed.inject(PaletteRegistry);
+    const reg = TestBed.inject(Sh3PaletteRegistry);
     const { el } = mount({ name: "Hugo Heynard" });
     expect(el.style.background).toBe(hexToRgb(reg.colorFor("Hugo Heynard")));
   });
 
   it("recolours reactively when the palette switches app-wide", () => {
-    const reg = TestBed.inject(PaletteRegistry);
+    const reg = TestBed.inject(Sh3PaletteRegistry);
     const { fixture, el } = mount({ name: "Hugo" });
     const before = el.style.background;
     reg.use("pastel");

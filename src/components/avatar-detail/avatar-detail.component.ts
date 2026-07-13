@@ -1,5 +1,5 @@
 import { Component, computed, input } from "@angular/core";
-import { AvatarComponent } from "../avatar/avatar.component";
+import { Sh3AvatarComponent } from "../avatar/avatar.component";
 
 /**
  * `<sh3-avatar-detail>` — an avatar next to one or two lines of text: the
@@ -27,7 +27,7 @@ import { AvatarComponent } from "../avatar/avatar.component";
 @Component({
   selector: "sh3-avatar-detail",
   standalone: true,
-  imports: [AvatarComponent],
+  imports: [Sh3AvatarComponent],
   template: `<sh3-avatar
       [name]="resolvedAvatarName()"
       [size]="size()"
@@ -70,7 +70,7 @@ import { AvatarComponent } from "../avatar/avatar.component";
     }
   `,
 })
-export class AvatarDetailComponent {
+export class Sh3AvatarDetailComponent {
   readonly primary = input.required<string>();
   readonly secondary = input<string>("");
   readonly avatarName = input<string>("");

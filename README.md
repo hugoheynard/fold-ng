@@ -121,23 +121,23 @@ full, typed set.)
 All standalone, signals-first, styled against the semantic tokens. Import from
 the package root.
 
-| Component                          | Selector              | What it is                                                   |
-| ---------------------------------- | --------------------- | ------------------------------------------------------------ |
-| `AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).    |
-| `PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
-| `CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
-| `HeroComponent`                    | `sh3-hero`            | Prominent header card (tone ladder + optional accent bar).   |
-| `Sh3DataTableComponent`            | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
-| `PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
-| `BadgeComponent`                   | `sh3-badge`           | Status / count pill (accent/info/warning/alert/success).     |
-| `StatusBadgeComponent`             | `sh3-status-badge`    | Status→colour badge (maps a domain status key to a tone).    |
-| `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
-| `IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `IconRegistry`).           |
-| `TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
-| `AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
-| `ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `ToastService`).                            |
-| `PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `PanelHostService`).            |
-| `PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).         |
+| Component                             | Selector              | What it is                                                   |
+| ------------------------------------- | --------------------- | ------------------------------------------------------------ |
+| `Sh3AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).    |
+| `Sh3PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
+| `Sh3CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
+| `Sh3HeroComponent`                    | `sh3-hero`            | Prominent header card (tone ladder + optional accent bar).   |
+| `Sh3DataTableComponent`               | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
+| `Sh3PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
+| `Sh3BadgeComponent`                   | `sh3-badge`           | Status / count pill (accent/info/warning/alert/success).     |
+| `Sh3StatusBadgeComponent`             | `sh3-status-badge`    | Status→colour badge (maps a domain status key to a tone).    |
+| `Sh3ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
+| `Sh3IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `Sh3IconRegistry`).        |
+| `Sh3TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
+| `Sh3AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
+| `Sh3ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `Sh3ToastService`).                         |
+| `Sh3PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `Sh3PanelHostService`).         |
+| `Sh3PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).         |
 
 ## Icons
 
@@ -155,19 +155,19 @@ pixel number):
 ```
 
 **A consumer adds its own icons** — the package's set stays the shared core; the
-app extends it through the root `IconRegistry`. Register once at bootstrap
+app extends it through the root `Sh3IconRegistry`. Register once at bootstrap
 (idiomatic, like `provideRouter`):
 
 ```ts
 // app.config.ts
-providers: [provideIcons({ "my-logo": "<svg …>…</svg>" })];
+providers: [provideSh3Icons({ "my-logo": "<svg …>…</svg>" })];
 ```
 
 Or at runtime — the icon recolours/resolves reactively:
 
 ```ts
-inject(IconRegistry).register("my-logo", svgMarkup);
-inject(IconRegistry).registerMany({ … });
+inject(Sh3IconRegistry).register("my-logo", svgMarkup);
+inject(Sh3IconRegistry).registerMany({ … });
 ```
 
 A custom entry with a built-in key overrides it. `name` is typed
@@ -178,14 +178,14 @@ registered custom string is still accepted (an unknown name renders nothing and
 ## Auto-colour
 
 `sh3-avatar` (and any entity that needs a stable, recognisable colour) draws
-from **one app-wide palette** via `PaletteRegistry` — a root singleton. Reading
+from **one app-wide palette** via `Sh3PaletteRegistry` — a root singleton. Reading
 from a single source is the point: the same seed (name / id) is the **same
 colour everywhere**, so people/entities stay recognisable across screens.
 
 Consumers never touch the palette arrays or the hash — they call `colorFor`:
 
 ```ts
-private readonly palette = inject(PaletteRegistry);
+private readonly palette = inject(Sh3PaletteRegistry);
 readonly color = computed(() => this.palette.colorFor(this.seed())); // reactive
 ```
 
@@ -193,18 +193,18 @@ readonly color = computed(() => this.palette.colorFor(this.seed())); // reactive
 
 ```ts
 // app.config.ts — a built-in name, or your own colour list
-providers: [providePalette("vivid")]; // 'vivid' (default) | 'extended' | 'pastel'
-providers: [providePalette(MY_BRAND_COLOURS)]; // readonly string[]
+providers: [provideSh3Palette("vivid")]; // 'vivid' (default) | 'extended' | 'pastel'
+providers: [provideSh3Palette(MY_BRAND_COLOURS)]; // readonly string[]
 ```
 
 **Or switch it live** — every avatar recolours in the same frame:
 
 ```ts
-inject(PaletteRegistry).use("pastel");
-inject(PaletteRegistry).use(MY_BRAND_COLOURS);
+inject(Sh3PaletteRegistry).use("pastel");
+inject(Sh3PaletteRegistry).use(MY_BRAND_COLOURS);
 ```
 
 Palettes are **categorical data**, not semantic tokens (qualitative hues to tell
-entities apart, theme-invariant), so they live in TS (`AUTO_PALETTES`), consumed
+entities apart, theme-invariant), so they live in TS (`SH3_AUTO_PALETTES`), consumed
 by a hash — not in the token CSS. Add a curated palette by adding one entry to
-`AUTO_PALETTES`; it becomes a typed `AutoPaletteName` everywhere.
+`SH3_AUTO_PALETTES`; it becomes a typed `Sh3AutoPaletteName` everywhere.

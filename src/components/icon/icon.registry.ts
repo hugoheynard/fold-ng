@@ -14,7 +14,7 @@ import { BRANDS_ICONS } from "./icons/brands.icons";
  * self-contained — no build-tool loader config leaks to a consumer.
  *
  * A consumer extends this set at runtime — never by editing this file — through
- * {@link IconRegistry} (`provideIcons()` at bootstrap, or `register()` later).
+ * {@link Sh3IconRegistry} (`provideSh3Icons()` at bootstrap, or `register()` later).
  */
 export const SH3_BUILTIN_ICONS = {
   ...UI_ICONS,

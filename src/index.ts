@@ -4,12 +4,12 @@
 // This entry point exposes the typed token catalogue + helpers so call
 // sites get autocomplete and a compile error on a misspelt token.
 
-export { AppShellComponent } from "./components/app-shell/app-shell.component";
-export { AvatarComponent } from "./components/avatar/avatar.component";
-export { AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
-export { BadgeComponent } from "./components/badge/badge.component";
-export { CardComponent } from "./components/card/card.component";
-export { HeroComponent } from "./components/hero/hero.component";
+export { Sh3AppShellComponent } from "./components/app-shell/app-shell.component";
+export { Sh3AvatarComponent } from "./components/avatar/avatar.component";
+export { Sh3AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
+export { Sh3BadgeComponent } from "./components/badge/badge.component";
+export { Sh3CardComponent } from "./components/card/card.component";
+export { Sh3HeroComponent } from "./components/hero/hero.component";
 export { Sh3DataTableComponent } from "./components/data-table/data-table.component";
 export { Sh3DataTableCellDirective } from "./components/data-table/data-table-cell.directive";
 export type {
@@ -19,48 +19,51 @@ export type {
   Sh3TableSortDir,
   Sh3TableTone,
 } from "./components/data-table/data-table.types";
-export { ChoiceRowComponent } from "./components/choice-row/choice-row.component";
-export type { ChoiceOption } from "./components/choice-row/choice-row.component";
-export { IconComponent } from "./components/icon/icon.component";
-export { StatusBadgeComponent } from "./components/status-badge/status-badge.component";
-export { LoadingStateComponent } from "./components/state/loading-state.component";
-export { EmptyStateComponent } from "./components/state/empty-state.component";
+export { Sh3ChoiceRowComponent } from "./components/choice-row/choice-row.component";
+export type { Sh3ChoiceOption } from "./components/choice-row/choice-row.component";
+export { Sh3IconComponent } from "./components/icon/icon.component";
+export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
+export { Sh3LoadingStateComponent } from "./components/state/loading-state.component";
+export { Sh3EmptyStateComponent } from "./components/state/empty-state.component";
 export type { Sh3IconSize } from "./components/icon/icon.component";
 export {
-  IconRegistry,
-  provideIcons,
+  Sh3IconRegistry,
+  provideSh3Icons,
 } from "./components/icon/icon-registry.service";
-export type { IconSet } from "./components/icon/icon-registry.service";
+export type { Sh3IconSet } from "./components/icon/icon-registry.service";
 export { SH3_BUILTIN_ICONS } from "./components/icon/icon.registry";
 export type {
   Sh3IconName,
   Sh3BuiltinIconName,
 } from "./components/icon/icon.registry";
-export { PageLayoutComponent } from "./components/page/page-layout.component";
-export { PageSectionComponent } from "./components/page/page-section.component";
-export { PaginatorComponent } from "./components/paginator/paginator.component";
-export type { PageItem } from "./components/paginator/paginator.component";
-export { TabNavComponent } from "./components/tab-nav/tab-nav.component";
-export type { TabNavItem } from "./components/tab-nav/tab-nav.component";
-export { ToastContainerComponent } from "./components/toast/toast-container.component";
-export { ToastService } from "./components/toast/toast.service";
-export type { Toast, ToastVariant } from "./components/toast/toast.service";
+export { Sh3PageLayoutComponent } from "./components/page/page-layout.component";
+export { Sh3PageSectionComponent } from "./components/page/page-section.component";
+export { Sh3PaginatorComponent } from "./components/paginator/paginator.component";
+export type { Sh3PageItem } from "./components/paginator/paginator.component";
+export { Sh3TabNavComponent } from "./components/tab-nav/tab-nav.component";
+export type { Sh3TabNavItem } from "./components/tab-nav/tab-nav.component";
+export { Sh3ToastContainerComponent } from "./components/toast/toast-container.component";
+export { Sh3ToastService } from "./components/toast/toast.service";
+export type {
+  Sh3Toast,
+  Sh3ToastVariant,
+} from "./components/toast/toast.service";
 
 // ── Panels (overlay system) ──────────────────────────────────
-export { PanelHostComponent } from "./panel/panel-host.component";
-export { PanelHeaderComponent } from "./panel/panel-header.component";
-export { PanelHostService } from "./panel/panel-host.service";
-export { PanelRef } from "./panel/panel-ref";
-export { PanelToggle } from "./panel/panel-toggle";
-export { PanelComponentOutletDirective } from "./panel/panel-component-outlet.directive";
+export { Sh3PanelHostComponent } from "./panel/panel-host.component";
+export { Sh3PanelHeaderComponent } from "./panel/panel-header.component";
+export { Sh3PanelHostService } from "./panel/panel-host.service";
+export { Sh3PanelRef } from "./panel/panel-ref";
+export { Sh3PanelToggle } from "./panel/panel-toggle";
+export { Sh3PanelComponentOutletDirective } from "./panel/panel-component-outlet.directive";
 export type {
-  PanelSide,
-  PanelContent,
-  PanelConfig,
-  PanelHandle,
-  PanelDescriptor,
-  TemplatePanelDescriptor,
-  ComponentPanelDescriptor,
+  Sh3PanelSide,
+  Sh3PanelContent,
+  Sh3PanelConfig,
+  Sh3PanelHandle,
+  Sh3PanelDescriptor,
+  Sh3TemplatePanelDescriptor,
+  Sh3ComponentPanelDescriptor,
 } from "./panel/panel.types";
 
 // NB: FocusTrapDirective + ScrollLockService stay package-internal — the panel
@@ -68,12 +71,16 @@ export type {
 
 // ── Auto-colour (categorical palettes + the app-wide registry) ─
 export {
-  PaletteRegistry,
-  providePalette,
-  PALETTE_DEFAULT,
+  Sh3PaletteRegistry,
+  provideSh3Palette,
+  SH3_PALETTE_DEFAULT,
 } from "./color/palette-registry.service";
-export { AUTO_PALETTES, hashSeed, resolvePalette } from "./color/palettes";
-export type { AutoPaletteName, PaletteInput } from "./color/palettes";
+export {
+  SH3_AUTO_PALETTES,
+  sh3HashSeed,
+  sh3ResolvePalette,
+} from "./color/palettes";
+export type { Sh3AutoPaletteName, Sh3PaletteInput } from "./color/palettes";
 
 export {
   SH3_SEMANTIC_COLOR_TOKENS,

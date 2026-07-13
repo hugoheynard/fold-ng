@@ -1,13 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { AvatarDetailComponent } from "./avatar-detail.component";
+import { Sh3AvatarDetailComponent } from "./avatar-detail.component";
 
 function mount(inputs: {
   primary: string;
   secondary?: string;
   avatarName?: string;
 }) {
-  const fixture = TestBed.createComponent(AvatarDetailComponent);
+  const fixture = TestBed.createComponent(Sh3AvatarDetailComponent);
   fixture.componentRef.setInput("primary", inputs.primary);
   if (inputs.secondary !== undefined) {
     fixture.componentRef.setInput("secondary", inputs.secondary);
@@ -23,7 +23,7 @@ function mount(inputs: {
   };
 }
 
-describe("AvatarDetailComponent", () => {
+describe("Sh3AvatarDetailComponent", () => {
   it("renders the primary line and an embedded avatar", () => {
     const { host } = mount({ primary: "Alex Rivers" });
     expect(host.querySelector(".primary")?.textContent?.trim()).toBe(

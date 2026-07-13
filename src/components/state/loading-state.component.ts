@@ -31,7 +31,7 @@ import { Component, input } from "@angular/core";
     }
   `,
 })
-export class LoadingStateComponent {
+export class Sh3LoadingStateComponent {
   /** Text to display. Defaults to "Loading...". */
   readonly message = input("Loading...");
 }

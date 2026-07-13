@@ -1,10 +1,10 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { IconComponent } from "./icon.component";
-import { IconRegistry } from "./icon-registry.service";
+import { Sh3IconComponent } from "./icon.component";
+import { Sh3IconRegistry } from "./icon-registry.service";
 
 function mount(name: string, extra: Record<string, unknown> = {}) {
-  const fixture = TestBed.createComponent(IconComponent);
+  const fixture = TestBed.createComponent(Sh3IconComponent);
   fixture.componentRef.setInput("name", name);
   for (const [k, v] of Object.entries(extra)) {
     fixture.componentRef.setInput(k, v);
@@ -14,7 +14,7 @@ function mount(name: string, extra: Record<string, unknown> = {}) {
   return { fixture, root, cmp: fixture.componentInstance };
 }
 
-describe("IconComponent", () => {
+describe("Sh3IconComponent", () => {
   it("renders the SVG markup for a built-in icon", () => {
     expect(mount("search").root.innerHTML).toContain("<svg");
   });
@@ -39,9 +39,9 @@ describe("IconComponent", () => {
   });
 });
 
-describe("IconRegistry (consumer extensibility)", () => {
+describe("Sh3IconRegistry (consumer extensibility)", () => {
   it("resolves a runtime-registered custom icon reactively", () => {
-    const reg = TestBed.inject(IconRegistry);
+    const reg = TestBed.inject(Sh3IconRegistry);
     const { fixture, root } = mount("my-custom");
     expect(root.innerHTML).not.toContain("<svg"); // unknown at first
     reg.register("my-custom", "<svg data-custom></svg>");
@@ -50,7 +50,7 @@ describe("IconRegistry (consumer extensibility)", () => {
   });
 
   it("registerMany merges a set; a custom key overrides a built-in", () => {
-    const reg = TestBed.inject(IconRegistry);
+    const reg = TestBed.inject(Sh3IconRegistry);
     expect(reg.has("search")).toBe(true);
     reg.registerMany({
       "brand-a": "<svg id='a'></svg>",

@@ -76,7 +76,7 @@ import { Component, input } from "@angular/core";
     }
   `,
 })
-export class CardComponent {
+export class Sh3CardComponent {
   /** Surface tint — `card` (raised, default) or `sunken` (deeper container). */
   readonly surface = input<"card" | "sunken">("card");
   /** Corner radius — `lg` (default), `md`, or `sm`. */

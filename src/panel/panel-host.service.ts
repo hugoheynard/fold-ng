@@ -1,30 +1,30 @@
 import { Injector, Service, type Type, inject, signal } from "@angular/core";
-import { PanelRef } from "./panel-ref";
+import { Sh3PanelRef } from "./panel-ref";
 import type {
-  ComponentPanelDescriptor,
-  PanelConfig,
-  PanelContent,
-  PanelDescriptor,
-  PanelHandle,
-  TemplatePanelDescriptor,
+  Sh3ComponentPanelDescriptor,
+  Sh3PanelConfig,
+  Sh3PanelContent,
+  Sh3PanelDescriptor,
+  Sh3PanelHandle,
+  Sh3TemplatePanelDescriptor,
 } from "./panel.types";
 
 /**
  * Single source of truth for the layout-owned side-panel region.
  *
  * Two ways to hand a panel to the one host, both rendered through the same
- * `PanelHostComponent` (backdrop, z-index, animation, scroll-lock, focus-trap):
+ * `Sh3PanelHostComponent` (backdrop, z-index, animation, scroll-lock, focus-trap):
  *
  * - **`open()` — the canonical, imperative API.** Open a component with a typed
- *   `data` input; get a {@link PanelRef} back for the result. No opaque token.
+ *   `data` input; get a {@link Sh3PanelRef} back for the result. No opaque token.
  * - **`present()` — declarative sugar** used by a `<side-panel>` wrapper to
  *   teleport a projected template. Kept for page-coupled form drawers.
  */
 @Service()
-export class PanelHostService {
+export class Sh3PanelHostService {
   private readonly rootInjector = inject(Injector);
   private nextId = 1;
-  private readonly _panels = signal<readonly PanelDescriptor[]>([]);
+  private readonly _panels = signal<readonly Sh3PanelDescriptor[]>([]);
 
   /** The active panels, oldest first. Read by the layout host. */
   readonly panels = this._panels.asReadonly();
@@ -32,28 +32,28 @@ export class PanelHostService {
   // Data-carrying panel: `config.data` is type-checked against the component's
   // `data` input.
   open<TData, TResult = unknown>(
-    component: Type<PanelContent<TData>>,
-    config: PanelConfig<TData> & { data: TData },
-  ): PanelRef<TResult>;
+    component: Type<Sh3PanelContent<TData>>,
+    config: Sh3PanelConfig<TData> & { data: TData },
+  ): Sh3PanelRef<TResult>;
   // Data-less panel (its data, if any, comes via `config.providers`).
   open<TResult = unknown>(
     component: Type<unknown>,
-    config?: Omit<PanelConfig<never>, "data">,
-  ): PanelRef<TResult>;
+    config?: Omit<Sh3PanelConfig<never>, "data">,
+  ): Sh3PanelRef<TResult>;
   open<TResult = unknown>(
     component: Type<unknown>,
-    config: PanelConfig<unknown> = {},
-  ): PanelRef<TResult> {
+    config: Sh3PanelConfig<unknown> = {},
+  ): Sh3PanelRef<TResult> {
     const id = this.takeId();
-    const ref = new PanelRef<TResult>(() => this.dismiss(id));
+    const ref = new Sh3PanelRef<TResult>(() => this.dismiss(id));
     const injector = Injector.create({
       parent: this.rootInjector,
       providers: [
-        { provide: PanelRef, useValue: ref },
+        { provide: Sh3PanelRef, useValue: ref },
         ...(config.providers ?? []),
       ],
     });
-    const descriptor: ComponentPanelDescriptor = {
+    const descriptor: Sh3ComponentPanelDescriptor = {
       kind: "component",
       id,
       component,
@@ -76,8 +76,8 @@ export class PanelHostService {
    * not subject to the imperative single-panel replacement.
    */
   present(
-    descriptor: Omit<TemplatePanelDescriptor, "id" | "kind">,
-  ): PanelHandle {
+    descriptor: Omit<Sh3TemplatePanelDescriptor, "id" | "kind">,
+  ): Sh3PanelHandle {
     const id = this.takeId();
     this.add({ ...descriptor, kind: "template", id });
     return { id, dismiss: () => this.dismiss(id) };
@@ -85,7 +85,7 @@ export class PanelHostService {
 
   /**
    * Close every open panel through its own `onClose` — so each opener's
-   * `PanelRef`/toggle settles — before a new single panel takes over. Iterates
+   * `Sh3PanelRef`/toggle settles — before a new single panel takes over. Iterates
    * a snapshot, so the `onClose`-driven removals don't disturb the loop.
    */
   private closeExisting(): void {
@@ -110,7 +110,7 @@ export class PanelHostService {
     return id;
   }
 
-  private add(descriptor: PanelDescriptor): void {
+  private add(descriptor: Sh3PanelDescriptor): void {
     this._panels.update((list) => [...list, descriptor]);
   }
 }

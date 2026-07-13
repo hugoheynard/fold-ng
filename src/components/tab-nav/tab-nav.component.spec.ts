@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { TabNavComponent, type TabNavItem } from "./tab-nav.component";
+import { Sh3TabNavComponent, type Sh3TabNavItem } from "./tab-nav.component";
 
 @Component({
   standalone: true,
-  imports: [TabNavComponent],
+  imports: [Sh3TabNavComponent],
   template: `<sh3-tab-nav
     [tabs]="tabs"
     [activeKey]="activeKey"
@@ -17,7 +17,7 @@ import { TabNavComponent, type TabNavItem } from "./tab-nav.component";
   />`,
 })
 class HostComponent {
-  tabs: TabNavItem[] = [
+  tabs: Sh3TabNavItem[] = [
     { key: "a", label: "Alpha", badge: 3 },
     { key: "b", label: "Beta", icon: "M12 2 2 22h20z" },
   ];
@@ -41,7 +41,7 @@ function setup(patch: Partial<HostComponent> = {}) {
   };
 }
 
-describe("TabNavComponent", () => {
+describe("Sh3TabNavComponent", () => {
   it("renders one tab per item with its label", () => {
     const { buttons } = setup();
     const labels = buttons.map((b) =>

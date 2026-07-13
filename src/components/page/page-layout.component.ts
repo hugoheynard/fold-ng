@@ -4,7 +4,7 @@ import { Component, input } from "@angular/core";
  * `<sh3-page-layout>` — the vertical scaffold for a settings/admin-style page:
  * an optional `title` + `description` header, an optional top-right actions
  * slot, and a body that stacks its children with a consistent rhythm. Pair it
- * with {@link PageSectionComponent} for grouped sub-sections.
+ * with {@link Sh3PageSectionComponent} for grouped sub-sections.
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
@@ -92,7 +92,7 @@ import { Component, input } from "@angular/core";
     }
   `,
 })
-export class PageLayoutComponent {
+export class Sh3PageLayoutComponent {
   /** The page heading. Omit for a header-less page. */
   readonly title = input<string>();
   /** A one-line description under the title. */

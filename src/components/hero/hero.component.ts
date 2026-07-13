@@ -1,7 +1,7 @@
 import { Component, booleanAttribute, input } from "@angular/core";
 
 /**
- * `<sh3-hero>` — a prominent header card. Same base as {@link CardComponent}
+ * `<sh3-hero>` — a prominent header card. Same base as {@link Sh3CardComponent}
  * (surface + border + radius + padding), with a `tone` that scales prominence
  * from quiet to loud. Lay out the content inside however you like (the hero is
  * just the surface); project it via `<ng-content>`.
@@ -141,7 +141,7 @@ import { Component, booleanAttribute, input } from "@angular/core";
     }
   `,
 })
-export class HeroComponent {
+export class Sh3HeroComponent {
   /** Prominence tint — `neutral` (default) · `sunken` · `subtle` · `gradient` · `primary`. */
   readonly tone = input<
     "neutral" | "sunken" | "subtle" | "gradient" | "primary"

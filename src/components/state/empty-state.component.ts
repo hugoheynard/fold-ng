@@ -93,7 +93,7 @@ import { Component, input } from "@angular/core";
     }
   `,
 })
-export class EmptyStateComponent {
+export class Sh3EmptyStateComponent {
   /** The bold primary line. */
   readonly title = input.required<string>();
   /** Optional muted secondary line. */

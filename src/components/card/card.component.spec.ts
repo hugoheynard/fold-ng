@@ -1,11 +1,11 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { CardComponent } from "./card.component";
+import { Sh3CardComponent } from "./card.component";
 
 @Component({
   standalone: true,
-  imports: [CardComponent],
+  imports: [Sh3CardComponent],
   template: `<sh3-card
     [surface]="surface()"
     [radius]="radius()"
@@ -29,7 +29,7 @@ function render() {
   return { fixture, card };
 }
 
-describe("CardComponent", () => {
+describe("Sh3CardComponent", () => {
   it("projects its content", () => {
     const { card } = render();
     expect(card.querySelector(".body")?.textContent).toBe("Content");

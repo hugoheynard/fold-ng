@@ -8,15 +8,15 @@ import {
 } from "@angular/core";
 import { FocusTrapDirective } from "../a11y/focus-trap.directive";
 import { ScrollLockService } from "../a11y/scroll-lock.service";
-import { PanelComponentOutletDirective } from "./panel-component-outlet.directive";
-import { PanelHostService } from "./panel-host.service";
-import type { PanelDescriptor } from "./panel.types";
+import { Sh3PanelComponentOutletDirective } from "./panel-component-outlet.directive";
+import { Sh3PanelHostService } from "./panel-host.service";
+import type { Sh3PanelDescriptor } from "./panel.types";
 
 /**
  * `<sh3-panel-host>` — the single, layout-owned chrome for every side panel.
  *
  * Rendered **once** in the content region (typically inside the app shell). It
- * reads the {@link PanelHostService} panels and wraps each in a **glass**
+ * reads the {@link Sh3PanelHostService} panels and wraps each in a **glass**
  * slide-in `<aside>` (no dark scrim — the surface itself is frosted),
  * `z-index: 50` stacking, focus-trap and body scroll-lock.
  *
@@ -34,7 +34,7 @@ import type { PanelDescriptor } from "./panel.types";
   imports: [
     NgTemplateOutlet,
     FocusTrapDirective,
-    PanelComponentOutletDirective,
+    Sh3PanelComponentOutletDirective,
   ],
   template: `@for (panel of panels(); track panel.id) {
     <div
@@ -213,8 +213,8 @@ import type { PanelDescriptor } from "./panel.types";
     }
   `,
 })
-export class PanelHostComponent {
-  private readonly host = inject(PanelHostService);
+export class Sh3PanelHostComponent {
+  private readonly host = inject(Sh3PanelHostService);
   private readonly scrollLock = inject(ScrollLockService);
 
   readonly panels = this.host.panels;
@@ -243,7 +243,7 @@ export class PanelHostComponent {
   }
 
   /** The accessible label — a template panel's title, else the component owns it. */
-  ariaLabel(panel: PanelDescriptor): string | null {
+  ariaLabel(panel: Sh3PanelDescriptor): string | null {
     return panel.kind === "template" ? panel.title() : null;
   }
 
@@ -256,7 +256,7 @@ export class PanelHostComponent {
     }
   }
 
-  onBackdrop(event: MouseEvent, panel: PanelDescriptor): void {
+  onBackdrop(event: MouseEvent, panel: Sh3PanelDescriptor): void {
     if (event.target === event.currentTarget) {
       panel.onClose();
     }

@@ -5,10 +5,14 @@ import {
   inject,
   signal,
 } from "@angular/core";
-import { hashSeed, resolvePalette, type PaletteInput } from "./palettes";
+import {
+  sh3HashSeed,
+  sh3ResolvePalette,
+  type Sh3PaletteInput,
+} from "./palettes";
 
-/** Bootstrap default for {@link PaletteRegistry} — set via {@link providePalette}. */
-export const PALETTE_DEFAULT = new InjectionToken<PaletteInput>(
+/** Bootstrap default for {@link Sh3PaletteRegistry} — set via {@link provideSh3Palette}. */
+export const SH3_PALETTE_DEFAULT = new InjectionToken<Sh3PaletteInput>(
   "sh3.palette.default",
 );
 
@@ -18,12 +22,12 @@ export const PALETTE_DEFAULT = new InjectionToken<PaletteInput>(
  *
  * ```ts
  * // app.config.ts
- * providers: [providePalette("pastel")]        // a built-in
- * providers: [providePalette(MY_BRAND_COLORS)] // your own list
+ * providers: [provideSh3Palette("pastel")]        // a built-in
+ * providers: [provideSh3Palette(MY_BRAND_COLORS)] // your own list
  * ```
  */
-export function providePalette(palette: PaletteInput): Provider {
-  return { provide: PALETTE_DEFAULT, useValue: palette };
+export function provideSh3Palette(palette: Sh3PaletteInput): Provider {
+  return { provide: SH3_PALETTE_DEFAULT, useValue: palette };
 }
 
 /**
@@ -33,9 +37,11 @@ export function providePalette(palette: PaletteInput): Provider {
  * app-wide with {@link use}; each `colorFor` reader recolours reactively.
  */
 @Service()
-export class PaletteRegistry {
+export class Sh3PaletteRegistry {
   private readonly _current = signal<readonly string[]>(
-    resolvePalette(inject(PALETTE_DEFAULT, { optional: true }) ?? "vivid"),
+    sh3ResolvePalette(
+      inject(SH3_PALETTE_DEFAULT, { optional: true }) ?? "vivid",
+    ),
   );
 
   /** The active palette. Reading this in a reactive context tracks switches. */
@@ -45,13 +51,13 @@ export class PaletteRegistry {
    * Switch the whole app's palette — a built-in name or a custom colour list.
    * Every `colorFor` reader updates in the same frame.
    */
-  use(palette: PaletteInput): void {
-    this._current.set(resolvePalette(palette));
+  use(palette: Sh3PaletteInput): void {
+    this._current.set(sh3ResolvePalette(palette));
   }
 
   /** Deterministic colour for a seed, from the active palette. Reactive. */
   colorFor(seed: string): string {
     const palette = this._current();
-    return palette[Math.abs(hashSeed(seed)) % palette.length];
+    return palette[Math.abs(sh3HashSeed(seed)) % palette.length];
   }
 }

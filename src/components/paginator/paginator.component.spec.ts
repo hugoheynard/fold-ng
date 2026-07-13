@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { PaginatorComponent } from "./paginator.component";
+import { Sh3PaginatorComponent } from "./paginator.component";
 
 function create(props: {
   currentPage: number;
@@ -9,7 +9,7 @@ function create(props: {
   siblingCount?: number;
   disabled?: boolean;
 }) {
-  const fixture = TestBed.createComponent(PaginatorComponent);
+  const fixture = TestBed.createComponent(Sh3PaginatorComponent);
   const ref = fixture.componentRef;
   ref.setInput("currentPage", props.currentPage);
   ref.setInput("pageSize", props.pageSize);
@@ -24,10 +24,10 @@ function create(props: {
   return { fixture, component: fixture.componentInstance };
 }
 
-const pageList = (c: PaginatorComponent) =>
+const pageList = (c: Sh3PaginatorComponent) =>
   c.pageItems().map((i) => (i.kind === "page" ? i.page : "…"));
 
-describe("PaginatorComponent", () => {
+describe("Sh3PaginatorComponent", () => {
   it("computes totalPages, clamping to 1 when empty", () => {
     expect(
       create({
