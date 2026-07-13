@@ -70,9 +70,7 @@ import { ToastService } from "./toast.service";
       backdrop-filter: blur(var(--sh3-blur-glass));
       -webkit-backdrop-filter: blur(var(--sh3-blur-glass));
       border: 1px solid var(--sh3-color-glass-border);
-      box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.5),
-        0 4px 12px rgba(0, 0, 0, 0.35);
+      box-shadow: var(--sh3-shadow-lg);
       cursor: pointer;
       animation: sh3-toast-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }

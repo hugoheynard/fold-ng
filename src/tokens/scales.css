@@ -1,9 +1,11 @@
 /* ============================================================
    SH3PHERD · Design tokens — SCALES (radius, type)
    ------------------------------------------------------------
-   Non-colour scales. These are single-tier: a radius or a font
-   size IS its value, there's nothing to theme, so there is no
-   primitive/semantic split — just the scale, on :root.
+   Sizing + elevation scales. Single-tier: a radius or a font size
+   IS its value, there's nothing to theme, so there is no
+   primitive/semantic split — just the scale, on :root. Elevation is
+   the one exception that touches colour, but stays theme-invariant
+   (black-ink shadows via the black primitive, legible on both themes).
    ============================================================ */
 
 :root {
@@ -44,4 +46,22 @@
 
   /* Backdrop-blur radii (for frosted `--sh3-color-glass` surfaces). */
   --sh3-blur-glass: 20px;
+
+  /* Elevation scale — the shared depth language. Components name a level, never
+     spell their own shadow. Theme-invariant: the ink is the black primitive via
+     color-mix (no raw rgba), which reads acceptably on dark and light.
+     `panel-*` are the directional side-panel shadows (+ inset glass highlight). */
+  --sh3-shadow-sm: 0 1px 2px
+    color-mix(in srgb, var(--sh3-ref-black) 20%, transparent);
+  --sh3-shadow-md: 0 10px 30px -12px
+    color-mix(in srgb, var(--sh3-ref-black) 50%, transparent);
+  --sh3-shadow-lg:
+    0 12px 32px color-mix(in srgb, var(--sh3-ref-black) 50%, transparent),
+    0 4px 12px color-mix(in srgb, var(--sh3-ref-black) 35%, transparent);
+  --sh3-shadow-panel-right:
+    -12px 0 40px color-mix(in srgb, var(--sh3-ref-black) 45%, transparent),
+    inset 1px 0 0 color-mix(in srgb, var(--sh3-ref-white) 4%, transparent);
+  --sh3-shadow-panel-left:
+    12px 0 40px color-mix(in srgb, var(--sh3-ref-black) 45%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--sh3-ref-white) 4%, transparent);
 }

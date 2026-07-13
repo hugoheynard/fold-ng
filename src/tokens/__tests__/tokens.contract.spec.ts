@@ -9,7 +9,9 @@ import {
   SH3_SPACE_TOKENS,
   SH3_MOTION_TOKENS,
   SH3_BLUR_TOKENS,
+  SH3_SHADOW_TOKENS,
 } from "../tokens.catalog";
+import { readdirSync } from "node:fs";
 
 /**
  * The token contract. These tests are the "lock" on the design system: they
@@ -72,7 +74,7 @@ describe("token contract · catalogue ↔ CSS", () => {
     expect(new Set(declared)).toEqual(new Set(expectedSemantic));
   });
 
-  it("scales.css declares exactly the radius + type + space + motion catalogue", () => {
+  it("scales.css declares exactly the radius + type + space + motion + shadow catalogue", () => {
     const declared = declaredVars(block(scales, ":root"));
     const expected = [
       ...SH3_RADIUS_TOKENS.map((t) => `--sh3-radius-${t}`),
@@ -80,6 +82,7 @@ describe("token contract · catalogue ↔ CSS", () => {
       ...SH3_SPACE_TOKENS.map((t) => `--sh3-space-${t}`),
       ...SH3_MOTION_TOKENS.map((t) => `--sh3-motion-${t}`),
       ...SH3_BLUR_TOKENS.map((t) => `--sh3-blur-${t}`),
+      ...SH3_SHADOW_TOKENS.map((t) => `--sh3-shadow-${t}`),
     ];
     expect(new Set(declared)).toEqual(new Set(expected));
   });
@@ -117,5 +120,55 @@ describe("token contract · theme invariance", () => {
 
   it("scales.css carries no theme-specific block (sizes never theme)", () => {
     expect(scales).not.toContain("data-theme");
+  });
+});
+
+/* -------------------------------------------------------------------------- */
+
+/** Recursively collect files with one of `exts` under `dir`. */
+function walk(dir: string, exts: string[]): string[] {
+  const out: string[] = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...walk(full, exts));
+    } else if (exts.some((e) => entry.name.endsWith(e))) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+/** The CSS a component ships: every `styles: \`…\`` block + its `.css` files. */
+function componentStyles(): { file: string; css: string }[] {
+  const srcDir = join(tokensDir, "..");
+  const out: { file: string; css: string }[] = [];
+  for (const file of walk(srcDir, [".css"])) {
+    if (file.includes(`${"tokens"}/`) || file.endsWith("index.css")) {
+      continue; // token layer is the ONE place colours live
+    }
+    out.push({ file, css: readFileSync(file, "utf8") });
+  }
+  for (const file of walk(srcDir, [".component.ts"])) {
+    for (const m of readFileSync(file, "utf8").matchAll(
+      /styles:\s*\[?\s*`([\s\S]*?)`/g,
+    )) {
+      out.push({ file, css: m[1] as string });
+    }
+  }
+  return out;
+}
+
+describe("token contract · components consume tokens only", () => {
+  // A component style must not spell a raw colour or shadow — it names a token.
+  // Colours come from `var(--sh3-color-*)` / `color-mix(… var …)`; depth from
+  // `var(--sh3-shadow-*)`. `currentColor` / `transparent` are colour-free.
+  const RAW_COLOUR = /#[0-9a-fA-F]{3,8}\b|(?<![\w-])rgba?\(|hsla?\(/;
+
+  it("no component style hard-codes a colour or shadow (rgba / hsl / hex)", () => {
+    const offenders = componentStyles()
+      .filter(({ css }) => RAW_COLOUR.test(stripComments(css)))
+      .map(({ file }) => file.slice(file.indexOf("/src/") + 1));
+    expect([...new Set(offenders)]).toEqual([]);
   });
 });

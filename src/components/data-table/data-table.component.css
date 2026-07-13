@@ -15,9 +15,7 @@
   border: 1px solid var(--sh3-color-border-subtle);
   border-radius: var(--sh3-radius-lg);
   background: var(--sh3-color-surface-sunken);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.24),
-    0 8px 24px -14px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--sh3-shadow-md);
 }
 
 .sh3dt {
@@ -200,7 +198,7 @@
     border-radius: var(--sh3-radius-md);
     background: var(--sh3-color-surface-sunken);
     padding: 4px 14px 8px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--sh3-shadow-sm);
   }
   .sh3dt--cards .sh3dt-row.tone-warning {
     border-left: 3px solid var(--sh3-color-warning);

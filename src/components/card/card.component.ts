@@ -72,7 +72,7 @@ import { Component, input } from "@angular/core";
     }
     :host(.is-interactive:hover) {
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+      box-shadow: var(--sh3-shadow-md);
     }
   `,
 })

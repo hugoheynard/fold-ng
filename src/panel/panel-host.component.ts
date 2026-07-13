@@ -125,17 +125,13 @@ import type { PanelDescriptor } from "./panel.types";
       backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
       -webkit-backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
       border-left: 1px solid var(--sh3-color-glass-border);
-      box-shadow:
-        -12px 0 40px rgba(0, 0, 0, 0.45),
-        inset 1px 0 0 rgba(255, 255, 255, 0.04);
+      box-shadow: var(--sh3-shadow-panel-right);
       animation: panel-slide-in-right 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .panel--left {
       border-left: none;
       border-right: 1px solid var(--sh3-color-glass-border);
-      box-shadow:
-        12px 0 40px rgba(0, 0, 0, 0.45),
-        inset -1px 0 0 rgba(255, 255, 255, 0.04);
+      box-shadow: var(--sh3-shadow-panel-left);
       animation-name: panel-slide-in-left;
     }
     @media (max-width: 768px) {

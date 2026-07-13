@@ -82,6 +82,7 @@ export {
   SH3_SPACE_TOKENS,
   SH3_MOTION_TOKENS,
   SH3_BLUR_TOKENS,
+  SH3_SHADOW_TOKENS,
   sh3ColorProperty,
   sh3ColorVar,
   sh3RadiusVar,
@@ -89,6 +90,7 @@ export {
   sh3SpaceVar,
   sh3MotionVar,
   sh3BlurVar,
+  sh3ShadowVar,
 } from "./tokens/tokens.catalog";
 export type {
   Sh3SemanticColorToken,
@@ -97,4 +99,5 @@ export type {
   Sh3SpaceToken,
   Sh3MotionToken,
   Sh3BlurToken,
+  Sh3ShadowToken,
 } from "./tokens/tokens.catalog";

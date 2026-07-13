@@ -129,6 +129,22 @@ export const SH3_BLUR_TOKENS = ["glass"] as const;
 
 export type Sh3BlurToken = (typeof SH3_BLUR_TOKENS)[number];
 
+/**
+ * Elevation scale — full `box-shadow` values. The shared depth language: a
+ * component never spells its own shadow, it names a level. Theme-invariant
+ * (black ink via `color-mix`, which reads acceptably on both themes), so they
+ * live with the scales. `panel-*` are the directional side-panel shadows.
+ */
+export const SH3_SHADOW_TOKENS = [
+  "sm",
+  "md",
+  "lg",
+  "panel-right",
+  "panel-left",
+] as const;
+
+export type Sh3ShadowToken = (typeof SH3_SHADOW_TOKENS)[number];
+
 /** The full custom-property name for a semantic colour token. */
 export function sh3ColorProperty(token: Sh3SemanticColorToken): string {
   return `--sh3-color-${token}`;
@@ -162,4 +178,9 @@ export function sh3MotionVar(token: Sh3MotionToken): string {
 /** A ready-to-use `var(--sh3-blur-…)` reference. */
 export function sh3BlurVar(token: Sh3BlurToken): string {
   return `var(--sh3-blur-${token})`;
+}
+
+/** A ready-to-use `var(--sh3-shadow-…)` reference. */
+export function sh3ShadowVar(token: Sh3ShadowToken): string {
+  return `var(--sh3-shadow-${token})`;
 }
