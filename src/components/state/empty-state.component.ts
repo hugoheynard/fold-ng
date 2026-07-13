@@ -8,6 +8,9 @@ import { Component, input } from "@angular/core";
  * - `[empty-icon]` — projected above the title (typically an SVG)
  * - default `ng-content` — projected below the subtitle (typically a button)
  *
+ * `tone="alert"` turns it into an error state (red title + icon); the default
+ * `neutral` tone is the plain empty state.
+ *
  * @selector `sh3-empty-state`
  *
  * @example
@@ -21,11 +24,14 @@ import { Component, input } from "@angular/core";
  *   </svg>
  *   <sh3-button variant="primary" (clicked)="create()">+ Create</sh3-button>
  * </sh3-empty-state>
+ *
+ * <sh3-empty-state tone="alert" title="Failed to load" />
  * ```
  */
 @Component({
   selector: "sh3-empty-state",
   standalone: true,
+  host: { "[class.alert]": "tone() === 'alert'" },
   template: `
     <div class="empty">
       <div class="empty-icon">
@@ -81,6 +87,10 @@ import { Component, input } from "@angular/core";
     .empty-action:empty {
       display: none;
     }
+    :host(.alert) .empty-icon,
+    :host(.alert) .empty-title {
+      color: var(--sh3-color-alert-text);
+    }
   `,
 })
 export class EmptyStateComponent {
@@ -88,4 +98,6 @@ export class EmptyStateComponent {
   readonly title = input.required<string>();
   /** Optional muted secondary line. */
   readonly subtitle = input("");
+  /** `alert` renders an error state (red title + icon); `neutral` is default. */
+  readonly tone = input<"neutral" | "alert">("neutral");
 }

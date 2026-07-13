@@ -6,7 +6,11 @@ import { EmptyStateComponent } from "./empty-state.component";
 @Component({
   standalone: true,
   imports: [EmptyStateComponent],
-  template: `<sh3-empty-state [title]="title" [subtitle]="subtitle">
+  template: `<sh3-empty-state
+    [title]="title"
+    [subtitle]="subtitle"
+    [tone]="tone"
+  >
     <svg empty-icon></svg>
     @if (withAction) {
       <button>Act</button>
@@ -16,6 +20,7 @@ import { EmptyStateComponent } from "./empty-state.component";
 class HostComponent {
   title = "No company yet";
   subtitle = "";
+  tone: "neutral" | "alert" = "neutral";
   withAction = false;
 }
 
@@ -44,5 +49,10 @@ describe("EmptyStateComponent", () => {
     const el = render({ withAction: true });
     expect(el.querySelector("[empty-icon]")).not.toBeNull();
     expect(el.querySelector(".empty-action button")).not.toBeNull();
+  });
+
+  it("flags the alert tone on the host", () => {
+    expect(render().classList.contains("alert")).toBe(false);
+    expect(render({ tone: "alert" }).classList.contains("alert")).toBe(true);
   });
 });
