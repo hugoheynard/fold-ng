@@ -25,7 +25,8 @@
     "clean": "../../dev-toolbox/scripts/clean:package.sh"
   },
   "peerDependencies": {
-    "@angular/core": "^22"
+    "@angular/core": "^22",
+    "@angular/platform-browser": "^22"
   },
   "dependencies": {
     "tslib": "^2.3.0"

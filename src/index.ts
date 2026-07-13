@@ -11,6 +11,18 @@ export { BadgeComponent } from "./components/badge/badge.component";
 export { CardComponent } from "./components/card/card.component";
 export { ChoiceRowComponent } from "./components/choice-row/choice-row.component";
 export type { ChoiceOption } from "./components/choice-row/choice-row.component";
+export { IconComponent } from "./components/icon/icon.component";
+export type { Sh3IconSize } from "./components/icon/icon.component";
+export {
+  IconRegistry,
+  provideIcons,
+} from "./components/icon/icon-registry.service";
+export type { IconSet } from "./components/icon/icon-registry.service";
+export { SH3_BUILTIN_ICONS } from "./components/icon/icon.registry";
+export type {
+  Sh3IconName,
+  Sh3BuiltinIconName,
+} from "./components/icon/icon.registry";
 export { PageLayoutComponent } from "./components/page/page-layout.component";
 export { PageSectionComponent } from "./components/page/page-section.component";
 export { TabNavComponent } from "./components/tab-nav/tab-nav.component";

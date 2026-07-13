@@ -112,8 +112,32 @@ Add roles only once we're certain of their usage.
       inlined `.sh3-page*` CSS onto it. 7 specs.
 
 Next components, one at a time, each with tests + a usage story. Lock order
-tracks what the app already reuses:
-`Button` · `StatusBadge` · `Avatar` · `Icon` · `Sh3DataTable` · …
+tracks what the app already reuses (✓ = landed):
+`Button` · `StatusBadge` · ~~`Avatar`~~✓ · ~~`Icon`~~✓ · **`Sh3DataTable`** ·
+`Paginator` · `PanelHeader` · …
+
+**Confirmed candidates + their dependency chain** (from `app/shared/`):
+
+- [x] **`Icon`** (`sh3-icon`) — **landed**. Shipped the full **100-icon** set
+      inlined (6 category maps `icons/*.icons.ts`, generated from the app's `.svg`
+      assets) so the package is self-contained. Static `SH3_ICONS` const → a runtime
+      **`IconRegistry`** root singleton: built-ins + consumer additions via
+      `provideIcons()` (bootstrap) or `register()`/`registerMany()` (runtime), keyed
+      `Sh3BuiltinIconName | (string & {})`. Added `@angular/platform-browser` peer
+      (`DomSanitizer`). ~90 app importers repointed; app icon component + registry
+      deleted. 6 specs (incl. extensibility). Unblocks `Paginator` + `PanelHeader`.
+- **`Sh3DataTable`** (`sh3-data-table` + cell directive + types) — already fully
+  `Sh3`-prefixed, generic, presentational, **no `Icon` dependency** → can be
+  extracted independently, right after the token scales. Heaviest on styles
+  (287-line SCSS → inline CSS).
+- **`Paginator`** (`sh3-paginator`) — needs `Icon`. Server-side, fully controlled.
+- **`PanelHeader`** (`sh3-panel-header`) — needs `Icon`; already wired to the
+  package `PanelRef`. Last real component left under `app/shared/panel/`.
+
+Prereq for all four: promote the deferred **space / motion / radius** token
+scales (see Phase 1) — they each consume `--gap-*`, `--t-fast`, `--radius-*`.
+All four still use `styleUrl`/`templateUrl`, so each move inlines template + CSS
+per the analog test constraint.
 
 ## Phase 4 · Publish
 

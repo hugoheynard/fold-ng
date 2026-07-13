@@ -127,10 +127,47 @@ the package root.
 | `CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
 | `BadgeComponent`                   | `sh3-badge`           | Status / count pill.                                         |
 | `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
+| `IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `IconRegistry`).           |
 | `TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
 | `AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
 | `ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `ToastService`).                            |
 | `PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `PanelHostService`).            |
+
+## Icons
+
+`sh3-icon` ships a **built-in set of ~100 single-colour SVGs** (`ui`, `nav`,
+`music`, `status`, `people`, `brands`), inlined so the package is
+self-contained — no `.svg` loader config leaks to a consumer. Icons use
+`currentColor`, so they inherit `color` and are sized with `size` (`xs…xl` or a
+pixel number):
+
+```html
+<sh3-icon name="search" />
+<sh3-icon name="heart" [size]="18" />
+<sh3-icon name="edit" title="Edit track" />
+<!-- name autocompletes the built-ins (Sh3BuiltinIconName) -->
+```
+
+**A consumer adds its own icons** — the package's set stays the shared core; the
+app extends it through the root `IconRegistry`. Register once at bootstrap
+(idiomatic, like `provideRouter`):
+
+```ts
+// app.config.ts
+providers: [provideIcons({ "my-logo": "<svg …>…</svg>" })];
+```
+
+Or at runtime — the icon recolours/resolves reactively:
+
+```ts
+inject(IconRegistry).register("my-logo", svgMarkup);
+inject(IconRegistry).registerMany({ … });
+```
+
+A custom entry with a built-in key overrides it. `name` is typed
+`Sh3BuiltinIconName | (string & {})`, so built-ins autocomplete while any
+registered custom string is still accepted (an unknown name renders nothing and
+`console.warn`s in dev).
 
 ## Auto-colour
 
