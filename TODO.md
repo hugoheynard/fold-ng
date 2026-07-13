@@ -250,3 +250,53 @@ open:
   a11y barrier, not just a keyboard trap.
 - **Panel close → `<sh3-icon name="close">`** (rule 4.7), and fold its aria into
   the i18n input above.
+
+## Road to 9.5 (current: ~8.4/10)
+
+The rating breakdown — Technique 9 · Modernité design 8.5 · Good practices 8.5 ·
+DX 8.5 · Tests 7.5. Foundations are ~9; what's missing is **finish + proof**.
+Ordered by impact on the score.
+
+**1 · i18n — the one real portability leak (Good practices 8.5→9, DX 8.5→9).**
+The blocker to the "reusable across projects" promise (rule 5.1).
+
+- [ ] Every user-facing / `aria-label` string → `input()` with an English default.
+      `sh3-paginator` (`perPage`/`of`/`empty`/`prev`/`next`/`page`), panel host +
+      header close (`"Fermer"` → `closeLabel`, default `"Close"`).
+- [ ] App supplies French once (paginator call site + the single panel host).
+- [ ] Fold the panel close `<svg>` into `<sh3-icon name="close">` (rule 4.7).
+
+**2 · Tests — happy-path only today (Tests 7.5→9).**
+
+- [ ] a11y automation: axe-core assertion in the panel/overlay specs (role,
+      `aria-modal`, focus order, Escape) — not just "it renders".
+- [ ] Visual-regression baseline (Playwright/Vitest-browser snapshots) for each
+      component × dark/light — the theme flip is claimed but never pixel-verified.
+- [ ] Coverage floor in CI; fill the thinly-tested components (tab-nav, app-shell).
+
+**3 · a11y depth (Modernité 8.5→9, and unblocks a real 6.2 gap).**
+
+- [ ] `inert` the background behind an open panel — a full modal barrier, not a
+      keyboard-only trap (screen-reader virtual cursor currently reaches behind).
+- [ ] Reduced-motion: gate the slide/fade animations behind
+      `prefers-reduced-motion`.
+- [ ] Reconsider the px type scale (rule 1.6) — offer a rem opt-in for consumers
+      whose root ≠ 14px, so user-zoom works. Currently an accepted deviation.
+
+**4 · Discipline still aspirational (Good practices 8.5→9).**
+
+- [ ] Retokenise the hard-coded px spacing + `0.18s ease` motion to
+      `--sh3-space-*` / `--sh3-motion-*`, then a lint guard (rule 1.5) so it's
+      enforced like colour — no new debt.
+
+**5 · Proof + release (DX 8.5→9.5, Modernité 8.5→9).**
+
+- [ ] A **second consumer** (even a tiny playground app) — the API is only
+      validated by one app today; a 2nd reveals the hidden assumptions.
+- [ ] Storybook (or a docs playground) so components are browsable, not just
+      README rows.
+- [ ] Real semver + a CHANGELOG; graduate from `0.0.0`. Wire the package into the
+      repo quality gates (ESLint/CI/pre-push — cross-ref Phase 0).
+
+Land 1–4 and it's a clean **9**; 5 is what earns the last half-point — a design
+system is only proven by a second user and a versioned release.
