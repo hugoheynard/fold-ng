@@ -234,3 +234,21 @@ avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
   `".svg": "text"` loader are now unused (nothing imports `.svg`). Harmless but
   cruft — delete them (and the loader) in a follow-up once the package icon set
   is confirmed as the single source of truth.
+
+## Hardcore-review follow-ups (2026-07) — see `dev-rules.md` ledger
+
+Done in the review pass: elevation tokens + the component-usage colour guard
+(rule 1.3/1.4), avatar luminance ink (6.3), focus-trap visible-only (6.2). Still
+open:
+
+- **Prefix every TS export `Sh3`** (rule 3.3). ~28 bare exports → `Sh3*`; big
+  app-wide import migration (`IconComponent` ~95 files, `ToastService` ~57).
+- **Extract hard-coded strings to inputs** (rule 5.1). `sh3-paginator` + panel
+  host/header carry French aria/labels; make them `input()`s with EN defaults,
+  the app supplies French once. Flips the app's a11y language → coordinate.
+- **Retokenise spacing/motion** (rule 1.5) and add a lint so it stays enforced
+  like colour is.
+- **`inert` the background behind an open panel** (rule 6.2) for a full modal
+  a11y barrier, not just a keyboard trap.
+- **Panel close → `<sh3-icon name="close">`** (rule 4.7), and fold its aria into
+  the i18n input above.
