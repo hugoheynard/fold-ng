@@ -109,12 +109,13 @@ Add roles only once we're certain of their usage.
 - [x] **Badge** (`sh3-badge`) — status/count pill; variants
       `accent`/`info`/`warning`/`alert`/`success` (success completed the family).
 - [x] **StatusBadge** (`sh3-status-badge`) — status→colour badge (maps a domain
-      status key to a tone: active→accent, pending→warning, suspended→alert,
-      coming-soon/unknown→neutral grey). Repatriated from `app/shared/`; 4
-      importers repointed, app copy deleted. 4 specs. NB: contract-status pills
-      (roster/detail) aren't migrated onto it yet — they colour draft/terminated
-      differently (amber/red vs its neutral grey) and active green vs its teal;
-      needs a canonical contract-status colour decision first.
+      status key to a tone: **active→success (green)**, draft/pending→warning,
+      suspended→alert, coming-soon/unknown (e.g. terminated)→neutral grey).
+      Repatriated from `app/shared/`; app copy deleted. Canonical scheme adopted
+      app-wide (active is green everywhere, incl. absences "approved" + company
+      "active"). Contract-status pills unified onto it: roster + user/detail
+      migrated; contract-card + dashboard widget auto-recoloured; company/detail's
+      clickable status editor kept but its `terminated` aligned to grey. 4 specs.
 - [x] **Auto-colour registry** — `PaletteRegistry` (root singleton) + curated
       `AUTO_PALETTES` (`vivid`/`extended`/`pastel`) + `providePalette()`. One
       active palette app-wide ⇒ a seed maps to the same colour everywhere;

@@ -6,11 +6,11 @@ import { Component, computed, input } from "@angular/core";
  * call sites pass a domain status rather than choosing a variant.
  *
  * **Supported statuses**
- * - `active` / `connected` — accent (teal)
- * - `pending` — warning (amber)
+ * - `active` / `connected` — success (green)
+ * - `draft` / `pending` — warning (amber)
  * - `suspended` / `error` — alert (red)
  * - `coming-soon` / `not_connected` — muted grey
- * - any other value — neutral grey
+ * - any other value (e.g. `terminated`) — neutral grey
  *
  * ```html
  * <sh3-status-badge status="active" />
@@ -39,10 +39,11 @@ import { Component, computed, input } from "@angular/core";
       white-space: nowrap;
     }
     .badge[data-status="active"] {
-      background: var(--sh3-color-primary-surface);
-      color: var(--sh3-color-primary);
-      border: 1px solid var(--sh3-color-primary-border);
+      background: var(--sh3-color-success-surface);
+      color: var(--sh3-color-success-text);
+      border: 1px solid var(--sh3-color-success-border);
     }
+    .badge[data-status="draft"],
     .badge[data-status="pending"] {
       background: var(--sh3-color-warning-surface);
       color: var(--sh3-color-warning-text);
@@ -58,10 +59,10 @@ import { Component, computed, input } from "@angular/core";
       color: var(--sh3-color-text-muted);
       border: 1px solid var(--sh3-color-border);
     }
-    /* Fallback — any unmapped status reads as neutral grey. */
-    .badge:not([data-status="active"]):not([data-status="pending"]):not(
-        [data-status="suspended"]
-      ):not([data-status="coming-soon"]) {
+    /* Fallback — any unmapped status (e.g. terminated) reads as neutral grey. */
+    .badge:not([data-status="active"]):not([data-status="draft"]):not(
+        [data-status="pending"]
+      ):not([data-status="suspended"]):not([data-status="coming-soon"]) {
       background: var(--sh3-color-surface-raised);
       color: var(--sh3-color-text-secondary);
       border: 1px solid var(--sh3-color-border);
