@@ -22,6 +22,7 @@ export type {
 export { ChoiceRowComponent } from "./components/choice-row/choice-row.component";
 export type { ChoiceOption } from "./components/choice-row/choice-row.component";
 export { IconComponent } from "./components/icon/icon.component";
+export { StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export type { Sh3IconSize } from "./components/icon/icon.component";
 export {
   IconRegistry,

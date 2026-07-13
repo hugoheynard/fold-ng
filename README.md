@@ -129,7 +129,8 @@ the package root.
 | `HeroComponent`                    | `sh3-hero`            | Prominent header card (tone ladder + optional accent bar).   |
 | `Sh3DataTableComponent`            | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
 | `PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
-| `BadgeComponent`                   | `sh3-badge`           | Status / count pill.                                         |
+| `BadgeComponent`                   | `sh3-badge`           | Status / count pill (accent/info/warning/alert/success).     |
+| `StatusBadgeComponent`             | `sh3-status-badge`    | Status→colour badge (maps a domain status key to a tone).    |
 | `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
 | `IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `IconRegistry`).           |
 | `TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
