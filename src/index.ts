@@ -9,6 +9,7 @@ export { AvatarComponent } from "./components/avatar/avatar.component";
 export { AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
 export { BadgeComponent } from "./components/badge/badge.component";
 export { CardComponent } from "./components/card/card.component";
+export { HeroComponent } from "./components/hero/hero.component";
 export { Sh3DataTableComponent } from "./components/data-table/data-table.component";
 export { Sh3DataTableCellDirective } from "./components/data-table/data-table-cell.directive";
 export type {

@@ -95,6 +95,15 @@ Add roles only once we're certain of their usage.
       the "pill radius" drift — the app's `--radius-lg` means _pill_, so the ref's
       `var(--radius-lg, 14px)` cards rendered as capsules; `sh3-card` uses the
       package `--sh3-radius-lg` (14px). 4 specs. First consumer: Intégrations.
+- [x] **Hero** (`sh3-hero`) — a prominent header card wrapping the card base with
+      a `tone` prominence ladder: `sunken` · `neutral` (default) · `gradient`
+      (primary-tinted wash + primary border + corner glow, the "billing plan"
+      look) · `primary` (solid fill, text flips to `on-primary`). `padding`
+      (`lg` default) like the card. No new token. `isolation:isolate` keeps the
+      gradient glow (`::after`, z-index:-1) below projected content. 4 specs.
+      First consumer: the Facturation plan hero (`.adm-plan` migrated). The
+      contract-detail `.cd-hero` (left accent bar + dual gradient) is a richer
+      variant, deferred.
 - [x] **Auto-colour registry** — `PaletteRegistry` (root singleton) + curated
       `AUTO_PALETTES` (`vivid`/`extended`/`pastel`) + `providePalette()`. One
       active palette app-wide ⇒ a seed maps to the same colour everywhere;
