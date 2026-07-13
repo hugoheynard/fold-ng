@@ -122,6 +122,14 @@
 
   /* Card — a solid raised content surface (opaque, unlike the alpha overlays) */
   --sh3-color-surface-card: var(--sh3-ref-ink-800);
+  /* Sunken — a deeper solid surface for large content containers (data tables,
+     page-level cards). Sits below `surface-card`: darker than the card, lighter
+     than the page. */
+  --sh3-color-surface-sunken: color-mix(
+    in srgb,
+    var(--sh3-ref-ink-800) 35%,
+    var(--sh3-ref-ink-850)
+  );
 
   /* Neutral surfaces + border — alpha overlays (white on dark) */
   --sh3-color-surface-subtle: color-mix(
@@ -249,6 +257,8 @@
 
   /* Card — a solid raised content surface (white on light) */
   --sh3-color-surface-card: var(--sh3-ref-white);
+  /* Sunken — light theme flattens the depth cue to white, matching the ref. */
+  --sh3-color-surface-sunken: var(--sh3-ref-white);
 
   /* Neutral surfaces + border — alpha overlays (black on light) */
   --sh3-color-surface-subtle: color-mix(

@@ -14,7 +14,7 @@
   overflow: auto;
   border: 1px solid var(--sh3-color-border-subtle);
   border-radius: var(--sh3-radius-lg);
-  background: var(--sh3-color-surface-card);
+  background: var(--sh3-color-surface-sunken);
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.24),
     0 8px 24px -14px rgba(0, 0, 0, 0.5);
@@ -34,10 +34,11 @@
   z-index: 2;
   padding: 0;
   text-align: left;
+  /* Lifts above the sunken body toward the card tone (ref: lighter than body). */
   background: color-mix(
     in srgb,
-    var(--sh3-color-surface-card) 88%,
-    var(--sh3-color-surface-hover)
+    var(--sh3-color-surface-sunken) 50%,
+    var(--sh3-color-surface-card)
   );
   border-bottom: 1px solid var(--sh3-color-border);
 }
@@ -197,7 +198,7 @@
     display: block;
     border: 1px solid var(--sh3-color-border-subtle);
     border-radius: var(--sh3-radius-md);
-    background: var(--sh3-color-surface-card);
+    background: var(--sh3-color-surface-sunken);
     padding: 4px 14px 8px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }

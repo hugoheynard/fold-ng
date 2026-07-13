@@ -75,6 +75,8 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   /* ── Neutral surfaces + border ────────────────────────────── */
   /** Solid raised content surface (cards, panels). */
   "surface-card",
+  /** Deeper solid surface for large containers (tables, page-level cards). */
+  "surface-sunken",
   /** Faint tinted fill (idle chips, subtle rows). */
   "surface-subtle",
   /** Slightly stronger fill (raised). */

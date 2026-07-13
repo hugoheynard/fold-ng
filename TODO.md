@@ -89,11 +89,12 @@ Add roles only once we're certain of their usage.
       re-export shim; the single `<sh3-toast-container>` render site is repointed.
 
 - [x] **Card** (`sh3-card`) — the canonical raised surface: `surface-card` bg +
-      hairline border + consistent radius (`radius`/`padding`/`interactive`
-      inputs). Fixes the "pill radius" drift — the app's `--radius-lg` means
-      _pill_, so the ref's `var(--radius-lg, 14px)` cards rendered as capsules;
-      `sh3-card` uses the package `--sh3-radius-lg` (14px). 3 specs. First
-      consumer: the Intégrations cards (next).
+      hairline border + consistent radius (`surface`/`radius`/`padding`/
+      `interactive` inputs). A `surface` input picks the tint — `card` (default)
+      or `sunken` (the deeper container tint, added with the data-table). Fixes
+      the "pill radius" drift — the app's `--radius-lg` means _pill_, so the ref's
+      `var(--radius-lg, 14px)` cards rendered as capsules; `sh3-card` uses the
+      package `--sh3-radius-lg` (14px). 4 specs. First consumer: Intégrations.
 - [x] **Auto-colour registry** — `PaletteRegistry` (root singleton) + curated
       `AUTO_PALETTES` (`vivid`/`extended`/`pastel`) + `providePalette()`. One
       active palette app-wide ⇒ a seed maps to the same colour everywhere;
@@ -128,11 +129,13 @@ tracks what the app already reuses (✓ = landed):
       deleted. 6 specs (incl. extensibility). Unblocks `Paginator` + `PanelHeader`.
 - [x] **`Sh3DataTable`** (`sh3-data-table` + cell directive + types) — **landed**.
       Generic/presentational, no `Icon` dependency. SCSS → a plain **`.css`
-      styleUrl** (see harness note below); the dark-panel surface maps onto
-      `surface-card` (body) + a subtle lift toward `surface-hover` (sticky
-      header). Drove one new token, `--sh3-color-border-subtle` (fainter hairline
-      for row dividers, below `border`). Added the `@angular/common` peer. Its one
-      app importer (roster contracts-tab) repointed; app copy deleted. 6 specs.
+      styleUrl** (see harness note below); the deep table surface uses
+      `surface-sunken` (body) with the sticky header lifted toward `surface-card`.
+      Drove two new tokens: `--sh3-color-border-subtle` (fainter hairline for row
+      dividers, below `border`) and `--sh3-color-surface-sunken` (a solid surface
+      **darker** than `surface-card` for large containers — the ref's second card
+      tint, below the raised card). Added the `@angular/common` peer. Its one app
+      importer (roster contracts-tab) repointed; app copy deleted. 6 specs.
 - [x] **`Paginator`** (`sh3-paginator`) — **landed**. Server-side, fully
       controlled (size selector + range + ellipsis page nav). Uses the package
       `sh3-icon` chevrons; SCSS → `.css` styleUrl, all tokens mapped (no new

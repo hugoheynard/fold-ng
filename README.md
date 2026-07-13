@@ -111,7 +111,8 @@ Deliberately small — we grow it together, one confirmed role at a time.
 | `--sh3-color-primary-strong`    | Primary hover / active        |
 | `--sh3-color-on-primary`        | Text / icon on a primary fill |
 
-(plus the status families, neutral surfaces, `surface-card`, glass, and the
+(plus the status families, neutral surfaces, the two card tints `surface-card` /
+`surface-sunken`, glass, and the
 radius / text / space / motion / blur scales — see `tokens.catalog.ts` for the
 full, typed set.)
 

@@ -7,6 +7,7 @@ import { CardComponent } from "./card.component";
   standalone: true,
   imports: [CardComponent],
   template: `<sh3-card
+    [surface]="surface()"
     [radius]="radius()"
     [padding]="padding()"
     [interactive]="interactive()"
@@ -15,6 +16,7 @@ import { CardComponent } from "./card.component";
   </sh3-card>`,
 })
 class HostComponent {
+  readonly surface = signal<"card" | "sunken">("card");
   readonly radius = signal<"sm" | "md" | "lg">("lg");
   readonly padding = signal<"none" | "sm" | "md" | "lg">("md");
   readonly interactive = signal(false);
@@ -47,5 +49,13 @@ describe("CardComponent", () => {
     expect(card.classList.contains("r-sm")).toBe(true);
     expect(card.classList.contains("p-none")).toBe(true);
     expect(card.classList.contains("is-interactive")).toBe(true);
+  });
+
+  it("switches the surface tint via the `surface` input", () => {
+    const { fixture, card } = render();
+    expect(card.classList.contains("s-sunken")).toBe(false);
+    fixture.componentInstance.surface.set("sunken");
+    fixture.detectChanges();
+    expect(card.classList.contains("s-sunken")).toBe(true);
   });
 });
