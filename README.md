@@ -121,22 +121,22 @@ full, typed set.)
 All standalone, signals-first, styled against the semantic tokens. Import from
 the package root.
 
-| Component                          | Selector              | What it is                                                     |
-| ---------------------------------- | --------------------- | -------------------------------------------------------------- |
-| `AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).      |
-| `PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).               |
-| `CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius).   |
-| `HeroComponent`                    | `sh3-hero`            | Prominent header card (neutral/sunken/gradient/primary tones). |
-| `Sh3DataTableComponent`            | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards).   |
-| `PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).      |
-| `BadgeComponent`                   | `sh3-badge`           | Status / count pill.                                           |
-| `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                     |
-| `IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `IconRegistry`).             |
-| `TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                       |
-| `AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                          |
-| `ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `ToastService`).                              |
-| `PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `PanelHostService`).              |
-| `PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).           |
+| Component                          | Selector              | What it is                                                   |
+| ---------------------------------- | --------------------- | ------------------------------------------------------------ |
+| `AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).    |
+| `PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
+| `CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
+| `HeroComponent`                    | `sh3-hero`            | Prominent header card (tone ladder + optional accent bar).   |
+| `Sh3DataTableComponent`            | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
+| `PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
+| `BadgeComponent`                   | `sh3-badge`           | Status / count pill.                                         |
+| `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
+| `IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `IconRegistry`).           |
+| `TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
+| `AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
+| `ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `ToastService`).                            |
+| `PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `PanelHostService`).            |
+| `PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).         |
 
 ## Icons
 

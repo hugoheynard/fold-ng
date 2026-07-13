@@ -6,15 +6,20 @@ import { HeroComponent } from "./hero.component";
 @Component({
   standalone: true,
   imports: [HeroComponent],
-  template: `<sh3-hero [tone]="tone()" [padding]="padding()">
+  template: `<sh3-hero
+    [tone]="tone()"
+    [padding]="padding()"
+    [accentBar]="accentBar()"
+  >
     <span class="body">Content</span>
   </sh3-hero>`,
 })
 class HostComponent {
-  readonly tone = signal<"neutral" | "sunken" | "gradient" | "primary">(
-    "neutral",
-  );
+  readonly tone = signal<
+    "neutral" | "sunken" | "subtle" | "gradient" | "primary"
+  >("neutral");
   readonly padding = signal<"sm" | "md" | "lg">("lg");
+  readonly accentBar = signal(false);
 }
 
 function render() {
@@ -37,6 +42,7 @@ describe("HeroComponent", () => {
     const { fixture, hero } = render();
     for (const [tone, cls] of [
       ["sunken", "t-sunken"],
+      ["subtle", "t-subtle"],
       ["gradient", "t-gradient"],
       ["primary", "t-primary"],
     ] as const) {
@@ -54,5 +60,15 @@ describe("HeroComponent", () => {
     fixture.componentInstance.padding.set("sm");
     fixture.detectChanges();
     expect(hero.classList.contains("p-sm")).toBe(true);
+  });
+
+  it("adds the accent-bar class (orthogonal to tone)", () => {
+    const { fixture, hero } = render();
+    expect(hero.classList.contains("has-bar")).toBe(false);
+    fixture.componentInstance.accentBar.set(true);
+    fixture.componentInstance.tone.set("subtle");
+    fixture.detectChanges();
+    expect(hero.classList.contains("has-bar")).toBe(true);
+    expect(hero.classList.contains("t-subtle")).toBe(true);
   });
 });
