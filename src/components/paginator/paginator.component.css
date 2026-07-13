@@ -1,0 +1,151 @@
+/* sh3-paginator — one horizontal bar: info (size + range) on the left, page
+   nav on the right. Styled on @sh3pherd/ui tokens. */
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sh3-space-lg);
+  flex-wrap: wrap;
+  padding: var(--sh3-space-sm) 0 0;
+  color: var(--sh3-color-text);
+  font-size: var(--sh3-text-sm);
+}
+
+/* Left cluster — page size + visible range. */
+.paginator-left {
+  display: flex;
+  align-items: center;
+  gap: var(--sh3-space-md);
+}
+
+.range {
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.range--empty {
+  font-style: italic;
+}
+
+/* ── Page size selector ──────────────────────────────── */
+
+.page-size {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh3-space-sm);
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+}
+
+.page-size__select {
+  height: 30px;
+  padding: 0 26px 0 10px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-surface-card)
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237a7670' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>")
+    no-repeat right 9px center;
+  color: var(--sh3-color-text);
+  font: inherit;
+  font-size: var(--sh3-text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--sh3-motion-fast);
+}
+.page-size__select:hover:not(:disabled) {
+  border-color: var(--sh3-color-border);
+}
+.page-size__select:focus-visible {
+  outline: none;
+  border-color: var(--sh3-color-primary-border);
+}
+.page-size__select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.page-size__select option {
+  background: var(--sh3-color-surface-card);
+}
+
+.page-size__label {
+  color: var(--sh3-color-text-muted);
+}
+
+/* ── Navigation ──────────────────────────────────────── */
+
+.pages {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh3-space-xs);
+}
+
+.nav-btn,
+.page-btn {
+  height: 30px;
+  min-width: 30px;
+  padding: 0 8px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--sh3-radius-sm);
+  background: transparent;
+  color: var(--sh3-color-text-secondary);
+  font: inherit;
+  font-size: var(--sh3-text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background var(--sh3-motion-fast),
+    border-color var(--sh3-motion-fast),
+    color var(--sh3-motion-fast);
+}
+.nav-btn:hover:not(:disabled),
+.page-btn:hover:not(:disabled) {
+  background: var(--sh3-color-surface-raised);
+  color: var(--sh3-color-text);
+}
+.nav-btn:focus-visible,
+.page-btn:focus-visible {
+  outline: 2px solid var(--sh3-color-primary);
+  outline-offset: 1px;
+}
+.nav-btn:disabled,
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.nav-btn {
+  color: var(--sh3-color-text-muted);
+}
+
+.page-btn.is-active,
+.page-btn.is-active:hover {
+  background: var(--sh3-color-primary-surface);
+  border-color: var(--sh3-color-primary-border);
+  color: var(--sh3-color-primary-text);
+  cursor: default;
+}
+
+.gap {
+  min-width: 18px;
+  text-align: center;
+  color: var(--sh3-color-text-faded);
+  font-size: var(--sh3-text-sm);
+  user-select: none;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  :host {
+    justify-content: center;
+  }
+  .page-size__label {
+    display: none;
+  }
+}

@@ -9,6 +9,15 @@ export { AvatarComponent } from "./components/avatar/avatar.component";
 export { AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
 export { BadgeComponent } from "./components/badge/badge.component";
 export { CardComponent } from "./components/card/card.component";
+export { Sh3DataTableComponent } from "./components/data-table/data-table.component";
+export { Sh3DataTableCellDirective } from "./components/data-table/data-table-cell.directive";
+export type {
+  Sh3TableColumn,
+  Sh3TableEmpty,
+  Sh3TableSort,
+  Sh3TableSortDir,
+  Sh3TableTone,
+} from "./components/data-table/data-table.types";
 export { ChoiceRowComponent } from "./components/choice-row/choice-row.component";
 export type { ChoiceOption } from "./components/choice-row/choice-row.component";
 export { IconComponent } from "./components/icon/icon.component";
@@ -25,6 +34,8 @@ export type {
 } from "./components/icon/icon.registry";
 export { PageLayoutComponent } from "./components/page/page-layout.component";
 export { PageSectionComponent } from "./components/page/page-section.component";
+export { PaginatorComponent } from "./components/paginator/paginator.component";
+export type { PageItem } from "./components/paginator/paginator.component";
 export { TabNavComponent } from "./components/tab-nav/tab-nav.component";
 export type { TabNavItem } from "./components/tab-nav/tab-nav.component";
 export { ToastContainerComponent } from "./components/toast/toast-container.component";

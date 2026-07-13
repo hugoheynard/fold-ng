@@ -83,6 +83,8 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "surface-hover",
   /** Neutral hairline border. */
   "border",
+  /** Fainter hairline — row dividers, subtle edges (below `border`). */
+  "border-subtle",
 
   /* ── Glass ────────────────────────────────────────────────── */
   /** Translucent frosted overlay (panels, floating menus). */

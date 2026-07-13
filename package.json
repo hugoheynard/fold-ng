@@ -25,6 +25,7 @@
     "clean": "../../dev-toolbox/scripts/clean:package.sh"
   },
   "peerDependencies": {
+    "@angular/common": "^22",
     "@angular/core": "^22",
     "@angular/platform-browser": "^22"
   },

@@ -125,6 +125,8 @@ the package root.
 | `AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).    |
 | `PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
 | `CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
+| `Sh3DataTableComponent`            | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
+| `PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
 | `BadgeComponent`                   | `sh3-badge`           | Status / count pill.                                         |
 | `ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
 | `IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `IconRegistry`).           |

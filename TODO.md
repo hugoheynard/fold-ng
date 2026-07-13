@@ -113,8 +113,8 @@ Add roles only once we're certain of their usage.
 
 Next components, one at a time, each with tests + a usage story. Lock order
 tracks what the app already reuses (✓ = landed):
-`Button` · `StatusBadge` · ~~`Avatar`~~✓ · ~~`Icon`~~✓ · **`Sh3DataTable`** ·
-`Paginator` · `PanelHeader` · …
+`Button` · `StatusBadge` · ~~`Avatar`~~✓ · ~~`Icon`~~✓ · ~~`Sh3DataTable`~~✓ ·
+~~`Paginator`~~✓ · **`PanelHeader`** · …
 
 **Confirmed candidates + their dependency chain** (from `app/shared/`):
 
@@ -126,18 +126,27 @@ tracks what the app already reuses (✓ = landed):
       `Sh3BuiltinIconName | (string & {})`. Added `@angular/platform-browser` peer
       (`DomSanitizer`). ~90 app importers repointed; app icon component + registry
       deleted. 6 specs (incl. extensibility). Unblocks `Paginator` + `PanelHeader`.
-- **`Sh3DataTable`** (`sh3-data-table` + cell directive + types) — already fully
-  `Sh3`-prefixed, generic, presentational, **no `Icon` dependency** → can be
-  extracted independently, right after the token scales. Heaviest on styles
-  (287-line SCSS → inline CSS).
-- **`Paginator`** (`sh3-paginator`) — needs `Icon`. Server-side, fully controlled.
-- **`PanelHeader`** (`sh3-panel-header`) — needs `Icon`; already wired to the
+- [x] **`Sh3DataTable`** (`sh3-data-table` + cell directive + types) — **landed**.
+      Generic/presentational, no `Icon` dependency. SCSS → a plain **`.css`
+      styleUrl** (see harness note below); the dark-panel surface maps onto
+      `surface-card` (body) + a subtle lift toward `surface-hover` (sticky
+      header). Drove one new token, `--sh3-color-border-subtle` (fainter hairline
+      for row dividers, below `border`). Added the `@angular/common` peer. Its one
+      app importer (roster contracts-tab) repointed; app copy deleted. 6 specs.
+- [x] **`Paginator`** (`sh3-paginator`) — **landed**. Server-side, fully
+      controlled (size selector + range + ellipsis page nav). Uses the package
+      `sh3-icon` chevrons; SCSS → `.css` styleUrl, all tokens mapped (no new
+      token). Fixed a latent `var(--t-fast) ease` double-easing bug (the motion
+      token already carries the easing). Its one importer (contracts-tab)
+      repointed; app copy deleted. 7 specs.
+- **`PanelHeader`** (`sh3-panel-header`) — needs `Icon` ✓; already wired to the
   package `PanelRef`. Last real component left under `app/shared/panel/`.
 
-Prereq for all four: promote the deferred **space / motion / radius** token
-scales (see Phase 1) — they each consume `--gap-*`, `--t-fast`, `--radius-*`.
-All four still use `styleUrl`/`templateUrl`, so each move inlines template + CSS
-per the analog test constraint.
+Harness note: a plain **`.css` `styleUrl` resolves fine** in the analog test env
+(only **SCSS** `styleUrl` needs a preprocessor it lacks). So a component with a
+big stylesheet keeps its CSS in a sibling `.css` file (data-table) rather than
+inlining `styles: []` — cleaner, and keeps the `.ts` under 300 lines. Small
+components still inline. Template stays inline (no `templateUrl`).
 
 ## Phase 4 · Publish
 
