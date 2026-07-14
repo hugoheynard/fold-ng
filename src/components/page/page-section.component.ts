@@ -46,19 +46,15 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
   },
   template: `@if (title() || description()) {
       <div class="section-head">
-        <div class="section-text">
-          @if (title()) {
-            <sh3-element-title [variant]="divider() ? 'bar' : 'eyebrow'">{{
-              title()
-            }}</sh3-element-title>
-          }
-          @if (description()) {
-            <p class="section-desc">{{ description() }}</p>
-          }
-        </div>
-        <div class="section-actions">
-          <ng-content select="[sectionActions]" />
-        </div>
+        @if (title()) {
+          <sh3-element-title [variant]="divider() ? 'bar' : 'eyebrow'">
+            {{ title() }}
+            <ng-content select="[sectionActions]" titleAction />
+          </sh3-element-title>
+        }
+        @if (description()) {
+          <p class="section-desc">{{ description() }}</p>
+        }
       </div>
     }
     <div class="section-body"><ng-content /></div>`,
@@ -68,13 +64,9 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
       flex-direction: column;
       gap: 16px;
     }
+    /* Column: the title row (sh3-element-title owns title + action) then the
+       optional description below it. */
     .section-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .section-text {
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -86,15 +78,6 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
       line-height: 1.5;
       max-width: 62ch;
       color: var(--sh3-color-text-secondary);
-    }
-    .section-actions {
-      flex: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .section-actions:empty {
-      display: none;
     }
     .section-body {
       min-width: 0;
@@ -129,7 +112,6 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
       overflow: hidden;
     }
     :host(.divider) .section-head {
-      align-items: center;
       padding: 14px 20px;
       border-bottom: 1px solid var(--sh3-color-border-subtle);
     }

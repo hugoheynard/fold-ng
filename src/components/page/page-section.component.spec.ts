@@ -41,11 +41,13 @@ function render() {
 describe("Sh3PageSectionComponent", () => {
   it("renders the title and projects content + actions", () => {
     const { root } = render();
-    expect(root.querySelector("sh3-element-title")?.textContent?.trim()).toBe(
-      "Moyens de paiement",
-    );
+    expect(
+      root.querySelector("sh3-element-title .et-label")?.textContent?.trim(),
+    ).toBe("Moyens de paiement");
     expect(root.querySelector(".body-item")).not.toBeNull();
-    expect(root.querySelector(".section-actions .act")).not.toBeNull();
+    expect(
+      root.querySelector("sh3-element-title .et-action .act"),
+    ).not.toBeNull();
   });
 
   it("omits the description when not provided", () => {
