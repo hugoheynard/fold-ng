@@ -1,173 +1,284 @@
-<app-toc-panel [items]="toc" [activeId]="activeSection()" />
-<app-token-panel />
+<sh3-app-shell
+  [appearance]="shellAppearance()"
+  [headerLayout]="shellHeaderLayout()"
+  [railWidth]="shellRailWidth()"
+  [headerHeight]="shellHeaderHeight()"
+>
+  <!-- ── rail primary: icon rail, shell settings first ─────────── -->
+  <nav railPrimary class="rail">
+    <button
+      type="button"
+      class="rail-btn"
+      title="Shell parameters"
+      [class.is-on]="settingsOpen()"
+      (click)="toggleSettings()"
+    >
+      <sh3-icon name="settings" />
+    </button>
+    <button type="button" class="rail-btn" disabled>
+      <sh3-icon name="home" />
+    </button>
+    <button type="button" class="rail-btn" disabled>
+      <sh3-icon name="contracts" />
+    </button>
+    <button type="button" class="rail-btn" disabled>
+      <sh3-icon name="music" />
+    </button>
+  </nav>
 
-<header class="gal-top">
-  <div>
-    <h1>@sh3pherd/ui — gallery</h1>
-    <p>Design-system components + variant matrices. Neutral workbench.</p>
+  <!-- ── rail secondary: table of contents ─────────────────────── -->
+  <app-toc-panel railSecondary [items]="toc" [activeId]="activeSection()" />
+
+  <!-- ── header ────────────────────────────────────────────────── -->
+  <header header class="gal-header">
+    <span class="gal-title">@sh3pherd/ui — gallery</span>
+    <button type="button" class="gal-theme" (click)="toggleTheme()">
+      <sh3-icon name="settings" size="sm" />
+      Theme: {{ theme() }}
+    </button>
+  </header>
+
+  <!-- ── content: scrollable gallery + docked token editor ─────── -->
+  <div class="gal-content">
+    <div #scroll class="gal-scroll">
+      <!-- ── sh3-element-title ─────────────────────────────────── -->
+      <section id="element-title" class="gal-sec">
+        <h2>sh3-element-title</h2>
+        <div class="gal-stack">
+          <div class="gal-cell">
+            <span class="gal-tag">eyebrow</span>
+            <sh3-element-title title="Contexte" />
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">bar</span>
+            <sh3-element-title variant="bar" title="Documents" />
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">title · iconTone matrix</span>
+            <div class="gal-row">
+              <sh3-element-title
+                variant="title"
+                icon="company"
+                iconTone="primary"
+                title="Primary"
+                subtitle="filled brand tile"
+              />
+              <sh3-element-title
+                variant="title"
+                icon="company"
+                iconTone="neutral"
+                title="Neutral"
+                subtitle="raised tile"
+              />
+              <sh3-element-title
+                variant="title"
+                icon="company"
+                iconTone="faded"
+                title="Faded"
+                subtitle="dim tile"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── sh3-context-card ──────────────────────────────────── -->
+      <section id="context-card" class="gal-sec">
+        <h2>sh3-context-card</h2>
+        <div class="gal-row gal-row--wide">
+          @for (tone of iconTones; track tone) {
+            <sh3-context-card
+              icon="company"
+              [iconTone]="tone"
+              title="Contexte"
+              subtitle="iconTone = {{ tone }}"
+            >
+              <div class="gal-kv">
+                <span class="gal-k">Créée le</span
+                ><span class="gal-v">14 mars 2024</span>
+              </div>
+              <div class="gal-kv">
+                <span class="gal-k">Propriétaire</span
+                ><span class="gal-v">Clément Aubry</span>
+              </div>
+              <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
+            </sh3-context-card>
+          }
+        </div>
+      </section>
+
+      <!-- ── sh3-page-section ──────────────────────────────────── -->
+      <section id="page-section" class="gal-sec">
+        <h2>sh3-page-section — surface × divider</h2>
+        <div class="gal-row gal-row--wide">
+          <sh3-page-section surface="transparent" title="Transparent">
+            <p class="gal-body">Flat on the page — no surface, no radius.</p>
+          </sh3-page-section>
+          <sh3-page-section surface="card" title="Card">
+            <p class="gal-body">Raised card surface + radius.</p>
+          </sh3-page-section>
+          <sh3-page-section surface="sunken" divider title="Sunken · divider">
+            <sh3-icon sectionActions name="edit" size="sm" />
+            <p class="gal-body">Deep tint + header bar.</p>
+          </sh3-page-section>
+        </div>
+        <div class="gal-cell">
+          <span class="gal-tag">stack (form fields)</span>
+          <sh3-page-section surface="card" stack title="Stacked">
+            <div class="gal-field">Field A</div>
+            <div class="gal-field">Field B</div>
+            <div class="gal-field">Field C</div>
+          </sh3-page-section>
+        </div>
+      </section>
+
+      <!-- ── sh3-hero ──────────────────────────────────────────── -->
+      <section id="hero" class="gal-sec">
+        <h2>sh3-hero — surface × accent</h2>
+        @for (surface of heroSurfaces; track surface) {
+          <div class="gal-row gal-row--wide">
+            @for (accent of heroAccents; track accent) {
+              <sh3-hero [surface]="surface" [accent]="accent" padding="md">
+                <strong>{{ surface }} · {{ accent }}</strong>
+                <p class="gal-body">Base surface with an accent overlay.</p>
+              </sh3-hero>
+            }
+          </div>
+        }
+        <div class="gal-cell">
+          <span class="gal-tag">accentBar + primary surface</span>
+          <div class="gal-row gal-row--wide">
+            <sh3-hero surface="card" accent="subtle" accentBar padding="md">
+              <strong>accentBar</strong>
+            </sh3-hero>
+            <sh3-hero surface="primary" padding="md">
+              <strong>primary fill</strong>
+            </sh3-hero>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── sh3-card ──────────────────────────────────────────── -->
+      <section id="card" class="gal-sec">
+        <h2>sh3-card</h2>
+        <div class="gal-row gal-row--wide">
+          <sh3-card>card (default)</sh3-card>
+          <sh3-card surface="sunken">sunken</sh3-card>
+          <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
+        </div>
+      </section>
+
+      <!-- ── sh3-link ──────────────────────────────────────────── -->
+      <section id="link" class="gal-sec">
+        <h2>sh3-link</h2>
+        <div class="gal-row">
+          <sh3-link icon="company" trailingIcon="chevron-right"
+            >accent + icons</sh3-link
+          >
+          <sh3-link tone="muted">muted</sh3-link>
+          <sh3-link href="https://sh3pherd.dev" tone="muted"
+            >anchor (href)</sh3-link
+          >
+          <sh3-link [disabled]="true">disabled</sh3-link>
+        </div>
+      </section>
+
+      <!-- ── badges + icons ────────────────────────────────────── -->
+      <section id="badges" class="gal-sec">
+        <h2>sh3-badge · sh3-status-badge · sh3-icon</h2>
+        <div class="gal-row">
+          @for (v of badgeVariants; track v) {
+            <sh3-badge [content]="v" [variant]="v" />
+          }
+        </div>
+        <div class="gal-row">
+          <sh3-status-badge status="active" label="Actif" />
+          <sh3-status-badge status="draft" label="Brouillon" />
+          <sh3-status-badge status="expired" label="Expiré" />
+        </div>
+        <div class="gal-row">
+          @for (n of iconNames; track n) {
+            <sh3-icon [name]="n" />
+          }
+        </div>
+      </section>
+    </div>
+
+    <app-token-panel />
   </div>
-  <button type="button" class="gal-theme" (click)="toggleTheme()">
-    <sh3-icon name="settings" size="sm" />
-    Theme: {{ theme() }}
-  </button>
-</header>
+</sh3-app-shell>
 
-<!-- ── sh3-element-title ─────────────────────────────────────── -->
-<section id="element-title" class="gal-sec">
-  <h2>sh3-element-title</h2>
-  <div class="gal-stack">
-    <div class="gal-cell">
-      <span class="gal-tag">eyebrow</span>
-      <sh3-element-title title="Contexte" />
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag">bar</span>
-      <sh3-element-title variant="bar" title="Documents" />
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag">title · iconTone matrix</span>
-      <div class="gal-row">
-        <sh3-element-title
-          variant="title"
-          icon="company"
-          iconTone="primary"
-          title="Primary"
-          subtitle="filled brand tile"
-        />
-        <sh3-element-title
-          variant="title"
-          icon="company"
-          iconTone="neutral"
-          title="Neutral"
-          subtitle="raised tile"
-        />
-        <sh3-element-title
-          variant="title"
-          icon="company"
-          iconTone="faded"
-          title="Faded"
-          subtitle="dim tile"
-        />
+<!-- ── shell parameters popover (fixed overlay, triggered by the rail) ── -->
+@if (settingsOpen()) {
+  <aside class="shell-settings">
+    <div class="ss-head">Shell parameters</div>
+
+    <div class="ss-group">
+      <span class="ss-label">appearance</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="shellAppearance() === 'flat'"
+          (click)="setAppearance('flat')"
+        >
+          flat
+        </button>
+        <button
+          type="button"
+          [class.is-on]="shellAppearance() === 'floating'"
+          (click)="setAppearance('floating')"
+        >
+          floating
+        </button>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ── sh3-context-card ──────────────────────────────────────── -->
-<section id="context-card" class="gal-sec">
-  <h2>sh3-context-card</h2>
-  <div class="gal-row gal-row--wide">
-    @for (tone of iconTones; track tone) {
-      <sh3-context-card
-        icon="company"
-        [iconTone]="tone"
-        title="Contexte"
-        subtitle="iconTone = {{ tone }}"
+    <div class="ss-group">
+      <span class="ss-label">headerLayout</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="shellHeaderLayout() === 'inset'"
+          (click)="setHeaderLayout('inset')"
+        >
+          inset
+        </button>
+        <button
+          type="button"
+          [class.is-on]="shellHeaderLayout() === 'full'"
+          (click)="setHeaderLayout('full')"
+        >
+          full
+        </button>
+      </div>
+    </div>
+
+    <div class="ss-group">
+      <span class="ss-label"
+        >railWidth <b>{{ shellRailWidth() }}px</b></span
       >
-        <div class="gal-kv">
-          <span class="gal-k">Créée le</span
-          ><span class="gal-v">14 mars 2024</span>
-        </div>
-        <div class="gal-kv">
-          <span class="gal-k">Propriétaire</span
-          ><span class="gal-v">Clément Aubry</span>
-        </div>
-        <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
-      </sh3-context-card>
-    }
-  </div>
-</section>
-
-<!-- ── sh3-page-section ──────────────────────────────────────── -->
-<section id="page-section" class="gal-sec">
-  <h2>sh3-page-section — surface × divider</h2>
-  <div class="gal-row gal-row--wide">
-    <sh3-page-section surface="transparent" title="Transparent">
-      <p class="gal-body">Flat on the page — no surface, no radius.</p>
-    </sh3-page-section>
-    <sh3-page-section surface="card" title="Card">
-      <p class="gal-body">Raised card surface + radius.</p>
-    </sh3-page-section>
-    <sh3-page-section surface="sunken" divider title="Sunken · divider">
-      <sh3-icon sectionActions name="edit" size="sm" />
-      <p class="gal-body">Deep tint + header bar.</p>
-    </sh3-page-section>
-  </div>
-  <div class="gal-cell">
-    <span class="gal-tag">stack (form fields)</span>
-    <sh3-page-section surface="card" stack title="Stacked">
-      <div class="gal-field">Field A</div>
-      <div class="gal-field">Field B</div>
-      <div class="gal-field">Field C</div>
-    </sh3-page-section>
-  </div>
-</section>
-
-<!-- ── sh3-hero ──────────────────────────────────────────────── -->
-<section id="hero" class="gal-sec">
-  <h2>sh3-hero — surface × accent</h2>
-  @for (surface of heroSurfaces; track surface) {
-    <div class="gal-row gal-row--wide">
-      @for (accent of heroAccents; track accent) {
-        <sh3-hero [surface]="surface" [accent]="accent" padding="md">
-          <strong>{{ surface }} · {{ accent }}</strong>
-          <p class="gal-body">Base surface with an accent overlay.</p>
-        </sh3-hero>
-      }
+      <input
+        #railInput
+        type="range"
+        min="48"
+        max="120"
+        [value]="shellRailWidth()"
+        (input)="setRailWidth(railInput.value)"
+      />
     </div>
-  }
-  <div class="gal-cell">
-    <span class="gal-tag">accentBar + primary surface</span>
-    <div class="gal-row gal-row--wide">
-      <sh3-hero surface="card" accent="subtle" accentBar padding="md">
-        <strong>accentBar</strong>
-      </sh3-hero>
-      <sh3-hero surface="primary" padding="md">
-        <strong>primary fill</strong>
-      </sh3-hero>
+
+    <div class="ss-group">
+      <span class="ss-label"
+        >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
+      >
+      <input
+        #headerInput
+        type="range"
+        min="44"
+        max="88"
+        [value]="shellHeaderHeight()"
+        (input)="setHeaderHeight(headerInput.value)"
+      />
     </div>
-  </div>
-</section>
-
-<!-- ── sh3-card ──────────────────────────────────────────────── -->
-<section id="card" class="gal-sec">
-  <h2>sh3-card</h2>
-  <div class="gal-row gal-row--wide">
-    <sh3-card>card (default)</sh3-card>
-    <sh3-card surface="sunken">sunken</sh3-card>
-    <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
-  </div>
-</section>
-
-<!-- ── sh3-link ──────────────────────────────────────────────── -->
-<section id="link" class="gal-sec">
-  <h2>sh3-link</h2>
-  <div class="gal-row">
-    <sh3-link icon="company" trailingIcon="chevron-right"
-      >accent + icons</sh3-link
-    >
-    <sh3-link tone="muted">muted</sh3-link>
-    <sh3-link href="https://sh3pherd.dev" tone="muted">anchor (href)</sh3-link>
-    <sh3-link [disabled]="true">disabled</sh3-link>
-  </div>
-</section>
-
-<!-- ── badges + icons ────────────────────────────────────────── -->
-<section id="badges" class="gal-sec">
-  <h2>sh3-badge · sh3-status-badge · sh3-icon</h2>
-  <div class="gal-row">
-    @for (v of badgeVariants; track v) {
-      <sh3-badge [content]="v" [variant]="v" />
-    }
-  </div>
-  <div class="gal-row">
-    <sh3-status-badge status="active" label="Actif" />
-    <sh3-status-badge status="draft" label="Brouillon" />
-    <sh3-status-badge status="expired" label="Expiré" />
-  </div>
-  <div class="gal-row">
-    @for (n of iconNames; track n) {
-      <sh3-icon [name]="n" />
-    }
-  </div>
-</section>
+  </aside>
+}

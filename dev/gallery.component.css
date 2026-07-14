@@ -1,10 +1,7 @@
 :host {
   display: block;
-  min-height: 100vh;
-  padding: 32px;
-  /* Room for the fixed panels: TOC (208px) left, token editor (300px) right. */
-  padding-left: 240px;
-  padding-right: 344px;
+  height: 100vh;
+  overflow: hidden;
   background: var(--sh3-color-bg-page);
   color: var(--sh3-color-text);
   font-family:
@@ -12,37 +9,86 @@
     -apple-system,
     sans-serif;
 }
+sh3-app-shell {
+  height: 100%;
+}
 
-.gal-top {
+/* ── Primary rail (icon column) ─────────────────────────────── */
+.rail {
+  height: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 36px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 0;
+  background: var(--sh3-color-bg-rail-primary);
 }
-.gal-top h1 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 800;
-}
-.gal-top p {
-  margin: 4px 0 0;
-  font-size: 13px;
+.rail-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: var(--sh3-radius-md);
+  background: none;
   color: var(--sh3-color-text-muted);
+  cursor: pointer;
+}
+.rail-btn:hover:not(:disabled) {
+  background: var(--sh3-color-surface-raised);
+  color: var(--sh3-color-text);
+}
+.rail-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.rail-btn.is-on {
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.gal-header {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  background: var(--sh3-color-bg-header);
+  border-bottom: 1px solid var(--sh3-color-border);
+}
+.gal-title {
+  font-size: 15px;
+  font-weight: 800;
 }
 .gal-theme {
   flex: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: var(--sh3-radius-md);
   border: 1px solid var(--sh3-color-border);
   background: var(--sh3-color-surface-card);
   color: var(--sh3-color-text);
   font: inherit;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+}
+
+/* ── Content: scrollable gallery + docked token editor ──────── */
+.gal-content {
+  height: 100%;
+  display: flex;
+  min-height: 0;
+}
+.gal-scroll {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 28px 32px;
 }
 
 .gal-sec {
@@ -117,4 +163,65 @@
   border-radius: var(--sh3-radius-sm);
   background: var(--sh3-color-surface-sunken);
   font-size: 13px;
+}
+
+/* ── Shell-parameters popover (fixed overlay by the rail) ───── */
+.shell-settings {
+  position: fixed;
+  top: 62px;
+  left: 78px;
+  z-index: 50;
+  width: 236px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-radius: var(--sh3-radius-lg);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-card);
+  box-shadow: var(--sh3-shadow-lg);
+}
+.ss-head {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sh3-color-text-muted);
+}
+.ss-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ss-label {
+  font-size: 12px;
+  color: var(--sh3-color-text-secondary);
+}
+.ss-label b {
+  color: var(--sh3-color-text);
+  font-variant-numeric: tabular-nums;
+}
+.ss-seg {
+  display: flex;
+  gap: 4px;
+}
+.ss-seg button {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ss-seg button.is-on {
+  border-color: var(--sh3-color-primary);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
+.ss-group input[type="range"] {
+  width: 100%;
+  accent-color: var(--sh3-color-primary);
 }

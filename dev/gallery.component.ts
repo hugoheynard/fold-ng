@@ -1,5 +1,12 @@
-import { Component, afterNextRender, signal } from "@angular/core";
 import {
+  Component,
+  ElementRef,
+  afterNextRender,
+  signal,
+  viewChild,
+} from "@angular/core";
+import {
+  Sh3AppShellComponent,
   Sh3BadgeComponent,
   Sh3CardComponent,
   Sh3ContextCardComponent,
@@ -14,13 +21,16 @@ import { TokenPanelComponent } from "./token-panel.component";
 import { TocPanelComponent, type TocItem } from "./toc-panel.component";
 
 /**
- * The gallery: every `@sh3pherd/ui` component with its variant matrix + a
- * dark/light theme toggle that flips the token layer for the whole subtree.
+ * The gallery — itself an `sh3-app-shell` instance (dogfooding). The primary
+ * rail's first icon opens a settings popover that drives the shell's own inputs
+ * (appearance / header layout / rail width / header height) live; the TOC fills
+ * the secondary rail and the token editor docks on the right of the content.
  */
 @Component({
   selector: "app-gallery",
   standalone: true,
   imports: [
+    Sh3AppShellComponent,
     Sh3CardComponent,
     Sh3HeroComponent,
     Sh3PageSectionComponent,
@@ -40,7 +50,39 @@ import { TocPanelComponent, type TocItem } from "./toc-panel.component";
 export class GalleryComponent {
   protected readonly theme = signal<"dark" | "light">("dark");
 
-  /** The table of contents — ids match the `<section>` ids in the template. */
+  /* ── Live shell parameters (driven by the rail settings popover) ── */
+  protected readonly settingsOpen = signal(false);
+  protected readonly shellAppearance = signal<"flat" | "floating">("flat");
+  protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
+  protected readonly shellRailWidth = signal(64);
+  protected readonly shellHeaderHeight = signal(56);
+
+  protected toggleSettings(): void {
+    this.settingsOpen.update((v) => !v);
+  }
+  protected setAppearance(value: "flat" | "floating"): void {
+    this.shellAppearance.set(value);
+  }
+  protected setHeaderLayout(value: "inset" | "full"): void {
+    this.shellHeaderLayout.set(value);
+  }
+  protected setRailWidth(value: string): void {
+    this.shellRailWidth.set(Number(value));
+  }
+  protected setHeaderHeight(value: string): void {
+    this.shellHeaderHeight.set(Number(value));
+  }
+
+  protected toggleTheme(): void {
+    this.theme.update((t) => (t === "dark" ? "light" : "dark"));
+  }
+
+  /* ── Table of contents + scroll-spy ── */
+  /** The scrollable content cell — the scroll-spy observer's root. */
+  private readonly scrollRef =
+    viewChild.required<ElementRef<HTMLElement>>("scroll");
+
+  /** ids match the `<section>` ids in the template. */
   protected readonly toc: readonly TocItem[] = [
     { id: "element-title", label: "element-title" },
     { id: "context-card", label: "context-card" },
@@ -50,31 +92,8 @@ export class GalleryComponent {
     { id: "link", label: "link" },
     { id: "badges", label: "badge · status · icon" },
   ];
-  /** The section currently in view — drives the TOC highlight (scroll-spy). */
+  /** The section currently in view — drives the TOC highlight. */
   protected readonly activeSection = signal<string>("");
-
-  constructor() {
-    afterNextRender(() => this.observeSections());
-  }
-
-  private observeSections(): void {
-    const sections = this.toc
-      .map((item) => document.getElementById(item.id))
-      .filter((el): el is HTMLElement => el !== null);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            this.activeSection.set(entry.target.id);
-          }
-        }
-      },
-      { rootMargin: "0px 0px -70% 0px", threshold: 0 },
-    );
-    for (const el of sections) {
-      observer.observe(el);
-    }
-  }
 
   // `as const` so each loop variable keeps its literal union type — required
   // for strictTemplates to accept it as a component input.
@@ -97,7 +116,27 @@ export class GalleryComponent {
     "music",
   ] as const;
 
-  protected toggleTheme(): void {
-    this.theme.update((t) => (t === "dark" ? "light" : "dark"));
+  constructor() {
+    afterNextRender(() => this.observeSections());
+  }
+
+  private observeSections(): void {
+    const root = this.scrollRef().nativeElement;
+    const sections = this.toc
+      .map((item) => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            this.activeSection.set(entry.target.id);
+          }
+        }
+      },
+      { root, rootMargin: "0px 0px -70% 0px", threshold: 0 },
+    );
+    for (const el of sections) {
+      observer.observe(el);
+    }
   }
 }

@@ -1,12 +1,10 @@
 :host {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 300px;
-  z-index: 20;
+  /* A right-docked column inside the shell content — no fixed positioning. */
+  flex: none;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 300px;
   background: var(--sh3-color-bg-header);
   border-left: 1px solid var(--sh3-color-border);
   color: var(--sh3-color-text);

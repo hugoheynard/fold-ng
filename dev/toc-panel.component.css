@@ -1,13 +1,10 @@
 :host {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 208px;
-  z-index: 20;
+  /* A shell rail-secondary cell — fills its grid cell, no fixed positioning. */
   display: flex;
   flex-direction: column;
-  background: var(--sh3-color-bg-header);
+  height: 100%;
+  width: 208px;
+  background: var(--sh3-color-bg-rail-secondary);
   border-right: 1px solid var(--sh3-color-border);
   font-family:
     system-ui,
