@@ -20,6 +20,8 @@
     }
   },
   "scripts": {
+    "dev": "vite",
+    "dev:build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest",
     "clean": "../../dev-toolbox/scripts/clean:package.sh"
@@ -41,6 +43,7 @@
     "@angular/platform-browser": "^22.0.5",
     "jsdom": "^26.0.0",
     "typescript": "~5.9.3",
+    "vite": "^7.3.5",
     "vitest": "^4.0.8",
     "zone.js": "~0.15.0"
   }
