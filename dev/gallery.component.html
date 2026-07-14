@@ -326,6 +326,32 @@
         </div>
       </section>
 
+      <!-- ── sh3-menu ──────────────────────────────────────────── -->
+      <section id="menu" class="gal-sec">
+        <h2>sh3-menu · sh3-menu-item</h2>
+        <span class="gal-tag">icon rail — hover an item for its tooltip</span>
+        <div class="menu-demo">
+          <sh3-menu>
+            <div header class="menu-demo-brand">S3</div>
+            @for (item of menuItems; track item.id) {
+              <button
+                sh3-menu-item
+                [icon]="item.icon"
+                [label]="item.label"
+                [active]="menuActive() === item.id"
+                (click)="menuActive.set(item.id)"
+              ></button>
+            }
+            <button
+              footer
+              sh3-menu-item
+              [icon]="'settings'"
+              label="Settings"
+            ></button>
+          </sh3-menu>
+        </div>
+      </section>
+
       <!-- ── badges + icons ────────────────────────────────────── -->
       <section id="badges" class="gal-sec">
         <h2>sh3-badge · sh3-status-badge · sh3-icon</h2>

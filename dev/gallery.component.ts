@@ -16,6 +16,8 @@ import {
   Sh3HeroComponent,
   Sh3IconComponent,
   Sh3LinkComponent,
+  Sh3MenuComponent,
+  Sh3MenuItemComponent,
   Sh3PageSectionComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
@@ -52,6 +54,8 @@ import { closestSh3, inspect } from "./inspect";
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
     Sh3TabNavComponent,
+    Sh3MenuComponent,
+    Sh3MenuItemComponent,
     Sh3PanelHostComponent,
     TokenPanelComponent,
     TocPanelComponent,
@@ -124,6 +128,14 @@ export class GalleryComponent {
     this.panelHost.open(TabPanelComponent, { side: "right" });
   }
 
+  /* ── sh3-menu demo ── */
+  protected readonly menuItems = [
+    { id: "home", icon: "home", label: "Home" },
+    { id: "contracts", icon: "contracts", label: "Contracts" },
+    { id: "music", icon: "music", label: "Music" },
+  ] as const;
+  protected readonly menuActive = signal<string>("home");
+
   /** Double-click a component → inspect its tokens + composition in a panel. */
   protected onInspect(event: MouseEvent): void {
     if (!(event.target instanceof Element)) {
@@ -154,6 +166,7 @@ export class GalleryComponent {
     { id: "card", label: "card" },
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
+    { id: "menu", label: "menu" },
     { id: "badges", label: "badge · status · icon" },
   ];
   /** The section currently in view — drives the TOC highlight. */
