@@ -20,14 +20,14 @@ class HostComponent {
   standalone: true,
   imports: [Sh3PageSectionComponent],
   template: `<sh3-page-section
-    [tone]="tone()"
+    [surface]="surface()"
     [divider]="divider()"
     [stack]="stack()"
     title="X"
   />`,
 })
 class AppearanceHostComponent {
-  readonly tone = signal<"transparent" | "raised" | "sunken">("transparent");
+  readonly surface = signal<"transparent" | "card" | "sunken">("transparent");
   readonly divider = signal(false);
   readonly stack = signal(false);
 }
@@ -68,33 +68,33 @@ describe("Sh3PageSectionComponent", () => {
     expect(root.querySelector(".section-body .body-item")).not.toBeNull();
   });
 
-  it("is transparent by default — no tone/divider host classes", () => {
+  it("is transparent by default — no surface/divider host classes", () => {
     const fixture = TestBed.createComponent(AppearanceHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
       "sh3-page-section",
     ) as HTMLElement;
-    expect(section.classList.contains("t-raised")).toBe(false);
-    expect(section.classList.contains("t-sunken")).toBe(false);
+    expect(section.classList.contains("s-card")).toBe(false);
+    expect(section.classList.contains("s-sunken")).toBe(false);
     expect(section.classList.contains("divider")).toBe(false);
   });
 
-  it("maps tone + divider inputs to host classes", () => {
+  it("maps surface + divider inputs to host classes", () => {
     const fixture = TestBed.createComponent(AppearanceHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
       "sh3-page-section",
     ) as HTMLElement;
 
-    fixture.componentInstance.tone.set("raised");
+    fixture.componentInstance.surface.set("card");
     fixture.detectChanges();
-    expect(section.classList.contains("t-raised")).toBe(true);
+    expect(section.classList.contains("s-card")).toBe(true);
 
-    fixture.componentInstance.tone.set("sunken");
+    fixture.componentInstance.surface.set("sunken");
     fixture.componentInstance.divider.set(true);
     fixture.detectChanges();
-    expect(section.classList.contains("t-sunken")).toBe(true);
-    expect(section.classList.contains("t-raised")).toBe(false);
+    expect(section.classList.contains("s-sunken")).toBe(true);
+    expect(section.classList.contains("s-card")).toBe(false);
     expect(section.classList.contains("divider")).toBe(true);
   });
 

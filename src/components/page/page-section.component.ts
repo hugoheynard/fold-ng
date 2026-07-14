@@ -11,11 +11,12 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
  * - `[sectionActions]` → the right-aligned header slot.
  *
  * Orthogonal appearance knobs compose the look:
- * - `tone` — `transparent` (default, flat on the page) · `raised` (card) ·
- *   `sunken` (deep container). A non-transparent tone adds padding, a hairline
- *   and a radius.
- * - `divider` — when `true` (only meaningful with a tone), the title renders as
- *   a bordered header **bar** with the body padded below it, instead of the
+ * - `surface` — `transparent` (default, flat on the page) · `card` (raised) ·
+ *   `sunken` (deep container). A non-transparent surface adds padding, a
+ *   hairline and a radius — the radius is what makes it read as a card. Same
+ *   vocabulary as {@link Sh3CardComponent} / {@link Sh3HeroComponent}.
+ * - `divider` — when `true` (only meaningful with a surface), the title renders
+ *   as a bordered header **bar** with the body padded below it, instead of the
  *   title sitting inline above the body.
  * - `stack` — lay the body out as an evenly-spaced vertical stack (form fields).
  *
@@ -25,8 +26,8 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
  *   …
  * </sh3-page-section>
  *
- * <sh3-page-section tone="raised" title="Informations générales">…form…</sh3-page-section>
- * <sh3-page-section tone="sunken" divider title="Documents">
+ * <sh3-page-section surface="card" title="Informations générales">…form…</sh3-page-section>
+ * <sh3-page-section surface="sunken" divider title="Documents">
  *   <button sectionActions>Ajouter</button>
  *   …dense panel…
  * </sh3-page-section>
@@ -39,8 +40,8 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
   standalone: true,
   imports: [Sh3ElementTitleComponent],
   host: {
-    "[class.t-raised]": "tone() === 'raised'",
-    "[class.t-sunken]": "tone() === 'sunken'",
+    "[class.s-card]": "surface() === 'card'",
+    "[class.s-sunken]": "surface() === 'sunken'",
     "[class.divider]": "divider()",
     "[class.stack]": "stack()",
   },
@@ -89,17 +90,18 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
       gap: 16px;
     }
 
-    /* ── Tone: a raised or sunken card wrapping the section (transparent = none) ── */
-    :host(.t-raised),
-    :host(.t-sunken) {
+    /* ── Surface: a card (raised) or sunken box wrapping the section. The radius
+       is what makes it read as a card — a transparent section has none. ── */
+    :host(.s-card),
+    :host(.s-sunken) {
       padding: 20px;
       border: 1px solid var(--sh3-color-border);
       border-radius: var(--sh3-radius-lg);
     }
-    :host(.t-raised) {
+    :host(.s-card) {
       background: var(--sh3-color-surface-card);
     }
-    :host(.t-sunken) {
+    :host(.s-sunken) {
       background: var(--sh3-color-surface-sunken);
       border-color: var(--sh3-color-border-subtle);
     }
@@ -133,8 +135,8 @@ export class Sh3PageSectionComponent {
   readonly title = input<string>();
   /** A one-line description under the title. */
   readonly description = input<string>();
-  /** Elevation tone — `transparent` (flat, default), `raised` (card), `sunken` (deep). */
-  readonly tone = input<"transparent" | "raised" | "sunken">("transparent");
+  /** Base surface — `transparent` (flat, default), `card` (raised + radius), `sunken` (deep + radius). */
+  readonly surface = input<"transparent" | "card" | "sunken">("transparent");
   /** With a surface, render the title as a bordered header bar above a padded body. */
   readonly divider = input(false, { transform: booleanAttribute });
   /** Lay the body out as an evenly-spaced vertical stack of form fields. */
