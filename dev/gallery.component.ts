@@ -58,16 +58,12 @@ import { TabPanelComponent } from "./tab-panel.component";
 export class GalleryComponent {
   protected readonly theme = signal<"dark" | "light">("dark");
 
-  /* ── Live shell parameters (driven by the rail settings popover) ── */
-  protected readonly settingsOpen = signal(false);
+  /* ── Live shell parameters (driven by the App Shell Settings card) ── */
   protected readonly shellAppearance = signal<"flat" | "floating">("flat");
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
 
-  protected toggleSettings(): void {
-    this.settingsOpen.update((v) => !v);
-  }
   protected setAppearance(value: "flat" | "floating"): void {
     this.shellAppearance.set(value);
   }
@@ -108,6 +104,7 @@ export class GalleryComponent {
 
   /** ids match the `<section>` ids in the template. */
   protected readonly toc: readonly TocItem[] = [
+    { id: "app-shell", label: "app-shell" },
     { id: "element-title", label: "element-title" },
     { id: "context-card", label: "context-card" },
     { id: "page-section", label: "page-section" },

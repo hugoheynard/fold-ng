@@ -168,33 +168,17 @@ sh3-app-shell {
   font-size: 13px;
 }
 
-/* ── Shell-parameters popover (fixed overlay by the rail) ───── */
-.shell-settings {
-  position: fixed;
-  top: 62px;
-  left: 78px;
-  z-index: 50;
-  width: 236px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  border-radius: var(--sh3-radius-lg);
-  border: 1px solid var(--sh3-color-border);
-  background: var(--sh3-color-surface-card);
-  box-shadow: var(--sh3-shadow-lg);
-}
-.ss-head {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sh3-color-text-muted);
+/* ── App Shell Settings card (controls live in the context card) ── */
+.gal-card-narrow {
+  max-width: 340px;
 }
 .ss-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+.ss-group + .ss-group {
+  margin-top: 14px;
 }
 .ss-label {
   font-size: 12px;

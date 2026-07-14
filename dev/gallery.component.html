@@ -4,16 +4,10 @@
   [railWidth]="shellRailWidth()"
   [headerHeight]="shellHeaderHeight()"
 >
-  <!-- ── rail primary: icon rail, shell settings first ─────────── -->
+  <!-- ── rail primary: decorative icon rail ────────────────────── -->
   <nav railPrimary class="rail">
-    <button
-      type="button"
-      class="rail-btn"
-      title="Shell parameters"
-      [class.is-on]="settingsOpen()"
-      (click)="toggleSettings()"
-    >
-      <sh3-icon name="settings" />
+    <button type="button" class="rail-btn is-on" disabled>
+      <sh3-icon name="grid" />
     </button>
     <button type="button" class="rail-btn" disabled>
       <sh3-icon name="home" />
@@ -41,6 +35,86 @@
   <!-- ── content: scrollable gallery + docked token editor ─────── -->
   <div class="gal-content">
     <div #scroll class="gal-scroll">
+      <!-- ── sh3-app-shell (this gallery is one) ───────────────── -->
+      <section id="app-shell" class="gal-sec">
+        <h2>sh3-app-shell</h2>
+        <div class="gal-card-narrow">
+          <sh3-context-card
+            icon="grid"
+            title="App Shell Settings"
+            subtitle="This gallery is itself an sh3-app-shell — tweak its structure live."
+          >
+            <div class="ss-group">
+              <span class="ss-label">appearance</span>
+              <div class="ss-seg">
+                <button
+                  type="button"
+                  [class.is-on]="shellAppearance() === 'flat'"
+                  (click)="setAppearance('flat')"
+                >
+                  flat
+                </button>
+                <button
+                  type="button"
+                  [class.is-on]="shellAppearance() === 'floating'"
+                  (click)="setAppearance('floating')"
+                >
+                  floating
+                </button>
+              </div>
+            </div>
+
+            <div class="ss-group">
+              <span class="ss-label">headerLayout</span>
+              <div class="ss-seg">
+                <button
+                  type="button"
+                  [class.is-on]="shellHeaderLayout() === 'inset'"
+                  (click)="setHeaderLayout('inset')"
+                >
+                  inset
+                </button>
+                <button
+                  type="button"
+                  [class.is-on]="shellHeaderLayout() === 'full'"
+                  (click)="setHeaderLayout('full')"
+                >
+                  full
+                </button>
+              </div>
+            </div>
+
+            <div class="ss-group">
+              <span class="ss-label"
+                >railWidth <b>{{ shellRailWidth() }}px</b></span
+              >
+              <input
+                #railInput
+                type="range"
+                min="48"
+                max="120"
+                [value]="shellRailWidth()"
+                (input)="setRailWidth(railInput.value)"
+              />
+            </div>
+
+            <div class="ss-group">
+              <span class="ss-label"
+                >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
+              >
+              <input
+                #headerInput
+                type="range"
+                min="44"
+                max="88"
+                [value]="shellHeaderHeight()"
+                (input)="setHeaderHeight(headerInput.value)"
+              />
+            </div>
+          </sh3-context-card>
+        </div>
+      </section>
+
       <!-- ── sh3-element-title ─────────────────────────────────── -->
       <section id="element-title" class="gal-sec">
         <h2>sh3-element-title</h2>
@@ -263,78 +337,3 @@
   <!-- side-panel overlay dock (anchors to the shell content region) -->
   <sh3-panel-host />
 </sh3-app-shell>
-
-<!-- ── shell parameters popover (fixed overlay, triggered by the rail) ── -->
-@if (settingsOpen()) {
-  <aside class="shell-settings">
-    <div class="ss-head">Shell parameters</div>
-
-    <div class="ss-group">
-      <span class="ss-label">appearance</span>
-      <div class="ss-seg">
-        <button
-          type="button"
-          [class.is-on]="shellAppearance() === 'flat'"
-          (click)="setAppearance('flat')"
-        >
-          flat
-        </button>
-        <button
-          type="button"
-          [class.is-on]="shellAppearance() === 'floating'"
-          (click)="setAppearance('floating')"
-        >
-          floating
-        </button>
-      </div>
-    </div>
-
-    <div class="ss-group">
-      <span class="ss-label">headerLayout</span>
-      <div class="ss-seg">
-        <button
-          type="button"
-          [class.is-on]="shellHeaderLayout() === 'inset'"
-          (click)="setHeaderLayout('inset')"
-        >
-          inset
-        </button>
-        <button
-          type="button"
-          [class.is-on]="shellHeaderLayout() === 'full'"
-          (click)="setHeaderLayout('full')"
-        >
-          full
-        </button>
-      </div>
-    </div>
-
-    <div class="ss-group">
-      <span class="ss-label"
-        >railWidth <b>{{ shellRailWidth() }}px</b></span
-      >
-      <input
-        #railInput
-        type="range"
-        min="48"
-        max="120"
-        [value]="shellRailWidth()"
-        (input)="setRailWidth(railInput.value)"
-      />
-    </div>
-
-    <div class="ss-group">
-      <span class="ss-label"
-        >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
-      >
-      <input
-        #headerInput
-        type="range"
-        min="44"
-        max="88"
-        [value]="shellHeaderHeight()"
-        (input)="setHeaderHeight(headerInput.value)"
-      />
-    </div>
-  </aside>
-}
