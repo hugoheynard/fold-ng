@@ -137,6 +137,11 @@ import { booleanAttribute, Component, input } from "@angular/core";
       padding: 14px 20px;
       border-bottom: 1px solid var(--sh3-color-border-subtle);
     }
+    /* The header-bar title reads a touch larger + brighter than the inline one. */
+    :host(.divider) .section-title {
+      font-size: 11px;
+      color: var(--sh3-color-text-secondary);
+    }
     :host(.divider) .section-body {
       padding: 8px 20px 14px;
     }
