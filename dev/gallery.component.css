@@ -88,6 +88,9 @@ sh3-app-shell {
   flex: 1;
   min-width: 0;
   overflow-y: auto;
+  /* Keep the scroll here — never chain to the document (which would shove the
+     fixed header off the top when overscrolling past the ends). */
+  overscroll-behavior: contain;
   padding: 0 32px;
   /* Each section is a screenful — snap gently to its top when paging. */
   scroll-snap-type: y proximity;

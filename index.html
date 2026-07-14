@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@sh3pherd/ui — gallery</title>
     <style>
-      /* Kill the default body margin so the shell reaches every edge. */
+      /* Kill the default body margin so the shell reaches every edge, and lock
+         document scroll — only the shell's inner content region scrolls, so the
+         fixed header can never be pushed off the top. */
       html,
       body {
         margin: 0;
         height: 100%;
+        overflow: hidden;
         background: var(--sh3-color-bg-page);
       }
     </style>
