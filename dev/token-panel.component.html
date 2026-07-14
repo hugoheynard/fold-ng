@@ -1,0 +1,35 @@
+<header class="tp-top">
+  <span class="tp-title">Palette</span>
+  <button
+    type="button"
+    class="tp-reset"
+    [disabled]="dirtyCount() === 0"
+    (click)="reset()"
+  >
+    Reset
+    @if (dirtyCount()) {
+      <span class="tp-count">{{ dirtyCount() }}</span>
+    }
+  </button>
+</header>
+
+<div class="tp-body">
+  @for (group of groups(); track group.family) {
+    <section class="tp-group">
+      <h3 class="tp-family">{{ group.family }}</h3>
+      @for (swatch of group.swatches; track swatch.name) {
+        <label class="tp-row">
+          <input
+            #picker
+            type="color"
+            class="tp-picker"
+            [value]="valueOf(swatch)"
+            (input)="set(swatch.name, picker.value)"
+          />
+          <span class="tp-label">{{ swatch.label }}</span>
+          <span class="tp-hex">{{ valueOf(swatch) }}</span>
+        </label>
+      }
+    </section>
+  }
+</div>

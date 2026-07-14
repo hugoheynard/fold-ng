@@ -10,6 +10,7 @@ import {
   Sh3PageSectionComponent,
   Sh3StatusBadgeComponent,
 } from "../src/index";
+import { TokenPanelComponent } from "./token-panel.component";
 
 /**
  * The gallery: every `@sh3pherd/ui` component with its variant matrix + a
@@ -28,6 +29,7 @@ import {
     Sh3BadgeComponent,
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
+    TokenPanelComponent,
   ],
   host: { "[attr.data-theme]": "theme() === 'light' ? 'light' : null" },
   templateUrl: "./gallery.component.html",
