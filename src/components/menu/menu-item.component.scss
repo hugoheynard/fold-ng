@@ -1,0 +1,71 @@
+:host {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--sh3-radius-md);
+  color: var(--sh3-color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background var(--sh3-motion-fast),
+    color var(--sh3-motion-fast);
+}
+:host(:hover) {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-text-secondary);
+}
+:host(:focus-visible) {
+  outline: 2px solid var(--sh3-color-primary);
+  outline-offset: 2px;
+}
+
+/* Active — accent tint + a left indicator bar (matches the shell's rail). */
+:host(.is-active) {
+  color: var(--sh3-color-text);
+  background: var(--sh3-color-primary-surface);
+}
+:host(.is-active) .mi-icon {
+  color: var(--sh3-color-primary);
+}
+:host(.is-active)::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 0 2px 2px 0;
+  background: var(--sh3-color-primary);
+}
+
+.mi-icon {
+  color: inherit;
+  transition: color var(--sh3-motion-fast);
+}
+
+/* Hover tooltip — escapes the rail to the right (host has overflow: visible). */
+.mi-tip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-glass);
+  border: 1px solid var(--sh3-color-glass-border);
+  color: var(--sh3-color-text);
+  font-size: var(--sh3-text-xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: var(--sh3-shadow-md);
+  transition: opacity var(--sh3-motion-fast);
+  z-index: 100;
+}
+:host(:hover) .mi-tip {
+  opacity: 1;
+}
