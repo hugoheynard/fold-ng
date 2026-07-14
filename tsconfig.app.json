@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "files": ["dev/main.ts"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "node_modules", "dist"]
+}
