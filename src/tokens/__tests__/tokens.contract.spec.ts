@@ -174,4 +174,17 @@ describe("token contract · components consume tokens only", () => {
       .map(({ file }) => file.slice(file.indexOf("/src/") + 1));
     expect([...new Set(offenders)]).toEqual([]);
   });
+
+  // A typo like `--sh3-color-text-primary` (the token is `--sh3-color-text`)
+  // resolves to an invalid value and the element silently inherits its colour.
+  // The parity/no-hex checks miss it — this closes that gap.
+  it("every --sh3-color-* a component references is a declared semantic token", () => {
+    const declared = new Set(expectedSemantic);
+    const offenders = componentStyles().flatMap(({ file, css }) =>
+      referencedVars(css)
+        .filter((v) => v.startsWith("--sh3-color-") && !declared.has(v))
+        .map((v) => `${v} in ${file.slice(file.indexOf("/src/") + 1)}`),
+    );
+    expect([...new Set(offenders)]).toEqual([]);
+  });
 });
