@@ -1,4 +1,4 @@
-import { Component, input } from "@angular/core";
+import { booleanAttribute, Component, input } from "@angular/core";
 
 /**
  * `<sh3-page-section>` — a titled sub-section inside a {@link Sh3PageLayoutComponent}:
@@ -9,10 +9,23 @@ import { Component, input } from "@angular/core";
  * - default slot → the section content.
  * - `[sectionActions]` → the right-aligned header slot.
  *
+ * Two orthogonal appearance knobs compose the surface treatment:
+ * - `surface` — `none` (default, flat on the page) · `card` (raised card) ·
+ *   `sunken` (deep container). A surface adds padding, a hairline and a radius.
+ * - `divider` — when `true` (only meaningful with a surface), the title renders
+ *   as a bordered header **bar** with the body padded below it, instead of the
+ *   title sitting inline above the body.
+ *
  * ```html
  * <sh3-page-section title="Moyens de paiement" description="Le moyen par défaut…">
  *   <button sectionActions>Ajouter</button>
  *   …
+ * </sh3-page-section>
+ *
+ * <sh3-page-section surface="card" title="Informations générales">…form…</sh3-page-section>
+ * <sh3-page-section surface="sunken" divider title="Documents">
+ *   <button sectionActions>Ajouter</button>
+ *   …dense panel…
  * </sh3-page-section>
  * ```
  *
@@ -21,6 +34,11 @@ import { Component, input } from "@angular/core";
 @Component({
   selector: "sh3-page-section",
   standalone: true,
+  host: {
+    "[class.s-card]": "surface() === 'card'",
+    "[class.s-sunken]": "surface() === 'sunken'",
+    "[class.divider]": "divider()",
+  },
   template: `@if (title() || description()) {
       <div class="section-head">
         <div class="section-text">
@@ -36,7 +54,7 @@ import { Component, input } from "@angular/core";
         </div>
       </div>
     }
-    <ng-content />`,
+    <div class="section-body"><ng-content /></div>`,
   styles: `
     :host {
       display: flex;
@@ -79,6 +97,48 @@ import { Component, input } from "@angular/core";
     .section-actions:empty {
       display: none;
     }
+    .section-body {
+      min-width: 0;
+    }
+
+    /* ── Surface: a raised or sunken card wrapping the section ── */
+    :host(.s-card),
+    :host(.s-sunken) {
+      padding: 20px;
+      border: 1px solid var(--sh3-color-border);
+      border-radius: var(--sh3-radius-lg);
+    }
+    :host(.s-card) {
+      background: var(--sh3-color-surface-card);
+    }
+    :host(.s-sunken) {
+      background: var(--sh3-color-surface-sunken);
+      border-color: var(--sh3-color-border-subtle);
+    }
+
+    /* ── Divider: title becomes a bordered header bar, body padded below.
+       Comes after the surface rules (equal specificity) so it wins. ── */
+    :host(.divider) {
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    :host(.divider) .section-head {
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--sh3-color-border-subtle);
+    }
+    :host(.divider) .section-body {
+      padding: 8px 20px 14px;
+    }
+    @media (max-width: 700px) {
+      :host(.divider) .section-head {
+        padding: 12px 15px;
+      }
+      :host(.divider) .section-body {
+        padding: 6px 15px 12px;
+      }
+    }
   `,
 })
 export class Sh3PageSectionComponent {
@@ -86,4 +146,8 @@ export class Sh3PageSectionComponent {
   readonly title = input<string>();
   /** A one-line description under the title. */
   readonly description = input<string>();
+  /** Surface treatment — `none` (flat, default), `card` (raised), `sunken` (deep). */
+  readonly surface = input<"none" | "card" | "sunken">("none");
+  /** With a surface, render the title as a bordered header bar above a padded body. */
+  readonly divider = input(false, { transform: booleanAttribute });
 }

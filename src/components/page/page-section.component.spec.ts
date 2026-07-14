@@ -16,6 +16,20 @@ class HostComponent {
   readonly description = signal<string | undefined>(undefined);
 }
 
+@Component({
+  standalone: true,
+  imports: [Sh3PageSectionComponent],
+  template: `<sh3-page-section
+    [surface]="surface()"
+    [divider]="divider()"
+    title="X"
+  />`,
+})
+class AppearanceHostComponent {
+  readonly surface = signal<"none" | "card" | "sunken">("none");
+  readonly divider = signal(false);
+}
+
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
@@ -43,5 +57,40 @@ describe("Sh3PageSectionComponent", () => {
     fixture.detectChanges();
     expect(root.querySelector(".section-head")).toBeNull();
     expect(root.querySelector(".body-item")).not.toBeNull();
+  });
+
+  it("wraps the body in .section-body", () => {
+    const { root } = render();
+    expect(root.querySelector(".section-body .body-item")).not.toBeNull();
+  });
+
+  it("is flat by default — no surface/divider host classes", () => {
+    const fixture = TestBed.createComponent(AppearanceHostComponent);
+    fixture.detectChanges();
+    const section = fixture.nativeElement.querySelector(
+      "sh3-page-section",
+    ) as HTMLElement;
+    expect(section.classList.contains("s-card")).toBe(false);
+    expect(section.classList.contains("s-sunken")).toBe(false);
+    expect(section.classList.contains("divider")).toBe(false);
+  });
+
+  it("maps surface + divider inputs to host classes", () => {
+    const fixture = TestBed.createComponent(AppearanceHostComponent);
+    fixture.detectChanges();
+    const section = fixture.nativeElement.querySelector(
+      "sh3-page-section",
+    ) as HTMLElement;
+
+    fixture.componentInstance.surface.set("card");
+    fixture.detectChanges();
+    expect(section.classList.contains("s-card")).toBe(true);
+
+    fixture.componentInstance.surface.set("sunken");
+    fixture.componentInstance.divider.set(true);
+    fixture.detectChanges();
+    expect(section.classList.contains("s-sunken")).toBe(true);
+    expect(section.classList.contains("s-card")).toBe(false);
+    expect(section.classList.contains("divider")).toBe(true);
   });
 });
