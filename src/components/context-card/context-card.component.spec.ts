@@ -43,16 +43,16 @@ describe("Sh3ContextCardComponent", () => {
     expect(host.querySelector(".cc-body .row")?.textContent).toBe("Body");
   });
 
-  it("omits the icon + subtitle until provided", () => {
+  it("omits the icon + subtitle until provided (via element-title)", () => {
     const { fixture, host } = render();
-    expect(host.querySelector(".cc-icon")).toBeNull();
-    expect(host.querySelector(".cc-sub")).toBeNull();
+    expect(host.querySelector(".et-icon")).toBeNull();
+    expect(host.querySelector(".et-sub")).toBeNull();
 
     fixture.componentInstance.icon.set("company");
     fixture.componentInstance.subtitle.set("Activité de l'espace");
     fixture.detectChanges();
-    expect(host.querySelector(".cc-icon sh3-icon")).not.toBeNull();
-    expect(host.querySelector(".cc-sub")?.textContent?.trim()).toBe(
+    expect(host.querySelector(".et-icon sh3-icon")).not.toBeNull();
+    expect(host.querySelector(".et-sub")?.textContent?.trim()).toBe(
       "Activité de l'espace",
     );
   });

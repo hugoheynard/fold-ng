@@ -2,12 +2,18 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { Sh3ElementTitleComponent } from "./element-title.component";
+import type { Sh3IconName } from "../icon/icon.registry";
 
 @Component({
   standalone: true,
   imports: [Sh3ElementTitleComponent],
-  template: `<sh3-element-title [variant]="variant()" [level]="level()">
-    Contexte
+  template: `<sh3-element-title
+    [variant]="variant()"
+    [level]="level()"
+    [icon]="icon()"
+    [title]="title()"
+    [subtitle]="subtitle()"
+  >
     @if (withAction()) {
       <button titleAction class="act">edit</button>
     }
@@ -16,6 +22,9 @@ import { Sh3ElementTitleComponent } from "./element-title.component";
 class HostComponent {
   readonly variant = signal<"eyebrow" | "bar" | "title">("eyebrow");
   readonly level = signal(2);
+  readonly icon = signal<Sh3IconName | undefined>(undefined);
+  readonly title = signal("Contexte");
+  readonly subtitle = signal<string | undefined>(undefined);
   readonly withAction = signal(false);
 }
 
@@ -29,14 +38,10 @@ function render() {
 }
 
 describe("Sh3ElementTitleComponent", () => {
-  it("projects its label text", () => {
-    const { el } = render();
-    expect(el.querySelector(".et-label")?.textContent?.trim()).toBe("Contexte");
-  });
-
-  it("makes the label a heading for assistive tech, level 2 by default", () => {
+  it("renders the title input as the heading label", () => {
     const { el } = render();
     const label = el.querySelector(".et-label");
+    expect(label?.textContent?.trim()).toBe("Contexte");
     expect(label?.getAttribute("role")).toBe("heading");
     expect(label?.getAttribute("aria-level")).toBe("2");
   });
@@ -61,6 +66,20 @@ describe("Sh3ElementTitleComponent", () => {
     fixture.detectChanges();
     expect(el.classList.contains("v-title")).toBe(true);
     expect(el.classList.contains("v-bar")).toBe(false);
+  });
+
+  it("renders icon + subtitle only when provided", () => {
+    const { fixture, el } = render();
+    expect(el.querySelector(".et-icon")).toBeNull();
+    expect(el.querySelector(".et-sub")).toBeNull();
+
+    fixture.componentInstance.icon.set("company");
+    fixture.componentInstance.subtitle.set("Activité de l'espace");
+    fixture.detectChanges();
+    expect(el.querySelector(".et-icon sh3-icon")).not.toBeNull();
+    expect(el.querySelector(".et-sub")?.textContent?.trim()).toBe(
+      "Activité de l'espace",
+    );
   });
 
   it("projects a trailing action into [titleAction]", () => {

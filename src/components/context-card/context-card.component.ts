@@ -1,7 +1,6 @@
 import { Component, input } from "@angular/core";
 import { Sh3CardComponent } from "../card/card.component";
 import { Sh3ElementTitleComponent } from "../element-title/element-title.component";
-import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
 
 /**
@@ -28,20 +27,16 @@ import type { Sh3IconName } from "../icon/icon.registry";
 @Component({
   selector: "sh3-context-card",
   standalone: true,
-  imports: [Sh3CardComponent, Sh3IconComponent, Sh3ElementTitleComponent],
+  imports: [Sh3CardComponent, Sh3ElementTitleComponent],
   template: `<sh3-card padding="none">
     <div class="cc-head">
-      @if (icon(); as ic) {
-        <span class="cc-icon"><sh3-icon [name]="ic" size="md" /></span>
-      }
-      <span class="cc-titles">
-        <sh3-element-title variant="title" [level]="3">{{
-          title()
-        }}</sh3-element-title>
-        @if (subtitle(); as s) {
-          <span class="cc-sub">{{ s }}</span>
-        }
-      </span>
+      <sh3-element-title
+        variant="title"
+        [level]="3"
+        [icon]="icon()"
+        [title]="title()"
+        [subtitle]="subtitle()"
+      />
     </div>
     <div class="cc-body"><ng-content /></div>
     <div class="cc-foot"><ng-content select="[footer]" /></div>
@@ -50,34 +45,10 @@ import type { Sh3IconName } from "../icon/icon.registry";
     :host {
       display: block;
     }
-    /* Header — raised icon tile + title + subtitle, divider below. */
+    /* Header — the whole icon + title + subtitle block is sh3-element-title. */
     .cc-head {
-      display: flex;
-      align-items: center;
-      gap: 12px;
       padding: 16px;
       border-bottom: 1px solid var(--sh3-color-border-subtle);
-    }
-    .cc-icon {
-      flex: none;
-      display: grid;
-      place-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: var(--sh3-radius-md);
-      border: 1px solid var(--sh3-color-border);
-      background: var(--sh3-color-surface-raised);
-      color: var(--sh3-color-primary);
-    }
-    .cc-titles {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-    .cc-sub {
-      font-size: var(--sh3-text-xs);
-      color: var(--sh3-color-text-muted);
     }
     /* Body — the projected content. */
     .cc-body {

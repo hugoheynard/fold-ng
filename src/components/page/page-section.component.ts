@@ -47,9 +47,11 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
   },
   template: `@if (title() || description()) {
       <div class="section-head">
-        @if (title()) {
-          <sh3-element-title [variant]="divider() ? 'bar' : 'eyebrow'">
-            {{ title() }}
+        @if (title(); as t) {
+          <sh3-element-title
+            [variant]="divider() ? 'bar' : 'eyebrow'"
+            [title]="t"
+          >
             <ng-content select="[sectionActions]" titleAction />
           </sh3-element-title>
         }
