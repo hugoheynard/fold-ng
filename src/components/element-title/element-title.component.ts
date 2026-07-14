@@ -11,7 +11,8 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * - `eyebrow` (default) — 10px, muted, uppercase. Inline section label.
  * - `bar` — 11px, secondary, uppercase. For a divider header bar.
  * - `title` — normal-case, `text-md`, primary. A card/panel heading; a leading
- *   `icon` renders in a raised tile.
+ *   `icon` renders in a tile whose tone is set by `iconTone`
+ *   (`neutral` raised · `primary` filled brand · `faded` dim).
  *
  * A trailing action (edit/add button, lock badge) projects into `[titleAction]`,
  * right-aligned. The title — not the action — is the heading for assistive tech.
@@ -34,6 +35,8 @@ import type { Sh3IconName } from "../icon/icon.registry";
   host: {
     "[class.v-bar]": "variant() === 'bar'",
     "[class.v-title]": "variant() === 'title'",
+    "[class.it-primary]": "iconTone() === 'primary'",
+    "[class.it-faded]": "iconTone() === 'faded'",
   },
   template: `@if (icon(); as ic) {
       <span class="et-icon"><sh3-icon [name]="ic" [size]="iconSize()" /></span>
@@ -114,11 +117,24 @@ import type { Sh3IconName } from "../icon/icon.registry";
       border: 1px solid var(--sh3-color-border);
       background: var(--sh3-color-surface-raised);
     }
+    /* Tile tone (title variant): primary = filled brand tile; faded = dim. */
+    :host(.v-title.it-primary) .et-icon {
+      background: var(--sh3-color-primary);
+      border-color: var(--sh3-color-primary);
+      color: var(--sh3-color-on-primary);
+    }
+    :host(.v-title.it-faded) .et-icon {
+      background: var(--sh3-color-surface-sunken);
+      border-color: var(--sh3-color-border-subtle);
+      color: var(--sh3-color-text-muted);
+    }
   `,
 })
 export class Sh3ElementTitleComponent {
   /** Leading icon glyph (raised tile in the `title` variant). */
   readonly icon = input<Sh3IconName>();
+  /** Icon tile tone (title variant) — `neutral` (raised), `primary` (filled brand), `faded` (dim). */
+  readonly iconTone = input<"neutral" | "primary" | "faded">("neutral");
   /** The heading text. */
   readonly title = input.required<string>();
   /** Optional secondary line under the title. */

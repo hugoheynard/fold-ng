@@ -11,6 +11,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
     [variant]="variant()"
     [level]="level()"
     [icon]="icon()"
+    [iconTone]="iconTone()"
     [title]="title()"
     [subtitle]="subtitle()"
   >
@@ -23,6 +24,7 @@ class HostComponent {
   readonly variant = signal<"eyebrow" | "bar" | "title">("eyebrow");
   readonly level = signal(2);
   readonly icon = signal<Sh3IconName | undefined>(undefined);
+  readonly iconTone = signal<"neutral" | "primary" | "faded">("neutral");
   readonly title = signal("Contexte");
   readonly subtitle = signal<string | undefined>(undefined);
   readonly withAction = signal(false);
@@ -80,6 +82,19 @@ describe("Sh3ElementTitleComponent", () => {
     expect(el.querySelector(".et-sub")?.textContent?.trim()).toBe(
       "Activité de l'espace",
     );
+  });
+
+  it("maps the icon tile tone to a host class", () => {
+    const { fixture, el } = render();
+    expect(el.classList.contains("it-primary")).toBe(false);
+    fixture.componentInstance.iconTone.set("primary");
+    fixture.detectChanges();
+    expect(el.classList.contains("it-primary")).toBe(true);
+
+    fixture.componentInstance.iconTone.set("faded");
+    fixture.detectChanges();
+    expect(el.classList.contains("it-faded")).toBe(true);
+    expect(el.classList.contains("it-primary")).toBe(false);
   });
 
   it("projects a trailing action into [titleAction]", () => {

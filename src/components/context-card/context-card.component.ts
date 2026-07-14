@@ -34,6 +34,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
         variant="title"
         [level]="3"
         [icon]="icon()"
+        [iconTone]="iconTone()"
         [title]="title()"
         [subtitle]="subtitle()"
       />
@@ -67,8 +68,10 @@ import type { Sh3IconName } from "../icon/icon.registry";
   `,
 })
 export class Sh3ContextCardComponent {
-  /** Header icon glyph (raised tile). */
+  /** Header icon glyph. */
   readonly icon = input<Sh3IconName>();
+  /** Icon tile tone — `primary` (filled brand, default), `neutral` (raised), `faded` (dim). */
+  readonly iconTone = input<"neutral" | "primary" | "faded">("primary");
   /** Header title. */
   readonly title = input.required<string>();
   /** Optional line under the title. */
