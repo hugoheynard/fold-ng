@@ -121,25 +121,26 @@ full, typed set.)
 All standalone, signals-first, styled against the semantic tokens. Import from
 the package root.
 
-| Component                             | Selector              | What it is                                                   |
-| ------------------------------------- | --------------------- | ------------------------------------------------------------ |
-| `Sh3AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).    |
-| `Sh3PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
-| `Sh3CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
-| `Sh3ElementTitleComponent`            | `sh3-element-title`   | Uppercase section/card mini-title (eyebrow · bar variants).  |
-| `Sh3LinkComponent`                    | `sh3-link`            | Inline text link / link-button (icons, accent · muted).      |
-| `Sh3HeroComponent`                    | `sh3-hero`            | Prominent header card (base surface × accent overlay + bar). |
-| `Sh3DataTableComponent`               | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
-| `Sh3PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
-| `Sh3BadgeComponent`                   | `sh3-badge`           | Status / count pill (accent/info/warning/alert/success).     |
-| `Sh3StatusBadgeComponent`             | `sh3-status-badge`    | Status→colour badge (maps a domain status key to a tone).    |
-| `Sh3ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                   |
-| `Sh3IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `Sh3IconRegistry`).        |
-| `Sh3TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                     |
-| `Sh3AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                        |
-| `Sh3ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `Sh3ToastService`).                         |
-| `Sh3PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `Sh3PanelHostService`).         |
-| `Sh3PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).         |
+| Component                             | Selector              | What it is                                                     |
+| ------------------------------------- | --------------------- | -------------------------------------------------------------- |
+| `Sh3AppShellComponent`                | `sh3-app-shell`       | Responsive app skeleton (rails + header + content slots).      |
+| `Sh3PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).               |
+| `Sh3CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius).   |
+| `Sh3ContextCardComponent`             | `sh3-context-card`    | Titled info card: icon header + body + optional footer action. |
+| `Sh3ElementTitleComponent`            | `sh3-element-title`   | Uppercase section/card mini-title (eyebrow · bar variants).    |
+| `Sh3LinkComponent`                    | `sh3-link`            | Inline text link / link-button (icons, accent · muted).        |
+| `Sh3HeroComponent`                    | `sh3-hero`            | Prominent header card (base surface × accent overlay + bar).   |
+| `Sh3DataTableComponent`               | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards).   |
+| `Sh3PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).      |
+| `Sh3BadgeComponent`                   | `sh3-badge`           | Status / count pill (accent/info/warning/alert/success).       |
+| `Sh3StatusBadgeComponent`             | `sh3-status-badge`    | Status→colour badge (maps a domain status key to a tone).      |
+| `Sh3ChoiceRowComponent`               | `sh3-choice-row`      | Segmented / chip selector.                                     |
+| `Sh3IconComponent`                    | `sh3-icon`            | SVG icon (100-icon built-in set + `Sh3IconRegistry`).          |
+| `Sh3TabNavComponent`                  | `sh3-tab-nav`         | Tab bar (horizontal / vertical sidebar).                       |
+| `Sh3AvatarComponent` / `…Detail`      | `sh3-avatar`          | Initials/image avatar; identity cell.                          |
+| `Sh3ToastContainerComponent`          | `sh3-toast-container` | Snackbar host (+ `Sh3ToastService`).                           |
+| `Sh3PanelHostComponent`               | `sh3-panel-host`      | Side-panel / overlay host (+ `Sh3PanelHostService`).           |
+| `Sh3PanelHeaderComponent`             | `sh3-panel-header`    | Standard panel header (title/eyebrow, self-closing).           |
 
 ## Icons
 

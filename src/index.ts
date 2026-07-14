@@ -9,6 +9,7 @@ export { Sh3AvatarComponent } from "./components/avatar/avatar.component";
 export { Sh3AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
 export { Sh3BadgeComponent } from "./components/badge/badge.component";
 export { Sh3CardComponent } from "./components/card/card.component";
+export { Sh3ContextCardComponent } from "./components/context-card/context-card.component";
 export { Sh3ElementTitleComponent } from "./components/element-title/element-title.component";
 export { Sh3LinkComponent } from "./components/link/link.component";
 export { Sh3HeroComponent } from "./components/hero/hero.component";
