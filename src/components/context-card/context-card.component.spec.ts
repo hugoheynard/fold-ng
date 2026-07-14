@@ -33,9 +33,11 @@ function render() {
 }
 
 describe("Sh3ContextCardComponent", () => {
-  it("renders the title as a heading and projects the body", () => {
+  it("renders the title via sh3-element-title (heading) and projects the body", () => {
     const { host } = render();
-    const title = host.querySelector(".cc-title");
+    const title = host.querySelector(
+      "sh3-element-title[variant='title'] .et-label",
+    );
     expect(title?.textContent?.trim()).toBe("Contexte");
     expect(title?.getAttribute("role")).toBe("heading");
     expect(host.querySelector(".cc-body .row")?.textContent).toBe("Body");

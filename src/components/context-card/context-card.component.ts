@@ -1,5 +1,6 @@
 import { Component, input } from "@angular/core";
 import { Sh3CardComponent } from "../card/card.component";
+import { Sh3ElementTitleComponent } from "../element-title/element-title.component";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
 
@@ -27,16 +28,16 @@ import type { Sh3IconName } from "../icon/icon.registry";
 @Component({
   selector: "sh3-context-card",
   standalone: true,
-  imports: [Sh3CardComponent, Sh3IconComponent],
+  imports: [Sh3CardComponent, Sh3IconComponent, Sh3ElementTitleComponent],
   template: `<sh3-card padding="none">
     <div class="cc-head">
       @if (icon(); as ic) {
         <span class="cc-icon"><sh3-icon [name]="ic" size="md" /></span>
       }
       <span class="cc-titles">
-        <span class="cc-title" role="heading" aria-level="3">{{
+        <sh3-element-title variant="title" [level]="3">{{
           title()
-        }}</span>
+        }}</sh3-element-title>
         @if (subtitle(); as s) {
           <span class="cc-sub">{{ s }}</span>
         }
@@ -73,11 +74,6 @@ import type { Sh3IconName } from "../icon/icon.registry";
       flex-direction: column;
       gap: 2px;
       min-width: 0;
-    }
-    .cc-title {
-      font-size: var(--sh3-text-md);
-      font-weight: 700;
-      color: var(--sh3-color-text-primary);
     }
     .cc-sub {
       font-size: var(--sh3-text-xs);

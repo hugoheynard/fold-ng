@@ -1,12 +1,13 @@
 import { Component, input } from "@angular/core";
 
 /**
- * `<sh3-element-title>` — the small uppercase label that heads a section, card
- * or panel. One primitive with two emphases, so the "uppercase 700 mini-title"
- * is never hand-rolled per feature.
+ * `<sh3-element-title>` — the label that heads a section, card or panel. One
+ * primitive with three emphases, so a heading is never hand-rolled per feature.
  *
- * - `eyebrow` (default) — 10px, muted. The quiet inline section/card label.
- * - `bar` — 11px, secondary. Larger + brighter, for a divider header bar.
+ * - `eyebrow` (default) — 10px, muted, uppercase. The quiet inline section label.
+ * - `bar` — 11px, secondary, uppercase. For a divider header bar.
+ * - `title` — normal-case, `text-md`, primary. A card/panel heading (pair it
+ *   with a caller-supplied subtitle line below).
  *
  * Optional trailing action (an edit/add button, a lock badge) projects into the
  * `[titleAction]` slot, right-aligned. The label — not the action — is the
@@ -27,7 +28,10 @@ import { Component, input } from "@angular/core";
 @Component({
   selector: "sh3-element-title",
   standalone: true,
-  host: { "[class.v-bar]": "variant() === 'bar'" },
+  host: {
+    "[class.v-bar]": "variant() === 'bar'",
+    "[class.v-title]": "variant() === 'title'",
+  },
   template: `<span class="et-label" role="heading" [attr.aria-level]="level()"
       ><ng-content
     /></span>
@@ -52,6 +56,12 @@ import { Component, input } from "@angular/core";
       font-size: 11px;
       color: var(--sh3-color-text-secondary);
     }
+    :host(.v-title) .et-label {
+      font-size: var(--sh3-text-md);
+      letter-spacing: normal;
+      text-transform: none;
+      color: var(--sh3-color-text-primary);
+    }
     .et-action {
       flex: none;
       display: inline-flex;
@@ -64,8 +74,8 @@ import { Component, input } from "@angular/core";
   `,
 })
 export class Sh3ElementTitleComponent {
-  /** Emphasis — `eyebrow` (10px muted, default) or `bar` (11px secondary). */
-  readonly variant = input<"eyebrow" | "bar">("eyebrow");
+  /** Emphasis — `eyebrow` (10px muted), `bar` (11px secondary), `title` (text-md, normal-case). */
+  readonly variant = input<"eyebrow" | "bar" | "title">("eyebrow");
   /** Heading outline depth exposed to assistive tech (`aria-level`). */
   readonly level = input(2);
 }

@@ -14,7 +14,7 @@ import { Sh3ElementTitleComponent } from "./element-title.component";
   </sh3-element-title>`,
 })
 class HostComponent {
-  readonly variant = signal<"eyebrow" | "bar">("eyebrow");
+  readonly variant = signal<"eyebrow" | "bar" | "title">("eyebrow");
   readonly level = signal(2);
   readonly withAction = signal(false);
 }
@@ -48,13 +48,19 @@ describe("Sh3ElementTitleComponent", () => {
     expect(el.querySelector(".et-label")?.getAttribute("aria-level")).toBe("3");
   });
 
-  it("is eyebrow by default and toggles the bar variant class", () => {
+  it("is eyebrow by default and toggles the bar / title variant classes", () => {
     const { fixture, el } = render();
     expect(el.classList.contains("v-bar")).toBe(false);
+    expect(el.classList.contains("v-title")).toBe(false);
 
     fixture.componentInstance.variant.set("bar");
     fixture.detectChanges();
     expect(el.classList.contains("v-bar")).toBe(true);
+
+    fixture.componentInstance.variant.set("title");
+    fixture.detectChanges();
+    expect(el.classList.contains("v-title")).toBe(true);
+    expect(el.classList.contains("v-bar")).toBe(false);
   });
 
   it("projects a trailing action into [titleAction]", () => {
