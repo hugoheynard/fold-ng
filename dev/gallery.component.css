@@ -128,6 +128,9 @@ sh3-app-shell {
   flex-direction: column;
   gap: 8px;
 }
+.gal-narrow {
+  max-width: 220px;
+}
 .gal-tag {
   font-size: 10px;
   font-weight: 700;

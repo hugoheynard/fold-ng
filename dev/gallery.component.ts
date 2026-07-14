@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   afterNextRender,
+  inject,
   signal,
   viewChild,
 } from "@angular/core";
@@ -15,10 +16,15 @@ import {
   Sh3IconComponent,
   Sh3LinkComponent,
   Sh3PageSectionComponent,
+  Sh3PanelHostComponent,
+  Sh3PanelHostService,
   Sh3StatusBadgeComponent,
+  Sh3TabNavComponent,
+  type Sh3TabNavItem,
 } from "../src/index";
 import { TokenPanelComponent } from "./token-panel.component";
 import { TocPanelComponent, type TocItem } from "./toc-panel.component";
+import { TabPanelComponent } from "./tab-panel.component";
 
 /**
  * The gallery — itself an `sh3-app-shell` instance (dogfooding). The primary
@@ -40,6 +46,8 @@ import { TocPanelComponent, type TocItem } from "./toc-panel.component";
     Sh3BadgeComponent,
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
+    Sh3TabNavComponent,
+    Sh3PanelHostComponent,
     TokenPanelComponent,
     TocPanelComponent,
   ],
@@ -77,6 +85,22 @@ export class GalleryComponent {
     this.theme.update((t) => (t === "dark" ? "light" : "dark"));
   }
 
+  /* ── Tab-nav demos + a tab-nav opened inside a side panel ── */
+  private readonly panelHost = inject(Sh3PanelHostService);
+  protected readonly tabItems: Sh3TabNavItem[] = [
+    { key: "overview", label: "Overview" },
+    { key: "members", label: "Members", badge: 3 },
+    { key: "settings", label: "Settings" },
+  ];
+  protected readonly tabUnderline = signal("overview");
+  protected readonly tabFill = signal("overview");
+  protected readonly tabComfortable = signal("members");
+  protected readonly tabVertical = signal("overview");
+
+  protected openTabPanel(): void {
+    this.panelHost.open(TabPanelComponent, { side: "right" });
+  }
+
   /* ── Table of contents + scroll-spy ── */
   /** The scrollable content cell — the scroll-spy observer's root. */
   private readonly scrollRef =
@@ -90,6 +114,7 @@ export class GalleryComponent {
     { id: "hero", label: "hero" },
     { id: "card", label: "card" },
     { id: "link", label: "link" },
+    { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
   ];
   /** The section currently in view — drives the TOC highlight. */
