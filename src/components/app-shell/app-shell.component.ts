@@ -33,7 +33,7 @@ import { Component, computed, input } from "@angular/core";
  * |------------------|-------------------------------------------|
  * | `railPrimary`    | Left rail (fixed width).                  |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
- * | `header`         | Top bar (content column).                 |
+ * | `header`         | Top bar (content column, or full-width — see `headerLayout`). |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. |
  *
  * ## Sizing knobs
@@ -43,11 +43,21 @@ import { Component, computed, input } from "@angular/core";
  * | `headerHeight`       | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
  * | `headerHeightMobile` | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
  *
+ * ## Layout knobs
+ * | Input          | Values                | Default   | Meaning                                    |
+ * |----------------|-----------------------|-----------|--------------------------------------------|
+ * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
+ * | `appearance`   | `"flat" \| "floating"`| `"flat"`  | `flat` = regions are edge-to-edge blocks; `floating` = each region is a rounded, elevated card on a page-colour gutter (inset-dashboard look). |
+ *
+ * In `floating` mode the content cell becomes a rounded card; because it already
+ * clips its overflow, a floating panel anchored inside it inherits that radius
+ * for free — no extra wiring.
+ *
  * @selector `sh3-app-shell`
  *
  * @example
  * ```html
- * <sh3-app-shell [railWidth]="72">
+ * <sh3-app-shell [railWidth]="72" headerLayout="full" appearance="floating">
  *   <app-menu railPrimary />
  *   <app-workspace-rail railSecondary />
  *   <app-header header />
@@ -63,6 +73,8 @@ import { Component, computed, input } from "@angular/core";
     "[style.--sh3-shell-rail-width]": "railWidthVar()",
     "[style.--sh3-shell-header-height]": "headerHeightVar()",
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
+    "[class.header-full]": 'headerLayout() === "full"',
+    "[class.floating]": 'appearance() === "floating"',
   },
   template: `<div class="rail-primary">
       <ng-content select="[railPrimary]" />
@@ -110,9 +122,36 @@ import { Component, computed, input } from "@angular/core";
       overflow: hidden;
     }
 
-    /* Rails drop out on narrow viewports → single header + content column. */
+    /* headerLayout="full" — header spans every column, above the rails, instead
+       of sitting over the content column with the rails climbing its side. */
+    :host(.header-full) {
+      grid-template-areas:
+        "header       header         header"
+        "rail-primary rail-secondary content";
+    }
+
+    /* appearance="floating" — inset-dashboard look: a page-colour gutter around
+       every region, each region a rounded, elevated card. The content cell keeps
+       its overflow clip, so a panel anchored inside inherits the radius. */
+    :host(.floating) {
+      padding: var(--sh3-space-md);
+      gap: var(--sh3-space-md);
+    }
+    :host(.floating) .rail-primary,
+    :host(.floating) .rail-secondary,
+    :host(.floating) .header,
+    :host(.floating) .content {
+      border-radius: var(--sh3-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--sh3-shadow-md);
+    }
+
+    /* Rails drop out on narrow viewports → single header + content column.
+       Both base and header-full collapse to the same stack (equal specificity to
+       :host(.header-full), so source order lets the mobile rule win). */
     @media (max-width: 768px) {
-      :host {
+      :host,
+      :host(.header-full) {
         grid-template-columns: minmax(0, 1fr);
         grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr;
         grid-template-areas:
@@ -133,6 +172,11 @@ export class Sh3AppShellComponent {
   readonly headerHeight = input<number>();
   /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
+
+  /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
+  readonly headerLayout = input<"inset" | "full">("inset");
+  /** `"floating"` renders each region as a rounded, elevated card on a page-colour gutter; `"flat"` (default) is edge-to-edge blocks. */
+  readonly appearance = input<"flat" | "floating">("flat");
 
   /* Map each input to its CSS var — `null` when unset so the stylesheet
      variable (or its fallback default) keeps winning; a set input overrides it. */

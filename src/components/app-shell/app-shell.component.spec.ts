@@ -25,6 +25,19 @@ class SizedHostComponent {
   readonly header = signal<number | undefined>(undefined);
 }
 
+@Component({
+  standalone: true,
+  imports: [Sh3AppShellComponent],
+  template: `<sh3-app-shell
+    [headerLayout]="layout()"
+    [appearance]="appearance()"
+  />`,
+})
+class LayoutHostComponent {
+  readonly layout = signal<"inset" | "full">("inset");
+  readonly appearance = signal<"flat" | "floating">("flat");
+}
+
 function setup() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
@@ -76,5 +89,44 @@ describe("Sh3AppShellComponent", () => {
     fixture.componentInstance.rail.set(undefined);
     fixture.detectChanges();
     expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("");
+  });
+
+  it("is flat + inset by default (no layout classes)", () => {
+    const host = setup();
+    const shell = host.querySelector("sh3-app-shell") ?? host;
+    expect(shell.classList.contains("header-full")).toBe(false);
+    expect(shell.classList.contains("floating")).toBe(false);
+  });
+
+  it('toggles the header-full class from headerLayout="full"', () => {
+    const fixture = TestBed.createComponent(LayoutHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    fixture.componentInstance.layout.set("full");
+    fixture.detectChanges();
+    expect(shell.classList.contains("header-full")).toBe(true);
+
+    fixture.componentInstance.layout.set("inset");
+    fixture.detectChanges();
+    expect(shell.classList.contains("header-full")).toBe(false);
+  });
+
+  it('toggles the floating class from appearance="floating"', () => {
+    const fixture = TestBed.createComponent(LayoutHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    fixture.componentInstance.appearance.set("floating");
+    fixture.detectChanges();
+    expect(shell.classList.contains("floating")).toBe(true);
+
+    fixture.componentInstance.appearance.set("flat");
+    fixture.detectChanges();
+    expect(shell.classList.contains("floating")).toBe(false);
   });
 });
