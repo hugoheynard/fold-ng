@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, afterNextRender, signal } from "@angular/core";
 import {
   Sh3BadgeComponent,
   Sh3CardComponent,
@@ -11,6 +11,7 @@ import {
   Sh3StatusBadgeComponent,
 } from "../src/index";
 import { TokenPanelComponent } from "./token-panel.component";
+import { TocPanelComponent, type TocItem } from "./toc-panel.component";
 
 /**
  * The gallery: every `@sh3pherd/ui` component with its variant matrix + a
@@ -30,6 +31,7 @@ import { TokenPanelComponent } from "./token-panel.component";
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
     TokenPanelComponent,
+    TocPanelComponent,
   ],
   host: { "[attr.data-theme]": "theme() === 'light' ? 'light' : null" },
   templateUrl: "./gallery.component.html",
@@ -37,6 +39,42 @@ import { TokenPanelComponent } from "./token-panel.component";
 })
 export class GalleryComponent {
   protected readonly theme = signal<"dark" | "light">("dark");
+
+  /** The table of contents — ids match the `<section>` ids in the template. */
+  protected readonly toc: readonly TocItem[] = [
+    { id: "element-title", label: "element-title" },
+    { id: "context-card", label: "context-card" },
+    { id: "page-section", label: "page-section" },
+    { id: "hero", label: "hero" },
+    { id: "card", label: "card" },
+    { id: "link", label: "link" },
+    { id: "badges", label: "badge · status · icon" },
+  ];
+  /** The section currently in view — drives the TOC highlight (scroll-spy). */
+  protected readonly activeSection = signal<string>("");
+
+  constructor() {
+    afterNextRender(() => this.observeSections());
+  }
+
+  private observeSections(): void {
+    const sections = this.toc
+      .map((item) => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            this.activeSection.set(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -70% 0px", threshold: 0 },
+    );
+    for (const el of sections) {
+      observer.observe(el);
+    }
+  }
 
   // `as const` so each loop variable keeps its literal union type — required
   // for strictTemplates to accept it as a component input.

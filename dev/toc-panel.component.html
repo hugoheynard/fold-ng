@@ -1,0 +1,13 @@
+<div class="toc-title">Sections</div>
+<nav class="toc-nav">
+  @for (item of items(); track item.id) {
+    <button
+      type="button"
+      class="toc-link"
+      [class.is-active]="item.id === activeId()"
+      (click)="go(item.id)"
+    >
+      {{ item.label }}
+    </button>
+  }
+</nav>

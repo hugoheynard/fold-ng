@@ -2,7 +2,8 @@
   display: block;
   min-height: 100vh;
   padding: 32px;
-  /* Room for the fixed token panel (300px) on the right. */
+  /* Room for the fixed panels: TOC (208px) left, token editor (300px) right. */
+  padding-left: 240px;
   padding-right: 344px;
   background: var(--sh3-color-bg-page);
   color: var(--sh3-color-text);
@@ -46,6 +47,8 @@
 
 .gal-sec {
   margin-bottom: 44px;
+  /* Breathing room when the TOC scrolls a section to the top. */
+  scroll-margin-top: 24px;
 }
 .gal-sec h2 {
   margin: 0 0 16px;

@@ -1,3 +1,4 @@
+<app-toc-panel [items]="toc" [activeId]="activeSection()" />
 <app-token-panel />
 
 <header class="gal-top">
@@ -12,7 +13,7 @@
 </header>
 
 <!-- ── sh3-element-title ─────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="element-title" class="gal-sec">
   <h2>sh3-element-title</h2>
   <div class="gal-stack">
     <div class="gal-cell">
@@ -53,7 +54,7 @@
 </section>
 
 <!-- ── sh3-context-card ──────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="context-card" class="gal-sec">
   <h2>sh3-context-card</h2>
   <div class="gal-row gal-row--wide">
     @for (tone of iconTones; track tone) {
@@ -78,7 +79,7 @@
 </section>
 
 <!-- ── sh3-page-section ──────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="page-section" class="gal-sec">
   <h2>sh3-page-section — surface × divider</h2>
   <div class="gal-row gal-row--wide">
     <sh3-page-section surface="transparent" title="Transparent">
@@ -103,7 +104,7 @@
 </section>
 
 <!-- ── sh3-hero ──────────────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="hero" class="gal-sec">
   <h2>sh3-hero — surface × accent</h2>
   @for (surface of heroSurfaces; track surface) {
     <div class="gal-row gal-row--wide">
@@ -129,7 +130,7 @@
 </section>
 
 <!-- ── sh3-card ──────────────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="card" class="gal-sec">
   <h2>sh3-card</h2>
   <div class="gal-row gal-row--wide">
     <sh3-card>card (default)</sh3-card>
@@ -139,7 +140,7 @@
 </section>
 
 <!-- ── sh3-link ──────────────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="link" class="gal-sec">
   <h2>sh3-link</h2>
   <div class="gal-row">
     <sh3-link icon="company" trailingIcon="chevron-right"
@@ -152,7 +153,7 @@
 </section>
 
 <!-- ── badges + icons ────────────────────────────────────────── -->
-<section class="gal-sec">
+<section id="badges" class="gal-sec">
   <h2>sh3-badge · sh3-status-badge · sh3-icon</h2>
   <div class="gal-row">
     @for (v of badgeVariants; track v) {
