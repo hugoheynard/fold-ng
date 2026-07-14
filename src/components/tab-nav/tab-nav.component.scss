@@ -1,0 +1,196 @@
+:host {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+/* flex: 1 so the bar fills the host box in both axes — the surface
+       background then covers the whole container, not just the tab content
+       (e.g. a full-height vertical sidebar). */
+.tab-nav {
+  flex: 1;
+  display: flex;
+  max-width: 100%;
+  gap: 2px;
+  user-select: none;
+}
+
+/* Filled bar — the tab-nav carries its own surface instead of blending
+       with the app background. Uses the tertiary rail role: a tab sidebar is,
+       semantically, the third navigation rail (app menu · workspace · section). */
+.bg-surface {
+  background: var(--sh3-color-bg-rail-tertiary);
+  padding: 4px 8px 0;
+}
+.bg-surface.dir-vertical {
+  padding: 12px 8px;
+}
+.tab-nav-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 4px;
+  background: none;
+  border: none;
+  color: var(--sh3-color-text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    color 0.1s ease,
+    background 0.1s ease,
+    border-color 0.1s ease;
+  white-space: nowrap;
+}
+.tab-nav-item:hover {
+  color: var(--sh3-color-text-secondary);
+}
+
+/* Comfortable — a prominent, page-level bar (vs the compact default). */
+.size-comfortable .tab-nav-item {
+  flex: 0 1 auto;
+  gap: 7px;
+  padding: 11px 16px;
+  font-size: var(--sh3-text-sm);
+}
+
+/* Underline */
+.style-underline {
+  border-bottom: 1px solid var(--sh3-color-border);
+}
+.style-underline .tab-nav-item {
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.style-underline .tab-nav-item.is-active {
+  color: var(--sh3-color-text);
+  border-bottom-color: var(--sh3-color-primary);
+}
+
+/* Fill */
+.style-fill .tab-nav-item {
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid transparent;
+}
+.style-fill .tab-nav-item.is-active {
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+  font-weight: 600;
+}
+.style-fill .tab-nav-item:hover:not(.is-active) {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-text);
+}
+
+/* Vertical */
+.dir-vertical {
+  flex-direction: column;
+}
+.dir-vertical .tab-nav-item {
+  flex: none;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 9px 12px;
+  gap: 10px;
+  border-radius: var(--sh3-radius-sm);
+  font-size: var(--sh3-text-sm);
+  font-weight: 500;
+}
+.dir-vertical.style-underline {
+  border-bottom: none;
+  border-right: 1px solid var(--sh3-color-border);
+}
+.dir-vertical.style-underline .tab-nav-item {
+  border-bottom: none;
+  border-left: 2px solid transparent;
+  margin-bottom: 0;
+  margin-right: -1px;
+}
+.dir-vertical.style-underline .tab-nav-item.is-active {
+  border-left-color: var(--sh3-color-primary);
+}
+.dir-vertical.style-fill .tab-nav-item.is-active {
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+  font-weight: 600;
+}
+
+/* Vertical collapses to a horizontal icon-accordion on mobile. */
+@media (max-width: 768px) {
+  .dir-vertical {
+    flex-direction: row;
+    align-items: center;
+  }
+  .dir-vertical .tab-nav-item {
+    flex: 0 0 auto;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    gap: 0;
+    font-size: var(--sh3-text-xs);
+    font-weight: 600;
+  }
+  .dir-vertical .tab-nav-item .tab-nav-label {
+    display: none;
+  }
+  .dir-vertical .tab-nav-item.is-active {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 6px;
+    padding: 8px 12px;
+  }
+  .dir-vertical .tab-nav-item.is-active .tab-nav-label {
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dir-vertical .tab-nav-badge {
+    display: none;
+  }
+  .dir-vertical.style-underline {
+    border-right: none;
+    border-bottom: 1px solid var(--sh3-color-border);
+  }
+  .dir-vertical.style-underline .tab-nav-item {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    margin-right: 0;
+    margin-bottom: -1px;
+  }
+  .dir-vertical.style-underline .tab-nav-item.is-active {
+    border-bottom-color: var(--sh3-color-primary);
+  }
+  .dir-vertical.style-fill {
+    border-right: none;
+  }
+}
+
+.tab-nav-icon {
+  flex-shrink: 0;
+}
+
+/* Count pill — dim on idle, accent-tinted on the active tab. */
+.tab-nav-badge {
+  min-width: 16px;
+  padding: 0 6px;
+  border-radius: var(--sh3-radius-pill);
+  background: var(--sh3-color-surface-subtle);
+  color: var(--sh3-color-text-faded);
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.tab-nav-item.is-active .tab-nav-badge {
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
+.size-comfortable .tab-nav-badge {
+  min-width: 20px;
+  padding: 0 7px;
+  font-size: 11px;
+  font-weight: 600;
+}

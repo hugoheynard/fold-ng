@@ -1,0 +1,22 @@
+<div
+  class="choice-row"
+  role="group"
+  [class.segmented]="layout() === 'segmented'"
+  [class.chips]="layout() === 'chips'"
+  [attr.aria-label]="ariaLabel() || null"
+>
+  @for (opt of options(); track opt.key) {
+    <button
+      type="button"
+      class="choice"
+      [class.is-active]="activeKey() === opt.key"
+      [attr.aria-pressed]="activeKey() === opt.key"
+      (click)="selected.emit(opt.key)"
+    >
+      <span>{{ opt.label }}</span>
+      @if (opt.count !== undefined) {
+        <span class="choice-count">{{ opt.count }}</span>
+      }
+    </button>
+  }
+</div>

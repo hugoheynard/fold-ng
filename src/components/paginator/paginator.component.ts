@@ -30,78 +30,8 @@ export type Sh3PageItem = { kind: "page"; page: number } | { kind: "gap" };
   selector: "sh3-paginator",
   standalone: true,
   imports: [Sh3IconComponent],
-  template: `
-    @let options = pageSizeOptions();
-
-    <div class="paginator-left">
-      @if (options.length > 0) {
-        <label class="page-size">
-          <select
-            #pageSizeSelect
-            class="page-size__select"
-            [value]="pageSize()"
-            [disabled]="disabled()"
-            (change)="onPageSizeChange(pageSizeSelect.value)"
-            aria-label="Éléments par page"
-          >
-            @for (opt of options; track opt) {
-              <option [value]="opt">{{ opt }}</option>
-            }
-          </select>
-          <span class="page-size__label">par page</span>
-        </label>
-      }
-
-      @if (totalItems() > 0) {
-        <span class="range"
-          >{{ rangeStart() }}–{{ rangeEnd() }} sur {{ totalItems() }}</span
-        >
-      } @else {
-        <span class="range range--empty">Aucun élément</span>
-      }
-    </div>
-
-    <nav class="pages" aria-label="Pagination">
-      <button
-        type="button"
-        class="nav-btn"
-        [disabled]="!canGoPrev()"
-        (click)="prev()"
-        aria-label="Page précédente"
-      >
-        <sh3-icon name="chevron-left" [size]="15" />
-      </button>
-
-      @for (item of pageItems(); track $index) {
-        @if (item.kind === "page") {
-          <button
-            type="button"
-            class="page-btn"
-            [class.is-active]="item.page === currentPage()"
-            [attr.aria-current]="item.page === currentPage() ? 'page' : null"
-            [attr.aria-label]="'Page ' + item.page"
-            [disabled]="disabled()"
-            (click)="goToPage(item.page)"
-          >
-            {{ item.page }}
-          </button>
-        } @else {
-          <span class="gap" aria-hidden="true">…</span>
-        }
-      }
-
-      <button
-        type="button"
-        class="nav-btn"
-        [disabled]="!canGoNext()"
-        (click)="next()"
-        aria-label="Page suivante"
-      >
-        <sh3-icon name="chevron-right" [size]="15" />
-      </button>
-    </nav>
-  `,
-  styleUrl: "./paginator.component.css",
+  templateUrl: "./paginator.component.html",
+  styleUrl: "./paginator.component.scss",
 })
 export class Sh3PaginatorComponent {
   /** 1-indexed current page. */

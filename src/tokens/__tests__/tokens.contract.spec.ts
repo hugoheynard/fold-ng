@@ -139,11 +139,14 @@ function walk(dir: string, exts: string[]): string[] {
   return out;
 }
 
-/** The CSS a component ships: every `styles: \`…\`` block + its `.css` files. */
+/** The CSS a component ships: its external `.scss`/`.css` files plus any inline
+ *  `styles: \`…\`` block still left in a `.component.ts`. Components externalise
+ *  their styles to a sibling `.scss` (Angular convention), but the inline scan
+ *  stays so the guard never goes blind if one is re-inlined. */
 function componentStyles(): { file: string; css: string }[] {
   const srcDir = join(tokensDir, "..");
   const out: { file: string; css: string }[] = [];
-  for (const file of walk(srcDir, [".css"])) {
+  for (const file of walk(srcDir, [".css", ".scss"])) {
     if (file.includes(`${"tokens"}/`) || file.endsWith("index.css")) {
       continue; // token layer is the ONE place colours live
     }

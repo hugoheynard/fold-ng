@@ -28,44 +28,8 @@ import type { Sh3IconName } from "../icon/icon.registry";
   selector: "sh3-context-card",
   standalone: true,
   imports: [Sh3CardComponent, Sh3ElementTitleComponent],
-  template: `<sh3-card padding="none">
-    <div class="cc-head">
-      <sh3-element-title
-        variant="title"
-        [level]="3"
-        [icon]="icon()"
-        [iconTone]="iconTone()"
-        [title]="title()"
-        [subtitle]="subtitle()"
-      />
-    </div>
-    <div class="cc-body"><ng-content /></div>
-    <div class="cc-foot"><ng-content select="[footer]" /></div>
-  </sh3-card>`,
-  styles: `
-    :host {
-      display: block;
-    }
-    /* Header — the whole icon + title + subtitle block is sh3-element-title. */
-    .cc-head {
-      padding: 16px;
-      border-bottom: 1px solid var(--sh3-color-border-subtle);
-    }
-    /* Body — the projected content. */
-    .cc-body {
-      padding: 2px 16px;
-    }
-    /* Footer — a centred action, divider above; gone when empty. */
-    .cc-foot {
-      display: flex;
-      justify-content: center;
-      padding: 14px 16px;
-      border-top: 1px solid var(--sh3-color-border-subtle);
-    }
-    .cc-foot:empty {
-      display: none;
-    }
-  `,
+  templateUrl: "./context-card.component.html",
+  styleUrl: "./context-card.component.scss",
 })
 export class Sh3ContextCardComponent {
   /** Header icon glyph. */

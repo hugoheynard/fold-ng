@@ -55,79 +55,8 @@ function readableInk(fill: string): string {
 @Component({
   selector: "sh3-avatar",
   standalone: true,
-  template: `@if (imageUrl()) {
-      <div
-        class="avatar has-image"
-        [class.size-sm]="size() === 'sm'"
-        [class.size-md]="size() === 'md'"
-        [class.size-lg]="size() === 'lg'"
-        [class.shape-square]="square()"
-        [attr.title]="name()"
-      >
-        <img [src]="imageUrl()" [alt]="name()" class="avatar-img" />
-      </div>
-    } @else {
-      <div
-        class="avatar"
-        [class.size-sm]="size() === 'sm'"
-        [class.size-md]="size() === 'md'"
-        [class.size-lg]="size() === 'lg'"
-        [class.variant-ghost]="variant() === 'ghost'"
-        [class.shape-square]="square()"
-        [style.background]="variant() === 'solid' ? color() : ''"
-        [style.color]="variant() === 'solid' ? onColor() : ''"
-        [attr.title]="name()"
-      >
-        {{ initials() }}
-      </div>
-    }`,
-  styles: `
-    .avatar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      user-select: none;
-      border-radius: var(--sh3-radius-round);
-    }
-    .avatar.size-sm {
-      width: 20px;
-      height: 20px;
-      font-size: 7px;
-    }
-    .avatar.size-md {
-      width: 32px;
-      height: 32px;
-      font-size: 11px;
-    }
-    .avatar.size-lg {
-      width: 44px;
-      height: 44px;
-      font-size: 15px;
-    }
-    /* Guests — dashed outline instead of a solid fill. */
-    .avatar.variant-ghost {
-      background: var(--sh3-color-surface-raised);
-      color: var(--sh3-color-text-secondary);
-      border: 1px dashed var(--sh3-color-border);
-    }
-    /* Orgs — square with a small radius. */
-    .avatar.shape-square {
-      border-radius: var(--sh3-radius-sm);
-    }
-    .avatar.has-image {
-      overflow: hidden;
-      background: var(--sh3-color-surface-raised);
-      border: 1px solid var(--sh3-color-border);
-    }
-    .avatar-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  `,
+  templateUrl: "./avatar.component.html",
+  styleUrl: "./avatar.component.scss",
 })
 export class Sh3AvatarComponent {
   private readonly palette = inject(Sh3PaletteRegistry);

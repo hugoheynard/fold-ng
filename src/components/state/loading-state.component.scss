@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.loading {
+  color: var(--sh3-color-text-muted);
+  font-size: var(--sh3-text-sm);
+}

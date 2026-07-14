@@ -1,0 +1,75 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+.et-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.et-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.et-label {
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sh3-color-text-muted);
+}
+:host(.v-bar) .et-label {
+  font-size: 11px;
+  color: var(--sh3-color-text-secondary);
+}
+:host(.v-title) .et-label {
+  font-size: var(--sh3-text-md);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--sh3-color-text-primary);
+}
+.et-sub {
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+}
+.et-action {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.et-action:empty {
+  display: none;
+}
+/* Icon — a plain leading glyph; the title variant lifts it into a tile. */
+.et-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--sh3-color-primary);
+}
+:host(.v-title) .et-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--sh3-radius-md);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-raised);
+}
+/* Tile tone (title variant): primary = filled brand tile; faded = dim. */
+:host(.v-title.it-primary) .et-icon {
+  background: var(--sh3-color-primary);
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-on-primary);
+}
+:host(.v-title.it-faded) .et-icon {
+  background: var(--sh3-color-surface-sunken);
+  border-color: var(--sh3-color-border-subtle);
+  color: var(--sh3-color-text-muted);
+}

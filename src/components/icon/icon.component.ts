@@ -34,49 +34,8 @@ const SIZE_PX: Record<Exclude<Sh3IconSize, number>, string> = {
 @Component({
   selector: "sh3-icon",
   standalone: true,
-  template: `<span
-    class="icon-root"
-    role="img"
-    [attr.aria-label]="title() || null"
-    [attr.aria-hidden]="title() ? null : 'true'"
-    [style.--icon-size]="sizeVar()"
-    [innerHTML]="svg()"
-  ></span>`,
-  styles: [
-    `
-      :host {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 0;
-        color: inherit;
-      }
-      .icon-root {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: var(--icon-size, 20px);
-        height: var(--icon-size, 20px);
-      }
-      /* The injected <svg> gets block behaviour + fills the container. */
-      .icon-root ::ng-deep svg {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
-      /* Filled SVGs paint with the host colour unless they opt out via
-         fill="none" (outlined icons). The :not() guard is what preserves
-         outlined rendering — setting fill here unconditionally would turn
-         outlined icons into solid blobs. */
-      .icon-root ::ng-deep svg:not([fill="none"]) {
-        fill: currentColor;
-      }
-      /* Outlined SVGs stroke with currentColor; normalise any child stroke. */
-      .icon-root ::ng-deep svg [stroke]:not([stroke="none"]) {
-        stroke: currentColor;
-      }
-    `,
-  ],
+  templateUrl: "./icon.component.html",
+  styleUrl: "./icon.component.scss",
 })
 export class Sh3IconComponent {
   /** Icon name — a built-in (autocompleted) or a consumer-registered string. */

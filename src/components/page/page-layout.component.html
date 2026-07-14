@@ -1,0 +1,14 @@
+@if (title() || description()) {
+  <header class="page-head">
+    <div class="page-head-text">
+      @if (title()) {
+        <h1 class="page-title">{{ title() }}</h1>
+      }
+      @if (description()) {
+        <p class="page-desc">{{ description() }}</p>
+      }
+    </div>
+    <div class="page-actions"><ng-content select="[pageActions]" /></div>
+  </header>
+}
+<div class="page-body"><ng-content /></div>

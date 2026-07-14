@@ -1,0 +1,23 @@
+<ng-template #inner>
+  @if (icon(); as i) {
+    <sh3-icon [name]="i" size="sm" />
+  }
+  <span class="lnk-label"><ng-content /></span>
+  @if (trailingIcon(); as t) {
+    <sh3-icon [name]="t" size="sm" />
+  }
+</ng-template>
+@if (href(); as h) {
+  <a class="lnk" [href]="h">
+    <ng-container [ngTemplateOutlet]="inner" />
+  </a>
+} @else {
+  <button
+    type="button"
+    class="lnk"
+    [disabled]="disabled()"
+    (click)="clicked.emit()"
+  >
+    <ng-container [ngTemplateOutlet]="inner" />
+  </button>
+}

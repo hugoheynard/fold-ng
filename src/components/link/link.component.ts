@@ -28,69 +28,8 @@ import type { Sh3IconName } from "../icon/icon.registry";
   standalone: true,
   imports: [NgTemplateOutlet, Sh3IconComponent],
   host: { "[class.tone-muted]": "tone() === 'muted'" },
-  template: `<ng-template #inner>
-      @if (icon(); as i) {
-        <sh3-icon [name]="i" size="sm" />
-      }
-      <span class="lnk-label"><ng-content /></span>
-      @if (trailingIcon(); as t) {
-        <sh3-icon [name]="t" size="sm" />
-      }
-    </ng-template>
-    @if (href(); as h) {
-      <a class="lnk" [href]="h">
-        <ng-container [ngTemplateOutlet]="inner" />
-      </a>
-    } @else {
-      <button
-        type="button"
-        class="lnk"
-        [disabled]="disabled()"
-        (click)="clicked.emit()"
-      >
-        <ng-container [ngTemplateOutlet]="inner" />
-      </button>
-    }`,
-  styles: `
-    :host {
-      display: inline-flex;
-      min-width: 0;
-    }
-    .lnk {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-      padding: 0;
-      border: 0;
-      background: none;
-      font-family: inherit;
-      font-size: var(--sh3-text-xs);
-      font-weight: 600;
-      color: var(--sh3-color-primary);
-      text-decoration: none;
-      cursor: pointer;
-      transition: color var(--sh3-motion-fast);
-    }
-    :host(.tone-muted) .lnk {
-      color: var(--sh3-color-text-secondary);
-    }
-    .lnk:hover .lnk-label {
-      text-decoration: underline;
-    }
-    .lnk:disabled {
-      color: var(--sh3-color-text-muted);
-      cursor: not-allowed;
-    }
-    .lnk:disabled .lnk-label {
-      text-decoration: none;
-    }
-    .lnk-label {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  `,
+  templateUrl: "./link.component.html",
+  styleUrl: "./link.component.scss",
 })
 export class Sh3LinkComponent {
   /** Leading icon glyph. */

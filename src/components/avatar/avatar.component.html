@@ -1,0 +1,26 @@
+@if (imageUrl()) {
+  <div
+    class="avatar has-image"
+    [class.size-sm]="size() === 'sm'"
+    [class.size-md]="size() === 'md'"
+    [class.size-lg]="size() === 'lg'"
+    [class.shape-square]="square()"
+    [attr.title]="name()"
+  >
+    <img [src]="imageUrl()" [alt]="name()" class="avatar-img" />
+  </div>
+} @else {
+  <div
+    class="avatar"
+    [class.size-sm]="size() === 'sm'"
+    [class.size-md]="size() === 'md'"
+    [class.size-lg]="size() === 'lg'"
+    [class.variant-ghost]="variant() === 'ghost'"
+    [class.shape-square]="square()"
+    [style.background]="variant() === 'solid' ? color() : ''"
+    [style.color]="variant() === 'solid' ? onColor() : ''"
+    [attr.title]="name()"
+  >
+    {{ initials() }}
+  </div>
+}

@@ -15,51 +15,10 @@ import { Component, input } from "@angular/core";
 @Component({
   selector: "sh3-badge",
   standalone: true,
-  template: `{{ content() }}`,
+  templateUrl: "./badge.component.html",
   // Inline so the component is fully self-contained — no external asset to
   // resolve or ship. Colours/sizes come entirely from @sh3pherd/ui tokens.
-  styles: `
-    :host {
-      display: inline-flex;
-      align-items: center;
-      user-select: none;
-      font-size: var(--sh3-text-xs);
-      font-weight: 500;
-      white-space: nowrap;
-      padding: 1px 7px;
-    }
-    :host(.pill) {
-      border-radius: var(--sh3-radius-pill);
-    }
-    :host(.square) {
-      border-radius: var(--sh3-radius-sm);
-    }
-    :host(.accent) {
-      background: var(--sh3-color-primary-surface);
-      border: 1px solid var(--sh3-color-primary-border);
-      color: var(--sh3-color-primary-text);
-    }
-    :host(.info) {
-      background: var(--sh3-color-info-surface);
-      border: 1px solid var(--sh3-color-info-border);
-      color: var(--sh3-color-info-text);
-    }
-    :host(.warning) {
-      background: var(--sh3-color-warning-surface);
-      border: 1px solid var(--sh3-color-warning-border);
-      color: var(--sh3-color-warning-text);
-    }
-    :host(.alert) {
-      background: var(--sh3-color-alert-surface);
-      border: 1px solid var(--sh3-color-alert-border);
-      color: var(--sh3-color-alert-text);
-    }
-    :host(.success) {
-      background: var(--sh3-color-success-surface);
-      border: 1px solid var(--sh3-color-success-border);
-      color: var(--sh3-color-success-text);
-    }
-  `,
+  styleUrl: "./badge.component.scss",
   host: {
     "[class]": 'variant() + " " + radius()',
   },

@@ -14,22 +14,9 @@ import { Component, input } from "@angular/core";
 @Component({
   selector: "sh3-loading",
   standalone: true,
-  template: `<div class="loading">
-    <span>{{ message() }}</span>
-  </div>`,
+  templateUrl: "./loading-state.component.html",
   // Inline + tokens only, so the component is fully self-contained.
-  styles: `
-    :host {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-    }
-    .loading {
-      color: var(--sh3-color-text-muted);
-      font-size: var(--sh3-text-sm);
-    }
-  `,
+  styleUrl: "./loading-state.component.scss",
 })
 export class Sh3LoadingStateComponent {
   /** Text to display. Defaults to "Loading...". */

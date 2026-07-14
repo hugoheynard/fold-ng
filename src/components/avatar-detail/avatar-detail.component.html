@@ -1,0 +1,13 @@
+<sh3-avatar
+  [name]="resolvedAvatarName()"
+  [size]="size()"
+  [variant]="variant()"
+  [square]="square()"
+  [imageUrl]="imageUrl()"
+/>
+<span class="lines">
+  <span class="primary">{{ primary() }}</span>
+  @if (hasSecondary()) {
+    <span class="secondary">{{ secondary() }}</span>
+  }
+</span>

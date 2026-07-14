@@ -1,0 +1,14 @@
+@if (icon(); as ic) {
+  <span class="et-icon"><sh3-icon [name]="ic" [size]="iconSize()" /></span>
+}
+<span class="et-main">
+  <span class="et-row">
+    <span class="et-label" role="heading" [attr.aria-level]="level()">{{
+      title()
+    }}</span>
+    <span class="et-action"><ng-content select="[titleAction]" /></span>
+  </span>
+  @if (subtitle(); as s) {
+    <span class="et-sub">{{ s }}</span>
+  }
+</span>

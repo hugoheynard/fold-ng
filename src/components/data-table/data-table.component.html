@@ -1,0 +1,81 @@
+<div
+  class="sh3dt-wrap"
+  [class.sh3dt--zebra]="zebra()"
+  [class.sh3dt--hover]="hover()"
+  [class.sh3dt--cards]="mobileCards()"
+>
+  <table class="sh3dt">
+    <thead>
+      <tr>
+        @for (col of columns(); track col.key) {
+          <th
+            scope="col"
+            [style.width]="col.width || null"
+            [attr.aria-sort]="col.sortable ? ariaSort(col.key) : null"
+          >
+            @if (col.sortable) {
+              <button
+                type="button"
+                class="sh3dt-th-sort"
+                [class.right]="col.align === 'right'"
+                (click)="sortChange.emit(col.key)"
+              >
+                <span>{{ col.label }}</span>
+                <span class="sh3dt-arrow" [class.on]="isSorted(col.key)">{{
+                  sortArrow(col.key)
+                }}</span>
+              </button>
+            } @else {
+              <span
+                class="sh3dt-th-plain"
+                [class.right]="col.align === 'right'"
+                >{{ col.label }}</span
+              >
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track keyOf(row, $index); let i = $index) {
+        @let tone = toneOf(row);
+        <tr
+          class="sh3dt-row"
+          [class.tone-warning]="tone === 'warning'"
+          [class.tone-alert]="tone === 'alert'"
+          [class.tone-success]="tone === 'success'"
+          [class.clickable]="clickable()"
+          [attr.tabindex]="clickable() ? 0 : null"
+          (click)="onRowActivate(row)"
+          (keydown.enter)="onRowActivate(row)"
+        >
+          @for (col of columns(); track col.key) {
+            <td
+              class="sh3dt-cell"
+              [class.is-primary]="col.key === primaryKey()"
+              [class.right]="col.align === 'right'"
+              [ngClass]="col.cellClass || ''"
+              [attr.data-label]="col.label"
+            >
+              @if (cellTemplate(col.key); as tpl) {
+                <ng-container
+                  [ngTemplateOutlet]="tpl"
+                  [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                />
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (rows().length === 0 && empty(); as e) {
+    <div class="sh3dt-empty">
+      <div class="sh3dt-empty-t">{{ e.title }}</div>
+      @if (e.subtitle) {
+        <div class="sh3dt-empty-s">{{ e.subtitle }}</div>
+      }
+    </div>
+  }
+</div>

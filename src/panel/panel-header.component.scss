@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  flex: none;
+}
+.ph {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sh3-space-md);
+  padding: var(--sh3-space-lg) var(--sh3-space-lg) var(--sh3-space-md);
+  border-bottom: 1px solid var(--sh3-color-glass-border);
+}
+/* Title-only header → vertically centre the title with the close button.
+         With a subtitle/description the row stays top-aligned. */
+.ph:not(:has(.ph__subtitle)):not(:has(.ph__desc:not(:empty))) {
+  align-items: center;
+}
+.ph__titles {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.ph__titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sh3-space-xs);
+  min-width: 0;
+}
+.ph__icon {
+  flex: none;
+  color: var(--sh3-color-text-secondary);
+}
+.ph__title {
+  margin: 0;
+  font-size: var(--sh3-text-lg);
+  font-weight: 600;
+  color: var(--sh3-color-text);
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ph__subtitle {
+  margin: 0;
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-faded);
+  font-variant-numeric: tabular-nums;
+}
+.ph__desc {
+  margin-top: 6px;
+  font-size: var(--sh3-text-sm);
+  color: var(--sh3-color-text-secondary);
+  line-height: 1.5;
+}
+/* no projected content → collapse the slot so it costs no space */
+.ph__desc:empty {
+  display: none;
+}
+.ph__actions {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sh3-space-xs);
+}
+.ph__close {
+  all: unset;
+  box-sizing: border-box;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--sh3-radius-xs);
+  color: var(--sh3-color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--sh3-motion-fast),
+    color var(--sh3-motion-fast);
+}
+.ph__close:hover {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-text);
+}
+
+/* ── Eyebrow variant: compact icon + uppercase category label ── */
+.ph--eyebrow {
+  align-items: center;
+  padding: var(--sh3-space-md) var(--sh3-space-lg);
+}
+.ph--eyebrow .ph__icon {
+  opacity: 0.75;
+}
+.ph--eyebrow .ph__title {
+  font-size: var(--sh3-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sh3-color-text-muted);
+}

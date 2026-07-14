@@ -1,0 +1,38 @@
+:host {
+  display: inline-flex;
+  min-width: 0;
+}
+.lnk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: var(--sh3-text-xs);
+  font-weight: 600;
+  color: var(--sh3-color-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--sh3-motion-fast);
+}
+:host(.tone-muted) .lnk {
+  color: var(--sh3-color-text-secondary);
+}
+.lnk:hover .lnk-label {
+  text-decoration: underline;
+}
+.lnk:disabled {
+  color: var(--sh3-color-text-muted);
+  cursor: not-allowed;
+}
+.lnk:disabled .lnk-label {
+  text-decoration: none;
+}
+.lnk-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

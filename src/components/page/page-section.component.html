@@ -1,0 +1,13 @@
+@if (title() || description()) {
+  <div class="section-head">
+    @if (title(); as t) {
+      <sh3-element-title [variant]="divider() ? 'bar' : 'eyebrow'" [title]="t">
+        <ng-content select="[sectionActions]" titleAction />
+      </sh3-element-title>
+    }
+    @if (description()) {
+      <p class="section-desc">{{ description() }}</p>
+    }
+  </div>
+}
+<div class="section-body"><ng-content /></div>

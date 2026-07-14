@@ -28,47 +28,8 @@ import { Sh3AvatarComponent } from "../avatar/avatar.component";
   selector: "sh3-avatar-detail",
   standalone: true,
   imports: [Sh3AvatarComponent],
-  template: `<sh3-avatar
-      [name]="resolvedAvatarName()"
-      [size]="size()"
-      [variant]="variant()"
-      [square]="square()"
-      [imageUrl]="imageUrl()"
-    />
-    <span class="lines">
-      <span class="primary">{{ primary() }}</span>
-      @if (hasSecondary()) {
-        <span class="secondary">{{ secondary() }}</span>
-      }
-    </span>`,
-  styles: `
-    :host {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-    .lines {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 0;
-    }
-    .primary {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-weight: 500;
-      color: var(--sh3-color-text);
-    }
-    .secondary {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: var(--sh3-text-sm);
-      color: var(--sh3-color-text-faded);
-    }
-  `,
+  templateUrl: "./avatar-detail.component.html",
+  styleUrl: "./avatar-detail.component.scss",
 })
 export class Sh3AvatarDetailComponent {
   readonly primary = input.required<string>();

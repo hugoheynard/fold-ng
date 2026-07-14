@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+/* Header — the whole icon + title + subtitle block is sh3-element-title. */
+.cc-head {
+  padding: 16px;
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+}
+/* Body — the projected content. */
+.cc-body {
+  padding: 2px 16px;
+}
+/* Footer — a centred action, divider above; gone when empty. */
+.cc-foot {
+  display: flex;
+  justify-content: center;
+  padding: 14px 16px;
+  border-top: 1px solid var(--sh3-color-border-subtle);
+}
+.cc-foot:empty {
+  display: none;
+}

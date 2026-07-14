@@ -1,0 +1,12 @@
+<div class="empty">
+  <div class="empty-icon">
+    <ng-content select="[empty-icon]" />
+  </div>
+  <p class="empty-title">{{ title() }}</p>
+  @if (subtitle()) {
+    <p class="empty-sub">{{ subtitle() }}</p>
+  }
+  <div class="empty-action">
+    <ng-content />
+  </div>
+</div>
