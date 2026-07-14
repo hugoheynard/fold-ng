@@ -9,11 +9,12 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * - default slot → the section content.
  * - `[sectionActions]` → the right-aligned header slot.
  *
- * Two orthogonal appearance knobs compose the surface treatment:
- * - `surface` — `none` (default, flat on the page) · `card` (raised card) ·
- *   `sunken` (deep container). A surface adds padding, a hairline and a radius.
- * - `divider` — when `true` (only meaningful with a surface), the title renders
- *   as a bordered header **bar** with the body padded below it, instead of the
+ * Orthogonal appearance knobs compose the look:
+ * - `tone` — `transparent` (default, flat on the page) · `raised` (card) ·
+ *   `sunken` (deep container). A non-transparent tone adds padding, a hairline
+ *   and a radius.
+ * - `divider` — when `true` (only meaningful with a tone), the title renders as
+ *   a bordered header **bar** with the body padded below it, instead of the
  *   title sitting inline above the body.
  * - `stack` — lay the body out as an evenly-spaced vertical stack (form fields).
  *
@@ -23,8 +24,8 @@ import { booleanAttribute, Component, input } from "@angular/core";
  *   …
  * </sh3-page-section>
  *
- * <sh3-page-section surface="card" title="Informations générales">…form…</sh3-page-section>
- * <sh3-page-section surface="sunken" divider title="Documents">
+ * <sh3-page-section tone="raised" title="Informations générales">…form…</sh3-page-section>
+ * <sh3-page-section tone="sunken" divider title="Documents">
  *   <button sectionActions>Ajouter</button>
  *   …dense panel…
  * </sh3-page-section>
@@ -36,8 +37,8 @@ import { booleanAttribute, Component, input } from "@angular/core";
   selector: "sh3-page-section",
   standalone: true,
   host: {
-    "[class.s-card]": "surface() === 'card'",
-    "[class.s-sunken]": "surface() === 'sunken'",
+    "[class.t-raised]": "tone() === 'raised'",
+    "[class.t-sunken]": "tone() === 'sunken'",
     "[class.divider]": "divider()",
     "[class.stack]": "stack()",
   },
@@ -109,17 +110,17 @@ import { booleanAttribute, Component, input } from "@angular/core";
       gap: 16px;
     }
 
-    /* ── Surface: a raised or sunken card wrapping the section ── */
-    :host(.s-card),
-    :host(.s-sunken) {
+    /* ── Tone: a raised or sunken card wrapping the section (transparent = none) ── */
+    :host(.t-raised),
+    :host(.t-sunken) {
       padding: 20px;
       border: 1px solid var(--sh3-color-border);
       border-radius: var(--sh3-radius-lg);
     }
-    :host(.s-card) {
+    :host(.t-raised) {
       background: var(--sh3-color-surface-card);
     }
-    :host(.s-sunken) {
+    :host(.t-sunken) {
       background: var(--sh3-color-surface-sunken);
       border-color: var(--sh3-color-border-subtle);
     }
@@ -154,8 +155,8 @@ export class Sh3PageSectionComponent {
   readonly title = input<string>();
   /** A one-line description under the title. */
   readonly description = input<string>();
-  /** Surface treatment — `none` (flat, default), `card` (raised), `sunken` (deep). */
-  readonly surface = input<"none" | "card" | "sunken">("none");
+  /** Elevation tone — `transparent` (flat, default), `raised` (card), `sunken` (deep). */
+  readonly tone = input<"transparent" | "raised" | "sunken">("transparent");
   /** With a surface, render the title as a bordered header bar above a padded body. */
   readonly divider = input(false, { transform: booleanAttribute });
   /** Lay the body out as an evenly-spaced vertical stack of form fields. */
