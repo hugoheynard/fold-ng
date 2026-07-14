@@ -38,80 +38,96 @@
       <!-- ── sh3-app-shell (this gallery is one) ───────────────── -->
       <section id="app-shell" class="gal-sec">
         <h2>sh3-app-shell</h2>
-        <div class="gal-card-narrow">
-          <sh3-context-card
-            icon="grid"
-            title="App Shell Settings"
-            subtitle="This gallery is itself an sh3-app-shell — tweak its structure live."
-          >
-            <div class="ss-group">
-              <span class="ss-label">appearance</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="shellAppearance() === 'flat'"
-                  (click)="setAppearance('flat')"
-                >
-                  flat
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="shellAppearance() === 'floating'"
-                  (click)="setAppearance('floating')"
-                >
-                  floating
-                </button>
+        <div class="shell-demo">
+          <div class="gal-card-narrow">
+            <sh3-context-card
+              icon="grid"
+              title="App Shell Settings"
+              subtitle="This gallery is itself an sh3-app-shell — tweak its structure live."
+            >
+              <div class="ss-group">
+                <span class="ss-label">appearance</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="shellAppearance() === 'flat'"
+                    (click)="setAppearance('flat')"
+                  >
+                    flat
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="shellAppearance() === 'floating'"
+                    (click)="setAppearance('floating')"
+                  >
+                    floating
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div class="ss-group">
-              <span class="ss-label">headerLayout</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="shellHeaderLayout() === 'inset'"
-                  (click)="setHeaderLayout('inset')"
-                >
-                  inset
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="shellHeaderLayout() === 'full'"
-                  (click)="setHeaderLayout('full')"
-                >
-                  full
-                </button>
+              <div class="ss-group">
+                <span class="ss-label">headerLayout</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="shellHeaderLayout() === 'inset'"
+                    (click)="setHeaderLayout('inset')"
+                  >
+                    inset
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="shellHeaderLayout() === 'full'"
+                    (click)="setHeaderLayout('full')"
+                  >
+                    full
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div class="ss-group">
-              <span class="ss-label"
-                >railWidth <b>{{ shellRailWidth() }}px</b></span
-              >
-              <input
-                #railInput
-                type="range"
-                min="48"
-                max="120"
-                [value]="shellRailWidth()"
-                (input)="setRailWidth(railInput.value)"
-              />
-            </div>
+              <div class="ss-group">
+                <span class="ss-label"
+                  >railWidth <b>{{ shellRailWidth() }}px</b></span
+                >
+                <input
+                  #railInput
+                  type="range"
+                  min="48"
+                  max="120"
+                  [value]="shellRailWidth()"
+                  (input)="setRailWidth(railInput.value)"
+                />
+              </div>
 
-            <div class="ss-group">
-              <span class="ss-label"
-                >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
-              >
-              <input
-                #headerInput
-                type="range"
-                min="44"
-                max="88"
-                [value]="shellHeaderHeight()"
-                (input)="setHeaderHeight(headerInput.value)"
-              />
+              <div class="ss-group">
+                <span class="ss-label"
+                  >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
+                >
+                <input
+                  #headerInput
+                  type="range"
+                  min="44"
+                  max="88"
+                  [value]="shellHeaderHeight()"
+                  (input)="setHeaderHeight(headerInput.value)"
+                />
+              </div>
+            </sh3-context-card>
+          </div>
+
+          <div class="code-block">
+            <div class="code-top">
+              <span class="code-lang">html</span>
+              <button type="button" class="code-copy" (click)="copyShellCode()">
+                <sh3-icon
+                  [name]="copied() ? 'check-circle' : 'copy'"
+                  size="sm"
+                />
+                {{ copied() ? "Copied" : "Copy" }}
+              </button>
             </div>
-          </sh3-context-card>
+            <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
+          </div>
         </div>
       </section>
 

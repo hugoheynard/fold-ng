@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   afterNextRender,
+  computed,
   inject,
   signal,
   viewChild,
@@ -29,10 +30,12 @@ import { InspectPanelComponent } from "./inspect-panel.component";
 import { closestSh3, inspect } from "./inspect";
 
 /**
- * The gallery — itself an `sh3-app-shell` instance (dogfooding). The primary
- * rail's first icon opens a settings popover that drives the shell's own inputs
- * (appearance / header layout / rail width / header height) live; the TOC fills
- * the secondary rail and the token editor docks on the right of the content.
+ * The gallery — itself an `sh3-app-shell` instance (dogfooding). The first
+ * section's "App Shell Settings" card drives the shell's own inputs (appearance
+ * / header layout / rail width / header height) live and shows the matching
+ * markup with a copy button; the TOC fills the secondary rail and the token
+ * editor docks on the right of the content. Double-click any component to
+ * inspect + edit its tokens (scoped to that element).
  */
 @Component({
   selector: "app-gallery",
@@ -77,6 +80,28 @@ export class GalleryComponent {
   }
   protected setHeaderHeight(value: string): void {
     this.shellHeaderHeight.set(Number(value));
+  }
+
+  /** The `<sh3-app-shell>` markup reflecting the current settings — live. */
+  protected readonly shellCode = computed(() =>
+    [
+      "<sh3-app-shell",
+      `  appearance="${this.shellAppearance()}"`,
+      `  headerLayout="${this.shellHeaderLayout()}"`,
+      `  [railWidth]="${this.shellRailWidth()}"`,
+      `  [headerHeight]="${this.shellHeaderHeight()}"`,
+      ">",
+      "  <!-- railPrimary · railSecondary · header · content -->",
+      "</sh3-app-shell>",
+    ].join("\n"),
+  );
+  protected readonly copied = signal(false);
+
+  protected copyShellCode(): void {
+    void navigator.clipboard.writeText(this.shellCode()).then(() => {
+      this.copied.set(true);
+      setTimeout(() => this.copied.set(false), 1500);
+    });
   }
 
   protected toggleTheme(): void {
