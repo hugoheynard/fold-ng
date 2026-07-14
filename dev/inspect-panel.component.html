@@ -1,0 +1,33 @@
+<sh3-panel-header [title]="data().selector" subtitle="tokens & composition" />
+<div class="ins-body">
+  @if (data().composes.length) {
+    <section class="ins-block">
+      <h3 class="ins-heading">Composes</h3>
+      <div class="ins-chips">
+        @for (child of data().composes; track child) {
+          <span class="ins-chip">{{ child }}</span>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="ins-block">
+    <h3 class="ins-heading">Tokens · {{ rows().length }}</h3>
+    @if (rows().length) {
+      @for (row of rows(); track row.name) {
+        <div class="ins-row">
+          @if (isColorToken(row.name)) {
+            <span
+              class="ins-swatch"
+              [style.background]="'var(' + row.name + ')'"
+            ></span>
+          }
+          <span class="ins-name">{{ row.name }}</span>
+          <span class="ins-val">{{ row.value }}</span>
+        </div>
+      }
+    } @else {
+      <p class="ins-empty">No design tokens referenced.</p>
+    }
+  </section>
+</div>

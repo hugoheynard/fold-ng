@@ -34,7 +34,7 @@
 
   <!-- ── content: scrollable gallery + docked token editor ─────── -->
   <div class="gal-content">
-    <div #scroll class="gal-scroll">
+    <div #scroll class="gal-scroll" (dblclick)="onInspect($event)">
       <!-- ── sh3-app-shell (this gallery is one) ───────────────── -->
       <section id="app-shell" class="gal-sec">
         <h2>sh3-app-shell</h2>

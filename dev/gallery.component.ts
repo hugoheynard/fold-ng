@@ -25,6 +25,8 @@ import {
 import { TokenPanelComponent } from "./token-panel.component";
 import { TocPanelComponent, type TocItem } from "./toc-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
+import { InspectPanelComponent } from "./inspect-panel.component";
+import { closestSh3, inspect } from "./inspect";
 
 /**
  * The gallery — itself an `sh3-app-shell` instance (dogfooding). The primary
@@ -95,6 +97,18 @@ export class GalleryComponent {
 
   protected openTabPanel(): void {
     this.panelHost.open(TabPanelComponent, { side: "right" });
+  }
+
+  /** Double-click a component → inspect its tokens + composition in a panel. */
+  protected onInspect(event: MouseEvent): void {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+    const el = closestSh3(event.target);
+    const info = el ? inspect(el.tagName.toLowerCase()) : null;
+    if (info) {
+      this.panelHost.open(InspectPanelComponent, { data: info, side: "right" });
+    }
   }
 
   /* ── Table of contents + scroll-spy ── */
