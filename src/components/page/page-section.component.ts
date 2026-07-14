@@ -1,4 +1,5 @@
 import { booleanAttribute, Component, input } from "@angular/core";
+import { Sh3ElementTitleComponent } from "../element-title/element-title.component";
 
 /**
  * `<sh3-page-section>` — a titled sub-section inside a {@link Sh3PageLayoutComponent}:
@@ -36,6 +37,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
 @Component({
   selector: "sh3-page-section",
   standalone: true,
+  imports: [Sh3ElementTitleComponent],
   host: {
     "[class.t-raised]": "tone() === 'raised'",
     "[class.t-sunken]": "tone() === 'sunken'",
@@ -46,7 +48,9 @@ import { booleanAttribute, Component, input } from "@angular/core";
       <div class="section-head">
         <div class="section-text">
           @if (title()) {
-            <h2 class="section-title">{{ title() }}</h2>
+            <sh3-element-title [variant]="divider() ? 'bar' : 'eyebrow'">{{
+              title()
+            }}</sh3-element-title>
           }
           @if (description()) {
             <p class="section-desc">{{ description() }}</p>
@@ -75,14 +79,6 @@ import { booleanAttribute, Component, input } from "@angular/core";
       flex-direction: column;
       gap: 6px;
       min-width: 0;
-    }
-    .section-title {
-      margin: 0;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--sh3-color-text-muted);
     }
     .section-desc {
       margin: 0;
@@ -136,11 +132,6 @@ import { booleanAttribute, Component, input } from "@angular/core";
       align-items: center;
       padding: 14px 20px;
       border-bottom: 1px solid var(--sh3-color-border-subtle);
-    }
-    /* The header-bar title reads a touch larger + brighter than the inline one. */
-    :host(.divider) .section-title {
-      font-size: 11px;
-      color: var(--sh3-color-text-secondary);
     }
     :host(.divider) .section-body {
       padding: 8px 20px 14px;

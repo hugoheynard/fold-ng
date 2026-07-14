@@ -41,7 +41,7 @@ function render() {
 describe("Sh3PageSectionComponent", () => {
   it("renders the title and projects content + actions", () => {
     const { root } = render();
-    expect(root.querySelector(".section-title")?.textContent?.trim()).toBe(
+    expect(root.querySelector("sh3-element-title")?.textContent?.trim()).toBe(
       "Moyens de paiement",
     );
     expect(root.querySelector(".body-item")).not.toBeNull();
