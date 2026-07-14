@@ -1,0 +1,68 @@
+// @ts-check
+import eslint from "@eslint/js";
+import tslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
+import globals from "globals";
+import {
+  noUnlimitedDisable,
+  typeEscapeHatches,
+  stringifySafety,
+} from "@sh3pherd/eslint-config";
+
+/**
+ * Lint for `@sh3pherd/ui` — the design-system package, previously unlinted.
+ * Enforces the project's load-bearing bans (`any`, `as` casts, naked
+ * `eslint-disable`) on the component source and the dev gallery; the
+ * type-checked string-safety rules are scoped to `src/`. TS-only, mirroring
+ * the other package configs — templates (.html) are not linted here.
+ *
+ * Components run in the browser (DOM globals); `.spec.ts` relax the `as`-cast
+ * ban (test fixtures narrow with assertions). `as const` stays exempt.
+ */
+export default tslint.config(
+  {
+    ignores: [
+      "dist",
+      "out-tsc",
+      "node_modules",
+      "eslint.config.mjs",
+      "vite.config.ts",
+      "**/*.js",
+    ],
+  },
+  eslint.configs.recommended,
+  ...tslint.configs.recommended,
+  eslintPluginPrettierRecommended,
+  // ── No naked `eslint-disable` (CLAUDE.md: no `eslint-disable`) ──
+  {
+    plugins: { "eslint-comments": eslintComments },
+    rules: { ...noUnlimitedDisable },
+  },
+  {
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+      sourceType: "module",
+    },
+    rules: { ...typeEscapeHatches },
+  },
+  // ── Type-checked string-safety (production src only) ──
+  {
+    files: ["src/**/*.ts"],
+    ignores: ["**/*.spec.ts", "**/__tests__/**"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: { ...stringifySafety },
+  },
+  {
+    files: ["**/*.spec.ts"],
+    rules: {
+      "@typescript-eslint/consistent-type-assertions": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+);

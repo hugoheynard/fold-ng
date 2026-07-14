@@ -62,8 +62,8 @@ function collectPrimitives(sheets: StyleSheetList): Swatch[] {
 /** Family of a label: the part before a trailing `-<scale>` (`teal-500`→`teal`),
  *  else the whole label (`white`→`white`). */
 function familyOf(label: string): string {
-  const scale = label.match(/^(.*)-\d+$/);
-  return scale ? (scale[1] as string) : label;
+  const scale = /^(.*)-\d+$/.exec(label);
+  return scale?.[1] ?? label;
 }
 
 function groupByFamily(swatches: Swatch[]): SwatchGroup[] {
