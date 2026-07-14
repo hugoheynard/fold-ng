@@ -7,7 +7,8 @@ import { Sh3HeroComponent } from "./hero.component";
   standalone: true,
   imports: [Sh3HeroComponent],
   template: `<sh3-hero
-    [tone]="tone()"
+    [surface]="surface()"
+    [accent]="accent()"
     [padding]="padding()"
     [accentBar]="accentBar()"
   >
@@ -15,9 +16,8 @@ import { Sh3HeroComponent } from "./hero.component";
   </sh3-hero>`,
 })
 class HostComponent {
-  readonly tone = signal<
-    "neutral" | "sunken" | "subtle" | "gradient" | "primary"
-  >("neutral");
+  readonly surface = signal<"card" | "sunken" | "primary">("card");
+  readonly accent = signal<"none" | "subtle" | "gradient">("none");
   readonly padding = signal<"sm" | "md" | "lg">("lg");
   readonly accentBar = signal(false);
 }
@@ -34,25 +34,44 @@ describe("Sh3HeroComponent", () => {
     expect(render().hero.querySelector(".body")?.textContent).toBe("Content");
   });
 
-  it("carries no modifier classes at the defaults (neutral tone, lg padding)", () => {
+  it("carries no modifier classes at the defaults (card surface, no accent, lg padding)", () => {
     expect(render().hero.className).toBe("");
   });
 
-  it("maps each tone to its modifier class", () => {
+  it("maps each base surface to its modifier class", () => {
     const { fixture, hero } = render();
-    for (const [tone, cls] of [
-      ["sunken", "t-sunken"],
-      ["subtle", "t-subtle"],
-      ["gradient", "t-gradient"],
-      ["primary", "t-primary"],
+    for (const [surface, cls] of [
+      ["sunken", "s-sunken"],
+      ["primary", "s-primary"],
     ] as const) {
-      fixture.componentInstance.tone.set(tone);
+      fixture.componentInstance.surface.set(surface);
       fixture.detectChanges();
       expect(hero.classList.contains(cls)).toBe(true);
     }
-    fixture.componentInstance.tone.set("neutral");
+    fixture.componentInstance.surface.set("card");
     fixture.detectChanges();
     expect(hero.className).toBe("");
+  });
+
+  it("maps each accent to its modifier class", () => {
+    const { fixture, hero } = render();
+    for (const [accent, cls] of [
+      ["subtle", "a-subtle"],
+      ["gradient", "a-gradient"],
+    ] as const) {
+      fixture.componentInstance.accent.set(accent);
+      fixture.detectChanges();
+      expect(hero.classList.contains(cls)).toBe(true);
+    }
+  });
+
+  it("composes a base surface with an accent (orthogonal)", () => {
+    const { fixture, hero } = render();
+    fixture.componentInstance.surface.set("sunken");
+    fixture.componentInstance.accent.set("subtle");
+    fixture.detectChanges();
+    expect(hero.classList.contains("s-sunken")).toBe(true);
+    expect(hero.classList.contains("a-subtle")).toBe(true);
   });
 
   it("maps non-default padding to a modifier class", () => {
@@ -62,13 +81,13 @@ describe("Sh3HeroComponent", () => {
     expect(hero.classList.contains("p-sm")).toBe(true);
   });
 
-  it("adds the accent-bar class (orthogonal to tone)", () => {
+  it("adds the accent-bar class (orthogonal to surface + accent)", () => {
     const { fixture, hero } = render();
     expect(hero.classList.contains("has-bar")).toBe(false);
     fixture.componentInstance.accentBar.set(true);
-    fixture.componentInstance.tone.set("subtle");
+    fixture.componentInstance.accent.set("subtle");
     fixture.detectChanges();
     expect(hero.classList.contains("has-bar")).toBe(true);
-    expect(hero.classList.contains("t-subtle")).toBe(true);
+    expect(hero.classList.contains("a-subtle")).toBe(true);
   });
 });

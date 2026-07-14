@@ -2,29 +2,27 @@ import { Component, booleanAttribute, input } from "@angular/core";
 
 /**
  * `<sh3-hero>` — a prominent header card. Same base as {@link Sh3CardComponent}
- * (surface + border + radius + padding), with a `tone` that scales prominence
- * from quiet to loud. Lay out the content inside however you like (the hero is
- * just the surface); project it via `<ng-content>`.
+ * (surface + border + radius + padding); lay the content out inside however you
+ * like and project it via `<ng-content>`.
  *
- * **`tone`** (low → high prominence):
+ * Two orthogonal axes decide the look — a **base surface** and an optional
+ * decorative **accent** painted on top of it (so any base can carry any accent):
+ *
+ * **`surface`** — the base fill:
+ * - `card` (default) — the standard raised card (`surface-card`).
  * - `sunken` — the deep container tint (`surface-sunken` + fainter border).
- * - `neutral` (default) — the standard raised card.
- * - `subtle` — a quiet accent hero: a `surface-card` → `surface-sunken`
- *   diagonal gradient + a faint corner glow.
- * - `gradient` — a primary-tinted gradient + primary border + a soft radial
- *   glow (the "billing plan" look).
  * - `primary` — a solid primary fill; text flips to `on-primary`.
  *
- * **`accentBar`** — orthogonal: adds a primary accent bar down the left edge
- * (a "featured" marker), composable with any tone.
+ * **`accent`** — a transparent gradient + glow overlay:
+ * - `none` (default) — no overlay.
+ * - `subtle` — a faint diagonal wash toward the deep tint + a soft corner glow.
+ * - `gradient` — a primary-tinted wash + primary border + a stronger corner glow.
+ *
+ * **`accentBar`** — orthogonal: a primary accent bar down the left edge.
  *
  * ```html
- * <sh3-hero tone="gradient">
- *   <div class="left">…</div>
- *   <div class="right">…</div>
- * </sh3-hero>
- *
- * <sh3-hero tone="subtle" accentBar>…</sh3-hero>
+ * <sh3-hero surface="sunken" accent="subtle" accentBar>…</sh3-hero>
+ * <sh3-hero accent="gradient">…</sh3-hero>
  * ```
  *
  * @selector `sh3-hero`
@@ -33,19 +31,19 @@ import { Component, booleanAttribute, input } from "@angular/core";
   selector: "sh3-hero",
   standalone: true,
   host: {
-    "[class.t-sunken]": "tone() === 'sunken'",
-    "[class.t-subtle]": "tone() === 'subtle'",
-    "[class.t-gradient]": "tone() === 'gradient'",
-    "[class.t-primary]": "tone() === 'primary'",
+    "[class.s-sunken]": "surface() === 'sunken'",
+    "[class.s-primary]": "surface() === 'primary'",
+    "[class.a-subtle]": "accent() === 'subtle'",
+    "[class.a-gradient]": "accent() === 'gradient'",
     "[class.has-bar]": "accentBar()",
     "[class.p-sm]": "padding() === 'sm'",
     "[class.p-md]": "padding() === 'md'",
   },
   template: `<ng-content />`,
   styles: `
-    /* Defaults: neutral tone (raised card) + lg padding. isolation establishes
-       a stacking context so the gradient glow (::after, z-index:-1) sits above
-       the background but below the projected content, whatever its z-index. */
+    /* Defaults: card surface + lg padding. isolation establishes a stacking
+       context so an accent overlay (::after, z-index:-1) sits above the base
+       fill but below the projected content, whatever its z-index. */
     :host {
       display: block;
       position: relative;
@@ -63,70 +61,59 @@ import { Component, booleanAttribute, input } from "@angular/core";
       padding: 16px;
     }
 
-    /* Sunken — the deep container tint, fainter hairline. */
-    :host(.t-sunken) {
+    /* ── Base surface ── */
+    :host(.s-sunken) {
       background: var(--sh3-color-surface-sunken);
       border-color: var(--sh3-color-border-subtle);
     }
-
-    /* Subtle — a quiet accent hero: card→sunken diagonal + a faint glow. */
-    :host(.t-subtle) {
-      background: linear-gradient(
-        160deg,
-        var(--sh3-color-surface-card),
-        var(--sh3-color-surface-sunken)
-      );
-    }
-    :host(.t-subtle)::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(
-        120% 140% at 100% 0%,
-        color-mix(in srgb, var(--sh3-color-primary) 10%, transparent),
-        transparent 45%
-      );
-    }
-
-    /* Gradient — primary-tinted wash + primary border + a corner glow. */
-    :host(.t-gradient) {
-      border-color: var(--sh3-color-primary-border);
-      background: linear-gradient(
-        180deg,
-        color-mix(
-          in srgb,
-          var(--sh3-color-primary) 8%,
-          var(--sh3-color-surface-card)
-        ),
-        var(--sh3-color-surface-card)
-      );
-    }
-    :host(.t-gradient)::after {
-      content: "";
-      position: absolute;
-      top: -40%;
-      right: -10%;
-      width: 340px;
-      height: 340px;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(
-        circle,
-        color-mix(in srgb, var(--sh3-color-primary) 22%, transparent),
-        transparent 68%
-      );
-    }
-
-    /* Primary — solid fill; content reads on the on-primary ink. */
-    :host(.t-primary) {
+    :host(.s-primary) {
       background: var(--sh3-color-primary);
       border-color: var(--sh3-color-primary);
       color: var(--sh3-color-on-primary);
     }
 
-    /* Accent bar — orthogonal left edge marker, composable with any tone. */
+    /* ── Accent overlays (transparent, painted over the base surface) ── */
+    :host(.a-subtle)::after,
+    :host(.a-gradient)::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    /* Subtle — a faint diagonal toward the deep tint + a soft corner glow. */
+    :host(.a-subtle)::after {
+      background:
+        radial-gradient(
+          120% 140% at 100% 0%,
+          color-mix(in srgb, var(--sh3-color-primary) 10%, transparent),
+          transparent 45%
+        ),
+        linear-gradient(
+          160deg,
+          transparent 30%,
+          color-mix(in srgb, var(--sh3-color-surface-sunken) 50%, transparent)
+        );
+    }
+    /* Gradient — primary-tinted wash + primary border + a stronger corner glow. */
+    :host(.a-gradient) {
+      border-color: var(--sh3-color-primary-border);
+    }
+    :host(.a-gradient)::after {
+      background:
+        radial-gradient(
+          260px circle at 90% -10%,
+          color-mix(in srgb, var(--sh3-color-primary) 22%, transparent),
+          transparent 68%
+        ),
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--sh3-color-primary) 8%, transparent),
+          transparent 60%
+        );
+    }
+
+    /* Accent bar — orthogonal left edge marker, composable with any surface. */
     :host(.has-bar)::before {
       content: "";
       position: absolute;
@@ -142,12 +129,12 @@ import { Component, booleanAttribute, input } from "@angular/core";
   `,
 })
 export class Sh3HeroComponent {
-  /** Prominence tint — `neutral` (default) · `sunken` · `subtle` · `gradient` · `primary`. */
-  readonly tone = input<
-    "neutral" | "sunken" | "subtle" | "gradient" | "primary"
-  >("neutral");
+  /** Base fill — `card` (default) · `sunken` (deep tint) · `primary` (solid fill). */
+  readonly surface = input<"card" | "sunken" | "primary">("card");
+  /** Decorative overlay — `none` (default) · `subtle` (diagonal + glow) · `gradient` (primary wash + glow). */
+  readonly accent = input<"none" | "subtle" | "gradient">("none");
   /** Inner padding — `lg` (default) · `md` · `sm`. */
   readonly padding = input<"sm" | "md" | "lg">("lg");
-  /** Add a primary accent bar down the left edge (composable with any tone). */
+  /** Add a primary accent bar down the left edge (composable with any surface). */
   readonly accentBar = input(false, { transform: booleanAttribute });
 }

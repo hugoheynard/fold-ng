@@ -127,7 +127,7 @@ the package root.
 | `Sh3PageLayoutComponent` / `…Section` | `sh3-page-layout`     | Settings/admin page scaffold (title + sections).             |
 | `Sh3CardComponent`                    | `sh3-card`            | Raised content surface (`surface-card` + consistent radius). |
 | `Sh3ElementTitleComponent`            | `sh3-element-title`   | Uppercase section/card mini-title (eyebrow · bar variants).  |
-| `Sh3HeroComponent`                    | `sh3-hero`            | Prominent header card (tone ladder + optional accent bar).   |
+| `Sh3HeroComponent`                    | `sh3-hero`            | Prominent header card (base surface × accent overlay + bar). |
 | `Sh3DataTableComponent`               | `sh3-data-table`      | Controlled roster table (sortable, tone rows, mobile cards). |
 | `Sh3PaginatorComponent`               | `sh3-paginator`       | Server-side paginator (size selector + range + page nav).    |
 | `Sh3BadgeComponent`                   | `sh3-badge`           | Status / count pill (accent/info/warning/alert/success).     |
