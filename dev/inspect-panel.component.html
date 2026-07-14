@@ -1,10 +1,13 @@
-<sh3-panel-header [title]="data().selector" subtitle="tokens & composition" />
+<sh3-panel-header
+  [title]="data().info.selector"
+  subtitle="tokens & composition — edits apply to this element only"
+/>
 <div class="ins-body">
-  @if (data().composes.length) {
+  @if (data().info.composes.length) {
     <section class="ins-block">
       <h3 class="ins-heading">Composes</h3>
       <div class="ins-chips">
-        @for (child of data().composes; track child) {
+        @for (child of data().info.composes; track child) {
           <span class="ins-chip">{{ child }}</span>
         }
       </div>
@@ -12,18 +15,40 @@
   }
 
   <section class="ins-block">
-    <h3 class="ins-heading">Tokens · {{ rows().length }}</h3>
+    <div class="ins-block-top">
+      <h3 class="ins-heading">Tokens · {{ rows().length }}</h3>
+      @if (dirtyCount()) {
+        <button type="button" class="ins-reset-all" (click)="resetAll()">
+          Reset {{ dirtyCount() }}
+        </button>
+      }
+    </div>
+
     @if (rows().length) {
       @for (row of rows(); track row.name) {
         <div class="ins-row">
-          @if (isColorToken(row.name)) {
-            <span
-              class="ins-swatch"
-              [style.background]="'var(' + row.name + ')'"
-            ></span>
-          }
-          <span class="ins-name">{{ row.name }}</span>
-          <span class="ins-val">{{ row.value }}</span>
+          <div class="ins-row-head">
+            @if (isColorToken(row.name)) {
+              <span class="ins-swatch" [style.background]="valueOf(row)"></span>
+            }
+            <span class="ins-name">{{ row.name }}</span>
+            @if (overrides()[row.name]) {
+              <button
+                type="button"
+                class="ins-reset-one"
+                title="Reset to default"
+                (click)="resetOne(row.name)"
+              >
+                ↺
+              </button>
+            }
+          </div>
+          <input
+            #field
+            class="ins-field"
+            [value]="valueOf(row)"
+            (change)="set(row.name, field.value)"
+          />
         </div>
       }
     } @else {

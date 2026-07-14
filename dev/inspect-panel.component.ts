@@ -1,17 +1,24 @@
-import { Component, afterNextRender, input, signal } from "@angular/core";
+import {
+  Component,
+  afterNextRender,
+  computed,
+  input,
+  signal,
+} from "@angular/core";
 import { Sh3PanelHeaderComponent } from "../src/index";
-import type { ComponentInfo } from "./inspect";
+import type { InspectTarget } from "./inspect";
 
-/** A token name paired with its currently-resolved value. */
+/** A token name paired with the value declared in the token layer (the base). */
 interface TokenRow {
   readonly name: string;
-  readonly value: string;
+  readonly base: string;
 }
 
 /**
- * The inspector panel: for a double-clicked component it lists the design
- * tokens it references (with their live values) and the `sh3-*` children it
- * composes. Data-carrying panel (`open({ data })`). Dev-only.
+ * The inspector panel: for a double-clicked component it lists the tokens its
+ * styles reference and the `sh3-*` children it composes. Editing a token writes
+ * it as an **inline style on that element only** — so the override is scoped to
+ * this instance and its children, never the rest of the page. Dev-only.
  */
 @Component({
   selector: "app-inspect-panel",
@@ -21,19 +28,48 @@ interface TokenRow {
   styleUrl: "./inspect-panel.component.css",
 })
 export class InspectPanelComponent {
-  readonly data = input.required<ComponentInfo>();
+  readonly data = input.required<InspectTarget>();
   protected readonly rows = signal<TokenRow[]>([]);
+  /** Name → per-element override value, for the ones the user has edited. */
+  protected readonly overrides = signal<Record<string, string>>({});
+  protected readonly dirtyCount = computed(
+    () => Object.keys(this.overrides()).length,
+  );
 
   constructor() {
     afterNextRender(() => {
       const styles = getComputedStyle(document.documentElement);
       this.rows.set(
-        this.data().tokens.map((name) => ({
+        this.data().info.tokens.map((name) => ({
           name,
-          value: styles.getPropertyValue(name).trim(),
+          base: styles.getPropertyValue(name).trim(),
         })),
       );
     });
+  }
+
+  /** Current value for a row — the element override if edited, else the base. */
+  protected valueOf(row: TokenRow): string {
+    return this.overrides()[row.name] ?? row.base;
+  }
+
+  protected set(name: string, value: string): void {
+    this.data().element.style.setProperty(name, value);
+    this.overrides.update((all) => ({ ...all, [name]: value }));
+  }
+
+  protected resetOne(name: string): void {
+    this.data().element.style.removeProperty(name);
+    this.overrides.update((all) =>
+      Object.fromEntries(Object.entries(all).filter(([key]) => key !== name)),
+    );
+  }
+
+  protected resetAll(): void {
+    for (const name of Object.keys(this.overrides())) {
+      this.data().element.style.removeProperty(name);
+    }
+    this.overrides.set({});
   }
 
   /** Colour tokens (`--sh3-color-*` / `--sh3-ref-*`) get a swatch preview. */

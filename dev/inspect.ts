@@ -15,6 +15,13 @@ export interface ComponentInfo {
   readonly composes: readonly string[];
 }
 
+/** What the inspector panel edits: a component's metadata + the live element it
+ *  was opened for (token overrides are set inline on this element only). */
+export interface InspectTarget {
+  readonly info: ComponentInfo;
+  readonly element: HTMLElement;
+}
+
 const scss = import.meta.glob<string>("../src/components/**/*.component.scss", {
   query: "?raw",
   import: "default",
@@ -66,10 +73,13 @@ export function inspect(selector: string): ComponentInfo | null {
 }
 
 /** The nearest ancestor (incl. `el`) that is an `sh3-*` element, or `null`. */
-export function closestSh3(el: Element): Element | null {
+export function closestSh3(el: Element): HTMLElement | null {
   let node: Element | null = el;
   while (node) {
-    if (node.tagName.toLowerCase().startsWith("sh3-")) {
+    if (
+      node instanceof HTMLElement &&
+      node.tagName.toLowerCase().startsWith("sh3-")
+    ) {
       return node;
     }
     node = node.parentElement;

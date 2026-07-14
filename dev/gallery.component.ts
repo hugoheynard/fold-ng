@@ -106,8 +106,11 @@ export class GalleryComponent {
     }
     const el = closestSh3(event.target);
     const info = el ? inspect(el.tagName.toLowerCase()) : null;
-    if (info) {
-      this.panelHost.open(InspectPanelComponent, { data: info, side: "right" });
+    if (el && info) {
+      this.panelHost.open(InspectPanelComponent, {
+        data: { info, element: el },
+        side: "right",
+      });
     }
   }
 
