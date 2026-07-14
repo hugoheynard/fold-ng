@@ -4,6 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@sh3pherd/ui — gallery</title>
+    <style>
+      /* Kill the default body margin so the shell reaches every edge. */
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--sh3-color-bg-page);
+      }
+    </style>
   </head>
   <body>
     <app-gallery></app-gallery>
