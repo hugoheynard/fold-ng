@@ -15,6 +15,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * - `divider` — when `true` (only meaningful with a surface), the title renders
  *   as a bordered header **bar** with the body padded below it, instead of the
  *   title sitting inline above the body.
+ * - `stack` — lay the body out as an evenly-spaced vertical stack (form fields).
  *
  * ```html
  * <sh3-page-section title="Moyens de paiement" description="Le moyen par défaut…">
@@ -38,6 +39,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
     "[class.s-card]": "surface() === 'card'",
     "[class.s-sunken]": "surface() === 'sunken'",
     "[class.divider]": "divider()",
+    "[class.stack]": "stack()",
   },
   template: `@if (title() || description()) {
       <div class="section-head">
@@ -100,6 +102,12 @@ import { booleanAttribute, Component, input } from "@angular/core";
     .section-body {
       min-width: 0;
     }
+    /* Stack: body is a vertical flow of form fields with even spacing. */
+    :host(.stack) .section-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
     /* ── Surface: a raised or sunken card wrapping the section ── */
     :host(.s-card),
@@ -150,4 +158,6 @@ export class Sh3PageSectionComponent {
   readonly surface = input<"none" | "card" | "sunken">("none");
   /** With a surface, render the title as a bordered header bar above a padded body. */
   readonly divider = input(false, { transform: booleanAttribute });
+  /** Lay the body out as an evenly-spaced vertical stack of form fields. */
+  readonly stack = input(false, { transform: booleanAttribute });
 }

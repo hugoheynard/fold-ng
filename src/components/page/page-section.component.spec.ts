@@ -22,12 +22,14 @@ class HostComponent {
   template: `<sh3-page-section
     [surface]="surface()"
     [divider]="divider()"
+    [stack]="stack()"
     title="X"
   />`,
 })
 class AppearanceHostComponent {
   readonly surface = signal<"none" | "card" | "sunken">("none");
   readonly divider = signal(false);
+  readonly stack = signal(false);
 }
 
 function render() {
@@ -92,5 +94,18 @@ describe("Sh3PageSectionComponent", () => {
     expect(section.classList.contains("s-sunken")).toBe(true);
     expect(section.classList.contains("s-card")).toBe(false);
     expect(section.classList.contains("divider")).toBe(true);
+  });
+
+  it("toggles the stack host class", () => {
+    const fixture = TestBed.createComponent(AppearanceHostComponent);
+    fixture.detectChanges();
+    const section = fixture.nativeElement.querySelector(
+      "sh3-page-section",
+    ) as HTMLElement;
+    expect(section.classList.contains("stack")).toBe(false);
+
+    fixture.componentInstance.stack.set(true);
+    fixture.detectChanges();
+    expect(section.classList.contains("stack")).toBe(true);
   });
 });
