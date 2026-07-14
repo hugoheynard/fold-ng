@@ -1,5 +1,5 @@
 <header class="tp-top">
-  <span class="tp-title">Palette</span>
+  <span class="tp-title">Tokens</span>
   <button
     type="button"
     class="tp-reset"
@@ -17,17 +17,28 @@
   @for (group of groups(); track group.family) {
     <section class="tp-group">
       <h3 class="tp-family">{{ group.family }}</h3>
-      @for (swatch of group.swatches; track swatch.name) {
+      @for (entry of group.entries; track entry.name) {
         <label class="tp-row">
-          <input
-            #picker
-            type="color"
-            class="tp-picker"
-            [value]="valueOf(swatch)"
-            (input)="set(swatch.name, picker.value)"
-          />
-          <span class="tp-label">{{ swatch.label }}</span>
-          <span class="tp-hex">{{ valueOf(swatch) }}</span>
+          @if (entry.kind === "color") {
+            <input
+              #picker
+              type="color"
+              class="tp-picker"
+              [value]="valueOf(entry)"
+              (input)="set(entry.name, picker.value)"
+            />
+            <span class="tp-label">{{ entry.label }}</span>
+            <span class="tp-hex">{{ valueOf(entry) }}</span>
+          } @else {
+            <span class="tp-label">{{ entry.label }}</span>
+            <input
+              #field
+              type="text"
+              class="tp-field"
+              [value]="valueOf(entry)"
+              (change)="set(entry.name, field.value)"
+            />
+          }
         </label>
       }
     </section>

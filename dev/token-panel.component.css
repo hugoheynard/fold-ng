@@ -95,6 +95,25 @@
   color: var(--sh3-color-text-muted);
 }
 
+/* Text field for scale (value) tokens — px / rem / unitless. */
+.tp-field {
+  flex: none;
+  width: 72px;
+  padding: 4px 8px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.tp-field:focus {
+  outline: none;
+  border-color: var(--sh3-color-primary);
+}
+
 /* Native colour input, trimmed to a clean square swatch. */
 .tp-picker {
   flex: none;
