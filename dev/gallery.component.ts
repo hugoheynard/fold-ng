@@ -85,8 +85,6 @@ export class GalleryComponent {
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
-  /** Let the primary rail grow to the (expanding) menu's width. */
-  protected readonly shellRailGrows = signal(true);
 
   protected setAppearance(value: "flat" | "floating"): void {
     this.shellAppearance.set(value);
@@ -108,14 +106,11 @@ export class GalleryComponent {
       `  appearance="${this.shellAppearance()}"`,
       `  headerLayout="${this.shellHeaderLayout()}"`,
       `  [railWidth]="${this.shellRailWidth()}"`,
-      this.shellRailGrows() ? "  railGrows" : "",
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
       "  <!-- railPrimary · railSecondary · header · content -->",
       "</sh3-app-shell>",
-    ]
-      .filter(Boolean)
-      .join("\n"),
+    ].join("\n"),
   );
   protected readonly copied = signal(false);
 
