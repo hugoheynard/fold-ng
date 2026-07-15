@@ -18,6 +18,7 @@ import {
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
+  Sh3MenuSeparatorComponent,
   Sh3PageSectionComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
@@ -56,6 +57,7 @@ import { closestSh3, inspect } from "./inspect";
     Sh3TabNavComponent,
     Sh3MenuComponent,
     Sh3MenuItemComponent,
+    Sh3MenuSeparatorComponent,
     Sh3PanelHostComponent,
     TokenPanelComponent,
     TocPanelComponent,
@@ -135,6 +137,7 @@ export class GalleryComponent {
     { id: "music", icon: "music", label: "Music" },
   ] as const;
   protected readonly menuActive = signal<string>("home");
+  protected readonly menuExpanded = signal(false);
 
   /** Double-click a component → inspect its tokens + composition in a panel. */
   protected onInspect(event: MouseEvent): void {

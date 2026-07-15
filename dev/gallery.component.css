@@ -180,11 +180,16 @@ sh3-app-shell {
   font-size: 13px;
 }
 
-/* sh3-menu demo — a short rail. No overflow clip: tooltips escape to the right. */
+/* sh3-menu demo — a short rail. No overflow clip: tooltips escape to the right.
+   The wrapper width tracks the menu's expanded state so it doesn't overflow. */
 .menu-demo {
   width: 72px;
   height: 320px;
   margin-top: 12px;
+  transition: width var(--sh3-motion-base);
+}
+.menu-demo.is-expanded {
+  width: 236px;
 }
 .menu-demo-brand {
   width: 36px;
