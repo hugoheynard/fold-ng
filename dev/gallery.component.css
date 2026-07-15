@@ -170,9 +170,6 @@ sh3-app-shell {
   flex: 0 1 340px;
   max-width: 340px;
 }
-.menu-settings {
-  margin-top: 20px;
-}
 .code-block {
   flex: 1 1 360px;
   min-width: 300px;

@@ -276,6 +276,7 @@ export class GalleryComponent {
   /** ids match the `<section>` ids in the template. */
   protected readonly toc: readonly TocItem[] = [
     { id: "app-shell", label: "app-shell" },
+    { id: "menu", label: "menu" },
     { id: "element-title", label: "element-title" },
     { id: "context-card", label: "context-card" },
     { id: "page-section", label: "page-section" },
