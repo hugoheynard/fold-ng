@@ -6,7 +6,6 @@ import {
   afterNextRender,
   booleanAttribute,
   computed,
-  effect,
   inject,
   input,
   model,
@@ -79,7 +78,7 @@ export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
   templateUrl: "./menu.component.html",
   styleUrl: "./menu.component.scss",
   host: {
-    "[class.expanded]": "effectiveExpanded()",
+    "[class.expanded]": "expanded()",
     "[attr.data-tint]": "tint()",
     "[attr.data-level]": "level()",
   },
@@ -88,9 +87,9 @@ export class Sh3MenuComponent {
   /** Show a chevron toggle that flips `expanded`. */
   readonly collapsible = input(false, { transform: booleanAttribute });
   /**
-   * Two-way: `true` widens the rail and reveals inline labels. Only honoured
-   * when `collapsible` — a non-collapsible menu is a fixed icon rail, so
-   * `expanded` without `collapsible` is a no-op (and warns in dev).
+   * Two-way: `true` widens the rail and reveals inline labels. A standalone
+   * state — a menu can be statically expanded (a labelled sidebar) without
+   * `collapsible`; `collapsible` only adds the toggle that flips it.
    */
   readonly expanded = model(false);
   /** How items tint on hover / when active (`follow` = section colour). */
@@ -107,11 +106,6 @@ export class Sh3MenuComponent {
   private readonly hasHeader = signal(false);
   private readonly hasFooter = signal(false);
 
-  /** The applied expansion — inert unless the menu is collapsible. */
-  protected readonly effectiveExpanded = computed(
-    () => this.collapsible() && this.expanded(),
-  );
-
   /**
    * The band the toggle renders into: the `togglePlacement` override when set,
    * else auto — first in the footer, else last in the header, else the body.
@@ -127,14 +121,6 @@ export class Sh3MenuComponent {
   );
 
   constructor() {
-    effect(() => {
-      if (this.expanded() && !this.collapsible()) {
-        console.warn(
-          "[sh3-menu] `expanded` is ignored without `collapsible` — set `collapsible` to allow the rail to expand.",
-        );
-      }
-    });
-
     const destroyRef = inject(DestroyRef);
     afterNextRender(() => {
       const head = this.headRef().nativeElement;
