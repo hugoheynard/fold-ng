@@ -19,7 +19,7 @@ import {
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
-  Sh3MenuSeparatorComponent,
+  Sh3MenuSectionComponent,
   Sh3PageSectionComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
@@ -66,7 +66,7 @@ interface MenuSection {
     Sh3TabNavComponent,
     Sh3MenuComponent,
     Sh3MenuItemComponent,
-    Sh3MenuSeparatorComponent,
+    Sh3MenuSectionComponent,
     Sh3PanelHostComponent,
     TokenPanelComponent,
     TocPanelComponent,
@@ -217,15 +217,18 @@ export class GalleryComponent {
       lines.push('  <div header class="brand">S3</div>');
     }
     for (const s of this.menuSectionList()) {
-      if (this.menuSections()) {
-        lines.push(
-          `  <sh3-menu-separator label="${s.name}" color="${s.color}" />`,
-        );
+      const wrap = this.menuSections();
+      const pad = wrap ? "    " : "  ";
+      if (wrap) {
+        lines.push(`  <sh3-menu-section label="${s.name}" color="${s.color}">`);
       }
       for (const icon of this.iconsFor(s.icons)) {
         lines.push(
-          `  <button sh3-menu-item icon="${icon}" label="${this.labelFor(icon)}"></button>`,
+          `${pad}<button sh3-menu-item icon="${icon}" label="${this.labelFor(icon)}"></button>`,
         );
+      }
+      if (wrap) {
+        lines.push("  </sh3-menu-section>");
       }
     }
     if (this.menuFooter()) {

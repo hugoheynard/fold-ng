@@ -18,16 +18,27 @@
 
     @for (s of menuSectionList(); track s.id) {
       @if (menuSections()) {
-        <sh3-menu-separator [label]="s.name" [color]="s.color" />
-      }
-      @for (icon of iconsFor(s.icons); track $index) {
-        <button
-          sh3-menu-item
-          [icon]="icon"
-          [label]="labelFor(icon)"
-          [active]="menuActive() === s.id + '-' + $index"
-          (click)="menuActive.set(s.id + '-' + $index)"
-        ></button>
+        <sh3-menu-section [label]="s.name" [color]="s.color">
+          @for (icon of iconsFor(s.icons); track $index) {
+            <button
+              sh3-menu-item
+              [icon]="icon"
+              [label]="labelFor(icon)"
+              [active]="menuActive() === s.id + '-' + $index"
+              (click)="menuActive.set(s.id + '-' + $index)"
+            ></button>
+          }
+        </sh3-menu-section>
+      } @else {
+        @for (icon of iconsFor(s.icons); track $index) {
+          <button
+            sh3-menu-item
+            [icon]="icon"
+            [label]="labelFor(icon)"
+            [active]="menuActive() === s.id + '-' + $index"
+            (click)="menuActive.set(s.id + '-' + $index)"
+          ></button>
+        }
       }
     }
 
