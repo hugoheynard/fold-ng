@@ -16,6 +16,7 @@ export { Sh3MenuComponent } from "./components/menu/menu.component";
 export type {
   Sh3MenuTint,
   Sh3MenuTogglePlacement,
+  Sh3MenuLevel,
 } from "./components/menu/menu.component";
 export { Sh3MenuItemComponent } from "./components/menu/menu-item.component";
 export { Sh3MenuSeparatorComponent } from "./components/menu/menu-separator.component";

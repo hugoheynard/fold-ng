@@ -10,6 +10,7 @@ import { Sh3MenuComponent } from "./menu.component";
     [collapsible]="collapsible()"
     [(expanded)]="expanded"
     [tint]="tint()"
+    [level]="level()"
   >
     <div header class="h">Brand</div>
     <a class="item">Item</a>
@@ -20,6 +21,7 @@ class HostComponent {
   readonly collapsible = signal(false);
   readonly expanded = signal(false);
   readonly tint = signal<"follow" | "neutral" | "primary">("follow");
+  readonly level = signal<"primary" | "secondary" | "tertiary">("primary");
 }
 
 function render() {
@@ -63,6 +65,14 @@ describe("Sh3MenuComponent", () => {
     fixture.componentInstance.tint.set("primary");
     fixture.detectChanges();
     expect(menu.getAttribute("data-tint")).toBe("primary");
+  });
+
+  it("reflects the rail level onto the host as data-level", () => {
+    const { fixture, menu } = render();
+    expect(menu.getAttribute("data-level")).toBe("primary");
+    fixture.componentInstance.level.set("secondary");
+    fixture.detectChanges();
+    expect(menu.getAttribute("data-level")).toBe("secondary");
   });
 
   it("toggles the expanded class + writes back the two-way state", () => {

@@ -25,6 +25,13 @@ import { Sh3IconComponent } from "../icon/icon.component";
 export type Sh3MenuTint = "follow" | "neutral" | "primary";
 
 /**
+ * The rail's depth in the shell hierarchy — picks its background tint so a
+ * primary rail and a secondary (e.g. workspace) rail read as different layers:
+ * `primary` (default) · `secondary` · `tertiary`.
+ */
+export type Sh3MenuLevel = "primary" | "secondary" | "tertiary";
+
+/**
  * Where the collapse toggle sits. `auto` follows band presence (first in the
  * footer, else last in the header, else last in the body); the others pin it to
  * a specific band.
@@ -74,6 +81,7 @@ export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
   host: {
     "[class.expanded]": "effectiveExpanded()",
     "[attr.data-tint]": "tint()",
+    "[attr.data-level]": "level()",
   },
 })
 export class Sh3MenuComponent {
@@ -87,6 +95,8 @@ export class Sh3MenuComponent {
   readonly expanded = model(false);
   /** How items tint on hover / when active (`follow` = section colour). */
   readonly tint = input<Sh3MenuTint>("follow");
+  /** Rail depth → background tint (`primary` default / `secondary` / `tertiary`). */
+  readonly level = input<Sh3MenuLevel>("primary");
   /** Pin the collapse toggle to a band, or `auto` to follow band presence. */
   readonly togglePlacement = input<Sh3MenuTogglePlacement>("auto");
 

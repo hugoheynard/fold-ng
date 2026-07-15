@@ -12,11 +12,20 @@
   box-sizing: border-box;
   padding: 10px 0;
   gap: 4px;
+  /* Background follows the rail's depth (`level`): a primary rail and a
+     secondary (workspace) rail read as distinct layers. */
   background: var(--sh3-color-bg-rail-primary);
   border-right: 1px solid var(--sh3-color-border);
   overflow: visible; /* tooltips escape the rail */
   user-select: none;
   transition: width var(--sh3-motion-base);
+}
+
+:host([data-level="secondary"]) {
+  background: var(--sh3-color-bg-rail-secondary);
+}
+:host([data-level="tertiary"]) {
+  background: var(--sh3-color-bg-rail-tertiary);
 }
 
 /* Expanded — the rail takes its content width (labels), bounded so a long label
