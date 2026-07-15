@@ -38,10 +38,11 @@
   --mi-active-icon: var(--mi-accent);
 }
 :host-context(sh3-menu[data-tint="neutral"]) {
-  /* Match the tab-nav hover exactly: flat surface-hover background + text. */
+  /* Flat surface-hover background. Hover text stays faded (like primary's hover
+     shows the accent, not bright text); the selection brightens to full text. */
   --mi-accent: var(--sh3-color-text-secondary);
   --mi-hover-bg: var(--sh3-color-surface-hover);
-  --mi-hover-fg: var(--sh3-color-text);
+  --mi-hover-fg: var(--sh3-color-text-secondary);
   --mi-active-bg: var(--sh3-color-surface-hover);
   --mi-active-fg: var(--sh3-color-text);
   --mi-active-icon: var(--sh3-color-text);
