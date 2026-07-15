@@ -145,6 +145,15 @@ export class GalleryComponent {
   protected readonly menuActive = signal<string>("");
   protected readonly menuExpanded = signal(false);
   protected readonly menuCollapsible = signal(true);
+
+  /** Flip collapsible; expanded is meaningless without it, so reset it off. */
+  protected toggleCollapsible(): void {
+    const next = !this.menuCollapsible();
+    this.menuCollapsible.set(next);
+    if (!next) {
+      this.menuExpanded.set(false);
+    }
+  }
   /** Structural slots — toggled so the design can be seen with/without each. */
   protected readonly menuHeader = signal(true);
   protected readonly menuSections = signal(true);

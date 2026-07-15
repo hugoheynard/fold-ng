@@ -181,13 +181,14 @@
                   <button
                     type="button"
                     [class.is-on]="menuCollapsible()"
-                    (click)="menuCollapsible.set(!menuCollapsible())"
+                    (click)="toggleCollapsible()"
                   >
                     collapsible
                   </button>
                   <button
                     type="button"
                     [class.is-on]="menuExpanded()"
+                    [disabled]="!menuCollapsible()"
                     (click)="menuExpanded.set(!menuExpanded())"
                   >
                     expanded

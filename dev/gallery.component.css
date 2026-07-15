@@ -254,6 +254,10 @@ sh3-app-shell {
   background: var(--sh3-color-primary-surface);
   color: var(--sh3-color-primary-text);
 }
+.ss-seg button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .ss-group input[type="range"] {
   width: 100%;
   accent-color: var(--sh3-color-primary);
