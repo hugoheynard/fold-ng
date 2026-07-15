@@ -54,15 +54,10 @@
     }
   </sh3-menu>
 
-  <!-- ── rail secondary: section nav, dogfooded as an sh3-menu ──── -->
-  <sh3-menu
-    railSecondary
-    level="secondary"
-    collapsible
-    [expanded]="tocExpanded()"
-    (expandedChange)="tocExpanded.set($event)"
-    tint="primary"
-  >
+  <!-- ── rail secondary: a static "Library" nav, dogfooded as an sh3-menu
+       (level secondary, always expanded, no collapse toggle) ──────── -->
+  <sh3-menu railSecondary level="secondary" [expanded]="true" tint="primary">
+    <div header class="lib-head">Library</div>
     @for (item of toc; track item.id) {
       <button
         sh3-menu-item
@@ -198,14 +193,13 @@
                   <button
                     type="button"
                     [class.is-on]="menuCollapsible()"
-                    (click)="toggleCollapsible()"
+                    (click)="menuCollapsible.set(!menuCollapsible())"
                   >
                     collapsible
                   </button>
                   <button
                     type="button"
                     [class.is-on]="menuExpanded()"
-                    [disabled]="!menuCollapsible()"
                     (click)="menuExpanded.set(!menuExpanded())"
                   >
                     expanded
