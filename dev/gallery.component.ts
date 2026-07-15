@@ -20,6 +20,7 @@ import {
   Sh3MenuComponent,
   Sh3MenuItemComponent,
   Sh3MenuSectionComponent,
+  type Sh3MenuLevel,
   type Sh3MenuTint,
   type Sh3MenuTogglePlacement,
   Sh3PageSectionComponent,
@@ -169,6 +170,13 @@ export class GalleryComponent {
     "neutral",
     "primary",
   ];
+  /** Rail depth → background tint. */
+  protected readonly menuLevel = signal<Sh3MenuLevel>("primary");
+  protected readonly menuLevels: readonly Sh3MenuLevel[] = [
+    "primary",
+    "secondary",
+    "tertiary",
+  ];
   /** Collapse-arrow placement: `auto` follows the slots, the rest pin a band. */
   protected readonly menuArrow = signal<Sh3MenuTogglePlacement>("auto");
   protected readonly menuArrows: readonly Sh3MenuTogglePlacement[] = [
@@ -251,6 +259,7 @@ export class GalleryComponent {
   protected readonly menuCode = computed(() => {
     const attrs = [
       this.menuCollapsible() ? 'collapsible [(expanded)]="expanded"' : "",
+      this.menuLevel() === "primary" ? "" : `level="${this.menuLevel()}"`,
       this.menuTint() === "follow" ? "" : `tint="${this.menuTint()}"`,
       this.menuCollapsible() && this.menuArrow() !== "auto"
         ? `togglePlacement="${this.menuArrow()}"`

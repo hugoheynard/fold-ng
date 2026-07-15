@@ -11,6 +11,7 @@
     [expanded]="menuExpanded()"
     (expandedChange)="menuExpanded.set($event)"
     [tint]="menuTint()"
+    [level]="menuLevel()"
     [togglePlacement]="menuArrow()"
   >
     @if (menuHeader()) {
@@ -268,6 +269,21 @@
                       (click)="menuTint.set(t)"
                     >
                       {{ t }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <div class="ss-group">
+                <span class="ss-label">level</span>
+                <div class="ss-seg">
+                  @for (l of menuLevels; track l) {
+                    <button
+                      type="button"
+                      [class.is-on]="menuLevel() === l"
+                      (click)="menuLevel.set(l)"
+                    >
+                      {{ l }}
                     </button>
                   }
                 </div>
