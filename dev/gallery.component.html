@@ -78,7 +78,22 @@
                 <sh3-icon name="menu" [size]="18" />
               </div>
               <div railSecondary class="sp-rail sp-rail--2">Nav</div>
-              <div header class="sp-header">Header</div>
+              <div header class="sp-header">
+                <span>Header</span>
+                <div class="sp-actions">
+                  <button type="button" (click)="openTabPanel()">
+                    <sh3-icon name="contracts" size="sm" />
+                    Open panel
+                  </button>
+                  <button type="button" (click)="toggleTheme()">
+                    <sh3-icon
+                      [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"
+                      size="sm"
+                    />
+                    {{ theme() === "dark" ? "Light" : "Dark" }}
+                  </button>
+                </div>
+              </div>
               <div class="sp-content">
                 <div class="sp-block"></div>
                 <div class="sp-block"></div>
