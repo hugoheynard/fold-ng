@@ -75,6 +75,8 @@ interface PageTokenGroup {
 interface TocItem {
   readonly id: string;
   readonly label: string;
+  /** Rail icon — defaults to `grid` when unset. */
+  readonly icon?: Sh3IconName;
 }
 
 /**
@@ -501,11 +503,17 @@ export class GalleryComponent {
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
-    { id: "avatar", label: "avatar" },
-    { id: "avatar-detail", label: "avatar-detail" },
-    { id: "avatar-list", label: "avatar-list" },
+    { id: "avatar", label: "avatar", icon: "team" },
     { id: "tokens", label: "design tokens" },
   ];
+
+  /** The avatar page groups the three avatar components behind a tab-nav. */
+  protected readonly avatarTabs: Sh3TabNavItem[] = [
+    { key: "avatar", label: "avatar" },
+    { key: "detail", label: "avatar-detail" },
+    { key: "list", label: "avatar-list" },
+  ];
+  protected readonly avatarTab = signal("avatar");
   /** The section currently in view — drives the nav highlight. */
   protected readonly activeSection = signal<string>("");
 

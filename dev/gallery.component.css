@@ -257,6 +257,11 @@ sh3-app-shell {
   color: var(--sh3-color-text);
 }
 
+/* avatar family page — the tab-nav that switches the three components. */
+.avatar-tabs {
+  margin-bottom: 24px;
+}
+
 /* avatar-list preview — a wide card the list centres on. The component's ring
    defaults to the card surface, so on this card surface it reads correctly. */
 .al-preview {
