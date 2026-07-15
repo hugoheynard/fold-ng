@@ -1,6 +1,25 @@
-<div class="menu-head"><ng-content select="[header]" /></div>
-<nav class="menu-body"><ng-content /></nav>
-@if (collapsible()) {
+<div class="menu-head" #head>
+  <ng-content select="[header]" />
+  @if (collapsible() && togglePlacement() === "header") {
+    <ng-container [ngTemplateOutlet]="toggleTpl" />
+  }
+</div>
+
+<nav class="menu-body">
+  <ng-content />
+  @if (collapsible() && togglePlacement() === "body") {
+    <ng-container [ngTemplateOutlet]="toggleTpl" />
+  }
+</nav>
+
+<div class="menu-foot" #foot>
+  @if (collapsible() && togglePlacement() === "footer") {
+    <ng-container [ngTemplateOutlet]="toggleTpl" />
+  }
+  <ng-content select="[footer]" />
+</div>
+
+<ng-template #toggleTpl>
   <button
     type="button"
     class="menu-toggle"
@@ -12,5 +31,4 @@
       [size]="14"
     />
   </button>
-}
-<div class="menu-foot"><ng-content select="[footer]" /></div>
+</ng-template>

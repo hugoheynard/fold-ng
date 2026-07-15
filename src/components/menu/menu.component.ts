@@ -1,4 +1,17 @@
-import { Component, booleanAttribute, input, model } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  afterNextRender,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+  model,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { Sh3IconComponent } from "../icon/icon.component";
 
 /**
@@ -47,7 +60,7 @@ export type Sh3MenuTint = "follow" | "neutral" | "primary";
 @Component({
   selector: "sh3-menu",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [Sh3IconComponent, NgTemplateOutlet],
   templateUrl: "./menu.component.html",
   styleUrl: "./menu.component.scss",
   host: { "[class.expanded]": "expanded()", "[attr.data-tint]": "tint()" },
@@ -59,6 +72,48 @@ export class Sh3MenuComponent {
   readonly expanded = model(false);
   /** How items tint on hover / when active (`follow` = section colour). */
   readonly tint = input<Sh3MenuTint>("follow");
+
+  private readonly headRef =
+    viewChild.required<ElementRef<HTMLElement>>("head");
+  private readonly footRef =
+    viewChild.required<ElementRef<HTMLElement>>("foot");
+  private readonly hasHeader = signal(false);
+  private readonly hasFooter = signal(false);
+
+  /**
+   * Where the collapse toggle sits: first in the footer, else last in the
+   * header, else last in the body (when neither band has content).
+   */
+  protected readonly togglePlacement = computed<"footer" | "header" | "body">(
+    () => (this.hasFooter() ? "footer" : this.hasHeader() ? "header" : "body"),
+  );
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const head = this.headRef().nativeElement;
+      const foot = this.footRef().nativeElement;
+      const sync = (): void => {
+        this.hasHeader.set(this.slotFilled(head));
+        this.hasFooter.set(this.slotFilled(foot));
+      };
+      sync();
+      const observer = new MutationObserver(sync);
+      observer.observe(head, { childList: true });
+      observer.observe(foot, { childList: true });
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
+  }
+
+  /** True when a band holds projected content (ignoring the toggle itself). */
+  private slotFilled(band: HTMLElement): boolean {
+    for (const child of Array.from(band.children)) {
+      if (!child.classList.contains("menu-toggle")) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   protected toggle(): void {
     this.expanded.update((v) => !v);
