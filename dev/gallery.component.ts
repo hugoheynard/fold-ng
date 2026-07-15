@@ -140,6 +140,10 @@ export class GalleryComponent {
   protected readonly menuExpanded = signal(false);
   protected readonly menuCollapsible = signal(true);
   protected readonly menuSections = signal(true);
+  /** Measured width of the rail menu — the shell column follows it when expanded
+   *  so an expanded menu takes exactly its content width. */
+  private readonly menuRailRef = viewChild<ElementRef<HTMLElement>>("menuRail");
+  protected readonly menuWidth = signal(64);
 
   /** Double-click a component → inspect its tokens + composition in a panel. */
   protected onInspect(event: MouseEvent): void {
@@ -198,7 +202,23 @@ export class GalleryComponent {
   ] as const;
 
   constructor() {
-    afterNextRender(() => this.observeSections());
+    afterNextRender(() => {
+      this.observeSections();
+      this.observeMenuWidth();
+    });
+  }
+
+  /** Track the rail menu's rendered width so the shell column matches its
+   *  content when the menu expands (it is `width: max-content` when expanded). */
+  private observeMenuWidth(): void {
+    const el = this.menuRailRef()?.nativeElement;
+    if (!el) {
+      return;
+    }
+    const observer = new ResizeObserver(() => {
+      this.menuWidth.set(Math.ceil(el.getBoundingClientRect().width));
+    });
+    observer.observe(el);
   }
 
   private observeSections(): void {

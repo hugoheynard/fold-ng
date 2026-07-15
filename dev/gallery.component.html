@@ -1,11 +1,12 @@
 <sh3-app-shell
   [appearance]="shellAppearance()"
   [headerLayout]="shellHeaderLayout()"
-  [railWidth]="menuExpanded() ? 236 : shellRailWidth()"
+  [railWidth]="menuExpanded() ? menuWidth() : shellRailWidth()"
   [headerHeight]="shellHeaderHeight()"
 >
   <!-- ── rail primary: the sh3-menu (parameterised from the settings card) ── -->
   <sh3-menu
+    #menuRail
     railPrimary
     [collapsible]="menuCollapsible()"
     [expanded]="menuExpanded()"
