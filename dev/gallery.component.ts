@@ -30,7 +30,6 @@ import {
   type Sh3TabNavItem,
 } from "../src/index";
 import { TokenPanelComponent } from "./token-panel.component";
-import { TocPanelComponent, type TocItem } from "./toc-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
 import { InspectPanelComponent } from "./inspect-panel.component";
 import { closestSh3, inspect } from "./inspect";
@@ -41,6 +40,12 @@ interface MenuSection {
   name: string;
   color: string;
   icons: number;
+}
+
+/** One entry in the gallery's section nav (the railSecondary sh3-menu). */
+interface TocItem {
+  readonly id: string;
+  readonly label: string;
 }
 
 /**
@@ -71,7 +76,6 @@ interface MenuSection {
     Sh3MenuSectionComponent,
     Sh3PanelHostComponent,
     TokenPanelComponent,
-    TocPanelComponent,
   ],
   host: { "[attr.data-theme]": "theme() === 'light' ? 'light' : null" },
   templateUrl: "./gallery.component.html",
@@ -322,8 +326,17 @@ export class GalleryComponent {
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
   ];
-  /** The section currently in view — drives the TOC highlight. */
+  /** The section currently in view — drives the nav highlight. */
   protected readonly activeSection = signal<string>("");
+  /** The section nav (railSecondary sh3-menu) starts expanded (labels shown). */
+  protected readonly tocExpanded = signal(true);
+
+  /** Smooth-scroll the content to a section (section-nav item click). */
+  protected scrollTo(id: string): void {
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   // `as const` so each loop variable keeps its literal union type — required
   // for strictTemplates to accept it as a component input.
