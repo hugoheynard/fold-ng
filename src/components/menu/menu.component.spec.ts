@@ -6,7 +6,11 @@ import { Sh3MenuComponent } from "./menu.component";
 @Component({
   standalone: true,
   imports: [Sh3MenuComponent],
-  template: `<sh3-menu [collapsible]="collapsible()" [(expanded)]="expanded">
+  template: `<sh3-menu
+    [collapsible]="collapsible()"
+    [(expanded)]="expanded"
+    [tint]="tint()"
+  >
     <div header class="h">Brand</div>
     <a class="item">Item</a>
     <div footer class="f">Account</div>
@@ -15,6 +19,7 @@ import { Sh3MenuComponent } from "./menu.component";
 class HostComponent {
   readonly collapsible = signal(false);
   readonly expanded = signal(false);
+  readonly tint = signal<"follow" | "neutral" | "primary">("follow");
 }
 
 function render() {
@@ -38,6 +43,14 @@ describe("Sh3MenuComponent", () => {
     fixture.componentInstance.collapsible.set(true);
     fixture.detectChanges();
     expect(menu.querySelector(".menu-toggle")).not.toBeNull();
+  });
+
+  it("reflects the tint mode onto the host as data-tint", () => {
+    const { fixture, menu } = render();
+    expect(menu.getAttribute("data-tint")).toBe("follow");
+    fixture.componentInstance.tint.set("primary");
+    fixture.detectChanges();
+    expect(menu.getAttribute("data-tint")).toBe("primary");
   });
 
   it("toggles the expanded class + writes back the two-way state", () => {

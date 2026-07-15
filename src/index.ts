@@ -13,6 +13,7 @@ export { Sh3ContextCardComponent } from "./components/context-card/context-card.
 export { Sh3ElementTitleComponent } from "./components/element-title/element-title.component";
 export { Sh3LinkComponent } from "./components/link/link.component";
 export { Sh3MenuComponent } from "./components/menu/menu.component";
+export type { Sh3MenuTint } from "./components/menu/menu.component";
 export { Sh3MenuItemComponent } from "./components/menu/menu-item.component";
 export { Sh3MenuSeparatorComponent } from "./components/menu/menu-separator.component";
 export { Sh3MenuSectionComponent } from "./components/menu/menu-section.component";

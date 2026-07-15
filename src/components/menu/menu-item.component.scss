@@ -13,30 +13,40 @@
   transition:
     background var(--sh3-motion-fast),
     color var(--sh3-motion-fast);
+
+  /* The tint the item hovers/activates with. `follow` (the sh3-menu default)
+     takes the enclosing section's colour, or neutral when there's no section
+     (the footer). The menu's `tint` input overrides it for all its items. */
+  --mi-accent: var(--sh3-menu-section-color, var(--sh3-color-text-secondary));
 }
-/* Hover takes the enclosing section's tint (published as
-   --sh3-menu-section-color by sh3-menu-section). Section-less items — e.g. the
-   footer — fall back to the neutral hover, pixel-identical. */
+:host-context(sh3-menu[data-tint="neutral"]) {
+  --mi-accent: var(--sh3-color-text-secondary);
+}
+:host-context(sh3-menu[data-tint="primary"]) {
+  --mi-accent: var(--sh3-color-primary);
+}
+
 :host(:hover) {
   background: color-mix(
     in srgb,
-    var(--sh3-menu-section-color, var(--sh3-color-surface-hover)) 18%,
+    var(--mi-accent) 16%,
     var(--sh3-color-surface-hover)
   );
-  color: var(--sh3-menu-section-color, var(--sh3-color-text-secondary));
+  color: var(--mi-accent);
 }
 :host(:focus-visible) {
   outline: 2px solid var(--sh3-color-primary);
   outline-offset: 2px;
 }
 
-/* Active — accent tint + a left indicator bar (matches the shell's rail). */
+/* Active — the tint persists after a click: filled with the accent + a left
+   indicator bar (matches the shell's rail). */
 :host(.is-active) {
   color: var(--sh3-color-text);
-  background: var(--sh3-color-primary-surface);
+  background: color-mix(in srgb, var(--mi-accent) 20%, transparent);
 }
 :host(.is-active) .mi-icon {
-  color: var(--sh3-color-primary);
+  color: var(--mi-accent);
 }
 :host(.is-active)::before {
   content: "";
@@ -46,7 +56,7 @@
   bottom: 8px;
   width: 2px;
   border-radius: 0 2px 2px 0;
-  background: var(--sh3-color-primary);
+  background: var(--mi-accent);
 }
 
 .mi-icon {

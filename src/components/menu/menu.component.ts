@@ -2,6 +2,15 @@ import { Component, booleanAttribute, input, model } from "@angular/core";
 import { Sh3IconComponent } from "../icon/icon.component";
 
 /**
+ * How menu items colour on hover and when active:
+ * - `follow` — take the enclosing section's colour (falls back to neutral for
+ *   section-less items, e.g. the footer).
+ * - `neutral` — a plain grey tint, no accent.
+ * - `primary` — the app's primary accent.
+ */
+export type Sh3MenuTint = "follow" | "neutral" | "primary";
+
+/**
  * `<sh3-menu>` — a vertical icon navigation rail (the app's primary menu shell).
  *
  * Structural + presentational: it owns the rail column, its top/body/bottom
@@ -41,13 +50,15 @@ import { Sh3IconComponent } from "../icon/icon.component";
   imports: [Sh3IconComponent],
   templateUrl: "./menu.component.html",
   styleUrl: "./menu.component.scss",
-  host: { "[class.expanded]": "expanded()" },
+  host: { "[class.expanded]": "expanded()", "[attr.data-tint]": "tint()" },
 })
 export class Sh3MenuComponent {
   /** Show a chevron toggle that flips `expanded`. */
   readonly collapsible = input(false, { transform: booleanAttribute });
   /** Two-way: `true` widens the rail and reveals inline labels. */
   readonly expanded = model(false);
+  /** How items tint on hover / when active (`follow` = section colour). */
+  readonly tint = input<Sh3MenuTint>("follow");
 
   protected toggle(): void {
     this.expanded.update((v) => !v);
