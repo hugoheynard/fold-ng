@@ -4,8 +4,12 @@
   width: 100%;
   overflow: hidden;
   background: var(--sh3-color-bg-page);
+  /* Both rails are intrinsic — each projected rail component sizes itself and
+     the `auto` track follows it (a self-collapsing rail shrinks to 0). The
+     primary reads `--sh3-shell-rail-width` for its base width via the rail
+     component; the secondary is driven by the workspace rail the same way. */
   grid-template-columns:
-    var(--sh3-shell-rail-width, 64px)
+    auto
     auto
     minmax(0, 1fr);
   grid-template-rows: var(--sh3-shell-header-height, 56px) 1fr;
@@ -37,16 +41,6 @@
   overflow: hidden;
 }
 
-/* railGrows — the primary column grows to its content, with railWidth as the
-       floor. Lets a self-sizing rail (e.g. an expanding sh3-menu) drive the
-       column width directly, no JS measurement. */
-:host(.rail-grows) {
-  grid-template-columns:
-    minmax(var(--sh3-shell-rail-width, 64px), max-content)
-    auto
-    minmax(0, 1fr);
-}
-
 /* headerLayout="full" — header spans every column, above the rails, instead
        of sitting over the content column with the rails climbing its side. */
 :host(.header-full) {
@@ -76,8 +70,7 @@
        :host(.header-full), so source order lets the mobile rule win). */
 @media (max-width: 768px) {
   :host,
-  :host(.header-full),
-  :host(.rail-grows) {
+  :host(.header-full) {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr;
     grid-template-areas:

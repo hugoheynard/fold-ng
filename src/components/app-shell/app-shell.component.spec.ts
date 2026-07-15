@@ -31,13 +31,11 @@ class SizedHostComponent {
   template: `<sh3-app-shell
     [headerLayout]="layout()"
     [appearance]="appearance()"
-    [railGrows]="railGrows()"
   />`,
 })
 class LayoutHostComponent {
   readonly layout = signal<"inset" | "full">("inset");
   readonly appearance = signal<"flat" | "floating">("flat");
-  readonly railGrows = signal(false);
 }
 
 function setup() {
@@ -98,19 +96,6 @@ describe("Sh3AppShellComponent", () => {
     const shell = host.querySelector("sh3-app-shell") ?? host;
     expect(shell.classList.contains("header-full")).toBe(false);
     expect(shell.classList.contains("floating")).toBe(false);
-    expect(shell.classList.contains("rail-grows")).toBe(false);
-  });
-
-  it("toggles the rail-grows class from railGrows", () => {
-    const fixture = TestBed.createComponent(LayoutHostComponent);
-    fixture.detectChanges();
-    const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
-    ) as HTMLElement;
-
-    fixture.componentInstance.railGrows.set(true);
-    fixture.detectChanges();
-    expect(shell.classList.contains("rail-grows")).toBe(true);
   });
 
   it('toggles the header-full class from headerLayout="full"', () => {

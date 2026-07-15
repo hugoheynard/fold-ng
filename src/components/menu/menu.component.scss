@@ -2,7 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  /* The menu owns its width; the shell's `auto` rail column follows it. Reads
+     the shell's base rail width (its `railWidth`), falling back to 64 when used
+     standalone. Expanded overrides this with its content width below. */
+  width: var(--sh3-shell-rail-width, 64px);
   height: 100%;
   padding: 10px 0;
   gap: 4px;

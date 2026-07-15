@@ -1,4 +1,4 @@
-import { Component, booleanAttribute, computed, input } from "@angular/core";
+import { Component, computed, input } from "@angular/core";
 
 /**
  * `<sh3-app-shell>` — the responsive application skeleton.
@@ -20,9 +20,9 @@ import { Component, booleanAttribute, computed, input } from "@angular/core";
  * ┌────────┬──────────────┬─────────────────────┐
  * │  rail  │ rail          │ header              │  ← header row
  * │ primary│ secondary     ├─────────────────────┤
- * │        │ (auto width,  │ content             │  ← content row
- * │        │  self-        │ (position: relative │
- * │        │  collapsing)  │  anchor for panels) │
+ * │ (auto, │ (auto width,  │ content             │  ← content row
+ * │  self- │  self-        │ (position: relative │
+ * │  sized)│  collapsing)  │  anchor for panels) │
  * └────────┴──────────────┴─────────────────────┘
  * ```
  *
@@ -31,7 +31,7 @@ import { Component, booleanAttribute, computed, input } from "@angular/core";
  * ## Slots
  * | Attribute        | Region                                    |
  * |------------------|-------------------------------------------|
- * | `railPrimary`    | Left rail (fixed `railWidth`, or grows to content when `railGrows`). |
+ * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--sh3-shell-rail-width`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. |
@@ -39,7 +39,7 @@ import { Component, booleanAttribute, computed, input } from "@angular/core";
  * ## Sizing knobs
  * | Input                | CSS variable                       | Default | Meaning                    |
  * |----------------------|------------------------------------|---------|----------------------------|
- * | `railWidth`          | `--sh3-shell-rail-width`           | `64px`  | Primary-rail column width. |
+ * | `railWidth`          | `--sh3-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
  * | `headerHeight`       | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
  * | `headerHeightMobile` | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
  *
@@ -75,25 +75,18 @@ import { Component, booleanAttribute, computed, input } from "@angular/core";
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
     "[class.header-full]": 'headerLayout() === "full"',
     "[class.floating]": 'appearance() === "floating"',
-    "[class.rail-grows]": "railGrows()",
   },
   templateUrl: "./app-shell.component.html",
   styleUrl: "./app-shell.component.scss",
 })
 export class Sh3AppShellComponent {
-  /** Primary-rail column width in px. Omit to inherit `--sh3-shell-rail-width` (64). */
+  /** Base width the primary rail reads in px (the column is intrinsic — the rail
+   *  component sizes itself). Omit to inherit `--sh3-shell-rail-width` (64). */
   readonly railWidth = input<number>();
   /** Header row height in px. Omit to inherit `--sh3-shell-header-height` (56). */
   readonly headerHeight = input<number>();
   /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
-
-  /**
-   * Let the primary rail grow past `railWidth` to its content's width (that
-   * width becomes the floor). Use it when the rail component sizes itself — e.g.
-   * an `sh3-menu` that expands — so the column follows without measuring.
-   */
-  readonly railGrows = input(false, { transform: booleanAttribute });
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");
