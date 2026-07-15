@@ -919,85 +919,91 @@
               title="sh3-avatar"
               description="A user or entity avatar: initials on a deterministic colour from the shared palette (same seed → same colour, everywhere), or an image via imageUrl. ghost dashes the border for guests; square switches to a rounded tile for orgs."
             >
-              <div class="gal-stack">
-                <div class="gal-cell">
-                  <span class="gal-tag">size · sm / md / lg</span>
-                  <div class="gal-row">
-                    <sh3-avatar name="Clément Aubry" size="sm" />
-                    <sh3-avatar name="Clément Aubry" size="md" />
-                    <sh3-avatar name="Clément Aubry" size="lg" />
+              <div class="demo-inspect">
+                <div class="demo-groups">
+                  @for (g of avatarDemos; track g.label) {
+                    <div class="gal-cell">
+                      <span class="gal-tag">{{ g.label }}</span>
+                      <div class="gal-row">
+                        @for (d of g.items; track $index) {
+                          <button
+                            type="button"
+                            class="demo-pick"
+                            [class.is-picked]="avatarPicked() === d"
+                            (click)="avatarPicked.set(d)"
+                          >
+                            <sh3-avatar
+                              [name]="d.name"
+                              [size]="d.size ?? 'md'"
+                              [variant]="d.variant ?? 'solid'"
+                              [square]="d.square ?? false"
+                              [imageUrl]="d.image ? demoAvatarImage : undefined"
+                              [muted]="d.muted ?? false"
+                              [ring]="d.ring ?? 'none'"
+                              [ringStyle]="d.ringStyle ?? 'solid'"
+                            />
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+                  <div class="gal-cell">
+                    <span class="gal-tag"
+                      >deterministic colour per seed — switch recolours all at
+                      once</span
+                    >
+                    <div class="palette-switch">
+                      @for (p of palettes; track p) {
+                        <button
+                          type="button"
+                          [class.is-on]="activePalette() === p"
+                          (click)="setPalette(p)"
+                        >
+                          {{ p }}
+                        </button>
+                      }
+                    </div>
+                    <div class="gal-row">
+                      @for (n of avatarNames; track n) {
+                        <sh3-avatar [name]="n" size="lg" />
+                      }
+                    </div>
                   </div>
                 </div>
-                <div class="gal-cell">
-                  <span class="gal-tag"
-                    >variant · solid / ghost (guest) · square (org)</span
-                  >
-                  <div class="gal-row">
-                    <sh3-avatar name="Inès Bernard" />
-                    <sh3-avatar name="Inès Bernard" variant="ghost" />
-                    <sh3-avatar name="Sh3pherd" square />
+
+                <div class="demo-code">
+                  <div class="code-note">
+                    <sh3-icon name="warning" size="sm" />
+                    <span
+                      >Exemples illustratifs — clique un avatar pour charger son
+                      markup, puis adapte-le à tes données.</span
+                    >
                   </div>
-                </div>
-                <div class="gal-cell">
-                  <span class="gal-tag"
-                    >imageUrl — replaces initials (round + square)</span
-                  >
-                  <div class="gal-row">
-                    <sh3-avatar name="Léa Petit" [imageUrl]="demoAvatarImage" />
-                    <sh3-avatar
-                      name="Sh3pherd"
-                      square
-                      [imageUrl]="demoAvatarImage"
-                    />
-                  </div>
-                </div>
-                <div class="gal-cell">
-                  <span class="gal-tag"
-                    >state · muted (absence) + status ring (solid / dotted =
-                    scheduled)</span
-                  >
-                  <div class="gal-row">
-                    <sh3-avatar name="Marc Machine" size="lg" [muted]="true" />
-                    <sh3-avatar
-                      name="Sofia Duarte"
-                      size="lg"
-                      ring="accent"
-                      ringStyle="dotted"
-                    />
-                    <sh3-avatar
-                      name="Léa Petit"
-                      size="lg"
-                      ring="warning"
-                      ringStyle="dotted"
-                    />
-                    <sh3-avatar
-                      name="Tom Rivière"
-                      size="lg"
-                      ring="alert"
-                      ringStyle="dotted"
-                    />
-                    <sh3-avatar name="Nora Khan" size="lg" ring="success" />
-                  </div>
-                </div>
-                <div class="gal-cell">
-                  <span class="gal-tag"
-                    >deterministic colour per seed — switch recolours all at
-                    once</span
-                  >
-                  <div class="palette-switch">
-                    @for (p of palettes; track p) {
-                      <button
-                        type="button"
-                        [class.is-on]="activePalette() === p"
-                        (click)="setPalette(p)"
-                      >
-                        {{ p }}
-                      </button>
-                    }
-                  </div>
-                  <div class="gal-row">
-                    @for (n of avatarNames; track n) {
-                      <sh3-avatar [name]="n" size="lg" />
+                  <div class="code-block">
+                    <div class="code-top">
+                      <span class="code-lang">html</span>
+                      @if (avatarPickedCode()) {
+                        <button
+                          type="button"
+                          class="code-copy"
+                          (click)="copyDemoCode(avatarPickedCode())"
+                        >
+                          <sh3-icon
+                            [name]="demoCopied() ? 'check-circle' : 'copy'"
+                            size="sm"
+                          />
+                          {{ demoCopied() ? "Copied" : "Copy" }}
+                        </button>
+                      }
+                    </div>
+                    @if (avatarPickedCode()) {
+                      <pre
+                        class="code-pre"
+                      ><code>{{ avatarPickedCode() }}</code></pre>
+                    } @else {
+                      <pre
+                        class="code-pre code-pre--empty"
+                      ><code>&lt;!-- clique un avatar --&gt;</code></pre>
                     }
                   </div>
                 </div>
@@ -1009,52 +1015,68 @@
               title="sh3-avatar-detail — identity cell"
               description="The canonical identity cell: an avatar beside one or two lines of text (name + email, entity + subtitle). A single line centres against the avatar; two lines stack. The initials and colour derive from the primary line unless avatarName overrides it."
             >
-              <div class="gal-stack">
-                <div class="gal-cell">
-                  <span class="gal-tag">two lines (name + email) · sizes</span>
-                  <div class="gal-row gal-row--wide">
-                    <sh3-avatar-detail
-                      primary="Clément Aubry"
-                      secondary="clement@sh3pherd.dev"
-                      size="sm"
-                    />
-                    <sh3-avatar-detail
-                      primary="Clément Aubry"
-                      secondary="clement@sh3pherd.dev"
-                    />
-                    <sh3-avatar-detail
-                      primary="Clément Aubry"
-                      secondary="clement@sh3pherd.dev"
-                      size="lg"
-                    />
+              <div class="demo-inspect">
+                <div class="demo-groups">
+                  @for (g of detailDemos; track g.label) {
+                    <div class="gal-cell">
+                      <span class="gal-tag">{{ g.label }}</span>
+                      <div class="gal-row gal-row--wide">
+                        @for (d of g.items; track $index) {
+                          <button
+                            type="button"
+                            class="demo-pick demo-pick--wide"
+                            [class.is-picked]="detailPicked() === d"
+                            (click)="detailPicked.set(d)"
+                          >
+                            <sh3-avatar-detail
+                              [primary]="d.primary"
+                              [secondary]="d.secondary ?? ''"
+                              [size]="d.size ?? 'md'"
+                              [variant]="d.variant ?? 'solid'"
+                              [square]="d.square ?? false"
+                              [imageUrl]="d.image ? demoAvatarImage : undefined"
+                            />
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                <div class="demo-code">
+                  <div class="code-note">
+                    <sh3-icon name="warning" size="sm" />
+                    <span
+                      >Exemples illustratifs — clique une cellule pour charger
+                      son markup, puis adapte-le à tes données.</span
+                    >
                   </div>
-                </div>
-                <div class="gal-cell">
-                  <span class="gal-tag"
-                    >single line — centres against the avatar</span
-                  >
-                  <sh3-avatar-detail primary="Inès Bernard" />
-                </div>
-                <div class="gal-cell">
-                  <span class="gal-tag"
-                    >ghost (guest) · square (org) · image</span
-                  >
-                  <div class="gal-row gal-row--wide">
-                    <sh3-avatar-detail
-                      primary="Marc Machine"
-                      secondary="Invité"
-                      variant="ghost"
-                    />
-                    <sh3-avatar-detail
-                      primary="Sh3pherd"
-                      secondary="Organisation"
-                      square
-                    />
-                    <sh3-avatar-detail
-                      primary="Léa Petit"
-                      secondary="Design"
-                      [imageUrl]="demoAvatarImage"
-                    />
+                  <div class="code-block">
+                    <div class="code-top">
+                      <span class="code-lang">html</span>
+                      @if (detailPickedCode()) {
+                        <button
+                          type="button"
+                          class="code-copy"
+                          (click)="copyDemoCode(detailPickedCode())"
+                        >
+                          <sh3-icon
+                            [name]="demoCopied() ? 'check-circle' : 'copy'"
+                            size="sm"
+                          />
+                          {{ demoCopied() ? "Copied" : "Copy" }}
+                        </button>
+                      }
+                    </div>
+                    @if (detailPickedCode()) {
+                      <pre
+                        class="code-pre"
+                      ><code>{{ detailPickedCode() }}</code></pre>
+                    } @else {
+                      <pre
+                        class="code-pre code-pre--empty"
+                      ><code>&lt;!-- clique une cellule --&gt;</code></pre>
+                    }
                   </div>
                 </div>
               </div>
