@@ -30,6 +30,9 @@ import {
   Sh3StatusBadgeComponent,
   Sh3TabNavComponent,
   type Sh3TabNavItem,
+  type Sh3RadiusToken,
+  type Sh3SemanticColorToken,
+  sh3ColorProperty,
 } from "../src/index";
 import { TokenPanelComponent } from "./token-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
@@ -48,10 +51,12 @@ interface MenuSection {
 /** Responsive preview mode for the app-shell page. */
 type ShellMode = "desktop" | "tablet" | "mobile";
 
-/** A design token a page exposes for overriding (roundness/colour/layout). */
-type PageTokenKind = "color" | "size";
+/** A design token a page exposes for overriding — its full custom-property name
+ *  is derived from the typed catalog, so a renamed/removed token is a compile
+ *  error here (the list can't silently go stale). */
+type PageTokenKind = "color" | "radius";
 interface PageToken {
-  readonly name: string;
+  readonly prop: string;
   readonly desc: string;
   readonly kind: PageTokenKind;
 }
@@ -159,85 +164,49 @@ export class GalleryComponent {
 
   /* ── "Show code" overlay + the page's overridable tokens ──────────────
    *  The code switch (in the mode bar) drops a glass sheet over the preview:
-   *  HTML usage on the left, the CSS custom-properties to override on the
-   *  right. The same token list feeds the "Tokens" card below the preview.
-   *  Semantics are the preferred override surface (not raw primitives). */
+   *  HTML usage on the left, the CSS you'd paste to apply your overrides on the
+   *  right. The Tokens card below is a live sandbox — adjust a token and the
+   *  preview updates. Semantics are the preferred override surface. */
   protected readonly showCode = signal(false);
 
-  /** The tokens this page cares about — roundness, surface colours, layout. */
+  /** The shell's overridable tokens — derived from the typed catalog. Rail
+   *  width / header height are omitted here: they already have live sliders. */
   protected readonly shellTokens: readonly PageTokenGroup[] = [
     {
       label: "roundness",
-      tokens: [
-        {
-          name: "--sh3-radius-lg",
-          desc: "floating region cards",
-          kind: "size",
-        },
-      ],
+      tokens: [radiusToken("lg", "floating region cards")],
     },
     {
       label: "surfaces",
       tokens: [
-        {
-          name: "--sh3-color-bg-page",
-          desc: "page + floating gutter",
-          kind: "color",
-        },
-        {
-          name: "--sh3-color-bg-rail-primary",
-          desc: "primary rail",
-          kind: "color",
-        },
-        {
-          name: "--sh3-color-bg-rail-secondary",
-          desc: "secondary rail",
-          kind: "color",
-        },
-        { name: "--sh3-color-bg-header", desc: "header band", kind: "color" },
-        {
-          name: "--sh3-color-border",
-          desc: "region separators",
-          kind: "color",
-        },
-      ],
-    },
-    {
-      label: "layout",
-      tokens: [
-        {
-          name: "--sh3-shell-rail-width",
-          desc: "primary rail width",
-          kind: "size",
-        },
-        {
-          name: "--sh3-shell-header-height",
-          desc: "header height",
-          kind: "size",
-        },
+        colorToken("bg-page", "page + floating gutter"),
+        colorToken("bg-rail-primary", "primary rail"),
+        colorToken("bg-rail-secondary", "secondary rail"),
+        colorToken("bg-header", "header band"),
+        colorToken("border", "region separators"),
       ],
     },
   ];
 
-  /** Live resolved value per token, read off the preview shell. DOM reads live
-   *  in an effect (below), never in a computed. */
-  protected readonly tokenValues = signal<Record<string, string>>({});
   private readonly previewShellRef =
     viewChild<ElementRef<HTMLElement>>("previewShell");
+  /** Live sandbox state — the token overrides the user has typed (prop → value).
+   *  Applied to the preview shell in an effect; emitted as the CSS block. */
+  protected readonly shellOverrides = signal<Record<string, string>>({});
+  protected readonly hasShellOverrides = computed(
+    () => Object.keys(this.shellOverrides()).length > 0,
+  );
+  protected setShellOverride(prop: string, value: string): void {
+    this.shellOverrides.update((o) => withOverride(o, prop, value));
+  }
+  protected resetShellOverrides(): void {
+    this.shellOverrides.set({});
+  }
 
-  /** The CSS override block for the overlay's right pane — semantics first. */
-  protected readonly shellTokensCss = computed(() => {
-    const values = this.tokenValues();
-    const lines = ["sh3-app-shell {"];
-    for (const group of this.shellTokens) {
-      lines.push(`  /* ${group.label} */`);
-      for (const token of group.tokens) {
-        lines.push(`  ${token.name}: ${values[token.name] || "inherit"};`);
-      }
-    }
-    lines.push("}");
-    return lines.join("\n");
-  });
+  /** The CSS block for the overlay's right pane — the overrides you've made. */
+  protected readonly shellTokensCss = computed(() =>
+    overrideCss("sh3-app-shell", this.shellOverrides()),
+  );
   protected readonly cssCopied = signal(false);
   protected copyShellTokensCss(): void {
     void navigator.clipboard.writeText(this.shellTokensCss()).then(() => {
@@ -279,6 +248,9 @@ export class GalleryComponent {
     { id: "music", icon: "music", label: "Music" },
   ] as const;
   protected readonly railActive = signal<string>("home");
+  /** The app-shell preview's own primary-rail selection (decoupled from the
+   *  gallery's outer rail, which reuses the same nav data). */
+  protected readonly previewNav = signal<string>("home");
 
   /* ── Library nav (railSecondary) — its tint/level come from the preview via
    *    "Apply to Library". ── */
@@ -442,73 +414,44 @@ export class GalleryComponent {
   /* ── Menu page: "code" overlay + overridable tokens (third column) ──── */
   protected readonly menuShowCode = signal(false);
 
-  /** The tokens the menu exposes — roundness, rail surfaces, accent. */
+  /** The menu's overridable tokens — derived from the typed catalog. */
   protected readonly menuTokens: readonly PageTokenGroup[] = [
     {
       label: "roundness",
       tokens: [
-        { name: "--sh3-radius-sm", desc: "item background", kind: "size" },
-        {
-          name: "--sh3-radius-lg",
-          desc: "floating rail card",
-          kind: "size",
-        },
+        radiusToken("sm", "item background"),
+        radiusToken("lg", "floating rail card"),
       ],
     },
     {
       label: "surfaces",
       tokens: [
-        {
-          name: "--sh3-color-bg-rail-primary",
-          desc: "level primary",
-          kind: "color",
-        },
-        {
-          name: "--sh3-color-bg-rail-secondary",
-          desc: "level secondary",
-          kind: "color",
-        },
-        {
-          name: "--sh3-color-bg-rail-tertiary",
-          desc: "level tertiary",
-          kind: "color",
-        },
-        {
-          name: "--sh3-color-surface-hover",
-          desc: "neutral hover / active",
-          kind: "color",
-        },
+        colorToken("bg-rail-primary", "level primary"),
+        colorToken("bg-rail-secondary", "level secondary"),
+        colorToken("bg-rail-tertiary", "level tertiary"),
+        colorToken("surface-hover", "neutral hover / active"),
       ],
     },
-    {
-      label: "accent",
-      tokens: [
-        {
-          name: "--sh3-color-primary",
-          desc: "primary tint (bar + active)",
-          kind: "color",
-        },
-      ],
-    },
+    { label: "accent", tokens: [colorToken("primary", "primary tint")] },
   ];
 
-  protected readonly menuTokenValues = signal<Record<string, string>>({});
   private readonly menuPreviewRef =
     viewChild<ElementRef<HTMLElement>>("menuPreview");
+  protected readonly menuOverrides = signal<Record<string, string>>({});
+  protected readonly hasMenuOverrides = computed(
+    () => Object.keys(this.menuOverrides()).length > 0,
+  );
+  protected setMenuOverride(prop: string, value: string): void {
+    this.menuOverrides.update((o) => withOverride(o, prop, value));
+  }
+  protected resetMenuOverrides(): void {
+    this.menuOverrides.set({});
+  }
 
-  /** CSS override block for the menu overlay's right pane — semantics first. */
-  protected readonly menuTokensCss = computed(() => {
-    const values = this.menuTokenValues();
-    const lines = ["sh3-menu {"];
-    for (const group of this.menuTokens) {
-      lines.push(`  /* ${group.label} */`);
-      for (const token of group.tokens) {
-        lines.push(`  ${token.name}: ${values[token.name] || "inherit"};`);
-      }
-    }
-    lines.push("}");
-    return lines.join("\n");
-  });
+  /** CSS override block for the menu overlay's right pane — your overrides. */
+  protected readonly menuTokensCss = computed(() =>
+    overrideCss("sh3-menu", this.menuOverrides()),
+  );
   protected readonly menuCssCopied = signal(false);
   protected copyMenuTokensCss(): void {
     void navigator.clipboard.writeText(this.menuTokensCss()).then(() => {
@@ -584,30 +527,23 @@ export class GalleryComponent {
 
   constructor() {
     afterNextRender(() => this.observeSections());
-    // Resolve the page's tokens off the live preview shell. getComputedStyle is
-    // a DOM read → keep it in an effect and mirror the result into a signal
-    // (a computed must stay pure). Re-runs when the theme or size settings move.
-    effect(() => {
-      this.theme();
-      this.shellRailWidth();
-      this.shellHeaderHeight();
-      const el = this.previewShellRef()?.nativeElement;
-      if (!el) {
-        return;
-      }
-      this.tokenValues.set(resolveTokens(el, this.shellTokens));
-    });
-    // Same, for the menu page's tokens — re-resolve on level/tint/theme change.
-    effect(() => {
-      this.theme();
-      this.menuLevel();
-      this.menuTint();
-      const el = this.menuPreviewRef()?.nativeElement;
-      if (!el) {
-        return;
-      }
-      this.menuTokenValues.set(resolveTokens(el, this.menuTokens));
-    });
+    // Live sandbox: write the token overrides onto the preview elements. A DOM
+    // write (setProperty/removeProperty) → an effect, not a computed. Each
+    // re-runs when its override map (or the target element) changes.
+    effect(() =>
+      applyOverrides(
+        this.previewShellRef()?.nativeElement,
+        this.shellTokens,
+        this.shellOverrides(),
+      ),
+    );
+    effect(() =>
+      applyOverrides(
+        this.menuPreviewRef()?.nativeElement,
+        this.menuTokens,
+        this.menuOverrides(),
+      ),
+    );
   }
 
   private observeSections(): void {
@@ -631,18 +567,68 @@ export class GalleryComponent {
   }
 }
 
-/** Read each token's resolved value off `el` (a DOM read — call from an effect,
- *  never a computed). Returns a `name → value` map. */
-function resolveTokens(
-  el: HTMLElement,
-  groups: readonly PageTokenGroup[],
+/** A colour token → a page token. The id is typed against the catalog, so a
+ *  renamed/removed colour is a compile error (the list can't go stale). */
+function colorToken(token: Sh3SemanticColorToken, desc: string): PageToken {
+  return { prop: sh3ColorProperty(token), desc, kind: "color" };
+}
+
+/** A radius token → a page token (typed against the catalog, same as above). */
+function radiusToken(token: Sh3RadiusToken, desc: string): PageToken {
+  return { prop: `--sh3-radius-${token}`, desc, kind: "radius" };
+}
+
+/** Set (or, for a blank value, clear) one override — returns a new map. */
+function withOverride(
+  map: Record<string, string>,
+  prop: string,
+  value: string,
 ): Record<string, string> {
-  const styles = getComputedStyle(el);
-  const values: Record<string, string> = {};
+  const next = { ...map };
+  const trimmed = value.trim();
+  if (trimmed) {
+    next[prop] = trimmed;
+  } else {
+    delete next[prop];
+  }
+  return next;
+}
+
+/** The CSS block a user would paste to apply their overrides. */
+function overrideCss(
+  selector: string,
+  overrides: Record<string, string>,
+): string {
+  const entries = Object.entries(overrides);
+  if (entries.length === 0) {
+    return "/* adjust a token on the left to see the CSS here */";
+  }
+  const lines = [`${selector} {`];
+  for (const [prop, value] of entries) {
+    lines.push(`  ${prop}: ${value};`);
+  }
+  lines.push("}");
+  return lines.join("\n");
+}
+
+/** Write the current overrides onto `el` — cleared tokens are removed so the
+ *  element falls back to the theme. A DOM write → call from an effect. */
+function applyOverrides(
+  el: HTMLElement | undefined,
+  groups: readonly PageTokenGroup[],
+  overrides: Record<string, string>,
+): void {
+  if (!el) {
+    return;
+  }
   for (const group of groups) {
     for (const token of group.tokens) {
-      values[token.name] = styles.getPropertyValue(token.name).trim();
+      const value = overrides[token.prop];
+      if (value) {
+        el.style.setProperty(token.prop, value);
+      } else {
+        el.style.removeProperty(token.prop);
+      }
     }
   }
-  return values;
 }
