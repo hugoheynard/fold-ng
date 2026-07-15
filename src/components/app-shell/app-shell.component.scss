@@ -95,3 +95,28 @@
     display: none;
   }
 }
+
+/* Container-query responsiveness — mirrors the viewport rules but keyed to the
+   shell's own width. Only fires inside an ancestor with `container-type` (e.g.
+   the gallery's responsive-mode preview); the app has none, so it stays on the
+   @media rules above. Two steps: the secondary rail folds first (tablet), then
+   both rails (mobile). */
+@container (max-width: 1024px) {
+  .rail-secondary {
+    display: none;
+  }
+}
+@container (max-width: 768px) {
+  :host,
+  :host(.header-full) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr;
+    grid-template-areas:
+      "header"
+      "content";
+  }
+  .rail-primary,
+  .rail-secondary {
+    display: none;
+  }
+}
