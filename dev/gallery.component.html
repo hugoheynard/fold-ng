@@ -67,7 +67,12 @@
           <span class="spm-width">{{ shellPreviewWidth() }}px</span>
         </div>
         <div class="shell-preview-frame">
-          <div class="shell-preview" [style.width.px]="shellPreviewWidth()">
+          <div
+            class="shell-preview"
+            [style.width.px]="shellPreviewWidth()"
+            panelScope
+            #sph="panelScope"
+          >
             <sh3-app-shell
               [appearance]="shellAppearance()"
               [headerLayout]="shellHeaderLayout()"
@@ -81,7 +86,7 @@
               <div header class="sp-header">
                 <span>Header</span>
                 <div class="sp-actions">
-                  <button type="button" (click)="openTabPanel()">
+                  <button type="button" (click)="openPreviewPanel(sph.service)">
                     <sh3-icon name="contracts" size="sm" />
                     Open panel
                   </button>
@@ -98,6 +103,9 @@
                 <div class="sp-block"></div>
                 <div class="sp-block"></div>
               </div>
+
+              <!-- the preview's own panel host — panels open inside the preview -->
+              <sh3-panel-host />
             </sh3-app-shell>
           </div>
         </div>

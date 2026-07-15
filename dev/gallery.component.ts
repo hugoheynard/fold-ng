@@ -33,6 +33,7 @@ import {
 import { TokenPanelComponent } from "./token-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
 import { InspectPanelComponent } from "./inspect-panel.component";
+import { PanelScopeDirective } from "./panel-scope.directive";
 import { closestSh3, inspect } from "./inspect";
 
 /** A menu section in the live builder: a colored separator + N simulated items. */
@@ -79,6 +80,7 @@ interface TocItem {
     Sh3MenuItemComponent,
     Sh3MenuSectionComponent,
     Sh3PanelHostComponent,
+    PanelScopeDirective,
     TokenPanelComponent,
   ],
   host: { "[attr.data-theme]": "theme() === 'light' ? 'light' : null" },
@@ -160,6 +162,12 @@ export class GalleryComponent {
 
   protected openTabPanel(): void {
     this.panelHost.open(TabPanelComponent, { side: "right" });
+  }
+
+  /** Open a panel in the preview's own host (a scoped service instance), so it
+   *  slides in inside the preview shell rather than the gallery. */
+  protected openPreviewPanel(host: Sh3PanelHostService): void {
+    host.open(TabPanelComponent, { side: "right", width: 260 });
   }
 
   /* ── railPrimary: a stable static nav, decoupled from the settings ── */
