@@ -12,10 +12,14 @@
     [expanded]="menuExpanded()"
     (expandedChange)="menuExpanded.set($event)"
   >
-    <div header class="rail-brand">S3</div>
+    @if (menuHeader()) {
+      <div header class="rail-brand">S3</div>
+    }
 
     @for (s of menuSectionList(); track s.id) {
-      <sh3-menu-separator [label]="s.name" [color]="s.color" />
+      @if (menuSections()) {
+        <sh3-menu-separator [label]="s.name" [color]="s.color" />
+      }
       @for (icon of iconsFor(s.icons); track $index) {
         <button
           sh3-menu-item
@@ -27,7 +31,14 @@
       }
     }
 
-    <button footer sh3-menu-item [icon]="'settings'" label="Settings"></button>
+    @if (menuFooter()) {
+      <button
+        footer
+        sh3-menu-item
+        [icon]="'settings'"
+        label="Settings"
+      ></button>
+    }
   </sh3-menu>
 
   <!-- ── rail secondary: table of contents ─────────────────────── -->
@@ -163,6 +174,33 @@
                     (click)="menuExpanded.set(!menuExpanded())"
                   >
                     expanded
+                  </button>
+                </div>
+              </div>
+
+              <div class="ss-group">
+                <span class="ss-label">slots</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="menuHeader()"
+                    (click)="menuHeader.set(!menuHeader())"
+                  >
+                    header
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuSections()"
+                    (click)="menuSections.set(!menuSections())"
+                  >
+                    sections
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuFooter()"
+                    (click)="menuFooter.set(!menuFooter())"
+                  >
+                    footer
                   </button>
                 </div>
               </div>

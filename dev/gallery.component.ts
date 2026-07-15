@@ -143,6 +143,10 @@ export class GalleryComponent {
   protected readonly menuActive = signal<string>("");
   protected readonly menuExpanded = signal(false);
   protected readonly menuCollapsible = signal(true);
+  /** Structural slots — toggled so the design can be seen with/without each. */
+  protected readonly menuHeader = signal(true);
+  protected readonly menuSections = signal(true);
+  protected readonly menuFooter = signal(true);
 
   /** Each section = a colored separator + N simulated menu items. Editable from
    *  the Menu Settings card (+/− sections, name, color, icon count). */
@@ -208,21 +212,28 @@ export class GalleryComponent {
     const open = this.menuCollapsible()
       ? '<sh3-menu collapsible [(expanded)]="expanded">'
       : "<sh3-menu>";
-    const lines = [open, '  <div header class="brand">S3</div>'];
+    const lines = [open];
+    if (this.menuHeader()) {
+      lines.push('  <div header class="brand">S3</div>');
+    }
     for (const s of this.menuSectionList()) {
-      lines.push(
-        `  <sh3-menu-separator label="${s.name}" color="${s.color}" />`,
-      );
+      if (this.menuSections()) {
+        lines.push(
+          `  <sh3-menu-separator label="${s.name}" color="${s.color}" />`,
+        );
+      }
       for (const icon of this.iconsFor(s.icons)) {
         lines.push(
           `  <button sh3-menu-item icon="${icon}" label="${this.labelFor(icon)}"></button>`,
         );
       }
     }
-    lines.push(
-      '  <button footer sh3-menu-item icon="settings" label="Settings"></button>',
-      "</sh3-menu>",
-    );
+    if (this.menuFooter()) {
+      lines.push(
+        '  <button footer sh3-menu-item icon="settings" label="Settings"></button>',
+      );
+    }
+    lines.push("</sh3-menu>");
     return lines.join("\n");
   });
   protected readonly menuCopied = signal(false);
