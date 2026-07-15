@@ -1,4 +1,4 @@
-import { Component, computed, input } from "@angular/core";
+import { Component, booleanAttribute, computed, input } from "@angular/core";
 
 /**
  * `<sh3-app-shell>` — the responsive application skeleton.
@@ -31,7 +31,7 @@ import { Component, computed, input } from "@angular/core";
  * ## Slots
  * | Attribute        | Region                                    |
  * |------------------|-------------------------------------------|
- * | `railPrimary`    | Left rail (fixed width).                  |
+ * | `railPrimary`    | Left rail (fixed `railWidth`, or grows to content when `railGrows`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. |
@@ -75,6 +75,7 @@ import { Component, computed, input } from "@angular/core";
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
     "[class.header-full]": 'headerLayout() === "full"',
     "[class.floating]": 'appearance() === "floating"',
+    "[class.rail-grows]": "railGrows()",
   },
   templateUrl: "./app-shell.component.html",
   styleUrl: "./app-shell.component.scss",
@@ -86,6 +87,13 @@ export class Sh3AppShellComponent {
   readonly headerHeight = input<number>();
   /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
+
+  /**
+   * Let the primary rail grow past `railWidth` to its content's width (that
+   * width becomes the floor). Use it when the rail component sizes itself — e.g.
+   * an `sh3-menu` that expands — so the column follows without measuring.
+   */
+  readonly railGrows = input(false, { transform: booleanAttribute });
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");

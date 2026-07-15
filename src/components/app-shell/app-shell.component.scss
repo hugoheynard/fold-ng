@@ -37,6 +37,16 @@
   overflow: hidden;
 }
 
+/* railGrows — the primary column grows to its content, with railWidth as the
+       floor. Lets a self-sizing rail (e.g. an expanding sh3-menu) drive the
+       column width directly, no JS measurement. */
+:host(.rail-grows) {
+  grid-template-columns:
+    minmax(var(--sh3-shell-rail-width, 64px), max-content)
+    auto
+    minmax(0, 1fr);
+}
+
 /* headerLayout="full" — header spans every column, above the rails, instead
        of sitting over the content column with the rails climbing its side. */
 :host(.header-full) {
@@ -66,7 +76,8 @@
        :host(.header-full), so source order lets the mobile rule win). */
 @media (max-width: 768px) {
   :host,
-  :host(.header-full) {
+  :host(.header-full),
+  :host(.rail-grows) {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr;
     grid-template-areas:
