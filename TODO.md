@@ -87,6 +87,31 @@ Add roles only once we're certain of their usage.
       `info` keeps the app's brand-teal tone. First consumer of the `success`
       family. 8 specs. App's 51 `ToastService` sites keep their import path via a
       re-export shim; the single `<sh3-toast-container>` render site is repointed.
+  - [x] **Single snackbar extracted → `sh3-toast`** — the container rendered each
+        toast inline as a `<div class="toast">` with **emoji** glyphs and
+        whole-surface click-to-dismiss. Pulled into a presentational
+        `Sh3ToastComponent`: `sh3-icon` status glyphs (`check-circle`/`info`/
+        `warning`/`alert`), a single `--sh3-toast-accent` custom prop per variant,
+        an explicit close button emitting `dismiss` (no more accidental dismiss),
+        `role`/`aria-live` (assertive `alert` for error, polite `status` else),
+        and a reduced-motion guard. Container now owns only stacking. Added the
+        `alert` status icon (the set had no error glyph). Component + container
+        specs; public API (`ToastService`, `<sh3-toast-container>`) unchanged.
+- [x] **Menu** (`sh3-menu` + `menu-item` / `menu-section` / `menu-separator`) —
+      the collapsible nav rail: coloured sections, `tint="follow"` (items take
+      their section colour), depth `level` (primary/secondary/tertiary tints),
+      collapse toggle with `togglePlacement` (`auto`/`header`/`footer`/`body`,
+      multi-row bands via a reserved gutter), floating-shell self-rounding. Items
+      are attribute components (`a[sh3-menu-item]`) so `routerLink` /
+      `routerLinkActive` compose. Drives the app's workspace rail (perso +
+      workspace nav) and the app-menu launcher.
+- [x] **AvatarList** (`sh3-avatar-list`) — overlapping avatar cluster (from the
+      org-chart node pattern): `limit` + a detached `+N` overflow chip, `top`
+      (`first`/`last`, stacking direction), uniform `size` / `square` per cluster,
+      and **per-face** state (`variant` / `muted` / `ring` / `ringStyle`) on
+      `Sh3AvatarListItem` — a member can be a ghost among members.
+- [x] **State views** (`sh3-loading` + `sh3-empty-state`) — the shared loading
+      placeholder + empty-state block, moved off `app/shared/`.
 
 - [x] **Card** (`sh3-card`) — the canonical raised surface: `surface-card` bg +
       hairline border + consistent radius (`surface`/`radius`/`padding`/
@@ -145,9 +170,10 @@ they earn the move.
 
 **Confirmed candidates + their dependency chain** (from `app/shared/`):
 
-- [x] **`Icon`** (`sh3-icon`) — **landed**. Shipped the full **100-icon** set
-      inlined (6 category maps `icons/*.icons.ts`, generated from the app's `.svg`
-      assets) so the package is self-contained. Static `SH3_ICONS` const → a runtime
+- [x] **`Icon`** (`sh3-icon`) — **landed**. Shipped the full **~100-icon** set
+      inlined (102 today — `alert` added for the toast error variant; 6 category
+      maps `icons/*.icons.ts`, generated from the app's `.svg` assets) so the
+      package is self-contained. Static `SH3_ICONS` const → a runtime
       **`IconRegistry`** root singleton: built-ins + consumer additions via
       `provideIcons()` (bootstrap) or `register()`/`registerMany()` (runtime), keyed
       `Sh3BuiltinIconName | (string & {})`. Added `@angular/platform-browser` peer
@@ -282,7 +308,8 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 - [ ] `inert` the background behind an open panel — a full modal barrier, not a
       keyboard-only trap (screen-reader virtual cursor currently reaches behind).
 - [ ] Reduced-motion: gate the slide/fade animations behind
-      `prefers-reduced-motion`.
+      `prefers-reduced-motion`. (`sh3-toast` entrance now does; sweep the rest —
+      menu width transition, panel slide, hero glow.)
 - [ ] Reconsider the px type scale (rule 1.6) — offer a rem opt-in for consumers
       whose root ≠ 14px, so user-zoom works. Currently an accepted deviation.
 
