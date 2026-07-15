@@ -15,6 +15,7 @@ import {
   Sh3ElementTitleComponent,
   Sh3HeroComponent,
   Sh3IconComponent,
+  type Sh3IconName,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -31,6 +32,14 @@ import { TocPanelComponent, type TocItem } from "./toc-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
 import { InspectPanelComponent } from "./inspect-panel.component";
 import { closestSh3, inspect } from "./inspect";
+
+/** A menu section in the live builder: a colored separator + N simulated items. */
+interface MenuSection {
+  id: string;
+  name: string;
+  color: string;
+  icons: number;
+}
 
 /**
  * The gallery — itself an `sh3-app-shell` instance (dogfooding). The first
@@ -130,16 +139,101 @@ export class GalleryComponent {
     this.panelHost.open(TabPanelComponent, { side: "right" });
   }
 
-  /* ── sh3-menu demo ── */
-  protected readonly menuItems = [
-    { id: "home", icon: "home", label: "Home" },
-    { id: "contracts", icon: "contracts", label: "Contracts" },
-    { id: "music", icon: "music", label: "Music" },
-  ] as const;
-  protected readonly menuActive = signal<string>("home");
+  /* ── sh3-menu demo — a live, editable menu built from a list of sections ── */
+  protected readonly menuActive = signal<string>("");
   protected readonly menuExpanded = signal(false);
   protected readonly menuCollapsible = signal(true);
-  protected readonly menuSections = signal(true);
+
+  /** Each section = a colored separator + N simulated menu items. Editable from
+   *  the Menu Settings card (+/− sections, name, color, icon count). */
+  protected readonly menuSectionList = signal<MenuSection[]>([
+    { id: "s1", name: "Personal", color: "#06a4a4", icons: 3 },
+    { id: "s2", name: "More", color: "#7c5bbf", icons: 2 },
+  ]);
+  /** Monotonic id source — no Date.now()/random (unavailable + non-deterministic). */
+  private sectionSeq = 3;
+
+  /** Icons cycled through to populate a section's simulated items. */
+  private readonly iconPool: readonly Sh3IconName[] = [
+    "home",
+    "contracts",
+    "music",
+    "bell",
+    "company",
+    "edit",
+  ];
+
+  protected iconsFor(count: number): Sh3IconName[] {
+    return Array.from(
+      { length: count },
+      (_, i) => this.iconPool[i % this.iconPool.length],
+    );
+  }
+  protected labelFor(icon: Sh3IconName): string {
+    return icon.charAt(0).toUpperCase() + icon.slice(1);
+  }
+
+  protected addSection(): void {
+    const id = `s${this.sectionSeq++}`;
+    this.menuSectionList.update((list) => [
+      ...list,
+      { id, name: "Section", color: "#5b8def", icons: 2 },
+    ]);
+  }
+  protected removeSection(id: string): void {
+    this.menuSectionList.update((list) => list.filter((s) => s.id !== id));
+  }
+  protected setSectionName(id: string, name: string): void {
+    this.menuSectionList.update((list) =>
+      list.map((s) => (s.id === id ? { ...s, name } : s)),
+    );
+  }
+  protected setSectionColor(id: string, color: string): void {
+    this.menuSectionList.update((list) =>
+      list.map((s) => (s.id === id ? { ...s, color } : s)),
+    );
+  }
+  protected stepSectionIcons(id: string, delta: number): void {
+    this.menuSectionList.update((list) =>
+      list.map((s) =>
+        s.id === id
+          ? { ...s, icons: Math.max(0, Math.min(8, s.icons + delta)) }
+          : s,
+      ),
+    );
+  }
+
+  /** The `<sh3-menu>` markup reflecting the current sections — live. */
+  protected readonly menuCode = computed(() => {
+    const open = this.menuCollapsible()
+      ? '<sh3-menu collapsible [(expanded)]="expanded">'
+      : "<sh3-menu>";
+    const lines = [open, '  <div header class="brand">S3</div>'];
+    for (const s of this.menuSectionList()) {
+      lines.push(
+        `  <sh3-menu-separator label="${s.name}" color="${s.color}" />`,
+      );
+      for (const icon of this.iconsFor(s.icons)) {
+        lines.push(
+          `  <button sh3-menu-item icon="${icon}" label="${this.labelFor(icon)}"></button>`,
+        );
+      }
+    }
+    lines.push(
+      '  <button footer sh3-menu-item icon="settings" label="Settings"></button>',
+      "</sh3-menu>",
+    );
+    return lines.join("\n");
+  });
+  protected readonly menuCopied = signal(false);
+
+  protected copyMenuCode(): void {
+    void navigator.clipboard.writeText(this.menuCode()).then(() => {
+      this.menuCopied.set(true);
+      setTimeout(() => this.menuCopied.set(false), 1500);
+    });
+  }
+
   /** Measured width of the rail menu — the shell column follows it when expanded
    *  so an expanded menu takes exactly its content width. */
   private readonly menuRailRef = viewChild<ElementRef<HTMLElement>>("menuRail");

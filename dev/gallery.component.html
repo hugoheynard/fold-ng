@@ -14,23 +14,18 @@
   >
     <div header class="rail-brand">S3</div>
 
-    @if (menuSections()) {
-      <sh3-menu-separator label="Personal" color="#06a4a4" />
+    @for (s of menuSectionList(); track s.id) {
+      <sh3-menu-separator [label]="s.name" [color]="s.color" />
+      @for (icon of iconsFor(s.icons); track $index) {
+        <button
+          sh3-menu-item
+          [icon]="icon"
+          [label]="labelFor(icon)"
+          [active]="menuActive() === s.id + '-' + $index"
+          (click)="menuActive.set(s.id + '-' + $index)"
+        ></button>
+      }
     }
-    @for (item of menuItems; track item.id) {
-      <button
-        sh3-menu-item
-        [icon]="item.icon"
-        [label]="item.label"
-        [active]="menuActive() === item.id"
-        (click)="menuActive.set(item.id)"
-      ></button>
-    }
-
-    @if (menuSections()) {
-      <sh3-menu-separator label="More" color="#7c5bbf" />
-    }
-    <button sh3-menu-item [icon]="'bell'" label="Notifications"></button>
 
     <button footer sh3-menu-item [icon]="'settings'" label="Settings"></button>
   </sh3-menu>
@@ -145,39 +140,122 @@
           </div>
         </div>
 
-        <div class="gal-card-narrow menu-settings">
-          <sh3-context-card
-            icon="menu"
-            title="Menu Settings"
-            subtitle="railPrimary sh3-menu options"
-          >
-            <div class="ss-group">
-              <span class="ss-label">menu</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="menuCollapsible()"
-                  (click)="menuCollapsible.set(!menuCollapsible())"
-                >
-                  collapsible
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="menuExpanded()"
-                  (click)="menuExpanded.set(!menuExpanded())"
-                >
-                  expanded
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="menuSections()"
-                  (click)="menuSections.set(!menuSections())"
-                >
-                  sections
-                </button>
+        <div class="shell-demo menu-settings">
+          <div class="gal-card-narrow">
+            <sh3-context-card
+              icon="menu"
+              title="Menu Settings"
+              subtitle="railPrimary sh3-menu options"
+            >
+              <div class="ss-group">
+                <span class="ss-label">menu</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="menuCollapsible()"
+                    (click)="menuCollapsible.set(!menuCollapsible())"
+                  >
+                    collapsible
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuExpanded()"
+                    (click)="menuExpanded.set(!menuExpanded())"
+                  >
+                    expanded
+                  </button>
+                </div>
               </div>
+
+              <div class="ss-group">
+                <div class="ss-head">
+                  <span class="ss-label">sections</span>
+                  <div class="ss-step">
+                    <button
+                      type="button"
+                      (click)="
+                        removeSection(
+                          menuSectionList()[menuSectionList().length - 1].id
+                        )
+                      "
+                      [disabled]="menuSectionList().length === 0"
+                      aria-label="Remove last section"
+                    >
+                      −
+                    </button>
+                    <b>{{ menuSectionList().length }}</b>
+                    <button
+                      type="button"
+                      (click)="addSection()"
+                      aria-label="Add section"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                @for (s of menuSectionList(); track s.id) {
+                  <div class="sec-row">
+                    <input
+                      #colorInput
+                      type="color"
+                      class="sec-color"
+                      [value]="s.color"
+                      (input)="setSectionColor(s.id, colorInput.value)"
+                      aria-label="Section color"
+                    />
+                    <input
+                      #nameInput
+                      type="text"
+                      class="sec-name"
+                      [value]="s.name"
+                      (input)="setSectionName(s.id, nameInput.value)"
+                      aria-label="Section name"
+                    />
+                    <div class="ss-step">
+                      <button
+                        type="button"
+                        (click)="stepSectionIcons(s.id, -1)"
+                        aria-label="Fewer items"
+                      >
+                        −
+                      </button>
+                      <b>{{ s.icons }}</b>
+                      <button
+                        type="button"
+                        (click)="stepSectionIcons(s.id, 1)"
+                        aria-label="More items"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      class="sec-del"
+                      (click)="removeSection(s.id)"
+                      aria-label="Delete section"
+                    >
+                      ×
+                    </button>
+                  </div>
+                }
+              </div>
+            </sh3-context-card>
+          </div>
+
+          <div class="code-block">
+            <div class="code-top">
+              <span class="code-lang">html</span>
+              <button type="button" class="code-copy" (click)="copyMenuCode()">
+                <sh3-icon
+                  [name]="menuCopied() ? 'check-circle' : 'copy'"
+                  size="sm"
+                />
+                {{ menuCopied() ? "Copied" : "Copy" }}
+              </button>
             </div>
-          </sh3-context-card>
+            <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
+          </div>
         </div>
       </section>
 

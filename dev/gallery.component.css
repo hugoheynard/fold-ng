@@ -262,3 +262,104 @@ sh3-app-shell {
   width: 100%;
   accent-color: var(--sh3-color-primary);
 }
+
+/* ── Section builder (+/− sections, name, color, icon count) ──── */
+.ss-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ss-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ss-step button {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ss-step button:hover:not(:disabled) {
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-primary-text);
+}
+.ss-step button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.ss-step b {
+  min-width: 14px;
+  text-align: center;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.sec-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--sh3-color-border-subtle);
+}
+.sec-color {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-sm);
+  background: none;
+  cursor: pointer;
+}
+.sec-color::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+.sec-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+.sec-name {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font: inherit;
+  font-size: 12px;
+}
+.sec-name:focus-visible {
+  outline: none;
+  border-color: var(--sh3-color-primary);
+}
+.sec-del {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--sh3-radius-sm);
+  background: none;
+  color: var(--sh3-color-text-muted);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.sec-del:hover {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-alert-text, var(--sh3-color-text));
+}
