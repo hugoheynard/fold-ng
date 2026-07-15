@@ -120,3 +120,16 @@
   align-self: flex-end;
   margin-right: 8px;
 }
+
+/* Expanded + toggle in the header → lay the header as a row with the arrow
+   inline at the end (beside the header content), matching the app's workspace
+   rail. Collapsed stays a column (both bands do), so only expanded differs. */
+:host(.expanded) .menu-head.head-has-toggle {
+  flex-direction: row;
+  align-items: center;
+}
+:host(.expanded) .menu-head.head-has-toggle .menu-toggle {
+  align-self: center;
+  margin-left: auto;
+  margin-right: 0;
+}

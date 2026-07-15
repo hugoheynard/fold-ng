@@ -1,4 +1,8 @@
-<div class="menu-head" #head>
+<div
+  class="menu-head"
+  [class.head-has-toggle]="collapsible() && resolvedPlacement() === 'header'"
+  #head
+>
   <ng-content select="[header]" />
   @if (collapsible() && resolvedPlacement() === "header") {
     <ng-container [ngTemplateOutlet]="toggleTpl" />
