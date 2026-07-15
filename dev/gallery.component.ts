@@ -44,6 +44,7 @@ import {
   sh3ColorProperty,
   Sh3PaletteRegistry,
   type Sh3AutoPaletteName,
+  SH3_BUILTIN_ICONS,
 } from "../src/index";
 import { TokenPanelComponent } from "./token-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
@@ -538,8 +539,32 @@ export class GalleryComponent {
     { id: "badges", label: "badge · status · icon" },
     { id: "avatar", label: "avatar", icon: "team" },
     { id: "form", label: "form", icon: "edit" },
+    { id: "icons", label: "icons" },
     { id: "tokens", label: "design tokens" },
   ];
+
+  /* ── icons page — the sh3-icon system + the full built-in catalogue ────── */
+  protected readonly iconSizeSteps = ["xs", "sm", "md", "lg", "xl"] as const;
+  /** Colour tokens the icon inherits via `currentColor` (set on a wrapper). */
+  protected readonly iconColorTokens = [
+    "text",
+    "text-secondary",
+    "primary",
+    "info",
+    "warning",
+    "alert",
+    "success",
+  ] as const;
+  /** Every built-in icon name, sorted — the page renders one cell per name. */
+  protected readonly allIconNames: readonly string[] =
+    Object.keys(SH3_BUILTIN_ICONS).sort();
+  protected readonly copiedIcon = signal("");
+  protected copyIconName(name: string): void {
+    void navigator.clipboard.writeText(name).then(() => {
+      this.copiedIcon.set(name);
+      setTimeout(() => this.copiedIcon.set(""), 1200);
+    });
+  }
 
   /** The avatar page groups the three avatar components behind a tab-nav. */
   protected readonly avatarTabs: Sh3TabNavItem[] = [

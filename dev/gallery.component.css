@@ -365,6 +365,71 @@ sh3-app-shell {
   color: var(--sh3-color-primary-text);
 }
 
+/* ── icons page — the sh3-icon system + the full catalogue grid ────────── */
+.icon-sizes {
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  color: var(--sh3-color-text);
+}
+.isz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.isz span {
+  font-size: 11px;
+  color: var(--sh3-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.icon-colors {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 8px;
+  border-radius: var(--sh3-radius-md);
+  border: 1px solid var(--sh3-color-border-subtle);
+  background: var(--sh3-color-surface-card);
+  color: var(--sh3-color-text);
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+}
+.icon-cell:hover {
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-primary-text);
+}
+.icon-cell.is-copied {
+  border-color: var(--sh3-color-success);
+  color: var(--sh3-color-success-text);
+}
+.icon-cell-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  color: var(--sh3-color-text-muted);
+}
+.icon-cell:hover .icon-cell-name,
+.icon-cell.is-copied .icon-cell-name {
+  color: inherit;
+}
+
 /* ── form page — vertical tab-nav rail + a settings-style form ────────── */
 .form-layout {
   display: flex;
