@@ -24,6 +24,13 @@ import { Sh3IconComponent } from "../icon/icon.component";
 export type Sh3MenuTint = "follow" | "neutral" | "primary";
 
 /**
+ * Where the collapse toggle sits. `auto` follows band presence (first in the
+ * footer, else last in the header, else last in the body); the others pin it to
+ * a specific band.
+ */
+export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
+
+/**
  * `<sh3-menu>` — a vertical icon navigation rail (the app's primary menu shell).
  *
  * Structural + presentational: it owns the rail column, its top/body/bottom
@@ -72,6 +79,8 @@ export class Sh3MenuComponent {
   readonly expanded = model(false);
   /** How items tint on hover / when active (`follow` = section colour). */
   readonly tint = input<Sh3MenuTint>("follow");
+  /** Pin the collapse toggle to a band, or `auto` to follow band presence. */
+  readonly togglePlacement = input<Sh3MenuTogglePlacement>("auto");
 
   private readonly headRef =
     viewChild.required<ElementRef<HTMLElement>>("head");
@@ -81,11 +90,17 @@ export class Sh3MenuComponent {
   private readonly hasFooter = signal(false);
 
   /**
-   * Where the collapse toggle sits: first in the footer, else last in the
-   * header, else last in the body (when neither band has content).
+   * The band the toggle renders into: the `togglePlacement` override when set,
+   * else auto — first in the footer, else last in the header, else the body.
    */
-  protected readonly togglePlacement = computed<"footer" | "header" | "body">(
-    () => (this.hasFooter() ? "footer" : this.hasHeader() ? "header" : "body"),
+  protected readonly resolvedPlacement = computed<"footer" | "header" | "body">(
+    () => {
+      const forced = this.togglePlacement();
+      if (forced !== "auto") {
+        return forced;
+      }
+      return this.hasFooter() ? "footer" : this.hasHeader() ? "header" : "body";
+    },
   );
 
   constructor() {

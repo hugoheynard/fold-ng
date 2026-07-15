@@ -1,19 +1,19 @@
 <div class="menu-head" #head>
   <ng-content select="[header]" />
-  @if (collapsible() && togglePlacement() === "header") {
+  @if (collapsible() && resolvedPlacement() === "header") {
     <ng-container [ngTemplateOutlet]="toggleTpl" />
   }
 </div>
 
 <nav class="menu-body">
   <ng-content />
-  @if (collapsible() && togglePlacement() === "body") {
+  @if (collapsible() && resolvedPlacement() === "body") {
     <ng-container [ngTemplateOutlet]="toggleTpl" />
   }
 </nav>
 
 <div class="menu-foot" #foot>
-  @if (collapsible() && togglePlacement() === "footer") {
+  @if (collapsible() && resolvedPlacement() === "footer") {
     <ng-container [ngTemplateOutlet]="toggleTpl" />
   }
   <ng-content select="[footer]" />
