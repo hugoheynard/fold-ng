@@ -61,4 +61,15 @@ describe("Sh3AvatarComponent", () => {
     const img = fixture.nativeElement.querySelector("img.avatar-img");
     expect(img?.getAttribute("src")).toBe("/logo.png");
   });
+
+  it("square coerces the bare attribute (empty string) to true", () => {
+    const fixture = TestBed.createComponent(Sh3AvatarComponent);
+    fixture.componentRef.setInput("name", "Acme");
+    // `<sh3-avatar square>` in a template binds the input to "" — booleanAttribute
+    // must read that as true (otherwise the empty string stays falsy → still round).
+    fixture.componentRef.setInput("square", "");
+    fixture.detectChanges();
+    const el = fixture.nativeElement.querySelector(".avatar") as HTMLElement;
+    expect(el.classList.contains("shape-square")).toBe(true);
+  });
 });

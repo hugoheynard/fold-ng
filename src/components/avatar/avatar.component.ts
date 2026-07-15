@@ -1,4 +1,10 @@
-import { Component, computed, inject, input } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  inject,
+  input,
+} from "@angular/core";
 import { Sh3PaletteRegistry } from "../../color/palette-registry.service";
 
 /** Ink for text on a light vs dark categorical fill. */
@@ -65,7 +71,7 @@ export class Sh3AvatarComponent {
   readonly size = input<"sm" | "md" | "lg">("md");
   readonly colorSeed = input<string | undefined>(undefined);
   readonly variant = input<"solid" | "ghost">("solid");
-  readonly square = input(false);
+  readonly square = input(false, { transform: booleanAttribute });
   readonly imageUrl = input<string | undefined>(undefined);
 
   /** Readable ink for the initials, derived from the fill's luminance. */

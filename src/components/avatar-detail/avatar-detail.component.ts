@@ -1,4 +1,4 @@
-import { Component, computed, input } from "@angular/core";
+import { booleanAttribute, Component, computed, input } from "@angular/core";
 import { Sh3AvatarComponent } from "../avatar/avatar.component";
 
 /**
@@ -37,7 +37,7 @@ export class Sh3AvatarDetailComponent {
   readonly avatarName = input<string>("");
   readonly size = input<"sm" | "md" | "lg">("md");
   readonly variant = input<"solid" | "ghost">("solid");
-  readonly square = input(false);
+  readonly square = input(false, { transform: booleanAttribute });
   readonly imageUrl = input<string | undefined>(undefined);
 
   /** Falls back to the primary line when no explicit avatar name is given. */
