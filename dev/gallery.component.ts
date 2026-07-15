@@ -146,7 +146,27 @@ export class GalleryComponent {
     this.panelHost.open(TabPanelComponent, { side: "right" });
   }
 
-  /* ── sh3-menu demo — a live, editable menu built from a list of sections ── */
+  /* ── railPrimary: a stable static nav, decoupled from the settings ── */
+  protected readonly railNav = [
+    { id: "home", icon: "home", label: "Home" },
+    { id: "contracts", icon: "contracts", label: "Contracts" },
+    { id: "music", icon: "music", label: "Music" },
+  ] as const;
+  protected readonly railActive = signal<string>("home");
+
+  /* ── Library nav (railSecondary) — its tint/level come from the preview via
+   *    "Apply to Library". ── */
+  protected readonly libTint = signal<Sh3MenuTint>("primary");
+  protected readonly libLevel = signal<Sh3MenuLevel>("secondary");
+  protected readonly applied = signal(false);
+  protected applyToLibrary(): void {
+    this.libTint.set(this.menuTint());
+    this.libLevel.set(this.menuLevel());
+    this.applied.set(true);
+    setTimeout(() => this.applied.set(false), 1500);
+  }
+
+  /* ── sh3-menu preview — a live, editable menu built from a list of sections ── */
   protected readonly menuActive = signal<string>("");
   protected readonly menuExpanded = signal(false);
   protected readonly menuCollapsible = signal(true);

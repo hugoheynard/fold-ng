@@ -26,6 +26,43 @@ sh3-app-shell {
   font-size: 14px;
 }
 
+/* ── sh3-menu page: the live preview box above the settings cards ── */
+.menu-preview {
+  display: flex;
+  align-items: stretch;
+  height: 340px;
+  margin-bottom: 20px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-lg);
+  background: var(--sh3-color-bg-page);
+}
+
+/* "Apply to Library" — pushes the preview's tint/level onto the Library nav. */
+.apply-btn {
+  margin-top: 16px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-primary);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--sh3-motion-fast),
+    color var(--sh3-motion-fast);
+}
+.apply-btn:hover {
+  background: var(--sh3-color-primary);
+  color: var(--sh3-color-on-primary);
+}
+
 /* ── Secondary rail: the "Library" nav header ─────────────────── */
 .lib-head {
   padding: 2px 4px 6px;
