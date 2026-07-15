@@ -19,6 +19,8 @@ import {
   type Sh3AvatarRingStyle,
   Sh3BadgeComponent,
   Sh3CardComponent,
+  Sh3ChoiceRowComponent,
+  type Sh3ChoiceOption,
   Sh3ContextCardComponent,
   Sh3ElementTitleComponent,
   Sh3HeroComponent,
@@ -126,6 +128,7 @@ interface TocItem {
     Sh3AvatarDetailComponent,
     Sh3AvatarListComponent,
     Sh3CardComponent,
+    Sh3ChoiceRowComponent,
     Sh3HeroComponent,
     Sh3PageSectionComponent,
     Sh3ElementTitleComponent,
@@ -534,6 +537,7 @@ export class GalleryComponent {
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
     { id: "avatar", label: "avatar", icon: "team" },
+    { id: "form", label: "form", icon: "edit" },
     { id: "tokens", label: "design tokens" },
   ];
 
@@ -544,6 +548,48 @@ export class GalleryComponent {
     { key: "list", label: "avatar-list" },
   ];
   protected readonly avatarTab = signal("avatar");
+
+  /* ── form page — a vertical tab-nav drives a settings-style form ────────── */
+  protected readonly formTabs: Sh3TabNavItem[] = [
+    { key: "profile", label: "Profile" },
+    { key: "account", label: "Account" },
+    { key: "notifications", label: "Notifications", badge: 2 },
+  ];
+  protected readonly formTab = signal("profile");
+
+  /* Fields — plain signals + native inputs (the package ships no field
+     components; the app's Signal Forms aren't available here). This page
+     showcases the layout: vertical nav + page-section + choice-row. */
+  protected readonly fName = signal("Clément Aubry");
+  protected readonly fEmail = signal("clement@sh3pherd.dev");
+  protected readonly fRole = signal("manager");
+  protected readonly fBio = signal("");
+  protected readonly fUsername = signal("caubry");
+  protected readonly fLang = signal("fr");
+  protected readonly fTwoFactor = signal("off");
+  protected readonly fDigest = signal("daily");
+  protected readonly fPush = signal("on");
+
+  protected readonly roleOptions: Sh3ChoiceOption[] = [
+    { key: "manager", label: "Manager" },
+    { key: "member", label: "Member" },
+    { key: "guest", label: "Guest" },
+  ];
+  protected readonly onOff: Sh3ChoiceOption[] = [
+    { key: "off", label: "Off" },
+    { key: "on", label: "On" },
+  ];
+  protected readonly digestOptions: Sh3ChoiceOption[] = [
+    { key: "off", label: "Off" },
+    { key: "daily", label: "Daily" },
+    { key: "weekly", label: "Weekly" },
+  ];
+
+  protected readonly formSaved = signal(false);
+  protected saveForm(): void {
+    this.formSaved.set(true);
+    setTimeout(() => this.formSaved.set(false), 1500);
+  }
   /** The section currently in view — drives the nav highlight. */
   protected readonly activeSection = signal<string>("");
 

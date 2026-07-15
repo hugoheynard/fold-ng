@@ -365,6 +365,96 @@ sh3-app-shell {
   color: var(--sh3-color-primary-text);
 }
 
+/* ── form page — vertical tab-nav rail + a settings-style form ────────── */
+.form-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+.form-nav {
+  flex: 0 0 190px;
+  position: sticky;
+  top: 0;
+}
+.form-body {
+  flex: 1 1 420px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sh3-color-text-secondary);
+}
+.field input,
+.field textarea,
+.field select {
+  padding: 9px 11px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font: inherit;
+  font-size: 13px;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible {
+  outline: none;
+  border-color: var(--sh3-color-primary);
+}
+.field-hint {
+  font-size: 11px;
+  color: var(--sh3-color-text-muted);
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btn-ghost,
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--sh3-radius-sm);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-ghost {
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-card);
+  color: var(--sh3-color-text);
+}
+.btn-ghost:hover {
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-primary-text);
+}
+.btn-primary {
+  border: 1px solid var(--sh3-color-primary);
+  background: var(--sh3-color-primary);
+  color: var(--sh3-color-on-primary);
+}
+.btn-primary:hover {
+  background: var(--sh3-color-primary-strong);
+  border-color: var(--sh3-color-primary-strong);
+}
+
 /* ── Header ─────────────────────────────────────────────────── */
 .gal-header {
   height: 100%;
