@@ -1,0 +1,20 @@
+@for (a of visible(); track $index) {
+  <span class="al-item" [style.z-index]="z($index)">
+    <sh3-avatar
+      [name]="a.name"
+      [imageUrl]="a.imageUrl"
+      [colorSeed]="a.colorSeed"
+      [size]="size()"
+      [variant]="variant()"
+      [square]="square()"
+    />
+  </span>
+}
+@if (overflow() > 0) {
+  <span
+    class="al-more"
+    [style.z-index]="moreZ()"
+    [attr.title]="overflow() + ' more'"
+    >+{{ overflow() }}</span
+  >
+}

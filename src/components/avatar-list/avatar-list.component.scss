@@ -1,0 +1,65 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  /* Ring drawn around each face so the overlap reads cleanly — matches the
+     surface behind the list. Override when it sits on a non-card background. */
+  --sh3-avatar-list-ring: var(--sh3-color-surface-card);
+}
+
+.al-item,
+.al-more {
+  position: relative;
+  border-radius: var(--sh3-radius-round);
+  box-shadow: 0 0 0 2px var(--sh3-avatar-list-ring);
+}
+:host(.is-square) .al-item,
+:host(.is-square) .al-more {
+  border-radius: var(--sh3-radius-sm);
+}
+
+/* Overlap: every face but the first slides under (or over) its neighbour. */
+.al-item + .al-item,
+.al-more {
+  margin-left: var(--al-overlap);
+}
+:host(.size-sm) {
+  --al-overlap: -7px;
+}
+:host(.size-md) {
+  --al-overlap: -11px;
+}
+:host(.size-lg) {
+  --al-overlap: -15px;
+}
+
+.al-item {
+  display: inline-flex;
+}
+
+/* The `+N` chip — a neutral face the same size as the avatars. */
+.al-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--sh3-color-surface-raised);
+  color: var(--sh3-color-text-secondary);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+:host(.size-sm) .al-more {
+  width: 20px;
+  height: 20px;
+  font-size: 8px;
+}
+:host(.size-md) .al-more {
+  width: 32px;
+  height: 32px;
+  font-size: 11px;
+}
+:host(.size-lg) .al-more {
+  width: 44px;
+  height: 44px;
+  font-size: 14px;
+}

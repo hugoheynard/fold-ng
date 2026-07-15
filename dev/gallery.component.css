@@ -257,6 +257,12 @@ sh3-app-shell {
   color: var(--sh3-color-text);
 }
 
+/* The avatar-list demos sit on the page, so ring them in the page colour
+   (the component defaults to the card surface for on-card use). */
+#avatar-list {
+  --sh3-avatar-list-ring: var(--sh3-color-bg-page);
+}
+
 /* ── Avatar page: the app-wide palette switch ─────────────────── */
 .palette-switch {
   display: flex;

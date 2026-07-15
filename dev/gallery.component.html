@@ -1023,6 +1023,49 @@
         </sh3-page-section>
       </section>
 
+      <!-- ── sh3-avatar-list (overlapping faces + overflow) ────── -->
+      <section id="avatar-list" class="gal-sec">
+        <sh3-page-section
+          title="sh3-avatar-list"
+          description="A row of slightly-overlapping avatars — the org-chart 'who sits on this node' cluster. Past limit, the remainder collapses into a trailing +N chip. top chooses which end stacks on top (the overlap direction)."
+        >
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">limit 4 of 7 — the rest becomes +N</span>
+              <sh3-avatar-list [avatars]="team" [limit]="4" />
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag"
+                >top · first (leading on top) vs last (trailing on top)</span
+              >
+              <div class="gal-row">
+                <sh3-avatar-list [avatars]="team" [limit]="4" top="first" />
+                <sh3-avatar-list [avatars]="team" [limit]="4" top="last" />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">size · sm / md / lg</span>
+              <div class="gal-row">
+                <sh3-avatar-list [avatars]="team" [limit]="4" size="sm" />
+                <sh3-avatar-list [avatars]="team" [limit]="4" size="md" />
+                <sh3-avatar-list [avatars]="team" [limit]="4" size="lg" />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">square (orgs) · ghost (guests)</span>
+              <div class="gal-row">
+                <sh3-avatar-list [avatars]="team" [limit]="4" square />
+                <sh3-avatar-list [avatars]="team" [limit]="4" variant="ghost" />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">no limit — every face</span>
+              <sh3-avatar-list [avatars]="team" />
+            </div>
+          </div>
+        </sh3-page-section>
+      </section>
+
       <!-- ── design tokens — live editor with a Palette/Fonts/Scale sub-nav ── -->
       <section id="tokens" class="gal-sec">
         <h2>design tokens</h2>

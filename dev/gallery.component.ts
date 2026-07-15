@@ -12,6 +12,8 @@ import {
   Sh3AppShellComponent,
   Sh3AvatarComponent,
   Sh3AvatarDetailComponent,
+  Sh3AvatarListComponent,
+  type Sh3AvatarListItem,
   Sh3BadgeComponent,
   Sh3CardComponent,
   Sh3ContextCardComponent,
@@ -90,6 +92,7 @@ interface TocItem {
     Sh3AppShellComponent,
     Sh3AvatarComponent,
     Sh3AvatarDetailComponent,
+    Sh3AvatarListComponent,
     Sh3CardComponent,
     Sh3HeroComponent,
     Sh3PageSectionComponent,
@@ -500,6 +503,7 @@ export class GalleryComponent {
     { id: "badges", label: "badge · status · icon" },
     { id: "avatar", label: "avatar" },
     { id: "avatar-detail", label: "avatar-detail" },
+    { id: "avatar-list", label: "avatar-list" },
     { id: "tokens", label: "design tokens" },
   ];
   /** The section currently in view — drives the nav highlight. */
@@ -543,6 +547,16 @@ export class GalleryComponent {
     "Léa Petit",
     "Tom Rivière",
   ] as const;
+  /** A team roster for the avatar-list (overlapping faces + overflow). */
+  protected readonly team: readonly Sh3AvatarListItem[] = [
+    { name: "Clément Aubry" },
+    { name: "Inès Bernard" },
+    { name: "Marc Machine" },
+    { name: "Sofia Duarte" },
+    { name: "Léa Petit" },
+    { name: "Tom Rivière" },
+    { name: "Nora Khan" },
+  ];
   /** A self-contained image (data URI) for the imageUrl demos — no network. */
   protected readonly demoAvatarImage =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%232f855a'/%3E%3Ctext x='22' y='30' font-size='20' fill='white' text-anchor='middle' font-family='sans-serif'%3ES3%3C/text%3E%3C/svg%3E";

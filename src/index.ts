@@ -7,6 +7,10 @@
 export { Sh3AppShellComponent } from "./components/app-shell/app-shell.component";
 export { Sh3AvatarComponent } from "./components/avatar/avatar.component";
 export { Sh3AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
+export {
+  Sh3AvatarListComponent,
+  type Sh3AvatarListItem,
+} from "./components/avatar-list/avatar-list.component";
 export { Sh3BadgeComponent } from "./components/badge/badge.component";
 export { Sh3CardComponent } from "./components/card/card.component";
 export { Sh3ContextCardComponent } from "./components/context-card/context-card.component";
