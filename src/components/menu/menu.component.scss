@@ -59,6 +59,16 @@
   padding-top: 8px;
   border-top: 1px solid var(--sh3-color-border-subtle);
 }
+/* Expanded: head/foot items align left like the body (not centered). Horizontal
+   padding via left/right only, so each band keeps its separator padding-top /
+   -bottom. `width: auto` keeps the max-content chain intact. */
+:host(.expanded) .menu-head,
+:host(.expanded) .menu-foot {
+  align-items: stretch;
+  width: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+}
 
 /* The body grows to fill, pinning the footer to the bottom; items sit at top. */
 .menu-body {
