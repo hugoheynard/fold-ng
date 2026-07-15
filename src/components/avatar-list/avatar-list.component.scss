@@ -6,48 +6,51 @@
   --sh3-avatar-list-ring: var(--sh3-color-surface-card);
 }
 
-.al-item,
-.al-more {
+.al-item {
   position: relative;
+  display: inline-flex;
   border-radius: var(--sh3-radius-round);
+  /* An opaque backing disc + a ring in the surface colour: the ring separates
+     overlapping faces, and the disc means a muted/transparent face reads against
+     the surface — not against the neighbour it overlaps. */
+  background: var(--sh3-avatar-list-ring);
   box-shadow: 0 0 0 2px var(--sh3-avatar-list-ring);
 }
-:host(.is-square) .al-item,
-:host(.is-square) .al-more {
+:host(.is-square) .al-item {
   border-radius: var(--sh3-radius-sm);
 }
 
-/* Overlap: every face but the first slides under (or over) its neighbour. */
-.al-item + .al-item,
-.al-more {
+/* Overlap between faces only — a gentle amount so they breathe. */
+.al-item + .al-item {
   margin-left: var(--al-overlap);
 }
 :host(.size-sm) {
-  --al-overlap: -7px;
+  --al-overlap: -5px;
 }
 :host(.size-md) {
-  --al-overlap: -11px;
+  --al-overlap: -8px;
 }
 :host(.size-lg) {
-  --al-overlap: -15px;
+  --al-overlap: -11px;
 }
 
-.al-item {
-  display: inline-flex;
-}
-
-/* The `+N` chip — same size as the avatars, primary-tinted so the "more" reads
-   at a glance (it's usually the affordance to expand the group). */
+/* The `+N` chip sits apart from the stack (a small gap, no overlap, no ring) so
+   it never superimposes a face. Primary-tinted so the "more" reads at a glance. */
 .al-more {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-left: 6px;
+  border-radius: var(--sh3-radius-round);
   background: var(--sh3-color-primary-surface);
   color: var(--sh3-color-primary-text);
   font-weight: 700;
   letter-spacing: 0.02em;
   user-select: none;
+}
+:host(.is-square) .al-more {
+  border-radius: var(--sh3-radius-sm);
 }
 :host(.size-sm) .al-more {
   width: 20px;

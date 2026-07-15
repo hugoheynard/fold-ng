@@ -94,9 +94,4 @@ export class Sh3AvatarListComponent {
     const count = this.visible().length;
     return this.top() === "first" ? count - index : index + 1;
   }
-
-  /** The chip always sits on top so its count stays readable. */
-  protected moreZ(): number {
-    return this.visible().length + 1;
-  }
 }

@@ -14,10 +14,7 @@
   </span>
 }
 @if (overflow() > 0) {
-  <span
-    class="al-more"
-    [style.z-index]="moreZ()"
-    [attr.title]="overflow() + ' more'"
+  <span class="al-more" [attr.title]="overflow() + ' more'"
     >+{{ overflow() }}</span
   >
 }
