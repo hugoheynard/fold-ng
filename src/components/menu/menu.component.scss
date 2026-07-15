@@ -121,15 +121,22 @@
   margin-right: 8px;
 }
 
-/* Expanded + toggle in the header → lay the header as a row with the arrow
-   inline at the end (beside the header content), matching the app's workspace
-   rail. Collapsed stays a column (both bands do), so only expanded differs. */
-:host(.expanded) .menu-head.head-has-toggle {
+/* Expanded + toggle in a band → lay the band as a row with the arrow inline at
+   the end (beside the band's content), matching the app's workspace rail.
+   Collapsed stays a column (both bands do), so only expanded differs. The footer
+   renders the toggle first (auto = "first in footer"), so `order` sends it to
+   the end without changing the collapsed layout. */
+:host(.expanded) .menu-head.head-has-toggle,
+:host(.expanded) .menu-foot.foot-has-toggle {
   flex-direction: row;
   align-items: center;
 }
-:host(.expanded) .menu-head.head-has-toggle .menu-toggle {
+:host(.expanded) .menu-head.head-has-toggle .menu-toggle,
+:host(.expanded) .menu-foot.foot-has-toggle .menu-toggle {
   align-self: center;
   margin-left: auto;
   margin-right: 0;
+}
+:host(.expanded) .menu-foot.foot-has-toggle .menu-toggle {
+  order: 1;
 }

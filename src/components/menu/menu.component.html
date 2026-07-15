@@ -16,7 +16,11 @@
   }
 </nav>
 
-<div class="menu-foot" #foot>
+<div
+  class="menu-foot"
+  [class.foot-has-toggle]="collapsible() && resolvedPlacement() === 'footer'"
+  #foot
+>
   @if (collapsible() && resolvedPlacement() === "footer") {
     <ng-container [ngTemplateOutlet]="toggleTpl" />
   }
