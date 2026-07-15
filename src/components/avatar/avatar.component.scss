@@ -43,3 +43,34 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Presence — a dimmed avatar (same hue, lower intensity) flags absence/inactive. */
+.avatar.is-muted {
+  opacity: 0.45;
+}
+
+/* Status ring — an outline (follows border-radius, can be dotted, and stays
+   clear of the fill's border/box-shadow). `data-ring` carries the colour,
+   `data-ring-style="dotted"` the scheduled/tentative look. */
+.avatar[data-ring] {
+  outline: 2px solid var(--avatar-ring, transparent);
+  outline-offset: 2px;
+}
+.avatar[data-ring-style="dotted"] {
+  outline-style: dotted;
+}
+.avatar[data-ring="accent"] {
+  --avatar-ring: var(--sh3-color-primary);
+}
+.avatar[data-ring="info"] {
+  --avatar-ring: var(--sh3-color-info);
+}
+.avatar[data-ring="warning"] {
+  --avatar-ring: var(--sh3-color-warning);
+}
+.avatar[data-ring="alert"] {
+  --avatar-ring: var(--sh3-color-alert);
+}
+.avatar[data-ring="success"] {
+  --avatar-ring: var(--sh3-color-success);
+}

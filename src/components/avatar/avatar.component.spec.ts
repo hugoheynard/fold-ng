@@ -13,6 +13,9 @@ function mount(inputs: {
   name: string;
   variant?: "solid" | "ghost";
   imageUrl?: string;
+  muted?: boolean;
+  ring?: string;
+  ringStyle?: string;
 }) {
   const fixture = TestBed.createComponent(Sh3AvatarComponent);
   fixture.componentRef.setInput("name", inputs.name);
@@ -21,6 +24,15 @@ function mount(inputs: {
   }
   if (inputs.imageUrl) {
     fixture.componentRef.setInput("imageUrl", inputs.imageUrl);
+  }
+  if (inputs.muted !== undefined) {
+    fixture.componentRef.setInput("muted", inputs.muted);
+  }
+  if (inputs.ring) {
+    fixture.componentRef.setInput("ring", inputs.ring);
+  }
+  if (inputs.ringStyle) {
+    fixture.componentRef.setInput("ringStyle", inputs.ringStyle);
   }
   fixture.detectChanges();
   const el = fixture.nativeElement.querySelector(".avatar") as HTMLElement;
@@ -71,5 +83,23 @@ describe("Sh3AvatarComponent", () => {
     fixture.detectChanges();
     const el = fixture.nativeElement.querySelector(".avatar") as HTMLElement;
     expect(el.classList.contains("shape-square")).toBe(true);
+  });
+
+  it("muted dims the avatar", () => {
+    const { el } = mount({ name: "Away", muted: true });
+    expect(el.classList.contains("is-muted")).toBe(true);
+  });
+
+  it("ring sets the status outline attrs; 'none' clears them", () => {
+    const withRing = mount({
+      name: "In",
+      ring: "warning",
+      ringStyle: "dotted",
+    });
+    expect(withRing.el.getAttribute("data-ring")).toBe("warning");
+    expect(withRing.el.getAttribute("data-ring-style")).toBe("dotted");
+
+    const noRing = mount({ name: "In" });
+    expect(noRing.el.getAttribute("data-ring")).toBeNull();
   });
 });

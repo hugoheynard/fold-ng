@@ -70,4 +70,23 @@ describe("Sh3AvatarListComponent", () => {
     const fixture = mount({ avatars: FACES.slice(0, 2), square: "" });
     expect(fixture.componentInstance.square()).toBe(true);
   });
+
+  it("forwards per-face state (muted / ring) to each avatar", () => {
+    const fixture = mount({
+      avatars: [
+        { name: "Away", muted: true },
+        { name: "Incoming", ring: "warning", ringStyle: "dotted" },
+      ],
+    });
+    const avatars = fixture.nativeElement.querySelectorAll(".avatar");
+    expect((avatars[0] as HTMLElement).classList.contains("is-muted")).toBe(
+      true,
+    );
+    expect((avatars[1] as HTMLElement).getAttribute("data-ring")).toBe(
+      "warning",
+    );
+    expect((avatars[1] as HTMLElement).getAttribute("data-ring-style")).toBe(
+      "dotted",
+    );
+  });
 });

@@ -5,7 +5,11 @@
 // sites get autocomplete and a compile error on a misspelt token.
 
 export { Sh3AppShellComponent } from "./components/app-shell/app-shell.component";
-export { Sh3AvatarComponent } from "./components/avatar/avatar.component";
+export {
+  Sh3AvatarComponent,
+  type Sh3AvatarRing,
+  type Sh3AvatarRingStyle,
+} from "./components/avatar/avatar.component";
 export { Sh3AvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
 export {
   Sh3AvatarListComponent,

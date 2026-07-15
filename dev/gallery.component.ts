@@ -547,13 +547,14 @@ export class GalleryComponent {
     "Léa Petit",
     "Tom Rivière",
   ] as const;
-  /** A team roster for the avatar-list (overlapping faces + overflow). */
+  /** A team roster for the avatar-list — a few carry per-face state so the
+   *  showcase demonstrates absence + scheduled status in context. */
   protected readonly team: readonly Sh3AvatarListItem[] = [
     { name: "Clément Aubry" },
     { name: "Inès Bernard" },
-    { name: "Marc Machine" },
-    { name: "Sofia Duarte" },
-    { name: "Léa Petit" },
+    { name: "Marc Machine", muted: true }, // absent today
+    { name: "Sofia Duarte", ring: "accent", ringStyle: "dotted" }, // incoming
+    { name: "Léa Petit", ring: "warning", ringStyle: "dotted" }, // leaving
     { name: "Tom Rivière" },
     { name: "Nora Khan" },
   ];

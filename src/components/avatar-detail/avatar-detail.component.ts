@@ -1,5 +1,9 @@
 import { booleanAttribute, Component, computed, input } from "@angular/core";
-import { Sh3AvatarComponent } from "../avatar/avatar.component";
+import {
+  Sh3AvatarComponent,
+  type Sh3AvatarRing,
+  type Sh3AvatarRingStyle,
+} from "../avatar/avatar.component";
 
 /**
  * `<sh3-avatar-detail>` — an avatar next to one or two lines of text: the
@@ -21,6 +25,9 @@ import { Sh3AvatarComponent } from "../avatar/avatar.component";
  * | `variant`    | `'solid' \| 'ghost'`   | `'solid'` | `'ghost'` dashes the avatar (guests).        |
  * | `square`     | `boolean`              | `false`   | Square avatar (orgs).                        |
  * | `imageUrl`   | `string`               | —         | Avatar image; replaces initials when set.    |
+ * | `muted`      | `boolean`              | `false`   | Dim the avatar (absence / inactive).         |
+ * | `ring`       | `Sh3AvatarRing`        | `'none'`  | Status outline on the avatar.                |
+ * | `ringStyle`  | `'solid' \| 'dotted'`  | `'solid'` | Ring line style (`dotted` = scheduled).      |
  *
  * @selector `sh3-avatar-detail`
  */
@@ -39,6 +46,12 @@ export class Sh3AvatarDetailComponent {
   readonly variant = input<"solid" | "ghost">("solid");
   readonly square = input(false, { transform: booleanAttribute });
   readonly imageUrl = input<string | undefined>(undefined);
+  /** Dim the avatar — absence / inactive (forwarded to `sh3-avatar`). */
+  readonly muted = input(false, { transform: booleanAttribute });
+  /** Status outline colour (forwarded to `sh3-avatar`). */
+  readonly ring = input<Sh3AvatarRing>("none");
+  /** Ring line style (forwarded to `sh3-avatar`). */
+  readonly ringStyle = input<Sh3AvatarRingStyle>("solid");
 
   /** Falls back to the primary line when no explicit avatar name is given. */
   readonly resolvedAvatarName = computed(

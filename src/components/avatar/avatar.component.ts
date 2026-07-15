@@ -37,6 +37,17 @@ function readableInk(fill: string): string {
   return luminance > 0.4 ? DARK_INK : LIGHT_INK;
 }
 
+/** Status-ring colour — reuses the `sh3-badge` status vocabulary. */
+export type Sh3AvatarRing =
+  | "none"
+  | "accent"
+  | "info"
+  | "warning"
+  | "alert"
+  | "success";
+/** Status-ring line style — `dotted` reads as scheduled / tentative. */
+export type Sh3AvatarRingStyle = "solid" | "dotted";
+
 /**
  * `<sh3-avatar>` — a user/entity avatar with initials or an image.
  *
@@ -44,6 +55,12 @@ function readableInk(fill: string): string {
  * deterministic background colour taken from the app-wide {@link Sh3PaletteRegistry}
  * (so the same seed is the same colour everywhere, and one `registry.use(...)`
  * recolours every avatar).
+ *
+ * Three orthogonal state axes compose: `variant` (fill), `muted` (presence —
+ * dim for an absence/inactive person), and `ring` + `ringStyle` (a status
+ * outline). The component stays domain-agnostic: a screen maps its own states
+ * (e.g. absent → `[muted]`, a scheduled arrival → `ring="accent"`
+ * `ringStyle="dotted"`), the avatar just draws the primitives.
  *
  * ## Inputs
  *
@@ -55,6 +72,9 @@ function readableInk(fill: string): string {
  * | `variant`   | `'solid' \| 'ghost'`   | `'solid'` | `'ghost'` renders a dashed border (for guests). |
  * | `square`    | `boolean`              | `false`   | Square shape with a small radius (for orgs).    |
  * | `imageUrl`  | `string`               | —         | Image/logo URL. Replaces initials when set.     |
+ * | `muted`     | `boolean`              | `false`   | Dim the avatar (same hue, less intense) — absence / inactive. |
+ * | `ring`      | `Sh3AvatarRing`        | `'none'`  | A status outline (`accent`/`info`/`warning`/`alert`/`success`). |
+ * | `ringStyle` | `'solid' \| 'dotted'`  | `'solid'` | Ring line style — `dotted` for scheduled/tentative states. |
  *
  * @selector `sh3-avatar`
  */
@@ -73,6 +93,12 @@ export class Sh3AvatarComponent {
   readonly variant = input<"solid" | "ghost">("solid");
   readonly square = input(false, { transform: booleanAttribute });
   readonly imageUrl = input<string | undefined>(undefined);
+  /** Dim the avatar (same hue, less intense) — for an absent / inactive person. */
+  readonly muted = input(false, { transform: booleanAttribute });
+  /** A status outline; `'none'` draws nothing. */
+  readonly ring = input<Sh3AvatarRing>("none");
+  /** Ring line style — `'dotted'` for scheduled / tentative states. */
+  readonly ringStyle = input<Sh3AvatarRingStyle>("solid");
 
   /** Readable ink for the initials, derived from the fill's luminance. */
   protected readonly onColor = computed(() => readableInk(this.color()));

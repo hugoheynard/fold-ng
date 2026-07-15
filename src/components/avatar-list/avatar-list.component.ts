@@ -5,9 +5,14 @@ import {
   input,
   numberAttribute,
 } from "@angular/core";
-import { Sh3AvatarComponent } from "../avatar/avatar.component";
+import {
+  Sh3AvatarComponent,
+  type Sh3AvatarRing,
+  type Sh3AvatarRingStyle,
+} from "../avatar/avatar.component";
 
-/** One face in an {@link Sh3AvatarListComponent} — the minimum an avatar needs. */
+/** One face in an {@link Sh3AvatarListComponent} — the minimum an avatar needs,
+ *  plus optional per-face state (absence / status ring). */
 export interface Sh3AvatarListItem {
   /** Full name — initials + deterministic colour derive from it. */
   readonly name: string;
@@ -15,6 +20,12 @@ export interface Sh3AvatarListItem {
   readonly imageUrl?: string;
   /** Overrides the string used to pick the deterministic colour (else `name`). */
   readonly colorSeed?: string;
+  /** Dim this face — absence / inactive. */
+  readonly muted?: boolean;
+  /** A status outline on this face. */
+  readonly ring?: Sh3AvatarRing;
+  /** Ring line style for this face (`dotted` = scheduled / tentative). */
+  readonly ringStyle?: Sh3AvatarRingStyle;
 }
 
 /**
