@@ -1,9 +1,4 @@
-<sh3-app-shell
-  [appearance]="shellAppearance()"
-  [headerLayout]="shellHeaderLayout()"
-  [railWidth]="shellRailWidth()"
-  [headerHeight]="shellHeaderHeight()"
->
+<sh3-app-shell>
   <!-- ── rail primary: a stable static nav (the configurable menu lives in the
        #menu page's preview, applied to the Library nav below) ──────── -->
   <sh3-menu railPrimary tint="primary">
@@ -55,12 +50,49 @@
       <!-- ── sh3-app-shell (this gallery is one) ───────────────── -->
       <section id="app-shell" class="gal-sec">
         <h2>sh3-app-shell</h2>
+
+        <!-- Responsive preview — the settings drive this shell; the mode switch
+             resizes the container so the shell folds (secondary rail at tablet,
+             both rails at mobile) via its container queries. -->
+        <div class="shell-preview-modes">
+          @for (m of shellModes; track m) {
+            <button
+              type="button"
+              [class.is-on]="shellMode() === m"
+              (click)="shellMode.set(m)"
+            >
+              {{ m }}
+            </button>
+          }
+          <span class="spm-width">{{ shellPreviewWidth() }}px</span>
+        </div>
+        <div class="shell-preview-frame">
+          <div class="shell-preview" [style.width.px]="shellPreviewWidth()">
+            <sh3-app-shell
+              [appearance]="shellAppearance()"
+              [headerLayout]="shellHeaderLayout()"
+              [railWidth]="shellRailWidth()"
+              [headerHeight]="shellHeaderHeight()"
+            >
+              <div railPrimary class="sp-rail sp-rail--1">
+                <sh3-icon name="menu" [size]="18" />
+              </div>
+              <div railSecondary class="sp-rail sp-rail--2">Nav</div>
+              <div header class="sp-header">Header</div>
+              <div class="sp-content">
+                <div class="sp-block"></div>
+                <div class="sp-block"></div>
+              </div>
+            </sh3-app-shell>
+          </div>
+        </div>
+
         <div class="shell-demo">
           <div class="gal-card-narrow">
             <sh3-context-card
               icon="grid"
               title="App Shell Settings"
-              subtitle="This gallery is itself an sh3-app-shell — tweak its structure live."
+              subtitle="Drives the preview above — resize with Desktop / Tablet / Mobile."
             >
               <div class="ss-group">
                 <span class="ss-label">appearance</span>

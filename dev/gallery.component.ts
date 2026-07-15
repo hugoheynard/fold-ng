@@ -43,6 +43,9 @@ interface MenuSection {
   icons: number;
 }
 
+/** Responsive preview mode for the app-shell page. */
+type ShellMode = "desktop" | "tablet" | "mobile";
+
 /** One entry in the gallery's section nav (the railSecondary sh3-menu). */
 interface TocItem {
   readonly id: string;
@@ -90,6 +93,19 @@ export class GalleryComponent {
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
+
+  /* ── Responsive preview modes (drive the preview box's width via a container
+   *    query in sh3-app-shell) ── */
+  protected readonly shellModes = ["desktop", "tablet", "mobile"] as const;
+  protected readonly shellMode = signal<ShellMode>("desktop");
+  private readonly SHELL_MODE_WIDTH: Record<ShellMode, number> = {
+    desktop: 1200,
+    tablet: 880,
+    mobile: 380,
+  };
+  protected readonly shellPreviewWidth = computed(
+    () => this.SHELL_MODE_WIDTH[this.shellMode()],
+  );
 
   protected setAppearance(value: "flat" | "floating"): void {
     this.shellAppearance.set(value);

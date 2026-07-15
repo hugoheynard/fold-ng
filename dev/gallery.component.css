@@ -26,6 +26,90 @@ sh3-app-shell {
   font-size: 14px;
 }
 
+/* ── sh3-app-shell page: responsive preview (Desktop / Tablet / Mobile) ── */
+.shell-preview-modes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.shell-preview-modes button {
+  padding: 6px 12px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.shell-preview-modes button.is-on {
+  border-color: var(--sh3-color-primary);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
+.spm-width {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--sh3-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.shell-preview-frame {
+  height: 460px;
+  margin-bottom: 20px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-lg);
+  overflow: auto;
+  background: var(--sh3-color-bg-page);
+}
+.shell-preview {
+  /* The container the shell's container queries key off — resizing this via the
+     mode buttons folds the shell (secondary at ≤1024, both at ≤768). */
+  container-type: inline-size;
+  height: 100%;
+  transition: width var(--sh3-motion-base);
+}
+.sp-rail {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--sh3-color-text-muted);
+  font-size: 12px;
+}
+.sp-rail--1 {
+  width: var(--sh3-shell-rail-width, 64px);
+  background: var(--sh3-color-bg-rail-primary);
+  border-right: 1px solid var(--sh3-color-border);
+}
+.sp-rail--2 {
+  width: 150px;
+  background: var(--sh3-color-bg-rail-secondary);
+  border-right: 1px solid var(--sh3-color-border);
+}
+.sp-header {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  background: var(--sh3-color-bg-header);
+  border-bottom: 1px solid var(--sh3-color-border);
+  font-weight: 700;
+  font-size: 13px;
+}
+.sp-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+.sp-block {
+  height: 64px;
+  border-radius: var(--sh3-radius-md);
+  border: 1px solid var(--sh3-color-border-subtle);
+  background: var(--sh3-color-surface-card);
+}
+
 /* ── sh3-menu page: the live preview box above the settings cards ── */
 .menu-preview {
   display: flex;
