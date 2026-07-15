@@ -10,6 +10,8 @@ import {
 } from "@angular/core";
 import {
   Sh3AppShellComponent,
+  Sh3AvatarComponent,
+  Sh3AvatarDetailComponent,
   Sh3BadgeComponent,
   Sh3CardComponent,
   Sh3ContextCardComponent,
@@ -33,6 +35,8 @@ import {
   type Sh3RadiusToken,
   type Sh3SemanticColorToken,
   sh3ColorProperty,
+  Sh3PaletteRegistry,
+  type Sh3AutoPaletteName,
 } from "../src/index";
 import { TokenPanelComponent } from "./token-panel.component";
 import { TabPanelComponent } from "./tab-panel.component";
@@ -84,6 +88,8 @@ interface TocItem {
   standalone: true,
   imports: [
     Sh3AppShellComponent,
+    Sh3AvatarComponent,
+    Sh3AvatarDetailComponent,
     Sh3CardComponent,
     Sh3HeroComponent,
     Sh3PageSectionComponent,
@@ -492,6 +498,8 @@ export class GalleryComponent {
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
+    { id: "avatar", label: "avatar" },
+    { id: "avatar-detail", label: "avatar-detail" },
     { id: "tokens", label: "design tokens" },
   ];
   /** The section currently in view — drives the nav highlight. */
@@ -524,6 +532,34 @@ export class GalleryComponent {
     "bell",
     "music",
   ] as const;
+
+  /* ── Avatar demos + the app-wide palette switch ─────────────────────── */
+  /** Names for the "deterministic colour per seed" row. */
+  protected readonly avatarNames = [
+    "Clément Aubry",
+    "Inès Bernard",
+    "Marc Machine",
+    "Sofia Duarte",
+    "Léa Petit",
+    "Tom Rivière",
+  ] as const;
+  /** A self-contained image (data URI) for the imageUrl demos — no network. */
+  protected readonly demoAvatarImage =
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%232f855a'/%3E%3Ctext x='22' y='30' font-size='20' fill='white' text-anchor='middle' font-family='sans-serif'%3ES3%3C/text%3E%3C/svg%3E";
+
+  /** The palette registry is a root singleton — switching it recolours every
+   *  avatar in the app at once (a given seed keeps one colour, app-wide). */
+  private readonly palette = inject(Sh3PaletteRegistry);
+  protected readonly palettes: readonly Sh3AutoPaletteName[] = [
+    "vivid",
+    "extended",
+    "pastel",
+  ];
+  protected readonly activePalette = signal<Sh3AutoPaletteName>("vivid");
+  protected setPalette(name: Sh3AutoPaletteName): void {
+    this.palette.use(name);
+    this.activePalette.set(name);
+  }
 
   constructor() {
     afterNextRender(() => this.observeSections());

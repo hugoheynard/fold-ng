@@ -257,6 +257,29 @@ sh3-app-shell {
   color: var(--sh3-color-text);
 }
 
+/* ── Avatar page: the app-wide palette switch ─────────────────── */
+.palette-switch {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.palette-switch button {
+  padding: 5px 12px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.palette-switch button.is-on {
+  border-color: var(--sh3-color-primary);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
+
 /* ── Header ─────────────────────────────────────────────────── */
 .gal-header {
   height: 100%;

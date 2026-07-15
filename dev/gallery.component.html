@@ -903,6 +903,114 @@
         </div>
       </section>
 
+      <!-- ── sh3-avatar ────────────────────────────────────────── -->
+      <section id="avatar" class="gal-sec">
+        <h2>sh3-avatar</h2>
+        <div class="gal-stack">
+          <div class="gal-cell">
+            <span class="gal-tag">size · sm / md / lg</span>
+            <div class="gal-row">
+              <sh3-avatar name="Clément Aubry" size="sm" />
+              <sh3-avatar name="Clément Aubry" size="md" />
+              <sh3-avatar name="Clément Aubry" size="lg" />
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag"
+              >variant · solid / ghost (guest) · square (org)</span
+            >
+            <div class="gal-row">
+              <sh3-avatar name="Inès Bernard" />
+              <sh3-avatar name="Inès Bernard" variant="ghost" />
+              <sh3-avatar name="Sh3pherd" square />
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag"
+              >imageUrl — replaces initials (round + square)</span
+            >
+            <div class="gal-row">
+              <sh3-avatar name="Léa Petit" [imageUrl]="demoAvatarImage" />
+              <sh3-avatar name="Sh3pherd" square [imageUrl]="demoAvatarImage" />
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag"
+              >deterministic colour per seed — switch recolours all at
+              once</span
+            >
+            <div class="palette-switch">
+              @for (p of palettes; track p) {
+                <button
+                  type="button"
+                  [class.is-on]="activePalette() === p"
+                  (click)="setPalette(p)"
+                >
+                  {{ p }}
+                </button>
+              }
+            </div>
+            <div class="gal-row">
+              @for (n of avatarNames; track n) {
+                <sh3-avatar [name]="n" size="lg" />
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── sh3-avatar-detail (identity cell) ─────────────────── -->
+      <section id="avatar-detail" class="gal-sec">
+        <h2>sh3-avatar-detail — identity cell</h2>
+        <div class="gal-stack">
+          <div class="gal-cell">
+            <span class="gal-tag">two lines (name + email) · sizes</span>
+            <div class="gal-row gal-row--wide">
+              <sh3-avatar-detail
+                primary="Clément Aubry"
+                secondary="clement@sh3pherd.dev"
+                size="sm"
+              />
+              <sh3-avatar-detail
+                primary="Clément Aubry"
+                secondary="clement@sh3pherd.dev"
+              />
+              <sh3-avatar-detail
+                primary="Clément Aubry"
+                secondary="clement@sh3pherd.dev"
+                size="lg"
+              />
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag"
+              >single line — centres against the avatar</span
+            >
+            <sh3-avatar-detail primary="Inès Bernard" />
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">ghost (guest) · square (org) · image</span>
+            <div class="gal-row gal-row--wide">
+              <sh3-avatar-detail
+                primary="Marc Machine"
+                secondary="Invité"
+                variant="ghost"
+              />
+              <sh3-avatar-detail
+                primary="Sh3pherd"
+                secondary="Organisation"
+                square
+              />
+              <sh3-avatar-detail
+                primary="Léa Petit"
+                secondary="Design"
+                [imageUrl]="demoAvatarImage"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ── design tokens — live editor with a Palette/Fonts/Scale sub-nav ── -->
       <section id="tokens" class="gal-sec">
         <h2>design tokens</h2>
