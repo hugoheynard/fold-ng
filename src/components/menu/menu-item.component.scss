@@ -19,23 +19,40 @@
 
   /* The tint the item hovers/activates with. `follow` (the sh3-menu default)
      takes the enclosing section's colour, or neutral when there's no section
-     (the footer). The menu's `tint` input overrides it for all its items. */
+     (the footer). The menu's `tint` input overrides it for all its items. The
+     hover/active surfaces + text derive from it, so a tint only sets --mi-accent
+     (except neutral, which maps to the flat tab-nav-hover look). */
   --mi-accent: var(--sh3-menu-section-color, var(--sh3-color-text-secondary));
+  --mi-hover-bg: color-mix(
+    in srgb,
+    var(--mi-accent) 16%,
+    var(--sh3-color-surface-hover)
+  );
+  --mi-hover-fg: var(--mi-accent);
+  --mi-active-bg: color-mix(in srgb, var(--mi-accent) 15%, transparent);
+  --mi-active-fg: color-mix(
+    in srgb,
+    var(--mi-accent) 80%,
+    var(--sh3-color-text)
+  );
+  --mi-active-icon: var(--mi-accent);
 }
 :host-context(sh3-menu[data-tint="neutral"]) {
+  /* Match the tab-nav hover exactly: flat surface-hover background + text. */
   --mi-accent: var(--sh3-color-text-secondary);
+  --mi-hover-bg: var(--sh3-color-surface-hover);
+  --mi-hover-fg: var(--sh3-color-text);
+  --mi-active-bg: var(--sh3-color-surface-hover);
+  --mi-active-fg: var(--sh3-color-text);
+  --mi-active-icon: var(--sh3-color-text);
 }
 :host-context(sh3-menu[data-tint="primary"]) {
   --mi-accent: var(--sh3-color-primary);
 }
 
 :host(:hover) {
-  background: color-mix(
-    in srgb,
-    var(--mi-accent) 16%,
-    var(--sh3-color-surface-hover)
-  );
-  color: var(--mi-accent);
+  background: var(--mi-hover-bg);
+  color: var(--mi-hover-fg);
 }
 :host(:focus-visible) {
   outline: 2px solid var(--sh3-color-primary);
@@ -47,11 +64,11 @@
    left indicator bar sitting in the rail gutter (flush to the edge, -8px) with a
    soft glow — not glued to the item. */
 :host(.is-active) {
-  color: color-mix(in srgb, var(--mi-accent) 80%, var(--sh3-color-text));
-  background: color-mix(in srgb, var(--mi-accent) 15%, transparent);
+  color: var(--mi-active-fg);
+  background: var(--mi-active-bg);
 }
 :host(.is-active) .mi-icon {
-  color: var(--mi-accent);
+  color: var(--mi-active-icon);
 }
 :host(.is-active)::before {
   content: "";
