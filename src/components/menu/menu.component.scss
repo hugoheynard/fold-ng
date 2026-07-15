@@ -13,10 +13,13 @@
   transition: width var(--sh3-motion-base);
 }
 
-/* Expanded — a wider rail with inline labels (items/separators self-switch via
-   :host-context). Consumers place an expandable menu in an auto-width cell. */
+/* Expanded — the rail takes its content width (labels), bounded so a long label
+   can't run away. Items/separators self-switch to inline labels via
+   :host-context. In a fixed-width cell, size the cell to match (measure it). */
 :host(.expanded) {
-  width: 236px;
+  width: max-content;
+  min-width: 190px;
+  max-width: 260px;
   align-items: stretch;
 }
 
