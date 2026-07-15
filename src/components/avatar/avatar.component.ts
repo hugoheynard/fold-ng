@@ -37,6 +37,8 @@ function readableInk(fill: string): string {
   return luminance > 0.4 ? DARK_INK : LIGHT_INK;
 }
 
+/** Fill style — `ghost` dashes the outline (guests). */
+export type Sh3AvatarVariant = "solid" | "ghost";
 /** Status-ring colour — reuses the `sh3-badge` status vocabulary. */
 export type Sh3AvatarRing =
   | "none"
@@ -90,7 +92,7 @@ export class Sh3AvatarComponent {
   readonly name = input.required<string>();
   readonly size = input<"sm" | "md" | "lg">("md");
   readonly colorSeed = input<string | undefined>(undefined);
-  readonly variant = input<"solid" | "ghost">("solid");
+  readonly variant = input<Sh3AvatarVariant>("solid");
   readonly square = input(false, { transform: booleanAttribute });
   readonly imageUrl = input<string | undefined>(undefined);
   /** Dim the avatar (same hue, less intense) — for an absent / inactive person. */

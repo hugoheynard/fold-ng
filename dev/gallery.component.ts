@@ -551,7 +551,7 @@ export class GalleryComponent {
    *  showcase demonstrates absence + scheduled status in context. */
   protected readonly team: readonly Sh3AvatarListItem[] = [
     { name: "Clément Aubry" },
-    { name: "Inès Bernard" },
+    { name: "Inès Bernard", variant: "ghost" }, // a guest among members
     { name: "Marc Machine", muted: true }, // absent today
     { name: "Sofia Duarte", ring: "accent", ringStyle: "dotted" }, // incoming
     { name: "Léa Petit", ring: "warning", ringStyle: "dotted" }, // leaving
@@ -581,7 +581,6 @@ export class GalleryComponent {
   protected readonly alLimit = signal(4);
   protected readonly alTop = signal<"first" | "last">("first");
   protected readonly alSize = signal<"sm" | "md" | "lg">("md");
-  protected readonly alVariant = signal<"solid" | "ghost">("solid");
   protected readonly alSquare = signal(false);
   /** The team sliced to the chosen face count — drives the preview. */
   protected readonly alFaces = computed(() =>
@@ -602,7 +601,6 @@ export class GalleryComponent {
       this.alLimit() > 0 ? `[limit]="${this.alLimit()}"` : "",
       this.alTop() === "first" ? "" : `top="${this.alTop()}"`,
       this.alSize() === "md" ? "" : `size="${this.alSize()}"`,
-      this.alVariant() === "solid" ? "" : `variant="${this.alVariant()}"`,
       this.alSquare() ? "square" : "",
     ].filter(Boolean);
     return `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;

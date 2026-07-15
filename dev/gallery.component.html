@@ -1075,7 +1075,6 @@
               [limit]="alLimit()"
               [top]="alTop()"
               [size]="alSize()"
-              [variant]="alVariant()"
               [square]="alSquare()"
             />
             @if (alShowCode()) {
@@ -1202,26 +1201,21 @@
                 </div>
 
                 <div class="ss-group">
-                  <span class="ss-label">variant · shape</span>
+                  <span class="ss-label"
+                    >shape (uniform — per-face state is in the data)</span
+                  >
                   <div class="ss-seg">
                     <button
                       type="button"
-                      [class.is-on]="alVariant() === 'solid'"
-                      (click)="alVariant.set('solid')"
+                      [class.is-on]="!alSquare()"
+                      (click)="alSquare.set(false)"
                     >
-                      solid
-                    </button>
-                    <button
-                      type="button"
-                      [class.is-on]="alVariant() === 'ghost'"
-                      (click)="alVariant.set('ghost')"
-                    >
-                      ghost
+                      round
                     </button>
                     <button
                       type="button"
                       [class.is-on]="alSquare()"
-                      (click)="alSquare.set(!alSquare())"
+                      (click)="alSquare.set(true)"
                     >
                       square
                     </button>

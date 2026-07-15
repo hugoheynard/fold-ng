@@ -7,6 +7,7 @@
 export { Sh3AppShellComponent } from "./components/app-shell/app-shell.component";
 export {
   Sh3AvatarComponent,
+  type Sh3AvatarVariant,
   type Sh3AvatarRing,
   type Sh3AvatarRingStyle,
 } from "./components/avatar/avatar.component";

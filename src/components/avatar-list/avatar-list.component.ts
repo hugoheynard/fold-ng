@@ -7,12 +7,14 @@ import {
 } from "@angular/core";
 import {
   Sh3AvatarComponent,
+  type Sh3AvatarVariant,
   type Sh3AvatarRing,
   type Sh3AvatarRingStyle,
 } from "../avatar/avatar.component";
 
 /** One face in an {@link Sh3AvatarListComponent} — the minimum an avatar needs,
- *  plus optional per-face state (absence / status ring). */
+ *  plus optional per-face identity/state. `variant` lives here (not on the list)
+ *  because a single member can be a guest among members. */
 export interface Sh3AvatarListItem {
   /** Full name — initials + deterministic colour derive from it. */
   readonly name: string;
@@ -20,6 +22,8 @@ export interface Sh3AvatarListItem {
   readonly imageUrl?: string;
   /** Overrides the string used to pick the deterministic colour (else `name`). */
   readonly colorSeed?: string;
+  /** Fill style — `ghost` for a guest among members. */
+  readonly variant?: Sh3AvatarVariant;
   /** Dim this face — absence / inactive. */
   readonly muted?: boolean;
   /** A status outline on this face. */
@@ -44,8 +48,11 @@ export interface Sh3AvatarListItem {
  * | `limit`   | `number`                | `0`       | Max faces on the line (`0` = all). Extra → a `+N` chip.  |
  * | `top`     | `'first' \| 'last'`     | `'first'` | Which end stacks on top — the overlap direction.         |
  * | `size`    | `'sm' \| 'md' \| 'lg'`  | `'md'`    | Avatar size (shared by every face + the chip).           |
- * | `variant` | `'solid' \| 'ghost'`    | `'solid'` | Passed to each avatar (`ghost` dashes guests).           |
- * | `square`  | `boolean`               | `false`   | Square faces (orgs).                                     |
+ * | `square`  | `boolean`               | `false`   | Square faces (orgs) — uniform across the cluster.        |
+ *
+ * Per-face traits (`variant`/`muted`/`ring`/`ringStyle`) live on each
+ * `Sh3AvatarListItem`, since they vary member-by-member (a guest among members,
+ * one person absent, another arriving).
  *
  * @selector `sh3-avatar-list`
  *
@@ -74,7 +81,6 @@ export class Sh3AvatarListComponent {
   /** `'first'` = the leading face sits on top; `'last'` = the trailing one does. */
   readonly top = input<"first" | "last">("first");
   readonly size = input<"sm" | "md" | "lg">("md");
-  readonly variant = input<"solid" | "ghost">("solid");
   readonly square = input(false, { transform: booleanAttribute });
 
   /** The faces actually rendered (capped at `limit` when it bites). */
