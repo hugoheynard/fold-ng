@@ -13,38 +13,18 @@ sh3-app-shell {
   height: 100%;
 }
 
-/* ── Primary rail (icon column) ─────────────────────────────── */
-.rail {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 10px 0;
-  background: var(--sh3-color-bg-rail-primary);
-}
-.rail-btn {
-  width: 40px;
-  height: 40px;
+/* ── Primary rail: the sh3-menu brand tile in its header slot ── */
+.rail-brand {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 8px;
+  border-radius: var(--sh3-radius-md);
   display: grid;
   place-items: center;
-  border: none;
-  border-radius: var(--sh3-radius-md);
-  background: none;
-  color: var(--sh3-color-text-muted);
-  cursor: pointer;
-}
-.rail-btn:hover:not(:disabled) {
-  background: var(--sh3-color-surface-raised);
-  color: var(--sh3-color-text);
-}
-.rail-btn:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-.rail-btn.is-on {
-  background: var(--sh3-color-primary-surface);
-  color: var(--sh3-color-primary-text);
+  background: var(--sh3-color-primary);
+  color: var(--sh3-color-on-primary);
+  font-weight: 800;
+  font-size: 14px;
 }
 
 /* ── Header ─────────────────────────────────────────────────── */
@@ -178,30 +158,6 @@ sh3-app-shell {
   border-radius: var(--sh3-radius-sm);
   background: var(--sh3-color-surface-sunken);
   font-size: 13px;
-}
-
-/* sh3-menu demo — a short rail. No overflow clip: tooltips escape to the right.
-   The wrapper width tracks the menu's expanded state so it doesn't overflow. */
-.menu-demo {
-  width: 72px;
-  height: 320px;
-  margin-top: 12px;
-  transition: width var(--sh3-motion-base);
-}
-.menu-demo.is-expanded {
-  width: 236px;
-}
-.menu-demo-brand {
-  width: 36px;
-  height: 36px;
-  margin-bottom: 8px;
-  border-radius: var(--sh3-radius-md);
-  display: grid;
-  place-items: center;
-  background: var(--sh3-color-primary);
-  color: var(--sh3-color-on-primary);
-  font-weight: 800;
-  font-size: 14px;
 }
 
 /* ── App Shell Settings card + live code snippet ─────────────── */

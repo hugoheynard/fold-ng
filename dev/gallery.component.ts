@@ -138,6 +138,8 @@ export class GalleryComponent {
   ] as const;
   protected readonly menuActive = signal<string>("home");
   protected readonly menuExpanded = signal(false);
+  protected readonly menuCollapsible = signal(true);
+  protected readonly menuSections = signal(true);
 
   /** Double-click a component → inspect its tokens + composition in a panel. */
   protected onInspect(event: MouseEvent): void {
@@ -169,7 +171,6 @@ export class GalleryComponent {
     { id: "card", label: "card" },
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
-    { id: "menu", label: "menu" },
     { id: "badges", label: "badge · status · icon" },
   ];
   /** The section currently in view — drives the TOC highlight. */

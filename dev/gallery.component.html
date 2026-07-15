@@ -1,24 +1,38 @@
 <sh3-app-shell
   [appearance]="shellAppearance()"
   [headerLayout]="shellHeaderLayout()"
-  [railWidth]="shellRailWidth()"
+  [railWidth]="menuExpanded() ? 236 : shellRailWidth()"
   [headerHeight]="shellHeaderHeight()"
 >
-  <!-- ── rail primary: decorative icon rail ────────────────────── -->
-  <nav railPrimary class="rail">
-    <button type="button" class="rail-btn is-on" disabled>
-      <sh3-icon name="grid" />
-    </button>
-    <button type="button" class="rail-btn" disabled>
-      <sh3-icon name="home" />
-    </button>
-    <button type="button" class="rail-btn" disabled>
-      <sh3-icon name="contracts" />
-    </button>
-    <button type="button" class="rail-btn" disabled>
-      <sh3-icon name="music" />
-    </button>
-  </nav>
+  <!-- ── rail primary: the sh3-menu (parameterised from the settings card) ── -->
+  <sh3-menu
+    railPrimary
+    [collapsible]="menuCollapsible()"
+    [expanded]="menuExpanded()"
+    (expandedChange)="menuExpanded.set($event)"
+  >
+    <div header class="rail-brand">S3</div>
+
+    @if (menuSections()) {
+      <sh3-menu-separator label="Personal" color="#06a4a4" />
+    }
+    @for (item of menuItems; track item.id) {
+      <button
+        sh3-menu-item
+        [icon]="item.icon"
+        [label]="item.label"
+        [active]="menuActive() === item.id"
+        (click)="menuActive.set(item.id)"
+      ></button>
+    }
+
+    @if (menuSections()) {
+      <sh3-menu-separator label="More" color="#7c5bbf" />
+    }
+    <button sh3-menu-item [icon]="'bell'" label="Notifications"></button>
+
+    <button footer sh3-menu-item [icon]="'settings'" label="Settings"></button>
+  </sh3-menu>
 
   <!-- ── rail secondary: table of contents ─────────────────────── -->
   <app-toc-panel railSecondary [items]="toc" [activeId]="activeSection()" />
@@ -111,6 +125,33 @@
                   [value]="shellHeaderHeight()"
                   (input)="setHeaderHeight(headerInput.value)"
                 />
+              </div>
+
+              <div class="ss-group">
+                <span class="ss-label">menu (railPrimary)</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="menuCollapsible()"
+                    (click)="menuCollapsible.set(!menuCollapsible())"
+                  >
+                    collapsible
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuExpanded()"
+                    (click)="menuExpanded.set(!menuExpanded())"
+                  >
+                    expanded
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuSections()"
+                    (click)="menuSections.set(!menuSections())"
+                  >
+                    sections
+                  </button>
+                </div>
               </div>
             </sh3-context-card>
           </div>
@@ -323,49 +364,6 @@
               Open panel with tabs
             </button>
           </div>
-        </div>
-      </section>
-
-      <!-- ── sh3-menu ──────────────────────────────────────────── -->
-      <section id="menu" class="gal-sec">
-        <h2>sh3-menu · sh3-menu-item · sh3-menu-separator</h2>
-        <span class="gal-tag"
-          >collapsible icon rail — coloured section separators; toggle the
-          chevron to expand</span
-        >
-        <div class="menu-demo" [class.is-expanded]="menuExpanded()">
-          <sh3-menu
-            collapsible
-            [expanded]="menuExpanded()"
-            (expandedChange)="menuExpanded.set($event)"
-          >
-            <div header class="menu-demo-brand">S3</div>
-
-            <sh3-menu-separator label="Personal" color="#06a4a4" />
-            @for (item of menuItems; track item.id) {
-              <button
-                sh3-menu-item
-                [icon]="item.icon"
-                [label]="item.label"
-                [active]="menuActive() === item.id"
-                (click)="menuActive.set(item.id)"
-              ></button>
-            }
-
-            <sh3-menu-separator label="More" color="#7c5bbf" />
-            <button
-              sh3-menu-item
-              [icon]="'bell'"
-              label="Notifications"
-            ></button>
-
-            <button
-              footer
-              sh3-menu-item
-              [icon]="'settings'"
-              label="Settings"
-            ></button>
-          </sh3-menu>
         </div>
       </section>
 
