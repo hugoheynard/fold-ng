@@ -196,15 +196,54 @@ sh3-app-shell {
   background: var(--sh3-color-surface-card);
 }
 
-/* ── sh3-menu page: the live preview box above the settings cards ── */
+/* ── sh3-menu page: 3 columns, full height — preview · settings · tokens ── */
+.menu-page {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(300px, 1fr) minmax(
+      240px,
+      320px
+    );
+  gap: 20px;
+  align-items: stretch;
+}
+.menu-col {
+  min-width: 0;
+}
+.menu-col--preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.menu-preview-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+/* The preview fills the column height so it matches the settings/tokens cards. */
 .menu-preview {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
   display: flex;
   align-items: stretch;
-  height: 340px;
-  margin-bottom: 20px;
   border: 1px solid var(--sh3-color-border);
   border-radius: var(--sh3-radius-lg);
   background: var(--sh3-color-bg-page);
+}
+/* Stacked overlay (HTML over CSS) — the menu preview column is narrow + tall. */
+.code-overlay--stack {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.code-overlay--stack .code-overlay-pane + .code-overlay-pane {
+  border-left: none;
+  border-top: 1px solid var(--sh3-color-glass-border);
+}
+
+/* Stack the 3 columns when the content area gets narrow. */
+@media (max-width: 1040px) {
+  .menu-page {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* "Apply to Library" — pushes the preview's tint/level onto the Library nav. */

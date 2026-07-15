@@ -245,7 +245,9 @@
             >
               @for (group of shellTokens; track group.label) {
                 <div class="tok-group">
-                  <span class="ss-label tok-group-label">{{ group.label }}</span>
+                  <span class="ss-label tok-group-label">{{
+                    group.label
+                  }}</span>
                   @for (t of group.tokens; track t.name) {
                     <div class="tok-row">
                       @if (t.kind === "color") {
@@ -278,62 +280,120 @@
       <section id="menu" class="gal-sec">
         <h2>sh3-menu</h2>
 
-        <!-- Live preview — the Menu Settings drive this menu; "Apply to Library"
-             pushes its tint + level onto the secondary Library nav. -->
-        <div class="menu-preview">
-          <sh3-menu
-            [collapsible]="menuCollapsible()"
-            [expanded]="menuExpanded()"
-            (expandedChange)="menuExpanded.set($event)"
-            [tint]="menuTint()"
-            [level]="menuLevel()"
-            [togglePlacement]="menuArrow()"
-          >
-            @if (menuHeader()) {
-              <div header class="rail-brand">S3</div>
-            }
-            @for (s of menuSectionList(); track s.id) {
-              @if (menuSections()) {
-                <sh3-menu-section [label]="s.name" [color]="s.color">
-                  @for (icon of iconsFor(s.icons); track $index) {
-                    <button
-                      sh3-menu-item
-                      [icon]="icon"
-                      [label]="labelFor(icon)"
-                      [active]="menuActive() === s.id + '-' + $index"
-                      (click)="menuActive.set(s.id + '-' + $index)"
-                    ></button>
+        <!-- 3 columns, full height: preview (left) · settings (centre) ·
+             tokens (right). The Menu Settings drive the preview; "Apply to
+             Library" pushes its tint + level onto the secondary Library nav;
+             the "code" switch drops a glass HTML|CSS overlay over the preview. -->
+        <div class="menu-page">
+          <div class="menu-col menu-col--preview">
+            <div class="menu-preview-bar">
+              <button
+                type="button"
+                class="spm-code"
+                [class.is-on]="menuShowCode()"
+                (click)="menuShowCode.set(!menuShowCode())"
+              >
+                code
+              </button>
+            </div>
+            <div class="menu-preview">
+              <sh3-menu
+                #menuPreview
+                [collapsible]="menuCollapsible()"
+                [expanded]="menuExpanded()"
+                (expandedChange)="menuExpanded.set($event)"
+                [tint]="menuTint()"
+                [level]="menuLevel()"
+                [togglePlacement]="menuArrow()"
+              >
+                @if (menuHeader()) {
+                  <div header class="rail-brand">S3</div>
+                }
+                @for (s of menuSectionList(); track s.id) {
+                  @if (menuSections()) {
+                    <sh3-menu-section [label]="s.name" [color]="s.color">
+                      @for (icon of iconsFor(s.icons); track $index) {
+                        <button
+                          sh3-menu-item
+                          [icon]="icon"
+                          [label]="labelFor(icon)"
+                          [active]="menuActive() === s.id + '-' + $index"
+                          (click)="menuActive.set(s.id + '-' + $index)"
+                        ></button>
+                      }
+                    </sh3-menu-section>
+                  } @else {
+                    @for (icon of iconsFor(s.icons); track $index) {
+                      <button
+                        sh3-menu-item
+                        [icon]="icon"
+                        [label]="labelFor(icon)"
+                        [active]="menuActive() === s.id + '-' + $index"
+                        (click)="menuActive.set(s.id + '-' + $index)"
+                      ></button>
+                    }
                   }
-                </sh3-menu-section>
-              } @else {
-                @for (icon of iconsFor(s.icons); track $index) {
+                }
+                @if (menuFooter()) {
                   <button
+                    footer
                     sh3-menu-item
-                    [icon]="icon"
-                    [label]="labelFor(icon)"
-                    [active]="menuActive() === s.id + '-' + $index"
-                    (click)="menuActive.set(s.id + '-' + $index)"
+                    icon="settings"
+                    label="Settings"
                   ></button>
                 }
-              }
-            }
-            @if (menuFooter()) {
-              <button
-                footer
-                sh3-menu-item
-                icon="settings"
-                label="Settings"
-              ></button>
-            }
-          </sh3-menu>
-        </div>
+              </sh3-menu>
 
-        <div class="shell-demo">
-          <div class="gal-card-narrow">
+              <!-- "code" overlay — HTML usage (top) | CSS variables (bottom).
+                   Stacked, since the preview column is narrow and tall. -->
+              @if (menuShowCode()) {
+                <div class="code-overlay code-overlay--stack">
+                  <div class="code-overlay-pane">
+                    <div class="code-overlay-top">
+                      <span class="code-lang">html</span>
+                      <button
+                        type="button"
+                        class="code-copy"
+                        (click)="copyMenuCode()"
+                      >
+                        <sh3-icon
+                          [name]="menuCopied() ? 'check-circle' : 'copy'"
+                          size="sm"
+                        />
+                        {{ menuCopied() ? "Copied" : "Copy" }}
+                      </button>
+                    </div>
+                    <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
+                  </div>
+                  <div class="code-overlay-pane">
+                    <div class="code-overlay-top">
+                      <span class="code-lang">css · variables to override</span>
+                      <button
+                        type="button"
+                        class="code-copy"
+                        (click)="copyMenuTokensCss()"
+                      >
+                        <sh3-icon
+                          [name]="menuCssCopied() ? 'check-circle' : 'copy'"
+                          size="sm"
+                        />
+                        {{ menuCssCopied() ? "Copied" : "Copy" }}
+                      </button>
+                    </div>
+                    <pre
+                      class="code-pre"
+                    ><code>{{ menuTokensCss() }}</code></pre>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="menu-col menu-col--settings">
             <sh3-context-card
               icon="menu"
               title="Menu Settings"
-              subtitle="drives the preview above — apply to the Library nav"
+              subtitle="drives the preview — apply to the Library nav"
             >
               <div class="ss-group">
                 <span class="ss-label">menu</span>
@@ -519,18 +579,43 @@
             </sh3-context-card>
           </div>
 
-          <div class="code-block">
-            <div class="code-top">
-              <span class="code-lang">html</span>
-              <button type="button" class="code-copy" (click)="copyMenuCode()">
-                <sh3-icon
-                  [name]="menuCopied() ? 'check-circle' : 'copy'"
-                  size="sm"
-                />
-                {{ menuCopied() ? "Copied" : "Copy" }}
-              </button>
-            </div>
-            <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
+          <div class="menu-col menu-col--tokens">
+            <sh3-context-card
+              icon="grid"
+              title="Tokens"
+              subtitle="override on the host (or :root) — semantics preferred"
+            >
+              @for (group of menuTokens; track group.label) {
+                <div class="tok-group">
+                  <span class="ss-label tok-group-label">{{
+                    group.label
+                  }}</span>
+                  @for (t of group.tokens; track t.name) {
+                    <div class="tok-row">
+                      @if (t.kind === "color") {
+                        <span
+                          class="tok-swatch"
+                          [style.background]="'var(' + t.name + ')'"
+                        ></span>
+                      } @else {
+                        <span class="tok-swatch tok-swatch--num">{{
+                          menuTokenValues()[t.name] || "–"
+                        }}</span>
+                      }
+                      <div class="tok-meta">
+                        <code class="tok-name">{{ t.name }}</code>
+                        <span class="tok-desc">{{ t.desc }}</span>
+                      </div>
+                      @if (t.kind === "color") {
+                        <span class="tok-val">{{
+                          menuTokenValues()[t.name]
+                        }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </sh3-context-card>
           </div>
         </div>
       </section>

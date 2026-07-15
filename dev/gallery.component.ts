@@ -48,16 +48,16 @@ interface MenuSection {
 /** Responsive preview mode for the app-shell page. */
 type ShellMode = "desktop" | "tablet" | "mobile";
 
-/** A design token this page exposes for overriding (roundness/colour/layout). */
-type ShellTokenKind = "color" | "size";
-interface ShellToken {
+/** A design token a page exposes for overriding (roundness/colour/layout). */
+type PageTokenKind = "color" | "size";
+interface PageToken {
   readonly name: string;
   readonly desc: string;
-  readonly kind: ShellTokenKind;
+  readonly kind: PageTokenKind;
 }
-interface ShellTokenGroup {
+interface PageTokenGroup {
   readonly label: string;
-  readonly tokens: readonly ShellToken[];
+  readonly tokens: readonly PageToken[];
 }
 
 /** One entry in the gallery's section nav (the railSecondary sh3-menu). */
@@ -165,7 +165,7 @@ export class GalleryComponent {
   protected readonly showCode = signal(false);
 
   /** The tokens this page cares about — roundness, surface colours, layout. */
-  protected readonly shellTokens: readonly ShellTokenGroup[] = [
+  protected readonly shellTokens: readonly PageTokenGroup[] = [
     {
       label: "roundness",
       tokens: [
@@ -439,6 +439,84 @@ export class GalleryComponent {
     });
   }
 
+  /* ── Menu page: "code" overlay + overridable tokens (third column) ──── */
+  protected readonly menuShowCode = signal(false);
+
+  /** The tokens the menu exposes — roundness, rail surfaces, accent. */
+  protected readonly menuTokens: readonly PageTokenGroup[] = [
+    {
+      label: "roundness",
+      tokens: [
+        { name: "--sh3-radius-sm", desc: "item background", kind: "size" },
+        {
+          name: "--sh3-radius-lg",
+          desc: "floating rail card",
+          kind: "size",
+        },
+      ],
+    },
+    {
+      label: "surfaces",
+      tokens: [
+        {
+          name: "--sh3-color-bg-rail-primary",
+          desc: "level primary",
+          kind: "color",
+        },
+        {
+          name: "--sh3-color-bg-rail-secondary",
+          desc: "level secondary",
+          kind: "color",
+        },
+        {
+          name: "--sh3-color-bg-rail-tertiary",
+          desc: "level tertiary",
+          kind: "color",
+        },
+        {
+          name: "--sh3-color-surface-hover",
+          desc: "neutral hover / active",
+          kind: "color",
+        },
+      ],
+    },
+    {
+      label: "accent",
+      tokens: [
+        {
+          name: "--sh3-color-primary",
+          desc: "primary tint (bar + active)",
+          kind: "color",
+        },
+      ],
+    },
+  ];
+
+  protected readonly menuTokenValues = signal<Record<string, string>>({});
+  private readonly menuPreviewRef =
+    viewChild<ElementRef<HTMLElement>>("menuPreview");
+
+  /** CSS override block for the menu overlay's right pane — semantics first. */
+  protected readonly menuTokensCss = computed(() => {
+    const values = this.menuTokenValues();
+    const lines = ["sh3-menu {"];
+    for (const group of this.menuTokens) {
+      lines.push(`  /* ${group.label} */`);
+      for (const token of group.tokens) {
+        lines.push(`  ${token.name}: ${values[token.name] || "inherit"};`);
+      }
+    }
+    lines.push("}");
+    return lines.join("\n");
+  });
+  protected readonly menuCssCopied = signal(false);
+  protected copyMenuTokensCss(): void {
+    void navigator.clipboard.writeText(this.menuTokensCss()).then(() => {
+      this.menuCssCopied.set(true);
+      setTimeout(() => this.menuCssCopied.set(false), 1500);
+    });
+  }
+
   /** Double-click a component → inspect its tokens + composition in a panel. */
   protected onInspect(event: MouseEvent): void {
     if (!(event.target instanceof Element)) {
@@ -517,14 +595,18 @@ export class GalleryComponent {
       if (!el) {
         return;
       }
-      const styles = getComputedStyle(el);
-      const next: Record<string, string> = {};
-      for (const group of this.shellTokens) {
-        for (const token of group.tokens) {
-          next[token.name] = styles.getPropertyValue(token.name).trim();
-        }
+      this.tokenValues.set(resolveTokens(el, this.shellTokens));
+    });
+    // Same, for the menu page's tokens — re-resolve on level/tint/theme change.
+    effect(() => {
+      this.theme();
+      this.menuLevel();
+      this.menuTint();
+      const el = this.menuPreviewRef()?.nativeElement;
+      if (!el) {
+        return;
       }
-      this.tokenValues.set(next);
+      this.menuTokenValues.set(resolveTokens(el, this.menuTokens));
     });
   }
 
@@ -547,4 +629,20 @@ export class GalleryComponent {
       observer.observe(el);
     }
   }
+}
+
+/** Read each token's resolved value off `el` (a DOM read — call from an effect,
+ *  never a computed). Returns a `name → value` map. */
+function resolveTokens(
+  el: HTMLElement,
+  groups: readonly PageTokenGroup[],
+): Record<string, string> {
+  const styles = getComputedStyle(el);
+  const values: Record<string, string> = {};
+  for (const group of groups) {
+    for (const token of group.tokens) {
+      values[token.name] = styles.getPropertyValue(token.name).trim();
+    }
+  }
+  return values;
 }
