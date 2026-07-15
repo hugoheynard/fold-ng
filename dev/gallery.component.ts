@@ -155,6 +155,12 @@ export class GalleryComponent {
     "neutral",
     "primary",
   ];
+  /** Where sh3-menu drops the collapse arrow — mirrors the component's rule
+   *  (first in footer, else last in header, else last in body) so the settings
+   *  show the outcome live as the slots are toggled. */
+  protected readonly togglePlacement = computed(() =>
+    this.menuFooter() ? "footer" : this.menuHeader() ? "header" : "body",
+  );
 
   /** Each section = a colored separator + N simulated menu items. Editable from
    *  the Menu Settings card (+/− sections, name, color, icon count). */

@@ -192,6 +192,11 @@
                     expanded
                   </button>
                 </div>
+                @if (menuCollapsible()) {
+                  <span class="ss-label"
+                    >collapse arrow → <b>{{ togglePlacement() }}</b></span
+                  >
+                }
               </div>
 
               <div class="ss-group">
