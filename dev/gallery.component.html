@@ -12,6 +12,7 @@
     [expanded]="menuExpanded()"
     (expandedChange)="menuExpanded.set($event)"
     [tint]="menuTint()"
+    [togglePlacement]="menuArrow()"
   >
     @if (menuHeader()) {
       <div header class="rail-brand">S3</div>
@@ -192,12 +193,26 @@
                     expanded
                   </button>
                 </div>
-                @if (menuCollapsible()) {
-                  <span class="ss-label"
-                    >collapse arrow → <b>{{ togglePlacement() }}</b></span
-                  >
-                }
               </div>
+
+              @if (menuCollapsible()) {
+                <div class="ss-group">
+                  <span class="ss-label"
+                    >collapse arrow → <b>{{ resolvedArrow() }}</b></span
+                  >
+                  <div class="ss-seg">
+                    @for (a of menuArrows; track a) {
+                      <button
+                        type="button"
+                        [class.is-on]="menuArrow() === a"
+                        (click)="menuArrow.set(a)"
+                      >
+                        {{ a }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
 
               <div class="ss-group">
                 <span class="ss-label">slots</span>

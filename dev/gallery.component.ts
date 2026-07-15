@@ -21,6 +21,7 @@ import {
   Sh3MenuItemComponent,
   Sh3MenuSectionComponent,
   type Sh3MenuTint,
+  type Sh3MenuTogglePlacement,
   Sh3PageSectionComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
@@ -155,12 +156,24 @@ export class GalleryComponent {
     "neutral",
     "primary",
   ];
-  /** Where sh3-menu drops the collapse arrow — mirrors the component's rule
-   *  (first in footer, else last in header, else last in body) so the settings
-   *  show the outcome live as the slots are toggled. */
-  protected readonly togglePlacement = computed(() =>
-    this.menuFooter() ? "footer" : this.menuHeader() ? "header" : "body",
-  );
+  /** Collapse-arrow placement: `auto` follows the slots, the rest pin a band. */
+  protected readonly menuArrow = signal<Sh3MenuTogglePlacement>("auto");
+  protected readonly menuArrows: readonly Sh3MenuTogglePlacement[] = [
+    "auto",
+    "header",
+    "footer",
+    "body",
+  ];
+  /** The band the arrow actually lands in — the override, or the auto rule
+   *  (first in footer, else last in header, else last in body). Mirrors the
+   *  component so the settings show the outcome live. */
+  protected readonly resolvedArrow = computed(() => {
+    const forced = this.menuArrow();
+    if (forced !== "auto") {
+      return forced;
+    }
+    return this.menuFooter() ? "footer" : this.menuHeader() ? "header" : "body";
+  });
 
   /** Each section = a colored separator + N simulated menu items. Editable from
    *  the Menu Settings card (+/− sections, name, color, icon count). */
@@ -226,6 +239,9 @@ export class GalleryComponent {
     const attrs = [
       this.menuCollapsible() ? 'collapsible [(expanded)]="expanded"' : "",
       this.menuTint() === "follow" ? "" : `tint="${this.menuTint()}"`,
+      this.menuCollapsible() && this.menuArrow() !== "auto"
+        ? `togglePlacement="${this.menuArrow()}"`
+        : "",
     ].filter(Boolean);
     const open = attrs.length ? `<sh3-menu ${attrs.join(" ")}>` : "<sh3-menu>";
     const lines = [open];
