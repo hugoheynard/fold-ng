@@ -2,6 +2,9 @@
   display: grid;
   height: 100%;
   width: 100%;
+  /* border-box so the floating mode's padding stays inside 100% × 100% instead
+     of adding to it (which would push the grid past the frame, bottom + right). */
+  box-sizing: border-box;
   overflow: hidden;
   background: var(--sh3-color-bg-page);
   /* Both rails are intrinsic — each projected rail component sizes itself and
