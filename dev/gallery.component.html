@@ -1,12 +1,12 @@
 <sh3-app-shell
   [appearance]="shellAppearance()"
   [headerLayout]="shellHeaderLayout()"
-  [railWidth]="menuExpanded() ? menuWidth() : shellRailWidth()"
+  [railWidth]="shellRailWidth()"
+  [railGrows]="shellRailGrows()"
   [headerHeight]="shellHeaderHeight()"
 >
   <!-- ── rail primary: the sh3-menu (parameterised from the settings card) ── -->
   <sh3-menu
-    #menuRail
     railPrimary
     [collapsible]="menuCollapsible()"
     [expanded]="menuExpanded()"
@@ -131,6 +131,19 @@
                   [value]="shellRailWidth()"
                   (input)="setRailWidth(railInput.value)"
                 />
+              </div>
+
+              <div class="ss-group">
+                <span class="ss-label">railGrows</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="shellRailGrows()"
+                    (click)="shellRailGrows.set(!shellRailGrows())"
+                  >
+                    grow to menu
+                  </button>
+                </div>
               </div>
 
               <div class="ss-group">

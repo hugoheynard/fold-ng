@@ -85,6 +85,8 @@ export class GalleryComponent {
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
+  /** Let the primary rail grow to the (expanding) menu's width. */
+  protected readonly shellRailGrows = signal(true);
 
   protected setAppearance(value: "flat" | "floating"): void {
     this.shellAppearance.set(value);
@@ -106,11 +108,14 @@ export class GalleryComponent {
       `  appearance="${this.shellAppearance()}"`,
       `  headerLayout="${this.shellHeaderLayout()}"`,
       `  [railWidth]="${this.shellRailWidth()}"`,
+      this.shellRailGrows() ? "  railGrows" : "",
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
       "  <!-- railPrimary · railSecondary · header · content -->",
       "</sh3-app-shell>",
-    ].join("\n"),
+    ]
+      .filter(Boolean)
+      .join("\n"),
   );
   protected readonly copied = signal(false);
 
@@ -289,11 +294,6 @@ export class GalleryComponent {
     });
   }
 
-  /** Measured width of the rail menu — the shell column follows it when expanded
-   *  so an expanded menu takes exactly its content width. */
-  private readonly menuRailRef = viewChild<ElementRef<HTMLElement>>("menuRail");
-  protected readonly menuWidth = signal(64);
-
   /** Double-click a component → inspect its tokens + composition in a panel. */
   protected onInspect(event: MouseEvent): void {
     if (!(event.target instanceof Element)) {
@@ -352,23 +352,7 @@ export class GalleryComponent {
   ] as const;
 
   constructor() {
-    afterNextRender(() => {
-      this.observeSections();
-      this.observeMenuWidth();
-    });
-  }
-
-  /** Track the rail menu's rendered width so the shell column matches its
-   *  content when the menu expands (it is `width: max-content` when expanded). */
-  private observeMenuWidth(): void {
-    const el = this.menuRailRef()?.nativeElement;
-    if (!el) {
-      return;
-    }
-    const observer = new ResizeObserver(() => {
-      this.menuWidth.set(Math.ceil(el.getBoundingClientRect().width));
-    });
-    observer.observe(el);
+    afterNextRender(() => this.observeSections());
   }
 
   private observeSections(): void {
