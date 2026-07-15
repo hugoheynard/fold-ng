@@ -65,6 +65,14 @@
             </button>
           }
           <span class="spm-width">{{ shellPreviewWidth() }}px</span>
+          <button
+            type="button"
+            class="spm-code"
+            [class.is-on]="showCode()"
+            (click)="showCode.set(!showCode())"
+          >
+            code
+          </button>
         </div>
         <div class="shell-preview-frame">
           <div
@@ -74,6 +82,7 @@
             #sph="panelScope"
           >
             <sh3-app-shell
+              #previewShell
               [appearance]="shellAppearance()"
               [headerLayout]="shellHeaderLayout()"
               [railWidth]="shellRailWidth()"
@@ -108,6 +117,47 @@
               <sh3-panel-host />
             </sh3-app-shell>
           </div>
+
+          <!-- "code" overlay — a glass sheet over the preview: HTML usage on the
+               left, the CSS variables to override on the right. -->
+          @if (showCode()) {
+            <div class="code-overlay">
+              <div class="code-overlay-pane">
+                <div class="code-overlay-top">
+                  <span class="code-lang">html</span>
+                  <button
+                    type="button"
+                    class="code-copy"
+                    (click)="copyShellCode()"
+                  >
+                    <sh3-icon
+                      [name]="copied() ? 'check-circle' : 'copy'"
+                      size="sm"
+                    />
+                    {{ copied() ? "Copied" : "Copy" }}
+                  </button>
+                </div>
+                <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
+              </div>
+              <div class="code-overlay-pane">
+                <div class="code-overlay-top">
+                  <span class="code-lang">css · variables to override</span>
+                  <button
+                    type="button"
+                    class="code-copy"
+                    (click)="copyShellTokensCss()"
+                  >
+                    <sh3-icon
+                      [name]="cssCopied() ? 'check-circle' : 'copy'"
+                      size="sm"
+                    />
+                    {{ cssCopied() ? "Copied" : "Copy" }}
+                  </button>
+                </div>
+                <pre class="code-pre"><code>{{ shellTokensCss() }}</code></pre>
+              </div>
+            </div>
+          }
         </div>
 
         <div class="shell-demo">
@@ -187,18 +237,39 @@
             </sh3-context-card>
           </div>
 
-          <div class="code-block">
-            <div class="code-top">
-              <span class="code-lang">html</span>
-              <button type="button" class="code-copy" (click)="copyShellCode()">
-                <sh3-icon
-                  [name]="copied() ? 'check-circle' : 'copy'"
-                  size="sm"
-                />
-                {{ copied() ? "Copied" : "Copy" }}
-              </button>
-            </div>
-            <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
+          <div class="tok-card-wrap">
+            <sh3-context-card
+              icon="grid"
+              title="Tokens"
+              subtitle="override these on the host (or :root) — semantics preferred"
+            >
+              @for (group of shellTokens; track group.label) {
+                <div class="tok-group">
+                  <span class="ss-label tok-group-label">{{ group.label }}</span>
+                  @for (t of group.tokens; track t.name) {
+                    <div class="tok-row">
+                      @if (t.kind === "color") {
+                        <span
+                          class="tok-swatch"
+                          [style.background]="'var(' + t.name + ')'"
+                        ></span>
+                      } @else {
+                        <span class="tok-swatch tok-swatch--num">{{
+                          tokenValues()[t.name] || "–"
+                        }}</span>
+                      }
+                      <div class="tok-meta">
+                        <code class="tok-name">{{ t.name }}</code>
+                        <span class="tok-desc">{{ t.desc }}</span>
+                      </div>
+                      @if (t.kind === "color") {
+                        <span class="tok-val">{{ tokenValues()[t.name] }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </sh3-context-card>
           </div>
         </div>
       </section>

@@ -55,13 +55,67 @@ sh3-app-shell {
   color: var(--sh3-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
+/* "code" switch — sits at the far right of the mode bar, same level as the
+   Desktop/Tablet/Mobile buttons; toggles the glass overlay over the preview. */
+.spm-code {
+  margin-left: auto;
+  padding: 6px 14px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.spm-code.is-on {
+  border-color: var(--sh3-color-primary);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
 .shell-preview-frame {
+  position: relative;
   height: 460px;
   margin-bottom: 20px;
   border: 1px solid var(--sh3-color-border);
   border-radius: var(--sh3-radius-lg);
   overflow: auto;
   background: var(--sh3-color-bg-page);
+}
+
+/* ── "code" glass overlay — HTML usage | CSS variables, over the preview ── */
+.code-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--sh3-color-glass);
+  backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
+  border-radius: var(--sh3-radius-lg);
+  overflow: hidden;
+}
+.code-overlay-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.code-overlay-pane + .code-overlay-pane {
+  border-left: 1px solid var(--sh3-color-glass-border);
+}
+.code-overlay-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px 8px 14px;
+  border-bottom: 1px solid var(--sh3-color-glass-border);
+}
+.code-overlay .code-pre {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 .shell-preview {
   /* The container the shell's container queries key off — resizing this via the
@@ -86,6 +140,14 @@ sh3-app-shell {
   width: 150px;
   background: var(--sh3-color-bg-rail-secondary);
   border-right: 1px solid var(--sh3-color-border);
+}
+/* Floating shell: the rail regions round but keep overflow visible (so a real
+   menu's tooltips escape) — so each rail must round its OWN background and drop
+   its divider, exactly as sh3-menu does. Placeholder rails need the same. */
+.shell-preview sh3-app-shell.floating .sp-rail {
+  border-right: none;
+  border-radius: var(--sh3-radius-lg);
+  overflow: hidden;
 }
 .sp-header {
   display: flex;
@@ -371,6 +433,77 @@ sh3-app-shell {
   font-size: 12px;
   line-height: 1.6;
   color: var(--sh3-color-text-secondary);
+}
+
+/* ── Tokens card — the page's overridable variables (next to the settings) ── */
+.tok-card-wrap {
+  flex: 1 1 360px;
+  min-width: 300px;
+}
+.tok-group + .tok-group {
+  margin-top: 16px;
+}
+.tok-group-label {
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--sh3-color-text-muted);
+}
+.tok-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid var(--sh3-color-border-subtle);
+}
+.tok-group-label + .tok-row {
+  border-top: none;
+}
+.tok-swatch {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+}
+.tok-swatch--num {
+  display: grid;
+  place-items: center;
+  width: auto;
+  min-width: 40px;
+  padding: 0 6px;
+  background: var(--sh3-color-surface-sunken);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  color: var(--sh3-color-text-secondary);
+}
+.tok-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.tok-name {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--sh3-color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tok-desc {
+  font-size: 11px;
+  color: var(--sh3-color-text-muted);
+}
+.tok-val {
+  flex: none;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  color: var(--sh3-color-text-muted);
 }
 .ss-group {
   display: flex;

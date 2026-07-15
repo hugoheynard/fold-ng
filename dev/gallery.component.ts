@@ -3,6 +3,7 @@ import {
   ElementRef,
   afterNextRender,
   computed,
+  effect,
   inject,
   signal,
   viewChild,
@@ -46,6 +47,18 @@ interface MenuSection {
 
 /** Responsive preview mode for the app-shell page. */
 type ShellMode = "desktop" | "tablet" | "mobile";
+
+/** A design token this page exposes for overriding (roundness/colour/layout). */
+type ShellTokenKind = "color" | "size";
+interface ShellToken {
+  readonly name: string;
+  readonly desc: string;
+  readonly kind: ShellTokenKind;
+}
+interface ShellTokenGroup {
+  readonly label: string;
+  readonly tokens: readonly ShellToken[];
+}
 
 /** One entry in the gallery's section nav (the railSecondary sh3-menu). */
 interface TocItem {
@@ -141,6 +154,95 @@ export class GalleryComponent {
     void navigator.clipboard.writeText(this.shellCode()).then(() => {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 1500);
+    });
+  }
+
+  /* ── "Show code" overlay + the page's overridable tokens ──────────────
+   *  The code switch (in the mode bar) drops a glass sheet over the preview:
+   *  HTML usage on the left, the CSS custom-properties to override on the
+   *  right. The same token list feeds the "Tokens" card below the preview.
+   *  Semantics are the preferred override surface (not raw primitives). */
+  protected readonly showCode = signal(false);
+
+  /** The tokens this page cares about — roundness, surface colours, layout. */
+  protected readonly shellTokens: readonly ShellTokenGroup[] = [
+    {
+      label: "roundness",
+      tokens: [
+        {
+          name: "--sh3-radius-lg",
+          desc: "floating region cards",
+          kind: "size",
+        },
+      ],
+    },
+    {
+      label: "surfaces",
+      tokens: [
+        {
+          name: "--sh3-color-bg-page",
+          desc: "page + floating gutter",
+          kind: "color",
+        },
+        {
+          name: "--sh3-color-bg-rail-primary",
+          desc: "primary rail",
+          kind: "color",
+        },
+        {
+          name: "--sh3-color-bg-rail-secondary",
+          desc: "secondary rail",
+          kind: "color",
+        },
+        { name: "--sh3-color-bg-header", desc: "header band", kind: "color" },
+        {
+          name: "--sh3-color-border",
+          desc: "region separators",
+          kind: "color",
+        },
+      ],
+    },
+    {
+      label: "layout",
+      tokens: [
+        {
+          name: "--sh3-shell-rail-width",
+          desc: "primary rail width",
+          kind: "size",
+        },
+        {
+          name: "--sh3-shell-header-height",
+          desc: "header height",
+          kind: "size",
+        },
+      ],
+    },
+  ];
+
+  /** Live resolved value per token, read off the preview shell. DOM reads live
+   *  in an effect (below), never in a computed. */
+  protected readonly tokenValues = signal<Record<string, string>>({});
+  private readonly previewShellRef =
+    viewChild<ElementRef<HTMLElement>>("previewShell");
+
+  /** The CSS override block for the overlay's right pane — semantics first. */
+  protected readonly shellTokensCss = computed(() => {
+    const values = this.tokenValues();
+    const lines = ["sh3-app-shell {"];
+    for (const group of this.shellTokens) {
+      lines.push(`  /* ${group.label} */`);
+      for (const token of group.tokens) {
+        lines.push(`  ${token.name}: ${values[token.name] || "inherit"};`);
+      }
+    }
+    lines.push("}");
+    return lines.join("\n");
+  });
+  protected readonly cssCopied = signal(false);
+  protected copyShellTokensCss(): void {
+    void navigator.clipboard.writeText(this.shellTokensCss()).then(() => {
+      this.cssCopied.set(true);
+      setTimeout(() => this.cssCopied.set(false), 1500);
     });
   }
 
@@ -404,6 +506,26 @@ export class GalleryComponent {
 
   constructor() {
     afterNextRender(() => this.observeSections());
+    // Resolve the page's tokens off the live preview shell. getComputedStyle is
+    // a DOM read → keep it in an effect and mirror the result into a signal
+    // (a computed must stay pure). Re-runs when the theme or size settings move.
+    effect(() => {
+      this.theme();
+      this.shellRailWidth();
+      this.shellHeaderHeight();
+      const el = this.previewShellRef()?.nativeElement;
+      if (!el) {
+        return;
+      }
+      const styles = getComputedStyle(el);
+      const next: Record<string, string> = {};
+      for (const group of this.shellTokens) {
+        for (const token of group.tokens) {
+          next[token.name] = styles.getPropertyValue(token.name).trim();
+        }
+      }
+      this.tokenValues.set(next);
+    });
   }
 
   private observeSections(): void {
