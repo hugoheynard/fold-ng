@@ -575,6 +575,89 @@ export class GalleryComponent {
     this.activePalette.set(name);
   }
 
+  /* ── avatar-list showcase: preview + settings + code + token sandbox ─── */
+  protected readonly alCount = signal(7);
+  protected readonly alLimit = signal(4);
+  protected readonly alTop = signal<"first" | "last">("first");
+  protected readonly alSize = signal<"sm" | "md" | "lg">("md");
+  protected readonly alVariant = signal<"solid" | "ghost">("solid");
+  protected readonly alSquare = signal(false);
+  /** The team sliced to the chosen face count — drives the preview. */
+  protected readonly alFaces = computed(() =>
+    this.team.slice(0, this.alCount()),
+  );
+  protected setAlCount(value: string): void {
+    this.alCount.set(Number(value));
+  }
+  protected setAlLimit(value: string): void {
+    this.alLimit.set(Number(value));
+  }
+
+  /** The `<sh3-avatar-list>` markup reflecting the settings — live. */
+  protected readonly alShowCode = signal(false);
+  protected readonly alCode = computed(() => {
+    const attrs = [
+      '[avatars]="team"',
+      this.alLimit() > 0 ? `[limit]="${this.alLimit()}"` : "",
+      this.alTop() === "first" ? "" : `top="${this.alTop()}"`,
+      this.alSize() === "md" ? "" : `size="${this.alSize()}"`,
+      this.alVariant() === "solid" ? "" : `variant="${this.alVariant()}"`,
+      this.alSquare() ? "square" : "",
+    ].filter(Boolean);
+    return `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
+  });
+  protected readonly alCopied = signal(false);
+  protected copyAlCode(): void {
+    void navigator.clipboard.writeText(this.alCode()).then(() => {
+      this.alCopied.set(true);
+      setTimeout(() => this.alCopied.set(false), 1500);
+    });
+  }
+
+  /** avatar-list's overridable tokens — its own ring var + the chip surfaces. */
+  protected readonly alTokens: readonly PageTokenGroup[] = [
+    {
+      label: "ring",
+      tokens: [
+        {
+          prop: "--sh3-avatar-list-ring",
+          desc: "ring around each face",
+          kind: "color",
+        },
+      ],
+    },
+    {
+      label: "overflow chip",
+      tokens: [
+        colorToken("surface-raised", "+N chip background"),
+        colorToken("text-secondary", "+N chip text"),
+      ],
+    },
+    { label: "roundness", tokens: [radiusToken("sm", "square face rounding")] },
+  ];
+  private readonly alPreviewRef =
+    viewChild<ElementRef<HTMLElement>>("alPreview");
+  protected readonly alOverrides = signal<Record<string, string>>({});
+  protected readonly hasAlOverrides = computed(
+    () => Object.keys(this.alOverrides()).length > 0,
+  );
+  protected setAlOverride(prop: string, value: string): void {
+    this.alOverrides.update((o) => withOverride(o, prop, value));
+  }
+  protected resetAlOverrides(): void {
+    this.alOverrides.set({});
+  }
+  protected readonly alTokensCss = computed(() =>
+    overrideCss("sh3-avatar-list", this.alOverrides()),
+  );
+  protected readonly alCssCopied = signal(false);
+  protected copyAlTokensCss(): void {
+    void navigator.clipboard.writeText(this.alTokensCss()).then(() => {
+      this.alCssCopied.set(true);
+      setTimeout(() => this.alCssCopied.set(false), 1500);
+    });
+  }
+
   constructor() {
     afterNextRender(() => this.observeSections());
     // Live sandbox: write the token overrides onto the preview elements. A DOM
@@ -592,6 +675,13 @@ export class GalleryComponent {
         this.menuPreviewRef()?.nativeElement,
         this.menuTokens,
         this.menuOverrides(),
+      ),
+    );
+    effect(() =>
+      applyOverrides(
+        this.alPreviewRef()?.nativeElement,
+        this.alTokens,
+        this.alOverrides(),
       ),
     );
   }

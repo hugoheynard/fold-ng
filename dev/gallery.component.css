@@ -257,10 +257,19 @@ sh3-app-shell {
   color: var(--sh3-color-text);
 }
 
-/* The avatar-list demos sit on the page, so ring them in the page colour
-   (the component defaults to the card surface for on-card use). */
-#avatar-list {
-  --sh3-avatar-list-ring: var(--sh3-color-bg-page);
+/* avatar-list preview — a wide card the list centres on. The component's ring
+   defaults to the card surface, so on this card surface it reads correctly. */
+.al-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  margin-bottom: 20px;
+  padding: 24px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-lg);
+  background: var(--sh3-color-surface-card);
+  overflow: hidden;
 }
 
 /* ── Avatar page: the app-wide palette switch ─────────────────── */
