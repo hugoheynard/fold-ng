@@ -202,9 +202,12 @@ committed work; the point is to learn before we lock anything.
 body` are already `overflow: hidden`, so the body lock is a no-op). Reproduce
   and measure _which_ element shifts (inner scroll-container scrollbar vs.
   `backdrop-filter` repaint on the glass) before touching CSS.
-- **`rail-primary` sizing model.** Kept fixed-width (a CSS-var track) on purpose —
-  an icon rail wants a stable, predictable width. Revisit `auto` (content-driven,
-  like `rail-secondary`) only if a real case demands it.
+- **`rail-primary` sizing model — resolved.** Now `auto` (content-driven), like
+  `rail-secondary`: each rail component owns its width and the grid follows —
+  needed once `sh3-menu` gained an expanded state (it takes its content width
+  with no JS measurement). Trade-off: `sh3-menu` reads the shell's
+  `--sh3-shell-rail-width` var → intra-package coupling, accepted-with-rationale
+  (ledger #11 in `dev-rules.md`).
 - **Publish build.** `ng-packagr` target vs. staying source-consumed inside the
   monorepo and only building for external publish (see Phase 4).
 - **SCSS surface.** Expose the SCSS mixins alongside the CSS tokens, or ship

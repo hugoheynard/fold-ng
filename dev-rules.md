@@ -231,3 +231,15 @@ accepted-with-rationale.
 | 8   | Focus-trap doesn't `inert` the background                             | 6.2     | ⏳     |
 | 9   | Panel close hand-rolls an `<svg>`                                     | 4.7     | ⏳     |
 | 10  | px type scale hurts user-zoom a11y                                    | 1.6     | 📌     |
+| 11  | `sh3-menu` reads the shell's `--sh3-shell-rail-width` var             | 5       | 📌     |
+
+**#11 rationale (accepted).** Making the rail sizing pure-CSS (both shell
+columns `auto`, each rail component owns its width — mirrors `workspace-rail`)
+meant `sh3-menu` declares `width: var(--sh3-shell-rail-width, 64px)` for its
+collapsed state. That couples the menu to a var **named for the shell**, so the
+two `@sh3pherd/ui` components are no longer fully independent. Accepted because:
+(a) it keeps the shell's `railWidth` input working end-to-end with **zero app
+changes**; (b) a menu used **standalone** (no shell) falls back cleanly to
+`64px`; (c) both components ship in the same package. If `sh3-menu` ever needs
+to be shell-agnostic, give it its own `--sh3-menu-rail-width` token (with the
+shell var as the fallback default) and have the shell publish onto it.
