@@ -44,8 +44,9 @@
 
 /* Active — the tint persists after a click. Matches the app's workspace rail: a
    faint accent-tinted pill (inset, so it never touches the rail edges) and a
-   left indicator bar sitting in the rail gutter (flush to the edge, -8px) with a
-   soft glow — not glued to the item. */
+   left indicator bar sitting in the rail gutter (flush to the edge, -8px) — not
+   glued to the item. No box-shadow glow: the menu keeps overflow:visible for
+   tooltips, so a glow would blur past the rail edge into a neighbouring rail. */
 :host(.is-active) {
   color: color-mix(in srgb, var(--mi-accent) 80%, var(--sh3-color-text));
   background: color-mix(in srgb, var(--mi-accent) 15%, transparent);
@@ -62,7 +63,6 @@
   width: 2px;
   border-radius: 0 2px 2px 0;
   background: var(--mi-accent);
-  box-shadow: 0 0 8px var(--mi-accent);
 }
 
 .mi-icon {
