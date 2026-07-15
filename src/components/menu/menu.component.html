@@ -1,3 +1,16 @@
 <div class="menu-head"><ng-content select="[header]" /></div>
 <nav class="menu-body"><ng-content /></nav>
+@if (collapsible()) {
+  <button
+    type="button"
+    class="menu-toggle"
+    [attr.aria-label]="expanded() ? 'Collapse menu' : 'Expand menu'"
+    (click)="toggle()"
+  >
+    <sh3-icon
+      [name]="expanded() ? 'chevron-left' : 'chevron-right'"
+      [size]="14"
+    />
+  </button>
+}
 <div class="menu-foot"><ng-content select="[footer]" /></div>

@@ -1,0 +1,42 @@
+/* Collapsed (icon rail): a short mark centered between items. */
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 12px;
+  margin: 4px 0 2px;
+}
+.sep-mark {
+  flex-shrink: 0;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--sh3-color-border);
+  opacity: 0.85;
+}
+.sep-label {
+  display: none;
+}
+
+/* Expanded: a section header — colour dot + uppercase label. */
+:host-context(sh3-menu.expanded) {
+  justify-content: flex-start;
+  gap: 7px;
+  height: auto;
+  padding: 12px 12px 4px;
+}
+:host-context(sh3-menu.expanded) .sep-mark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 1;
+}
+:host-context(sh3-menu.expanded) .sep-label {
+  display: inline;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--sh3-color-text-muted);
+}

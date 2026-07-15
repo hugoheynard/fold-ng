@@ -14,6 +14,7 @@ export { Sh3ElementTitleComponent } from "./components/element-title/element-tit
 export { Sh3LinkComponent } from "./components/link/link.component";
 export { Sh3MenuComponent } from "./components/menu/menu.component";
 export { Sh3MenuItemComponent } from "./components/menu/menu-item.component";
+export { Sh3MenuSeparatorComponent } from "./components/menu/menu-separator.component";
 export { Sh3HeroComponent } from "./components/hero/hero.component";
 export { Sh3DataTableComponent } from "./components/data-table/data-table.component";
 export { Sh3DataTableCellDirective } from "./components/data-table/data-table-cell.directive";

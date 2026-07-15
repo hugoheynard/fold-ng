@@ -69,3 +69,26 @@
 :host(:hover) .mi-tip {
   opacity: 1;
 }
+
+/* Inside an expanded menu: a full-width row, the tooltip becomes an inline
+   label (no longer a floating chip). */
+:host-context(sh3-menu.expanded) {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+}
+:host-context(sh3-menu.expanded) .mi-tip {
+  position: static;
+  transform: none;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font-size: var(--sh3-text-sm);
+  opacity: 1;
+  pointer-events: auto;
+}

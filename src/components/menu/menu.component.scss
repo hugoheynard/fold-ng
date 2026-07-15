@@ -10,6 +10,14 @@
   border-right: 1px solid var(--sh3-color-border);
   overflow: visible; /* tooltips escape the rail */
   user-select: none;
+  transition: width var(--sh3-motion-base);
+}
+
+/* Expanded — a wider rail with inline labels (items/separators self-switch via
+   :host-context). Consumers place an expandable menu in an auto-width cell. */
+:host(.expanded) {
+  width: 236px;
+  align-items: stretch;
 }
 
 .menu-head,
@@ -38,4 +46,33 @@
   align-items: center;
   gap: 4px;
   width: 100%;
+}
+:host(.expanded) .menu-body {
+  align-items: stretch;
+  padding: 0 8px;
+}
+
+/* Collapse/expand toggle. */
+.menu-toggle {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: var(--sh3-radius-sm);
+  background: none;
+  color: var(--sh3-color-text-muted);
+  cursor: pointer;
+  transition:
+    background var(--sh3-motion-fast),
+    color var(--sh3-motion-fast);
+}
+.menu-toggle:hover {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-text-secondary);
+}
+:host(.expanded) .menu-toggle {
+  align-self: flex-end;
+  margin-right: 8px;
 }
