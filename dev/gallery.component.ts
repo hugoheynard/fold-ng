@@ -345,6 +345,7 @@ export class GalleryComponent {
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
+    { id: "tokens", label: "design tokens" },
   ];
   /** The section currently in view — drives the nav highlight. */
   protected readonly activeSection = signal<string>("");

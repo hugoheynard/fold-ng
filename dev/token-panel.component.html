@@ -1,5 +1,9 @@
 <header class="tp-top">
-  <span class="tp-title">Tokens</span>
+  <sh3-tab-nav
+    [tabs]="tabItems()"
+    [activeKey]="activeCategory()"
+    (tabChange)="activeCategory.set($event)"
+  />
   <button
     type="button"
     class="tp-reset"

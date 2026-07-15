@@ -1,4 +1,14 @@
 import { Component, afterNextRender, computed, signal } from "@angular/core";
+import { Sh3TabNavComponent, type Sh3TabNavItem } from "../src/index";
+
+/** Top-level token category — the sub-nav tabs. */
+type TokenCategory = "palette" | "fonts" | "scale";
+const CATEGORY_ORDER: readonly TokenCategory[] = ["palette", "fonts", "scale"];
+const CATEGORY_LABELS: Record<TokenCategory, string> = {
+  palette: "Palette",
+  fonts: "Fonts",
+  scale: "Scale",
+};
 
 /** One editable token, discovered from the loaded stylesheets. */
 interface TokenEntry {
@@ -13,7 +23,16 @@ interface TokenEntry {
 }
 interface TokenGroup {
   readonly family: string;
+  readonly category: TokenCategory;
   readonly entries: readonly TokenEntry[];
+}
+
+/** Which sub-nav category a token belongs to. */
+function categoryOf(entry: TokenEntry): TokenCategory {
+  if (entry.kind === "color") {
+    return "palette";
+  }
+  return entry.name.startsWith("--sh3-text-") ? "fonts" : "scale";
 }
 
 /** Display order for the families; unknown families sort last. */
@@ -95,12 +114,17 @@ function groupByFamily(entries: TokenEntry[]): TokenGroup[] {
     return index === -1 ? FAMILY_ORDER.length : index;
   };
   return [...byFamily.entries()]
-    .map(([family, list]) => ({ family, entries: list }))
+    .map(([family, list]) => ({
+      family,
+      category: categoryOf(list[0]),
+      entries: list,
+    }))
     .sort((a, b) => rank(a.family) - rank(b.family));
 }
 
 /**
- * The gallery's permanent right panel: a live token editor. It overrides
+ * The gallery's live token editor (the "tokens" page). A sub-nav (Palette /
+ * Fonts / Scale) switches which token family group is shown. Edits override
  * palette primitives (`--sh3-ref-*`) and scale tokens (`radius` / `space` /
  * `text`) as inline properties on the document root; because every semantic
  * token resolves through those, one edit re-themes the whole preview. Reset
@@ -109,11 +133,26 @@ function groupByFamily(entries: TokenEntry[]): TokenGroup[] {
 @Component({
   selector: "app-token-panel",
   standalone: true,
+  imports: [Sh3TabNavComponent],
   templateUrl: "./token-panel.component.html",
   styleUrl: "./token-panel.component.css",
 })
 export class TokenPanelComponent {
-  protected readonly groups = signal<TokenGroup[]>([]);
+  private readonly allGroups = signal<TokenGroup[]>([]);
+  /** The categories actually present, in display order — drives the sub-nav. */
+  protected readonly tabItems = computed<Sh3TabNavItem[]>(() => {
+    const present = new Set(this.allGroups().map((g) => g.category));
+    return CATEGORY_ORDER.filter((c) => present.has(c)).map((c) => ({
+      key: c,
+      label: CATEGORY_LABELS[c],
+    }));
+  });
+  protected readonly activeCategory = signal<string>("palette");
+  /** The groups of the active category. */
+  protected readonly groups = computed(() =>
+    this.allGroups().filter((g) => g.category === this.activeCategory()),
+  );
+
   /** Name → overridden value, for the ones the user has touched. */
   protected readonly overrides = signal<Record<string, string>>({});
   protected readonly dirtyCount = computed(
@@ -122,7 +161,7 @@ export class TokenPanelComponent {
 
   constructor() {
     afterNextRender(() => {
-      this.groups.set(groupByFamily(collectTokens(document.styleSheets)));
+      this.allGroups.set(groupByFamily(collectTokens(document.styleSheets)));
     });
   }
 
