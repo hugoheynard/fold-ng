@@ -7,6 +7,9 @@
      standalone. Expanded overrides this with its content width below. */
   width: var(--sh3-shell-rail-width, 64px);
   height: 100%;
+  /* border-box so the vertical padding stays inside the rail height instead of
+     overflowing the bottom (which the shell cell clips → footer looks flush). */
+  box-sizing: border-box;
   padding: 10px 0;
   gap: 4px;
   background: var(--sh3-color-bg-rail-primary);
