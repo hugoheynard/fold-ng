@@ -127,33 +127,6 @@
                   (input)="setHeaderHeight(headerInput.value)"
                 />
               </div>
-
-              <div class="ss-group">
-                <span class="ss-label">menu (railPrimary)</span>
-                <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="menuCollapsible()"
-                    (click)="menuCollapsible.set(!menuCollapsible())"
-                  >
-                    collapsible
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuExpanded()"
-                    (click)="menuExpanded.set(!menuExpanded())"
-                  >
-                    expanded
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuSections()"
-                    (click)="menuSections.set(!menuSections())"
-                  >
-                    sections
-                  </button>
-                </div>
-              </div>
             </sh3-context-card>
           </div>
 
@@ -170,6 +143,41 @@
             </div>
             <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
           </div>
+        </div>
+
+        <div class="gal-card-narrow menu-settings">
+          <sh3-context-card
+            icon="menu"
+            title="Menu Settings"
+            subtitle="railPrimary sh3-menu options"
+          >
+            <div class="ss-group">
+              <span class="ss-label">menu</span>
+              <div class="ss-seg">
+                <button
+                  type="button"
+                  [class.is-on]="menuCollapsible()"
+                  (click)="menuCollapsible.set(!menuCollapsible())"
+                >
+                  collapsible
+                </button>
+                <button
+                  type="button"
+                  [class.is-on]="menuExpanded()"
+                  (click)="menuExpanded.set(!menuExpanded())"
+                >
+                  expanded
+                </button>
+                <button
+                  type="button"
+                  [class.is-on]="menuSections()"
+                  (click)="menuSections.set(!menuSections())"
+                >
+                  sections
+                </button>
+              </div>
+            </div>
+          </sh3-context-card>
         </div>
       </section>
 
