@@ -1,0 +1,14 @@
+<sh3-icon class="toast-icon" [name]="icon()" [size]="16" aria-hidden="true" />
+
+<span class="toast-message"><ng-content /></span>
+
+@if (dismissible()) {
+  <button
+    class="toast-close"
+    type="button"
+    aria-label="Dismiss"
+    (click)="dismiss.emit()"
+  >
+    <sh3-icon name="close" [size]="14" aria-hidden="true" />
+  </button>
+}

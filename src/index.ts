@@ -63,6 +63,7 @@ export { Sh3PaginatorComponent } from "./components/paginator/paginator.componen
 export type { Sh3PageItem } from "./components/paginator/paginator.component";
 export { Sh3TabNavComponent } from "./components/tab-nav/tab-nav.component";
 export type { Sh3TabNavItem } from "./components/tab-nav/tab-nav.component";
+export { Sh3ToastComponent } from "./components/toast/toast.component";
 export { Sh3ToastContainerComponent } from "./components/toast/toast-container.component";
 export { Sh3ToastService } from "./components/toast/toast.service";
 export type {

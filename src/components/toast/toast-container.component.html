@@ -1,24 +1,7 @@
 @for (toast of toastService.toasts(); track toast.id) {
-  <div
-    [class]="'toast ' + toast.variant"
-    (click)="toastService.dismiss(toast.id)"
+  <sh3-toast
+    [variant]="toast.variant"
+    (dismiss)="toastService.dismiss(toast.id)"
+    >{{ toast.message }}</sh3-toast
   >
-    <span class="toast-icon">
-      @switch (toast.variant) {
-        @case ("success") {
-          ✓
-        }
-        @case ("error") {
-          ✕
-        }
-        @case ("warning") {
-          ⚠
-        }
-        @default {
-          ℹ
-        }
-      }
-    </span>
-    <span class="toast-message">{{ toast.message }}</span>
-  </div>
 }
