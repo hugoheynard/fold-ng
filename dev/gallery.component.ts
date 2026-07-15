@@ -20,6 +20,7 @@ import {
   Sh3MenuComponent,
   Sh3MenuItemComponent,
   Sh3MenuSectionComponent,
+  type Sh3MenuTint,
   Sh3PageSectionComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
@@ -147,6 +148,13 @@ export class GalleryComponent {
   protected readonly menuHeader = signal(true);
   protected readonly menuSections = signal(true);
   protected readonly menuFooter = signal(true);
+  /** How items tint on hover / when active. */
+  protected readonly menuTint = signal<Sh3MenuTint>("follow");
+  protected readonly menuTints: readonly Sh3MenuTint[] = [
+    "follow",
+    "neutral",
+    "primary",
+  ];
 
   /** Each section = a colored separator + N simulated menu items. Editable from
    *  the Menu Settings card (+/− sections, name, color, icon count). */
@@ -209,9 +217,11 @@ export class GalleryComponent {
 
   /** The `<sh3-menu>` markup reflecting the current sections — live. */
   protected readonly menuCode = computed(() => {
-    const open = this.menuCollapsible()
-      ? '<sh3-menu collapsible [(expanded)]="expanded">'
-      : "<sh3-menu>";
+    const attrs = [
+      this.menuCollapsible() ? 'collapsible [(expanded)]="expanded"' : "",
+      this.menuTint() === "follow" ? "" : `tint="${this.menuTint()}"`,
+    ].filter(Boolean);
+    const open = attrs.length ? `<sh3-menu ${attrs.join(" ")}>` : "<sh3-menu>";
     const lines = [open];
     if (this.menuHeader()) {
       lines.push('  <div header class="brand">S3</div>');
