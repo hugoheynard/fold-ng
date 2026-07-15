@@ -6,6 +6,7 @@ import {
   afterNextRender,
   booleanAttribute,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -70,12 +71,19 @@ export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
   imports: [Sh3IconComponent, NgTemplateOutlet],
   templateUrl: "./menu.component.html",
   styleUrl: "./menu.component.scss",
-  host: { "[class.expanded]": "expanded()", "[attr.data-tint]": "tint()" },
+  host: {
+    "[class.expanded]": "effectiveExpanded()",
+    "[attr.data-tint]": "tint()",
+  },
 })
 export class Sh3MenuComponent {
   /** Show a chevron toggle that flips `expanded`. */
   readonly collapsible = input(false, { transform: booleanAttribute });
-  /** Two-way: `true` widens the rail and reveals inline labels. */
+  /**
+   * Two-way: `true` widens the rail and reveals inline labels. Only honoured
+   * when `collapsible` — a non-collapsible menu is a fixed icon rail, so
+   * `expanded` without `collapsible` is a no-op (and warns in dev).
+   */
   readonly expanded = model(false);
   /** How items tint on hover / when active (`follow` = section colour). */
   readonly tint = input<Sh3MenuTint>("follow");
@@ -88,6 +96,11 @@ export class Sh3MenuComponent {
     viewChild.required<ElementRef<HTMLElement>>("foot");
   private readonly hasHeader = signal(false);
   private readonly hasFooter = signal(false);
+
+  /** The applied expansion — inert unless the menu is collapsible. */
+  protected readonly effectiveExpanded = computed(
+    () => this.collapsible() && this.expanded(),
+  );
 
   /**
    * The band the toggle renders into: the `togglePlacement` override when set,
@@ -104,6 +117,14 @@ export class Sh3MenuComponent {
   );
 
   constructor() {
+    effect(() => {
+      if (this.expanded() && !this.collapsible()) {
+        console.warn(
+          "[sh3-menu] `expanded` is ignored without `collapsible` — set `collapsible` to allow the rail to expand.",
+        );
+      }
+    });
+
     const destroyRef = inject(DestroyRef);
     afterNextRender(() => {
       const head = this.headRef().nativeElement;

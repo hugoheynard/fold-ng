@@ -45,6 +45,18 @@ describe("Sh3MenuComponent", () => {
     expect(menu.querySelector(".menu-toggle")).not.toBeNull();
   });
 
+  it("ignores expanded unless collapsible", () => {
+    const { fixture, menu } = render();
+    fixture.componentInstance.expanded.set(true);
+    fixture.detectChanges();
+    // collapsible is false — expansion is inert.
+    expect(menu.classList.contains("expanded")).toBe(false);
+
+    fixture.componentInstance.collapsible.set(true);
+    fixture.detectChanges();
+    expect(menu.classList.contains("expanded")).toBe(true);
+  });
+
   it("reflects the tint mode onto the host as data-tint", () => {
     const { fixture, menu } = render();
     expect(menu.getAttribute("data-tint")).toBe("follow");
