@@ -1,13 +1,13 @@
 :host {
   position: relative;
   width: 40px;
-  height: 40px;
+  height: 36px;
   /* border-box so the expanded row's width:100% + padding stays inside the
      menu column instead of overflowing to the right. */
   box-sizing: border-box;
   display: grid;
   place-items: center;
-  border-radius: var(--sh3-radius-md);
+  border-radius: var(--sh3-radius-sm);
   color: var(--sh3-color-text-muted);
   background: transparent;
   border: none;
@@ -101,7 +101,7 @@
    rail to its min-width, overflowing the nowrap labels. */
 :host-context(sh3-menu.expanded) {
   width: auto;
-  height: 40px;
+  height: 36px;
   display: flex;
   align-items: center;
   gap: 12px;
