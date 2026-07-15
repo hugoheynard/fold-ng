@@ -629,8 +629,8 @@ export class GalleryComponent {
     {
       label: "overflow chip",
       tokens: [
-        colorToken("surface-raised", "+N chip background"),
-        colorToken("text-secondary", "+N chip text"),
+        colorToken("primary-surface", "+N chip background"),
+        colorToken("primary-text", "+N chip text"),
       ],
     },
     { label: "roundness", tokens: [radiusToken("sm", "square face rounding")] },

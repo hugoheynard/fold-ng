@@ -36,14 +36,15 @@
   display: inline-flex;
 }
 
-/* The `+N` chip — a neutral face the same size as the avatars. */
+/* The `+N` chip — same size as the avatars, primary-tinted so the "more" reads
+   at a glance (it's usually the affordance to expand the group). */
 .al-more {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: var(--sh3-color-surface-raised);
-  color: var(--sh3-color-text-secondary);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
   font-weight: 700;
   letter-spacing: 0.02em;
   user-select: none;
