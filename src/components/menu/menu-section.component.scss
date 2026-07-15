@@ -1,0 +1,12 @@
+/* A section stacks its separator above the projected items. In the collapsed
+   rail the items center; expanded, they stretch to full-width rows. */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+:host-context(sh3-menu.expanded) {
+  align-items: stretch;
+}

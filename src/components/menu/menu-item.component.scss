@@ -14,9 +14,16 @@
     background var(--sh3-motion-fast),
     color var(--sh3-motion-fast);
 }
+/* Hover takes the enclosing section's tint (published as
+   --sh3-menu-section-color by sh3-menu-section). Section-less items — e.g. the
+   footer — fall back to the neutral hover, pixel-identical. */
 :host(:hover) {
-  background: var(--sh3-color-surface-hover);
-  color: var(--sh3-color-text-secondary);
+  background: color-mix(
+    in srgb,
+    var(--sh3-menu-section-color, var(--sh3-color-surface-hover)) 18%,
+    var(--sh3-color-surface-hover)
+  );
+  color: var(--sh3-menu-section-color, var(--sh3-color-text-secondary));
 }
 :host(:focus-visible) {
   outline: 2px solid var(--sh3-color-primary);
