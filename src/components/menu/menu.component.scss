@@ -71,6 +71,10 @@
 }
 :host(.expanded) .menu-body {
   align-items: stretch;
+  /* auto (not the base 100%) so the items' intrinsic width propagates up to the
+     menu's max-content — a percentage width breaks that and the rail collapses
+     to min-width, overflowing the labels. */
+  width: auto;
   padding: 0 8px;
 }
 

@@ -9,4 +9,7 @@
 }
 :host-context(sh3-menu.expanded) {
   align-items: stretch;
+  /* auto (not the base 100%) so the items' intrinsic width reaches the menu's
+     max-content — a percentage width collapses the rail to its min-width. */
+  width: auto;
 }
