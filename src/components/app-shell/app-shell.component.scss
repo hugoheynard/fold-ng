@@ -64,8 +64,18 @@
 :host(.floating) .header,
 :host(.floating) .content {
   border-radius: var(--sh3-radius-lg);
-  overflow: hidden;
   box-shadow: var(--sh3-shadow-md);
+}
+:host(.floating) .header,
+:host(.floating) .content {
+  overflow: hidden;
+}
+/* Rails keep overflow visible so a collapsed rail's hover tooltips escape the
+   card (they'd be clipped otherwise). The projected rail rounds its own
+   background to match the card — see sh3-menu's floating branch. */
+:host(.floating) .rail-primary,
+:host(.floating) .rail-secondary {
+  overflow: visible;
 }
 
 /* Rails drop out on narrow viewports → single header + content column.
