@@ -2,6 +2,9 @@
   position: relative;
   width: 40px;
   height: 40px;
+  /* border-box so the expanded row's width:100% + padding stays inside the
+     menu column instead of overflowing to the right. */
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   border-radius: var(--sh3-radius-md);
@@ -39,11 +42,13 @@
   outline-offset: 2px;
 }
 
-/* Active — the tint persists after a click: filled with the accent + a left
-   indicator bar (matches the shell's rail). */
+/* Active — the tint persists after a click. Matches the app's workspace rail: a
+   faint accent-tinted pill (inset, so it never touches the rail edges) and a
+   left indicator bar sitting in the rail gutter (flush to the edge, -8px) with a
+   soft glow — not glued to the item. */
 :host(.is-active) {
-  color: var(--sh3-color-text);
-  background: color-mix(in srgb, var(--mi-accent) 20%, transparent);
+  color: color-mix(in srgb, var(--mi-accent) 80%, var(--sh3-color-text));
+  background: color-mix(in srgb, var(--mi-accent) 15%, transparent);
 }
 :host(.is-active) .mi-icon {
   color: var(--mi-accent);
@@ -51,12 +56,13 @@
 :host(.is-active)::before {
   content: "";
   position: absolute;
-  left: -1px;
+  left: -8px;
   top: 8px;
   bottom: 8px;
   width: 2px;
   border-radius: 0 2px 2px 0;
   background: var(--mi-accent);
+  box-shadow: 0 0 8px var(--mi-accent);
 }
 
 .mi-icon {
