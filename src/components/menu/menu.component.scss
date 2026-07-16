@@ -94,6 +94,15 @@
      to min-width, overflowing the labels. */
   width: auto;
   padding: 0 8px;
+  /* A nav taller than the rail scrolls instead of overflowing off the bottom.
+     `min-height: 0` lets this flex item shrink below its content so the scroll
+     can engage; `overflow-y` does the scrolling. Expanded only — collapsed
+     keeps `overflow: visible` so hover tooltips escape the rail (setting
+     `overflow-y` would force `overflow-x` to clip them too). */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 /* Collapse/expand toggle. */
