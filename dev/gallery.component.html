@@ -25,7 +25,7 @@
   >
     <div header class="lib-head">Library</div>
     @for (group of navGroups; track group.label) {
-      <sh3-menu-section [label]="group.label" [color]="group.color">
+      <sh3-menu-section [label]="group.label" [color]="group.color" collapsible>
         @for (item of group.items; track item.id) {
           <button
             sh3-menu-item

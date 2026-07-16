@@ -139,6 +139,16 @@ Add roles only once we're certain of their usage.
       are attribute components (`a[sh3-menu-item]`) so `routerLink` /
       `routerLinkActive` compose. Drives the app's workspace rail (perso +
       workspace nav) and the app-menu launcher.
+  - [x] **Expanded body scrolls** — a nav taller than the rail was overflowing
+        off the bottom with no way down. The expanded `.menu-body` now scrolls
+        (`overflow-y: auto` + `min-height: 0`); collapsed keeps `overflow:
+        visible` so hover tooltips still escape.
+  - [x] **Collapsible sections** — opt-in `collapsible` on `sh3-menu-section`:
+        the header becomes a fold toggle, `[(collapsed)]` two-way (starts open).
+        The section holding the **active** item stays open regardless (read via
+        `contentChildren` on the projected items) so the current page is never
+        hidden. Expanded-rail only; the items wrapper is `display: contents`
+        unless collapsible, so existing sections are byte-for-byte unchanged.
 - [x] **AvatarList** (`sh3-avatar-list`) — overlapping avatar cluster (from the
       org-chart node pattern): `limit` + a detached `+N` overflow chip, `top`
       (`first`/`last`, stacking direction), uniform `size` / `square` per cluster,
