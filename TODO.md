@@ -98,6 +98,13 @@ Add roles only once we're certain of their usage.
         `x-circle` status icon (the error glyph — a cross, pairing with
         `check-circle`). Component + container specs; public API (`ToastService`,
         `<sh3-toast-container>`) unchanged.
+  - [x] **Auto-expiry moved onto the component (`duration` input)** — the service
+        no longer runs the dismiss `setTimeout`; each `sh3-toast` owns its own
+        timer via a `duration` (ms) input (effect + cleanup), emitting `dismiss`
+        when it elapses. `duration = 0` is sticky. The container passes the
+        queued toast's `durationMs`; `ToastService.show(msg, variant, ms)` is
+        unchanged, so the ~51 app sites keep working. Makes a standalone
+        `sh3-toast` self-sufficient (no service needed to auto-close).
 - [x] **Menu** (`sh3-menu` + `menu-item` / `menu-section` / `menu-separator`) —
       the collapsible nav rail: coloured sections, `tint="follow"` (items take
       their section colour), depth `level` (primary/secondary/tertiary tints),

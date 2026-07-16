@@ -942,8 +942,16 @@
 
             <div class="gal-cell">
               <span class="gal-tag"
-                >live · fire through Sh3ToastService (bottom-right)</span
+                >live · fire through Sh3ToastService (bottom-right) ·
+                duration</span
               >
+              <div class="gal-narrow">
+                <sh3-choice-row
+                  [options]="toastDurationOptions"
+                  [activeKey]="toastDuration()"
+                  (selected)="toastDuration.set($event)"
+                />
+              </div>
               <div class="gal-row">
                 @for (v of toastVariants; track v) {
                   <button

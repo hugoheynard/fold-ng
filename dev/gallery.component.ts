@@ -309,15 +309,23 @@ export class GalleryComponent {
   };
   /** The `dismissible` demo toast — its close button hides it (dismiss output). */
   protected readonly demoToastOpen = signal(true);
+  /** The duration the live triggers fire with (`0` = sticky). */
+  protected readonly toastDurationOptions: Sh3ChoiceOption[] = [
+    { key: "2000", label: "2s" },
+    { key: "4000", label: "4s" },
+    { key: "0", label: "sticky" },
+  ];
+  protected readonly toastDuration = signal("4000");
   private toastSeq = 0;
 
-  /** Fire a real toast through the service — stacks bottom-right, auto-expires. */
+  /** Fire a real toast through the service — stacks bottom-right; auto-expires
+   *  after the chosen duration (or stays until closed when sticky). */
   protected fireToast(variant: Sh3ToastVariant): void {
     this.toastSeq += 1;
     this.toastService.show(
       `${this.toastMessages[variant]} (#${this.toastSeq})`,
       variant,
-      4000,
+      Number(this.toastDuration()),
     );
   }
 
