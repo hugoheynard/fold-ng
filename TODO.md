@@ -122,6 +122,15 @@ Add roles only once we're certain of their usage.
       (no raw rgba). `variant`/`size` types live in `button.types.ts`; spec +
       gallery entry added. The programs-local `ui-button` is a **different**
       component and was left alone.
+- [x] **ButtonIcon** (`sh3-button-icon`) — the icon-only sibling (16 consumers):
+      toolbar / transport / row-action affordances. `shape` × `size` × `tone`
+      surface as `data-*` for the SCSS; momentary (`clicked`) or two-way toggle
+      (`[(active)]` → pressed state + `aria-pressed`); `tooltip` sets `title` +
+      `aria-label`. Same repatriation shape as `sh3-button` — selector unchanged,
+      only the TS import moves. SCSS re-tokenised: the `--bi-*` locals resolve to
+      `--sh3-*`, the accent tone uses `on-primary`/`primary-strong`, the critical
+      hover/active tints use `color-mix(… var …)` (were raw rgba). Types in
+      `button-icon.types.ts`; full spec ported; gallery entry added.
 - [x] **Menu** (`sh3-menu` + `menu-item` / `menu-section` / `menu-separator`) —
       the collapsible nav rail: coloured sections, `tint="follow"` (items take
       their section colour), depth `level` (primary/secondary/tertiary tints),

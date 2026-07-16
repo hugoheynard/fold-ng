@@ -21,6 +21,7 @@ import {
   Sh3ButtonComponent,
   type Sh3ButtonVariant,
   type Sh3ButtonSize,
+  Sh3ButtonIconComponent,
   Sh3CardComponent,
   Sh3ChoiceRowComponent,
   type Sh3ChoiceOption,
@@ -144,6 +145,7 @@ interface TocItem {
     Sh3LinkComponent,
     Sh3BadgeComponent,
     Sh3ButtonComponent,
+    Sh3ButtonIconComponent,
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
     Sh3TabNavComponent,
@@ -620,6 +622,7 @@ export class GalleryComponent {
     { id: "card", label: "card" },
     { id: "link", label: "link" },
     { id: "button", label: "button" },
+    { id: "button-icon", label: "button-icon" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
     { id: "toast", label: "toast", icon: "toast" },
@@ -725,6 +728,7 @@ export class GalleryComponent {
   ];
   protected readonly buttonSizes: Sh3ButtonSize[] = ["sm", "md", "lg"];
   protected readonly buttonClicks = signal(0);
+  protected readonly biMasked = signal(false);
   protected readonly badgeVariants = [
     "accent",
     "info",
