@@ -391,14 +391,30 @@
           Layout directive — turns its host into a sticky side column (a
           vertical flex stack that stays put while the main content scrolls
           past). Put it on an <code>&lt;aside&gt;</code> to keep the semantics.
-          No template, no wrapper. Tunable via CSS vars:
-          <code>--sh3-sticky-column-top</code> /
-          <code>--sh3-sticky-column-gap</code>, and
-          <code>--sh3-sticky-column-position</code> which the page flips to
+          No template, no wrapper. Tunable via CSS vars: The anchor (<code
+            >sticky="top | center | bottom"</code
+          >) and offset (<code>[stickyOffset]</code>) are inputs; the gap and
+          the responsive un-stick stay CSS vars —
+          <code>--sh3-sticky-column-gap</code> and
+          <code>--sh3-sticky-column-position</code>, which the page flips to
           <code>static</code> at its own stacking breakpoint.
         </p>
 
         <div class="gal-cell">
+          <div class="gal-row">
+            <span class="gal-tag">sticky</span>
+            <div class="ss-seg">
+              @for (a of stickyDemoAnchors; track a) {
+                <button
+                  type="button"
+                  [class.is-on]="stickyDemoAnchor() === a"
+                  (click)="stickyDemoAnchor.set(a)"
+                >
+                  {{ a }}
+                </button>
+              }
+            </div>
+          </div>
           <span class="gal-tag"
             >preview — scroll inside the frame, the aside sticks</span
           >
@@ -413,13 +429,16 @@
               </div>
               <aside
                 sh3StickyColumn
+                [sticky]="stickyDemoAnchor()"
                 class="sticky-demo-side"
                 style="
                   --sh3-sticky-column-top: 8px;
                   --sh3-sticky-column-gap: 8px;
                 "
               >
-                <div class="sticky-demo-card">📌 sticks here</div>
+                <div class="sticky-demo-card">
+                  📌 sticks {{ stickyDemoAnchor() }}
+                </div>
               </aside>
             </div>
           </div>
@@ -431,7 +450,7 @@
             <button
               type="button"
               class="code-copy"
-              (click)="copyDemoCode(stickyColumnCode)"
+              (click)="copyDemoCode(stickyColumnCode())"
             >
               <sh3-icon
                 [name]="demoCopied() ? 'check-circle' : 'copy'"
@@ -440,7 +459,7 @@
               {{ demoCopied() ? "Copied" : "Copy" }}
             </button>
           </div>
-          <pre class="code-pre"><code>{{ stickyColumnCode }}</code></pre>
+          <pre class="code-pre"><code>{{ stickyColumnCode() }}</code></pre>
         </div>
       </section>
 
