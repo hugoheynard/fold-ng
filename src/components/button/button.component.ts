@@ -1,4 +1,4 @@
-import { Component, input, output } from "@angular/core";
+import { Component, booleanAttribute, input, output } from "@angular/core";
 import type {
   Sh3ButtonShape,
   Sh3ButtonSize,
@@ -28,6 +28,7 @@ import type {
   styleUrl: "./button.component.scss",
   host: {
     "[class]": 'variant() + " " + size() + " " + shape()',
+    "[class.block]": "block()",
   },
 })
 export class Sh3ButtonComponent {
@@ -46,6 +47,9 @@ export class Sh3ButtonComponent {
 
   /** Corner shape — `rounded` (default) or `pill` (fully rounded). */
   readonly shape = input<Sh3ButtonShape>("rounded");
+
+  /** Stretch to fill the container's width (block-level) instead of hugging its label. */
+  readonly block = input(false, { transform: booleanAttribute });
 
   /** Native `type` attribute of the inner `<button>`. */
   readonly type = input<"button" | "submit">("button");

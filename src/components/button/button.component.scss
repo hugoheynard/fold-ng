@@ -8,6 +8,14 @@
   display: inline-flex;
 }
 
+// Block — stretch to the container's full width.
+:host(.block) {
+  display: flex;
+}
+:host(.block) button {
+  width: 100%;
+}
+
 button {
   all: unset;
   box-sizing: border-box;

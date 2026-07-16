@@ -41,6 +41,14 @@ describe("Sh3ButtonComponent", () => {
     expect(host.classList.contains("rounded")).toBe(false);
   });
 
+  it("toggles the block (full-width) class", () => {
+    const { fixture, host } = mount();
+    expect(host.classList.contains("block")).toBe(false);
+    fixture.componentRef.setInput("block", true);
+    fixture.detectChanges();
+    expect(host.classList.contains("block")).toBe(true);
+  });
+
   it("emits clicked on press but not while disabled", () => {
     const { fixture, button } = mount();
     let clicks = 0;
