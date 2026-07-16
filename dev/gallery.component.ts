@@ -393,7 +393,7 @@ export class GalleryComponent {
 
   /* ── Library nav (railSecondary) — its tint/level come from the preview via
    *    "Apply to Library". ── */
-  protected readonly libTint = signal<Sh3MenuTint>("primary");
+  protected readonly libTint = signal<Sh3MenuTint>("follow");
   protected readonly libLevel = signal<Sh3MenuLevel>("secondary");
   protected readonly applied = signal(false);
   protected applyToLibrary(): void {
