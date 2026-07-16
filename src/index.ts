@@ -42,7 +42,10 @@ export type {
   Sh3MenuTogglePlacement,
   Sh3MenuLevel,
 } from "./components/menu/menu.component";
-export { Sh3MenuItemComponent } from "./components/menu/menu-item.component";
+export {
+  Sh3MenuItemComponent,
+  type Sh3MenuItemBadgeTone,
+} from "./components/menu/menu-item.component";
 export { Sh3MenuSeparatorComponent } from "./components/menu/menu-separator.component";
 export { Sh3MenuSectionComponent } from "./components/menu/menu-section.component";
 export { Sh3HeroComponent } from "./components/hero/hero.component";

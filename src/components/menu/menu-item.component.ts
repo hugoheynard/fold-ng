@@ -7,6 +7,23 @@ import {
 } from "../badge/badge.component";
 
 /**
+ * Badge tone for a menu item. `follow` (the default) tints the badge with the
+ * item's own accent — i.e. the section colour, or whatever the menu's `tint`
+ * resolves to — so it matches the item's hover/active look. The rest are the
+ * shared {@link Sh3BadgeVariant} semantic colours.
+ */
+export type Sh3MenuItemBadgeTone = "follow" | Sh3BadgeVariant;
+
+/** Solid accent colour per semantic tone (drives the dot + follow-pill). */
+const TONE_ACCENT: Record<Sh3BadgeVariant, string> = {
+  accent: "var(--sh3-color-primary)",
+  info: "var(--sh3-color-info)",
+  warning: "var(--sh3-color-warning)",
+  alert: "var(--sh3-color-alert)",
+  success: "var(--sh3-color-success)",
+};
+
+/**
  * `[sh3-menu-item]` — an icon rail item. It is an **attribute** component, put
  * on the caller's own `<a>`/`<button>` so routing stays theirs (`routerLink` +
  * `routerLinkActive`). It renders the icon + a hover tooltip (`label`); `active`
@@ -14,9 +31,11 @@ import {
  *
  * A {@link badge} adds a status tag / count that renders in both rail modes:
  * a corner dot (or count bubble, for a number) when the rail is collapsed to
- * icons, and the full `sh3-badge` pill after the label when expanded. It stays
- * an input (not projected content) because only this component knows its rail
- * mode, and that mode dictates where the badge belongs.
+ * icons, and the full badge pill after the label when expanded. It stays an
+ * input (not projected content) because only this component knows its rail
+ * mode, and that mode dictates where the badge belongs. {@link badgeTone}
+ * colours both modes from a single accent — `follow` (default) matches the
+ * item's own tint, the semantic tones reuse the `sh3-badge` palette.
  *
  * @selector `a[sh3-menu-item]`, `button[sh3-menu-item]`
  *
@@ -39,6 +58,7 @@ import {
   host: {
     "[class.is-active]": "active()",
     "[attr.aria-label]": "ariaLabel()",
+    "[style.--mi-badge-accent]": "badgeAccent()",
   },
 })
 export class Sh3MenuItemComponent {
@@ -52,8 +72,8 @@ export class Sh3MenuItemComponent {
    * string / nullish renders nothing; a count of `0` is treated as nothing.
    */
   readonly badge = input<string | number>();
-  /** Badge colour, from the shared `sh3-badge` vocabulary. */
-  readonly badgeTone = input<Sh3BadgeVariant>("accent");
+  /** Badge colour — `follow` (default) tracks the item's tint, or a semantic tone. */
+  readonly badgeTone = input<Sh3MenuItemBadgeTone>("follow");
 
   /** Whether the badge is a numeric count (drives the collapsed bubble). */
   protected readonly isCount = computed(() => typeof this.badge() === "number");
@@ -62,6 +82,23 @@ export class Sh3MenuItemComponent {
   protected readonly hasBadge = computed(() => {
     const b = this.badge();
     return b !== undefined && b !== "" && b !== 0;
+  });
+
+  /** Whether the tone tracks the item's accent (vs a semantic `sh3-badge`). */
+  protected readonly isFollowTone = computed(
+    () => this.badgeTone() === "follow",
+  );
+
+  /** The badge's accent colour — the item's tint, or the semantic tone's. */
+  protected readonly badgeAccent = computed(() => {
+    const tone = this.badgeTone();
+    return tone === "follow" ? "var(--mi-accent)" : TONE_ACCENT[tone];
+  });
+
+  /** Semantic variant for the expanded `sh3-badge` (unused when following). */
+  protected readonly badgeVariant = computed<Sh3BadgeVariant>(() => {
+    const tone = this.badgeTone();
+    return tone === "follow" ? "accent" : tone;
   });
 
   /** Badge text for the expanded pill (`sh3-badge` needs a string). */

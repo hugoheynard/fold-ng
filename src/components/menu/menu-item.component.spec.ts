@@ -12,12 +12,14 @@ import { Sh3MenuItemComponent } from "./menu-item.component";
     [label]="label()"
     [active]="active()"
     [badge]="badge()"
+    [badgeTone]="tone()"
   ></a>`,
 })
 class HostComponent {
   readonly label = signal("Home");
   readonly active = signal(false);
   readonly badge = signal<string | number | undefined>(undefined);
+  readonly tone = signal<"follow" | "info" | "alert">("follow");
 }
 
 function render() {
@@ -71,6 +73,31 @@ describe("Sh3MenuItemComponent", () => {
     fixture.componentInstance.badge.set(150);
     fixture.detectChanges();
     expect(item.querySelector(".mi-dot")?.textContent?.trim()).toBe("99+");
+  });
+
+  it("uses a follow pill (not sh3-badge) by default", () => {
+    const { fixture, item } = render();
+    fixture.componentInstance.badge.set("new");
+    fixture.detectChanges();
+    expect(item.querySelector(".mi-badge-follow")).not.toBeNull();
+    expect(item.querySelector("sh3-badge")).toBeNull();
+    expect(item.style.getPropertyValue("--mi-badge-accent")).toBe(
+      "var(--mi-accent)",
+    );
+  });
+
+  it("uses sh3-badge + the tone's accent for a semantic tone", () => {
+    const { fixture, item } = render();
+    fixture.componentInstance.badge.set("new");
+    fixture.componentInstance.tone.set("alert");
+    fixture.detectChanges();
+    expect(item.querySelector(".mi-badge-follow")).toBeNull();
+    const pill = item.querySelector("sh3-badge");
+    expect(pill).not.toBeNull();
+    expect(pill?.classList.contains("alert")).toBe(true);
+    expect(item.style.getPropertyValue("--mi-badge-accent")).toBe(
+      "var(--sh3-color-alert)",
+    );
   });
 
   it("treats a zero count and empty string as no badge", () => {

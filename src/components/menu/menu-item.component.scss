@@ -89,6 +89,8 @@
 }
 
 /* ── Badge ──────────────────────────────────────────────────────────
+   `--mi-badge-accent` (set on the host) drives both modes: it's the item's own
+   tint for `follow`, or the semantic tone's colour otherwise.
    Collapsed rail: a corner indicator on the icon — a small accent dot, or a
    count bubble when the badge is a number (no room for a text pill on 40px).
    The pill (`.mi-badge`) is hidden here and revealed in the expanded row. */
@@ -99,7 +101,7 @@
   width: 8px;
   height: 8px;
   border-radius: var(--sh3-radius-round);
-  background: var(--mi-accent);
+  background: var(--mi-badge-accent, var(--mi-accent));
   pointer-events: none;
 }
 .mi-dot-count {
@@ -120,6 +122,20 @@
 
 .mi-badge {
   display: none;
+}
+
+/* `follow` pill: mirror sh3-badge's shape/type, tinted from the item's accent
+   with the same soft surface/border/text mix the item uses for its hovers. */
+.mi-badge-follow {
+  padding: 1px 7px;
+  border-radius: var(--sh3-radius-pill);
+  font-size: var(--sh3-text-xs);
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  background: color-mix(in srgb, var(--mi-badge-accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mi-badge-accent) 35%, transparent);
+  color: color-mix(in srgb, var(--mi-badge-accent) 85%, var(--sh3-color-text));
 }
 
 /* Expanded row: drop the corner indicator, show the pill flush to the trailing

@@ -9,11 +9,16 @@
 
 <span class="mi-tip">{{ label() }}</span>
 
-<!-- Expanded rail: the full badge pill, pushed to the row's trailing edge. -->
+<!-- Expanded rail: the badge pill, pushed to the row's trailing edge. `follow`
+     tints from the item's own accent; the semantic tones reuse sh3-badge. -->
 @if (hasBadge()) {
-  <sh3-badge
-    class="mi-badge"
-    [content]="badgeText()"
-    [variant]="badgeTone()"
-  />
+  @if (isFollowTone()) {
+    <span class="mi-badge mi-badge-follow">{{ badgeText() }}</span>
+  } @else {
+    <sh3-badge
+      class="mi-badge"
+      [content]="badgeText()"
+      [variant]="badgeVariant()"
+    />
+  }
 }
