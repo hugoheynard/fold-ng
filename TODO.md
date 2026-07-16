@@ -169,6 +169,13 @@ Add roles only once we're certain of their usage.
       `Sh3AvatarListItem` — a member can be a ghost among members.
 - [x] **State views** (`sh3-loading` + `sh3-empty-state`) — the shared loading
       placeholder + empty-state block, moved off `app/shared/`.
+- [x] **StickyColumn** (`[sh3StickyColumn]`) — layout directive for a sticky
+      side column (`<aside sh3StickyColumn>`), killing the per-page
+      `.sidebar { display:flex; …; position:sticky }` duplication. Host inline
+      styles only (no template/wrapper). Tunable via CSS vars —
+      `--sh3-sticky-column-top`/`-gap`, and `-position` which a page flips to
+      `static` in its own stacking breakpoint (the page keeps its breakpoint;
+      the directive stays breakpoint-agnostic).
 
 - [x] **Card** (`sh3-card`) — the canonical raised surface: `surface-card` bg +
       hairline border + consistent radius (`surface`/`radius`/`padding`/
