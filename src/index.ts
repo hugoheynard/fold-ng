@@ -51,7 +51,10 @@ export { Sh3MenuSectionComponent } from "./components/menu/menu-section.componen
 export { Sh3HeroComponent } from "./components/hero/hero.component";
 export { Sh3DataTableComponent } from "./components/data-table/data-table.component";
 export { Sh3DataTableCellDirective } from "./components/data-table/data-table-cell.directive";
-export { Sh3StickyColumnDirective } from "./directives/sticky-column.directive";
+export {
+  Sh3StickyColumnDirective,
+  type Sh3StickyColumnAnchor,
+} from "./directives/sticky-column.directive";
 export type {
   Sh3TableColumn,
   Sh3TableEmpty,
