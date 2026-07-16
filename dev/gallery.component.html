@@ -903,66 +903,213 @@
         </div>
       </section>
 
-      <!-- ── sh3-toast ─────────────────────────────────────────── -->
+      <!-- ── sh3-toast — three sub-pages behind a vertical tab-nav ────── -->
       <section id="toast" class="gal-sec">
         <sh3-page-section
           title="sh3-toast"
-          description="A transient frosted-glass snackbar: a variant status glyph, the message (projected), and an optional dismiss button. sh3-toast-container stacks them bottom-right; Sh3ToastService owns the queue + auto-expiry."
+          description="A transient frosted-glass snackbar: a variant status glyph, the message (projected), and an optional dismiss button. sh3-toast-container stacks them bottom-right; Sh3ToastService owns the queue."
         >
-          <div class="gal-stack">
-            <div class="gal-cell">
-              <span class="gal-tag">variants · dismissible = false</span>
-              <div class="toast-demo-col">
-                @for (v of toastVariants; track v) {
-                  <sh3-toast [variant]="v" [dismissible]="false">{{
-                    toastMessages[v]
-                  }}</sh3-toast>
-                }
-              </div>
-            </div>
+          <div class="form-layout">
+            <aside class="form-nav">
+              <sh3-tab-nav
+                direction="vertical"
+                activeStyle="fill"
+                [tabs]="toastTabs"
+                [activeKey]="toastTab()"
+                (tabChange)="toastTab.set($event)"
+              />
+            </aside>
 
-            <div class="gal-cell">
-              <span class="gal-tag">dismissible · the (dismiss) output</span>
-              <div class="toast-demo-col">
-                @if (demoToastOpen()) {
-                  <sh3-toast variant="info" (dismiss)="demoToastOpen.set(false)"
-                    >Press ✕ — the dismiss output fires</sh3-toast
+            <div class="form-body">
+              @switch (toastTab()) {
+                @case ("variants") {
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Variants"
+                    description="Four tones — the glyph + left accent take the variant's -text tint. info uses the brand primary tint; error renders as an assertive live-region (role=alert)."
                   >
-                } @else {
-                  <button
-                    type="button"
-                    class="gal-theme"
-                    (click)="demoToastOpen.set(true)"
-                  >
-                    <sh3-icon name="reload" size="sm" /> Reset
-                  </button>
+                    <div class="toast-demo-col">
+                      @for (v of toastVariants; track v) {
+                        <sh3-toast [variant]="v" [dismissible]="false">{{
+                          toastMessages[v]
+                        }}</sh3-toast>
+                      }
+                    </div>
+                  </sh3-page-section>
                 }
-              </div>
-            </div>
 
-            <div class="gal-cell">
-              <span class="gal-tag"
-                >live · fire through Sh3ToastService (bottom-right) ·
-                duration</span
-              >
-              <div class="gal-narrow">
-                <sh3-choice-row
-                  [options]="toastDurationOptions"
-                  [activeKey]="toastDuration()"
-                  (selected)="toastDuration.set($event)"
-                />
-              </div>
-              <div class="gal-row">
-                @for (v of toastVariants; track v) {
-                  <button
-                    type="button"
-                    class="gal-theme"
-                    (click)="fireToast(v)"
+                @case ("behavior") {
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Dismiss"
+                    description="An explicit close button emits (dismiss) — the whole surface is not click-to-dismiss. dismissible=false hides the button."
                   >
-                    <sh3-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
-                  </button>
+                    <div class="toast-demo-col">
+                      @if (demoToastOpen()) {
+                        <sh3-toast
+                          variant="info"
+                          (dismiss)="demoToastOpen.set(false)"
+                          >Press ✕ — the dismiss output fires</sh3-toast
+                        >
+                      } @else {
+                        <button
+                          type="button"
+                          class="gal-theme"
+                          (click)="demoToastOpen.set(true)"
+                        >
+                          <sh3-icon name="reload" size="sm" /> Reset
+                        </button>
+                      }
+                    </div>
+                  </sh3-page-section>
+
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Duration"
+                    description="The toast owns its auto-dismiss timer via a duration (ms) input; 0 = sticky. Fire through the service (bottom-right) with the chosen duration."
+                  >
+                    <div class="gal-narrow">
+                      <sh3-choice-row
+                        [options]="toastDurationOptions"
+                        [activeKey]="toastDuration()"
+                        (selected)="toastDuration.set($event)"
+                      />
+                    </div>
+                    <div class="gal-row">
+                      @for (v of toastVariants; track v) {
+                        <button
+                          type="button"
+                          class="gal-theme"
+                          (click)="fireToast(v)"
+                        >
+                          <sh3-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
+                        </button>
+                      }
+                    </div>
+                  </sh3-page-section>
                 }
-              </div>
+
+                @case ("usage") {
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Fire a toast"
+                    description="Inject Sh3ToastService and call show(). The duration argument is optional — omit it to use the policy."
+                  >
+                    <div class="code-block">
+                      <div class="code-top">
+                        <span class="code-lang">typescript</span>
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ toastFireCode }}</code></pre>
+                    </div>
+                  </sh3-page-section>
+
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Duration policy"
+                    description="A no-arg show() resolves most-specific first: durationByVariant → defaultDurationMs → the baked default. An explicit argument always wins."
+                  >
+                    <div class="code-block">
+                      <div class="code-top">
+                        <span class="code-lang"
+                          >typescript · app.config.ts</span
+                        >
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ toastConfigCode }}</code></pre>
+                    </div>
+                    <table class="api-table">
+                      <thead>
+                        <tr>
+                          <th>variant</th>
+                          <th>baked default</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><code>success</code></td>
+                          <td>3000 ms</td>
+                        </tr>
+                        <tr>
+                          <td><code>info</code></td>
+                          <td>4000 ms</td>
+                        </tr>
+                        <tr>
+                          <td><code>warning</code></td>
+                          <td>6000 ms</td>
+                        </tr>
+                        <tr>
+                          <td><code>error</code></td>
+                          <td>0 — sticky</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p class="doc-p">
+                      No <code>provideSh3Toasts</code> in the app → these baked
+                      defaults apply.
+                    </p>
+                  </sh3-page-section>
+
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Standalone component"
+                    description="A bare sh3-toast is self-sufficient — no service needed. It auto-dismisses after duration and emits (dismiss) on its close button."
+                  >
+                    <div class="code-block">
+                      <div class="code-top">
+                        <span class="code-lang">html</span>
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ toastStandaloneCode }}</code></pre>
+                    </div>
+                    <table class="api-table">
+                      <thead>
+                        <tr>
+                          <th>prop</th>
+                          <th>type</th>
+                          <th>default</th>
+                          <th>notes</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><code>variant</code></td>
+                          <td><code>success · info · warning · error</code></td>
+                          <td><code>info</code></td>
+                          <td>glyph + accent + live-region</td>
+                        </tr>
+                        <tr>
+                          <td><code>dismissible</code></td>
+                          <td><code>boolean</code></td>
+                          <td><code>true</code></td>
+                          <td>show the close button</td>
+                        </tr>
+                        <tr>
+                          <td><code>duration</code></td>
+                          <td><code>number</code> (ms)</td>
+                          <td><code>0</code></td>
+                          <td>0 = sticky (no timer)</td>
+                        </tr>
+                        <tr>
+                          <td><code>(dismiss)</code></td>
+                          <td><code>output&lt;void&gt;</code></td>
+                          <td>—</td>
+                          <td>close pressed / duration elapsed</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </sh3-page-section>
+                }
+              }
             </div>
           </div>
         </sh3-page-section>

@@ -329,6 +329,37 @@ export class GalleryComponent {
     );
   }
 
+  /** The toast page's three sub-pages (vertical tab-nav). */
+  protected readonly toastTabs: Sh3TabNavItem[] = [
+    { key: "variants", label: "Variants" },
+    { key: "behavior", label: "Behavior" },
+    { key: "usage", label: "Usage" },
+  ];
+  protected readonly toastTab = signal("variants");
+
+  /* ── Usage sub-page — documentation snippets ── */
+  protected readonly toastFireCode = [
+    "const toast = inject(Sh3ToastService);",
+    "",
+    'toast.show("Track uploaded", "success");      // policy duration',
+    'toast.show("Upload failed", "error", 8000);   // explicit override (ms)',
+    'toast.show("Action required", "warning", 0);  // 0 = sticky',
+  ].join("\n");
+  protected readonly toastConfigCode = [
+    "// app.config.ts — providers: [ … ]",
+    "provideSh3Toasts({",
+    "  defaultDurationMs: 4000,",
+    "  durationByVariant: { success: 2000, error: 0 }, // 0 = sticky",
+    "}),",
+  ].join("\n");
+  protected readonly toastStandaloneCode = [
+    "<sh3-toast",
+    '  variant="success"',
+    '  duration="3000"',
+    '  (dismiss)="onClose()"',
+    ">Track uploaded</sh3-toast>",
+  ].join("\n");
+
   /** Open a panel in the preview's own host (a scoped service instance), so it
    *  slides in inside the preview shell rather than the gallery. */
   protected openPreviewPanel(host: Sh3PanelHostService): void {

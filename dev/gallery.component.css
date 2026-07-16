@@ -623,6 +623,42 @@ sh3-app-shell {
   align-items: flex-start;
   gap: 8px;
 }
+
+/* Docs sub-page: a short prose line + a compact API reference table. */
+.doc-p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--sh3-color-text-secondary);
+}
+.doc-p code,
+.api-table code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--sh3-color-text);
+}
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.api-table th,
+.api-table td {
+  padding: 7px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+}
+.api-table th {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sh3-color-text-muted);
+}
+.api-table td {
+  color: var(--sh3-color-text-secondary);
+}
 .gal-tag {
   font-size: 10px;
   font-weight: 700;
