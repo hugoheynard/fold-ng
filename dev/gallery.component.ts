@@ -987,12 +987,15 @@ export class GalleryComponent {
     "center",
     "bottom",
   ];
+  protected readonly stickyDemoOffset = signal(8);
   protected readonly stickyColumnCode = computed(() => {
     const anchor = this.stickyDemoAnchor();
-    const attr = anchor === "top" ? "" : ` sticky="${anchor}"`;
+    const offset = this.stickyDemoOffset();
+    const anchorAttr = anchor === "top" ? "" : ` sticky="${anchor}"`;
+    const offsetAttr = offset === 0 ? "" : ` [stickyOffset]="${offset}"`;
     return [
       "<!-- layout only; keeps the <aside> semantics -->",
-      `<aside sh3StickyColumn${attr}>`,
+      `<aside sh3StickyColumn${anchorAttr}${offsetAttr}>`,
       "  <app-history />",
       "  <app-termination />",
       "</aside>",

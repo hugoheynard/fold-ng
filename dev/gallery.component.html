@@ -414,6 +414,17 @@
                 </button>
               }
             </div>
+            <span class="gal-tag">offset {{ stickyDemoOffset() }}px</span>
+            <input
+              #off
+              type="range"
+              min="0"
+              max="48"
+              step="2"
+              [value]="stickyDemoOffset()"
+              (input)="stickyDemoOffset.set(+off.value)"
+              aria-label="Sticky offset in pixels"
+            />
           </div>
           <span class="gal-tag"
             >preview — scroll inside the frame, the aside sticks</span
@@ -430,11 +441,9 @@
               <aside
                 sh3StickyColumn
                 [sticky]="stickyDemoAnchor()"
+                [stickyOffset]="stickyDemoOffset()"
                 class="sticky-demo-side"
-                style="
-                  --sh3-sticky-column-offset: 8px;
-                  --sh3-sticky-column-gap: 8px;
-                "
+                style="--sh3-sticky-column-gap: 8px"
               >
                 <div class="sticky-demo-card">
                   📌 sticks {{ stickyDemoAnchor() }}
