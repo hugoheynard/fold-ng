@@ -382,6 +382,66 @@
         </div>
       </section>
 
+      <!-- ── [sh3StickyColumn] directive ───────────────────────── -->
+      <section id="sticky-column" class="gal-sec">
+        <h2>[sh3StickyColumn]</h2>
+        <p class="doc-p">
+          Layout directive — turns its host into a sticky side column (a
+          vertical flex stack that stays put while the main content scrolls
+          past). Put it on an <code>&lt;aside&gt;</code> to keep the semantics.
+          No template, no wrapper. Tunable via CSS vars:
+          <code>--sh3-sticky-column-top</code> /
+          <code>--sh3-sticky-column-gap</code>, and
+          <code>--sh3-sticky-column-position</code> which the page flips to
+          <code>static</code> at its own stacking breakpoint.
+        </p>
+
+        <div class="gal-cell">
+          <span class="gal-tag"
+            >preview — scroll inside the frame, the aside sticks</span
+          >
+          <div class="sticky-demo">
+            <div class="sticky-demo-grid">
+              <div class="sticky-demo-main">
+                @for (i of stickyDemoRows; track i) {
+                  <div class="sticky-demo-block">
+                    Main content — row {{ i }}
+                  </div>
+                }
+              </div>
+              <aside
+                sh3StickyColumn
+                class="sticky-demo-side"
+                style="
+                  --sh3-sticky-column-top: 8px;
+                  --sh3-sticky-column-gap: 8px;
+                "
+              >
+                <div class="sticky-demo-card">📌 sticks here</div>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-top">
+            <span class="code-lang">html · scss</span>
+            <button
+              type="button"
+              class="code-copy"
+              (click)="copyDemoCode(stickyColumnCode)"
+            >
+              <sh3-icon
+                [name]="demoCopied() ? 'check-circle' : 'copy'"
+                size="sm"
+              />
+              {{ demoCopied() ? "Copied" : "Copy" }}
+            </button>
+          </div>
+          <pre class="code-pre"><code>{{ stickyColumnCode }}</code></pre>
+        </div>
+      </section>
+
       <!-- ── sh3-menu (rail primary demo) ──────────────────────── -->
       <section id="menu" class="gal-sec">
         <h2>sh3-menu</h2>
@@ -871,7 +931,9 @@
             >
             <div class="gal-row" style="align-items: center">
               <sh3-button variant="solid" icon="check">Confirm</sh3-button>
-              <sh3-button variant="ghost" size="sm" icon="edit">Edit</sh3-button>
+              <sh3-button variant="ghost" size="sm" icon="edit"
+                >Edit</sh3-button
+              >
               <sh3-button variant="primary" iconTrailing="chevron-right"
                 >Next</sh3-button
               >

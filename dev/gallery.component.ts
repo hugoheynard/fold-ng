@@ -38,6 +38,7 @@ import {
   type Sh3MenuTint,
   type Sh3MenuTogglePlacement,
   Sh3PageSectionComponent,
+  Sh3StickyColumnDirective,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
   Sh3StatusBadgeComponent,
@@ -148,6 +149,7 @@ interface NavGroup {
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
     Sh3PageSectionComponent,
+    Sh3StickyColumnDirective,
     Sh3ElementTitleComponent,
     Sh3ContextCardComponent,
     Sh3LinkComponent,
@@ -637,6 +639,7 @@ export class GalleryComponent {
         { id: "app-shell", label: "app-shell", icon: "grid" },
         { id: "page-section", label: "page-section" },
         { id: "hero", label: "hero" },
+        { id: "sticky-column", label: "sticky-column" },
       ],
     },
     {
@@ -920,6 +923,23 @@ export class GalleryComponent {
     return demo ? detailDemoCode(demo) : "";
   });
   protected readonly demoCopied = signal(false);
+  /* ── sticky-column directive demo ── */
+  protected readonly stickyDemoRows = [1, 2, 3, 4, 5, 6, 7, 8];
+  protected readonly stickyColumnCode = [
+    "<!-- layout only; keeps the <aside> semantics -->",
+    "<aside sh3StickyColumn>",
+    "  <app-history />",
+    "  <app-termination />",
+    "</aside>",
+    "",
+    "/* the page un-sticks at its own stacking breakpoint */",
+    "@media (max-width: 1040px) {",
+    "  aside[sh3StickyColumn] {",
+    "    --sh3-sticky-column-position: static;",
+    "  }",
+    "}",
+  ].join("\n");
+
   protected copyDemoCode(code: string): void {
     void navigator.clipboard.writeText(code).then(() => {
       this.demoCopied.set(true);
