@@ -30,6 +30,17 @@ describe("Sh3ButtonComponent", () => {
     expect(host.classList.contains("primary")).toBe(false);
   });
 
+  it("defaults to the rounded shape and switches to pill on demand", () => {
+    const { fixture, host } = mount();
+    expect(host.classList.contains("rounded")).toBe(true);
+    expect(host.classList.contains("pill")).toBe(false);
+
+    fixture.componentRef.setInput("shape", "pill");
+    fixture.detectChanges();
+    expect(host.classList.contains("pill")).toBe(true);
+    expect(host.classList.contains("rounded")).toBe(false);
+  });
+
   it("emits clicked on press but not while disabled", () => {
     const { fixture, button } = mount();
     let clicks = 0;

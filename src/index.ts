@@ -21,6 +21,7 @@ export { Sh3ButtonComponent } from "./components/button/button.component";
 export type {
   Sh3ButtonVariant,
   Sh3ButtonSize,
+  Sh3ButtonShape,
 } from "./components/button/button.types";
 export { Sh3ButtonIconComponent } from "./components/button-icon/button-icon.component";
 export type {

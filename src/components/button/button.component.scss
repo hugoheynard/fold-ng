@@ -61,6 +61,12 @@ button {
   border-radius: var(--sh3-radius-sm);
 }
 
+// ─── Shape ─────────────────────────────────────────────
+// `pill` overrides the size's radius (declared after, same specificity).
+:host(.pill) button {
+  border-radius: var(--sh3-radius-pill);
+}
+
 // ─── Variants ──────────────────────────────────────────
 
 // Primary — accent teal tint

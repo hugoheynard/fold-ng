@@ -8,3 +8,6 @@ export type Sh3ButtonVariant =
 
 /** Size preset — controls font-size, padding, and radius. */
 export type Sh3ButtonSize = "sm" | "md" | "lg";
+
+/** Corner shape — `rounded` (the size's radius) or `pill` (fully rounded). */
+export type Sh3ButtonShape = "rounded" | "pill";

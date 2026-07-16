@@ -1,5 +1,9 @@
 import { Component, input, output } from "@angular/core";
-import type { Sh3ButtonSize, Sh3ButtonVariant } from "./button.types";
+import type {
+  Sh3ButtonShape,
+  Sh3ButtonSize,
+  Sh3ButtonVariant,
+} from "./button.types";
 
 /**
  * `<sh3-button>` — the design-system entry point for every actionable button.
@@ -23,7 +27,7 @@ import type { Sh3ButtonSize, Sh3ButtonVariant } from "./button.types";
   templateUrl: "./button.component.html",
   styleUrl: "./button.component.scss",
   host: {
-    "[class]": 'variant() + " " + size()',
+    "[class]": 'variant() + " " + size() + " " + shape()',
   },
 })
 export class Sh3ButtonComponent {
@@ -39,6 +43,9 @@ export class Sh3ButtonComponent {
 
   /** Size preset controlling font-size, padding, and radius. */
   readonly size = input<Sh3ButtonSize>("md");
+
+  /** Corner shape — `rounded` (default) or `pill` (fully rounded). */
+  readonly shape = input<Sh3ButtonShape>("rounded");
 
   /** Native `type` attribute of the inner `<button>`. */
   readonly type = input<"button" | "submit">("button");
