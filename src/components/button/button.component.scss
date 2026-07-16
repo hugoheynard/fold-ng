@@ -62,9 +62,13 @@ button {
 }
 
 // ─── Shape ─────────────────────────────────────────────
-// `pill` overrides the size's radius (declared after, same specificity).
+// `pill` overrides the size's radius (declared after, same specificity). The
+// rounded ends eat into the label, so give it roomier horizontal padding —
+// `em`-based so it scales with the button's font-size. Vertical padding stays
+// from the size rule.
 :host(.pill) button {
   border-radius: var(--sh3-radius-pill);
+  padding-inline: 1.25em;
 }
 
 // ─── Variants ──────────────────────────────────────────
