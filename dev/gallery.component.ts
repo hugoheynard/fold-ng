@@ -410,6 +410,8 @@ export class GalleryComponent {
   /** Structural slots — toggled so the design can be seen with/without each. */
   protected readonly menuHeader = signal(true);
   protected readonly menuSections = signal(true);
+  /** Section behaviour — `true` makes each section a fold toggle (`collapsible`). */
+  protected readonly menuSectionCollapsible = signal(false);
   protected readonly menuFooter = signal(true);
   /** How items tint on hover / when active. */
   protected readonly menuTint = signal<Sh3MenuTint>("follow");
@@ -522,7 +524,10 @@ export class GalleryComponent {
       const wrap = this.menuSections();
       const pad = wrap ? "    " : "  ";
       if (wrap) {
-        lines.push(`  <sh3-menu-section label="${s.name}" color="${s.color}">`);
+        const collapsible = this.menuSectionCollapsible() ? " collapsible" : "";
+        lines.push(
+          `  <sh3-menu-section label="${s.name}" color="${s.color}"${collapsible}>`,
+        );
       }
       for (const icon of this.iconsFor(s.icons)) {
         lines.push(

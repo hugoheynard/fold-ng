@@ -417,7 +417,11 @@
                 }
                 @for (s of menuSectionList(); track s.id) {
                   @if (menuSections()) {
-                    <sh3-menu-section [label]="s.name" [color]="s.color">
+                    <sh3-menu-section
+                      [label]="s.name"
+                      [color]="s.color"
+                      [collapsible]="menuSectionCollapsible()"
+                    >
                       @for (icon of iconsFor(s.icons); track $index) {
                         <button
                           sh3-menu-item
@@ -566,6 +570,28 @@
                   </button>
                 </div>
               </div>
+
+              @if (menuSections()) {
+                <div class="ss-group">
+                  <span class="ss-label">section behaviour</span>
+                  <div class="ss-seg">
+                    <button
+                      type="button"
+                      [class.is-on]="!menuSectionCollapsible()"
+                      (click)="menuSectionCollapsible.set(false)"
+                    >
+                      static
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="menuSectionCollapsible()"
+                      (click)="menuSectionCollapsible.set(true)"
+                    >
+                      collapsible
+                    </button>
+                  </div>
+                </div>
+              }
 
               <div class="ss-group">
                 <span class="ss-label">tint</span>
