@@ -2,6 +2,7 @@
   <sh3-toast
     [variant]="toast.variant"
     [duration]="toast.durationMs"
+    animate.leave="toast-leaving"
     (dismiss)="toastService.dismiss(toast.id)"
     >{{ toast.message }}</sh3-toast
   >

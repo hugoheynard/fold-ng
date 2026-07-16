@@ -323,8 +323,8 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 - [ ] `inert` the background behind an open panel — a full modal barrier, not a
       keyboard-only trap (screen-reader virtual cursor currently reaches behind).
 - [ ] Reduced-motion: gate the slide/fade animations behind
-      `prefers-reduced-motion`. (`sh3-toast` entrance now does; sweep the rest —
-      menu width transition, panel slide, hero glow.)
+      `prefers-reduced-motion`. (`sh3-toast` entrance + exit now do; sweep the
+      rest — menu width transition, panel slide, hero glow.)
 - [ ] Reconsider the px type scale (rule 1.6) — offer a rem opt-in for consumers
       whose root ≠ 14px, so user-zoom works. Currently an accepted deviation.
 
