@@ -32,7 +32,6 @@ describe("Sh3StickyColumnDirective", () => {
     const { aside } = render();
     expect(aside.style.display).toBe("flex");
     expect(aside.style.flexDirection).toBe("column");
-    expect(aside.style.alignSelf).toBe("start");
     // tunable via CSS vars (default fallbacks kept in the value)
     expect(aside.style.position).toContain("--sh3-sticky-column-position");
     expect(aside.style.gap).toContain("--sh3-sticky-column-gap");
@@ -43,6 +42,7 @@ describe("Sh3StickyColumnDirective", () => {
     expect(aside.style.top).toContain("--sh3-sticky-column-top");
     expect(aside.style.bottom).toBe("auto");
     expect(aside.style.transform).toBe("none");
+    expect(aside.style.alignSelf).toBe("start");
   });
 
   it("pins to the bottom edge for the bottom anchor", () => {
@@ -52,6 +52,8 @@ describe("Sh3StickyColumnDirective", () => {
     expect(aside.style.top).toBe("auto");
     expect(aside.style.bottom).toContain("--sh3-sticky-column-top");
     expect(aside.style.transform).toBe("none");
+    // in-flow position must match the anchor so a short column starts pinned
+    expect(aside.style.alignSelf).toBe("end");
   });
 
   it("centres via top:50% + translateY for the center anchor", () => {
@@ -60,6 +62,8 @@ describe("Sh3StickyColumnDirective", () => {
     fixture.detectChanges();
     expect(aside.style.top).toBe("50%");
     expect(aside.style.transform).toBe("translateY(-50%)");
+    // top:50% pins the top edge, so the column must start at the row top
+    expect(aside.style.alignSelf).toBe("start");
   });
 
   it("resolves a numeric offset to px on the pinned edge", () => {

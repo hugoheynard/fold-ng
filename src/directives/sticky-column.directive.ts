@@ -44,7 +44,7 @@ export type Sh3StickyColumnAnchor = "top" | "center" | "bottom";
   host: {
     "[style.display]": '"flex"',
     "[style.flexDirection]": '"column"',
-    "[style.alignSelf]": '"start"',
+    "[style.alignSelf]": "alignSelfStyle()",
     "[style.gap]": '"var(--sh3-sticky-column-gap, 14px)"',
     "[style.position]": '"var(--sh3-sticky-column-position, sticky)"',
     "[style.top]": "topStyle()",
@@ -82,6 +82,15 @@ export class Sh3StickyColumnDirective {
 
   protected readonly bottomStyle = computed(() =>
     this.sticky() === "bottom" ? this.offsetCss() : "auto",
+  );
+
+  /** The in-flow start position that makes `sticky` engage from scroll 0.
+   *  `sticky` pins only once the constraint is active at the element's natural
+   *  flow position: `top`/`center` (which pin the top edge, at 0 / 50%) need the
+   *  column at the *top* of its tall row (`start`); `bottom` needs it at the
+   *  *bottom* (`end`), else it starts off-screen and only catches mid-scroll. */
+  protected readonly alignSelfStyle = computed(() =>
+    this.sticky() === "bottom" ? "end" : "start",
   );
 
   /** Centre anchoring pins the top edge at 50%, then pulls back half its height. */
