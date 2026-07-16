@@ -2,8 +2,6 @@
 // ships self-contained (no .svg text-loader dependency). Single-colour SVGs
 // using `currentColor`, so they inherit `color` from the host.
 export const STATUS_ICONS = {
-  alert:
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
   award:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23.664,0h-8.475l-2.97,6.003c-.073-.002-.146-.003-.22-.003-.076,0-.152,0-.228.003L8.811,0H.324l4.637,9.399c-1.227,1.538-1.961,3.486-1.961,5.601,0,4.962,4.038,9,9,9s9-4.038,9-9c0-2.121-.738-4.072-1.97-5.612L23.664,0Zm-7.854,1h6.243l-3.751,7.582c-1.334-1.311-3.074-2.209-5.011-2.489l2.52-5.093ZM1.933,1h6.256l2.513,5.094c-1.943.282-3.686,1.186-5.021,2.504L1.933,1Zm18.067,14c0,4.411-3.589,8-8,8s-8-3.589-8-8S7.589,7,12,7s8,3.589,8,8Zm-7.244-5.135h-1.494l-.897,3.135h-3.365v1.453l2.318,1.336-1.081,2.955,1.158.86,2.614-2.074,2.609,2.093,1.205-.831-1.171-2.969,2.347-1.377v-1.445h-3.347l-.896-3.135Zm.652,5.528l1.14,2.892-2.536-2.034-2.535,2.011,1.067-2.919-2.328-1.343h2.902l.89-3.11.89,3.11h2.884l-2.375,1.393Z"/></svg>',
   clock:
@@ -21,4 +19,6 @@ export const STATUS_ICONS = {
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
   warning:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  "x-circle":
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
 } as const;

@@ -91,12 +91,13 @@ Add roles only once we're certain of their usage.
         toast inline as a `<div class="toast">` with **emoji** glyphs and
         whole-surface click-to-dismiss. Pulled into a presentational
         `Sh3ToastComponent`: `sh3-icon` status glyphs (`check-circle`/`info`/
-        `warning`/`alert`), a single `--sh3-toast-accent` custom prop per variant,
+        `warning`/`x-circle`), a single `--sh3-toast-accent` custom prop per variant,
         an explicit close button emitting `dismiss` (no more accidental dismiss),
         `role`/`aria-live` (assertive `alert` for error, polite `status` else),
         and a reduced-motion guard. Container now owns only stacking. Added the
-        `alert` status icon (the set had no error glyph). Component + container
-        specs; public API (`ToastService`, `<sh3-toast-container>`) unchanged.
+        `x-circle` status icon (the error glyph — a cross, pairing with
+        `check-circle`). Component + container specs; public API (`ToastService`,
+        `<sh3-toast-container>`) unchanged.
 - [x] **Menu** (`sh3-menu` + `menu-item` / `menu-section` / `menu-separator`) —
       the collapsible nav rail: coloured sections, `tint="follow"` (items take
       their section colour), depth `level` (primary/secondary/tertiary tints),
@@ -171,9 +172,9 @@ they earn the move.
 **Confirmed candidates + their dependency chain** (from `app/shared/`):
 
 - [x] **`Icon`** (`sh3-icon`) — **landed**. Shipped the full **~100-icon** set
-      inlined (102 today — `alert` added for the toast error variant; 6 category
-      maps `icons/*.icons.ts`, generated from the app's `.svg` assets) so the
-      package is self-contained. Static `SH3_ICONS` const → a runtime
+      inlined (102 today — `x-circle` added for the toast error variant; 6
+      category maps `icons/*.icons.ts`, generated from the app's `.svg` assets) so
+      the package is self-contained. Static `SH3_ICONS` const → a runtime
       **`IconRegistry`** root singleton: built-ins + consumer additions via
       `provideIcons()` (bootstrap) or `register()`/`registerMany()` (runtime), keyed
       `Sh3BuiltinIconName | (string & {})`. Added `@angular/platform-browser` peer

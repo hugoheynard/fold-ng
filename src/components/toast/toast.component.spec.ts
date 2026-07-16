@@ -57,7 +57,7 @@ describe("Sh3ToastComponent", () => {
       ["success", "check-circle"],
       ["info", "info"],
       ["warning", "warning"],
-      ["error", "alert"],
+      ["error", "x-circle"],
     ];
     for (const [variant, icon] of cases) {
       const fixture = TestBed.createComponent(HostComponent);

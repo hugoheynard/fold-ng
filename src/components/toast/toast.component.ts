@@ -14,7 +14,7 @@ const VARIANT_ICON: Record<Sh3ToastVariant, Sh3IconName> = {
   success: "check-circle",
   info: "info",
   warning: "warning",
-  error: "alert",
+  error: "x-circle",
 };
 
 /**

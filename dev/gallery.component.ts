@@ -305,7 +305,7 @@ export class GalleryComponent {
     success: "check-circle",
     info: "info",
     warning: "warning",
-    error: "alert",
+    error: "x-circle",
   };
   /** The `dismissible` demo toast — its close button hides it (dismiss output). */
   protected readonly demoToastOpen = signal(true);
