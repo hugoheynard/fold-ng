@@ -55,463 +55,486 @@
     <div #scroll class="gal-scroll" (dblclick)="onInspect($event)">
       <!-- ── sh3-app-shell (this gallery is one) ───────────────── -->
       <section id="app-shell" class="gal-sec">
-        <h2>sh3-app-shell</h2>
-
-        <!-- Responsive preview — the settings drive this shell; the mode switch
+        <sh3-page-section title="sh3-app-shell">
+          <!-- Responsive preview — the settings drive this shell; the mode switch
              resizes the container so the shell folds (secondary rail at tablet,
              both rails at mobile) via its container queries. -->
-        <div class="shell-preview-modes">
-          @for (m of shellModes; track m) {
-            <button
-              type="button"
-              [class.is-on]="shellMode() === m"
-              (click)="shellMode.set(m)"
-            >
-              {{ m }}
-            </button>
-          }
-          <span class="spm-width">{{ shellPreviewWidth() }}px</span>
-          <button
-            type="button"
-            class="spm-code"
-            [class.is-on]="showCode()"
-            (click)="showCode.set(!showCode())"
-          >
-            code
-          </button>
-        </div>
-        <div class="shell-preview-frame">
-          <div
-            class="shell-preview"
-            [style.width.px]="shellPreviewWidth()"
-            panelScope
-            #sph="panelScope"
-          >
-            <sh3-app-shell
-              #previewShell
-              [appearance]="shellAppearance()"
-              [headerLayout]="shellHeaderLayout()"
-              [railWidth]="shellRailWidth()"
-              [headerHeight]="shellHeaderHeight()"
-            >
-              <!-- Real components in the rails — the preview can't drift from
-                   how sh3-menu actually behaves (rounds itself in floating,
-                   reads --sh3-shell-rail-width, tooltips when collapsed). -->
-              <sh3-menu railPrimary tint="primary">
-                <div header class="rail-brand">S3</div>
-                @for (i of railNav; track i.id) {
-                  <button
-                    sh3-menu-item
-                    [icon]="i.icon"
-                    [label]="i.label"
-                    [active]="previewNav() === i.id"
-                    (click)="previewNav.set(i.id)"
-                  ></button>
-                }
-                <button
-                  footer
-                  sh3-menu-item
-                  icon="settings"
-                  label="Settings"
-                ></button>
-              </sh3-menu>
-              <sh3-menu railSecondary level="secondary" [expanded]="true">
-                <div header class="lib-head">Workspace</div>
-                <button
-                  sh3-menu-item
-                  icon="grid"
-                  label="Overview"
-                  [active]="true"
-                ></button>
-                <button
-                  sh3-menu-item
-                  icon="contracts"
-                  label="Contracts"
-                ></button>
-                <button sh3-menu-item icon="music" label="Library"></button>
-              </sh3-menu>
-              <div header class="sp-header">
-                <span>Header</span>
-                <div class="sp-actions">
-                  <button type="button" (click)="openPreviewPanel(sph.service)">
-                    <sh3-icon name="contracts" size="sm" />
-                    Open panel
-                  </button>
-                  <button type="button" (click)="toggleTheme()">
-                    <sh3-icon
-                      [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"
-                      size="sm"
-                    />
-                    {{ theme() === "dark" ? "Light" : "Dark" }}
-                  </button>
-                </div>
-              </div>
-              <div class="sp-content">
-                <div class="sp-block"></div>
-                <div class="sp-block"></div>
-              </div>
-
-              <!-- the preview's own panel host — panels open inside the preview -->
-              <sh3-panel-host />
-            </sh3-app-shell>
-          </div>
-
-          <!-- "code" overlay — a glass sheet over the preview: HTML usage on the
-               left, the CSS variables to override on the right. -->
-          @if (showCode()) {
-            <div class="code-overlay">
-              <div class="code-overlay-pane">
-                <div class="code-overlay-top">
-                  <span class="code-lang">html</span>
-                  <button
-                    type="button"
-                    class="code-copy"
-                    (click)="copyShellCode()"
-                  >
-                    <sh3-icon
-                      [name]="copied() ? 'check-circle' : 'copy'"
-                      size="sm"
-                    />
-                    {{ copied() ? "Copied" : "Copy" }}
-                  </button>
-                </div>
-                <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
-              </div>
-              <div class="code-overlay-pane">
-                <div class="code-overlay-top">
-                  <span class="code-lang">css · variables to override</span>
-                  <button
-                    type="button"
-                    class="code-copy"
-                    (click)="copyShellTokensCss()"
-                  >
-                    <sh3-icon
-                      [name]="cssCopied() ? 'check-circle' : 'copy'"
-                      size="sm"
-                    />
-                    {{ cssCopied() ? "Copied" : "Copy" }}
-                  </button>
-                </div>
-                <pre class="code-pre"><code>{{ shellTokensCss() }}</code></pre>
-              </div>
-            </div>
-          }
-        </div>
-
-        <div class="shell-demo">
-          <div class="gal-card-narrow">
-            <sh3-context-card
-              icon="grid"
-              title="App Shell Settings"
-              subtitle="Drives the preview above — resize with Desktop / Tablet / Mobile."
-            >
-              <div class="ss-group">
-                <span class="ss-label">appearance</span>
-                <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="shellAppearance() === 'flat'"
-                    (click)="setAppearance('flat')"
-                  >
-                    flat
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="shellAppearance() === 'floating'"
-                    (click)="setAppearance('floating')"
-                  >
-                    floating
-                  </button>
-                </div>
-              </div>
-
-              <div class="ss-group">
-                <span class="ss-label">headerLayout</span>
-                <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="shellHeaderLayout() === 'inset'"
-                    (click)="setHeaderLayout('inset')"
-                  >
-                    inset
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="shellHeaderLayout() === 'full'"
-                    (click)="setHeaderLayout('full')"
-                  >
-                    full
-                  </button>
-                </div>
-              </div>
-
-              <div class="ss-group">
-                <span class="ss-label"
-                  >railWidth <b>{{ shellRailWidth() }}px</b></span
-                >
-                <input
-                  #railInput
-                  type="range"
-                  min="48"
-                  max="120"
-                  [value]="shellRailWidth()"
-                  (input)="setRailWidth(railInput.value)"
-                />
-              </div>
-
-              <div class="ss-group">
-                <span class="ss-label"
-                  >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
-                >
-                <input
-                  #headerInput
-                  type="range"
-                  min="44"
-                  max="88"
-                  [value]="shellHeaderHeight()"
-                  (input)="setHeaderHeight(headerInput.value)"
-                />
-              </div>
-            </sh3-context-card>
-          </div>
-
-          <div class="tok-card-wrap">
-            <sh3-context-card
-              icon="grid"
-              title="Tokens"
-              subtitle="live sandbox — edit a value to override the preview; semantics preferred"
-            >
-              @for (group of shellTokens; track group.label) {
-                <div class="tok-group">
-                  <span class="ss-label tok-group-label">{{
-                    group.label
-                  }}</span>
-                  @for (t of group.tokens; track t.prop) {
-                    <div class="tok-row">
-                      @if (t.kind === "color") {
-                        <span
-                          class="tok-swatch"
-                          [style.background]="
-                            shellOverrides()[t.prop] || 'var(' + t.prop + ')'
-                          "
-                        ></span>
-                      } @else {
-                        <span
-                          class="tok-swatch tok-swatch--radius"
-                          [style.borderRadius]="
-                            shellOverrides()[t.prop] || 'var(' + t.prop + ')'
-                          "
-                        ></span>
-                      }
-                      <div class="tok-meta">
-                        <code class="tok-name">{{ t.prop }}</code>
-                        <span class="tok-desc">{{ t.desc }}</span>
-                      </div>
-                      <input
-                        #ov
-                        type="text"
-                        class="tok-input"
-                        [value]="shellOverrides()[t.prop] || ''"
-                        [placeholder]="t.kind === 'color' ? '#7c5bbf' : '12px'"
-                        (input)="setShellOverride(t.prop, ov.value)"
-                        [attr.aria-label]="'Override ' + t.prop"
-                      />
-                    </div>
-                  }
-                </div>
-              }
+          <div class="shell-preview-modes">
+            @for (m of shellModes; track m) {
               <button
                 type="button"
-                class="tok-reset"
-                (click)="resetShellOverrides()"
-                [disabled]="!hasShellOverrides()"
+                [class.is-on]="shellMode() === m"
+                (click)="shellMode.set(m)"
               >
-                Reset overrides
+                {{ m }}
               </button>
-            </sh3-context-card>
+            }
+            <span class="spm-width">{{ shellPreviewWidth() }}px</span>
+            <button
+              type="button"
+              class="spm-code"
+              [class.is-on]="showCode()"
+              (click)="showCode.set(!showCode())"
+            >
+              code
+            </button>
           </div>
-        </div>
+          <div class="shell-preview-frame">
+            <div
+              class="shell-preview"
+              [style.width.px]="shellPreviewWidth()"
+              panelScope
+              #sph="panelScope"
+            >
+              <sh3-app-shell
+                #previewShell
+                [appearance]="shellAppearance()"
+                [headerLayout]="shellHeaderLayout()"
+                [railWidth]="shellRailWidth()"
+                [headerHeight]="shellHeaderHeight()"
+              >
+                <!-- Real components in the rails — the preview can't drift from
+                   how sh3-menu actually behaves (rounds itself in floating,
+                   reads --sh3-shell-rail-width, tooltips when collapsed). -->
+                <sh3-menu railPrimary tint="primary">
+                  <div header class="rail-brand">S3</div>
+                  @for (i of railNav; track i.id) {
+                    <button
+                      sh3-menu-item
+                      [icon]="i.icon"
+                      [label]="i.label"
+                      [active]="previewNav() === i.id"
+                      (click)="previewNav.set(i.id)"
+                    ></button>
+                  }
+                  <button
+                    footer
+                    sh3-menu-item
+                    icon="settings"
+                    label="Settings"
+                  ></button>
+                </sh3-menu>
+                <sh3-menu railSecondary level="secondary" [expanded]="true">
+                  <div header class="lib-head">Workspace</div>
+                  <button
+                    sh3-menu-item
+                    icon="grid"
+                    label="Overview"
+                    [active]="true"
+                  ></button>
+                  <button
+                    sh3-menu-item
+                    icon="contracts"
+                    label="Contracts"
+                  ></button>
+                  <button sh3-menu-item icon="music" label="Library"></button>
+                </sh3-menu>
+                <div header class="sp-header">
+                  <span>Header</span>
+                  <div class="sp-actions">
+                    <button
+                      type="button"
+                      (click)="openPreviewPanel(sph.service)"
+                    >
+                      <sh3-icon name="contracts" size="sm" />
+                      Open panel
+                    </button>
+                    <button type="button" (click)="toggleTheme()">
+                      <sh3-icon
+                        [name]="
+                          theme() === 'dark' ? 'theme-light' : 'theme-dark'
+                        "
+                        size="sm"
+                      />
+                      {{ theme() === "dark" ? "Light" : "Dark" }}
+                    </button>
+                  </div>
+                </div>
+                <div class="sp-content">
+                  <div class="sp-block"></div>
+                  <div class="sp-block"></div>
+                </div>
+
+                <!-- the preview's own panel host — panels open inside the preview -->
+                <sh3-panel-host />
+              </sh3-app-shell>
+            </div>
+
+            <!-- "code" overlay — a glass sheet over the preview: HTML usage on the
+               left, the CSS variables to override on the right. -->
+            @if (showCode()) {
+              <div class="code-overlay">
+                <div class="code-overlay-pane">
+                  <div class="code-overlay-top">
+                    <span class="code-lang">html</span>
+                    <button
+                      type="button"
+                      class="code-copy"
+                      (click)="copyShellCode()"
+                    >
+                      <sh3-icon
+                        [name]="copied() ? 'check-circle' : 'copy'"
+                        size="sm"
+                      />
+                      {{ copied() ? "Copied" : "Copy" }}
+                    </button>
+                  </div>
+                  <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
+                </div>
+                <div class="code-overlay-pane">
+                  <div class="code-overlay-top">
+                    <span class="code-lang">css · variables to override</span>
+                    <button
+                      type="button"
+                      class="code-copy"
+                      (click)="copyShellTokensCss()"
+                    >
+                      <sh3-icon
+                        [name]="cssCopied() ? 'check-circle' : 'copy'"
+                        size="sm"
+                      />
+                      {{ cssCopied() ? "Copied" : "Copy" }}
+                    </button>
+                  </div>
+                  <pre
+                    class="code-pre"
+                  ><code>{{ shellTokensCss() }}</code></pre>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="shell-demo">
+            <div class="gal-card-narrow">
+              <sh3-context-card
+                icon="grid"
+                title="App Shell Settings"
+                subtitle="Drives the preview above — resize with Desktop / Tablet / Mobile."
+              >
+                <div class="ss-group">
+                  <span class="ss-label">appearance</span>
+                  <div class="ss-seg">
+                    <button
+                      type="button"
+                      [class.is-on]="shellAppearance() === 'flat'"
+                      (click)="setAppearance('flat')"
+                    >
+                      flat
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="shellAppearance() === 'floating'"
+                      (click)="setAppearance('floating')"
+                    >
+                      floating
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ss-group">
+                  <span class="ss-label">headerLayout</span>
+                  <div class="ss-seg">
+                    <button
+                      type="button"
+                      [class.is-on]="shellHeaderLayout() === 'inset'"
+                      (click)="setHeaderLayout('inset')"
+                    >
+                      inset
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="shellHeaderLayout() === 'full'"
+                      (click)="setHeaderLayout('full')"
+                    >
+                      full
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ss-group">
+                  <span class="ss-label"
+                    >railWidth <b>{{ shellRailWidth() }}px</b></span
+                  >
+                  <input
+                    #railInput
+                    type="range"
+                    min="48"
+                    max="120"
+                    [value]="shellRailWidth()"
+                    (input)="setRailWidth(railInput.value)"
+                  />
+                </div>
+
+                <div class="ss-group">
+                  <span class="ss-label"
+                    >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
+                  >
+                  <input
+                    #headerInput
+                    type="range"
+                    min="44"
+                    max="88"
+                    [value]="shellHeaderHeight()"
+                    (input)="setHeaderHeight(headerInput.value)"
+                  />
+                </div>
+              </sh3-context-card>
+            </div>
+
+            <div class="tok-card-wrap">
+              <sh3-context-card
+                icon="grid"
+                title="Tokens"
+                subtitle="live sandbox — edit a value to override the preview; semantics preferred"
+              >
+                @for (group of shellTokens; track group.label) {
+                  <div class="tok-group">
+                    <span class="ss-label tok-group-label">{{
+                      group.label
+                    }}</span>
+                    @for (t of group.tokens; track t.prop) {
+                      <div class="tok-row">
+                        @if (t.kind === "color") {
+                          <span
+                            class="tok-swatch"
+                            [style.background]="
+                              shellOverrides()[t.prop] || 'var(' + t.prop + ')'
+                            "
+                          ></span>
+                        } @else {
+                          <span
+                            class="tok-swatch tok-swatch--radius"
+                            [style.borderRadius]="
+                              shellOverrides()[t.prop] || 'var(' + t.prop + ')'
+                            "
+                          ></span>
+                        }
+                        <div class="tok-meta">
+                          <code class="tok-name">{{ t.prop }}</code>
+                          <span class="tok-desc">{{ t.desc }}</span>
+                        </div>
+                        <input
+                          #ov
+                          type="text"
+                          class="tok-input"
+                          [value]="shellOverrides()[t.prop] || ''"
+                          [placeholder]="
+                            t.kind === 'color' ? '#7c5bbf' : '12px'
+                          "
+                          (input)="setShellOverride(t.prop, ov.value)"
+                          [attr.aria-label]="'Override ' + t.prop"
+                        />
+                      </div>
+                    }
+                  </div>
+                }
+                <button
+                  type="button"
+                  class="tok-reset"
+                  (click)="resetShellOverrides()"
+                  [disabled]="!hasShellOverrides()"
+                >
+                  Reset overrides
+                </button>
+              </sh3-context-card>
+            </div>
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-page-section ──────────────────────────────────── -->
       <section id="page-section" class="gal-sec">
-        <h2>sh3-page-section — surface × divider</h2>
-        <div class="gal-row gal-row--wide">
-          <sh3-page-section surface="transparent" title="Transparent">
-            <p class="gal-body">Flat on the page — no surface, no radius.</p>
-          </sh3-page-section>
-          <sh3-page-section surface="card" title="Card">
-            <p class="gal-body">Raised card surface + radius.</p>
-          </sh3-page-section>
-          <sh3-page-section surface="sunken" divider title="Sunken · divider">
-            <sh3-icon sectionActions name="edit" size="sm" />
-            <p class="gal-body">Deep tint + header bar.</p>
-          </sh3-page-section>
-        </div>
-        <div class="gal-cell">
-          <span class="gal-tag">stack (form fields)</span>
-          <sh3-page-section surface="card" stack title="Stacked">
-            <div class="gal-field">Field A</div>
-            <div class="gal-field">Field B</div>
-            <div class="gal-field">Field C</div>
-          </sh3-page-section>
-        </div>
+        <sh3-page-section title="sh3-page-section — surface × divider">
+          <div class="gal-row gal-row--wide">
+            <sh3-page-section surface="transparent" title="Transparent">
+              <p class="gal-body">Flat on the page — no surface, no radius.</p>
+            </sh3-page-section>
+            <sh3-page-section surface="card" title="Card">
+              <p class="gal-body">Raised card surface + radius.</p>
+            </sh3-page-section>
+            <sh3-page-section surface="sunken" divider title="Sunken · divider">
+              <sh3-icon sectionActions name="edit" size="sm" />
+              <p class="gal-body">Deep tint + header bar.</p>
+            </sh3-page-section>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">stack (form fields)</span>
+            <sh3-page-section surface="card" stack title="Stacked">
+              <div class="gal-field">Field A</div>
+              <div class="gal-field">Field B</div>
+              <div class="gal-field">Field C</div>
+            </sh3-page-section>
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-hero ──────────────────────────────────────────── -->
       <section id="hero" class="gal-sec">
-        <h2>sh3-hero — surface × accent</h2>
-        @for (surface of heroSurfaces; track surface) {
-          <div class="gal-row gal-row--wide">
-            @for (accent of heroAccents; track accent) {
-              <sh3-hero [surface]="surface" [accent]="accent" padding="md">
-                <strong>{{ surface }} · {{ accent }}</strong>
-                <p class="gal-body">Base surface with an accent overlay.</p>
+        <sh3-page-section title="sh3-hero — surface × accent">
+          @for (surface of heroSurfaces; track surface) {
+            <div class="gal-row gal-row--wide">
+              @for (accent of heroAccents; track accent) {
+                <sh3-hero [surface]="surface" [accent]="accent" padding="md">
+                  <strong>{{ surface }} · {{ accent }}</strong>
+                  <p class="gal-body">Base surface with an accent overlay.</p>
+                </sh3-hero>
+              }
+            </div>
+          }
+          <div class="gal-cell">
+            <span class="gal-tag">accentBar + primary surface</span>
+            <div class="gal-row gal-row--wide">
+              <sh3-hero surface="card" accent="subtle" accentBar padding="md">
+                <strong>accentBar</strong>
               </sh3-hero>
-            }
+              <sh3-hero surface="primary" padding="md">
+                <strong>primary fill</strong>
+              </sh3-hero>
+            </div>
           </div>
-        }
-        <div class="gal-cell">
-          <span class="gal-tag">accentBar + primary surface</span>
-          <div class="gal-row gal-row--wide">
-            <sh3-hero surface="card" accent="subtle" accentBar padding="md">
-              <strong>accentBar</strong>
-            </sh3-hero>
-            <sh3-hero surface="primary" padding="md">
-              <strong>primary fill</strong>
-            </sh3-hero>
-          </div>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── [sh3StickyColumn] directive ───────────────────────── -->
       <section id="sticky-column" class="gal-sec">
-        <h2>[sh3StickyColumn]</h2>
-        <p class="doc-p">
-          Layout directive — turns its host into a sticky side column (a
-          vertical flex stack that stays put while the main content scrolls
-          past). Put it on an <code>&lt;aside&gt;</code> to keep the semantics.
-          No template, no wrapper. Tunable via CSS vars: The anchor (<code
-            >sticky="top | center | bottom"</code
-          >) and offset (<code>[stickyOffset]</code>) are inputs; the gap and
-          the responsive un-stick stay CSS vars —
-          <code>--sh3-sticky-column-gap</code> and
-          <code>--sh3-sticky-column-position</code>, which the page flips to
-          <code>static</code> at its own stacking breakpoint.
-        </p>
+        <sh3-page-section title="[sh3StickyColumn]">
+          <p class="doc-p">
+            Layout directive — turns its host into a sticky side column (a
+            vertical flex stack that stays put while the main content scrolls
+            past). Put it on an <code>&lt;aside&gt;</code> to keep the
+            semantics. No template, no wrapper. Tunable via CSS vars: The anchor
+            (<code>sticky="top | center | bottom"</code>) and offset
+            (<code>[stickyOffset]</code>) are inputs; the gap and the responsive
+            un-stick stay CSS vars — <code>--sh3-sticky-column-gap</code> and
+            <code>--sh3-sticky-column-position</code>, which the page flips to
+            <code>static</code> at its own stacking breakpoint.
+          </p>
 
-        <div class="gal-cell">
-          <div class="gal-row">
-            <span class="gal-tag">sticky</span>
-            <div class="ss-seg">
-              @for (a of stickyDemoAnchors; track a) {
-                <button
-                  type="button"
-                  [class.is-on]="stickyDemoAnchor() === a"
-                  (click)="stickyDemoAnchor.set(a)"
-                >
-                  {{ a }}
-                </button>
-              }
-            </div>
-            <span class="gal-tag">offset {{ stickyDemoOffset() }}px</span>
-            <input
-              #off
-              type="range"
-              min="0"
-              max="48"
-              step="2"
-              [value]="stickyDemoOffset()"
-              (input)="stickyDemoOffset.set(+off.value)"
-              aria-label="Sticky offset in pixels"
-            />
-          </div>
-          <span class="gal-tag"
-            >preview — scroll inside the frame, the aside sticks</span
-          >
-          <div class="sticky-demo">
-            <div class="sticky-demo-grid">
-              <div class="sticky-demo-main">
-                @for (i of stickyDemoRows; track i) {
-                  <div class="sticky-demo-block">
-                    Main content — row {{ i }}
-                  </div>
+          <div class="gal-cell">
+            <div class="gal-row">
+              <span class="gal-tag">sticky</span>
+              <div class="ss-seg">
+                @for (a of stickyDemoAnchors; track a) {
+                  <button
+                    type="button"
+                    [class.is-on]="stickyDemoAnchor() === a"
+                    (click)="stickyDemoAnchor.set(a)"
+                  >
+                    {{ a }}
+                  </button>
                 }
               </div>
-              <aside
-                sh3StickyColumn
-                [sticky]="stickyDemoAnchor()"
-                [stickyOffset]="stickyDemoOffset()"
-                class="sticky-demo-side"
-                style="--sh3-sticky-column-gap: 8px"
-              >
-                <div class="sticky-demo-card">
-                  📌 sticks {{ stickyDemoAnchor() }}
+              <span class="gal-tag">offset {{ stickyDemoOffset() }}px</span>
+              <input
+                #off
+                type="range"
+                min="0"
+                max="48"
+                step="2"
+                [value]="stickyDemoOffset()"
+                (input)="stickyDemoOffset.set(+off.value)"
+                aria-label="Sticky offset in pixels"
+              />
+            </div>
+            <span class="gal-tag"
+              >preview — scroll inside the frame, the aside sticks</span
+            >
+            <div class="sticky-demo">
+              <div class="sticky-demo-grid">
+                <div class="sticky-demo-main">
+                  @for (i of stickyDemoRows; track i) {
+                    <div class="sticky-demo-block">
+                      Main content — row {{ i }}
+                    </div>
+                  }
                 </div>
-              </aside>
+                <aside
+                  sh3StickyColumn
+                  [sticky]="stickyDemoAnchor()"
+                  [stickyOffset]="stickyDemoOffset()"
+                  class="sticky-demo-side"
+                  style="--sh3-sticky-column-gap: 8px"
+                >
+                  <div class="sticky-demo-card">
+                    📌 sticks {{ stickyDemoAnchor() }}
+                  </div>
+                </aside>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="code-block">
-          <div class="code-top">
-            <span class="code-lang">html · scss</span>
-            <button
-              type="button"
-              class="code-copy"
-              (click)="copyDemoCode(stickyColumnCode())"
-            >
-              <sh3-icon
-                [name]="demoCopied() ? 'check-circle' : 'copy'"
-                size="sm"
-              />
-              {{ demoCopied() ? "Copied" : "Copy" }}
-            </button>
+          <div class="code-block">
+            <div class="code-top">
+              <span class="code-lang">html · scss</span>
+              <button
+                type="button"
+                class="code-copy"
+                (click)="copyDemoCode(stickyColumnCode())"
+              >
+                <sh3-icon
+                  [name]="demoCopied() ? 'check-circle' : 'copy'"
+                  size="sm"
+                />
+                {{ demoCopied() ? "Copied" : "Copy" }}
+              </button>
+            </div>
+            <pre class="code-pre"><code>{{ stickyColumnCode() }}</code></pre>
           </div>
-          <pre class="code-pre"><code>{{ stickyColumnCode() }}</code></pre>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-menu (rail primary demo) ──────────────────────── -->
       <section id="menu" class="gal-sec">
-        <h2>sh3-menu</h2>
-
-        <!-- 3 columns, full height: preview (left) · settings (centre) ·
+        <sh3-page-section title="sh3-menu">
+          <!-- 3 columns, full height: preview (left) · settings (centre) ·
              tokens (right). The Menu Settings drive the preview; "Apply to
              Library" pushes its tint + level onto the secondary Library nav;
              the "code" switch drops a glass HTML|CSS overlay over the preview. -->
-        <div class="menu-page">
-          <div class="menu-col menu-col--preview">
-            <div class="menu-preview-bar">
-              <button
-                type="button"
-                class="spm-code"
-                [class.is-on]="menuShowCode()"
-                (click)="menuShowCode.set(!menuShowCode())"
-              >
-                code
-              </button>
-            </div>
-            <div class="menu-preview">
-              <sh3-menu
-                #menuPreview
-                [collapsible]="menuCollapsible()"
-                [expanded]="menuExpanded()"
-                (expandedChange)="menuExpanded.set($event)"
-                [tint]="menuTint()"
-                [level]="menuLevel()"
-                [togglePlacement]="menuArrow()"
-              >
-                @if (menuHeader()) {
-                  <div header class="rail-brand">S3</div>
-                }
-                @for (s of menuSectionList(); track s.id; let si = $index) {
-                  @if (menuSections()) {
-                    <sh3-menu-section
-                      [label]="s.name"
-                      [color]="s.color"
-                      [collapsible]="menuSectionCollapsible()"
-                    >
+          <div class="menu-page">
+            <div class="menu-col menu-col--preview">
+              <div class="menu-preview-bar">
+                <button
+                  type="button"
+                  class="spm-code"
+                  [class.is-on]="menuShowCode()"
+                  (click)="menuShowCode.set(!menuShowCode())"
+                >
+                  code
+                </button>
+              </div>
+              <div class="menu-preview">
+                <sh3-menu
+                  #menuPreview
+                  [collapsible]="menuCollapsible()"
+                  [expanded]="menuExpanded()"
+                  (expandedChange)="menuExpanded.set($event)"
+                  [tint]="menuTint()"
+                  [level]="menuLevel()"
+                  [togglePlacement]="menuArrow()"
+                >
+                  @if (menuHeader()) {
+                    <div header class="rail-brand">S3</div>
+                  }
+                  @for (s of menuSectionList(); track s.id; let si = $index) {
+                    @if (menuSections()) {
+                      <sh3-menu-section
+                        [label]="s.name"
+                        [color]="s.color"
+                        [collapsible]="menuSectionCollapsible()"
+                      >
+                        @for (icon of iconsFor(s.icons); track $index) {
+                          <button
+                            sh3-menu-item
+                            [icon]="icon"
+                            [label]="labelFor(icon)"
+                            [active]="menuActive() === s.id + '-' + $index"
+                            [badge]="previewBadge(si, $index)"
+                            [badgeTone]="menuBadgeTone()"
+                            (click)="menuActive.set(s.id + '-' + $index)"
+                          ></button>
+                        }
+                      </sh3-menu-section>
+                    } @else {
                       @for (icon of iconsFor(s.icons); track $index) {
                         <button
                           sh3-menu-item
@@ -523,672 +546,676 @@
                           (click)="menuActive.set(s.id + '-' + $index)"
                         ></button>
                       }
-                    </sh3-menu-section>
-                  } @else {
-                    @for (icon of iconsFor(s.icons); track $index) {
-                      <button
-                        sh3-menu-item
-                        [icon]="icon"
-                        [label]="labelFor(icon)"
-                        [active]="menuActive() === s.id + '-' + $index"
-                        [badge]="previewBadge(si, $index)"
-                        [badgeTone]="menuBadgeTone()"
-                        (click)="menuActive.set(s.id + '-' + $index)"
-                      ></button>
                     }
                   }
-                }
-                @if (menuFooter()) {
-                  <button
-                    footer
-                    sh3-menu-item
-                    icon="settings"
-                    label="Settings"
-                  ></button>
-                }
-              </sh3-menu>
+                  @if (menuFooter()) {
+                    <button
+                      footer
+                      sh3-menu-item
+                      icon="settings"
+                      label="Settings"
+                    ></button>
+                  }
+                </sh3-menu>
 
-              <!-- "code" overlay — HTML usage (top) | CSS variables (bottom).
+                <!-- "code" overlay — HTML usage (top) | CSS variables (bottom).
                    Stacked, since the preview column is narrow and tall. -->
-              @if (menuShowCode()) {
-                <div class="code-overlay code-overlay--stack">
-                  <div class="code-overlay-pane">
-                    <div class="code-overlay-top">
-                      <span class="code-lang">html</span>
-                      <button
-                        type="button"
-                        class="code-copy"
-                        (click)="copyMenuCode()"
-                      >
-                        <sh3-icon
-                          [name]="menuCopied() ? 'check-circle' : 'copy'"
-                          size="sm"
-                        />
-                        {{ menuCopied() ? "Copied" : "Copy" }}
-                      </button>
+                @if (menuShowCode()) {
+                  <div class="code-overlay code-overlay--stack">
+                    <div class="code-overlay-pane">
+                      <div class="code-overlay-top">
+                        <span class="code-lang">html</span>
+                        <button
+                          type="button"
+                          class="code-copy"
+                          (click)="copyMenuCode()"
+                        >
+                          <sh3-icon
+                            [name]="menuCopied() ? 'check-circle' : 'copy'"
+                            size="sm"
+                          />
+                          {{ menuCopied() ? "Copied" : "Copy" }}
+                        </button>
+                      </div>
+                      <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
                     </div>
-                    <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
-                  </div>
-                  <div class="code-overlay-pane">
-                    <div class="code-overlay-top">
-                      <span class="code-lang">css · variables to override</span>
-                      <button
-                        type="button"
-                        class="code-copy"
-                        (click)="copyMenuTokensCss()"
-                      >
-                        <sh3-icon
-                          [name]="menuCssCopied() ? 'check-circle' : 'copy'"
-                          size="sm"
-                        />
-                        {{ menuCssCopied() ? "Copied" : "Copy" }}
-                      </button>
+                    <div class="code-overlay-pane">
+                      <div class="code-overlay-top">
+                        <span class="code-lang"
+                          >css · variables to override</span
+                        >
+                        <button
+                          type="button"
+                          class="code-copy"
+                          (click)="copyMenuTokensCss()"
+                        >
+                          <sh3-icon
+                            [name]="menuCssCopied() ? 'check-circle' : 'copy'"
+                            size="sm"
+                          />
+                          {{ menuCssCopied() ? "Copied" : "Copy" }}
+                        </button>
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ menuTokensCss() }}</code></pre>
                     </div>
-                    <pre
-                      class="code-pre"
-                    ><code>{{ menuTokensCss() }}</code></pre>
                   </div>
-                </div>
-              }
+                }
+              </div>
             </div>
-          </div>
 
-          <div class="menu-col menu-col--settings">
-            <sh3-context-card
-              icon="menu"
-              title="Menu Settings"
-              subtitle="drives the preview — apply to the Library nav"
-            >
-              <div class="ss-group">
-                <span class="ss-label">menu</span>
-                <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="menuCollapsible()"
-                    (click)="menuCollapsible.set(!menuCollapsible())"
-                  >
-                    collapsible
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuExpanded()"
-                    (click)="menuExpanded.set(!menuExpanded())"
-                  >
-                    expanded
-                  </button>
-                </div>
-              </div>
-
-              @if (menuCollapsible()) {
+            <div class="menu-col menu-col--settings">
+              <sh3-context-card
+                icon="menu"
+                title="Menu Settings"
+                subtitle="drives the preview — apply to the Library nav"
+              >
                 <div class="ss-group">
-                  <span class="ss-label"
-                    >collapse arrow → <b>{{ resolvedArrow() }}</b></span
-                  >
-                  <div class="ss-seg">
-                    @for (a of menuArrows; track a) {
-                      <button
-                        type="button"
-                        [class.is-on]="menuArrow() === a"
-                        (click)="menuArrow.set(a)"
-                      >
-                        {{ a }}
-                      </button>
-                    }
-                  </div>
-                </div>
-              }
-
-              <div class="ss-group">
-                <span class="ss-label">slots</span>
-                <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="menuHeader()"
-                    (click)="menuHeader.set(!menuHeader())"
-                  >
-                    header
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuSections()"
-                    (click)="menuSections.set(!menuSections())"
-                  >
-                    sections
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuFooter()"
-                    (click)="menuFooter.set(!menuFooter())"
-                  >
-                    footer
-                  </button>
-                </div>
-              </div>
-
-              @if (menuSections()) {
-                <div class="ss-group">
-                  <span class="ss-label">section behaviour</span>
+                  <span class="ss-label">menu</span>
                   <div class="ss-seg">
                     <button
                       type="button"
-                      [class.is-on]="!menuSectionCollapsible()"
-                      (click)="menuSectionCollapsible.set(false)"
-                    >
-                      static
-                    </button>
-                    <button
-                      type="button"
-                      [class.is-on]="menuSectionCollapsible()"
-                      (click)="menuSectionCollapsible.set(true)"
+                      [class.is-on]="menuCollapsible()"
+                      (click)="menuCollapsible.set(!menuCollapsible())"
                     >
                       collapsible
                     </button>
+                    <button
+                      type="button"
+                      [class.is-on]="menuExpanded()"
+                      (click)="menuExpanded.set(!menuExpanded())"
+                    >
+                      expanded
+                    </button>
                   </div>
                 </div>
-              }
 
-              <div class="ss-group">
-                <span class="ss-label">tint</span>
-                <div class="ss-seg">
-                  @for (t of menuTints; track t) {
-                    <button
-                      type="button"
-                      [class.is-on]="menuTint() === t"
-                      (click)="menuTint.set(t)"
+                @if (menuCollapsible()) {
+                  <div class="ss-group">
+                    <span class="ss-label"
+                      >collapse arrow → <b>{{ resolvedArrow() }}</b></span
                     >
-                      {{ t }}
-                    </button>
-                  }
-                </div>
-              </div>
+                    <div class="ss-seg">
+                      @for (a of menuArrows; track a) {
+                        <button
+                          type="button"
+                          [class.is-on]="menuArrow() === a"
+                          (click)="menuArrow.set(a)"
+                        >
+                          {{ a }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
 
-              <div class="ss-group">
-                <span class="ss-label">level</span>
-                <div class="ss-seg">
-                  @for (l of menuLevels; track l) {
-                    <button
-                      type="button"
-                      [class.is-on]="menuLevel() === l"
-                      (click)="menuLevel.set(l)"
-                    >
-                      {{ l }}
-                    </button>
-                  }
-                </div>
-              </div>
-
-              <div class="ss-group">
-                <span class="ss-label">badge <i>(first item)</i></span>
-                <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="menuBadge() === 'none'"
-                    (click)="menuBadge.set('none')"
-                  >
-                    none
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuBadge() === 'tag'"
-                    (click)="menuBadge.set('tag')"
-                  >
-                    tag
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="menuBadge() === 'count'"
-                    (click)="menuBadge.set('count')"
-                  >
-                    count
-                  </button>
-                </div>
-              </div>
-
-              @if (menuBadge() !== "none") {
                 <div class="ss-group">
-                  <span class="ss-label">badge tone</span>
+                  <span class="ss-label">slots</span>
                   <div class="ss-seg">
-                    @for (t of menuBadgeTones; track t) {
+                    <button
+                      type="button"
+                      [class.is-on]="menuHeader()"
+                      (click)="menuHeader.set(!menuHeader())"
+                    >
+                      header
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="menuSections()"
+                      (click)="menuSections.set(!menuSections())"
+                    >
+                      sections
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="menuFooter()"
+                      (click)="menuFooter.set(!menuFooter())"
+                    >
+                      footer
+                    </button>
+                  </div>
+                </div>
+
+                @if (menuSections()) {
+                  <div class="ss-group">
+                    <span class="ss-label">section behaviour</span>
+                    <div class="ss-seg">
                       <button
                         type="button"
-                        [class.is-on]="menuBadgeTone() === t"
-                        (click)="menuBadgeTone.set(t)"
+                        [class.is-on]="!menuSectionCollapsible()"
+                        (click)="menuSectionCollapsible.set(false)"
+                      >
+                        static
+                      </button>
+                      <button
+                        type="button"
+                        [class.is-on]="menuSectionCollapsible()"
+                        (click)="menuSectionCollapsible.set(true)"
+                      >
+                        collapsible
+                      </button>
+                    </div>
+                  </div>
+                }
+
+                <div class="ss-group">
+                  <span class="ss-label">tint</span>
+                  <div class="ss-seg">
+                    @for (t of menuTints; track t) {
+                      <button
+                        type="button"
+                        [class.is-on]="menuTint() === t"
+                        (click)="menuTint.set(t)"
                       >
                         {{ t }}
                       </button>
                     }
                   </div>
                 </div>
-              }
 
-              <div class="ss-group">
-                <div class="ss-head">
-                  <span class="ss-label">sections</span>
-                  <div class="ss-step">
+                <div class="ss-group">
+                  <span class="ss-label">level</span>
+                  <div class="ss-seg">
+                    @for (l of menuLevels; track l) {
+                      <button
+                        type="button"
+                        [class.is-on]="menuLevel() === l"
+                        (click)="menuLevel.set(l)"
+                      >
+                        {{ l }}
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                <div class="ss-group">
+                  <span class="ss-label">badge <i>(first item)</i></span>
+                  <div class="ss-seg">
                     <button
                       type="button"
-                      (click)="
-                        removeSection(
-                          menuSectionList()[menuSectionList().length - 1].id
-                        )
-                      "
-                      [disabled]="menuSectionList().length === 0"
-                      aria-label="Remove last section"
+                      [class.is-on]="menuBadge() === 'none'"
+                      (click)="menuBadge.set('none')"
                     >
-                      −
+                      none
                     </button>
-                    <b>{{ menuSectionList().length }}</b>
                     <button
                       type="button"
-                      (click)="addSection()"
-                      aria-label="Add section"
+                      [class.is-on]="menuBadge() === 'tag'"
+                      (click)="menuBadge.set('tag')"
                     >
-                      +
+                      tag
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="menuBadge() === 'count'"
+                      (click)="menuBadge.set('count')"
+                    >
+                      count
                     </button>
                   </div>
                 </div>
 
-                @for (s of menuSectionList(); track s.id) {
-                  <div class="sec-row">
-                    <input
-                      #colorInput
-                      type="color"
-                      class="sec-color"
-                      [value]="s.color"
-                      (input)="setSectionColor(s.id, colorInput.value)"
-                      aria-label="Section color"
-                    />
-                    <input
-                      #nameInput
-                      type="text"
-                      class="sec-name"
-                      [value]="s.name"
-                      (input)="setSectionName(s.id, nameInput.value)"
-                      aria-label="Section name"
-                    />
+                @if (menuBadge() !== "none") {
+                  <div class="ss-group">
+                    <span class="ss-label">badge tone</span>
+                    <div class="ss-seg">
+                      @for (t of menuBadgeTones; track t) {
+                        <button
+                          type="button"
+                          [class.is-on]="menuBadgeTone() === t"
+                          (click)="menuBadgeTone.set(t)"
+                        >
+                          {{ t }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <div class="ss-group">
+                  <div class="ss-head">
+                    <span class="ss-label">sections</span>
                     <div class="ss-step">
                       <button
                         type="button"
-                        (click)="stepSectionIcons(s.id, -1)"
-                        aria-label="Fewer items"
+                        (click)="
+                          removeSection(
+                            menuSectionList()[menuSectionList().length - 1].id
+                          )
+                        "
+                        [disabled]="menuSectionList().length === 0"
+                        aria-label="Remove last section"
                       >
                         −
                       </button>
-                      <b>{{ s.icons }}</b>
+                      <b>{{ menuSectionList().length }}</b>
                       <button
                         type="button"
-                        (click)="stepSectionIcons(s.id, 1)"
-                        aria-label="More items"
+                        (click)="addSection()"
+                        aria-label="Add section"
                       >
                         +
                       </button>
                     </div>
-                    <button
-                      type="button"
-                      class="sec-del"
-                      (click)="removeSection(s.id)"
-                      aria-label="Delete section"
-                    >
-                      ×
-                    </button>
                   </div>
-                }
-              </div>
 
-              <button
-                type="button"
-                class="apply-btn"
-                (click)="applyToLibrary()"
-              >
-                <sh3-icon
-                  [name]="applied() ? 'check-circle' : 'give-rights'"
-                  size="sm"
-                />
-                {{ applied() ? "Applied to Library" : "Apply to Library" }}
-              </button>
-            </sh3-context-card>
-          </div>
-
-          <div class="menu-col menu-col--tokens">
-            <sh3-context-card
-              icon="grid"
-              title="Tokens"
-              subtitle="live sandbox — edit a value to override the preview; semantics preferred"
-            >
-              @for (group of menuTokens; track group.label) {
-                <div class="tok-group">
-                  <span class="ss-label tok-group-label">{{
-                    group.label
-                  }}</span>
-                  @for (t of group.tokens; track t.prop) {
-                    <div class="tok-row">
-                      @if (t.kind === "color") {
-                        <span
-                          class="tok-swatch"
-                          [style.background]="
-                            menuOverrides()[t.prop] || 'var(' + t.prop + ')'
-                          "
-                        ></span>
-                      } @else {
-                        <span
-                          class="tok-swatch tok-swatch--radius"
-                          [style.borderRadius]="
-                            menuOverrides()[t.prop] || 'var(' + t.prop + ')'
-                          "
-                        ></span>
-                      }
-                      <div class="tok-meta">
-                        <code class="tok-name">{{ t.prop }}</code>
-                        <span class="tok-desc">{{ t.desc }}</span>
-                      </div>
+                  @for (s of menuSectionList(); track s.id) {
+                    <div class="sec-row">
                       <input
-                        #ov
-                        type="text"
-                        class="tok-input"
-                        [value]="menuOverrides()[t.prop] || ''"
-                        [placeholder]="t.kind === 'color' ? '#7c5bbf' : '12px'"
-                        (input)="setMenuOverride(t.prop, ov.value)"
-                        [attr.aria-label]="'Override ' + t.prop"
+                        #colorInput
+                        type="color"
+                        class="sec-color"
+                        [value]="s.color"
+                        (input)="setSectionColor(s.id, colorInput.value)"
+                        aria-label="Section color"
                       />
+                      <input
+                        #nameInput
+                        type="text"
+                        class="sec-name"
+                        [value]="s.name"
+                        (input)="setSectionName(s.id, nameInput.value)"
+                        aria-label="Section name"
+                      />
+                      <div class="ss-step">
+                        <button
+                          type="button"
+                          (click)="stepSectionIcons(s.id, -1)"
+                          aria-label="Fewer items"
+                        >
+                          −
+                        </button>
+                        <b>{{ s.icons }}</b>
+                        <button
+                          type="button"
+                          (click)="stepSectionIcons(s.id, 1)"
+                          aria-label="More items"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        class="sec-del"
+                        (click)="removeSection(s.id)"
+                        aria-label="Delete section"
+                      >
+                        ×
+                      </button>
                     </div>
                   }
                 </div>
-              }
-              <button
-                type="button"
-                class="tok-reset"
-                (click)="resetMenuOverrides()"
-                [disabled]="!hasMenuOverrides()"
+
+                <button
+                  type="button"
+                  class="apply-btn"
+                  (click)="applyToLibrary()"
+                >
+                  <sh3-icon
+                    [name]="applied() ? 'check-circle' : 'give-rights'"
+                    size="sm"
+                  />
+                  {{ applied() ? "Applied to Library" : "Apply to Library" }}
+                </button>
+              </sh3-context-card>
+            </div>
+
+            <div class="menu-col menu-col--tokens">
+              <sh3-context-card
+                icon="grid"
+                title="Tokens"
+                subtitle="live sandbox — edit a value to override the preview; semantics preferred"
               >
-                Reset overrides
-              </button>
-            </sh3-context-card>
+                @for (group of menuTokens; track group.label) {
+                  <div class="tok-group">
+                    <span class="ss-label tok-group-label">{{
+                      group.label
+                    }}</span>
+                    @for (t of group.tokens; track t.prop) {
+                      <div class="tok-row">
+                        @if (t.kind === "color") {
+                          <span
+                            class="tok-swatch"
+                            [style.background]="
+                              menuOverrides()[t.prop] || 'var(' + t.prop + ')'
+                            "
+                          ></span>
+                        } @else {
+                          <span
+                            class="tok-swatch tok-swatch--radius"
+                            [style.borderRadius]="
+                              menuOverrides()[t.prop] || 'var(' + t.prop + ')'
+                            "
+                          ></span>
+                        }
+                        <div class="tok-meta">
+                          <code class="tok-name">{{ t.prop }}</code>
+                          <span class="tok-desc">{{ t.desc }}</span>
+                        </div>
+                        <input
+                          #ov
+                          type="text"
+                          class="tok-input"
+                          [value]="menuOverrides()[t.prop] || ''"
+                          [placeholder]="
+                            t.kind === 'color' ? '#7c5bbf' : '12px'
+                          "
+                          (input)="setMenuOverride(t.prop, ov.value)"
+                          [attr.aria-label]="'Override ' + t.prop"
+                        />
+                      </div>
+                    }
+                  </div>
+                }
+                <button
+                  type="button"
+                  class="tok-reset"
+                  (click)="resetMenuOverrides()"
+                  [disabled]="!hasMenuOverrides()"
+                >
+                  Reset overrides
+                </button>
+              </sh3-context-card>
+            </div>
           </div>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-tab-nav ───────────────────────────────────────── -->
       <section id="tab-nav" class="gal-sec">
-        <h2>sh3-tab-nav</h2>
-        <div class="gal-stack">
-          <div class="gal-cell">
-            <span class="gal-tag">underline · compact (default)</span>
-            <sh3-tab-nav
-              [tabs]="tabItems"
-              [activeKey]="tabUnderline()"
-              (tabChange)="tabUnderline.set($event)"
-            />
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">fill (pill)</span>
-            <sh3-tab-nav
-              [tabs]="tabItems"
-              [activeKey]="tabFill()"
-              activeStyle="fill"
-              (tabChange)="tabFill.set($event)"
-            />
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">comfortable · transparent</span>
-            <sh3-tab-nav
-              [tabs]="tabItems"
-              [activeKey]="tabComfortable()"
-              size="comfortable"
-              (tabChange)="tabComfortable.set($event)"
-            />
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">vertical (sidebar) · fill</span>
-            <div class="gal-narrow">
+        <sh3-page-section title="sh3-tab-nav">
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">underline · compact (default)</span>
               <sh3-tab-nav
                 [tabs]="tabItems"
-                [activeKey]="tabVertical()"
-                direction="vertical"
-                activeStyle="fill"
-                (tabChange)="tabVertical.set($event)"
+                [activeKey]="tabUnderline()"
+                (tabChange)="tabUnderline.set($event)"
               />
             </div>
+            <div class="gal-cell">
+              <span class="gal-tag">fill (pill)</span>
+              <sh3-tab-nav
+                [tabs]="tabItems"
+                [activeKey]="tabFill()"
+                activeStyle="fill"
+                (tabChange)="tabFill.set($event)"
+              />
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">comfortable · transparent</span>
+              <sh3-tab-nav
+                [tabs]="tabItems"
+                [activeKey]="tabComfortable()"
+                size="comfortable"
+                (tabChange)="tabComfortable.set($event)"
+              />
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">vertical (sidebar) · fill</span>
+              <div class="gal-narrow">
+                <sh3-tab-nav
+                  [tabs]="tabItems"
+                  [activeKey]="tabVertical()"
+                  direction="vertical"
+                  activeStyle="fill"
+                  (tabChange)="tabVertical.set($event)"
+                />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">in a side panel (sh3-panel)</span>
+              <button type="button" class="gal-theme" (click)="openTabPanel()">
+                <sh3-icon name="contracts" size="sm" />
+                Open panel with tabs
+              </button>
+            </div>
           </div>
-          <div class="gal-cell">
-            <span class="gal-tag">in a side panel (sh3-panel)</span>
-            <button type="button" class="gal-theme" (click)="openTabPanel()">
-              <sh3-icon name="contracts" size="sm" />
-              Open panel with tabs
-            </button>
-          </div>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-button ────────────────────────────────────────── -->
       <section id="button" class="gal-sec">
-        <h2>sh3-button</h2>
-        <div class="gal-stack">
-          <div class="gal-cell">
-            <span class="gal-tag">variants (md)</span>
-            <div class="gal-row">
-              @for (v of buttonVariants; track v) {
-                <sh3-button
-                  [variant]="v"
-                  (clicked)="buttonClicks.set(buttonClicks() + 1)"
-                  >{{ v }}</sh3-button
+        <sh3-page-section title="sh3-button">
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">variants (md)</span>
+              <div class="gal-row">
+                @for (v of buttonVariants; track v) {
+                  <sh3-button
+                    [variant]="v"
+                    (clicked)="buttonClicks.set(buttonClicks() + 1)"
+                    >{{ v }}</sh3-button
+                  >
+                }
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">sizes (primary)</span>
+              <div class="gal-row" style="align-items: center">
+                @for (s of buttonSizes; track s) {
+                  <sh3-button [size]="s">size {{ s }}</sh3-button>
+                }
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">shapes (rounded default · pill)</span>
+              <div class="gal-row" style="align-items: center">
+                <sh3-button size="sm">rounded</sh3-button>
+                <sh3-button size="sm" shape="pill">pill</sh3-button>
+                <sh3-button variant="primary" size="sm" shape="pill">
+                  <sh3-icon name="plus" [size]="13" />
+                  Proposer un avenant
+                </sh3-button>
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">block (full-width)</span>
+              <div class="gal-narrow">
+                <sh3-button variant="critical" block>
+                  <sh3-icon name="bin" [size]="14" />
+                  Résilier le contrat
+                </sh3-button>
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag"
+                >icon shorthand (sized from the button) · disabled</span
+              >
+              <div class="gal-row" style="align-items: center">
+                <sh3-button variant="solid" icon="check">Confirm</sh3-button>
+                <sh3-button variant="ghost" size="sm" icon="edit"
+                  >Edit</sh3-button
                 >
-              }
+                <sh3-button variant="primary" iconTrailing="chevron-right"
+                  >Next</sh3-button
+                >
+                <sh3-button [disabled]="true">Disabled</sh3-button>
+                <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
+              </div>
             </div>
           </div>
-          <div class="gal-cell">
-            <span class="gal-tag">sizes (primary)</span>
-            <div class="gal-row" style="align-items: center">
-              @for (s of buttonSizes; track s) {
-                <sh3-button [size]="s">size {{ s }}</sh3-button>
-              }
-            </div>
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">shapes (rounded default · pill)</span>
-            <div class="gal-row" style="align-items: center">
-              <sh3-button size="sm">rounded</sh3-button>
-              <sh3-button size="sm" shape="pill">pill</sh3-button>
-              <sh3-button variant="primary" size="sm" shape="pill">
-                <sh3-icon name="plus" [size]="13" />
-                Proposer un avenant
-              </sh3-button>
-            </div>
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">block (full-width)</span>
-            <div class="gal-narrow">
-              <sh3-button variant="critical" block>
-                <sh3-icon name="bin" [size]="14" />
-                Résilier le contrat
-              </sh3-button>
-            </div>
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag"
-              >icon shorthand (sized from the button) · disabled</span
-            >
-            <div class="gal-row" style="align-items: center">
-              <sh3-button variant="solid" icon="check">Confirm</sh3-button>
-              <sh3-button variant="ghost" size="sm" icon="edit"
-                >Edit</sh3-button
-              >
-              <sh3-button variant="primary" iconTrailing="chevron-right"
-                >Next</sh3-button
-              >
-              <sh3-button [disabled]="true">Disabled</sh3-button>
-              <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
-            </div>
-          </div>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-button-icon ───────────────────────────────────── -->
       <section id="button-icon" class="gal-sec">
-        <h2>sh3-button-icon</h2>
-        <div class="gal-stack">
-          <div class="gal-cell">
-            <span class="gal-tag">tones (md square)</span>
-            <div class="gal-row" style="align-items: center">
-              <sh3-button-icon icon="edit" tooltip="Ghost (default)" />
-              <sh3-button-icon icon="check" tone="accent" tooltip="Accent" />
-              <sh3-button-icon icon="bin" tone="critical" tooltip="Critical" />
+        <sh3-page-section title="sh3-button-icon">
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">tones (md square)</span>
+              <div class="gal-row" style="align-items: center">
+                <sh3-button-icon icon="edit" tooltip="Ghost (default)" />
+                <sh3-button-icon icon="check" tone="accent" tooltip="Accent" />
+                <sh3-button-icon
+                  icon="bin"
+                  tone="critical"
+                  tooltip="Critical"
+                />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">sizes (ghost square)</span>
+              <div class="gal-row" style="align-items: center">
+                <sh3-button-icon icon="reload" size="xs" tooltip="xs · 22px" />
+                <sh3-button-icon icon="reload" size="sm" tooltip="sm · 28px" />
+                <sh3-button-icon icon="reload" size="md" tooltip="md · 32px" />
+                <sh3-button-icon icon="reload" size="lg" tooltip="lg · 38px" />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">round · accent (transport)</span>
+              <div class="gal-row" style="align-items: center">
+                <sh3-button-icon
+                  icon="play"
+                  shape="round"
+                  tone="accent"
+                  size="lg"
+                  tooltip="Play"
+                />
+                <sh3-button-icon
+                  icon="reload"
+                  shape="round"
+                  size="md"
+                  tooltip="Restart"
+                />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">toggle ([(active)]) · disabled</span>
+              <div class="gal-row" style="align-items: center">
+                <sh3-button-icon
+                  icon="eye"
+                  tooltip="Toggle mask"
+                  [(active)]="biMasked"
+                />
+                <span class="gal-tag">masked: {{ biMasked() }}</span>
+                <sh3-button-icon
+                  icon="edit"
+                  [disabled]="true"
+                  tooltip="Disabled"
+                />
+              </div>
             </div>
           </div>
-          <div class="gal-cell">
-            <span class="gal-tag">sizes (ghost square)</span>
-            <div class="gal-row" style="align-items: center">
-              <sh3-button-icon icon="reload" size="xs" tooltip="xs · 22px" />
-              <sh3-button-icon icon="reload" size="sm" tooltip="sm · 28px" />
-              <sh3-button-icon icon="reload" size="md" tooltip="md · 32px" />
-              <sh3-button-icon icon="reload" size="lg" tooltip="lg · 38px" />
-            </div>
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">round · accent (transport)</span>
-            <div class="gal-row" style="align-items: center">
-              <sh3-button-icon
-                icon="play"
-                shape="round"
-                tone="accent"
-                size="lg"
-                tooltip="Play"
-              />
-              <sh3-button-icon
-                icon="reload"
-                shape="round"
-                size="md"
-                tooltip="Restart"
-              />
-            </div>
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">toggle ([(active)]) · disabled</span>
-            <div class="gal-row" style="align-items: center">
-              <sh3-button-icon
-                icon="eye"
-                tooltip="Toggle mask"
-                [(active)]="biMasked"
-              />
-              <span class="gal-tag">masked: {{ biMasked() }}</span>
-              <sh3-button-icon
-                icon="edit"
-                [disabled]="true"
-                tooltip="Disabled"
-              />
-            </div>
-          </div>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-link ──────────────────────────────────────────── -->
       <section id="link" class="gal-sec">
-        <h2>sh3-link</h2>
-        <div class="gal-row">
-          <sh3-link icon="company" trailingIcon="chevron-right"
-            >accent + icons</sh3-link
-          >
-          <sh3-link tone="muted">muted</sh3-link>
-          <sh3-link href="https://sh3pherd.dev" tone="muted"
-            >anchor (href)</sh3-link
-          >
-          <sh3-link [disabled]="true">disabled</sh3-link>
-        </div>
+        <sh3-page-section title="sh3-link">
+          <div class="gal-row">
+            <sh3-link icon="company" trailingIcon="chevron-right"
+              >accent + icons</sh3-link
+            >
+            <sh3-link tone="muted">muted</sh3-link>
+            <sh3-link href="https://sh3pherd.dev" tone="muted"
+              >anchor (href)</sh3-link
+            >
+            <sh3-link [disabled]="true">disabled</sh3-link>
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-card ──────────────────────────────────────────── -->
       <section id="card" class="gal-sec">
-        <h2>sh3-card</h2>
-        <div class="gal-row gal-row--wide">
-          <sh3-card>card (default)</sh3-card>
-          <sh3-card surface="sunken">sunken</sh3-card>
-          <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
-        </div>
+        <sh3-page-section title="sh3-card">
+          <div class="gal-row gal-row--wide">
+            <sh3-card>card (default)</sh3-card>
+            <sh3-card surface="sunken">sunken</sh3-card>
+            <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-context-card ──────────────────────────────────── -->
       <section id="context-card" class="gal-sec">
-        <h2>sh3-context-card</h2>
-        <div class="gal-row gal-row--wide">
-          @for (tone of iconTones; track tone) {
-            <sh3-context-card
-              icon="company"
-              [iconTone]="tone"
-              title="Contexte"
-              subtitle="iconTone = {{ tone }}"
-            >
-              <div class="gal-kv">
-                <span class="gal-k">Créée le</span
-                ><span class="gal-v">14 mars 2024</span>
-              </div>
-              <div class="gal-kv">
-                <span class="gal-k">Propriétaire</span
-                ><span class="gal-v">Clément Aubry</span>
-              </div>
-              <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
-            </sh3-context-card>
-          }
-        </div>
+        <sh3-page-section title="sh3-context-card">
+          <div class="gal-row gal-row--wide">
+            @for (tone of iconTones; track tone) {
+              <sh3-context-card
+                icon="company"
+                [iconTone]="tone"
+                title="Contexte"
+                subtitle="iconTone = {{ tone }}"
+              >
+                <div class="gal-kv">
+                  <span class="gal-k">Créée le</span
+                  ><span class="gal-v">14 mars 2024</span>
+                </div>
+                <div class="gal-kv">
+                  <span class="gal-k">Propriétaire</span
+                  ><span class="gal-v">Clément Aubry</span>
+                </div>
+                <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
+              </sh3-context-card>
+            }
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-element-title ─────────────────────────────────── -->
       <section id="element-title" class="gal-sec">
-        <h2>sh3-element-title</h2>
-        <div class="gal-stack">
-          <div class="gal-cell">
-            <span class="gal-tag">eyebrow</span>
-            <sh3-element-title title="Contexte" />
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">bar</span>
-            <sh3-element-title variant="bar" title="Documents" />
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">title · iconTone matrix</span>
-            <div class="gal-row">
-              <sh3-element-title
-                variant="title"
-                icon="company"
-                iconTone="primary"
-                title="Primary"
-                subtitle="filled brand tile"
-              />
-              <sh3-element-title
-                variant="title"
-                icon="company"
-                iconTone="neutral"
-                title="Neutral"
-                subtitle="raised tile"
-              />
-              <sh3-element-title
-                variant="title"
-                icon="company"
-                iconTone="faded"
-                title="Faded"
-                subtitle="dim tile"
-              />
+        <sh3-page-section title="sh3-element-title">
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">eyebrow</span>
+              <sh3-element-title title="Contexte" />
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">bar</span>
+              <sh3-element-title variant="bar" title="Documents" />
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">title · iconTone matrix</span>
+              <div class="gal-row">
+                <sh3-element-title
+                  variant="title"
+                  icon="company"
+                  iconTone="primary"
+                  title="Primary"
+                  subtitle="filled brand tile"
+                />
+                <sh3-element-title
+                  variant="title"
+                  icon="company"
+                  iconTone="neutral"
+                  title="Neutral"
+                  subtitle="raised tile"
+                />
+                <sh3-element-title
+                  variant="title"
+                  icon="company"
+                  iconTone="faded"
+                  title="Faded"
+                  subtitle="dim tile"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── badges + icons ────────────────────────────────────── -->
       <section id="badges" class="gal-sec">
-        <h2>sh3-badge · sh3-status-badge · sh3-icon</h2>
-        <div class="gal-row">
-          @for (v of badgeVariants; track v) {
-            <sh3-badge [content]="v" [variant]="v" />
-          }
-        </div>
-        <div class="gal-row">
-          <sh3-status-badge status="active" label="Actif" />
-          <sh3-status-badge status="draft" label="Brouillon" />
-          <sh3-status-badge status="expired" label="Expiré" />
-        </div>
-        <div class="gal-row">
-          @for (n of iconNames; track n) {
-            <sh3-icon [name]="n" />
-          }
-        </div>
+        <sh3-page-section title="sh3-badge · sh3-status-badge · sh3-icon">
+          <div class="gal-row">
+            @for (v of badgeVariants; track v) {
+              <sh3-badge [content]="v" [variant]="v" />
+            }
+          </div>
+          <div class="gal-row">
+            <sh3-status-badge status="active" label="Actif" />
+            <sh3-status-badge status="draft" label="Brouillon" />
+            <sh3-status-badge status="expired" label="Expiré" />
+          </div>
+          <div class="gal-row">
+            @for (n of iconNames; track n) {
+              <sh3-icon [name]="n" />
+            }
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── sh3-avatar ────────────────────────────────────────── -->
@@ -2044,8 +2071,9 @@
 
       <!-- ── design tokens — live editor with a Palette/Fonts/Scale sub-nav ── -->
       <section id="tokens" class="gal-sec">
-        <h2>design tokens</h2>
-        <app-token-panel />
+        <sh3-page-section title="design tokens">
+          <app-token-panel />
+        </sh3-page-section>
       </section>
     </div>
   </div>
