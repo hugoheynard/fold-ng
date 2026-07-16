@@ -88,6 +88,50 @@
   transition: color var(--sh3-motion-fast);
 }
 
+/* ── Badge ──────────────────────────────────────────────────────────
+   Collapsed rail: a corner indicator on the icon — a small accent dot, or a
+   count bubble when the badge is a number (no room for a text pill on 40px).
+   The pill (`.mi-badge`) is hidden here and revealed in the expanded row. */
+.mi-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--sh3-radius-round);
+  background: var(--mi-accent);
+  pointer-events: none;
+}
+.mi-dot-count {
+  top: 2px;
+  right: 2px;
+  width: auto;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--sh3-radius-pill);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--sh3-color-on-primary);
+}
+
+.mi-badge {
+  display: none;
+}
+
+/* Expanded row: drop the corner indicator, show the pill flush to the trailing
+   edge (the label keeps its natural width; `auto` margin fills the gap). */
+:host-context(sh3-menu.expanded) .mi-dot {
+  display: none;
+}
+:host-context(sh3-menu.expanded) .mi-badge {
+  display: inline-flex;
+  margin-left: auto;
+}
+
 /* Hover tooltip — escapes the rail to the right (host has overflow: visible). */
 .mi-tip {
   position: absolute;

@@ -1,2 +1,19 @@
 <sh3-icon [name]="icon()" [size]="18" class="mi-icon" />
+
+<!-- Collapsed rail: a corner dot, or a count bubble for a number. -->
+@if (hasBadge()) {
+  <span class="mi-dot" [class.mi-dot-count]="isCount()" aria-hidden="true">{{
+    dotText()
+  }}</span>
+}
+
 <span class="mi-tip">{{ label() }}</span>
+
+<!-- Expanded rail: the full badge pill, pushed to the row's trailing edge. -->
+@if (hasBadge()) {
+  <sh3-badge
+    class="mi-badge"
+    [content]="badgeText()"
+    [variant]="badgeTone()"
+  />
+}

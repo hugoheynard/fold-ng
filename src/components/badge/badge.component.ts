@@ -1,6 +1,23 @@
 import { Component, input } from "@angular/core";
 
 /**
+ * Semantic colour variants for {@link Sh3BadgeComponent}, mapped to design
+ * tokens. Shared so other components (e.g. `sh3-menu-item`'s badge) can tint a
+ * badge from the same vocabulary.
+ * - `accent` — teal, general purpose
+ * - `info` — purple, informative / categorical
+ * - `warning` — amber, attention needed
+ * - `alert` — red, critical / error
+ * - `success` — green, positive / complete
+ */
+export type Sh3BadgeVariant =
+  | "accent"
+  | "info"
+  | "warning"
+  | "alert"
+  | "success";
+
+/**
  * Badge / tag for labels, statuses, and categories.
  *
  * @selector `sh3-badge`
@@ -42,7 +59,5 @@ export class Sh3BadgeComponent {
    * - `alert` — red, critical / error
    * - `success` — green, positive / complete
    */
-  readonly variant = input<"accent" | "info" | "warning" | "alert" | "success">(
-    "accent",
-  );
+  readonly variant = input<Sh3BadgeVariant>("accent");
 }

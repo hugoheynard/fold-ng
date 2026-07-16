@@ -16,7 +16,10 @@ export {
   Sh3AvatarListComponent,
   type Sh3AvatarListItem,
 } from "./components/avatar-list/avatar-list.component";
-export { Sh3BadgeComponent } from "./components/badge/badge.component";
+export {
+  Sh3BadgeComponent,
+  type Sh3BadgeVariant,
+} from "./components/badge/badge.component";
 export { Sh3ButtonComponent } from "./components/button/button.component";
 export type {
   Sh3ButtonVariant,

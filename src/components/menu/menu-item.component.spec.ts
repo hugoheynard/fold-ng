@@ -11,11 +11,13 @@ import { Sh3MenuItemComponent } from "./menu-item.component";
     [icon]="'home'"
     [label]="label()"
     [active]="active()"
+    [badge]="badge()"
   ></a>`,
 })
 class HostComponent {
   readonly label = signal("Home");
   readonly active = signal(false);
+  readonly badge = signal<string | number | undefined>(undefined);
 }
 
 function render() {
@@ -38,5 +40,48 @@ describe("Sh3MenuItemComponent", () => {
     fixture.componentInstance.active.set(true);
     fixture.detectChanges();
     expect(item.classList.contains("is-active")).toBe(true);
+  });
+
+  it("renders no badge by default", () => {
+    const { item } = render();
+    expect(item.querySelector(".mi-dot")).toBeNull();
+    expect(item.querySelector(".mi-badge")).toBeNull();
+  });
+
+  it("renders a plain corner dot + pill for a text badge", () => {
+    const { fixture, item } = render();
+    fixture.componentInstance.badge.set("new");
+    fixture.detectChanges();
+    const dot = item.querySelector(".mi-dot");
+    expect(dot).not.toBeNull();
+    expect(dot?.classList.contains("mi-dot-count")).toBe(false);
+    expect(dot?.textContent).toBe("");
+    expect(item.querySelector(".mi-badge")).not.toBeNull();
+    expect(item.getAttribute("aria-label")).toBe("Home, new");
+  });
+
+  it("renders a count bubble for a numeric badge, capped at 99+", () => {
+    const { fixture, item } = render();
+    fixture.componentInstance.badge.set(3);
+    fixture.detectChanges();
+    const dot = item.querySelector(".mi-dot");
+    expect(dot?.classList.contains("mi-dot-count")).toBe(true);
+    expect(dot?.textContent?.trim()).toBe("3");
+
+    fixture.componentInstance.badge.set(150);
+    fixture.detectChanges();
+    expect(item.querySelector(".mi-dot")?.textContent?.trim()).toBe("99+");
+  });
+
+  it("treats a zero count and empty string as no badge", () => {
+    const { fixture, item } = render();
+    fixture.componentInstance.badge.set(0);
+    fixture.detectChanges();
+    expect(item.querySelector(".mi-dot")).toBeNull();
+    expect(item.getAttribute("aria-label")).toBeNull();
+
+    fixture.componentInstance.badge.set("");
+    fixture.detectChanges();
+    expect(item.querySelector(".mi-dot")).toBeNull();
   });
 });
