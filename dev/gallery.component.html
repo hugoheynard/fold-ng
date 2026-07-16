@@ -903,6 +903,63 @@
         </div>
       </section>
 
+      <!-- ── sh3-toast ─────────────────────────────────────────── -->
+      <section id="toast" class="gal-sec">
+        <sh3-page-section
+          title="sh3-toast"
+          description="A transient frosted-glass snackbar: a variant status glyph, the message (projected), and an optional dismiss button. sh3-toast-container stacks them bottom-right; Sh3ToastService owns the queue + auto-expiry."
+        >
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">variants · dismissible = false</span>
+              <div class="toast-demo-col">
+                @for (v of toastVariants; track v) {
+                  <sh3-toast [variant]="v" [dismissible]="false">{{
+                    toastMessages[v]
+                  }}</sh3-toast>
+                }
+              </div>
+            </div>
+
+            <div class="gal-cell">
+              <span class="gal-tag">dismissible · the (dismiss) output</span>
+              <div class="toast-demo-col">
+                @if (demoToastOpen()) {
+                  <sh3-toast variant="info" (dismiss)="demoToastOpen.set(false)"
+                    >Press ✕ — the dismiss output fires</sh3-toast
+                  >
+                } @else {
+                  <button
+                    type="button"
+                    class="gal-theme"
+                    (click)="demoToastOpen.set(true)"
+                  >
+                    <sh3-icon name="reload" size="sm" /> Reset
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="gal-cell">
+              <span class="gal-tag"
+                >live · fire through Sh3ToastService (bottom-right)</span
+              >
+              <div class="gal-row">
+                @for (v of toastVariants; track v) {
+                  <button
+                    type="button"
+                    class="gal-theme"
+                    (click)="fireToast(v)"
+                  >
+                    <sh3-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </sh3-page-section>
+      </section>
+
       <!-- ── sh3-avatar ────────────────────────────────────────── -->
       <!-- ── avatar family — three components behind a horizontal tab-nav ── -->
       <section id="avatar" class="gal-sec">
@@ -1549,6 +1606,9 @@
       </section>
     </div>
   </div>
+
+  <!-- toast queue host (fixed, bottom-right) — driven by the live triggers -->
+  <sh3-toast-container />
 
   <!-- side-panel overlay dock (anchors to the shell content region) -->
   <sh3-panel-host />

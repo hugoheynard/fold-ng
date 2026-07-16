@@ -39,6 +39,10 @@ import {
   Sh3StatusBadgeComponent,
   Sh3TabNavComponent,
   type Sh3TabNavItem,
+  Sh3ToastComponent,
+  Sh3ToastContainerComponent,
+  Sh3ToastService,
+  type Sh3ToastVariant,
   type Sh3RadiusToken,
   type Sh3SemanticColorToken,
   sh3ColorProperty,
@@ -142,6 +146,8 @@ interface TocItem {
     Sh3MenuComponent,
     Sh3MenuItemComponent,
     Sh3MenuSectionComponent,
+    Sh3ToastComponent,
+    Sh3ToastContainerComponent,
     Sh3PanelHostComponent,
     PanelScopeDirective,
     TokenPanelComponent,
@@ -278,6 +284,41 @@ export class GalleryComponent {
 
   protected openTabPanel(): void {
     this.panelHost.open(TabPanelComponent, { side: "right" });
+  }
+
+  /* ── Toast demos: static variants + a live trigger through the service ── */
+  private readonly toastService = inject(Sh3ToastService);
+  protected readonly toastVariants = [
+    "success",
+    "info",
+    "warning",
+    "error",
+  ] as const satisfies readonly Sh3ToastVariant[];
+  protected readonly toastMessages: Record<Sh3ToastVariant, string> = {
+    success: "Track uploaded",
+    info: "Sync in progress",
+    warning: "Storage almost full",
+    error: "Upload failed",
+  };
+  /** Mirrors the component's own variant→glyph map, for the trigger buttons. */
+  protected readonly toastIcons: Record<Sh3ToastVariant, Sh3IconName> = {
+    success: "check-circle",
+    info: "info",
+    warning: "warning",
+    error: "alert",
+  };
+  /** The `dismissible` demo toast — its close button hides it (dismiss output). */
+  protected readonly demoToastOpen = signal(true);
+  private toastSeq = 0;
+
+  /** Fire a real toast through the service — stacks bottom-right, auto-expires. */
+  protected fireToast(variant: Sh3ToastVariant): void {
+    this.toastSeq += 1;
+    this.toastService.show(
+      `${this.toastMessages[variant]} (#${this.toastSeq})`,
+      variant,
+      4000,
+    );
   }
 
   /** Open a panel in the preview's own host (a scoped service instance), so it
@@ -537,6 +578,7 @@ export class GalleryComponent {
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
+    { id: "toast", label: "toast", icon: "bell" },
     { id: "avatar", label: "avatar", icon: "team" },
     { id: "form", label: "form", icon: "edit" },
     { id: "icons", label: "icons" },

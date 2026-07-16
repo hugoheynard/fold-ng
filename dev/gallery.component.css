@@ -616,6 +616,13 @@ sh3-app-shell {
 .gal-narrow {
   max-width: 220px;
 }
+/* Toast demos: stack the snackbars, left-aligned (they own their own width). */
+.toast-demo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
 .gal-tag {
   font-size: 10px;
   font-weight: 700;
