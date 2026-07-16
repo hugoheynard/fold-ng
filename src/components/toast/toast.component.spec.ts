@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { Sh3ToastComponent } from "./toast.component";
 import type { Sh3ToastVariant } from "./toast.service";
 
@@ -11,6 +11,7 @@ import type { Sh3ToastVariant } from "./toast.service";
   template: `<sh3-toast
     [variant]="variant"
     [dismissible]="dismissible"
+    [duration]="duration"
     (dismiss)="dismissed = dismissed + 1"
     >Hello</sh3-toast
   >`,
@@ -18,6 +19,7 @@ import type { Sh3ToastVariant } from "./toast.service";
 class HostComponent {
   variant: Sh3ToastVariant = "info";
   dismissible = true;
+  duration = 0;
   dismissed = 0;
 }
 
@@ -78,5 +80,26 @@ describe("Sh3ToastComponent", () => {
   it("hides the close button when not dismissible", () => {
     const { toast } = render((h) => (h.dismissible = false));
     expect(toast.querySelector(".toast-close")).toBeNull();
+  });
+
+  describe("duration", () => {
+    afterEach(() => vi.useRealTimers());
+
+    it("auto-emits dismiss after `duration` elapses", () => {
+      vi.useFakeTimers();
+      const { host } = render((h) => (h.duration = 1000));
+      expect(host.dismissed).toBe(0);
+      vi.advanceTimersByTime(999);
+      expect(host.dismissed).toBe(0);
+      vi.advanceTimersByTime(1);
+      expect(host.dismissed).toBe(1);
+    });
+
+    it("is sticky at duration = 0 (no timer)", () => {
+      vi.useFakeTimers();
+      const { host } = render((h) => (h.duration = 0));
+      vi.advanceTimersByTime(100_000);
+      expect(host.dismissed).toBe(0);
+    });
   });
 });

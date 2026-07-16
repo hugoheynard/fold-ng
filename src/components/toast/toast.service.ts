@@ -13,13 +13,16 @@ export type Sh3Toast = {
 
 /**
  * Lightweight toast/snackbar service — the source of truth for the queue that
- * `sh3-toast-container` renders. Fire-and-forget: each toast auto-dismisses
- * after `durationMs`, or on click.
+ * `sh3-toast-container` renders. Fire-and-forget: `durationMs` rides on the
+ * queued toast and the rendered `sh3-toast` owns the auto-dismiss timer (it
+ * emits back into {@link dismiss}); a click on its close button does the same.
+ * `durationMs = 0` is sticky (no auto-dismiss — the user closes it).
  *
  * ```ts
  * const toast = inject(Sh3ToastService);
  * toast.show("Track uploaded", "success");
  * toast.show("Analysis failed", "error", 5000);
+ * toast.show("Action required", "warning", 0); // sticky
  * ```
  */
 @Service()
@@ -42,8 +45,6 @@ export class Sh3ToastService {
     };
 
     this._toasts.update((list) => [...list, toast]);
-
-    setTimeout(() => this.dismiss(toast.id), durationMs);
   }
 
   dismiss(id: string): void {

@@ -1,16 +1,11 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { Sh3ToastService } from "./toast.service";
 
 describe("Sh3ToastService", () => {
   let service: Sh3ToastService;
 
   beforeEach(() => {
-    vi.useFakeTimers();
     service = new Sh3ToastService();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
   });
 
   it("queues a toast with the given message + variant", () => {
@@ -28,11 +23,11 @@ describe("Sh3ToastService", () => {
     expect(toast.durationMs).toBe(3000);
   });
 
-  it("auto-dismisses after its duration", () => {
+  it("carries a caller-set duration on the toast (the sh3-toast times it)", () => {
     service.show("Bye", "info", 1000);
-    expect(service.toasts().length).toBe(1);
-    vi.advanceTimersByTime(1000);
-    expect(service.toasts().length).toBe(0);
+    expect(service.toasts()[0].durationMs).toBe(1000);
+    // The service itself no longer removes the toast on a timer — the rendered
+    // sh3-toast owns expiry and emits back into dismiss().
   });
 
   it("dismiss removes only the targeted toast", () => {

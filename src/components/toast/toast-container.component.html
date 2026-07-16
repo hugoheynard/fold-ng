@@ -1,6 +1,7 @@
 @for (toast of toastService.toasts(); track toast.id) {
   <sh3-toast
     [variant]="toast.variant"
+    [duration]="toast.durationMs"
     (dismiss)="toastService.dismiss(toast.id)"
     >{{ toast.message }}</sh3-toast
   >
