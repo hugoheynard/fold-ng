@@ -39,7 +39,7 @@ describe("Sh3StickyColumnDirective", () => {
 
   it("defaults to a top anchor at the header-clearance offset", () => {
     const { aside } = render();
-    expect(aside.style.top).toContain("--sh3-sticky-column-top");
+    expect(aside.style.top).toContain("--sh3-sticky-column-offset");
     expect(aside.style.bottom).toBe("auto");
     expect(aside.style.transform).toBe("none");
     expect(aside.style.alignSelf).toBe("start");
@@ -50,7 +50,7 @@ describe("Sh3StickyColumnDirective", () => {
     fixture.componentInstance.anchor.set("bottom");
     fixture.detectChanges();
     expect(aside.style.top).toBe("auto");
-    expect(aside.style.bottom).toContain("--sh3-sticky-column-top");
+    expect(aside.style.bottom).toContain("--sh3-sticky-column-offset");
     expect(aside.style.transform).toBe("none");
     // in-flow position must match the anchor so a short column starts pinned
     expect(aside.style.alignSelf).toBe("end");

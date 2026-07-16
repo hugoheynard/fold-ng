@@ -18,8 +18,8 @@ export type Sh3StickyColumnAnchor = "top" | "center" | "bottom";
  * - `sticky` (default `top`) — pin to `top`, `center`, or `bottom` of the
  *   scroll viewport.
  * - `stickyOffset` — distance from the pinned edge (a number = px, or any CSS
- *   length). For `top`, defaults to `var(--sh3-sticky-column-top, 84px)` (the
- *   header clearance); for `center` it nudges off dead-centre.
+ *   length). Defaults to `var(--sh3-sticky-column-offset, 84px)` (the header
+ *   clearance); for `center` it nudges off dead-centre.
  * - `--sh3-sticky-column-gap` (default `14px`) — the gap between stacked blocks.
  * - `--sh3-sticky-column-position` (default `sticky`) — set to `static` in the
  *   page's own responsive breakpoint to un-stick when the layout stacks.
@@ -62,7 +62,7 @@ export class Sh3StickyColumnDirective {
   private readonly offsetCss = computed(() => {
     const o = this.stickyOffset();
     if (o === undefined) {
-      return "var(--sh3-sticky-column-top, 84px)";
+      return "var(--sh3-sticky-column-offset, 84px)";
     }
     return typeof o === "number" ? `${o}px` : o;
   });
