@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
-import type { Sh3ToastVariant } from "./toast.service";
+import type { Sh3ToastVariant } from "./toast.types";
 
 /** Variant → leading status icon. */
 const VARIANT_ICON: Record<Sh3ToastVariant, Sh3IconName> = {

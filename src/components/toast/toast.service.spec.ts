@@ -1,7 +1,8 @@
 import type { Provider } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
-import { provideSh3Toasts, Sh3ToastService } from "./toast.service";
+import { provideSh3Toasts } from "./toast.config";
+import { Sh3ToastService } from "./toast.service";
 
 function service(providers: Provider[] = []): Sh3ToastService {
   TestBed.resetTestingModule();

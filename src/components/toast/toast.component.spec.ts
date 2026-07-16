@@ -3,7 +3,7 @@ import { TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { Sh3ToastComponent } from "./toast.component";
-import type { Sh3ToastVariant } from "./toast.service";
+import type { Sh3ToastVariant } from "./toast.types";
 
 @Component({
   standalone: true,

@@ -65,16 +65,13 @@ export { Sh3TabNavComponent } from "./components/tab-nav/tab-nav.component";
 export type { Sh3TabNavItem } from "./components/tab-nav/tab-nav.component";
 export { Sh3ToastComponent } from "./components/toast/toast.component";
 export { Sh3ToastContainerComponent } from "./components/toast/toast-container.component";
+export { Sh3ToastService } from "./components/toast/toast.service";
 export {
-  Sh3ToastService,
   provideSh3Toasts,
   SH3_TOAST_CONFIG,
-} from "./components/toast/toast.service";
-export type {
-  Sh3Toast,
-  Sh3ToastVariant,
-  Sh3ToastConfig,
-} from "./components/toast/toast.service";
+} from "./components/toast/toast.config";
+export type { Sh3ToastConfig } from "./components/toast/toast.config";
+export type { Sh3Toast, Sh3ToastVariant } from "./components/toast/toast.types";
 
 // ── Panels (overlay system) ──────────────────────────────────
 export { Sh3PanelHostComponent } from "./panel/panel-host.component";
