@@ -105,6 +105,13 @@ Add roles only once we're certain of their usage.
         queued toast's `durationMs`; `ToastService.show(msg, variant, ms)` is
         unchanged, so the ~51 app sites keep working. Makes a standalone
         `sh3-toast` self-sufficient (no service needed to auto-close).
+  - [x] **Duration policy via `provideSh3Toasts` (per-variant + generic)** — the
+        service resolves a no-arg `show()`'s duration most-specific first:
+        `durationByVariant[variant]` → `defaultDurationMs` → a baked
+        severity-scaled default (success 3s · info 4s · warning 6s · **error 0 =
+        sticky**, so errors aren't missed). An explicit `show()` arg still wins.
+        Config lives on the **service** (not the container — it stamps
+        `durationMs` at creation), via the package's `provideSh3X` idiom.
 - [x] **Menu** (`sh3-menu` + `menu-item` / `menu-section` / `menu-separator`) —
       the collapsible nav rail: coloured sections, `tint="follow"` (items take
       their section colour), depth `level` (primary/secondary/tertiary tints),

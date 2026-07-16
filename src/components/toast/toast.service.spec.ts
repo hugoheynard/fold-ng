@@ -1,46 +1,84 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { Sh3ToastService } from "./toast.service";
+import type { Provider } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
+import { describe, expect, it } from "vitest";
+import { provideSh3Toasts, Sh3ToastService } from "./toast.service";
+
+function service(providers: Provider[] = []): Sh3ToastService {
+  TestBed.resetTestingModule();
+  TestBed.configureTestingModule({ providers });
+  return TestBed.inject(Sh3ToastService);
+}
 
 describe("Sh3ToastService", () => {
-  let service: Sh3ToastService;
-
-  beforeEach(() => {
-    service = new Sh3ToastService();
-  });
-
   it("queues a toast with the given message + variant", () => {
-    service.show("Saved", "success");
-    const [toast] = service.toasts();
+    const svc = service();
+    svc.show("Saved", "success");
+    const [toast] = svc.toasts();
     expect(toast.message).toBe("Saved");
     expect(toast.variant).toBe("success");
-    expect(service.toasts().length).toBe(1);
+    expect(svc.toasts().length).toBe(1);
   });
 
-  it("defaults to the info variant and a 3s duration", () => {
-    service.show("Heads up");
-    const [toast] = service.toasts();
-    expect(toast.variant).toBe("info");
-    expect(toast.durationMs).toBe(3000);
+  it("defaults to the info variant", () => {
+    const svc = service();
+    svc.show("Heads up");
+    expect(svc.toasts()[0].variant).toBe("info");
   });
 
-  it("carries a caller-set duration on the toast (the sh3-toast times it)", () => {
-    service.show("Bye", "info", 1000);
-    expect(service.toasts()[0].durationMs).toBe(1000);
-    // The service itself no longer removes the toast on a timer — the rendered
-    // sh3-toast owns expiry and emits back into dismiss().
+  it("stamps the baked severity-scaled duration (error is sticky)", () => {
+    const svc = service();
+    svc.show("a", "success");
+    svc.show("b", "info");
+    svc.show("c", "warning");
+    svc.show("d", "error");
+    expect(svc.toasts().map((t) => t.durationMs)).toEqual([
+      3000, 4000, 6000, 0,
+    ]);
+  });
+
+  it("an explicit duration argument wins (including 0 = sticky)", () => {
+    const svc = service();
+    svc.show("x", "info", 99);
+    svc.show("y", "success", 0);
+    expect(svc.toasts().map((t) => t.durationMs)).toEqual([99, 0]);
+  });
+
+  it("resolves durationByVariant, then defaultDurationMs, then baked", () => {
+    const svc = service([
+      provideSh3Toasts({
+        defaultDurationMs: 1000,
+        durationByVariant: { error: 500 },
+      }),
+    ]);
+    svc.show("e", "error"); // per-variant → 500
+    svc.show("s", "success"); // no per-variant → defaultDurationMs 1000
+    expect(svc.toasts().map((t) => t.durationMs)).toEqual([500, 1000]);
+  });
+
+  it("keeps a configured 0 as sticky (not overridden by the default)", () => {
+    const svc = service([
+      provideSh3Toasts({
+        defaultDurationMs: 5000,
+        durationByVariant: { error: 0 },
+      }),
+    ]);
+    svc.show("e", "error");
+    expect(svc.toasts()[0].durationMs).toBe(0);
   });
 
   it("dismiss removes only the targeted toast", () => {
-    service.show("A", "info", 9999);
-    service.show("B", "info", 9999);
-    const [first] = service.toasts();
-    service.dismiss(first.id);
-    expect(service.toasts().map((t) => t.message)).toEqual(["B"]);
+    const svc = service();
+    svc.show("A", "info", 9999);
+    svc.show("B", "info", 9999);
+    const [first] = svc.toasts();
+    svc.dismiss(first.id);
+    expect(svc.toasts().map((t) => t.message)).toEqual(["B"]);
   });
 
   it("keeps insertion order, oldest first", () => {
-    service.show("one", "info", 9999);
-    service.show("two", "info", 9999);
-    expect(service.toasts().map((t) => t.message)).toEqual(["one", "two"]);
+    const svc = service();
+    svc.show("one", "info", 9999);
+    svc.show("two", "info", 9999);
+    expect(svc.toasts().map((t) => t.message)).toEqual(["one", "two"]);
   });
 });
