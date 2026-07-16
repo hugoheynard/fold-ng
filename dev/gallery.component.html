@@ -33,7 +33,7 @@
             [label]="item.label"
             [active]="activeSection() === item.id"
             [badge]="item.badge"
-            [badgeTone]="item.badgeTone ?? 'accent'"
+            [badgeTone]="item.badgeTone ?? 'follow'"
             (click)="scrollTo(item.id)"
           ></button>
         }

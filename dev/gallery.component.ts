@@ -18,7 +18,6 @@ import {
   type Sh3AvatarRing,
   type Sh3AvatarRingStyle,
   Sh3BadgeComponent,
-  type Sh3BadgeVariant,
   Sh3ButtonComponent,
   type Sh3ButtonVariant,
   type Sh3ButtonSize,
@@ -34,6 +33,7 @@ import {
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
+  type Sh3MenuItemBadgeTone,
   Sh3MenuSectionComponent,
   type Sh3MenuLevel,
   type Sh3MenuTint,
@@ -122,8 +122,8 @@ interface TocItem {
   readonly icon?: Sh3IconName;
   /** Optional nav badge — a tag (`"new"`) or a count (`3`). */
   readonly badge?: string | number;
-  /** Badge colour — defaults to `accent`. */
-  readonly badgeTone?: Sh3BadgeVariant;
+  /** Badge colour — defaults to `follow` (tracks the item's tint). */
+  readonly badgeTone?: Sh3MenuItemBadgeTone;
 }
 
 /** A colour-coded block of the Library nav — one `sh3-menu-section`. */
@@ -422,8 +422,9 @@ export class GalleryComponent {
   protected readonly menuFooter = signal(true);
   /** Demo badge on the preview's first item: none, a `"new"` tag, or a count. */
   protected readonly menuBadge = signal<"none" | "tag" | "count">("none");
-  protected readonly menuBadgeTone = signal<Sh3BadgeVariant>("info");
-  protected readonly menuBadgeTones: readonly Sh3BadgeVariant[] = [
+  protected readonly menuBadgeTone = signal<Sh3MenuItemBadgeTone>("follow");
+  protected readonly menuBadgeTones: readonly Sh3MenuItemBadgeTone[] = [
+    "follow",
     "accent",
     "info",
     "warning",
@@ -458,7 +459,7 @@ export class GalleryComponent {
     const bind =
       typeof value === "number" ? ` [badge]="${value}"` : ` badge="${value}"`;
     const tone = this.menuBadgeTone();
-    return `${bind}${tone === "accent" ? "" : ` badgeTone="${tone}"`}`;
+    return `${bind}${tone === "follow" ? "" : ` badgeTone="${tone}"`}`;
   }
   /** How items tint on hover / when active. */
   protected readonly menuTint = signal<Sh3MenuTint>("follow");
