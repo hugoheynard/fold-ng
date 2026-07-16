@@ -24,14 +24,18 @@
     [tint]="libTint()"
   >
     <div header class="lib-head">Library</div>
-    @for (item of toc; track item.id) {
-      <button
-        sh3-menu-item
-        [icon]="item.icon ?? 'grid'"
-        [label]="item.label"
-        [active]="activeSection() === item.id"
-        (click)="scrollTo(item.id)"
-      ></button>
+    @for (group of navGroups; track group.label) {
+      <sh3-menu-section [label]="group.label" [color]="group.color">
+        @for (item of group.items; track item.id) {
+          <button
+            sh3-menu-item
+            [icon]="item.icon ?? 'grid'"
+            [label]="item.label"
+            [active]="activeSection() === item.id"
+            (click)="scrollTo(item.id)"
+          ></button>
+        }
+      </sh3-menu-section>
     }
   </sh3-menu>
 
@@ -323,6 +327,57 @@
                 Reset overrides
               </button>
             </sh3-context-card>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── sh3-page-section ──────────────────────────────────── -->
+      <section id="page-section" class="gal-sec">
+        <h2>sh3-page-section — surface × divider</h2>
+        <div class="gal-row gal-row--wide">
+          <sh3-page-section surface="transparent" title="Transparent">
+            <p class="gal-body">Flat on the page — no surface, no radius.</p>
+          </sh3-page-section>
+          <sh3-page-section surface="card" title="Card">
+            <p class="gal-body">Raised card surface + radius.</p>
+          </sh3-page-section>
+          <sh3-page-section surface="sunken" divider title="Sunken · divider">
+            <sh3-icon sectionActions name="edit" size="sm" />
+            <p class="gal-body">Deep tint + header bar.</p>
+          </sh3-page-section>
+        </div>
+        <div class="gal-cell">
+          <span class="gal-tag">stack (form fields)</span>
+          <sh3-page-section surface="card" stack title="Stacked">
+            <div class="gal-field">Field A</div>
+            <div class="gal-field">Field B</div>
+            <div class="gal-field">Field C</div>
+          </sh3-page-section>
+        </div>
+      </section>
+
+      <!-- ── sh3-hero ──────────────────────────────────────────── -->
+      <section id="hero" class="gal-sec">
+        <h2>sh3-hero — surface × accent</h2>
+        @for (surface of heroSurfaces; track surface) {
+          <div class="gal-row gal-row--wide">
+            @for (accent of heroAccents; track accent) {
+              <sh3-hero [surface]="surface" [accent]="accent" padding="md">
+                <strong>{{ surface }} · {{ accent }}</strong>
+                <p class="gal-body">Base surface with an accent overlay.</p>
+              </sh3-hero>
+            }
+          </div>
+        }
+        <div class="gal-cell">
+          <span class="gal-tag">accentBar + primary surface</span>
+          <div class="gal-row gal-row--wide">
+            <sh3-hero surface="card" accent="subtle" accentBar padding="md">
+              <strong>accentBar</strong>
+            </sh3-hero>
+            <sh3-hero surface="primary" padding="md">
+              <strong>primary fill</strong>
+            </sh3-hero>
           </div>
         </div>
       </section>
@@ -688,145 +743,55 @@
         </div>
       </section>
 
-      <!-- ── sh3-element-title ─────────────────────────────────── -->
-      <section id="element-title" class="gal-sec">
-        <h2>sh3-element-title</h2>
+      <!-- ── sh3-tab-nav ───────────────────────────────────────── -->
+      <section id="tab-nav" class="gal-sec">
+        <h2>sh3-tab-nav</h2>
         <div class="gal-stack">
           <div class="gal-cell">
-            <span class="gal-tag">eyebrow</span>
-            <sh3-element-title title="Contexte" />
+            <span class="gal-tag">underline · compact (default)</span>
+            <sh3-tab-nav
+              [tabs]="tabItems"
+              [activeKey]="tabUnderline()"
+              (tabChange)="tabUnderline.set($event)"
+            />
           </div>
           <div class="gal-cell">
-            <span class="gal-tag">bar</span>
-            <sh3-element-title variant="bar" title="Documents" />
+            <span class="gal-tag">fill (pill)</span>
+            <sh3-tab-nav
+              [tabs]="tabItems"
+              [activeKey]="tabFill()"
+              activeStyle="fill"
+              (tabChange)="tabFill.set($event)"
+            />
           </div>
           <div class="gal-cell">
-            <span class="gal-tag">title · iconTone matrix</span>
-            <div class="gal-row">
-              <sh3-element-title
-                variant="title"
-                icon="company"
-                iconTone="primary"
-                title="Primary"
-                subtitle="filled brand tile"
-              />
-              <sh3-element-title
-                variant="title"
-                icon="company"
-                iconTone="neutral"
-                title="Neutral"
-                subtitle="raised tile"
-              />
-              <sh3-element-title
-                variant="title"
-                icon="company"
-                iconTone="faded"
-                title="Faded"
-                subtitle="dim tile"
+            <span class="gal-tag">comfortable · transparent</span>
+            <sh3-tab-nav
+              [tabs]="tabItems"
+              [activeKey]="tabComfortable()"
+              size="comfortable"
+              (tabChange)="tabComfortable.set($event)"
+            />
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">vertical (sidebar) · fill</span>
+            <div class="gal-narrow">
+              <sh3-tab-nav
+                [tabs]="tabItems"
+                [activeKey]="tabVertical()"
+                direction="vertical"
+                activeStyle="fill"
+                (tabChange)="tabVertical.set($event)"
               />
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- ── sh3-context-card ──────────────────────────────────── -->
-      <section id="context-card" class="gal-sec">
-        <h2>sh3-context-card</h2>
-        <div class="gal-row gal-row--wide">
-          @for (tone of iconTones; track tone) {
-            <sh3-context-card
-              icon="company"
-              [iconTone]="tone"
-              title="Contexte"
-              subtitle="iconTone = {{ tone }}"
-            >
-              <div class="gal-kv">
-                <span class="gal-k">Créée le</span
-                ><span class="gal-v">14 mars 2024</span>
-              </div>
-              <div class="gal-kv">
-                <span class="gal-k">Propriétaire</span
-                ><span class="gal-v">Clément Aubry</span>
-              </div>
-              <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
-            </sh3-context-card>
-          }
-        </div>
-      </section>
-
-      <!-- ── sh3-page-section ──────────────────────────────────── -->
-      <section id="page-section" class="gal-sec">
-        <h2>sh3-page-section — surface × divider</h2>
-        <div class="gal-row gal-row--wide">
-          <sh3-page-section surface="transparent" title="Transparent">
-            <p class="gal-body">Flat on the page — no surface, no radius.</p>
-          </sh3-page-section>
-          <sh3-page-section surface="card" title="Card">
-            <p class="gal-body">Raised card surface + radius.</p>
-          </sh3-page-section>
-          <sh3-page-section surface="sunken" divider title="Sunken · divider">
-            <sh3-icon sectionActions name="edit" size="sm" />
-            <p class="gal-body">Deep tint + header bar.</p>
-          </sh3-page-section>
-        </div>
-        <div class="gal-cell">
-          <span class="gal-tag">stack (form fields)</span>
-          <sh3-page-section surface="card" stack title="Stacked">
-            <div class="gal-field">Field A</div>
-            <div class="gal-field">Field B</div>
-            <div class="gal-field">Field C</div>
-          </sh3-page-section>
-        </div>
-      </section>
-
-      <!-- ── sh3-hero ──────────────────────────────────────────── -->
-      <section id="hero" class="gal-sec">
-        <h2>sh3-hero — surface × accent</h2>
-        @for (surface of heroSurfaces; track surface) {
-          <div class="gal-row gal-row--wide">
-            @for (accent of heroAccents; track accent) {
-              <sh3-hero [surface]="surface" [accent]="accent" padding="md">
-                <strong>{{ surface }} · {{ accent }}</strong>
-                <p class="gal-body">Base surface with an accent overlay.</p>
-              </sh3-hero>
-            }
+          <div class="gal-cell">
+            <span class="gal-tag">in a side panel (sh3-panel)</span>
+            <button type="button" class="gal-theme" (click)="openTabPanel()">
+              <sh3-icon name="contracts" size="sm" />
+              Open panel with tabs
+            </button>
           </div>
-        }
-        <div class="gal-cell">
-          <span class="gal-tag">accentBar + primary surface</span>
-          <div class="gal-row gal-row--wide">
-            <sh3-hero surface="card" accent="subtle" accentBar padding="md">
-              <strong>accentBar</strong>
-            </sh3-hero>
-            <sh3-hero surface="primary" padding="md">
-              <strong>primary fill</strong>
-            </sh3-hero>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── sh3-card ──────────────────────────────────────────── -->
-      <section id="card" class="gal-sec">
-        <h2>sh3-card</h2>
-        <div class="gal-row gal-row--wide">
-          <sh3-card>card (default)</sh3-card>
-          <sh3-card surface="sunken">sunken</sh3-card>
-          <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
-        </div>
-      </section>
-
-      <!-- ── sh3-link ──────────────────────────────────────────── -->
-      <section id="link" class="gal-sec">
-        <h2>sh3-link</h2>
-        <div class="gal-row">
-          <sh3-link icon="company" trailingIcon="chevron-right"
-            >accent + icons</sh3-link
-          >
-          <sh3-link tone="muted">muted</sh3-link>
-          <sh3-link href="https://sh3pherd.dev" tone="muted"
-            >anchor (href)</sh3-link
-          >
-          <sh3-link [disabled]="true">disabled</sh3-link>
         </div>
       </section>
 
@@ -838,7 +803,11 @@
             <span class="gal-tag">variants (md)</span>
             <div class="gal-row">
               @for (v of buttonVariants; track v) {
-                <sh3-button [variant]="v" (clicked)="buttonClicks.set(buttonClicks() + 1)">{{ v }}</sh3-button>
+                <sh3-button
+                  [variant]="v"
+                  (clicked)="buttonClicks.set(buttonClicks() + 1)"
+                  >{{ v }}</sh3-button
+                >
               }
             </div>
           </div>
@@ -892,69 +861,127 @@
           <div class="gal-cell">
             <span class="gal-tag">round · accent (transport)</span>
             <div class="gal-row" style="align-items: center">
-              <sh3-button-icon icon="play" shape="round" tone="accent" size="lg" tooltip="Play" />
-              <sh3-button-icon icon="reload" shape="round" size="md" tooltip="Restart" />
+              <sh3-button-icon
+                icon="play"
+                shape="round"
+                tone="accent"
+                size="lg"
+                tooltip="Play"
+              />
+              <sh3-button-icon
+                icon="reload"
+                shape="round"
+                size="md"
+                tooltip="Restart"
+              />
             </div>
           </div>
           <div class="gal-cell">
             <span class="gal-tag">toggle ([(active)]) · disabled</span>
             <div class="gal-row" style="align-items: center">
-              <sh3-button-icon icon="eye" tooltip="Toggle mask" [(active)]="biMasked" />
+              <sh3-button-icon
+                icon="eye"
+                tooltip="Toggle mask"
+                [(active)]="biMasked"
+              />
               <span class="gal-tag">masked: {{ biMasked() }}</span>
-              <sh3-button-icon icon="edit" [disabled]="true" tooltip="Disabled" />
+              <sh3-button-icon
+                icon="edit"
+                [disabled]="true"
+                tooltip="Disabled"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── sh3-tab-nav ───────────────────────────────────────── -->
-      <section id="tab-nav" class="gal-sec">
-        <h2>sh3-tab-nav</h2>
+      <!-- ── sh3-link ──────────────────────────────────────────── -->
+      <section id="link" class="gal-sec">
+        <h2>sh3-link</h2>
+        <div class="gal-row">
+          <sh3-link icon="company" trailingIcon="chevron-right"
+            >accent + icons</sh3-link
+          >
+          <sh3-link tone="muted">muted</sh3-link>
+          <sh3-link href="https://sh3pherd.dev" tone="muted"
+            >anchor (href)</sh3-link
+          >
+          <sh3-link [disabled]="true">disabled</sh3-link>
+        </div>
+      </section>
+
+      <!-- ── sh3-card ──────────────────────────────────────────── -->
+      <section id="card" class="gal-sec">
+        <h2>sh3-card</h2>
+        <div class="gal-row gal-row--wide">
+          <sh3-card>card (default)</sh3-card>
+          <sh3-card surface="sunken">sunken</sh3-card>
+          <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
+        </div>
+      </section>
+
+      <!-- ── sh3-context-card ──────────────────────────────────── -->
+      <section id="context-card" class="gal-sec">
+        <h2>sh3-context-card</h2>
+        <div class="gal-row gal-row--wide">
+          @for (tone of iconTones; track tone) {
+            <sh3-context-card
+              icon="company"
+              [iconTone]="tone"
+              title="Contexte"
+              subtitle="iconTone = {{ tone }}"
+            >
+              <div class="gal-kv">
+                <span class="gal-k">Créée le</span
+                ><span class="gal-v">14 mars 2024</span>
+              </div>
+              <div class="gal-kv">
+                <span class="gal-k">Propriétaire</span
+                ><span class="gal-v">Clément Aubry</span>
+              </div>
+              <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
+            </sh3-context-card>
+          }
+        </div>
+      </section>
+
+      <!-- ── sh3-element-title ─────────────────────────────────── -->
+      <section id="element-title" class="gal-sec">
+        <h2>sh3-element-title</h2>
         <div class="gal-stack">
           <div class="gal-cell">
-            <span class="gal-tag">underline · compact (default)</span>
-            <sh3-tab-nav
-              [tabs]="tabItems"
-              [activeKey]="tabUnderline()"
-              (tabChange)="tabUnderline.set($event)"
-            />
+            <span class="gal-tag">eyebrow</span>
+            <sh3-element-title title="Contexte" />
           </div>
           <div class="gal-cell">
-            <span class="gal-tag">fill (pill)</span>
-            <sh3-tab-nav
-              [tabs]="tabItems"
-              [activeKey]="tabFill()"
-              activeStyle="fill"
-              (tabChange)="tabFill.set($event)"
-            />
+            <span class="gal-tag">bar</span>
+            <sh3-element-title variant="bar" title="Documents" />
           </div>
           <div class="gal-cell">
-            <span class="gal-tag">comfortable · transparent</span>
-            <sh3-tab-nav
-              [tabs]="tabItems"
-              [activeKey]="tabComfortable()"
-              size="comfortable"
-              (tabChange)="tabComfortable.set($event)"
-            />
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">vertical (sidebar) · fill</span>
-            <div class="gal-narrow">
-              <sh3-tab-nav
-                [tabs]="tabItems"
-                [activeKey]="tabVertical()"
-                direction="vertical"
-                activeStyle="fill"
-                (tabChange)="tabVertical.set($event)"
+            <span class="gal-tag">title · iconTone matrix</span>
+            <div class="gal-row">
+              <sh3-element-title
+                variant="title"
+                icon="company"
+                iconTone="primary"
+                title="Primary"
+                subtitle="filled brand tile"
+              />
+              <sh3-element-title
+                variant="title"
+                icon="company"
+                iconTone="neutral"
+                title="Neutral"
+                subtitle="raised tile"
+              />
+              <sh3-element-title
+                variant="title"
+                icon="company"
+                iconTone="faded"
+                title="Faded"
+                subtitle="dim tile"
               />
             </div>
-          </div>
-          <div class="gal-cell">
-            <span class="gal-tag">in a side panel (sh3-panel)</span>
-            <button type="button" class="gal-theme" (click)="openTabPanel()">
-              <sh3-icon name="contracts" size="sm" />
-              Open panel with tabs
-            </button>
           </div>
         </div>
       </section>
@@ -977,218 +1004,6 @@
             <sh3-icon [name]="n" />
           }
         </div>
-      </section>
-
-      <!-- ── sh3-toast — three sub-pages behind a vertical tab-nav ────── -->
-      <section id="toast" class="gal-sec">
-        <sh3-page-section
-          title="sh3-toast"
-          description="A transient frosted-glass snackbar: a variant status glyph, the message (projected), and an optional dismiss button. sh3-toast-container stacks them bottom-right; Sh3ToastService owns the queue."
-        >
-          <div class="form-layout">
-            <aside class="form-nav">
-              <sh3-tab-nav
-                direction="vertical"
-                activeStyle="fill"
-                [tabs]="toastTabs"
-                [activeKey]="toastTab()"
-                (tabChange)="toastTab.set($event)"
-              />
-            </aside>
-
-            <div class="form-body">
-              @switch (toastTab()) {
-                @case ("variants") {
-                  <sh3-page-section
-                    surface="card"
-                    stack
-                    title="Variants"
-                    description="Four tones — the glyph + left accent take the variant's -text tint. info uses the brand primary tint; error renders as an assertive live-region (role=alert)."
-                  >
-                    <div class="toast-demo-col">
-                      @for (v of toastVariants; track v) {
-                        <sh3-toast [variant]="v" [dismissible]="false">{{
-                          toastMessages[v]
-                        }}</sh3-toast>
-                      }
-                    </div>
-                  </sh3-page-section>
-                }
-
-                @case ("behavior") {
-                  <sh3-page-section
-                    surface="card"
-                    stack
-                    title="Dismiss"
-                    description="An explicit close button emits (dismiss) — the whole surface is not click-to-dismiss. dismissible=false hides the button."
-                  >
-                    <div class="toast-demo-col">
-                      @if (demoToastOpen()) {
-                        <sh3-toast
-                          variant="info"
-                          (dismiss)="demoToastOpen.set(false)"
-                          >Press ✕ — the dismiss output fires</sh3-toast
-                        >
-                      } @else {
-                        <button
-                          type="button"
-                          class="gal-theme"
-                          (click)="demoToastOpen.set(true)"
-                        >
-                          <sh3-icon name="reload" size="sm" /> Reset
-                        </button>
-                      }
-                    </div>
-                  </sh3-page-section>
-
-                  <sh3-page-section
-                    surface="card"
-                    stack
-                    title="Duration"
-                    description="The toast owns its auto-dismiss timer via a duration (ms) input; 0 = sticky. Fire through the service (bottom-right) with the chosen duration."
-                  >
-                    <div class="gal-narrow">
-                      <sh3-choice-row
-                        [options]="toastDurationOptions"
-                        [activeKey]="toastDuration()"
-                        (selected)="toastDuration.set($event)"
-                      />
-                    </div>
-                    <div class="gal-row">
-                      @for (v of toastVariants; track v) {
-                        <button
-                          type="button"
-                          class="gal-theme"
-                          (click)="fireToast(v)"
-                        >
-                          <sh3-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
-                        </button>
-                      }
-                    </div>
-                  </sh3-page-section>
-                }
-
-                @case ("usage") {
-                  <sh3-page-section
-                    surface="card"
-                    stack
-                    title="Fire a toast"
-                    description="Inject Sh3ToastService and call show(). The duration argument is optional — omit it to use the policy."
-                  >
-                    <div class="code-block">
-                      <div class="code-top">
-                        <span class="code-lang">typescript</span>
-                      </div>
-                      <pre
-                        class="code-pre"
-                      ><code>{{ toastFireCode }}</code></pre>
-                    </div>
-                  </sh3-page-section>
-
-                  <sh3-page-section
-                    surface="card"
-                    stack
-                    title="Duration policy"
-                    description="A no-arg show() resolves most-specific first: durationByVariant → defaultDurationMs → the baked default. An explicit argument always wins."
-                  >
-                    <div class="code-block">
-                      <div class="code-top">
-                        <span class="code-lang"
-                          >typescript · app.config.ts</span
-                        >
-                      </div>
-                      <pre
-                        class="code-pre"
-                      ><code>{{ toastConfigCode }}</code></pre>
-                    </div>
-                    <table class="api-table">
-                      <thead>
-                        <tr>
-                          <th>variant</th>
-                          <th>baked default</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><code>success</code></td>
-                          <td>3000 ms</td>
-                        </tr>
-                        <tr>
-                          <td><code>info</code></td>
-                          <td>4000 ms</td>
-                        </tr>
-                        <tr>
-                          <td><code>warning</code></td>
-                          <td>6000 ms</td>
-                        </tr>
-                        <tr>
-                          <td><code>error</code></td>
-                          <td>0 — sticky</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p class="doc-p">
-                      No <code>provideSh3Toasts</code> in the app → these baked
-                      defaults apply.
-                    </p>
-                  </sh3-page-section>
-
-                  <sh3-page-section
-                    surface="card"
-                    stack
-                    title="Standalone component"
-                    description="A bare sh3-toast is self-sufficient — no service needed. It auto-dismisses after duration and emits (dismiss) on its close button."
-                  >
-                    <div class="code-block">
-                      <div class="code-top">
-                        <span class="code-lang">html</span>
-                      </div>
-                      <pre
-                        class="code-pre"
-                      ><code>{{ toastStandaloneCode }}</code></pre>
-                    </div>
-                    <table class="api-table">
-                      <thead>
-                        <tr>
-                          <th>prop</th>
-                          <th>type</th>
-                          <th>default</th>
-                          <th>notes</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><code>variant</code></td>
-                          <td><code>success · info · warning · error</code></td>
-                          <td><code>info</code></td>
-                          <td>glyph + accent + live-region</td>
-                        </tr>
-                        <tr>
-                          <td><code>dismissible</code></td>
-                          <td><code>boolean</code></td>
-                          <td><code>true</code></td>
-                          <td>show the close button</td>
-                        </tr>
-                        <tr>
-                          <td><code>duration</code></td>
-                          <td><code>number</code> (ms)</td>
-                          <td><code>0</code></td>
-                          <td>0 = sticky (no timer)</td>
-                        </tr>
-                        <tr>
-                          <td><code>(dismiss)</code></td>
-                          <td><code>output&lt;void&gt;</code></td>
-                          <td>—</td>
-                          <td>close pressed / duration elapsed</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </sh3-page-section>
-                }
-              }
-            </div>
-          </div>
-        </sh3-page-section>
       </section>
 
       <!-- ── sh3-avatar ────────────────────────────────────────── -->
@@ -1607,6 +1422,218 @@
             </sh3-page-section>
           }
         }
+      </section>
+
+      <!-- ── sh3-toast — three sub-pages behind a vertical tab-nav ────── -->
+      <section id="toast" class="gal-sec">
+        <sh3-page-section
+          title="sh3-toast"
+          description="A transient frosted-glass snackbar: a variant status glyph, the message (projected), and an optional dismiss button. sh3-toast-container stacks them bottom-right; Sh3ToastService owns the queue."
+        >
+          <div class="form-layout">
+            <aside class="form-nav">
+              <sh3-tab-nav
+                direction="vertical"
+                activeStyle="fill"
+                [tabs]="toastTabs"
+                [activeKey]="toastTab()"
+                (tabChange)="toastTab.set($event)"
+              />
+            </aside>
+
+            <div class="form-body">
+              @switch (toastTab()) {
+                @case ("variants") {
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Variants"
+                    description="Four tones — the glyph + left accent take the variant's -text tint. info uses the brand primary tint; error renders as an assertive live-region (role=alert)."
+                  >
+                    <div class="toast-demo-col">
+                      @for (v of toastVariants; track v) {
+                        <sh3-toast [variant]="v" [dismissible]="false">{{
+                          toastMessages[v]
+                        }}</sh3-toast>
+                      }
+                    </div>
+                  </sh3-page-section>
+                }
+
+                @case ("behavior") {
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Dismiss"
+                    description="An explicit close button emits (dismiss) — the whole surface is not click-to-dismiss. dismissible=false hides the button."
+                  >
+                    <div class="toast-demo-col">
+                      @if (demoToastOpen()) {
+                        <sh3-toast
+                          variant="info"
+                          (dismiss)="demoToastOpen.set(false)"
+                          >Press ✕ — the dismiss output fires</sh3-toast
+                        >
+                      } @else {
+                        <button
+                          type="button"
+                          class="gal-theme"
+                          (click)="demoToastOpen.set(true)"
+                        >
+                          <sh3-icon name="reload" size="sm" /> Reset
+                        </button>
+                      }
+                    </div>
+                  </sh3-page-section>
+
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Duration"
+                    description="The toast owns its auto-dismiss timer via a duration (ms) input; 0 = sticky. Fire through the service (bottom-right) with the chosen duration."
+                  >
+                    <div class="gal-narrow">
+                      <sh3-choice-row
+                        [options]="toastDurationOptions"
+                        [activeKey]="toastDuration()"
+                        (selected)="toastDuration.set($event)"
+                      />
+                    </div>
+                    <div class="gal-row">
+                      @for (v of toastVariants; track v) {
+                        <button
+                          type="button"
+                          class="gal-theme"
+                          (click)="fireToast(v)"
+                        >
+                          <sh3-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
+                        </button>
+                      }
+                    </div>
+                  </sh3-page-section>
+                }
+
+                @case ("usage") {
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Fire a toast"
+                    description="Inject Sh3ToastService and call show(). The duration argument is optional — omit it to use the policy."
+                  >
+                    <div class="code-block">
+                      <div class="code-top">
+                        <span class="code-lang">typescript</span>
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ toastFireCode }}</code></pre>
+                    </div>
+                  </sh3-page-section>
+
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Duration policy"
+                    description="A no-arg show() resolves most-specific first: durationByVariant → defaultDurationMs → the baked default. An explicit argument always wins."
+                  >
+                    <div class="code-block">
+                      <div class="code-top">
+                        <span class="code-lang"
+                          >typescript · app.config.ts</span
+                        >
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ toastConfigCode }}</code></pre>
+                    </div>
+                    <table class="api-table">
+                      <thead>
+                        <tr>
+                          <th>variant</th>
+                          <th>baked default</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><code>success</code></td>
+                          <td>3000 ms</td>
+                        </tr>
+                        <tr>
+                          <td><code>info</code></td>
+                          <td>4000 ms</td>
+                        </tr>
+                        <tr>
+                          <td><code>warning</code></td>
+                          <td>6000 ms</td>
+                        </tr>
+                        <tr>
+                          <td><code>error</code></td>
+                          <td>0 — sticky</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p class="doc-p">
+                      No <code>provideSh3Toasts</code> in the app → these baked
+                      defaults apply.
+                    </p>
+                  </sh3-page-section>
+
+                  <sh3-page-section
+                    surface="card"
+                    stack
+                    title="Standalone component"
+                    description="A bare sh3-toast is self-sufficient — no service needed. It auto-dismisses after duration and emits (dismiss) on its close button."
+                  >
+                    <div class="code-block">
+                      <div class="code-top">
+                        <span class="code-lang">html</span>
+                      </div>
+                      <pre
+                        class="code-pre"
+                      ><code>{{ toastStandaloneCode }}</code></pre>
+                    </div>
+                    <table class="api-table">
+                      <thead>
+                        <tr>
+                          <th>prop</th>
+                          <th>type</th>
+                          <th>default</th>
+                          <th>notes</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><code>variant</code></td>
+                          <td><code>success · info · warning · error</code></td>
+                          <td><code>info</code></td>
+                          <td>glyph + accent + live-region</td>
+                        </tr>
+                        <tr>
+                          <td><code>dismissible</code></td>
+                          <td><code>boolean</code></td>
+                          <td><code>true</code></td>
+                          <td>show the close button</td>
+                        </tr>
+                        <tr>
+                          <td><code>duration</code></td>
+                          <td><code>number</code> (ms)</td>
+                          <td><code>0</code></td>
+                          <td>0 = sticky (no timer)</td>
+                        </tr>
+                        <tr>
+                          <td><code>(dismiss)</code></td>
+                          <td><code>output&lt;void&gt;</code></td>
+                          <td>—</td>
+                          <td>close pressed / duration elapsed</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </sh3-page-section>
+                }
+              }
+            </div>
+          </div>
+        </sh3-page-section>
       </section>
 
       <!-- ── form — a vertical tab-nav drives a settings-style form ──────── -->

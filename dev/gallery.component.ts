@@ -120,6 +120,14 @@ interface TocItem {
   readonly icon?: Sh3IconName;
 }
 
+/** A colour-coded block of the Library nav — one `sh3-menu-section`. */
+interface NavGroup {
+  readonly label: string;
+  /** Section accent — tints the separator + item hover (any CSS colour). */
+  readonly color: string;
+  readonly items: readonly TocItem[];
+}
+
 /**
  * The gallery — itself an `sh3-app-shell` instance (dogfooding). The first
  * section's "App Shell Settings" card drives the shell's own inputs (appearance
@@ -611,25 +619,67 @@ export class GalleryComponent {
   private readonly scrollRef =
     viewChild.required<ElementRef<HTMLElement>>("scroll");
 
-  /** ids match the `<section>` ids in the template. */
-  protected readonly toc: readonly TocItem[] = [
-    { id: "app-shell", label: "app-shell" },
-    { id: "menu", label: "menu" },
-    { id: "element-title", label: "element-title" },
-    { id: "context-card", label: "context-card" },
-    { id: "page-section", label: "page-section" },
-    { id: "hero", label: "hero" },
-    { id: "card", label: "card" },
-    { id: "link", label: "link" },
-    { id: "button", label: "button" },
-    { id: "button-icon", label: "button-icon" },
-    { id: "tab-nav", label: "tab-nav" },
-    { id: "badges", label: "badge · status · icon" },
-    { id: "toast", label: "toast", icon: "toast" },
-    { id: "avatar", label: "avatar", icon: "team" },
-    { id: "form", label: "form", icon: "edit" },
-    { id: "icons", label: "icons" },
-    { id: "tokens", label: "design tokens" },
+  /**
+   * The Library nav, grouped into colour-coded blocks (one `sh3-menu-section`
+   * each). Group order === on-page section order, so the scroll-spy highlight
+   * flows straight down the rail. ids match the `<section>` ids in the template.
+   */
+  protected readonly navGroups: readonly NavGroup[] = [
+    {
+      label: "Layout",
+      color: "#06a4a4",
+      items: [
+        { id: "app-shell", label: "app-shell", icon: "grid" },
+        { id: "page-section", label: "page-section" },
+        { id: "hero", label: "hero" },
+      ],
+    },
+    {
+      label: "Navigation",
+      color: "#8b5cf6",
+      items: [
+        { id: "menu", label: "menu" },
+        { id: "tab-nav", label: "tab-nav" },
+      ],
+    },
+    {
+      label: "Actions",
+      color: "#3b82f6",
+      items: [
+        { id: "button", label: "button" },
+        { id: "button-icon", label: "button-icon" },
+        { id: "link", label: "link" },
+      ],
+    },
+    {
+      label: "Content",
+      color: "#f59e0b",
+      items: [
+        { id: "card", label: "card" },
+        { id: "context-card", label: "context-card" },
+        { id: "element-title", label: "element-title" },
+        { id: "badges", label: "badge · status · icon" },
+        { id: "avatar", label: "avatar", icon: "team" },
+      ],
+    },
+    {
+      label: "Feedback",
+      color: "#ec4899",
+      items: [{ id: "toast", label: "toast", icon: "toast" }],
+    },
+    {
+      label: "Forms",
+      color: "#10b981",
+      items: [{ id: "form", label: "form", icon: "edit" }],
+    },
+    {
+      label: "Foundations",
+      color: "#64748b",
+      items: [
+        { id: "icons", label: "icons" },
+        { id: "tokens", label: "design tokens" },
+      ],
+    },
   ];
 
   /* ── icons page — the sh3-icon system + the full built-in catalogue ────── */
@@ -983,7 +1033,8 @@ export class GalleryComponent {
 
   private observeSections(): void {
     const root = this.scrollRef().nativeElement;
-    const sections = this.toc
+    const sections = this.navGroups
+      .flatMap((group) => group.items)
       .map((item) => document.getElementById(item.id))
       .filter((el): el is HTMLElement => el !== null);
     const observer = new IntersectionObserver(
