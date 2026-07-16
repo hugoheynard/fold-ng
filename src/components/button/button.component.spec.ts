@@ -49,6 +49,20 @@ describe("Sh3ButtonComponent", () => {
     expect(host.classList.contains("block")).toBe(true);
   });
 
+  it("renders a leading/trailing icon shorthand sized from the button", () => {
+    const { fixture, button } = mount();
+    expect(button.querySelector("sh3-icon")).toBeNull();
+
+    fixture.componentRef.setInput("icon", "check");
+    fixture.componentRef.setInput("iconTrailing", "chevron-right");
+    fixture.componentRef.setInput("size", "lg");
+    fixture.detectChanges();
+    const icons = button.querySelectorAll("sh3-icon");
+    expect(icons.length).toBe(2);
+    // lg → 18px, derived (not hand-passed) so it stays consistent
+    expect(fixture.componentInstance.iconSize()).toBe(18);
+  });
+
   it("emits clicked on press but not while disabled", () => {
     const { fixture, button } = mount();
     let clicks = 0;

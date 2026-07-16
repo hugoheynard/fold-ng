@@ -1,9 +1,25 @@
-import { Component, booleanAttribute, input, output } from "@angular/core";
+import {
+  Component,
+  booleanAttribute,
+  computed,
+  input,
+  output,
+} from "@angular/core";
+import { Sh3IconComponent } from "../icon/icon.component";
+import type { Sh3IconSize } from "../icon/icon.component";
+import type { Sh3IconName } from "../icon/icon.registry";
 import type {
   Sh3ButtonShape,
   Sh3ButtonSize,
   Sh3ButtonVariant,
 } from "./button.types";
+
+/** Leading/trailing icon size, derived from the button `size`. */
+const ICON_SIZE: Record<Sh3ButtonSize, Sh3IconSize> = {
+  sm: 14,
+  md: 16,
+  lg: 18,
+};
 
 /**
  * `<sh3-button>` — the design-system entry point for every actionable button.
@@ -24,6 +40,7 @@ import type {
 @Component({
   selector: "sh3-button",
   standalone: true,
+  imports: [Sh3IconComponent],
   templateUrl: "./button.component.html",
   styleUrl: "./button.component.scss",
   host: {
@@ -50,6 +67,18 @@ export class Sh3ButtonComponent {
 
   /** Stretch to fill the container's width (block-level) instead of hugging its label. */
   readonly block = input(false, { transform: booleanAttribute });
+
+  /**
+   * Leading icon — a shorthand for the common "icon + label" button. The size
+   * is derived from {@link size}, so it stays consistent. For anything else
+   * (trailing content, custom markup) project it instead.
+   */
+  readonly icon = input<Sh3IconName>();
+  /** Trailing icon (after the label). */
+  readonly iconTrailing = input<Sh3IconName>();
+
+  /** Icon size for {@link icon} / {@link iconTrailing}, from the button size. */
+  readonly iconSize = computed<Sh3IconSize>(() => ICON_SIZE[this.size()]);
 
   /** Native `type` attribute of the inner `<button>`. */
   readonly type = input<"button" | "submit">("button");

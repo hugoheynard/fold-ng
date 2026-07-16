@@ -130,6 +130,11 @@ Add roles only once we're certain of their usage.
         (`:host(.block) { display: flex } button { width: 100% }`), default off.
         Lets full-width card/form CTAs (the contract "Résilier le contrat"
         trigger) become `sh3-button`.
+  - [x] **`icon` / `iconTrailing` shorthand** — the common "icon + label" case
+        without projecting `<sh3-icon>`. The button **owns** the icon size
+        (derived from `size`: sm→14 · md→16 · lg→18), killing the drift where
+        27 call sites hand-passed 5 different icon sizes (xs/12/13/14/sm).
+        Projection still works for custom content. All 27 sites migrated.
 - [x] **ButtonIcon** (`sh3-button-icon`) — the icon-only sibling (16 consumers):
       toolbar / transport / row-action affordances. `shape` × `size` × `tone`
       surface as `data-*` for the SCSS; momentary (`clicked`) or two-way toggle
