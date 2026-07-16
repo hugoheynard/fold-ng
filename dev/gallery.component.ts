@@ -578,7 +578,7 @@ export class GalleryComponent {
     { id: "link", label: "link" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
-    { id: "toast", label: "toast", icon: "bell" },
+    { id: "toast", label: "toast", icon: "toast" },
     { id: "avatar", label: "avatar", icon: "team" },
     { id: "form", label: "form", icon: "edit" },
     { id: "icons", label: "icons" },
