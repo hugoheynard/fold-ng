@@ -1,4 +1,4 @@
-/** The tone of a toast — drives its accent colour + icon. */
+/** The tone of a toast — drives its accent color + icon. */
 export type Sh3ToastVariant = "success" | "info" | "warning" | "error";
 
 /** A single transient notification (a queued toast). */
