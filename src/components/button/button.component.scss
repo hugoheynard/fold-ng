@@ -1,0 +1,124 @@
+// ═══════════════════════════════════════════════════════
+//  sh3-button — variant + size selected via host classes.
+//  Token-only: hover tints come from `color-mix(… var …)`.
+// ═══════════════════════════════════════════════════════
+
+// ─── Base reset ────────────────────────────────────────
+:host {
+  display: inline-flex;
+}
+
+button {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  white-space: nowrap;
+  font-family: inherit;
+  font-weight: 600;
+  transition:
+    background var(--sh3-motion-fast),
+    border-color var(--sh3-motion-fast),
+    color var(--sh3-motion-fast),
+    transform var(--sh3-motion-fast);
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sh3-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// ─── Sizes ─────────────────────────────────────────────
+:host(.sm) button {
+  font-size: var(--sh3-text-sm);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--sh3-radius-xs);
+}
+
+:host(.md) button {
+  font-size: var(--sh3-text-md);
+  padding: 0.45rem 1rem;
+  border-radius: var(--sh3-radius-sm);
+}
+
+:host(.lg) button {
+  font-size: var(--sh3-text-md);
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--sh3-radius-sm);
+}
+
+// ─── Variants ──────────────────────────────────────────
+
+// Primary — accent teal tint
+:host(.primary) button {
+  color: var(--sh3-color-primary-text);
+  background: var(--sh3-color-primary-surface);
+  border: 1px solid var(--sh3-color-primary-border);
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--sh3-color-primary) 24%, transparent);
+    border-color: color-mix(in srgb, var(--sh3-color-primary) 55%, transparent);
+  }
+}
+
+// Recommended — amber / warning
+:host(.recommended) button {
+  color: var(--sh3-color-warning-text);
+  background: var(--sh3-color-warning-surface);
+  border: 1px solid var(--sh3-color-warning-border);
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--sh3-color-warning) 22%, transparent);
+    border-color: color-mix(in srgb, var(--sh3-color-warning) 50%, transparent);
+  }
+}
+
+// Critical — red / alert
+:host(.critical) button {
+  color: var(--sh3-color-alert-text);
+  background: var(--sh3-color-alert-surface);
+  border: 1px solid var(--sh3-color-alert-border);
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--sh3-color-alert) 22%, transparent);
+    border-color: color-mix(in srgb, var(--sh3-color-alert) 55%, transparent);
+  }
+}
+
+// Ghost — neutral, minimal
+:host(.ghost) button {
+  color: var(--sh3-color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--sh3-color-border);
+
+  &:hover:not(:disabled) {
+    color: var(--sh3-color-text);
+    background: var(--sh3-color-surface-hover);
+    border-color: var(--sh3-color-border);
+  }
+}
+
+// Solid — filled accent background
+:host(.solid) button {
+  color: var(--sh3-color-on-primary);
+  background: var(--sh3-color-primary);
+  border: 1px solid transparent;
+
+  &:hover:not(:disabled) {
+    background: var(--sh3-color-primary-strong);
+  }
+}
