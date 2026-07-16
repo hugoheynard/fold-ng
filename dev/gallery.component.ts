@@ -420,6 +420,46 @@ export class GalleryComponent {
   /** Section behaviour — `true` makes each section a fold toggle (`collapsible`). */
   protected readonly menuSectionCollapsible = signal(false);
   protected readonly menuFooter = signal(true);
+  /** Demo badge on the preview's first item: none, a `"new"` tag, or a count. */
+  protected readonly menuBadge = signal<"none" | "tag" | "count">("none");
+  protected readonly menuBadgeTone = signal<Sh3BadgeVariant>("info");
+  protected readonly menuBadgeTones: readonly Sh3BadgeVariant[] = [
+    "accent",
+    "info",
+    "warning",
+    "alert",
+    "success",
+  ];
+  /** The badge value the current mode yields (`undefined` = off). */
+  private readonly menuBadgeValue = computed<string | number | undefined>(
+    () => {
+      const mode = this.menuBadge();
+      if (mode === "none") {
+        return undefined;
+      }
+      return mode === "count" ? 3 : "new";
+    },
+  );
+  /** Badge for the preview item at (section, item) — only the very first one. */
+  protected previewBadge(
+    sectionIndex: number,
+    itemIndex: number,
+  ): string | number | undefined {
+    return sectionIndex === 0 && itemIndex === 0
+      ? this.menuBadgeValue()
+      : undefined;
+  }
+
+  /** Render `[badge]`/`badge` (+ `badgeTone`) markup for the code overlay. */
+  private badgeAttrs(value: string | number | undefined): string {
+    if (value === undefined) {
+      return "";
+    }
+    const bind =
+      typeof value === "number" ? ` [badge]="${value}"` : ` badge="${value}"`;
+    const tone = this.menuBadgeTone();
+    return `${bind}${tone === "accent" ? "" : ` badgeTone="${tone}"`}`;
+  }
   /** How items tint on hover / when active. */
   protected readonly menuTint = signal<Sh3MenuTint>("follow");
   protected readonly menuTints: readonly Sh3MenuTint[] = [
@@ -527,7 +567,9 @@ export class GalleryComponent {
     if (this.menuHeader()) {
       lines.push('  <div header class="brand">S3</div>');
     }
-    for (const s of this.menuSectionList()) {
+    const sections = this.menuSectionList();
+    for (let si = 0; si < sections.length; si++) {
+      const s = sections[si];
       const wrap = this.menuSections();
       const pad = wrap ? "    " : "  ";
       if (wrap) {
@@ -536,9 +578,11 @@ export class GalleryComponent {
           `  <sh3-menu-section label="${s.name}" color="${s.color}"${collapsible}>`,
         );
       }
-      for (const icon of this.iconsFor(s.icons)) {
+      const icons = this.iconsFor(s.icons);
+      for (let ii = 0; ii < icons.length; ii++) {
+        const badge = this.badgeAttrs(this.previewBadge(si, ii));
         lines.push(
-          `${pad}<button sh3-menu-item icon="${icon}" label="${this.labelFor(icon)}"></button>`,
+          `${pad}<button sh3-menu-item icon="${icons[ii]}" label="${this.labelFor(icons[ii])}"${badge}></button>`,
         );
       }
       if (wrap) {

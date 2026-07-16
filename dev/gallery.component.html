@@ -477,7 +477,7 @@
                 @if (menuHeader()) {
                   <div header class="rail-brand">S3</div>
                 }
-                @for (s of menuSectionList(); track s.id) {
+                @for (s of menuSectionList(); track s.id; let si = $index) {
                   @if (menuSections()) {
                     <sh3-menu-section
                       [label]="s.name"
@@ -490,6 +490,8 @@
                           [icon]="icon"
                           [label]="labelFor(icon)"
                           [active]="menuActive() === s.id + '-' + $index"
+                          [badge]="previewBadge(si, $index)"
+                          [badgeTone]="menuBadgeTone()"
                           (click)="menuActive.set(s.id + '-' + $index)"
                         ></button>
                       }
@@ -501,6 +503,8 @@
                         [icon]="icon"
                         [label]="labelFor(icon)"
                         [active]="menuActive() === s.id + '-' + $index"
+                        [badge]="previewBadge(si, $index)"
+                        [badgeTone]="menuBadgeTone()"
                         (click)="menuActive.set(s.id + '-' + $index)"
                       ></button>
                     }
@@ -684,6 +688,50 @@
                   }
                 </div>
               </div>
+
+              <div class="ss-group">
+                <span class="ss-label">badge <i>(first item)</i></span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="menuBadge() === 'none'"
+                    (click)="menuBadge.set('none')"
+                  >
+                    none
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuBadge() === 'tag'"
+                    (click)="menuBadge.set('tag')"
+                  >
+                    tag
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="menuBadge() === 'count'"
+                    (click)="menuBadge.set('count')"
+                  >
+                    count
+                  </button>
+                </div>
+              </div>
+
+              @if (menuBadge() !== "none") {
+                <div class="ss-group">
+                  <span class="ss-label">badge tone</span>
+                  <div class="ss-seg">
+                    @for (t of menuBadgeTones; track t) {
+                      <button
+                        type="button"
+                        [class.is-on]="menuBadgeTone() === t"
+                        (click)="menuBadgeTone.set(t)"
+                      >
+                        {{ t }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
 
               <div class="ss-group">
                 <div class="ss-head">
