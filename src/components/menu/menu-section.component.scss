@@ -1,5 +1,5 @@
-/* A section stacks its separator above the projected items. In the collapsed
-   rail the items center; expanded, they stretch to full-width rows. */
+/* A section stacks its separator/header above the projected items. In the
+   collapsed rail the items center; expanded, they stretch to full-width rows. */
 :host {
   display: flex;
   flex-direction: column;
@@ -12,4 +12,81 @@
   /* auto (not the base 100%) so the items' intrinsic width reaches the menu's
      max-content — a percentage width collapses the rail to its min-width. */
   width: auto;
+}
+
+/* By default the items wrapper is transparent: the projected items stay direct
+   flex children of the section, so a non-collapsible section is unchanged. */
+.section-items {
+  display: contents;
+}
+
+/* ── Collapsible header ─────────────────────────────────
+   Wraps the separator in a toggle button with a trailing chevron. */
+.section-head {
+  all: unset;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  sh3-menu-separator {
+    flex: 1;
+    min-width: 0;
+  }
+}
+.section-chevron {
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: 10px;
+  color: var(--sh3-color-text-faded);
+  transition: transform var(--sh3-motion-fast);
+}
+.section-chevron.is-open {
+  transform: rotate(90deg);
+}
+/* Collapsed rail (icon only): no header to click — freeze the toggle, hide the
+   chevron, and keep every item visible. */
+:host-context(sh3-menu:not(.expanded)) .section-head {
+  pointer-events: none;
+}
+:host-context(sh3-menu:not(.expanded)) .section-chevron {
+  display: none;
+}
+
+/* ── Foldable items ─────────────────────────────────────
+   When collapsible the wrapper becomes a real box that can fold — it mirrors
+   the section's own column layout. */
+.section-items.foldable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  overflow: hidden;
+  max-height: 60vh;
+  opacity: 1;
+  transition:
+    max-height var(--sh3-motion-base),
+    opacity var(--sh3-motion-base);
+}
+:host-context(sh3-menu.expanded) .section-items.foldable {
+  align-items: stretch;
+  width: auto;
+}
+.section-items.foldable.is-collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+/* Never fold in the collapsed rail — every item stays reachable. */
+:host-context(sh3-menu:not(.expanded)) .section-items.foldable {
+  max-height: none;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-items.foldable,
+  .section-chevron {
+    transition: none;
+  }
 }

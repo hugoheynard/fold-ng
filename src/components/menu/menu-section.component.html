@@ -1,2 +1,29 @@
-<sh3-menu-separator [label]="label()" [color]="color()" />
-<ng-content />
+@if (collapsible()) {
+  <button
+    type="button"
+    class="section-head"
+    [attr.aria-expanded]="open()"
+    [attr.aria-controls]="bodyId"
+    (click)="toggle()"
+  >
+    <sh3-menu-separator [label]="label()" [color]="color()" />
+    <sh3-icon
+      class="section-chevron"
+      [class.is-open]="open()"
+      name="chevron-right"
+      [size]="12"
+      aria-hidden="true"
+    />
+  </button>
+} @else {
+  <sh3-menu-separator [label]="label()" [color]="color()" />
+}
+
+<div
+  class="section-items"
+  [id]="bodyId"
+  [class.foldable]="collapsible()"
+  [class.is-collapsed]="!open()"
+>
+  <ng-content />
+</div>

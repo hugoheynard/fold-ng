@@ -2,6 +2,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { Sh3MenuSectionComponent } from "./menu-section.component";
+import { Sh3MenuItemComponent } from "./menu-item.component";
 
 @Component({
   standalone: true,
@@ -15,6 +16,22 @@ class HostComponent {
   readonly color = signal<string | undefined>(undefined);
 }
 
+@Component({
+  standalone: true,
+  imports: [Sh3MenuSectionComponent, Sh3MenuItemComponent],
+  template: `<sh3-menu-section
+    label="Group"
+    collapsible
+    [collapsed]="collapsed()"
+  >
+    <button sh3-menu-item icon="home" label="Home" [active]="active()"></button>
+  </sh3-menu-section>`,
+})
+class CollapsibleHost {
+  readonly collapsed = signal(false);
+  readonly active = signal(false);
+}
+
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
@@ -22,6 +39,17 @@ function render() {
     "sh3-menu-section",
   ) as HTMLElement;
   return { fixture, section };
+}
+
+function renderCollapsible() {
+  const fixture = TestBed.createComponent(CollapsibleHost);
+  fixture.detectChanges();
+  const section = fixture.nativeElement.querySelector(
+    "sh3-menu-section",
+  ) as HTMLElement;
+  const head = section.querySelector(".section-head") as HTMLButtonElement;
+  const items = section.querySelector(".section-items") as HTMLElement;
+  return { fixture, section, head, items };
 }
 
 describe("Sh3MenuSectionComponent", () => {
@@ -42,5 +70,39 @@ describe("Sh3MenuSectionComponent", () => {
     expect(section.style.getPropertyValue("--sh3-menu-section-color")).toBe(
       "rgb(6, 164, 164)",
     );
+  });
+
+  it("has no toggle header and never folds when not collapsible", () => {
+    const { section } = render();
+    expect(section.querySelector(".section-head")).toBeNull();
+    expect(
+      (
+        section.querySelector(".section-items") as HTMLElement
+      ).classList.contains("is-collapsed"),
+    ).toBe(false);
+  });
+
+  it("toggles the fold state from the header, linked by aria", () => {
+    const { fixture, head, items } = renderCollapsible();
+    expect(head.getAttribute("aria-expanded")).toBe("true");
+    expect(head.getAttribute("aria-controls")).toBe(items.id);
+    expect(items.classList.contains("is-collapsed")).toBe(false);
+
+    head.click();
+    fixture.detectChanges();
+    expect(head.getAttribute("aria-expanded")).toBe("false");
+    expect(items.classList.contains("is-collapsed")).toBe(true);
+  });
+
+  it("stays open while it holds the active item, even if collapsed", () => {
+    const { fixture, head, items } = renderCollapsible();
+    fixture.componentInstance.collapsed.set(true);
+    fixture.detectChanges();
+    expect(items.classList.contains("is-collapsed")).toBe(true);
+
+    fixture.componentInstance.active.set(true);
+    fixture.detectChanges();
+    expect(head.getAttribute("aria-expanded")).toBe("true");
+    expect(items.classList.contains("is-collapsed")).toBe(false);
   });
 });
