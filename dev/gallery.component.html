@@ -32,6 +32,8 @@
             [icon]="item.icon ?? 'grid'"
             [label]="item.label"
             [active]="activeSection() === item.id"
+            [badge]="item.badge"
+            [badgeTone]="item.badgeTone ?? 'accent'"
             (click)="scrollTo(item.id)"
           ></button>
         }

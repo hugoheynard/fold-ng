@@ -18,6 +18,7 @@ import {
   type Sh3AvatarRing,
   type Sh3AvatarRingStyle,
   Sh3BadgeComponent,
+  type Sh3BadgeVariant,
   Sh3ButtonComponent,
   type Sh3ButtonVariant,
   type Sh3ButtonSize,
@@ -119,6 +120,10 @@ interface TocItem {
   readonly label: string;
   /** Rail icon — defaults to `grid` when unset. */
   readonly icon?: Sh3IconName;
+  /** Optional nav badge — a tag (`"new"`) or a count (`3`). */
+  readonly badge?: string | number;
+  /** Badge colour — defaults to `accent`. */
+  readonly badgeTone?: Sh3BadgeVariant;
 }
 
 /** A colour-coded block of the Library nav — one `sh3-menu-section`. */
@@ -639,7 +644,12 @@ export class GalleryComponent {
         { id: "app-shell", label: "app-shell", icon: "grid" },
         { id: "page-section", label: "page-section" },
         { id: "hero", label: "hero" },
-        { id: "sticky-column", label: "sticky-column" },
+        {
+          id: "sticky-column",
+          label: "sticky-column",
+          badge: "new",
+          badgeTone: "info",
+        },
       ],
     },
     {
