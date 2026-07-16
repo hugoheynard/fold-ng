@@ -22,6 +22,12 @@ export type {
   Sh3ButtonVariant,
   Sh3ButtonSize,
 } from "./components/button/button.types";
+export { Sh3ButtonIconComponent } from "./components/button-icon/button-icon.component";
+export type {
+  Sh3ButtonIconShape,
+  Sh3ButtonIconSize,
+  Sh3ButtonIconTone,
+} from "./components/button-icon/button-icon.types";
 export { Sh3CardComponent } from "./components/card/card.component";
 export { Sh3ContextCardComponent } from "./components/context-card/context-card.component";
 export { Sh3ElementTitleComponent } from "./components/element-title/element-title.component";

@@ -1,0 +1,10 @@
+<button
+  [type]="buttonType()"
+  [disabled]="disabled()"
+  [attr.title]="tooltip() || null"
+  [attr.aria-label]="tooltip() || null"
+  [attr.aria-pressed]="active() ? 'true' : null"
+  (click)="onClick($event)"
+>
+  <sh3-icon [name]="icon()" [size]="iconSize()" />
+</button>

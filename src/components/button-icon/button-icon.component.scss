@@ -1,0 +1,100 @@
+// ═══════════════════════════════════════════════════════
+//  sh3-button-icon — shape/size/tone via data-* attributes.
+//  Token-only: the `--bi-*` locals resolve to `--sh3-*` tokens.
+// ═══════════════════════════════════════════════════════
+
+:host {
+  display: inline-flex;
+
+  // ── size presets — drive the hit-area square ────────
+  &[data-size="xs"] {
+    --bi-size: 22px;
+    --bi-radius: var(--sh3-radius-xs);
+  }
+  &[data-size="sm"] {
+    --bi-size: 28px;
+    --bi-radius: var(--sh3-radius-sm);
+  }
+  &[data-size="md"] {
+    --bi-size: 32px;
+    --bi-radius: var(--sh3-radius-md);
+  }
+  &[data-size="lg"] {
+    --bi-size: 38px;
+    --bi-radius: var(--sh3-radius-md);
+  }
+
+  // ── shape — round overrides any radius ──────────────
+  &[data-shape="round"] {
+    --bi-radius: 50%;
+  }
+
+  // ── tone — colour + background ──────────────────────
+  &[data-tone="ghost"] {
+    --bi-color: var(--sh3-color-text-muted);
+    --bi-color-hover: var(--sh3-color-text);
+    --bi-bg: transparent;
+    --bi-bg-hover: var(--sh3-color-primary-surface);
+    --bi-bg-active: var(--sh3-color-primary-surface);
+    --bi-color-active: var(--sh3-color-primary);
+  }
+  &[data-tone="accent"] {
+    --bi-color: var(--sh3-color-on-primary);
+    --bi-color-hover: var(--sh3-color-on-primary);
+    --bi-bg: var(--sh3-color-primary);
+    --bi-bg-hover: var(--sh3-color-primary-strong);
+    --bi-bg-active: var(--sh3-color-primary-strong);
+    --bi-color-active: var(--sh3-color-on-primary);
+  }
+  &[data-tone="critical"] {
+    --bi-color: var(--sh3-color-alert);
+    --bi-color-hover: var(--sh3-color-alert);
+    --bi-bg: transparent;
+    --bi-bg-hover: color-mix(in srgb, var(--sh3-color-alert) 12%, transparent);
+    --bi-bg-active: color-mix(in srgb, var(--sh3-color-alert) 18%, transparent);
+    --bi-color-active: var(--sh3-color-alert);
+  }
+}
+
+button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bi-size);
+  height: var(--bi-size);
+  border-radius: var(--bi-radius);
+  background: var(--bi-bg);
+  color: var(--bi-color);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--sh3-motion-fast),
+    color var(--sh3-motion-fast),
+    transform var(--sh3-motion-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--bi-bg-hover);
+    color: var(--bi-color-hover);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sh3-color-primary);
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
+
+// ── pressed/toggle state (set on the host via data-active) ──
+:host([data-active]) button {
+  background: var(--bi-bg-active);
+  color: var(--bi-color-active);
+}
