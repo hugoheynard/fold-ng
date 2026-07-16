@@ -830,6 +830,44 @@
         </div>
       </section>
 
+      <!-- ── sh3-button ────────────────────────────────────────── -->
+      <section id="button" class="gal-sec">
+        <h2>sh3-button</h2>
+        <div class="gal-stack">
+          <div class="gal-cell">
+            <span class="gal-tag">variants (md)</span>
+            <div class="gal-row">
+              @for (v of buttonVariants; track v) {
+                <sh3-button [variant]="v" (clicked)="buttonClicks.set(buttonClicks() + 1)">{{ v }}</sh3-button>
+              }
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">sizes (primary)</span>
+            <div class="gal-row" style="align-items: center">
+              @for (s of buttonSizes; track s) {
+                <sh3-button [size]="s">size {{ s }}</sh3-button>
+              }
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag">with icon · disabled</span>
+            <div class="gal-row" style="align-items: center">
+              <sh3-button variant="solid">
+                <sh3-icon name="check" size="sm" />
+                Confirm
+              </sh3-button>
+              <sh3-button variant="ghost" size="sm">
+                <sh3-icon name="edit" size="sm" />
+                Edit
+              </sh3-button>
+              <sh3-button [disabled]="true">Disabled</sh3-button>
+              <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ── sh3-tab-nav ───────────────────────────────────────── -->
       <section id="tab-nav" class="gal-sec">
         <h2>sh3-tab-nav</h2>
@@ -857,7 +895,6 @@
               [tabs]="tabItems"
               [activeKey]="tabComfortable()"
               size="comfortable"
-              background="transparent"
               (tabChange)="tabComfortable.set($event)"
             />
           </div>

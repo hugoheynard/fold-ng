@@ -131,6 +131,7 @@ the package root.
 | `Sh3HeroComponent`                                      | `sh3-hero`          | Prominent header card (tone ladder + optional accent bar).                                                                         |
 | `Sh3ElementTitleComponent`                              | `sh3-element-title` | Uppercase section/card mini-title (eyebrow · bar variants).                                                                        |
 | `Sh3LinkComponent`                                      | `sh3-link`          | Inline text link / link-button (icons, accent · muted).                                                                            |
+| `Sh3ButtonComponent`                                    | `sh3-button`        | Action button — 5 variants (primary/recommended/critical/ghost/solid) × 3 sizes.                                                   |
 | `Sh3DataTableComponent`                                 | `sh3-data-table`    | Controlled roster table (sortable, tone rows, mobile cards).                                                                       |
 | `Sh3PaginatorComponent`                                 | `sh3-paginator`     | Server-side paginator (size selector + range + page nav).                                                                          |
 | `Sh3BadgeComponent`                                     | `sh3-badge`         | Status / count pill (accent/info/warning/alert/success).                                                                           |

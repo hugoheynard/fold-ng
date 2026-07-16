@@ -112,6 +112,16 @@ Add roles only once we're certain of their usage.
         sticky**, so errors aren't missed). An explicit `show()` arg still wins.
         Config lives on the **service** (not the container — it stamps
         `durationMs` at creation), via the package's `provideSh3X` idiom.
+- [x] **Button** (`sh3-button`) — repatriated the shared button, the design
+      system's most-used primitive (71 consumers). The `sh3-button` selector was
+      already package-shaped, so **templates are untouched** — only the TS import
+      + `imports:` symbol move (`ButtonComponent` → `Sh3ButtonComponent`). The
+      SCSS was re-expressed in `--sh3-*` tokens: hover tints via
+      `color-mix(… var(--sh3-color-*) …)`, the solid CTA via
+      `on-primary`/`primary-strong` — so it passes the component token contract
+      (no raw rgba). `variant`/`size` types live in `button.types.ts`; spec +
+      gallery entry added. The programs-local `ui-button` is a **different**
+      component and was left alone.
 - [x] **Menu** (`sh3-menu` + `menu-item` / `menu-section` / `menu-separator`) —
       the collapsible nav rail: coloured sections, `tint="follow"` (items take
       their section colour), depth `level` (primary/secondary/tertiary tints),

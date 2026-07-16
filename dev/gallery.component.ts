@@ -18,6 +18,9 @@ import {
   type Sh3AvatarRing,
   type Sh3AvatarRingStyle,
   Sh3BadgeComponent,
+  Sh3ButtonComponent,
+  type Sh3ButtonVariant,
+  type Sh3ButtonSize,
   Sh3CardComponent,
   Sh3ChoiceRowComponent,
   type Sh3ChoiceOption,
@@ -140,6 +143,7 @@ interface TocItem {
     Sh3ContextCardComponent,
     Sh3LinkComponent,
     Sh3BadgeComponent,
+    Sh3ButtonComponent,
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
     Sh3TabNavComponent,
@@ -615,6 +619,7 @@ export class GalleryComponent {
     { id: "hero", label: "hero" },
     { id: "card", label: "card" },
     { id: "link", label: "link" },
+    { id: "button", label: "button" },
     { id: "tab-nav", label: "tab-nav" },
     { id: "badges", label: "badge · status · icon" },
     { id: "toast", label: "toast", icon: "toast" },
@@ -711,6 +716,15 @@ export class GalleryComponent {
   protected readonly iconTones = ["primary", "neutral", "faded"] as const;
   protected readonly heroSurfaces = ["card", "sunken"] as const;
   protected readonly heroAccents = ["none", "subtle", "gradient"] as const;
+  protected readonly buttonVariants: Sh3ButtonVariant[] = [
+    "primary",
+    "recommended",
+    "critical",
+    "ghost",
+    "solid",
+  ];
+  protected readonly buttonSizes: Sh3ButtonSize[] = ["sm", "md", "lg"];
+  protected readonly buttonClicks = signal(0);
   protected readonly badgeVariants = [
     "accent",
     "info",
