@@ -1,5 +1,17 @@
 <div class="al-grid">
-  <aside class="al-aside al-aside-left"><ng-content select="[asideLeft]" /></aside>
+  <div
+    class="al-aside al-aside-left"
+    [attr.role]="asideLeftLabel() ? 'complementary' : null"
+    [attr.aria-label]="asideLeftLabel() || null"
+  >
+    <ng-content select="[asideLeft]" />
+  </div>
   <div class="al-center"><ng-content /></div>
-  <aside class="al-aside al-aside-right"><ng-content select="[asideRight]" /></aside>
+  <div
+    class="al-aside al-aside-right"
+    [attr.role]="asideRightLabel() ? 'complementary' : null"
+    [attr.aria-label]="asideRightLabel() || null"
+  >
+    <ng-content select="[asideRight]" />
+  </div>
 </div>

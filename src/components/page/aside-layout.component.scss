@@ -53,7 +53,11 @@
   gap: var(--sh3-aside-layout-stack, 18px);
 }
 
-/* Both rails: sticky flex columns pinned near the top of the scrollport. */
+/* Both rails: sticky flex columns pinned near the top of the scrollport. A rail
+   taller than the scrollport can't be fully seen while stuck, so it caps at the
+   visible height and scrolls internally instead of clipping its overflow below
+   the fold. The default assumes a ~viewport-tall scrollport; a page whose scroll
+   box is shorter overrides `--sh3-aside-layout-rail-max`. */
 .al-aside {
   align-self: start;
   position: sticky;
@@ -62,6 +66,13 @@
   flex-direction: column;
   gap: var(--sh3-aside-layout-rail-gap, 14px);
   min-width: 0;
+  max-height: var(
+    --sh3-aside-layout-rail-max,
+    calc(100dvh - var(--sh3-aside-layout-top, 84px) - 2rem)
+  );
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 /* Collapse to a single column: centre first, then the rails; un-stick. */
@@ -74,6 +85,10 @@
   }
   .al-aside {
     position: static;
+    /* Stacked in one column: no scrollport to fit, so let the rail be its full
+       height again instead of an internal scroll. */
+    max-height: none;
+    overflow: visible;
   }
   .al-center {
     order: 1;
