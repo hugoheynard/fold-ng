@@ -1046,7 +1046,7 @@ sh3-app-shell {
   --sh3-aside-layout-side-width: 96px;
   --sh3-aside-layout-gap: 8px;
   --sh3-aside-layout-pad: 8px;
-  --sh3-aside-layout-top: 8px;
+  /* --sh3-aside-layout-top is driven by the [topOffset] slider instead. */
   --sh3-aside-layout-rail-gap: 8px;
   --sh3-aside-layout-stack: 8px;
   --sh3-aside-layout-max: none;

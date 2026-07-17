@@ -1021,10 +1021,17 @@ export class GalleryComponent {
   protected readonly aslRows = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
+  protected readonly aslOffset = signal(8);
   protected readonly asideLayoutCode = computed(() => {
     const left = this.aslLeft();
+    const offset = this.aslOffset();
+    // 24px is the layout default — omit the attribute when it matches.
+    const open =
+      offset === 24
+        ? "<sh3-aside-layout>"
+        : `<sh3-aside-layout [topOffset]="${offset}">`;
     return [
-      "<sh3-aside-layout>",
+      open,
       ...(left ? ["  <app-timeline asideLeft />"] : []),
       "  <!-- untagged elements → centre column -->",
       "  <app-header />",

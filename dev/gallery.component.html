@@ -538,6 +538,17 @@
                   equal
                 </button>
               </div>
+              <span class="gal-tag">offset {{ aslOffset() }}px</span>
+              <input
+                #off
+                type="range"
+                min="0"
+                max="40"
+                step="2"
+                [value]="aslOffset()"
+                (input)="aslOffset.set(+off.value)"
+                aria-label="Sticky offset in pixels"
+              />
             </div>
             <span class="gal-tag"
               >preview — scroll inside the frame, the rails stick</span
@@ -546,6 +557,7 @@
               <sh3-aside-layout
                 class="asl-demo-layout"
                 [class.is-equal]="aslEqual()"
+                [topOffset]="aslOffset()"
               >
                 @if (aslLeft()) {
                   <div asideLeft class="asl-rail">📍 left</div>
@@ -556,6 +568,13 @@
                 <aside asideRight class="asl-card">📌 aside</aside>
               </sh3-aside-layout>
             </div>
+            <p class="doc-p">
+              <code>topOffset</code> is the gap once a rail <em>sticks</em>, not
+              its resting spot: at rest the shared grid padding (~8px here)
+              already aligns the rails, and <code>sticky</code> only pushes down
+              — so an offset below the padding looks inert until you scroll.
+              Scroll the frame to see 0 vs 40 diverge.
+            </p>
           </div>
 
           <div class="code-block">
