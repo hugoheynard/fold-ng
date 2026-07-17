@@ -539,11 +539,9 @@
                 @if (aslLeft()) {
                   <div asideLeft class="asl-rail">📍 left</div>
                 }
-                <div center>
-                  @for (i of aslRows; track i) {
-                    <div class="asl-block">Section {{ i }}</div>
-                  }
-                </div>
+                @for (i of aslRows; track i) {
+                  <div class="asl-block">Section {{ i }}</div>
+                }
                 <aside asideRight class="asl-card">📌 aside</aside>
               </sh3-aside-layout>
             </div>

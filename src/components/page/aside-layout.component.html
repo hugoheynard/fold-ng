@@ -1,5 +1,5 @@
 <div class="al-grid">
-  <ng-content select="[asideLeft]" />
-  <ng-content select="[center]" />
-  <ng-content select="[asideRight]" />
+  <aside class="al-aside al-aside-left"><ng-content select="[asideLeft]" /></aside>
+  <div class="al-center"><ng-content /></div>
+  <aside class="al-aside al-aside-right"><ng-content select="[asideRight]" /></aside>
 </div>

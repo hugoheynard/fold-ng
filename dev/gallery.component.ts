@@ -1025,14 +1025,12 @@ export class GalleryComponent {
     return [
       "<sh3-aside-layout>",
       ...(left ? ["  <app-timeline asideLeft />"] : []),
-      "  <div center>",
-      "    <app-header />",
-      '    <sh3-page-section title="…">…</sh3-page-section>',
-      "  </div>",
-      "  <aside asideRight>",
-      "    <app-history />",
-      "    <app-actions />",
-      "  </aside>",
+      "  <!-- untagged elements → centre column -->",
+      "  <app-header />",
+      '  <sh3-page-section title="…">…</sh3-page-section>',
+      "  <!-- tag each rail element -->",
+      "  <app-history asideRight />",
+      "  <app-actions asideRight />",
       "</sh3-aside-layout>",
     ].join("\n");
   });

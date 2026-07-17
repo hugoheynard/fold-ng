@@ -6,13 +6,18 @@ import { Component } from "@angular/core";
  * `sh3-page-section`s in the middle, sticky asides beside it, collapsing to a
  * single column on narrow viewports.
  *
- * Three named projection slots — the grid adapts to whichever are filled (via
- * `:has()`), so an omitted rail simply drops its column (reactively, even if
- * the rail appears/disappears at runtime):
+ * Content goes in three slots; the grid adapts to whichever rails are filled
+ * (via `:has()`), so an omitted rail simply drops its column (reactively, even
+ * if the rail appears/disappears at runtime):
+ * - default slot — the centre content column (the scroll-length driver): every
+ *   element that isn't tagged as a rail. Its blocks are stacked for you.
  * - `[asideLeft]` — optional left rail (e.g. a timeline); its presence turns on
- *   the third column.
- * - `[center]` — the main content column, and the scroll-length driver.
- * - `[asideRight]` — the right rail (history, actions…).
+ *   the third column. Tag each element that belongs in it.
+ * - `[asideRight]` — the right rail (history, actions…). Tag each element.
+ *
+ * Rail content is tagged per-element (not wrapped in one node) so the layout
+ * stacks it directly — that's what lets it style the projected blocks without
+ * reaching through view encapsulation.
  *
  * Scroll-agnostic: the asides stick relative to the page's own scroll
  * container (its ancestor), so a page keeps whatever scroll it already owns —
@@ -33,14 +38,12 @@ import { Component } from "@angular/core";
  * ```html
  * <sh3-aside-layout>
  *   <app-timeline asideLeft />
- *   <div center>
- *     <app-header />
- *     <sh3-page-section title="…">…</sh3-page-section>
- *   </div>
- *   <aside asideRight>
- *     <app-history />
- *     <app-actions />
- *   </aside>
+ *
+ *   <app-header />
+ *   <sh3-page-section title="…">…</sh3-page-section>
+ *
+ *   <app-history asideRight />
+ *   <app-actions asideRight />
  * </sh3-aside-layout>
  * ```
  */
