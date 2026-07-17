@@ -1,0 +1,30 @@
+/* The host disappears (display: contents) so the dt/dd become direct children
+   of the list's <dl> grid. This component styles only their appearance — the
+   grid geometry (columns, gaps, baseline) is the list's job. */
+:host {
+  display: contents;
+}
+
+.fl-key {
+  margin: 0;
+  font-size: var(--sh3-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sh3-color-text-muted);
+}
+
+.fl-val {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sh3-space-xs);
+  font-size: var(--sh3-text-md);
+  color: var(--sh3-color-text);
+}
+
+.fl-empty {
+  color: var(--sh3-color-text-muted);
+  font-style: italic;
+}

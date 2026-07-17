@@ -1,0 +1,6 @@
+<dt class="fl-key">{{ label() }}</dt>
+@if (empty()) {
+  <dd class="fl-val fl-empty">{{ placeholder() }}</dd>
+} @else {
+  <dd class="fl-val"><ng-content /></dd>
+}

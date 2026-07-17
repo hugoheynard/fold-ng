@@ -1,0 +1,18 @@
+/* The host disappears (display: contents) so the <dl> is the effective element
+   in the consumer's flow. All layout lives here on the grid; the dt/dd it lays
+   out are contributed by the sh3-field children (also display: contents) and
+   auto-place into these tracks by box-tree position — no selector crosses the
+   encapsulation boundary. */
+:host {
+  display: contents;
+}
+
+.fl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: var(--sh3-field-list-label-width, 160px) minmax(0, 1fr);
+  column-gap: var(--sh3-field-list-col-gap, 16px);
+  row-gap: var(--sh3-field-list-row-gap, 10px);
+  align-items: baseline;
+  min-width: 0;
+}
