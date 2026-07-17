@@ -60,9 +60,9 @@
    box is shorter overrides `--sh3-aside-layout-rail-max`. */
 .al-aside {
   /* Resolved sticky offset for this rail: its own override → the shared offset →
-     84px. Both `top` and the height cap read it, so a per-rail offset stays
+     24px. Both `top` and the height cap read it, so a per-rail offset stays
      consistent with the internal scroll. */
-  --al-rail-top: var(--sh3-aside-layout-top, 84px);
+  --al-rail-top: var(--sh3-aside-layout-top, 24px);
   align-self: start;
   position: sticky;
   top: var(--al-rail-top);
@@ -81,13 +81,13 @@
 .al-aside-left {
   --al-rail-top: var(
     --sh3-aside-layout-left-top,
-    var(--sh3-aside-layout-top, 84px)
+    var(--sh3-aside-layout-top, 24px)
   );
 }
 .al-aside-right {
   --al-rail-top: var(
     --sh3-aside-layout-right-top,
-    var(--sh3-aside-layout-top, 84px)
+    var(--sh3-aside-layout-top, 24px)
   );
 }
 

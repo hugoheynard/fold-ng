@@ -35,7 +35,7 @@ import { Component, input } from "@angular/core";
  * `--sh3-aside-layout-side-width` (300px). Rails default to a fixed width and
  * the centre flexes; set all three to `minmax(0, 1fr)` for **equal columns**.
  * Also `--sh3-aside-layout-gap` (28px) · `--sh3-aside-layout-max` (1240px) ·
- * `--sh3-aside-layout-top` (84px, the sticky offset — override per rail with
+ * `--sh3-aside-layout-top` (24px, the sticky offset — override per rail with
  * `--sh3-aside-layout-left-top` / `--sh3-aside-layout-right-top`) ·
  * `--sh3-aside-layout-rail-max` (the cap above which a taller-than-viewport rail
  * scrolls internally instead of being clipped by `sticky`). The page still owns
