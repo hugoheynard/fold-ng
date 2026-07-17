@@ -1311,6 +1311,70 @@
         </sh3-page-section>
       </section>
 
+      <!-- ── sh3-field / sh3-field-list ────────────────────────── -->
+      <section id="field" class="gal-sec">
+        <sh3-page-section
+          title="sh3-field · sh3-field-list"
+          description="The read-only half of a record — a dl/dt/dd list of label/value pairs. The display counterpart of sh3-input (which is the edit half): nothing here is interactive, it shows values you already know."
+        >
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">basic recap · [empty] placeholder</span>
+              <div class="fld-demo">
+                <sh3-field-list>
+                  <sh3-field label="Contract type">CDI</sh3-field>
+                  <sh3-field label="Job title">Sound engineer</sh3-field>
+                  <sh3-field label="End date" [empty]="true" />
+                  <sh3-field
+                    label="Notice"
+                    [empty]="true"
+                    placeholder="Non renseigné"
+                  />
+                </sh3-field-list>
+              </div>
+            </div>
+
+            <div class="gal-cell">
+              <span class="gal-tag">rich values · chips, links, icons</span>
+              <div class="fld-demo">
+                <sh3-field-list>
+                  <sh3-field label="Status">
+                    <sh3-status-badge status="active" label="Actif" />
+                  </sh3-field>
+                  <sh3-field label="Tags">
+                    <sh3-badge content="lead" variant="info" />
+                    <sh3-badge content="urgent" variant="warning" />
+                  </sh3-field>
+                  <sh3-field label="Contact">
+                    <sh3-icon name="team" [size]="16" />
+                    <sh3-link href="#field">Marc Machine</sh3-link>
+                  </sh3-field>
+                </sh3-field-list>
+              </div>
+            </div>
+
+            <div class="gal-cell">
+              <span class="gal-tag">narrow rail · shrink the label column</span>
+              <div class="fld-demo">
+                <sh3-field-list class="fld-narrow">
+                  <sh3-field label="Type">CDI</sh3-field>
+                  <sh3-field label="Start">12 Mar 2026</sh3-field>
+                </sh3-field-list>
+              </div>
+            </div>
+
+            <p class="doc-p">
+              Layout lives on the list's <code>&lt;dl&gt;</code> grid,
+              appearance on each field's <code>dt/dd</code>. The grid places the
+              projected cells by position, so nothing pierces view encapsulation
+              — set <code>--sh3-field-list-label-width</code> on the list to
+              reflow every row. Reach for <code>sh3-input</code> instead the
+              moment the value becomes editable.
+            </p>
+          </div>
+        </sh3-page-section>
+      </section>
+
       <!-- ── badges + icons ────────────────────────────────────── -->
       <section id="badges" class="gal-sec">
         <sh3-page-section title="sh3-badge · sh3-status-badge · sh3-icon">

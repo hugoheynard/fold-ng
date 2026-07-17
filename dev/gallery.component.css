@@ -1081,3 +1081,17 @@ sh3-app-shell {
   border-color: var(--sh3-color-info-border);
   color: var(--sh3-color-info-text);
 }
+
+/* sh3-field-list demos: a light surface framing (the list host is
+   display:contents, so the frame lives on this wrapper, not the component). */
+.fld-demo {
+  max-width: 420px;
+  padding: 16px 18px;
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-card);
+  border: 1px solid var(--sh3-color-border-subtle);
+}
+/* Custom props inherit through the display:contents host down to the <dl>. */
+.fld-narrow {
+  --sh3-field-list-label-width: 72px;
+}
