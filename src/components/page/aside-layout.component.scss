@@ -59,20 +59,36 @@
    the fold. The default assumes a ~viewport-tall scrollport; a page whose scroll
    box is shorter overrides `--sh3-aside-layout-rail-max`. */
 .al-aside {
+  /* Resolved sticky offset for this rail: its own override → the shared offset →
+     84px. Both `top` and the height cap read it, so a per-rail offset stays
+     consistent with the internal scroll. */
+  --al-rail-top: var(--sh3-aside-layout-top, 84px);
   align-self: start;
   position: sticky;
-  top: var(--sh3-aside-layout-top, 84px);
+  top: var(--al-rail-top);
   display: flex;
   flex-direction: column;
   gap: var(--sh3-aside-layout-rail-gap, 14px);
   min-width: 0;
   max-height: var(
     --sh3-aside-layout-rail-max,
-    calc(100dvh - var(--sh3-aside-layout-top, 84px) - 2rem)
+    calc(100dvh - var(--al-rail-top) - 2rem)
   );
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+}
+.al-aside-left {
+  --al-rail-top: var(
+    --sh3-aside-layout-left-top,
+    var(--sh3-aside-layout-top, 84px)
+  );
+}
+.al-aside-right {
+  --al-rail-top: var(
+    --sh3-aside-layout-right-top,
+    var(--sh3-aside-layout-top, 84px)
+  );
 }
 
 /* Collapse to a single column: centre first, then the rails; un-stick. */
