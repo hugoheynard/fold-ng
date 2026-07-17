@@ -1039,6 +1039,24 @@ sh3-app-shell {
   border-radius: var(--sh3-radius-md);
   background: var(--sh3-color-surface-sunken);
 }
+/* Compact metrics so the layout fits the mini frame (a class, not inline, so the
+   `.is-equal` modifier can override the track widths). */
+.asl-demo-layout {
+  --sh3-aside-layout-rail-width: 56px;
+  --sh3-aside-layout-side-width: 96px;
+  --sh3-aside-layout-gap: 8px;
+  --sh3-aside-layout-pad: 8px;
+  --sh3-aside-layout-top: 8px;
+  --sh3-aside-layout-rail-gap: 8px;
+  --sh3-aside-layout-stack: 8px;
+  --sh3-aside-layout-max: none;
+}
+/* Equal columns: all three tracks share the space. */
+.asl-demo-layout.is-equal {
+  --sh3-aside-layout-rail-width: minmax(0, 1fr);
+  --sh3-aside-layout-center-width: minmax(0, 1fr);
+  --sh3-aside-layout-side-width: minmax(0, 1fr);
+}
 .asl-block {
   padding: 14px 12px;
   border-radius: var(--sh3-radius-sm);

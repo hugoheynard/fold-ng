@@ -4,7 +4,7 @@
 
 .al-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: var(--sh3-aside-layout-center-width, minmax(0, 1fr));
   gap: var(--sh3-aside-layout-gap, 28px);
   max-width: var(--sh3-aside-layout-max, 1240px);
   margin-inline: auto;
@@ -13,17 +13,23 @@
 
 /* Columns exist only for the rails actually filled — `:has()` inspects the
    *projected* content (its argument isn't view-scoped), so this stays reactive:
-   a rail that toggles at runtime adds/drops its column. */
+   a rail that toggles at runtime adds/drops its column.
+   Each track is a CSS var: rails default to a fixed width, the centre flexes.
+   Set all three to `minmax(0, 1fr)` (or `1fr`) for equal columns. */
 :host:has([asideright]) .al-grid {
-  grid-template-columns: minmax(0, 1fr) var(--sh3-aside-layout-side-width, 300px);
+  grid-template-columns:
+    var(--sh3-aside-layout-center-width, minmax(0, 1fr))
+    var(--sh3-aside-layout-side-width, 300px);
 }
 :host:has([asideleft]) .al-grid {
-  grid-template-columns: var(--sh3-aside-layout-rail-width, 220px) minmax(0, 1fr);
+  grid-template-columns:
+    var(--sh3-aside-layout-rail-width, 220px)
+    var(--sh3-aside-layout-center-width, minmax(0, 1fr));
 }
 :host:has([asideleft]):has([asideright]) .al-grid {
   grid-template-columns:
     var(--sh3-aside-layout-rail-width, 220px)
-    minmax(0, 1fr)
+    var(--sh3-aside-layout-center-width, minmax(0, 1fr))
     var(--sh3-aside-layout-side-width, 300px);
 }
 

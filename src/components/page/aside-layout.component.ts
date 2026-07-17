@@ -26,11 +26,23 @@ import { Component } from "@angular/core";
  * `sh3StickyColumn` (top anchor) because it owns its columns, and pairs with a
  * `sh3-page-section` stack in the centre.
  *
- * Layout only, no inputs — tune via CSS custom properties on the host:
- * `--sh3-aside-layout-side-width` (300px) · `--sh3-aside-layout-rail-width`
- * (220px) · `--sh3-aside-layout-gap` (28px) · `--sh3-aside-layout-max` (1240px)
- * · `--sh3-aside-layout-top` (84px, the sticky offset). The page still owns the
+ * Layout only, no inputs — tune via CSS custom properties on the host. Each of
+ * the three tracks is a var: `--sh3-aside-layout-rail-width` (220px) ·
+ * `--sh3-aside-layout-center-width` (`minmax(0, 1fr)`) ·
+ * `--sh3-aside-layout-side-width` (300px). Rails default to a fixed width and
+ * the centre flexes; set all three to `minmax(0, 1fr)` for **equal columns**.
+ * Also `--sh3-aside-layout-gap` (28px) · `--sh3-aside-layout-max` (1240px) ·
+ * `--sh3-aside-layout-top` (84px, the sticky offset). The page still owns the
  * scroll container the asides stick within.
+ *
+ * ```scss
+ * // three equal columns
+ * sh3-aside-layout {
+ *   --sh3-aside-layout-rail-width: minmax(0, 1fr);
+ *   --sh3-aside-layout-center-width: minmax(0, 1fr);
+ *   --sh3-aside-layout-side-width: minmax(0, 1fr);
+ * }
+ * ```
  *
  * @selector `sh3-aside-layout`
  *

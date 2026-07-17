@@ -490,14 +490,16 @@
           <p class="doc-p">
             The detail-page archetype: a centered content column flanked by up
             to two sticky side rails, collapsing to one column on narrow
-            viewports. Three named slots —
-            <code>[asideLeft]</code> / <code>[center]</code> /
-            <code>[asideRight]</code> — and the grid adapts to whichever rails
-            are projected (via <code>:has()</code>), reactively. Zero inputs;
-            tune the metrics with CSS vars
-            (<code>--sh3-aside-layout-side-width</code>,
-            <code>--sh3-aside-layout-top</code>…). Scroll-agnostic: the asides
-            stick within the page's own scroll container.
+            viewports. Untagged elements are the centre; tag rail elements
+            <code>asideLeft</code> / <code>asideRight</code>. The grid adapts to
+            whichever rails are projected (via <code>:has()</code>), reactively.
+            Zero inputs; each track is a CSS var, so rails default to a fixed
+            width and the centre flexes — set all three (<code
+              >--sh3-aside-layout-rail-width</code
+            >
+            / <code>-center-width</code> / <code>-side-width</code>) to
+            <code>minmax(0, 1fr)</code> for equal columns. Scroll-agnostic: the
+            asides stick within the page's own scroll container.
           </p>
 
           <div class="gal-cell">
@@ -519,22 +521,31 @@
                   on (3-col)
                 </button>
               </div>
+              <span class="gal-tag">columns</span>
+              <div class="ss-seg">
+                <button
+                  type="button"
+                  [class.is-on]="!aslEqual()"
+                  (click)="aslEqual.set(false)"
+                >
+                  fixed rails
+                </button>
+                <button
+                  type="button"
+                  [class.is-on]="aslEqual()"
+                  (click)="aslEqual.set(true)"
+                >
+                  equal
+                </button>
+              </div>
             </div>
             <span class="gal-tag"
               >preview — scroll inside the frame, the rails stick</span
             >
             <div class="asl-demo">
               <sh3-aside-layout
-                style="
-                  --sh3-aside-layout-rail-width: 56px;
-                  --sh3-aside-layout-side-width: 96px;
-                  --sh3-aside-layout-gap: 8px;
-                  --sh3-aside-layout-pad: 8px;
-                  --sh3-aside-layout-top: 8px;
-                  --sh3-aside-layout-rail-gap: 8px;
-                  --sh3-aside-layout-stack: 8px;
-                  --sh3-aside-layout-max: none;
-                "
+                class="asl-demo-layout"
+                [class.is-equal]="aslEqual()"
               >
                 @if (aslLeft()) {
                   <div asideLeft class="asl-rail">📍 left</div>

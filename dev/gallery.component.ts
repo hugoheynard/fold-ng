@@ -1020,6 +1020,7 @@ export class GalleryComponent {
   /* ── aside-layout demo ── */
   protected readonly aslRows = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly aslLeft = signal(false);
+  protected readonly aslEqual = signal(false);
   protected readonly asideLayoutCode = computed(() => {
     const left = this.aslLeft();
     return [
