@@ -30,7 +30,8 @@ import { Component, computed, input } from "@angular/core";
  * {@link asideRightLabel}) — set one and that rail becomes a labelled
  * `complementary` landmark, leave it unset and the rail is a plain container
  * (no anonymous landmark noise) — plus {@link topOffset}, a convenience over the
- * sticky-offset var. Everything else is CSS custom properties on the host. Each of the three tracks is a var: `--sh3-aside-layout-rail-width`
+ * sticky-offset var. Everything else is CSS custom properties on the host. Each
+ * of the three tracks is a var: `--sh3-aside-layout-rail-width`
  * (220px) · `--sh3-aside-layout-center-width` (`minmax(0, 1fr)`) ·
  * `--sh3-aside-layout-side-width` (300px). Rails default to a fixed width and
  * the centre flexes; set all three to `minmax(0, 1fr)` for **equal columns**.
@@ -87,6 +88,14 @@ export class Sh3AsideLayoutComponent {
    * over the `--sh3-aside-layout-top` var (which it sets); leave it unset to keep
    * the 24px default or a per-rail `--sh3-aside-layout-left-top` /
    * `-right-top` override.
+   *
+   * It's the gap the rail keeps from the top **once it sticks** (i.e. after you
+   * scroll). At rest the rail already lines up with the centre via the shared
+   * grid padding, and `sticky` only ever pushes down, never up — so an offset
+   * *below* the grid's top padding has no visible effect until you scroll (a
+   * value like `0`–`20` looks inert on a page padded by 28px). Raise the offset
+   * past the padding to push the resting rail down; to pull it up, shrink
+   * `--sh3-aside-layout-pad` instead.
    */
   readonly topOffset = input<number | string>();
 
