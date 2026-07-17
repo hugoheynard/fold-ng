@@ -1,4 +1,4 @@
-import { Component, input } from "@angular/core";
+import { Component, computed, input } from "@angular/core";
 
 /**
  * `<sh3-aside-layout>` — a centered, self-scrolling content column flanked by
@@ -26,11 +26,11 @@ import { Component, input } from "@angular/core";
  * `sh3StickyColumn` (top anchor) because it owns its columns, and pairs with a
  * `sh3-page-section` stack in the centre.
  *
- * The only inputs are optional a11y labels ({@link asideLeftLabel} /
- * {@link asideRightLabel}): set one and that rail becomes a labelled
- * `complementary` landmark; leave it unset and the rail is a plain container —
- * no anonymous landmark noise. Everything else is CSS custom properties on the
- * host. Each of the three tracks is a var: `--sh3-aside-layout-rail-width`
+ * Inputs are kept minimal: optional a11y labels ({@link asideLeftLabel} /
+ * {@link asideRightLabel}) — set one and that rail becomes a labelled
+ * `complementary` landmark, leave it unset and the rail is a plain container
+ * (no anonymous landmark noise) — plus {@link topOffset}, a convenience over the
+ * sticky-offset var. Everything else is CSS custom properties on the host. Each of the three tracks is a var: `--sh3-aside-layout-rail-width`
  * (220px) · `--sh3-aside-layout-center-width` (`minmax(0, 1fr)`) ·
  * `--sh3-aside-layout-side-width` (300px). Rails default to a fixed width and
  * the centre flexes; set all three to `minmax(0, 1fr)` for **equal columns**.
@@ -70,6 +70,7 @@ import { Component, input } from "@angular/core";
   standalone: true,
   templateUrl: "./aside-layout.component.html",
   styleUrl: "./aside-layout.component.scss",
+  host: { "[style.--sh3-aside-layout-top]": "topOffsetCss()" },
 })
 export class Sh3AsideLayoutComponent {
   /**
@@ -80,4 +81,21 @@ export class Sh3AsideLayoutComponent {
   readonly asideLeftLabel = input<string>();
   /** Accessible label for the right rail — same rule as {@link asideLeftLabel}. */
   readonly asideRightLabel = input<string>();
+
+  /**
+   * The rails' sticky offset — a number (px) or any CSS length. A convenience
+   * over the `--sh3-aside-layout-top` var (which it sets); leave it unset to keep
+   * the 24px default or a per-rail `--sh3-aside-layout-left-top` /
+   * `-right-top` override.
+   */
+  readonly topOffset = input<number | string>();
+
+  /** The offset as a CSS length, or `null` to leave the var untouched. */
+  protected readonly topOffsetCss = computed(() => {
+    const o = this.topOffset();
+    if (o === undefined) {
+      return null;
+    }
+    return typeof o === "number" ? `${o}px` : o;
+  });
 }

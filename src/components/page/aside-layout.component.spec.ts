@@ -8,7 +8,10 @@ import { Sh3AsideLayoutComponent } from "./aside-layout.component";
 @Component({
   standalone: true,
   imports: [Sh3AsideLayoutComponent],
-  template: `<sh3-aside-layout [asideRightLabel]="rightLabel()">
+  template: `<sh3-aside-layout
+    [asideRightLabel]="rightLabel()"
+    [topOffset]="offset()"
+  >
     @if (left()) {
       <div asideLeft>L</div>
     }
@@ -19,6 +22,7 @@ import { Sh3AsideLayoutComponent } from "./aside-layout.component";
 class HostComponent {
   readonly left = signal(true);
   readonly rightLabel = signal<string | undefined>(undefined);
+  readonly offset = signal<number | string | undefined>(undefined);
 }
 
 function render() {
@@ -27,6 +31,7 @@ function render() {
   const host = fixture.nativeElement as HTMLElement;
   return {
     fixture,
+    layout: host.querySelector("sh3-aside-layout") as HTMLElement,
     center: host.querySelector(".al-center") as HTMLElement,
     railLeft: host.querySelector(".al-aside-left") as HTMLElement,
     railRight: host.querySelector(".al-aside-right") as HTMLElement,
@@ -71,6 +76,22 @@ describe("Sh3AsideLayoutComponent", () => {
     fixture.componentInstance.rightLabel.set(undefined);
     fixture.detectChanges();
     expect(railRight.getAttribute("role")).toBeNull();
+  });
+
+  it("drives the sticky-offset var from the topOffset input", () => {
+    const { fixture, layout } = render();
+    // unset → the var is left to the CSS default / per-rail overrides
+    expect(layout.style.getPropertyValue("--sh3-aside-layout-top")).toBe("");
+
+    fixture.componentInstance.offset.set(0);
+    fixture.detectChanges();
+    expect(layout.style.getPropertyValue("--sh3-aside-layout-top")).toBe("0px");
+
+    fixture.componentInstance.offset.set("2rem");
+    fixture.detectChanges();
+    expect(layout.style.getPropertyValue("--sh3-aside-layout-top")).toBe(
+      "2rem",
+    );
   });
 
   // happy-dom can't exercise the layout at runtime (it computes neither `:has()`
