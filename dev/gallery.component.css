@@ -1030,3 +1030,36 @@ sh3-app-shell {
   font-weight: 600;
   text-align: center;
 }
+
+/* ── sh3-aside-layout demo ────────────────────────────────── */
+.asl-demo {
+  height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-sunken);
+}
+.asl-block {
+  padding: 14px 12px;
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-surface-raised);
+  border: 1px solid var(--sh3-color-border-subtle);
+  font-size: 12px;
+  color: var(--sh3-color-text-secondary);
+}
+.asl-card,
+.asl-rail {
+  padding: 12px 8px;
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-primary-surface);
+  border: 1px solid var(--sh3-color-primary-border);
+  color: var(--sh3-color-primary-text);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+.asl-rail {
+  background: var(--sh3-color-info-surface);
+  border-color: var(--sh3-color-info-border);
+  color: var(--sh3-color-info-text);
+}

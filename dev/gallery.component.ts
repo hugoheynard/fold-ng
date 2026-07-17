@@ -38,6 +38,7 @@ import {
   type Sh3MenuLevel,
   type Sh3MenuTint,
   type Sh3MenuTogglePlacement,
+  Sh3AsideLayoutComponent,
   Sh3PageSectionComponent,
   Sh3StickyColumnDirective,
   type Sh3StickyColumnAnchor,
@@ -154,6 +155,7 @@ interface NavGroup {
     Sh3CardComponent,
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
+    Sh3AsideLayoutComponent,
     Sh3PageSectionComponent,
     Sh3StickyColumnDirective,
     Sh3ElementTitleComponent,
@@ -696,6 +698,12 @@ export class GalleryComponent {
           badge: "new",
           badgeTone: "info",
         },
+        {
+          id: "aside-layout",
+          label: "aside-layout",
+          badge: "new",
+          badgeTone: "info",
+        },
       ],
     },
     {
@@ -1006,6 +1014,26 @@ export class GalleryComponent {
       "    --sh3-sticky-column-position: static;",
       "  }",
       "}",
+    ].join("\n");
+  });
+
+  /* ── aside-layout demo ── */
+  protected readonly aslRows = [1, 2, 3, 4, 5, 6, 7, 8];
+  protected readonly aslLeft = signal(false);
+  protected readonly asideLayoutCode = computed(() => {
+    const left = this.aslLeft();
+    return [
+      "<sh3-aside-layout>",
+      ...(left ? ["  <app-timeline asideLeft />"] : []),
+      "  <div center>",
+      "    <app-header />",
+      '    <sh3-page-section title="…">…</sh3-page-section>',
+      "  </div>",
+      "  <aside asideRight>",
+      "    <app-history />",
+      "    <app-actions />",
+      "  </aside>",
+      "</sh3-aside-layout>",
     ].join("\n");
   });
 

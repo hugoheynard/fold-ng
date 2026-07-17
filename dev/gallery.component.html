@@ -401,11 +401,12 @@
           <p class="doc-p">
             Layout directive — turns its host into a sticky side column (a
             vertical flex stack that stays put while the main content scrolls
-            past). Put it on an <code>&lt;aside&gt;</code> to keep the semantics.
-            No template, no wrapper. The anchor
-            (<code>sticky="top | center | bottom"</code>) and offset
-            (<code>[stickyOffset]</code>) are inputs; the gap and the responsive
-            un-stick stay CSS vars — <code>--sh3-sticky-column-gap</code> and
+            past). Put it on an <code>&lt;aside&gt;</code> to keep the
+            semantics. No template, no wrapper. The anchor (<code
+              >sticky="top | center | bottom"</code
+            >) and offset (<code>[stickyOffset]</code>) are inputs; the gap and
+            the responsive un-stick stay CSS vars —
+            <code>--sh3-sticky-column-gap</code> and
             <code>--sh3-sticky-column-position</code>, which the page flips to
             <code>static</code> at its own stacking breakpoint.
           </p>
@@ -479,6 +480,91 @@
               </button>
             </div>
             <pre class="code-pre"><code>{{ stickyColumnCode() }}</code></pre>
+          </div>
+        </sh3-page-section>
+      </section>
+
+      <!-- ── sh3-aside-layout ──────────────────────────────────── -->
+      <section id="aside-layout" class="gal-sec">
+        <sh3-page-section title="[sh3-aside-layout]">
+          <p class="doc-p">
+            The detail-page archetype: a centered content column flanked by up
+            to two sticky side rails, collapsing to one column on narrow
+            viewports. Three named slots —
+            <code>[asideLeft]</code> / <code>[center]</code> /
+            <code>[asideRight]</code> — and the grid adapts to whichever rails
+            are projected (via <code>:has()</code>), reactively. Zero inputs;
+            tune the metrics with CSS vars
+            (<code>--sh3-aside-layout-side-width</code>,
+            <code>--sh3-aside-layout-top</code>…). Scroll-agnostic: the asides
+            stick within the page's own scroll container.
+          </p>
+
+          <div class="gal-cell">
+            <div class="gal-row">
+              <span class="gal-tag">left rail</span>
+              <div class="ss-seg">
+                <button
+                  type="button"
+                  [class.is-on]="!aslLeft()"
+                  (click)="aslLeft.set(false)"
+                >
+                  off (2-col)
+                </button>
+                <button
+                  type="button"
+                  [class.is-on]="aslLeft()"
+                  (click)="aslLeft.set(true)"
+                >
+                  on (3-col)
+                </button>
+              </div>
+            </div>
+            <span class="gal-tag"
+              >preview — scroll inside the frame, the rails stick</span
+            >
+            <div class="asl-demo">
+              <sh3-aside-layout
+                style="
+                  --sh3-aside-layout-rail-width: 56px;
+                  --sh3-aside-layout-side-width: 96px;
+                  --sh3-aside-layout-gap: 8px;
+                  --sh3-aside-layout-pad: 8px;
+                  --sh3-aside-layout-top: 8px;
+                  --sh3-aside-layout-rail-gap: 8px;
+                  --sh3-aside-layout-stack: 8px;
+                  --sh3-aside-layout-max: none;
+                "
+              >
+                @if (aslLeft()) {
+                  <div asideLeft class="asl-rail">📍 left</div>
+                }
+                <div center>
+                  @for (i of aslRows; track i) {
+                    <div class="asl-block">Section {{ i }}</div>
+                  }
+                </div>
+                <aside asideRight class="asl-card">📌 aside</aside>
+              </sh3-aside-layout>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-top">
+              <span class="code-lang">html</span>
+              <button
+                type="button"
+                class="code-copy"
+                (click)="copyDemoCode(asideLayoutCode())"
+              >
+                <sh3-icon
+                  [name]="demoCopied() ? 'check-circle' : 'copy'"
+                  size="sm"
+                />
+                {{ demoCopied() ? "Copied" : "Copy" }}
+              </button>
+            </div>
+            <pre class="code-pre"><code>{{ asideLayoutCode() }}</code></pre>
           </div>
         </sh3-page-section>
       </section>
