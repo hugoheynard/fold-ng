@@ -1,0 +1,80 @@
+:host {
+  display: block;
+}
+
+.al-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sh3-aside-layout-gap, 28px);
+  max-width: var(--sh3-aside-layout-max, 1240px);
+  margin-inline: auto;
+  padding: var(--sh3-aside-layout-pad, 28px 28px 64px);
+}
+
+/* Columns exist only for the rails actually projected — `:has()` keeps this
+   reactive, so a rail that toggles at runtime adds/drops its column. */
+:host:has([asideright]) .al-grid {
+  grid-template-columns: minmax(0, 1fr) var(--sh3-aside-layout-side-width, 300px);
+}
+:host:has([asideleft]) .al-grid {
+  grid-template-columns: var(--sh3-aside-layout-rail-width, 220px) minmax(0, 1fr);
+}
+:host:has([asideleft]):has([asideright]) .al-grid {
+  grid-template-columns:
+    var(--sh3-aside-layout-rail-width, 220px)
+    minmax(0, 1fr)
+    var(--sh3-aside-layout-side-width, 300px);
+}
+
+/* Centre: stack its blocks with a consistent rhythm; min-width:0 lets it shrink
+   inside the fr track instead of overflowing. */
+.al-grid > [center] {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh3-aside-layout-stack, 18px);
+}
+
+/* Both rails: sticky flex columns pinned near the top of the scrollport. The
+   projected element is itself the sticky column — no wrapper. */
+.al-grid > [asideleft],
+.al-grid > [asideright] {
+  align-self: start;
+  position: sticky;
+  top: var(--sh3-aside-layout-top, 84px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh3-aside-layout-rail-gap, 14px);
+  min-width: 0;
+}
+
+/* Collapse to a single column: centre first, then the rails; un-stick. The
+   selectors mirror the desktop ones so equal specificity + later source wins. */
+@media (max-width: 1040px) {
+  .al-grid,
+  :host:has([asideright]) .al-grid,
+  :host:has([asideleft]) .al-grid,
+  :host:has([asideleft]):has([asideright]) .al-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .al-grid > [asideleft],
+  .al-grid > [asideright] {
+    position: static;
+  }
+  .al-grid > [center] {
+    order: 1;
+  }
+  .al-grid > [asideleft] {
+    order: 2;
+  }
+  .al-grid > [asideright] {
+    order: 3;
+  }
+}
+
+@media (max-width: 700px) {
+  .al-grid {
+    padding: var(--sh3-aside-layout-pad-sm, 16px 14px 48px);
+    gap: 16px;
+  }
+}
