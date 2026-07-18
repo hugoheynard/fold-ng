@@ -820,6 +820,8 @@ export class GalleryComponent {
      layout: vertical nav + page-section + choice-row. */
   protected readonly demoText = signal("Two-way [(value)]");
   protected readonly demoBpm = signal<number | null>(120);
+  protected readonly demoArrows = signal<number | null>(8);
+  protected readonly demoStepper = signal<number | null>(2);
   protected readonly fName = signal("Clément Aubry");
   protected readonly fEmail = signal("clement@sh3pherd.dev");
   protected readonly fRole = signal("manager");

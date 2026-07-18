@@ -4,18 +4,76 @@
   [required]="required()"
   [hint]="hint()"
 >
-  <input
-    [id]="inputId"
-    type="number"
-    [attr.min]="min()"
-    [attr.max]="max()"
-    [attr.step]="step()"
-    [attr.placeholder]="placeholder()"
-    [attr.readonly]="readOnly() || null"
-    [attr.disabled]="disabled() || null"
-    [attr.required]="required() || null"
-    [value]="value()"
-    (input)="onInputChange($event)"
-    (blur)="touch.emit()"
-  />
+  <div
+    class="ni-field"
+    [class.ni-mode-arrows]="spinner() === 'arrows'"
+    [class.ni-mode-stepper]="spinner() === 'stepper'"
+    [class.ni-with-step]="showStep() && step() != null"
+  >
+    @if (spinner() === "stepper") {
+      <button
+        type="button"
+        class="ni-btn"
+        [disabled]="disabled() || readOnly() || atMin()"
+        aria-label="Decrement"
+        (click)="stepBy(-1)"
+      >
+        <sh3-icon name="minus" size="sm" />
+      </button>
+    }
+
+    <input
+      [id]="inputId"
+      type="number"
+      [attr.min]="min()"
+      [attr.max]="max()"
+      [attr.step]="step()"
+      [attr.placeholder]="placeholder()"
+      [attr.readonly]="readOnly() || null"
+      [attr.disabled]="disabled() || null"
+      [attr.required]="required() || null"
+      [value]="value()"
+      (input)="onInputChange($event)"
+      (blur)="touch.emit()"
+    />
+
+    @if (showStep() && step() != null && spinner() !== "stepper") {
+      <span class="ni-step" aria-hidden="true">{{ step() }}</span>
+    }
+
+    @if (spinner() === "arrows") {
+      <span class="ni-arrows">
+        <button
+          type="button"
+          class="ni-arrow"
+          [disabled]="disabled() || readOnly() || atMax()"
+          aria-label="Increment"
+          (click)="stepBy(1)"
+        >
+          <sh3-icon name="chevron-up" size="xs" />
+        </button>
+        <button
+          type="button"
+          class="ni-arrow"
+          [disabled]="disabled() || readOnly() || atMin()"
+          aria-label="Decrement"
+          (click)="stepBy(-1)"
+        >
+          <sh3-icon name="chevron-down" size="xs" />
+        </button>
+      </span>
+    }
+
+    @if (spinner() === "stepper") {
+      <button
+        type="button"
+        class="ni-btn"
+        [disabled]="disabled() || readOnly() || atMax()"
+        aria-label="Increment"
+        (click)="stepBy(1)"
+      >
+        <sh3-icon name="plus" size="sm" />
+      </button>
+    }
+  </div>
 </sh3-input-base>

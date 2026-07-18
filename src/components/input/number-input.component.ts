@@ -1,6 +1,7 @@
 import {
   booleanAttribute,
   Component,
+  computed,
   inject,
   input,
   model,
@@ -8,8 +9,12 @@ import {
 } from "@angular/core";
 import type { FormValueControl } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
+import { Sh3IconComponent } from "../icon/icon.component";
 import { Sh3InputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
+
+/** How the increment/decrement affordance renders. */
+export type Sh3NumberSpinner = "none" | "arrows" | "stepper";
 
 /**
  * `<sh3-number-input>` — the numeric sibling of {@link Sh3InputComponent}. Split
@@ -38,7 +43,7 @@ import { readInputValue } from "./input-value";
 @Component({
   selector: "sh3-number-input",
   standalone: true,
-  imports: [Sh3InputBaseComponent],
+  imports: [Sh3InputBaseComponent, Sh3IconComponent],
   templateUrl: "./number-input.component.html",
   styleUrl: "./number-input.component.scss",
   host: {
@@ -78,15 +83,63 @@ export class Sh3NumberInputComponent implements FormValueControl<
   readonly min = input<number | undefined>(undefined);
   /** Maximum value — passthrough + bound by a field's `max` validator. */
   readonly max = input<number | undefined>(undefined);
-  /** Step increment for the native spinner / arrow keys. */
+  /** Increment applied by the spinner buttons / arrow keys. @default 1 */
   readonly step = input<number | undefined>(undefined);
+
+  /**
+   * The increment/decrement affordance.
+   * - `arrows` — a stacked up/down chevron on the right (default).
+   * - `stepper` — `−` / `+` buttons flanking the field.
+   * - `none` — plain field, no buttons.
+   * @default 'arrows'
+   */
+  readonly spinner = input<Sh3NumberSpinner>("arrows");
+
+  /** Show the {@link step} as a small suffix, so the increment is visible. */
+  readonly showStep = input(false, { transform: booleanAttribute });
 
   /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
   readonly inputId = inject(Sh3IdService).next("sh3-number-input");
+
+  /** The effective step (defaults to 1 when unset). */
+  protected readonly effectiveStep = computed(() => this.step() ?? 1);
+
+  /** At/below the min bound — the decrement button is disabled. */
+  protected readonly atMin = computed(() => {
+    const min = this.min();
+    const v = this.value();
+    return min !== undefined && v !== null && v <= min;
+  });
+
+  /** At/above the max bound — the increment button is disabled. */
+  protected readonly atMax = computed(() => {
+    const max = this.max();
+    const v = this.value();
+    return max !== undefined && v !== null && v >= max;
+  });
 
   /** Parses the native value: empty → `null`, otherwise a `number`. */
   onInputChange(event: Event): void {
     const raw = readInputValue(event);
     this.value.set(raw === "" ? null : Number(raw));
+  }
+
+  /** Nudge the value by ±step, clamped to min/max. Fires `touch`. */
+  protected stepBy(direction: 1 | -1): void {
+    if (this.disabled() || this.readOnly()) {
+      return;
+    }
+    const base = this.value() ?? 0;
+    let next = base + direction * this.effectiveStep();
+    const min = this.min();
+    const max = this.max();
+    if (min !== undefined) {
+      next = Math.max(min, next);
+    }
+    if (max !== undefined) {
+      next = Math.min(max, next);
+    }
+    this.value.set(next);
+    this.touch.emit();
   }
 }

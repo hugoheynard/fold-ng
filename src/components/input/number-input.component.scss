@@ -1,5 +1,5 @@
 // sh3-number-input renders the same box as sh3-input (see input-shell.scss)
-// inside sh3-input-base (label/hint layout).
+// inside sh3-input-base (label/hint layout), plus its own spinner affordances.
 @use "./input-shell" as shell;
 
 :host {
@@ -7,3 +7,118 @@
 }
 
 @include shell.field-input-shell;
+
+// ── Field wrapper (holds the input + spinner) ───────────────
+.ni-field {
+  position: relative;
+  display: block;
+}
+
+// ── Arrows mode: stacked chevrons overlaid on the right edge ─
+.ni-mode-arrows input {
+  padding-right: 1.7rem;
+}
+.ni-arrows {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--sh3-color-border-subtle);
+}
+.ni-arrow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--sh3-color-text-muted);
+  cursor: pointer;
+  transition:
+    color var(--sh3-motion-fast),
+    background var(--sh3-motion-fast);
+
+  &:hover:not(:disabled) {
+    color: var(--sh3-color-text);
+    background: var(--sh3-color-surface-hover);
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  &:first-child {
+    border-top-right-radius: var(--sh3-radius-sm);
+  }
+  &:last-child {
+    border-bottom-right-radius: var(--sh3-radius-sm);
+  }
+}
+
+// ── Stepper mode: [−] input [+] ─────────────────────────────
+.ni-mode-stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+.ni-mode-stepper input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+.ni-btn {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--sh3-color-border-subtle);
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-surface-card);
+  color: var(--sh3-color-text);
+  cursor: pointer;
+  transition:
+    border-color var(--sh3-motion-fast),
+    background var(--sh3-motion-fast);
+
+  &:hover:not(:disabled) {
+    border-color: var(--sh3-color-border);
+    background: var(--sh3-color-surface-hover);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+:host(.sm) .ni-btn {
+  width: 1.75rem;
+}
+:host(.md) .ni-btn {
+  width: 2.25rem;
+}
+:host(.lg) .ni-btn {
+  width: 2.75rem;
+}
+
+// ── Step suffix (shows the increment) ───────────────────────
+.ni-with-step:not(.ni-mode-stepper) input {
+  padding-right: 2.2rem;
+}
+.ni-with-step.ni-mode-arrows input {
+  padding-right: 3.4rem;
+}
+.ni-step {
+  position: absolute;
+  top: 50%;
+  right: 0.6rem;
+  transform: translateY(-50%);
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-faded);
+  pointer-events: none;
+}
+.ni-mode-arrows .ni-step {
+  right: 2rem;
+}
