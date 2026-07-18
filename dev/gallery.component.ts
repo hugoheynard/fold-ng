@@ -850,7 +850,6 @@ export class GalleryComponent {
   protected readonly npMax = signal(0);
   protected readonly npShowStep = signal(false);
   protected readonly npSnap = signal(false);
-  protected readonly npInteger = signal(false);
   protected readonly npDecimals = signal<number | undefined>(undefined);
   protected readonly npValue = signal<number | null>(4);
 
@@ -880,10 +879,11 @@ export class GalleryComponent {
     if (this.npSnap()) {
       lines.push("  snapToStep");
     }
-    if (this.npInteger()) {
+    const decimals = this.npDecimals();
+    if (decimals === 0) {
       lines.push("  integer");
-    } else if (this.npDecimals() !== undefined) {
-      lines.push(`  [decimals]="${this.npDecimals()}"`);
+    } else if (decimals !== undefined) {
+      lines.push(`  [decimals]="${decimals}"`);
     }
     lines.push('  [(value)]="qty"', "/>");
     return lines.join("\n");
