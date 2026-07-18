@@ -108,6 +108,14 @@ export class Sh3NumberInputComponent implements FormValueControl<
   /** Show the {@link step} as a small suffix, so the increment is visible. */
   readonly showStep = input(false, { transform: booleanAttribute });
 
+  /**
+   * Keep the value on the step grid. When on, a manually typed value snaps to
+   * the nearest valid `base + n·step` **on blur** (base is {@link min}, else 0),
+   * then clamps to min/max — so free typing is allowed while editing, and the
+   * settled value always respects the step. Off by default.
+   */
+  readonly snapToStep = input(false, { transform: booleanAttribute });
+
   /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
   readonly inputId = inject(Sh3IdService).next("sh3-number-input");
 
@@ -147,22 +155,50 @@ export class Sh3NumberInputComponent implements FormValueControl<
     this.value.set(raw === "" ? null : Number(raw));
   }
 
-  /** Nudge the value by ±step, clamped to min/max. Fires `touch`. */
+  /** On blur: mark touched, and snap a typed value onto the grid if enabled. */
+  protected onBlur(): void {
+    this.touch.emit();
+    const v = this.value();
+    if (this.snapToStep() && v !== null && Number.isFinite(v)) {
+      this.value.set(this.snap(v));
+    }
+  }
+
+  /** Nudge the value by ±step, clamped (and grid-snapped when enabled). */
   protected stepBy(direction: 1 | -1): void {
     if (this.disabled() || this.readOnly()) {
       return;
     }
-    const base = this.value() ?? 0;
-    let next = base + direction * this.effectiveStep();
+    const raw = (this.value() ?? 0) + direction * this.effectiveStep();
+    this.value.set(this.snapToStep() ? this.snap(raw) : this.clamp(raw));
+    this.touch.emit();
+  }
+
+  /** Decimal places implied by the step, so arithmetic doesn't drift (0.1+0.2). */
+  private stepDecimals(): number {
+    const s = String(this.effectiveStep());
+    const dot = s.indexOf(".");
+    return dot === -1 ? 0 : s.length - dot - 1;
+  }
+
+  /** Clamp to min/max and fix step-precision float drift. */
+  private clamp(n: number): number {
+    let out = Number(n.toFixed(this.stepDecimals()));
     const min = this.min();
     const max = this.max();
     if (min !== undefined) {
-      next = Math.max(min, next);
+      out = Math.max(min, out);
     }
     if (max !== undefined) {
-      next = Math.min(max, next);
+      out = Math.min(max, out);
     }
-    this.value.set(next);
-    this.touch.emit();
+    return out;
+  }
+
+  /** Snap to the nearest `base + n·step` (base = min ?? 0), then clamp. */
+  private snap(n: number): number {
+    const step = this.effectiveStep();
+    const base = this.min() ?? 0;
+    return this.clamp(base + Math.round((n - base) / step) * step);
   }
 }

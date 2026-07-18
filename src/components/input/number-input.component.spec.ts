@@ -18,6 +18,7 @@ import type {
     [spinner]="spinner()"
     [controls]="controls()"
     [showStep]="showStep()"
+    [snapToStep]="snapToStep()"
     [(value)]="value"
   />`,
 })
@@ -29,6 +30,7 @@ class HostComponent {
   readonly spinner = signal<Sh3NumberSpinner>("arrows");
   readonly controls = signal<Sh3NumberControls>("inside");
   readonly showStep = signal(false);
+  readonly snapToStep = signal(false);
   readonly value = signal<number | null>(null);
 }
 
@@ -155,5 +157,62 @@ describe("Sh3NumberInputComponent", () => {
     fixture.componentInstance.showStep.set(true);
     fixture.detectChanges();
     expect(host.querySelector(".ni-step")?.textContent?.trim()).toBe("5");
+  });
+
+  it("does not touch a typed value on blur when snapToStep is off", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.step.set(5);
+    fixture.detectChanges();
+    input.value = "7";
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(7);
+  });
+
+  it("snaps a typed value to the nearest grid step on blur", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.step.set(5);
+    fixture.componentInstance.snapToStep.set(true);
+    fixture.detectChanges();
+
+    input.value = "7"; // nearest multiple of 5 is 5
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(5);
+
+    input.value = "8"; // nearest is 10
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(10);
+  });
+
+  it("snaps relative to min as the grid base, and clamps", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.min.set(2);
+    fixture.componentInstance.max.set(17);
+    fixture.componentInstance.step.set(5);
+    fixture.componentInstance.snapToStep.set(true);
+    fixture.detectChanges();
+
+    input.value = "9"; // grid is 2,7,12,17 → nearest to 9 is 7
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(7);
+
+    input.value = "40"; // snaps to 42 then clamps to max 17
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(17);
+  });
+
+  it("keeps float steps precise", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.step.set(0.1);
+    fixture.componentInstance.snapToStep.set(true);
+    fixture.detectChanges();
+    input.value = "0.30000001";
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(0.3);
   });
 });

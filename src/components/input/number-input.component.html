@@ -37,7 +37,7 @@
         [attr.required]="required() || null"
         [value]="value()"
         (input)="onInputChange($event)"
-        (blur)="touch.emit()"
+        (blur)="onBlur()"
       />
 
       @if (showStep() && step() != null) {
