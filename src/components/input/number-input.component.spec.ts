@@ -19,6 +19,8 @@ import type {
     [controls]="controls()"
     [showStep]="showStep()"
     [snapToStep]="snapToStep()"
+    [decimals]="decimals()"
+    [integer]="integer()"
     [(value)]="value"
   />`,
 })
@@ -31,6 +33,8 @@ class HostComponent {
   readonly controls = signal<Sh3NumberControls>("inside");
   readonly showStep = signal(false);
   readonly snapToStep = signal(false);
+  readonly decimals = signal<number | undefined>(undefined);
+  readonly integer = signal(false);
   readonly value = signal<number | null>(null);
 }
 
@@ -234,5 +238,49 @@ describe("Sh3NumberInputComponent", () => {
     input.dispatchEvent(new Event("input"));
     input.dispatchEvent(new Event("blur"));
     expect(fixture.componentInstance.value()).toBe(0.3);
+  });
+
+  it("allows decimals freely by default", () => {
+    const { fixture, input } = render();
+    input.value = "3.7";
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(3.7);
+  });
+
+  it("rounds a typed value to integers on blur when integer is set", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.integer.set(true);
+    fixture.detectChanges();
+    input.value = "3.7";
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(4);
+  });
+
+  it("sends step=1 to the native input for integers with no explicit step", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.integer.set(true);
+    fixture.detectChanges();
+    expect(input.getAttribute("step")).toBe("1");
+  });
+
+  it("caps decimals to the requested number of places on blur", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.decimals.set(2);
+    fixture.detectChanges();
+    input.value = "3.14159";
+    input.dispatchEvent(new Event("input"));
+    input.dispatchEvent(new Event("blur"));
+    expect(fixture.componentInstance.value()).toBe(3.14);
+  });
+
+  it("keeps stepped values on the integer grid when integer is set", () => {
+    const { fixture, inc } = render();
+    fixture.componentInstance.integer.set(true);
+    fixture.componentInstance.value.set(2.5);
+    fixture.detectChanges();
+    inc().click();
+    expect(Number.isInteger(fixture.componentInstance.value())).toBe(true);
   });
 });

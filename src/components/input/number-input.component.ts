@@ -119,11 +119,31 @@ export class Sh3NumberInputComponent implements FormValueControl<
    */
   readonly snapToStep = input(false, { transform: booleanAttribute });
 
+  /**
+   * Cap the number of decimal places on the settled value: it is rounded to this
+   * many decimals when stepping and on blur. `undefined` = unconstrained (any
+   * decimals allowed). See {@link integer} for the `0` shorthand.
+   */
+  readonly decimals = input<number | undefined>(undefined);
+
+  /** Shorthand for `decimals = 0` — integers only. Takes precedence over {@link decimals}. */
+  readonly integer = input(false, { transform: booleanAttribute });
+
   /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
   readonly inputId = inject(Sh3IdService).next("sh3-number-input");
 
   /** The effective step (defaults to 1 when unset). */
   protected readonly effectiveStep = computed(() => this.step() ?? 1);
+
+  /** The resolved decimal cap: `0` when {@link integer}, else {@link decimals}. */
+  private readonly maxDecimals = computed<number | undefined>(() =>
+    this.integer() ? 0 : this.decimals(),
+  );
+
+  /** The native `step` attribute — `1` for integers with no explicit step. */
+  protected readonly nativeStep = computed<number | undefined>(
+    () => this.step() ?? (this.integer() ? 1 : undefined),
+  );
 
   /** At/below the min bound — the decrement button is disabled. */
   protected readonly atMin = computed(() => {
@@ -167,12 +187,17 @@ export class Sh3NumberInputComponent implements FormValueControl<
     this.value.set(raw === "" ? null : Number(raw));
   }
 
-  /** On blur: mark touched, and snap a typed value onto the grid if enabled. */
+  /** On blur: mark touched, snap onto the grid if enabled, else round to the decimal cap. */
   protected onBlur(): void {
     this.touched.set(true);
     const v = this.value();
-    if (this.snapToStep() && v !== null && Number.isFinite(v)) {
+    if (v === null || !Number.isFinite(v)) {
+      return;
+    }
+    if (this.snapToStep()) {
       this.value.set(this.snap(v));
+    } else if (this.maxDecimals() !== undefined) {
+      this.value.set(Number(v.toFixed(this.roundPlaces())));
     }
   }
 
@@ -237,9 +262,14 @@ export class Sh3NumberInputComponent implements FormValueControl<
     return dot === -1 ? 0 : s.length - dot - 1;
   }
 
-  /** Clamp to min/max and fix step-precision float drift. */
+  /** Rounding precision for a settled value: the decimal cap when set, else the step's own. */
+  private roundPlaces(): number {
+    return this.maxDecimals() ?? this.stepDecimals();
+  }
+
+  /** Clamp to min/max and round to the effective precision. */
   private clamp(n: number): number {
-    let out = Number(n.toFixed(this.stepDecimals()));
+    let out = Number(n.toFixed(this.roundPlaces()));
     const min = this.min();
     const max = this.max();
     if (min !== undefined) {
