@@ -2299,6 +2299,34 @@
                             >
                               snapToStep
                             </button>
+                            <button
+                              type="button"
+                              [class.is-on]="npInteger()"
+                              (click)="npInteger.set(!npInteger())"
+                            >
+                              integer
+                            </button>
+                          </div>
+                        </div>
+                        <div class="np-field" params>
+                          <span class="gal-tag">decimals</span>
+                          <div class="ss-seg">
+                            <button
+                              type="button"
+                              [class.is-on]="npDecimals() === undefined"
+                              (click)="npDecimals.set(undefined)"
+                            >
+                              free
+                            </button>
+                            @for (d of [1, 2, 3]; track d) {
+                              <button
+                                type="button"
+                                [class.is-on]="npDecimals() === d"
+                                (click)="npDecimals.set(d)"
+                              >
+                                {{ d }}
+                              </button>
+                            }
                           </div>
                         </div>
 
@@ -2312,6 +2340,8 @@
                           [step]="npStep()"
                           [showStep]="npShowStep()"
                           [snapToStep]="npSnap()"
+                          [integer]="npInteger()"
+                          [decimals]="npDecimals()"
                           [(value)]="npValue"
                         />
                       </dev-playground>

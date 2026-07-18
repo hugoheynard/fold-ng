@@ -850,6 +850,8 @@ export class GalleryComponent {
   protected readonly npMax = signal(20);
   protected readonly npShowStep = signal(false);
   protected readonly npSnap = signal(false);
+  protected readonly npInteger = signal(false);
+  protected readonly npDecimals = signal<number | undefined>(undefined);
   protected readonly npValue = signal<number | null>(4);
 
   protected readonly numberPlaygroundCode = computed(() => {
@@ -872,6 +874,11 @@ export class GalleryComponent {
     }
     if (this.npSnap()) {
       lines.push("  snapToStep");
+    }
+    if (this.npInteger()) {
+      lines.push("  integer");
+    } else if (this.npDecimals() !== undefined) {
+      lines.push(`  [decimals]="${this.npDecimals()}"`);
     }
     lines.push('  [(value)]="qty"', "/>");
     return lines.join("\n");
