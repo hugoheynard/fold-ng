@@ -1,6 +1,6 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { Sh3NumberInputComponent } from "./number-input.component";
 import type {
   Sh3NumberSpinner,
@@ -203,6 +203,26 @@ describe("Sh3NumberInputComponent", () => {
     input.dispatchEvent(new Event("input"));
     input.dispatchEvent(new Event("blur"));
     expect(fixture.componentInstance.value()).toBe(17);
+  });
+
+  it("repeats while the pointer is held, and stops on release", () => {
+    vi.useFakeTimers();
+    try {
+      const { fixture, inc } = render();
+      fixture.componentInstance.step.set(1);
+      fixture.detectChanges();
+
+      inc().dispatchEvent(new Event("pointerdown"));
+      expect(fixture.componentInstance.value()).toBe(1); // immediate first step
+      vi.advanceTimersByTime(350 + 60 * 3); // hold delay + three repeats
+      expect(fixture.componentInstance.value()).toBe(4);
+
+      inc().dispatchEvent(new Event("pointerup"));
+      vi.advanceTimersByTime(60 * 5);
+      expect(fixture.componentInstance.value()).toBe(4); // stopped
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("keeps float steps precise", () => {

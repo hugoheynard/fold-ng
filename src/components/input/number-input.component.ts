@@ -2,6 +2,7 @@ import {
   booleanAttribute,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
   model,
@@ -161,6 +162,50 @@ export class Sh3NumberInputComponent implements FormValueControl<
     const v = this.value();
     if (this.snapToStep() && v !== null && Number.isFinite(v)) {
       this.value.set(this.snap(v));
+    }
+  }
+
+  private holdTimer: ReturnType<typeof setTimeout> | null = null;
+  private holdInterval: ReturnType<typeof setInterval> | null = null;
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.holdStop());
+  }
+
+  /** Keyboard-only click (Enter/Space have `detail === 0`); pointer presses are
+   *  driven by {@link holdStart} so they don't double-step. */
+  protected onButtonClick(direction: 1 | -1, event: MouseEvent): void {
+    if (event.detail === 0) {
+      this.stepBy(direction);
+    }
+  }
+
+  /** Pointer press: step once, then repeat after a hold, until release/bound. */
+  protected holdStart(direction: 1 | -1): void {
+    if (this.disabled() || this.readOnly()) {
+      return;
+    }
+    this.stepBy(direction);
+    this.holdTimer = setTimeout(() => {
+      this.holdInterval = setInterval(() => {
+        const before = this.value();
+        this.stepBy(direction);
+        if (this.value() === before) {
+          this.holdStop(); // hit a bound — nothing more to do
+        }
+      }, 60);
+    }, 350);
+  }
+
+  /** Stop any running hold-repeat (pointer released / left / component destroyed). */
+  protected holdStop(): void {
+    if (this.holdTimer !== null) {
+      clearTimeout(this.holdTimer);
+      this.holdTimer = null;
+    }
+    if (this.holdInterval !== null) {
+      clearInterval(this.holdInterval);
+      this.holdInterval = null;
     }
   }
 

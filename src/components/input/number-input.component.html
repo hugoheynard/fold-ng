@@ -15,7 +15,11 @@
         class="ni-btn ni-dec"
         [disabled]="decDisabled()"
         aria-label="Decrement"
-        (click)="stepBy(-1)"
+        (click)="onButtonClick(-1, $event)"
+        (pointerdown)="holdStart(-1)"
+        (pointerup)="holdStop()"
+        (pointerleave)="holdStop()"
+        (pointercancel)="holdStop()"
       >
         <sh3-icon
           [name]="spinner() === 'arrows' ? 'chevron-down' : 'minus'"
@@ -51,7 +55,11 @@
             class="ni-stack-btn ni-inc"
             [disabled]="incDisabled()"
             aria-label="Increment"
-            (click)="stepBy(1)"
+            (click)="onButtonClick(1, $event)"
+            (pointerdown)="holdStart(1)"
+            (pointerup)="holdStop()"
+            (pointerleave)="holdStop()"
+            (pointercancel)="holdStop()"
           >
             <sh3-icon
               [name]="spinner() === 'arrows' ? 'chevron-up' : 'plus'"
@@ -63,7 +71,11 @@
             class="ni-stack-btn ni-dec"
             [disabled]="decDisabled()"
             aria-label="Decrement"
-            (click)="stepBy(-1)"
+            (click)="onButtonClick(-1, $event)"
+            (pointerdown)="holdStart(-1)"
+            (pointerup)="holdStop()"
+            (pointerleave)="holdStop()"
+            (pointercancel)="holdStop()"
           >
             <sh3-icon
               [name]="spinner() === 'arrows' ? 'chevron-down' : 'minus'"
@@ -80,7 +92,11 @@
         class="ni-btn ni-inc"
         [disabled]="incDisabled()"
         aria-label="Increment"
-        (click)="stepBy(1)"
+        (click)="onButtonClick(1, $event)"
+        (pointerdown)="holdStart(1)"
+        (pointerup)="holdStop()"
+        (pointerleave)="holdStop()"
+        (pointercancel)="holdStop()"
       >
         <sh3-icon
           [name]="spinner() === 'arrows' ? 'chevron-up' : 'plus'"
