@@ -70,6 +70,7 @@ export { Sh3IconComponent } from "./components/icon/icon.component";
 export { Sh3IdService } from "./a11y/id.service";
 export { Sh3FieldIdDirective } from "./a11y/field-id.directive";
 export { Sh3InputComponent } from "./components/input/input.component";
+export { Sh3NumberInputComponent } from "./components/number-input/number-input.component";
 export { Sh3SearchComponent } from "./components/search/search.component";
 export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export { Sh3LoadingStateComponent } from "./components/state/loading-state.component";

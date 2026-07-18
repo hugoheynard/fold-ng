@@ -1,0 +1,107 @@
+// Shared visual shell for the native-input controls (sh3-input, sh3-number-input).
+// One source of truth for the box, label, sizes, alignment and variants — so a
+// redesign lands in both at once. Included at the root of each component's SCSS
+// via `@include shell.field-input-shell;`, so `:host` resolves to that component.
+
+@mixin field-input-shell {
+  :host {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  label {
+    font-size: var(--sh3-text-xs);
+    font-weight: 600;
+    color: var(--sh3-color-text-secondary);
+    margin-bottom: 5px;
+  }
+
+  input {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: inherit;
+    color: var(--sh3-color-text);
+    background: var(--sh3-color-surface-card);
+    border: 1px solid var(--sh3-color-border-subtle);
+    transition:
+      border-color var(--sh3-motion-fast),
+      box-shadow var(--sh3-motion-fast);
+
+    &::placeholder {
+      color: var(--sh3-color-text-faded);
+    }
+
+    &:hover:not(:disabled):not(:read-only):not(:focus) {
+      border-color: var(--sh3-color-border);
+    }
+
+    &:focus {
+      border-color: var(--sh3-color-primary);
+      box-shadow: 0 0 0 2px var(--sh3-color-primary-border);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:read-only {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    // Hide native number spinners (harmless for text inputs — no match).
+    &[type="number"] {
+      -moz-appearance: textfield;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        opacity: 0.4;
+      }
+    }
+  }
+
+  // ─── Sizes ──────────────────────────────────────────
+  :host(.sm) input {
+    height: 1.75rem;
+    font-size: var(--sh3-text-sm);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--sh3-radius-xs);
+  }
+
+  :host(.md) input {
+    height: 2.25rem;
+    font-size: var(--sh3-text-md);
+    padding: 0.4rem 0.65rem;
+    border-radius: var(--sh3-radius-sm);
+  }
+
+  :host(.lg) input {
+    height: 2.75rem;
+    font-size: var(--sh3-text-lg);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--sh3-radius-sm);
+  }
+
+  // ─── Alignment ──────────────────────────────────────
+  :host(.center) input {
+    text-align: center;
+  }
+
+  // ─── Variants ───────────────────────────────────────
+  // `panel` — flatter side-panel chrome: no focus glow, own box metrics
+  // (roomier padding, `radius-sm`, content-height). Declared after the size
+  // block so it wins; `size` on a panel input then only drives the font-size.
+  :host(.panel) input {
+    height: auto;
+    padding: 7px 10px;
+    border-radius: var(--sh3-radius-sm);
+    background: var(--sh3-color-surface-raised);
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}

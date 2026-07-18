@@ -33,6 +33,7 @@ import {
   Sh3IconComponent,
   type Sh3IconName,
   Sh3InputComponent,
+  Sh3NumberInputComponent,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -159,6 +160,7 @@ interface NavGroup {
     Sh3FieldComponent,
     Sh3FieldListComponent,
     Sh3InputComponent,
+    Sh3NumberInputComponent,
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
     Sh3AsideLayoutComponent,
@@ -817,7 +819,7 @@ export class GalleryComponent {
      controls (select / textarea, the sanctioned path for those). Showcases the
      layout: vertical nav + page-section + choice-row. */
   protected readonly demoText = signal("Two-way [(value)]");
-  protected readonly demoBpm = signal<string | number>(120);
+  protected readonly demoBpm = signal<number | null>(120);
   protected readonly fName = signal("Clément Aubry");
   protected readonly fEmail = signal("clement@sh3pherd.dev");
   protected readonly fRole = signal("manager");

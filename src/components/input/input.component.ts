@@ -1,12 +1,7 @@
 import { Component, inject, input, model, output } from "@angular/core";
 import type { FormValueControl } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
-
-/** Read `.value` off an input event target as a string, without `$any()`. */
-function readInputValue(event: Event): string {
-  const target = event.target;
-  return target instanceof HTMLInputElement ? target.value : "";
-}
+import { readInputValue } from "./input-value";
 
 /**
  * `<sh3-input>` — the text-input control: the *edit* half of a record, where
