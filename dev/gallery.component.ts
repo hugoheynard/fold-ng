@@ -763,11 +763,12 @@ export class GalleryComponent {
       items: [
         {
           id: "form",
-          label: "input · form",
+          label: "input",
           icon: "edit",
           badge: "new",
           badgeTone: "info",
         },
+        { id: "form-layout", label: "form layout" },
       ],
     },
     {
