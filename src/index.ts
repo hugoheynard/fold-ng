@@ -69,6 +69,7 @@ export type { Sh3ChoiceOption } from "./components/choice-row/choice-row.compone
 export { Sh3IconComponent } from "./components/icon/icon.component";
 export { Sh3IdService } from "./a11y/id.service";
 export { Sh3FieldIdDirective } from "./a11y/field-id.directive";
+export { Sh3RepeatPressDirective } from "./directives/repeat-press.directive";
 export { Sh3InputComponent } from "./components/input/input.component";
 export {
   Sh3NumberInputComponent,
