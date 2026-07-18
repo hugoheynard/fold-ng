@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, input, output } from "@angular/core";
-import { Sh3InputComponent } from "../input/input.component";
+import { Sh3InputComponent } from "./input.component";
 
 /**
  * `<sh3-search>` — an {@link Sh3InputComponent} that **debounces its emit**: it

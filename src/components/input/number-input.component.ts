@@ -1,7 +1,7 @@
 import { Component, inject, input, model, output } from "@angular/core";
 import type { FormValueControl } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
-import { readInputValue } from "../input/input-value";
+import { readInputValue } from "./input-value";
 
 /**
  * `<sh3-number-input>` — the numeric sibling of {@link Sh3InputComponent}. Split
