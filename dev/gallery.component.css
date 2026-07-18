@@ -1095,3 +1095,13 @@ sh3-app-shell {
 .fld-narrow {
   --sh3-field-list-label-width: 72px;
 }
+/* sh3-input showcase: a wrapped row of inputs, each capped so several fit. */
+.fld-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+}
+.fld-inputs sh3-input {
+  width: 200px;
+}

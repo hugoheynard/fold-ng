@@ -32,6 +32,7 @@ import {
   Sh3HeroComponent,
   Sh3IconComponent,
   type Sh3IconName,
+  Sh3InputComponent,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -157,6 +158,7 @@ interface NavGroup {
     Sh3CardComponent,
     Sh3FieldComponent,
     Sh3FieldListComponent,
+    Sh3InputComponent,
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
     Sh3AsideLayoutComponent,
@@ -752,7 +754,15 @@ export class GalleryComponent {
     {
       label: "Forms",
       color: "#10b981",
-      items: [{ id: "form", label: "form", icon: "edit" }],
+      items: [
+        {
+          id: "form",
+          label: "input · form",
+          icon: "edit",
+          badge: "new",
+          badgeTone: "info",
+        },
+      ],
     },
     {
       label: "Foundations",
@@ -803,9 +813,11 @@ export class GalleryComponent {
   ];
   protected readonly formTab = signal("profile");
 
-  /* Fields — plain signals + native inputs (the package ships no field
-     components; the app's Signal Forms aren't available here). This page
-     showcases the layout: vertical nav + page-section + choice-row. */
+  /* Fields — plain signals bound to sh3-input via [(value)] (text) or native
+     controls (select / textarea, the sanctioned path for those). Showcases the
+     layout: vertical nav + page-section + choice-row. */
+  protected readonly demoText = signal("Two-way [(value)]");
+  protected readonly demoBpm = signal<string | number>(120);
   protected readonly fName = signal("Clément Aubry");
   protected readonly fEmail = signal("clement@sh3pherd.dev");
   protected readonly fRole = signal("manager");

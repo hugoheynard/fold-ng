@@ -1,0 +1,17 @@
+@if (label()) {
+  <label [attr.for]="inputId">{{ label() }}</label>
+}
+
+<input
+  [id]="inputId"
+  [attr.type]="type()"
+  [attr.min]="min()"
+  [attr.max]="max()"
+  [attr.placeholder]="placeholder()"
+  [attr.readonly]="readOnly() || null"
+  [attr.disabled]="disabled() || null"
+  [attr.autocomplete]="autocomplete()"
+  [value]="value()"
+  (input)="onInputChange($event)"
+  (blur)="touch.emit()"
+/>

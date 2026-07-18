@@ -2029,8 +2029,51 @@
       <!-- ── form — a vertical tab-nav drives a settings-style form ──────── -->
       <section id="form" class="gal-sec">
         <sh3-page-section
+          title="sh3-input"
+          description="The text-input control — the edit half of a record (sh3-field is the read half). Signal Forms via [formField], or standalone [(value)]. Validation chrome (error/hint/required) is intentionally out of scope until a form needs it."
+        >
+          <div class="gal-stack">
+            <div class="gal-cell">
+              <span class="gal-tag">sizes · sm / md / lg</span>
+              <div class="fld-inputs">
+                <sh3-input size="sm" placeholder="sm — inline edits" />
+                <sh3-input size="md" placeholder="md — default" />
+                <sh3-input size="lg" placeholder="lg — prominent" />
+              </div>
+            </div>
+            <div class="gal-cell">
+              <span class="gal-tag">variants · states</span>
+              <div class="fld-inputs">
+                <sh3-input label="Default" [(value)]="demoText" />
+                <sh3-input
+                  variant="panel"
+                  label="Panel"
+                  placeholder="flatter side-panel chrome"
+                />
+                <sh3-input
+                  type="number"
+                  align="center"
+                  label="BPM"
+                  [(value)]="demoBpm"
+                />
+                <sh3-input
+                  label="Read-only"
+                  [value]="'Locked value'"
+                  [readOnly]="true"
+                />
+                <sh3-input
+                  label="Disabled"
+                  placeholder="unavailable"
+                  [disabled]="true"
+                />
+              </div>
+            </div>
+          </div>
+        </sh3-page-section>
+
+        <sh3-page-section
           title="form layout"
-          description="A vertical tab-nav as the section rail, driving a settings-style form: sh3-page-section groups the fields, sh3-choice-row handles segmented selects, and native fields are styled with the tokens (the sanctioned path for select/native inputs)."
+          description="A vertical tab-nav as the section rail, driving a settings-style form: sh3-page-section groups the fields, sh3-input handles the text fields ([(value)]), sh3-choice-row the segmented selects, and native select/textarea stay native (the sanctioned path for those)."
         >
           <div class="form-layout">
             <aside class="form-nav">
@@ -2052,26 +2095,8 @@
                     title="Profile"
                     description="Public identity."
                   >
-                    <div class="field">
-                      <label for="f-name">Full name</label>
-                      <input
-                        id="f-name"
-                        #fn
-                        type="text"
-                        [value]="fName()"
-                        (input)="fName.set(fn.value)"
-                      />
-                    </div>
-                    <div class="field">
-                      <label for="f-email">Email</label>
-                      <input
-                        id="f-email"
-                        #fe
-                        type="email"
-                        [value]="fEmail()"
-                        (input)="fEmail.set(fe.value)"
-                      />
-                    </div>
+                    <sh3-input label="Full name" [(value)]="fName" />
+                    <sh3-input label="Email" type="email" [(value)]="fEmail" />
                     <div class="field">
                       <label>Role</label>
                       <sh3-choice-row
@@ -2100,16 +2125,7 @@
                     title="Account"
                     description="Sign-in + preferences."
                   >
-                    <div class="field">
-                      <label for="f-user">Username</label>
-                      <input
-                        id="f-user"
-                        #fu
-                        type="text"
-                        [value]="fUsername()"
-                        (input)="fUsername.set(fu.value)"
-                      />
-                    </div>
+                    <sh3-input label="Username" [(value)]="fUsername" />
                     <div class="field">
                       <label for="f-lang">Language</label>
                       <select
