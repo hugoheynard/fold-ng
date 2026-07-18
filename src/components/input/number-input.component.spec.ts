@@ -338,4 +338,39 @@ describe("Sh3NumberInputComponent", () => {
       document.getElementById(describedBy as string)?.textContent,
     ).toContain("Whole numbers.");
   });
+
+  it("warns in dev when max is off the step grid with snapping on", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { fixture } = render();
+    fixture.componentInstance.min.set(0);
+    fixture.componentInstance.max.set(16); // grid 0,5,10,15 → 16 is off-grid
+    fixture.componentInstance.step.set(5);
+    fixture.componentInstance.snapToStep.set(true);
+    fixture.detectChanges();
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("does not warn when the grid divides the range evenly", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { fixture } = render();
+    fixture.componentInstance.min.set(0);
+    fixture.componentInstance.max.set(15); // grid 0,5,10,15 → aligned
+    fixture.componentInstance.step.set(5);
+    fixture.componentInstance.snapToStep.set(true);
+    fixture.detectChanges();
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("does not warn without snapToStep, even off-grid", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { fixture } = render();
+    fixture.componentInstance.min.set(0);
+    fixture.componentInstance.max.set(16);
+    fixture.componentInstance.step.set(5);
+    fixture.detectChanges();
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
 });

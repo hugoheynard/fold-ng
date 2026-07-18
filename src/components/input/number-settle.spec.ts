@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { decimalsOf, settleNumber } from "./number-settle";
+import { decimalsOf, isStepAligned, settleNumber } from "./number-settle";
 
 describe("decimalsOf", () => {
   it("counts plain decimal places", () => {
@@ -59,5 +59,42 @@ describe("settleNumber", () => {
     // step 1e-7 → 7 places; would have thrown / mis-rounded with a string parse
     const out = settleNumber(0.12345678, { step: 1e-7, snapToStep: false });
     expect(out).toBeCloseTo(0.1234568, 7);
+  });
+});
+
+describe("isStepAligned", () => {
+  it("is true when the grid divides the range evenly", () => {
+    expect(isStepAligned({ min: 0, max: 15, step: 5, snapToStep: true })).toBe(
+      true,
+    );
+    expect(isStepAligned({ min: 2, max: 17, step: 5, snapToStep: true })).toBe(
+      true,
+    );
+  });
+
+  it("is false when max sits between two grid points", () => {
+    expect(isStepAligned({ min: 0, max: 16, step: 5, snapToStep: true })).toBe(
+      false,
+    );
+  });
+
+  it("is vacuously true when there is no max to misalign", () => {
+    expect(isStepAligned({ min: 0, step: 5, snapToStep: true })).toBe(true);
+  });
+
+  it("bases the grid on min, not 0", () => {
+    // grid 3,8,13 → max 13 aligned; max 12 not
+    expect(isStepAligned({ min: 3, max: 13, step: 5, snapToStep: true })).toBe(
+      true,
+    );
+    expect(isStepAligned({ min: 3, max: 12, step: 5, snapToStep: true })).toBe(
+      false,
+    );
+  });
+
+  it("tolerates float drift (0.1 grid)", () => {
+    expect(isStepAligned({ min: 0, max: 1, step: 0.1, snapToStep: true })).toBe(
+      true,
+    );
   });
 });

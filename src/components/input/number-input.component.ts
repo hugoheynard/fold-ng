@@ -3,8 +3,10 @@ import {
   booleanAttribute,
   Component,
   computed,
+  effect,
   inject,
   input,
+  isDevMode,
   model,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
@@ -14,7 +16,11 @@ import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
 import { Sh3InputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
-import { settleNumber } from "./number-settle";
+import {
+  isStepAligned,
+  settleNumber,
+  type Sh3NumberConstraints,
+} from "./number-settle";
 
 /** The increment/decrement glyph: chevrons, `− / +`, or no buttons. */
 export type Sh3NumberSpinner = "none" | "arrows" | "plusminus";
@@ -99,21 +105,9 @@ export class Sh3NumberInputComponent implements FormValueControl<
   /** Increment applied by the spinner buttons / arrow keys. @default 1 */
   readonly step = input<number | undefined>(undefined);
 
-  /**
-   * The increment/decrement glyph.
-   * - `plusminus` — `−` / `+` symbols (default).
-   * - `arrows` — up/down chevrons.
-   * - `none` — no buttons.
-   * @default 'plusminus'
-   */
+  /** The step glyph — `plusminus` (`−`/`+`, default), `arrows` (chevrons), `none`. */
   readonly spinner = input<Sh3NumberSpinner>("plusminus");
-
-  /**
-   * Where the buttons sit, independent of the {@link spinner} glyph.
-   * - `inside` — stacked on the right edge, inside the box (default).
-   * - `outside` — decrement left, increment right, flanking the box.
-   * @default 'inside'
-   */
+  /** Where the buttons sit — `inside` the box (default) or `outside`, flanking it. */
   readonly controls = input<Sh3NumberControls>("inside");
 
   /** Show the {@link step} as a small suffix, so the increment is visible. */
@@ -147,6 +141,15 @@ export class Sh3NumberInputComponent implements FormValueControl<
   private readonly maxDecimals = computed<number | undefined>(() =>
     this.integer() ? 0 : this.decimals(),
   );
+
+  /** The active numeric constraints — shared by settling and the alignment check. */
+  private readonly constraints = computed<Sh3NumberConstraints>(() => ({
+    step: this.effectiveStep(),
+    min: this.min(),
+    max: this.max(),
+    decimals: this.maxDecimals(),
+    snapToStep: this.snapToStep(),
+  }));
 
   /** The native `step` attribute — `1` for integers with no explicit step. */
   protected readonly nativeStep = computed<number | undefined>(
@@ -196,6 +199,16 @@ export class Sh3NumberInputComponent implements FormValueControl<
     }
     return this.hint() ? `${this.inputId}-hint` : null;
   });
+
+  constructor() {
+    // Dev-only nudge: with snapping on, an off-grid `max` is only reachable via
+    // the clamp — usually a step/min/max mismatch the author wants to know about.
+    effect(() => {
+      if (this.snapToStep() && !isStepAligned(this.constraints())) {
+        this.warnStepMisaligned();
+      }
+    });
+  }
 
   /** Parses the native value: empty or unparseable → `null`, otherwise a `number`. */
   onInputChange(event: Event): void {
@@ -267,12 +280,16 @@ export class Sh3NumberInputComponent implements FormValueControl<
    * the pure {@link settleNumber} with the current constraints.
    */
   private settle(n: number): number {
-    return settleNumber(n, {
-      step: this.effectiveStep(),
-      min: this.min(),
-      max: this.max(),
-      decimals: this.maxDecimals(),
-      snapToStep: this.snapToStep(),
-    });
+    return settleNumber(n, this.constraints());
+  }
+
+  private warnStepMisaligned(): void {
+    if (isDevMode()) {
+      console.warn(
+        `[sh3-number-input] max ${String(this.max())} is off the step grid ` +
+          `(${this.min() ?? 0} + k·${this.effectiveStep()}); with snapToStep it ` +
+          `is only reachable via the clamp, not by stepping.`,
+      );
+    }
   }
 }

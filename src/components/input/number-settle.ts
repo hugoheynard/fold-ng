@@ -68,3 +68,17 @@ export function settleNumber(n: number, c: Sh3NumberConstraints): number {
   const snapped = c.snapToStep ? snapToGrid(n, c) : n;
   return clamp(round(snapped, c), c);
 }
+
+/**
+ * Is `max` reachable on the step grid? False when `(max − base) % step ≠ 0`
+ * (base = `min` ?? 0), i.e. the top bound sits between two grid points — with
+ * snapping on, `max` is then only reachable off-grid via the clamp. No `max`
+ * ⇒ nothing to misalign ⇒ true.
+ */
+export function isStepAligned(c: Sh3NumberConstraints): boolean {
+  if (c.max === undefined) {
+    return true;
+  }
+  const steps = (c.max - (c.min ?? 0)) / c.step;
+  return Math.abs(steps - Math.round(steps)) < 1e-9;
+}
