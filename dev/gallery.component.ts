@@ -842,7 +842,7 @@ export class GalleryComponent {
   protected readonly demoStepper = signal<number | null>(2);
 
   /* ── Number-input playground — params drive a live preview + code ─────── */
-  protected readonly npSpinner = signal<Sh3NumberSpinner>("arrows");
+  protected readonly npSpinner = signal<Sh3NumberSpinner>("plusminus");
   protected readonly npControls = signal<Sh3NumberControls>("inside");
   protected readonly npSize = signal<"sm" | "md" | "lg">("md");
   protected readonly npStep = signal(1);
@@ -859,7 +859,7 @@ export class GalleryComponent {
     if (this.npSize() !== "md") {
       lines.push(`  size="${this.npSize()}"`);
     }
-    if (this.npSpinner() !== "arrows") {
+    if (this.npSpinner() !== "plusminus") {
       lines.push(`  spinner="${this.npSpinner()}"`);
     }
     if (this.npControls() !== "inside") {
