@@ -251,33 +251,21 @@
                   </div>
                 </div>
 
-                <div class="ss-group">
-                  <span class="ss-label"
-                    >railWidth <b>{{ shellRailWidth() }}px</b></span
-                  >
-                  <input
-                    #railInput
-                    type="range"
-                    min="48"
-                    max="120"
-                    [value]="shellRailWidth()"
-                    (input)="setRailWidth(railInput.value)"
-                  />
-                </div>
+                <sh3-slider
+                  label="railWidth"
+                  [min]="48"
+                  [max]="120"
+                  [valueText]="shellRailWidth() + 'px'"
+                  [(value)]="shellRailWidth"
+                />
 
-                <div class="ss-group">
-                  <span class="ss-label"
-                    >headerHeight <b>{{ shellHeaderHeight() }}px</b></span
-                  >
-                  <input
-                    #headerInput
-                    type="range"
-                    min="44"
-                    max="88"
-                    [value]="shellHeaderHeight()"
-                    (input)="setHeaderHeight(headerInput.value)"
-                  />
-                </div>
+                <sh3-slider
+                  label="headerHeight"
+                  [min]="44"
+                  [max]="88"
+                  [valueText]="shellHeaderHeight() + 'px'"
+                  [(value)]="shellHeaderHeight"
+                />
               </sh3-context-card>
             </div>
 
@@ -425,16 +413,13 @@
                   </button>
                 }
               </div>
-              <span class="gal-tag">offset {{ stickyDemoOffset() }}px</span>
-              <input
-                #off
-                type="range"
-                min="0"
-                max="48"
-                step="2"
-                [value]="stickyDemoOffset()"
-                (input)="stickyDemoOffset.set(+off.value)"
-                aria-label="Sticky offset in pixels"
+              <sh3-slider
+                label="offset"
+                [min]="0"
+                [max]="48"
+                [step]="2"
+                [valueText]="stickyDemoOffset() + 'px'"
+                [(value)]="stickyDemoOffset"
               />
             </div>
             <span class="gal-tag"
@@ -538,16 +523,13 @@
                   equal
                 </button>
               </div>
-              <span class="gal-tag">offset {{ aslOffset() }}px</span>
-              <input
-                #off
-                type="range"
-                min="0"
-                max="40"
-                step="2"
-                [value]="aslOffset()"
-                (input)="aslOffset.set(+off.value)"
-                aria-label="Sticky offset in pixels"
+              <sh3-slider
+                label="offset"
+                [min]="0"
+                [max]="40"
+                [step]="2"
+                [valueText]="aslOffset() + 'px'"
+                [(value)]="aslOffset"
               />
             </div>
             <span class="gal-tag"
@@ -1652,33 +1634,19 @@
                     title="Avatar List Settings"
                     subtitle="drives the preview above"
                   >
-                    <div class="ss-group">
-                      <span class="ss-label"
-                        >faces <b>{{ alCount() }}</b></span
-                      >
-                      <input
-                        #alCountInput
-                        type="range"
-                        min="1"
-                        max="7"
-                        [value]="alCount()"
-                        (input)="setAlCount(alCountInput.value)"
-                      />
-                    </div>
+                    <sh3-slider
+                      label="faces"
+                      [min]="1"
+                      [max]="7"
+                      [(value)]="alCount"
+                    />
 
-                    <div class="ss-group">
-                      <span class="ss-label"
-                        >limit <b>{{ alLimit() }}</b> (0 = all)</span
-                      >
-                      <input
-                        #alLimitInput
-                        type="range"
-                        min="0"
-                        max="7"
-                        [value]="alLimit()"
-                        (input)="setAlLimit(alLimitInput.value)"
-                      />
-                    </div>
+                    <sh3-slider
+                      label="limit (0 = all)"
+                      [min]="0"
+                      [max]="7"
+                      [(value)]="alLimit"
+                    />
 
                     <div class="ss-group">
                       <span class="ss-label">top (overlap direction)</span>
@@ -2245,47 +2213,29 @@
                             </button>
                           </div>
                         </div>
-                        <div class="np-field" params>
-                          <span class="gal-tag">step {{ npStep() }}</span>
-                          <input
-                            #st
-                            type="range"
-                            min="1"
-                            max="10"
-                            step="1"
-                            [value]="npStep()"
-                            (input)="npStep.set(+st.value)"
-                            aria-label="Step"
-                          />
-                        </div>
-                        <div class="np-field" params>
-                          <span class="gal-tag"
-                            >min {{ npMin() || "off" }}</span
-                          >
-                          <input
-                            #mn
-                            type="range"
-                            min="0"
-                            max="10"
-                            [value]="npMin()"
-                            (input)="npMin.set(+mn.value)"
-                            aria-label="Min"
-                          />
-                        </div>
-                        <div class="np-field" params>
-                          <span class="gal-tag"
-                            >max {{ npMax() || "off" }}</span
-                          >
-                          <input
-                            #mx
-                            type="range"
-                            min="0"
-                            max="50"
-                            [value]="npMax()"
-                            (input)="npMax.set(+mx.value)"
-                            aria-label="Max"
-                          />
-                        </div>
+                        <sh3-slider
+                          params
+                          label="step"
+                          [min]="1"
+                          [max]="10"
+                          [(value)]="npStep"
+                        />
+                        <sh3-slider
+                          params
+                          label="min"
+                          [min]="0"
+                          [max]="10"
+                          [valueText]="npMin() ? npMin() + '' : 'off'"
+                          [(value)]="npMin"
+                        />
+                        <sh3-slider
+                          params
+                          label="max"
+                          [min]="0"
+                          [max]="50"
+                          [valueText]="npMax() ? npMax() + '' : 'off'"
+                          [(value)]="npMax"
+                        />
                         <div class="np-field" params>
                           <span class="gal-tag">flags</span>
                           <div class="ss-seg">

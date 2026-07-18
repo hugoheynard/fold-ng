@@ -39,6 +39,7 @@ import {
   type Sh3NumberSpinner,
   type Sh3NumberControls,
   Sh3SearchComponent,
+  Sh3SliderComponent,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -167,6 +168,7 @@ interface NavGroup {
     Sh3InputComponent,
     Sh3NumberInputComponent,
     Sh3SearchComponent,
+    Sh3SliderComponent,
     FormField,
     DevPlaygroundComponent,
     Sh3ChoiceRowComponent,
@@ -223,12 +225,6 @@ export class GalleryComponent {
   }
   protected setHeaderLayout(value: "inset" | "full"): void {
     this.shellHeaderLayout.set(value);
-  }
-  protected setRailWidth(value: string): void {
-    this.shellRailWidth.set(Number(value));
-  }
-  protected setHeaderHeight(value: string): void {
-    this.shellHeaderHeight.set(Number(value));
   }
 
   /** The `<sh3-app-shell>` markup reflecting the current settings — live. */
@@ -1159,12 +1155,6 @@ export class GalleryComponent {
   protected readonly alFaces = computed(() =>
     this.team.slice(0, this.alCount()),
   );
-  protected setAlCount(value: string): void {
-    this.alCount.set(Number(value));
-  }
-  protected setAlLimit(value: string): void {
-    this.alLimit.set(Number(value));
-  }
 
   /** The `<sh3-avatar-list>` markup reflecting the settings — live. */
   protected readonly alShowCode = signal(false);
