@@ -114,8 +114,7 @@ Add roles only once we're certain of their usage.
         `durationMs` at creation), via the package's `provideSh3X` idiom.
 - [x] **Button** (`sh3-button`) — repatriated the shared button, the design
       system's most-used primitive (71 consumers). The `sh3-button` selector was
-      already package-shaped, so **templates are untouched** — only the TS import
-      + `imports:` symbol move (`ButtonComponent` → `Sh3ButtonComponent`). The
+      already package-shaped, so **templates are untouched** — only the TS import + `imports:` symbol move (`ButtonComponent` → `Sh3ButtonComponent`). The
       SCSS was re-expressed in `--sh3-*` tokens: hover tints via
       `color-mix(… var(--sh3-color-*) …)`, the solid CTA via
       `on-primary`/`primary-strong` — so it passes the component token contract
@@ -155,7 +154,7 @@ Add roles only once we're certain of their usage.
   - [x] **Expanded body scrolls** — a nav taller than the rail was overflowing
         off the bottom with no way down. The expanded `.menu-body` now scrolls
         (`overflow-y: auto` + `min-height: 0`); collapsed keeps `overflow:
-        visible` so hover tooltips still escape.
+    visible` so hover tooltips still escape.
   - [x] **Collapsible sections** — opt-in `collapsible` on `sh3-menu-section`:
         the header becomes a fold toggle, `[(collapsed)]` two-way (starts open).
         The section holding the **active** item stays open regardless (read via
@@ -327,6 +326,26 @@ avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
   `".svg": "text"` loader are now unused (nothing imports `.svg`). Harmless but
   cruft — delete them (and the loader) in a follow-up once the package icon set
   is confirmed as the single source of truth.
+- **`sh3-number-input` stays on `type="number"` — i18n formatting deferred.**
+  Deliberately native `type=number`: robust parsing, the mobile numeric keyboard,
+  and native validation for free. The cost is it can **never** display grouped
+  thousands (`1 234`) and `inputmode` is ignored — both require `type="text"` + an
+  `Intl.NumberFormat` display/parse layer (the React Aria / Ark UI approach, which
+  never uses `type=number`). A full `type=text` migration (`role="spinbutton"` +
+  `aria-value*` + `inputmode` + draft-string editing + locale parse/format +
+  optional grouping) **was built and rolled back on 2026-07-18** — the app has no
+  monetary field yet, so the flexibility isn't earned (generalize on the 2nd real
+  usage, not by anticipation). **Trigger to revisit: the first currency/amount
+  field.** Verdict vs React Aria `NumberField`: **library-grade in craft, one tier
+  below in scope** — the whole gap is i18n/formatting + the `type=number` quirks
+  (FR users can't type a comma decimal on some keyboards; accepts `e` notation),
+  nothing else. Everything around it is already premium: pure `settleNumber`
+  (snap→round→clamp, exponent-safe precision, NaN guard), the extracted
+  `sh3RepeatPress` hold-repeat, unified keyboard stepping, wheel-blur, a11y
+  (`aria-describedby`, steppers out of the tab/AT tree), and a dev-warn when a
+  snapped `max` sits off the step grid. Missing even in a `type=text` future:
+  PageUp/PageDown (×10) + Home/End (→min/max), stepper acceleration, RTL /
+  non-Latin numerals.
 
 ## Hardcore-review follow-ups (2026-07) — see `dev-rules.md` ledger
 
