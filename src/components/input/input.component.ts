@@ -1,12 +1,12 @@
 import {
   booleanAttribute,
   Component,
+  computed,
   inject,
   input,
   model,
-  output,
 } from "@angular/core";
-import type { FormValueControl } from "@angular/forms/signals";
+import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
 import { Sh3InputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
@@ -14,9 +14,10 @@ import { readInputValue } from "./input-value";
 /**
  * `<sh3-input>` — the text-input control (`value: string`): the *edit* half of a
  * record, where {@link Sh3FieldComponent} is the *read* half. It renders an
- * optional label + a native `<input>` styled to the tokens, and nothing more —
- * validation chrome (error / hint / required) is intentionally out of scope
- * until a real form needs it. For numeric fields use {@link
+ * optional label + a native `<input>` styled to the tokens, plus the field
+ * chrome from {@link Sh3InputBaseComponent} (label / required / hint / error).
+ * When bound via `[formField]`, it surfaces the field's first validation error
+ * under the input once touched. For numeric fields use {@link
  * Sh3NumberInputComponent} — a separate control so each keeps its true value
  * type instead of a `string | number` union.
  *
@@ -54,8 +55,11 @@ export class Sh3InputComponent implements FormValueControl<string> {
   readonly value = model<string>("");
   /** Disabled state — bound automatically by `FormField` from the field. */
   readonly disabled = input<boolean>(false);
-  /** Emitted on blur so `FormField` can mark the field touched. */
-  readonly touch = output<void>();
+  /** Two-way touched state — set on blur (so `FormField` marks the field
+   *  touched), and kept in sync with the field's touched state. */
+  readonly touched = model<boolean>(false);
+  /** Validation errors — bound by `FormField` from the field. */
+  readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
   /**
    * Native input type (text-like only; use {@link Sh3NumberInputComponent} for numbers).
    * @default 'text'
@@ -127,9 +131,23 @@ export class Sh3InputComponent implements FormValueControl<string> {
   /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
   readonly inputId = inject(Sh3IdService).next("sh3-input");
 
+  /** The message to show under the field: the first error, once touched. */
+  protected readonly errorMessage = computed<string | undefined>(() => {
+    if (!this.touched()) {
+      return undefined;
+    }
+    const first = this.errors()[0];
+    return first ? (first.message ?? first.kind) : undefined;
+  });
+
   /** Handles native input event. `value.set()` also fires the model's
    *  auto `valueChange` output for standalone `(valueChange)` consumers. */
   onInputChange(event: Event): void {
     this.value.set(readInputValue(event));
+  }
+
+  /** Mark the field touched on blur, so errors can surface. */
+  protected onBlur(): void {
+    this.touched.set(true);
   }
 }

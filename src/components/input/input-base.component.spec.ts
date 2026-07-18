@@ -11,6 +11,7 @@ import { Sh3InputBaseComponent } from "./input-base.component";
     [for]="for()"
     [required]="required()"
     [hint]="hint()"
+    [error]="error()"
   >
     <input class="projected" />
   </sh3-input-base>`,
@@ -20,6 +21,7 @@ class HostComponent {
   readonly for = signal<string | undefined>(undefined);
   readonly required = signal(false);
   readonly hint = signal<string | undefined>(undefined);
+  readonly error = signal<string | undefined>(undefined);
 }
 
 function render() {
@@ -63,5 +65,17 @@ describe("Sh3InputBaseComponent", () => {
     fixture.componentInstance.required.set(true);
     fixture.detectChanges();
     expect(el.querySelector("sh3-label .req")).not.toBeNull();
+  });
+
+  it("shows the error instead of the hint, with an alert role", () => {
+    const { fixture, el } = render();
+    fixture.componentInstance.hint.set("Optional helper");
+    fixture.componentInstance.error.set("This field is required");
+    fixture.detectChanges();
+
+    expect(el.querySelector(".ib-hint")).toBeNull(); // error wins
+    const err = el.querySelector(".ib-error");
+    expect(err?.textContent?.trim()).toBe("This field is required");
+    expect(err?.getAttribute("role")).toBe("alert");
   });
 });

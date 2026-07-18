@@ -31,4 +31,6 @@ export class Sh3InputBaseComponent {
   readonly required = input(false, { transform: booleanAttribute });
   /** Helper text shown under the control. */
   readonly hint = input<string>();
+  /** Error message shown under the control; when set, it replaces the hint. */
+  readonly error = input<string>();
 }

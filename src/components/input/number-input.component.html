@@ -3,6 +3,7 @@
   [for]="inputId"
   [required]="required()"
   [hint]="hint()"
+  [error]="errorMessage()"
 >
   <div
     class="ni-field"
@@ -39,6 +40,7 @@
         [attr.readonly]="readOnly() || null"
         [attr.disabled]="disabled() || null"
         [attr.required]="required() || null"
+        [attr.aria-invalid]="errorMessage() ? true : null"
         [value]="value()"
         (input)="onInputChange($event)"
         (blur)="onBlur()"

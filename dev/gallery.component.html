@@ -2042,7 +2042,7 @@
               </div>
             </div>
             <div class="gal-cell">
-              <span class="gal-tag">label · required · hint</span>
+              <span class="gal-tag">label · required · hint · error</span>
               <div class="fld-inputs">
                 <sh3-input
                   label="Email"
@@ -2055,6 +2055,12 @@
                   required
                   [min]="0"
                   hint="Years."
+                />
+                <sh3-input
+                  label="Name"
+                  required
+                  hint="Blur while empty to see the error"
+                  [formField]="demoReqForm"
                 />
               </div>
             </div>

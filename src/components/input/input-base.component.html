@@ -4,6 +4,8 @@
 
 <ng-content />
 
-@if (hint(); as hintText) {
-  <p class="ib-hint">{{ hintText }}</p>
+@if (error(); as errorText) {
+  <p class="ib-msg ib-error" role="alert">{{ errorText }}</p>
+} @else if (hint(); as hintText) {
+  <p class="ib-msg ib-hint">{{ hintText }}</p>
 }

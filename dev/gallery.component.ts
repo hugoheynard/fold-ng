@@ -8,6 +8,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
+import { form, required, FormField } from "@angular/forms/signals";
 import {
   Sh3AppShellComponent,
   Sh3AvatarComponent,
@@ -161,6 +162,7 @@ interface NavGroup {
     Sh3FieldListComponent,
     Sh3InputComponent,
     Sh3NumberInputComponent,
+    FormField,
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
     Sh3AsideLayoutComponent,
@@ -822,6 +824,13 @@ export class GalleryComponent {
   protected readonly demoBpm = signal<number | null>(120);
   protected readonly demoArrows = signal<number | null>(8);
   protected readonly demoStepper = signal<number | null>(2);
+
+  /* A Signal Forms field with a required validator — blur while empty to
+     surface the error under the control. */
+  protected readonly demoReqName = signal("");
+  protected readonly demoReqForm = form(this.demoReqName, (p) => {
+    required(p, { message: "Name is required" });
+  });
   protected readonly fName = signal("Clément Aubry");
   protected readonly fEmail = signal("clement@sh3pherd.dev");
   protected readonly fRole = signal("manager");

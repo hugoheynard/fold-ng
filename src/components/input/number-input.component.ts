@@ -6,9 +6,8 @@ import {
   inject,
   input,
   model,
-  output,
 } from "@angular/core";
-import type { FormValueControl } from "@angular/forms/signals";
+import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
 import { Sh3IconComponent } from "../icon/icon.component";
 import { Sh3InputBaseComponent } from "./input-base.component";
@@ -61,8 +60,11 @@ export class Sh3NumberInputComponent implements FormValueControl<
   readonly value = model<number | null>(null);
   /** Disabled state — bound automatically by `FormField` from the field. */
   readonly disabled = input<boolean>(false);
-  /** Emitted on blur so `FormField` can mark the field touched. */
-  readonly touch = output<void>();
+  /** Two-way touched state — set on blur (so `FormField` marks the field
+   *  touched), and kept in sync with the field's touched state. */
+  readonly touched = model<boolean>(false);
+  /** Validation errors — bound by `FormField` from the field. */
+  readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
   /** Size preset — see {@link Sh3InputComponent.size}. @default 'md' */
   readonly size = input<"sm" | "md" | "lg">("md");
@@ -150,6 +152,15 @@ export class Sh3NumberInputComponent implements FormValueControl<
     () => this.frozen() || this.atMin(),
   );
 
+  /** The message to show under the field: the first error, once touched. */
+  protected readonly errorMessage = computed<string | undefined>(() => {
+    if (!this.touched()) {
+      return undefined;
+    }
+    const first = this.errors()[0];
+    return first ? (first.message ?? first.kind) : undefined;
+  });
+
   /** Parses the native value: empty → `null`, otherwise a `number`. */
   onInputChange(event: Event): void {
     const raw = readInputValue(event);
@@ -158,7 +169,7 @@ export class Sh3NumberInputComponent implements FormValueControl<
 
   /** On blur: mark touched, and snap a typed value onto the grid if enabled. */
   protected onBlur(): void {
-    this.touch.emit();
+    this.touched.set(true);
     const v = this.value();
     if (this.snapToStep() && v !== null && Number.isFinite(v)) {
       this.value.set(this.snap(v));
@@ -216,7 +227,7 @@ export class Sh3NumberInputComponent implements FormValueControl<
     }
     const raw = (this.value() ?? 0) + direction * this.effectiveStep();
     this.value.set(this.snapToStep() ? this.snap(raw) : this.clamp(raw));
-    this.touch.emit();
+    this.touched.set(true);
   }
 
   /** Decimal places implied by the step, so arithmetic doesn't drift (0.1+0.2). */

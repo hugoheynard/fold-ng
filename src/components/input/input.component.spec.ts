@@ -1,5 +1,6 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
+import { form, required, FormField } from "@angular/forms/signals";
 import { describe, it, expect } from "vitest";
 import { Sh3InputComponent } from "./input.component";
 
@@ -80,5 +81,53 @@ describe("Sh3InputComponent", () => {
     fixture.componentInstance.readOnly.set(true);
     fixture.detectChanges();
     expect(input.hasAttribute("readonly")).toBe(true);
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [Sh3InputComponent, FormField],
+  template: `<sh3-input [formField]="nameForm" />`,
+})
+class FormHostComponent {
+  readonly name = signal("");
+  readonly nameForm = form(this.name, (p) => {
+    required(p, { message: "Name is required" });
+  });
+}
+
+describe("Sh3InputComponent + Signal Forms", () => {
+  function renderForm() {
+    const fixture = TestBed.createComponent(FormHostComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement.querySelector(
+      "sh3-input",
+    ) as HTMLElement;
+    return { fixture, host, input: host.querySelector("input") as HTMLElement };
+  }
+
+  it("shows the field error only after the field is touched", () => {
+    const { fixture, host, input } = renderForm();
+    // invalid from the start (empty + required) but untouched → no message
+    expect(host.querySelector(".ib-error")).toBeNull();
+
+    input.dispatchEvent(new Event("blur"));
+    fixture.detectChanges();
+
+    const err = host.querySelector(".ib-error");
+    expect(err?.textContent?.trim()).toBe("Name is required");
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+  });
+
+  it("clears the error once the field becomes valid", () => {
+    const { fixture, host, input } = renderForm();
+    input.dispatchEvent(new Event("blur"));
+    fixture.detectChanges();
+    expect(host.querySelector(".ib-error")).not.toBeNull();
+
+    fixture.componentInstance.name.set("Ada");
+    fixture.detectChanges();
+    expect(host.querySelector(".ib-error")).toBeNull();
+    expect(input.getAttribute("aria-invalid")).toBeNull();
   });
 });
