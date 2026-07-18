@@ -2,22 +2,21 @@
   display: block;
 }
 
-/* param / preview / code, wrapping on narrow viewports */
+/* settings / preview / code — three matching cards, wrapping on narrow viewports */
 .pg-row {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   align-items: flex-start;
 }
-/* params → a "Settings" card */
-.pg-params {
-  flex: 0 0 220px;
+
+/* shared card shell */
+.pg-panel {
   border-radius: var(--sh3-radius-lg);
   border: 1px solid var(--sh3-color-border);
-  background: var(--sh3-color-surface-card);
   overflow: hidden;
 }
-.pg-params-head {
+.pg-head {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -25,49 +24,48 @@
   border-bottom: 1px solid var(--sh3-color-border-subtle);
   color: var(--sh3-color-text-secondary);
 }
-.pg-params-title {
+.pg-head-title {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--sh3-color-text);
 }
+.pg-body {
+  padding: 14px;
+}
+
+/* settings card */
+.pg-params {
+  flex: 0 0 220px;
+  background: var(--sh3-color-surface-card);
+}
 .pg-params-body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 14px;
 }
+
+/* preview card */
 .pg-preview {
   flex: 1 1 200px;
   min-width: 180px;
+  background: var(--sh3-color-surface-card);
+}
+.pg-preview-body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-.pg-tag {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--sh3-color-text-muted);
+  gap: 10px;
 }
 
-/* code block */
+/* code card */
 .pg-code {
   flex: 1 1 300px;
   min-width: 260px;
-  border-radius: var(--sh3-radius-lg);
-  border: 1px solid var(--sh3-color-border);
   background: var(--sh3-color-surface-sunken);
-  overflow: hidden;
 }
-.pg-code-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px 8px 14px;
-  border-bottom: 1px solid var(--sh3-color-border-subtle);
+.pg-head-code {
+  padding-right: 10px;
 }
 .pg-lang {
   font-size: 10px;
@@ -80,6 +78,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  margin-left: auto;
   padding: 4px 10px;
   border-radius: var(--sh3-radius-sm);
   border: 1px solid var(--sh3-color-border);

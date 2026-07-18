@@ -1,27 +1,33 @@
 <div class="pg-row">
-  <div class="pg-params">
-    <div class="pg-params-head">
+  <section class="pg-panel pg-params">
+    <header class="pg-head">
       <sh3-icon name="settings" size="sm" />
-      <span class="pg-params-title">Settings</span>
-    </div>
-    <div class="pg-params-body">
+      <span class="pg-head-title">Settings</span>
+    </header>
+    <div class="pg-body pg-params-body">
       <ng-content select="[params]" />
     </div>
-  </div>
+  </section>
 
-  <div class="pg-preview">
-    <span class="pg-tag">preview</span>
-    <ng-content />
-  </div>
+  <section class="pg-panel pg-preview">
+    <header class="pg-head">
+      <sh3-icon name="eye" size="sm" />
+      <span class="pg-head-title">Preview</span>
+    </header>
+    <div class="pg-body pg-preview-body">
+      <ng-content />
+    </div>
+  </section>
 
-  <div class="pg-code">
-    <div class="pg-code-top">
+  <section class="pg-panel pg-code">
+    <header class="pg-head pg-head-code">
+      <span class="pg-head-title">Code</span>
       <span class="pg-lang">{{ lang() }}</span>
       <button type="button" class="pg-copy" (click)="copy()">
         <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
         {{ copied() ? "Copied" : "Copy" }}
       </button>
-    </div>
+    </header>
     <pre class="pg-pre"><code>{{ code() }}</code></pre>
-  </div>
+  </section>
 </div>
