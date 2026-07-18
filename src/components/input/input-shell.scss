@@ -41,13 +41,16 @@
       cursor: default;
     }
 
-    // Hide native number spinners (harmless for text inputs — no match).
+    // Fully remove the native number spinner — sh3-number-input draws its own.
+    // (Harmless for text inputs — no match.)
     &[type="number"] {
+      appearance: textfield;
       -moz-appearance: textfield;
 
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
-        opacity: 0.4;
+        -webkit-appearance: none;
+        margin: 0;
       }
     }
   }

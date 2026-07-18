@@ -13,8 +13,10 @@ import { Sh3IconComponent } from "../icon/icon.component";
 import { Sh3InputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
-/** How the increment/decrement affordance renders. */
-export type Sh3NumberSpinner = "none" | "arrows" | "stepper";
+/** The increment/decrement glyph: chevrons, `− / +`, or no buttons. */
+export type Sh3NumberSpinner = "none" | "arrows" | "plusminus";
+/** Where the spinner buttons sit: stacked inside the box, or flanking it. */
+export type Sh3NumberControls = "inside" | "outside";
 
 /**
  * `<sh3-number-input>` — the numeric sibling of {@link Sh3InputComponent}. Split
@@ -87,13 +89,21 @@ export class Sh3NumberInputComponent implements FormValueControl<
   readonly step = input<number | undefined>(undefined);
 
   /**
-   * The increment/decrement affordance.
-   * - `arrows` — a stacked up/down chevron on the right (default).
-   * - `stepper` — `−` / `+` buttons flanking the field.
-   * - `none` — plain field, no buttons.
+   * The increment/decrement glyph.
+   * - `arrows` — up/down chevrons (default).
+   * - `plusminus` — `−` / `+` symbols.
+   * - `none` — no buttons.
    * @default 'arrows'
    */
   readonly spinner = input<Sh3NumberSpinner>("arrows");
+
+  /**
+   * Where the buttons sit, independent of the {@link spinner} glyph.
+   * - `inside` — stacked on the right edge, inside the box (default).
+   * - `outside` — decrement left, increment right, flanking the box.
+   * @default 'inside'
+   */
+  readonly controls = input<Sh3NumberControls>("inside");
 
   /** Show the {@link step} as a small suffix, so the increment is visible. */
   readonly showStep = input(false, { transform: booleanAttribute });
@@ -117,6 +127,19 @@ export class Sh3NumberInputComponent implements FormValueControl<
     const v = this.value();
     return max !== undefined && v !== null && v >= max;
   });
+
+  /** Whether any spinner button renders. */
+  protected readonly hasControls = computed(() => this.spinner() !== "none");
+  /** Non-interactive (disabled or read-only) → both buttons off. */
+  private readonly frozen = computed(() => this.disabled() || this.readOnly());
+  /** The increment button is disabled. */
+  protected readonly incDisabled = computed(
+    () => this.frozen() || this.atMax(),
+  );
+  /** The decrement button is disabled. */
+  protected readonly decDisabled = computed(
+    () => this.frozen() || this.atMin(),
+  );
 
   /** Parses the native value: empty → `null`, otherwise a `number`. */
   onInputChange(event: Event): void {

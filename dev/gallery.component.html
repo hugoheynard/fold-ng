@@ -2060,25 +2060,40 @@
             </div>
             <div class="gal-cell">
               <span class="gal-tag"
-                >number spinners · arrows / stepper / step</span
+                >number spinners · glyph (arrows / +−) × placement (inside /
+                outside)</span
               >
               <div class="fld-inputs">
                 <sh3-number-input
-                  label="Arrows"
+                  label="arrows · inside"
                   spinner="arrows"
+                  controls="inside"
                   [min]="0"
                   [max]="20"
                   [(value)]="demoArrows"
                 />
                 <sh3-number-input
-                  label="Stepper"
-                  spinner="stepper"
+                  label="arrows · outside"
+                  spinner="arrows"
+                  controls="outside"
                   [min]="0"
-                  [step]="1"
+                  [max]="20"
+                  [(value)]="demoArrows"
+                />
+                <sh3-number-input
+                  label="+− · inside"
+                  spinner="plusminus"
+                  controls="inside"
                   [(value)]="demoStepper"
                 />
                 <sh3-number-input
-                  label="Show step"
+                  label="+− · outside"
+                  spinner="plusminus"
+                  controls="outside"
+                  [(value)]="demoStepper"
+                />
+                <sh3-number-input
+                  label="show step"
                   spinner="arrows"
                   [step]="5"
                   showStep

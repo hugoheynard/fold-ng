@@ -6,73 +6,86 @@
 >
   <div
     class="ni-field"
-    [class.ni-mode-arrows]="spinner() === 'arrows'"
-    [class.ni-mode-stepper]="spinner() === 'stepper'"
-    [class.ni-with-step]="showStep() && step() != null"
+    [class.ni-inside]="controls() === 'inside'"
+    [class.ni-outside]="controls() === 'outside'"
   >
-    @if (spinner() === "stepper") {
+    @if (hasControls() && controls() === "outside") {
       <button
         type="button"
-        class="ni-btn"
-        [disabled]="disabled() || readOnly() || atMin()"
+        class="ni-btn ni-dec"
+        [disabled]="decDisabled()"
         aria-label="Decrement"
         (click)="stepBy(-1)"
       >
-        <sh3-icon name="minus" size="sm" />
+        <sh3-icon
+          [name]="spinner() === 'arrows' ? 'chevron-down' : 'minus'"
+          size="sm"
+        />
       </button>
     }
 
-    <input
-      [id]="inputId"
-      type="number"
-      [attr.min]="min()"
-      [attr.max]="max()"
-      [attr.step]="step()"
-      [attr.placeholder]="placeholder()"
-      [attr.readonly]="readOnly() || null"
-      [attr.disabled]="disabled() || null"
-      [attr.required]="required() || null"
-      [value]="value()"
-      (input)="onInputChange($event)"
-      (blur)="touch.emit()"
-    />
+    <div class="ni-box">
+      <input
+        [id]="inputId"
+        type="number"
+        [attr.min]="min()"
+        [attr.max]="max()"
+        [attr.step]="step()"
+        [attr.placeholder]="placeholder()"
+        [attr.readonly]="readOnly() || null"
+        [attr.disabled]="disabled() || null"
+        [attr.required]="required() || null"
+        [value]="value()"
+        (input)="onInputChange($event)"
+        (blur)="touch.emit()"
+      />
 
-    @if (showStep() && step() != null && spinner() !== "stepper") {
-      <span class="ni-step" aria-hidden="true">{{ step() }}</span>
-    }
+      @if (showStep() && step() != null) {
+        <span class="ni-step" aria-hidden="true">{{ step() }}</span>
+      }
 
-    @if (spinner() === "arrows") {
-      <span class="ni-arrows">
-        <button
-          type="button"
-          class="ni-arrow"
-          [disabled]="disabled() || readOnly() || atMax()"
-          aria-label="Increment"
-          (click)="stepBy(1)"
-        >
-          <sh3-icon name="chevron-up" size="xs" />
-        </button>
-        <button
-          type="button"
-          class="ni-arrow"
-          [disabled]="disabled() || readOnly() || atMin()"
-          aria-label="Decrement"
-          (click)="stepBy(-1)"
-        >
-          <sh3-icon name="chevron-down" size="xs" />
-        </button>
-      </span>
-    }
+      @if (hasControls() && controls() === "inside") {
+        <span class="ni-stack">
+          <button
+            type="button"
+            class="ni-stack-btn ni-inc"
+            [disabled]="incDisabled()"
+            aria-label="Increment"
+            (click)="stepBy(1)"
+          >
+            <sh3-icon
+              [name]="spinner() === 'arrows' ? 'chevron-up' : 'plus'"
+              size="xs"
+            />
+          </button>
+          <button
+            type="button"
+            class="ni-stack-btn ni-dec"
+            [disabled]="decDisabled()"
+            aria-label="Decrement"
+            (click)="stepBy(-1)"
+          >
+            <sh3-icon
+              [name]="spinner() === 'arrows' ? 'chevron-down' : 'minus'"
+              size="xs"
+            />
+          </button>
+        </span>
+      }
+    </div>
 
-    @if (spinner() === "stepper") {
+    @if (hasControls() && controls() === "outside") {
       <button
         type="button"
-        class="ni-btn"
-        [disabled]="disabled() || readOnly() || atMax()"
+        class="ni-btn ni-inc"
+        [disabled]="incDisabled()"
         aria-label="Increment"
         (click)="stepBy(1)"
       >
-        <sh3-icon name="plus" size="sm" />
+        <sh3-icon
+          [name]="spinner() === 'arrows' ? 'chevron-up' : 'plus'"
+          size="sm"
+        />
       </button>
     }
   </div>

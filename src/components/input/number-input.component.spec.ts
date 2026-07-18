@@ -2,7 +2,10 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { Sh3NumberInputComponent } from "./number-input.component";
-import type { Sh3NumberSpinner } from "./number-input.component";
+import type {
+  Sh3NumberSpinner,
+  Sh3NumberControls,
+} from "./number-input.component";
 
 @Component({
   standalone: true,
@@ -13,6 +16,7 @@ import type { Sh3NumberSpinner } from "./number-input.component";
     [max]="max()"
     [step]="step()"
     [spinner]="spinner()"
+    [controls]="controls()"
     [showStep]="showStep()"
     [(value)]="value"
   />`,
@@ -23,6 +27,7 @@ class HostComponent {
   readonly max = signal<number | undefined>(undefined);
   readonly step = signal<number | undefined>(undefined);
   readonly spinner = signal<Sh3NumberSpinner>("arrows");
+  readonly controls = signal<Sh3NumberControls>("inside");
   readonly showStep = signal(false);
   readonly value = signal<number | null>(null);
 }
@@ -36,7 +41,11 @@ function render() {
   const input = host.querySelector("input") as HTMLInputElement;
   const buttons = (): HTMLButtonElement[] =>
     Array.from(host.querySelectorAll("button"));
-  return { fixture, host, input, buttons };
+  const inc = (): HTMLButtonElement =>
+    host.querySelector('button[aria-label="Increment"]') as HTMLButtonElement;
+  const dec = (): HTMLButtonElement =>
+    host.querySelector('button[aria-label="Decrement"]') as HTMLButtonElement;
+  return { fixture, host, input, buttons, inc, dec };
 }
 
 describe("Sh3NumberInputComponent", () => {
@@ -81,12 +90,11 @@ describe("Sh3NumberInputComponent", () => {
     expect(input.getAttribute("step")).toBe("0.5");
   });
 
-  it("renders spinner buttons per mode", () => {
+  it("renders two spinner buttons for either glyph, none for 'none'", () => {
     const { fixture, buttons } = render();
-    // arrows (default) → up + down
-    expect(buttons().length).toBe(2);
+    expect(buttons().length).toBe(2); // arrows (default)
 
-    fixture.componentInstance.spinner.set("stepper");
+    fixture.componentInstance.spinner.set("plusminus");
     fixture.detectChanges();
     expect(buttons().length).toBe(2);
 
@@ -95,40 +103,48 @@ describe("Sh3NumberInputComponent", () => {
     expect(buttons().length).toBe(0);
   });
 
+  it("renders the buttons for both placements", () => {
+    const { fixture, inc, dec } = render();
+    fixture.componentInstance.controls.set("outside");
+    fixture.detectChanges();
+    expect(inc()).not.toBeNull();
+    expect(dec()).not.toBeNull();
+
+    fixture.componentInstance.controls.set("inside");
+    fixture.detectChanges();
+    expect(inc()).not.toBeNull();
+    expect(dec()).not.toBeNull();
+  });
+
   it("increments and decrements by the step, clamped to bounds", () => {
-    const { fixture, buttons } = render();
-    fixture.componentInstance.spinner.set("stepper");
+    const { fixture, inc, dec } = render();
     fixture.componentInstance.step.set(5);
     fixture.componentInstance.min.set(0);
     fixture.componentInstance.max.set(10);
     fixture.componentInstance.value.set(8);
     fixture.detectChanges();
 
-    const [minus, plus] = buttons();
-    plus.click();
+    inc().click();
     expect(fixture.componentInstance.value()).toBe(10); // clamped to max, not 13
-    minus.click();
+    dec().click();
     expect(fixture.componentInstance.value()).toBe(5);
   });
 
   it("disables the increment button at max and decrement at min", () => {
-    const { fixture, buttons } = render();
-    fixture.componentInstance.spinner.set("stepper");
+    const { fixture, inc, dec } = render();
     fixture.componentInstance.min.set(0);
     fixture.componentInstance.max.set(10);
     fixture.componentInstance.value.set(10);
     fixture.detectChanges();
-    const [minus, plus] = buttons();
-    expect(plus.disabled).toBe(true);
-    expect(minus.disabled).toBe(false);
+    expect(inc().disabled).toBe(true);
+    expect(dec().disabled).toBe(false);
   });
 
   it("steps from 0 when the field is empty", () => {
-    const { fixture, buttons } = render();
-    fixture.componentInstance.spinner.set("stepper");
+    const { fixture, inc } = render();
     fixture.componentInstance.step.set(2);
     fixture.detectChanges();
-    buttons()[1].click(); // plus
+    inc().click();
     expect(fixture.componentInstance.value()).toBe(2);
   });
 
