@@ -5,28 +5,44 @@
   [hint]="hint()"
   [error]="errorMessage()"
 >
+  <ng-template
+    #stepBtn
+    let-dir="dir"
+    let-size="size"
+    let-cls="cls"
+    let-off="off"
+  >
+    <button
+      type="button"
+      [class]="cls"
+      [disabled]="off"
+      [attr.aria-label]="dir === 1 ? 'Increment' : 'Decrement'"
+      sh3RepeatPress
+      [sh3RepeatPressDisabled]="off"
+      (sh3RepeatPress)="stepBy(dir)"
+      (click)="onButtonClick(dir, $event)"
+    >
+      <sh3-icon [name]="iconFor(dir)" [size]="size" />
+    </button>
+  </ng-template>
+
   <div
     class="ni-field"
     [class.ni-inside]="controls() === 'inside'"
     [class.ni-outside]="controls() === 'outside'"
   >
     @if (hasControls() && controls() === "outside") {
-      <button
-        type="button"
-        class="ni-btn ni-dec"
-        [disabled]="decDisabled()"
-        aria-label="Decrement"
-        (click)="onButtonClick(-1, $event)"
-        (pointerdown)="holdStart(-1)"
-        (pointerup)="holdStop()"
-        (pointerleave)="holdStop()"
-        (pointercancel)="holdStop()"
-      >
-        <sh3-icon
-          [name]="spinner() === 'arrows' ? 'chevron-down' : 'minus'"
-          size="sm"
-        />
-      </button>
+      <ng-container
+        *ngTemplateOutlet="
+          stepBtn;
+          context: {
+            dir: -1,
+            size: 'sm',
+            cls: 'ni-btn ni-dec',
+            off: decDisabled(),
+          }
+        "
+      />
     }
 
     <div class="ni-box">
@@ -52,59 +68,44 @@
 
       @if (hasControls() && controls() === "inside") {
         <span class="ni-stack">
-          <button
-            type="button"
-            class="ni-stack-btn ni-inc"
-            [disabled]="incDisabled()"
-            aria-label="Increment"
-            (click)="onButtonClick(1, $event)"
-            (pointerdown)="holdStart(1)"
-            (pointerup)="holdStop()"
-            (pointerleave)="holdStop()"
-            (pointercancel)="holdStop()"
-          >
-            <sh3-icon
-              [name]="spinner() === 'arrows' ? 'chevron-up' : 'plus'"
-              size="xs"
-            />
-          </button>
-          <button
-            type="button"
-            class="ni-stack-btn ni-dec"
-            [disabled]="decDisabled()"
-            aria-label="Decrement"
-            (click)="onButtonClick(-1, $event)"
-            (pointerdown)="holdStart(-1)"
-            (pointerup)="holdStop()"
-            (pointerleave)="holdStop()"
-            (pointercancel)="holdStop()"
-          >
-            <sh3-icon
-              [name]="spinner() === 'arrows' ? 'chevron-down' : 'minus'"
-              size="xs"
-            />
-          </button>
+          <ng-container
+            *ngTemplateOutlet="
+              stepBtn;
+              context: {
+                dir: 1,
+                size: 'xs',
+                cls: 'ni-stack-btn ni-inc',
+                off: incDisabled(),
+              }
+            "
+          />
+          <ng-container
+            *ngTemplateOutlet="
+              stepBtn;
+              context: {
+                dir: -1,
+                size: 'xs',
+                cls: 'ni-stack-btn ni-dec',
+                off: decDisabled(),
+              }
+            "
+          />
         </span>
       }
     </div>
 
     @if (hasControls() && controls() === "outside") {
-      <button
-        type="button"
-        class="ni-btn ni-inc"
-        [disabled]="incDisabled()"
-        aria-label="Increment"
-        (click)="onButtonClick(1, $event)"
-        (pointerdown)="holdStart(1)"
-        (pointerup)="holdStop()"
-        (pointerleave)="holdStop()"
-        (pointercancel)="holdStop()"
-      >
-        <sh3-icon
-          [name]="spinner() === 'arrows' ? 'chevron-up' : 'plus'"
-          size="sm"
-        />
-      </button>
+      <ng-container
+        *ngTemplateOutlet="
+          stepBtn;
+          context: {
+            dir: 1,
+            size: 'sm',
+            cls: 'ni-btn ni-inc',
+            off: incDisabled(),
+          }
+        "
+      />
     }
   </div>
 </sh3-input-base>

@@ -1,17 +1,20 @@
+import { NgTemplateOutlet } from "@angular/common";
 import {
   booleanAttribute,
   Component,
   computed,
-  DestroyRef,
   inject,
   input,
   model,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
+import { Sh3RepeatPressDirective } from "../../directives/repeat-press.directive";
 import { Sh3IconComponent } from "../icon/icon.component";
+import type { Sh3IconName } from "../icon/icon.registry";
 import { Sh3InputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
+import { settleNumber } from "./number-settle";
 
 /** The increment/decrement glyph: chevrons, `− / +`, or no buttons. */
 export type Sh3NumberSpinner = "none" | "arrows" | "plusminus";
@@ -45,7 +48,12 @@ export type Sh3NumberControls = "inside" | "outside";
 @Component({
   selector: "sh3-number-input",
   standalone: true,
-  imports: [Sh3InputBaseComponent, Sh3IconComponent],
+  imports: [
+    Sh3InputBaseComponent,
+    Sh3IconComponent,
+    Sh3RepeatPressDirective,
+    NgTemplateOutlet,
+  ],
   templateUrl: "./number-input.component.html",
   styleUrl: "./number-input.component.scss",
   host: {
@@ -181,110 +189,67 @@ export class Sh3NumberInputComponent implements FormValueControl<
     return first ? (first.message ?? first.kind) : undefined;
   });
 
-  /** Parses the native value: empty → `null`, otherwise a `number`. */
+  /** Parses the native value: empty or unparseable → `null`, otherwise a `number`. */
   onInputChange(event: Event): void {
     const raw = readInputValue(event);
-    this.value.set(raw === "" ? null : Number(raw));
+    if (raw === "") {
+      this.value.set(null);
+      return;
+    }
+    const parsed = Number(raw);
+    this.value.set(Number.isNaN(parsed) ? null : parsed);
   }
 
-  /** On blur: mark touched, snap onto the grid if enabled, else round to the decimal cap. */
+  /** On blur: mark touched; settle the value onto its constraints when any apply. */
   protected onBlur(): void {
     this.touched.set(true);
     const v = this.value();
     if (v === null || !Number.isFinite(v)) {
       return;
     }
-    if (this.snapToStep()) {
-      this.value.set(this.snap(v));
-    } else if (this.maxDecimals() !== undefined) {
-      this.value.set(Number(v.toFixed(this.roundPlaces())));
+    if (this.snapToStep() || this.maxDecimals() !== undefined) {
+      this.value.set(this.settle(v));
     }
   }
 
-  private holdTimer: ReturnType<typeof setTimeout> | null = null;
-  private holdInterval: ReturnType<typeof setInterval> | null = null;
-
-  constructor() {
-    inject(DestroyRef).onDestroy(() => this.holdStop());
-  }
-
   /** Keyboard-only click (Enter/Space have `detail === 0`); pointer presses are
-   *  driven by {@link holdStart} so they don't double-step. */
+   *  driven by {@link Sh3RepeatPressDirective} so they don't double-step. */
   protected onButtonClick(direction: 1 | -1, event: MouseEvent): void {
     if (event.detail === 0) {
       this.stepBy(direction);
     }
   }
 
-  /** Pointer press: step once, then repeat after a hold, until release/bound. */
-  protected holdStart(direction: 1 | -1): void {
-    if (this.disabled() || this.readOnly()) {
-      return;
+  /** The glyph for a step button in the given direction (arrows vs `− / +`). */
+  protected iconFor(direction: 1 | -1): Sh3IconName {
+    if (this.spinner() === "arrows") {
+      return direction === 1 ? "chevron-up" : "chevron-down";
     }
-    this.stepBy(direction);
-    this.holdTimer = setTimeout(() => {
-      this.holdInterval = setInterval(() => {
-        const before = this.value();
-        this.stepBy(direction);
-        if (this.value() === before) {
-          this.holdStop(); // hit a bound — nothing more to do
-        }
-      }, 60);
-    }, 350);
+    return direction === 1 ? "plus" : "minus";
   }
 
-  /** Stop any running hold-repeat (pointer released / left / component destroyed). */
-  protected holdStop(): void {
-    if (this.holdTimer !== null) {
-      clearTimeout(this.holdTimer);
-      this.holdTimer = null;
-    }
-    if (this.holdInterval !== null) {
-      clearInterval(this.holdInterval);
-      this.holdInterval = null;
-    }
-  }
-
-  /** Nudge the value by ±step, clamped (and grid-snapped when enabled). */
+  /** Nudge the value by ±step, then settle it onto its constraints. */
   protected stepBy(direction: 1 | -1): void {
     if (this.disabled() || this.readOnly()) {
       return;
     }
     const raw = (this.value() ?? 0) + direction * this.effectiveStep();
-    this.value.set(this.snapToStep() ? this.snap(raw) : this.clamp(raw));
+    this.value.set(this.settle(raw));
     this.touched.set(true);
   }
 
-  /** Decimal places implied by the step, so arithmetic doesn't drift (0.1+0.2). */
-  private stepDecimals(): number {
-    const s = String(this.effectiveStep());
-    const dot = s.indexOf(".");
-    return dot === -1 ? 0 : s.length - dot - 1;
-  }
-
-  /** Rounding precision for a settled value: the decimal cap when set, else the step's own. */
-  private roundPlaces(): number {
-    return this.maxDecimals() ?? this.stepDecimals();
-  }
-
-  /** Clamp to min/max and round to the effective precision. */
-  private clamp(n: number): number {
-    let out = Number(n.toFixed(this.roundPlaces()));
-    const min = this.min();
-    const max = this.max();
-    if (min !== undefined) {
-      out = Math.max(min, out);
-    }
-    if (max !== undefined) {
-      out = Math.min(max, out);
-    }
-    return out;
-  }
-
-  /** Snap to the nearest `base + n·step` (base = min ?? 0), then clamp. */
-  private snap(n: number): number {
-    const step = this.effectiveStep();
-    const base = this.min() ?? 0;
-    return this.clamp(base + Math.round((n - base) / step) * step);
+  /**
+   * Resolve a raw number to a valid settled value — the single source of truth
+   * for "what counts as valid", so blur and stepping never diverge. Delegates to
+   * the pure {@link settleNumber} with the current constraints.
+   */
+  private settle(n: number): number {
+    return settleNumber(n, {
+      step: this.effectiveStep(),
+      min: this.min(),
+      max: this.max(),
+      decimals: this.maxDecimals(),
+      snapToStep: this.snapToStep(),
+    });
   }
 }
