@@ -1,0 +1,33 @@
+@use "./input-shell";
+
+:host {
+  display: block;
+}
+
+// Box, sizes, `panel` variant, focus/disabled — shared with sh3-input.
+@include input-shell.field-input-shell;
+
+.sel-wrap {
+  position: relative;
+}
+
+.sel {
+  // Drop the native arrow — we draw our own caret, so leave room on the right.
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 1.85rem;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.sel-caret {
+  position: absolute;
+  top: 50%;
+  right: 0.6rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--sh3-color-text-muted);
+}

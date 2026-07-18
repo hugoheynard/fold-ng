@@ -1,0 +1,32 @@
+<sh3-input-base
+  [label]="label()"
+  [for]="inputId"
+  [required]="required()"
+  [hint]="hint()"
+  [error]="errorMessage()"
+>
+  <div class="sel-wrap">
+    <select
+      [id]="inputId"
+      class="sel"
+      [disabled]="disabled()"
+      [attr.required]="required() || null"
+      [attr.aria-invalid]="errorMessage() ? true : null"
+      [attr.aria-describedby]="describedBy()"
+      [value]="value()"
+      (change)="onChange($event)"
+      (blur)="onBlur()"
+    >
+      @if (placeholder(); as ph) {
+        <option value="" disabled hidden>{{ ph }}</option>
+      }
+      <ng-content />
+    </select>
+    <sh3-icon
+      name="chevron-down"
+      size="sm"
+      class="sel-caret"
+      aria-hidden="true"
+    />
+  </div>
+</sh3-input-base>
