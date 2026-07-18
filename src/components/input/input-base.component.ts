@@ -29,6 +29,10 @@ export class Sh3InputBaseComponent {
   readonly for = input<string>();
   /** Show the required marker on the label. */
   readonly required = input(false, { transform: booleanAttribute });
+  /** Show a lighter `(optional)` marker on the label (ignored when required). */
+  readonly optional = input(false, { transform: booleanAttribute });
+  /** The word inside the optional marker. @default 'optional' */
+  readonly optionalLabel = input("optional");
   /** Helper text shown under the control. */
   readonly hint = input<string>();
   /** Error message shown under the control; when set, it replaces the hint. */

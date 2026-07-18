@@ -66,6 +66,10 @@ export class Sh3SelectComponent implements FormValueControl<string> {
   readonly label = input<string>();
   /** Show a required marker on the label (and set the native `required`). */
   readonly required = input(false, { transform: booleanAttribute });
+  /** Show a lighter `(optional)` marker on the label (ignored when required). */
+  readonly optional = input(false, { transform: booleanAttribute });
+  /** The word inside the optional marker. @default 'optional' */
+  readonly optionalLabel = input("optional");
   /** Optional helper text shown under the control. */
   readonly hint = input<string>();
   /** Optional placeholder — a leading, disabled option shown while empty. */

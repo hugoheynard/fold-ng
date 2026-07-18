@@ -1,5 +1,11 @@
 @if (label(); as labelText) {
-  <sh3-label [text]="labelText" [for]="for()" [required]="required()" />
+  <sh3-label
+    [text]="labelText"
+    [for]="for()"
+    [required]="required()"
+    [optional]="optional()"
+    [optionalLabel]="optionalLabel()"
+  />
 }
 
 <ng-content />

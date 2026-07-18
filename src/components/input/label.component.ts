@@ -16,6 +16,8 @@ import { booleanAttribute, Component, input } from "@angular/core";
     >{{ text() }}
     @if (required()) {
       <span class="req" aria-hidden="true">*</span>
+    } @else if (optional()) {
+      <span class="opt">({{ optionalLabel() }})</span>
     }
   </label>`,
   styleUrl: "./label.component.scss",
@@ -25,6 +27,10 @@ export class Sh3LabelComponent {
   readonly text = input.required<string>();
   /** The id of the control this labels (`<label for>`). */
   readonly for = input<string>();
-  /** Show the required marker. */
+  /** Show the required marker (`*`). Takes precedence over {@link optional}. */
   readonly required = input(false, { transform: booleanAttribute });
+  /** Show a lighter, parenthesised optional marker after the label. */
+  readonly optional = input(false, { transform: booleanAttribute });
+  /** The word inside the optional marker's parentheses. @default 'optional' */
+  readonly optionalLabel = input("optional");
 }

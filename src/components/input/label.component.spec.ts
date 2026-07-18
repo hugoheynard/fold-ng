@@ -10,12 +10,16 @@ import { Sh3LabelComponent } from "./label.component";
     [text]="text()"
     [for]="for()"
     [required]="required()"
+    [optional]="optional()"
+    [optionalLabel]="optionalLabel()"
   />`,
 })
 class HostComponent {
   readonly text = signal("Job title");
   readonly for = signal<string | undefined>(undefined);
   readonly required = signal(false);
+  readonly optional = signal(false);
+  readonly optionalLabel = signal("optional");
 }
 
 function render() {
@@ -37,6 +41,28 @@ describe("Sh3LabelComponent", () => {
     fixture.componentInstance.required.set(true);
     fixture.detectChanges();
     expect(el.querySelector(".req")?.textContent).toBe("*");
+  });
+
+  it("shows a lighter optional marker, overridable and hidden by default", () => {
+    const { fixture, el } = render();
+    expect(el.querySelector(".opt")).toBeNull();
+
+    fixture.componentInstance.optional.set(true);
+    fixture.detectChanges();
+    expect(el.querySelector(".opt")?.textContent?.trim()).toBe("(optional)");
+
+    fixture.componentInstance.optionalLabel.set("optionnel");
+    fixture.detectChanges();
+    expect(el.querySelector(".opt")?.textContent?.trim()).toBe("(optionnel)");
+  });
+
+  it("prefers the required marker over the optional one", () => {
+    const { fixture, el } = render();
+    fixture.componentInstance.required.set(true);
+    fixture.componentInstance.optional.set(true);
+    fixture.detectChanges();
+    expect(el.querySelector(".req")).not.toBeNull();
+    expect(el.querySelector(".opt")).toBeNull();
   });
 
   it("points the label at the control via for", () => {
