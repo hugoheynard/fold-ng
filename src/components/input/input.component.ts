@@ -114,12 +114,14 @@ export class Sh3InputComponent implements FormValueControl<string | number> {
   readonly autocomplete = input<string | null>(null);
 
   /** Minimum value (number inputs). Also bound by the signal-forms `FormField`
-   *  directive from a field's `min` validator — hence `undefined`, not `null`,
-   *  as the unset sentinel (the control contract types it `number | undefined`). */
-  readonly min = input<number | undefined>(undefined);
+   *  directive from a field's `min` validator. Typed to the control's value type
+   *  (`string | number`) — not just `number` — because `@angular/forms/signals`
+   *  22 requires the `min`/`max` field-state bindings on a `FormValueControl<T>`
+   *  to accept `NonNullable<T> | undefined`; `undefined` is the unset sentinel. */
+  readonly min = input<string | number | undefined>(undefined);
 
-  /** Maximum value (number inputs). See {@link min} for the sentinel rationale. */
-  readonly max = input<number | undefined>(undefined);
+  /** Maximum value (number inputs). See {@link min} for the type rationale. */
+  readonly max = input<string | number | undefined>(undefined);
 
   /** Unique ID for label association. */
   readonly inputId = crypto.randomUUID();
