@@ -56,8 +56,8 @@ export class Sh3SearchComponent {
     inject(DestroyRef).onDestroy(() => this.clear());
   }
 
-  protected onInput(value: string | number): void {
-    const term = String(value).trim();
+  protected onInput(value: string): void {
+    const term = value.trim();
     this.clear();
     this.timer = setTimeout(() => {
       if (term !== this.lastEmitted) {

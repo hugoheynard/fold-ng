@@ -4,11 +4,13 @@ import { Sh3IdService } from "../../a11y/id.service";
 import { readInputValue } from "./input-value";
 
 /**
- * `<sh3-input>` — the text-input control: the *edit* half of a record, where
- * {@link Sh3FieldComponent} is the *read* half. It renders an optional label +
- * a native `<input>` styled to the tokens, and nothing more — validation chrome
- * (error / hint / required) is intentionally out of scope until a real form
- * needs it.
+ * `<sh3-input>` — the text-input control (`value: string`): the *edit* half of a
+ * record, where {@link Sh3FieldComponent} is the *read* half. It renders an
+ * optional label + a native `<input>` styled to the tokens, and nothing more —
+ * validation chrome (error / hint / required) is intentionally out of scope
+ * until a real form needs it. For numeric fields use {@link
+ * Sh3NumberInputComponent} — a separate control so each keeps its true value
+ * type instead of a `string | number` union.
  *
  * Integrates with signal forms via the `FormValueControl` contract (bind with
  * `[formField]`), or drive it standalone with `[(value)]` / `(valueChange)`.
@@ -22,7 +24,7 @@ import { readInputValue } from "./input-value";
  * <sh3-input placeholder="Version name…" [formField]="form.label" />
  *
  * <!-- Standalone two-way -->
- * <sh3-input type="number" size="sm" align="center" placeholder="BPM" [(value)]="bpm" />
+ * <sh3-input size="sm" placeholder="Filter…" [(value)]="term" />
  *
  * <!-- Read-only display -->
  * <sh3-input [value]="title" [readOnly]="true" />
@@ -37,21 +39,19 @@ import { readInputValue } from "./input-value";
     "[class]": 'size() + " " + align() + " " + variant()',
   },
 })
-export class Sh3InputComponent implements FormValueControl<string | number> {
+export class Sh3InputComponent implements FormValueControl<string> {
   /** The bound value — a `model()` so signal forms' `FormField` and `[(value)]`
    *  both keep it in sync. */
-  readonly value = model<string | number>("");
+  readonly value = model<string>("");
   /** Disabled state — bound automatically by `FormField` from the field. */
   readonly disabled = input<boolean>(false);
   /** Emitted on blur so `FormField` can mark the field touched. */
   readonly touch = output<void>();
   /**
-   * Native input type.
+   * Native input type (text-like only; use {@link Sh3NumberInputComponent} for numbers).
    * @default 'text'
    */
-  readonly type = input<
-    "text" | "number" | "email" | "password" | "tel" | "url"
-  >("text");
+  readonly type = input<"text" | "email" | "password" | "tel" | "url">("text");
 
   /**
    * Size preset controlling height, font-size, padding and border-radius.
@@ -109,24 +109,12 @@ export class Sh3InputComponent implements FormValueControl<string | number> {
    */
   readonly autocomplete = input<string | null>(null);
 
-  /** Minimum value (number inputs). Also bound by the signal-forms `FormField`
-   *  directive from a field's `min` validator. Typed to the control's value type
-   *  (`string | number`) — not just `number` — because `@angular/forms/signals`
-   *  22 requires the `min`/`max` field-state bindings on a `FormValueControl<T>`
-   *  to accept `NonNullable<T> | undefined`; `undefined` is the unset sentinel. */
-  readonly min = input<string | number | undefined>(undefined);
-
-  /** Maximum value (number inputs). See {@link min} for the type rationale. */
-  readonly max = input<string | number | undefined>(undefined);
-
   /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
   readonly inputId = inject(Sh3IdService).next("sh3-input");
 
   /** Handles native input event. `value.set()` also fires the model's
    *  auto `valueChange` output for standalone `(valueChange)` consumers. */
   onInputChange(event: Event): void {
-    const val = readInputValue(event);
-    const parsed = this.type() === "number" && val !== "" ? Number(val) : val;
-    this.value.set(parsed);
+    this.value.set(readInputValue(event));
   }
 }

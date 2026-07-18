@@ -18,12 +18,12 @@ import { Sh3InputComponent } from "./input.component";
 })
 class HostComponent {
   readonly label = signal<string | undefined>(undefined);
-  readonly type = signal<"text" | "number">("text");
+  readonly type = signal<"text" | "email" | "password">("text");
   readonly size = signal<"sm" | "md" | "lg">("md");
   readonly align = signal<"start" | "center">("start");
   readonly variant = signal<"default" | "panel">("default");
   readonly readOnly = signal(false);
-  readonly value = signal<string | number>("");
+  readonly value = signal<string>("");
 }
 
 function render() {
@@ -58,21 +58,6 @@ describe("Sh3InputComponent", () => {
     input.dispatchEvent(new Event("input"));
     fixture.detectChanges();
     expect(fixture.componentInstance.value()).toBe("world");
-  });
-
-  it("coerces the value to a number for type=number", () => {
-    const { fixture, input } = render();
-    fixture.componentInstance.type.set("number");
-    fixture.detectChanges();
-
-    input.value = "42";
-    input.dispatchEvent(new Event("input"));
-    expect(fixture.componentInstance.value()).toBe(42);
-
-    // an empty string stays a string, not NaN
-    input.value = "";
-    input.dispatchEvent(new Event("input"));
-    expect(fixture.componentInstance.value()).toBe("");
   });
 
   it("mirrors size / align / variant onto the host class", () => {
