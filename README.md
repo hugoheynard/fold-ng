@@ -150,6 +150,23 @@ the package root.
 | `Sh3PanelHostComponent`                                 | `sh3-panel-host`    | Side-panel / overlay host (+ `Sh3PanelHostService` / `Sh3PanelRef` / `Sh3PanelToggle`).                                                                               |
 | `Sh3PanelHeaderComponent`                               | `sh3-panel-header`  | Standard panel header (title/eyebrow, self-closing).                                                                                                                  |
 
+## Form-field ids
+
+Browsers warn — _"A form field element should have an id or name attribute"_ —
+about any `<input>` / `<select>` / `<textarea>` that carries neither (autofill +
+a11y can't identify it). Two pieces keep that silent, SSR-safely:
+
+- **`Sh3IdService`** — a unique-id generator. A per-injector counter (one per app,
+  fresh per SSR request), so ids are deterministic in render order and match
+  server ↔ client. Use it when a component owns a labelled control and needs the
+  id for `<label for>`: `readonly id = inject(Sh3IdService).next('sh3-input')`.
+  (`crypto.randomUUID()` differs server vs client and trips hydration — don't.)
+- **`Sh3FieldIdDirective`** — auto-applies (by selector) to any native control
+  missing **both** `id` and `name`, and assigns one. Add it to a component's
+  `imports` once and every loose native control in its template is fixed — no
+  per-element edit. It skips anything already identified (static or bound `id`/
+  `name`), so it never fights a control you've labelled yourself.
+
 ## Icons
 
 `sh3-icon` ships a **built-in set of ~100 single-colour SVGs** (102 today, across

@@ -1,5 +1,6 @@
-import { Component, input, model, output } from "@angular/core";
+import { Component, inject, input, model, output } from "@angular/core";
 import type { FormValueControl } from "@angular/forms/signals";
+import { Sh3IdService } from "../../a11y/id.service";
 
 /** Read `.value` off an input event target as a string, without `$any()`. */
 function readInputValue(event: Event): string {
@@ -123,8 +124,8 @@ export class Sh3InputComponent implements FormValueControl<string | number> {
   /** Maximum value (number inputs). See {@link min} for the type rationale. */
   readonly max = input<string | number | undefined>(undefined);
 
-  /** Unique ID for label association. */
-  readonly inputId = crypto.randomUUID();
+  /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
+  readonly inputId = inject(Sh3IdService).next("sh3-input");
 
   /** Handles native input event. `value.set()` also fires the model's
    *  auto `valueChange` output for standalone `(valueChange)` consumers. */

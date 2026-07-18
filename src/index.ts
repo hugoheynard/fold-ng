@@ -67,6 +67,8 @@ export type {
 export { Sh3ChoiceRowComponent } from "./components/choice-row/choice-row.component";
 export type { Sh3ChoiceOption } from "./components/choice-row/choice-row.component";
 export { Sh3IconComponent } from "./components/icon/icon.component";
+export { Sh3IdService } from "./a11y/id.service";
+export { Sh3FieldIdDirective } from "./a11y/field-id.directive";
 export { Sh3InputComponent } from "./components/input/input.component";
 export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export { Sh3LoadingStateComponent } from "./components/state/loading-state.component";
