@@ -76,6 +76,9 @@ export {
   type Sh3NumberControls,
 } from "./components/input/number-input.component";
 export { Sh3SearchComponent } from "./components/input/search.component";
+export { Sh3SliderComponent } from "./components/slider/slider.component";
+export { Sh3RangeSliderComponent } from "./components/slider/range-slider.component";
+export type { Sh3RangeValue } from "./components/slider/range-slider.component";
 export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export { Sh3LoadingStateComponent } from "./components/state/loading-state.component";
 export { Sh3EmptyStateComponent } from "./components/state/empty-state.component";

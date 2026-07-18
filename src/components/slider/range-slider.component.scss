@@ -1,0 +1,67 @@
+@use "./slider";
+
+:host {
+  display: block;
+}
+
+.rs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rs-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--sh3-color-text-muted);
+}
+
+.rs-track-wrap {
+  position: relative;
+  height: 20px;
+}
+
+.rs-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--sh3-color-border-subtle);
+  border-radius: 2px;
+}
+
+.rs-fill {
+  position: absolute;
+  height: 100%;
+  background: var(--sh3-color-primary);
+  border-radius: 2px;
+}
+
+.rs-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+  outline: none;
+
+  @include slider.thumb;
+}
+
+.rs-values {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--sh3-color-text-muted);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}

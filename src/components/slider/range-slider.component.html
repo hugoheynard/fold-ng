@@ -1,0 +1,35 @@
+<div class="rs">
+  <span class="rs-label">{{ label() }}</span>
+  <div class="rs-track-wrap">
+    <div class="rs-track">
+      <div
+        class="rs-fill"
+        [style.left.%]="fillLeft()"
+        [style.width.%]="fillWidth()"
+      ></div>
+    </div>
+    <input
+      type="range"
+      class="rs-thumb rs-thumb--min"
+      [min]="min()"
+      [max]="max()"
+      [step]="step()"
+      [value]="currentMin()"
+      [attr.aria-label]="label() + ' minimum'"
+      (input)="onMinChange($event)"
+    />
+    <input
+      type="range"
+      class="rs-thumb rs-thumb--max"
+      [min]="min()"
+      [max]="max()"
+      [step]="step()"
+      [value]="currentMax()"
+      [attr.aria-label]="label() + ' maximum'"
+      (input)="onMaxChange($event)"
+    />
+  </div>
+  <span class="rs-values"
+    >{{ formatValue(currentMin()) }} – {{ formatValue(currentMax()) }}</span
+  >
+</div>

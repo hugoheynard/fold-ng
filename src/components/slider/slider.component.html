@@ -1,0 +1,25 @@
+<div class="sl">
+  @if (label() || showValue()) {
+    <div class="sl-head">
+      @if (label()) {
+        <span class="sl-label">{{ label() }}</span>
+      }
+      @if (showValue()) {
+        <span class="sl-value">{{ display() }}</span>
+      }
+    </div>
+  }
+  <input
+    [id]="inputId"
+    class="sl-input"
+    type="range"
+    [min]="min()"
+    [max]="max()"
+    [step]="step()"
+    [value]="value()"
+    [disabled]="disabled()"
+    [style.--sl-pct]="percent() + '%'"
+    [attr.aria-label]="label()"
+    (input)="onInput($event)"
+  />
+</div>
