@@ -587,6 +587,10 @@ sh3-app-shell {
   flex-direction: column;
   gap: 22px;
 }
+/* extra breathing room before the playground sits under the demos */
+.np-playground-cell {
+  margin-top: 26px;
+}
 .gal-row {
   display: flex;
   flex-wrap: wrap;
