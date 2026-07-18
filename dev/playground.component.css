@@ -10,6 +10,21 @@
   align-items: flex-start;
 }
 
+/* equal mode: same width (share the row evenly) and same height (stretch) */
+:host(.pg-equal) .pg-row {
+  align-items: stretch;
+}
+:host(.pg-equal) .pg-panel {
+  flex: 1 1 0;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+:host(.pg-equal) .pg-body,
+:host(.pg-equal) .pg-pre {
+  flex: 1 1 auto;
+}
+
 /* shared card shell */
 .pg-panel {
   border-radius: var(--sh3-radius-lg);

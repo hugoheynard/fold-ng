@@ -1,4 +1,4 @@
-import { Component, input, signal } from "@angular/core";
+import { booleanAttribute, Component, input, signal } from "@angular/core";
 import { Sh3IconComponent } from "../src/index";
 
 /**
@@ -14,6 +14,9 @@ import { Sh3IconComponent } from "../src/index";
  *   <sh3-number-input … />
  * </dev-playground>
  * ```
+ *
+ * Set `equal` to force the three cards to share the width evenly and stretch to
+ * a common height (otherwise each sizes to its content).
  */
 @Component({
   selector: "dev-playground",
@@ -21,12 +24,15 @@ import { Sh3IconComponent } from "../src/index";
   imports: [Sh3IconComponent],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",
+  host: { "[class.pg-equal]": "equal()" },
 })
 export class DevPlaygroundComponent {
   /** The generated code snippet shown (and copied) on the right. */
   readonly code = input("");
   /** Language label on the code block. */
   readonly lang = input("html");
+  /** Equal-width and equal-height cards instead of content sizing. */
+  readonly equal = input(false, { transform: booleanAttribute });
 
   protected readonly copied = signal(false);
 
