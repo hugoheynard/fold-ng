@@ -1,6 +1,12 @@
 <div class="pg-row">
   <div class="pg-params">
-    <ng-content select="[params]" />
+    <div class="pg-params-head">
+      <sh3-icon name="settings" size="sm" />
+      <span class="pg-params-title">Settings</span>
+    </div>
+    <div class="pg-params-body">
+      <ng-content select="[params]" />
+    </div>
   </div>
 
   <div class="pg-preview">
