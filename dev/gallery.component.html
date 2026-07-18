@@ -2259,7 +2259,9 @@
                           />
                         </div>
                         <div class="np-field" params>
-                          <span class="gal-tag">min {{ npMin() }}</span>
+                          <span class="gal-tag"
+                            >min {{ npMin() || "off" }}</span
+                          >
                           <input
                             #mn
                             type="range"
@@ -2271,11 +2273,13 @@
                           />
                         </div>
                         <div class="np-field" params>
-                          <span class="gal-tag">max {{ npMax() }}</span>
+                          <span class="gal-tag"
+                            >max {{ npMax() || "off" }}</span
+                          >
                           <input
                             #mx
                             type="range"
-                            min="10"
+                            min="0"
                             max="50"
                             [value]="npMax()"
                             (input)="npMax.set(+mx.value)"
@@ -2335,8 +2339,8 @@
                           [size]="npSize()"
                           [spinner]="npSpinner()"
                           [controls]="npControls()"
-                          [min]="npMin()"
-                          [max]="npMax()"
+                          [min]="npMin() || undefined"
+                          [max]="npMax() || undefined"
                           [step]="npStep()"
                           [showStep]="npShowStep()"
                           [snapToStep]="npSnap()"

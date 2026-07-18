@@ -847,7 +847,7 @@ export class GalleryComponent {
   protected readonly npSize = signal<"sm" | "md" | "lg">("md");
   protected readonly npStep = signal(1);
   protected readonly npMin = signal(0);
-  protected readonly npMax = signal(20);
+  protected readonly npMax = signal(0);
   protected readonly npShowStep = signal(false);
   protected readonly npSnap = signal(false);
   protected readonly npInteger = signal(false);
@@ -865,7 +865,12 @@ export class GalleryComponent {
     if (this.npControls() !== "inside") {
       lines.push(`  controls="${this.npControls()}"`);
     }
-    lines.push(`  [min]="${this.npMin()}"`, `  [max]="${this.npMax()}"`);
+    if (this.npMin() > 0) {
+      lines.push(`  [min]="${this.npMin()}"`);
+    }
+    if (this.npMax() > 0) {
+      lines.push(`  [max]="${this.npMax()}"`);
+    }
     if (this.npStep() !== 1) {
       lines.push(`  [step]="${this.npStep()}"`);
     }
