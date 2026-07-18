@@ -2030,117 +2030,164 @@
       <section id="form" class="gal-sec">
         <sh3-page-section
           title="sh3-input"
-          description="The text-input control — the edit half of a record (sh3-field is the read half). Signal Forms via [formField], or standalone [(value)]. Validation chrome (error/hint/required) is intentionally out of scope until a form needs it."
+          description="The edit half of a record (sh3-field reads). Signal Forms via [formField] or standalone [(value)]; label / required / hint / error are provided by sh3-input-base."
         >
-          <div class="gal-stack">
-            <div class="gal-cell">
-              <span class="gal-tag">sizes · sm / md / lg</span>
-              <div class="fld-inputs">
-                <sh3-input size="sm" placeholder="sm — inline edits" />
-                <sh3-input size="md" placeholder="md — default" />
-                <sh3-input size="lg" placeholder="lg — prominent" />
-              </div>
-            </div>
-            <div class="gal-cell">
-              <span class="gal-tag">label · required · hint · error</span>
-              <div class="fld-inputs">
-                <sh3-input
-                  label="Email"
-                  required
-                  hint="We'll never share it."
-                  placeholder="you@example.com"
-                />
-                <sh3-number-input
-                  label="Age"
-                  required
-                  [min]="0"
-                  hint="Years."
-                />
-                <sh3-input
-                  label="Name"
-                  required
-                  hint="Blur while empty to see the error"
-                  [formField]="demoReqForm"
-                />
-              </div>
-            </div>
-            <div class="gal-cell">
-              <span class="gal-tag"
-                >number spinners · glyph (arrows / +−) × placement (inside /
-                outside)</span
-              >
-              <div class="fld-inputs">
-                <sh3-number-input
-                  label="arrows · inside"
-                  spinner="arrows"
-                  controls="inside"
-                  [min]="0"
-                  [max]="20"
-                  [(value)]="demoArrows"
-                />
-                <sh3-number-input
-                  label="arrows · outside"
-                  spinner="arrows"
-                  controls="outside"
-                  [min]="0"
-                  [max]="20"
-                  [(value)]="demoArrows"
-                />
-                <sh3-number-input
-                  label="+− · inside"
-                  spinner="plusminus"
-                  controls="inside"
-                  [(value)]="demoStepper"
-                />
-                <sh3-number-input
-                  label="+− · outside"
-                  spinner="plusminus"
-                  controls="outside"
-                  [(value)]="demoStepper"
-                />
-                <sh3-number-input
-                  label="show step"
-                  spinner="arrows"
-                  [step]="5"
-                  showStep
-                  [(value)]="demoArrows"
-                />
-                <sh3-number-input
-                  label="snap to step"
-                  spinner="arrows"
-                  [step]="5"
-                  snapToStep
-                  showStep
-                  hint="Type 7, blur → 5"
-                  [(value)]="demoStepper"
-                />
-              </div>
-            </div>
-            <div class="gal-cell">
-              <span class="gal-tag">variants · states</span>
-              <div class="fld-inputs">
-                <sh3-input label="Default" [(value)]="demoText" />
-                <sh3-input
-                  variant="panel"
-                  label="Panel"
-                  placeholder="flatter side-panel chrome"
-                />
-                <sh3-number-input
-                  align="center"
-                  label="BPM"
-                  [(value)]="demoBpm"
-                />
-                <sh3-input
-                  label="Read-only"
-                  [value]="'Locked value'"
-                  [readOnly]="true"
-                />
-                <sh3-input
-                  label="Disabled"
-                  placeholder="unavailable"
-                  [disabled]="true"
-                />
-              </div>
+          <div class="form-layout">
+            <aside class="form-nav">
+              <sh3-tab-nav
+                direction="vertical"
+                activeStyle="fill"
+                [tabs]="inputTabs"
+                [activeKey]="inputTab()"
+                (tabChange)="inputTab.set($event)"
+              />
+            </aside>
+
+            <div class="form-body">
+              @switch (inputTab()) {
+                @case ("text") {
+                  <div class="gal-stack">
+                    <div class="gal-cell">
+                      <span class="gal-tag">sizes · sm / md / lg</span>
+                      <div class="fld-inputs">
+                        <sh3-input size="sm" placeholder="sm — inline edits" />
+                        <sh3-input size="md" placeholder="md — default" />
+                        <sh3-input size="lg" placeholder="lg — prominent" />
+                      </div>
+                    </div>
+                    <div class="gal-cell">
+                      <span class="gal-tag"
+                        >label · required · hint · error</span
+                      >
+                      <div class="fld-inputs">
+                        <sh3-input
+                          label="Email"
+                          required
+                          hint="We'll never share it."
+                          placeholder="you@example.com"
+                        />
+                        <sh3-input
+                          label="Name"
+                          required
+                          hint="Blur while empty to see the error"
+                          [formField]="demoReqForm"
+                        />
+                      </div>
+                    </div>
+                    <div class="gal-cell">
+                      <span class="gal-tag">variants · states</span>
+                      <div class="fld-inputs">
+                        <sh3-input label="Default" [(value)]="demoText" />
+                        <sh3-input
+                          variant="panel"
+                          label="Panel"
+                          placeholder="flatter side-panel chrome"
+                        />
+                        <sh3-input
+                          label="Read-only"
+                          [value]="'Locked value'"
+                          [readOnly]="true"
+                        />
+                        <sh3-input
+                          label="Disabled"
+                          placeholder="unavailable"
+                          [disabled]="true"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @case ("number") {
+                  <div class="gal-stack">
+                    <div class="gal-cell">
+                      <span class="gal-tag"
+                        >spinner glyph (arrows / +−) × placement (inside /
+                        outside)</span
+                      >
+                      <div class="fld-inputs">
+                        <sh3-number-input
+                          label="arrows · inside"
+                          spinner="arrows"
+                          controls="inside"
+                          [min]="0"
+                          [max]="20"
+                          [(value)]="demoArrows"
+                        />
+                        <sh3-number-input
+                          label="arrows · outside"
+                          spinner="arrows"
+                          controls="outside"
+                          [min]="0"
+                          [max]="20"
+                          [(value)]="demoArrows"
+                        />
+                        <sh3-number-input
+                          label="+− · inside"
+                          spinner="plusminus"
+                          controls="inside"
+                          [(value)]="demoStepper"
+                        />
+                        <sh3-number-input
+                          label="+− · outside"
+                          spinner="plusminus"
+                          controls="outside"
+                          [(value)]="demoStepper"
+                        />
+                      </div>
+                    </div>
+                    <div class="gal-cell">
+                      <span class="gal-tag">step · showStep · snapToStep</span>
+                      <div class="fld-inputs">
+                        <sh3-number-input
+                          label="show step"
+                          spinner="arrows"
+                          [step]="5"
+                          showStep
+                          [(value)]="demoArrows"
+                        />
+                        <sh3-number-input
+                          label="snap to step"
+                          spinner="arrows"
+                          [step]="5"
+                          snapToStep
+                          showStep
+                          hint="Type 7, blur → 5"
+                          [(value)]="demoStepper"
+                        />
+                        <sh3-number-input
+                          align="center"
+                          label="BPM · centered"
+                          [(value)]="demoBpm"
+                        />
+                        <sh3-number-input
+                          label="Age"
+                          required
+                          [min]="0"
+                          hint="Years."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @case ("search") {
+                  <div class="gal-stack">
+                    <div class="gal-cell">
+                      <span class="gal-tag"
+                        >sh3-search · debounced (emits on settle)</span
+                      >
+                      <div class="fld-inputs">
+                        <sh3-search
+                          placeholder="Search name, email…"
+                          (searchChange)="searchTerm.set($event)"
+                        />
+                      </div>
+                      <p class="doc-p">Last emitted: “{{ searchTerm() }}”</p>
+                    </div>
+                  </div>
+                }
+              }
             </div>
           </div>
         </sh3-page-section>

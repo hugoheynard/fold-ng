@@ -35,6 +35,7 @@ import {
   type Sh3IconName,
   Sh3InputComponent,
   Sh3NumberInputComponent,
+  Sh3SearchComponent,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -162,6 +163,7 @@ interface NavGroup {
     Sh3FieldListComponent,
     Sh3InputComponent,
     Sh3NumberInputComponent,
+    Sh3SearchComponent,
     FormField,
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
@@ -808,6 +810,15 @@ export class GalleryComponent {
     { key: "list", label: "avatar-list" },
   ];
   protected readonly avatarTab = signal("avatar");
+
+  /* ── input showcase — a vertical tab-nav, one tab per control ──────────── */
+  protected readonly inputTabs: Sh3TabNavItem[] = [
+    { key: "text", label: "Text" },
+    { key: "number", label: "Number" },
+    { key: "search", label: "Search" },
+  ];
+  protected readonly inputTab = signal("text");
+  protected readonly searchTerm = signal("");
 
   /* ── form page — a vertical tab-nav drives a settings-style form ────────── */
   protected readonly formTabs: Sh3TabNavItem[] = [
