@@ -1,22 +1,11 @@
-// Shared visual shell for the native-input controls (sh3-input, sh3-number-input).
-// One source of truth for the box, label, sizes, alignment and variants — so a
-// redesign lands in both at once. Included at the root of each component's SCSS
-// via `@include shell.field-input-shell;`, so `:host` resolves to that component.
+// Shared box styling for the native-input controls (sh3-input, sh3-number-input).
+// One source of truth for the input box, sizes, alignment and variants — so a
+// redesign lands in both at once. The field layout (label, hint) lives in
+// input-base.component.scss; this mixin styles only the `<input>` itself.
+// Included at the root of each component's SCSS via
+// `@include shell.field-input-shell;`, so `:host` resolves to that component.
 
 @mixin field-input-shell {
-  :host {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-  }
-
-  label {
-    font-size: var(--sh3-text-xs);
-    font-weight: 600;
-    color: var(--sh3-color-text-secondary);
-    margin-bottom: 5px;
-  }
-
   input {
     all: unset;
     box-sizing: border-box;

@@ -1,0 +1,14 @@
+// Owns the vertical field layout: label, control, hint stacked with an even gap.
+// The control's own box styling lives in input-shell.scss.
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.ib-hint {
+  margin: 0;
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+}

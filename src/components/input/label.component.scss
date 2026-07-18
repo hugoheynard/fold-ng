@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+label {
+  font-size: var(--sh3-text-xs);
+  font-weight: 600;
+  color: var(--sh3-color-text-secondary);
+}
+
+.req {
+  color: var(--sh3-color-alert-text);
+  margin-left: 2px;
+}

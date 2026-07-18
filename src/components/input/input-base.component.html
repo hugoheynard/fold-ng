@@ -1,0 +1,9 @@
+@if (label(); as labelText) {
+  <sh3-label [text]="labelText" [for]="for()" [required]="required()" />
+}
+
+<ng-content />
+
+@if (hint(); as hintText) {
+  <p class="ib-hint">{{ hintText }}</p>
+}

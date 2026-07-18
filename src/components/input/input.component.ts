@@ -1,6 +1,14 @@
-import { Component, inject, input, model, output } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  inject,
+  input,
+  model,
+  output,
+} from "@angular/core";
 import type { FormValueControl } from "@angular/forms/signals";
 import { Sh3IdService } from "../../a11y/id.service";
+import { Sh3InputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
 /**
@@ -33,6 +41,7 @@ import { readInputValue } from "./input-value";
 @Component({
   selector: "sh3-input",
   standalone: true,
+  imports: [Sh3InputBaseComponent],
   templateUrl: "./input.component.html",
   styleUrl: "./input.component.scss",
   host: {
@@ -83,6 +92,12 @@ export class Sh3InputComponent implements FormValueControl<string> {
 
   /** Optional label displayed above the input. */
   readonly label = input<string>();
+
+  /** Show a required marker on the label (and set the native `required`). */
+  readonly required = input(false, { transform: booleanAttribute });
+
+  /** Optional helper text shown under the input. */
+  readonly hint = input<string>();
 
   /** Placeholder text. */
   readonly placeholder = input("");

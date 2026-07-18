@@ -1,4 +1,9 @@
-// sh3-number-input renders the same shell as sh3-input (see input-shell.scss).
+// sh3-number-input renders the same box as sh3-input (see input-shell.scss)
+// inside sh3-input-base (label/hint layout).
 @use "./input-shell" as shell;
+
+:host {
+  display: block;
+}
 
 @include shell.field-input-shell;

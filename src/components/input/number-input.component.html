@@ -1,17 +1,21 @@
-@if (label()) {
-  <label [attr.for]="inputId">{{ label() }}</label>
-}
-
-<input
-  [id]="inputId"
-  type="number"
-  [attr.min]="min()"
-  [attr.max]="max()"
-  [attr.step]="step()"
-  [attr.placeholder]="placeholder()"
-  [attr.readonly]="readOnly() || null"
-  [attr.disabled]="disabled() || null"
-  [value]="value()"
-  (input)="onInputChange($event)"
-  (blur)="touch.emit()"
-/>
+<sh3-input-base
+  [label]="label()"
+  [for]="inputId"
+  [required]="required()"
+  [hint]="hint()"
+>
+  <input
+    [id]="inputId"
+    type="number"
+    [attr.min]="min()"
+    [attr.max]="max()"
+    [attr.step]="step()"
+    [attr.placeholder]="placeholder()"
+    [attr.readonly]="readOnly() || null"
+    [attr.disabled]="disabled() || null"
+    [attr.required]="required() || null"
+    [value]="value()"
+    (input)="onInputChange($event)"
+    (blur)="touch.emit()"
+  />
+</sh3-input-base>

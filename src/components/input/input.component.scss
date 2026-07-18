@@ -1,4 +1,9 @@
-// sh3-input renders the shared native-input shell (see input-shell.scss).
+// sh3-input renders the shared native-input box (see input-shell.scss) inside
+// sh3-input-base (which owns the label/hint layout).
 @use "./input-shell" as shell;
+
+:host {
+  display: block;
+}
 
 @include shell.field-input-shell;

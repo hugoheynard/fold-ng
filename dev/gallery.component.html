@@ -2042,6 +2042,23 @@
               </div>
             </div>
             <div class="gal-cell">
+              <span class="gal-tag">label · required · hint</span>
+              <div class="fld-inputs">
+                <sh3-input
+                  label="Email"
+                  required
+                  hint="We'll never share it."
+                  placeholder="you@example.com"
+                />
+                <sh3-number-input
+                  label="Age"
+                  required
+                  [min]="0"
+                  hint="Years."
+                />
+              </div>
+            </div>
+            <div class="gal-cell">
               <span class="gal-tag">variants · states</span>
               <div class="fld-inputs">
                 <sh3-input label="Default" [(value)]="demoText" />
