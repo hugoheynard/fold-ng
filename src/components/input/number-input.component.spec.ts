@@ -29,7 +29,7 @@ class HostComponent {
   readonly min = signal<number | undefined>(undefined);
   readonly max = signal<number | undefined>(undefined);
   readonly step = signal<number | undefined>(undefined);
-  readonly spinner = signal<Sh3NumberSpinner>("arrows");
+  readonly spinner = signal<Sh3NumberSpinner>("plusminus");
   readonly controls = signal<Sh3NumberControls>("inside");
   readonly showStep = signal(false);
   readonly snapToStep = signal(false);
@@ -98,9 +98,9 @@ describe("Sh3NumberInputComponent", () => {
 
   it("renders two spinner buttons for either glyph, none for 'none'", () => {
     const { fixture, buttons } = render();
-    expect(buttons().length).toBe(2); // arrows (default)
+    expect(buttons().length).toBe(2); // plusminus (default)
 
-    fixture.componentInstance.spinner.set("plusminus");
+    fixture.componentInstance.spinner.set("arrows");
     fixture.detectChanges();
     expect(buttons().length).toBe(2);
 

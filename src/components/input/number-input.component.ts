@@ -93,12 +93,12 @@ export class Sh3NumberInputComponent implements FormValueControl<
 
   /**
    * The increment/decrement glyph.
-   * - `arrows` — up/down chevrons (default).
-   * - `plusminus` — `−` / `+` symbols.
+   * - `plusminus` — `−` / `+` symbols (default).
+   * - `arrows` — up/down chevrons.
    * - `none` — no buttons.
-   * @default 'arrows'
+   * @default 'plusminus'
    */
-  readonly spinner = input<Sh3NumberSpinner>("arrows");
+  readonly spinner = input<Sh3NumberSpinner>("plusminus");
 
   /**
    * Where the buttons sit, independent of the {@link spinner} glyph.
