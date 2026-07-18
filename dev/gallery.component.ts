@@ -9,6 +9,7 @@ import {
   viewChild,
 } from "@angular/core";
 import { form, required, FormField } from "@angular/forms/signals";
+import { DevPlaygroundComponent } from "./playground.component";
 import {
   Sh3AppShellComponent,
   Sh3AvatarComponent,
@@ -167,6 +168,7 @@ interface NavGroup {
     Sh3NumberInputComponent,
     Sh3SearchComponent,
     FormField,
+    DevPlaygroundComponent,
     Sh3ChoiceRowComponent,
     Sh3HeroComponent,
     Sh3AsideLayoutComponent,

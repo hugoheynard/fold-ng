@@ -862,33 +862,11 @@ sh3-app-shell {
   color: var(--sh3-color-text);
   font-variant-numeric: tabular-nums;
 }
-/* Number-input playground — a param / preview / code triptych row. */
-.np-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: flex-start;
-}
-.np-params {
-  flex: 0 0 210px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+/* One labelled param control in a dev-playground params slot. */
 .np-field {
   display: flex;
   flex-direction: column;
   gap: 5px;
-}
-.np-preview {
-  flex: 1 1 200px;
-  min-width: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.np-code {
-  flex: 1 1 300px;
 }
 
 .ss-seg {
