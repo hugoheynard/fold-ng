@@ -39,6 +39,7 @@ import {
   type Sh3NumberSpinner,
   type Sh3NumberControls,
   Sh3SearchComponent,
+  Sh3SelectComponent,
   Sh3SliderComponent,
   Sh3LinkComponent,
   Sh3MenuComponent,
@@ -168,6 +169,7 @@ interface NavGroup {
     Sh3InputComponent,
     Sh3NumberInputComponent,
     Sh3SearchComponent,
+    Sh3SelectComponent,
     Sh3SliderComponent,
     FormField,
     DevPlaygroundComponent,
@@ -816,10 +818,16 @@ export class GalleryComponent {
   protected readonly inputTabs: Sh3TabNavItem[] = [
     { key: "text", label: "Text" },
     { key: "number", label: "Number" },
+    { key: "select", label: "Select" },
     { key: "search", label: "Search" },
   ];
   protected readonly inputTab = signal("text");
   protected readonly searchTerm = signal("");
+
+  /* ── select demo ─────────────────────────────────────────────────────── */
+  protected readonly selCurrency = signal("");
+  protected readonly selSize = signal("");
+  protected readonly currencies = ["EUR", "USD", "GBP", "JPY"];
 
   /* ── form page — a vertical tab-nav drives a settings-style form ────────── */
   protected readonly formTabs: Sh3TabNavItem[] = [

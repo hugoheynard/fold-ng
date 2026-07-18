@@ -2302,6 +2302,62 @@
                   </div>
                 }
 
+                @case ("select") {
+                  <div class="gal-stack">
+                    <div class="gal-cell">
+                      <span class="gal-tag"
+                        >sh3-select · native &lt;select&gt;, options
+                        projected</span
+                      >
+                      <div class="fld-inputs">
+                        <sh3-select
+                          label="Devise"
+                          placeholder="Choisir…"
+                          hint="Native under the hood — options are projected."
+                          [(value)]="selCurrency"
+                        >
+                          @for (c of currencies; track c) {
+                            <option [value]="c">{{ c }}</option>
+                          }
+                        </sh3-select>
+                      </div>
+                      <p class="doc-p">Selected: “{{ selCurrency() }}”</p>
+                    </div>
+
+                    <div class="gal-cell">
+                      <span class="gal-tag">sizes · sm / md / lg</span>
+                      <div class="fld-inputs">
+                        <sh3-select size="sm" label="sm" [(value)]="selSize">
+                          <option value="a">Alpha</option>
+                          <option value="b">Bravo</option>
+                        </sh3-select>
+                        <sh3-select size="md" label="md" [(value)]="selSize">
+                          <option value="a">Alpha</option>
+                          <option value="b">Bravo</option>
+                        </sh3-select>
+                        <sh3-select size="lg" label="lg" [(value)]="selSize">
+                          <option value="a">Alpha</option>
+                          <option value="b">Bravo</option>
+                        </sh3-select>
+                      </div>
+                    </div>
+
+                    <div class="gal-cell">
+                      <span class="gal-tag">variant · panel</span>
+                      <div class="fld-inputs">
+                        <sh3-select
+                          variant="panel"
+                          label="Rôle"
+                          placeholder="—"
+                          [(value)]="selSize"
+                        >
+                          <option value="lead">Lead</option>
+                          <option value="member">Member</option>
+                        </sh3-select>
+                      </div>
+                    </div>
+                  </div>
+                }
                 @case ("search") {
                   <div class="gal-stack">
                     <div class="gal-cell">
