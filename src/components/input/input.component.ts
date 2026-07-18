@@ -140,6 +140,14 @@ export class Sh3InputComponent implements FormValueControl<string> {
     return first ? (first.message ?? first.kind) : undefined;
   });
 
+  /** `aria-describedby` target: the error when shown, else the hint, else none. */
+  protected readonly describedBy = computed<string | null>(() => {
+    if (this.errorMessage()) {
+      return `${this.inputId}-error`;
+    }
+    return this.hint() ? `${this.inputId}-hint` : null;
+  });
+
   /** Handles native input event. `value.set()` also fires the model's
    *  auto `valueChange` output for standalone `(valueChange)` consumers. */
   onInputChange(event: Event): void {

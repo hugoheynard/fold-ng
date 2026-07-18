@@ -14,6 +14,7 @@ import { Sh3InputComponent } from "./input.component";
     [align]="align()"
     [variant]="variant()"
     [readOnly]="readOnly()"
+    [hint]="hint()"
     [(value)]="value"
   />`,
 })
@@ -24,6 +25,7 @@ class HostComponent {
   readonly align = signal<"start" | "center">("start");
   readonly variant = signal<"default" | "panel">("default");
   readonly readOnly = signal(false);
+  readonly hint = signal<string | undefined>(undefined);
   readonly value = signal<string>("");
 }
 
@@ -47,6 +49,19 @@ describe("Sh3InputComponent", () => {
     expect(label?.textContent?.trim()).toBe("First name");
     // label is associated with the input by id
     expect(label?.getAttribute("for")).toBe(input.id);
+  });
+
+  it("links the hint to the input via aria-describedby", () => {
+    const { fixture, input } = render();
+    expect(input.getAttribute("aria-describedby")).toBeNull();
+
+    fixture.componentInstance.hint.set("We never share it.");
+    fixture.detectChanges();
+    const describedBy = input.getAttribute("aria-describedby");
+    expect(describedBy).toMatch(/-hint$/);
+    expect(
+      document.getElementById(describedBy as string)?.textContent,
+    ).toContain("We never share it.");
   });
 
   it("reflects the bound value and writes typing back through the model", () => {

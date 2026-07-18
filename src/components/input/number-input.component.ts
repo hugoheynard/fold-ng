@@ -189,6 +189,14 @@ export class Sh3NumberInputComponent implements FormValueControl<
     return first ? (first.message ?? first.kind) : undefined;
   });
 
+  /** `aria-describedby` target: the error when shown, else the hint, else none. */
+  protected readonly describedBy = computed<string | null>(() => {
+    if (this.errorMessage()) {
+      return `${this.inputId}-error`;
+    }
+    return this.hint() ? `${this.inputId}-hint` : null;
+  });
+
   /** Parses the native value: empty or unparseable → `null`, otherwise a `number`. */
   onInputChange(event: Event): void {
     const raw = readInputValue(event);
@@ -217,6 +225,21 @@ export class Sh3NumberInputComponent implements FormValueControl<
   protected onButtonClick(direction: 1 | -1, event: MouseEvent): void {
     if (event.detail === 0) {
       this.stepBy(direction);
+    }
+  }
+
+  /** Own the ↑/↓ arrows so keyboard stepping obeys snap/clamp/precision, not the
+   *  native `step` (which would only reconcile on blur). */
+  protected onArrow(direction: 1 | -1, event: Event): void {
+    event.preventDefault();
+    this.stepBy(direction);
+  }
+
+  /** A focused number field changes value on scroll — blur so the page scrolls
+   *  instead (blur on an unfocused input is a no-op). */
+  protected onWheel(event: WheelEvent): void {
+    if (event.target instanceof HTMLElement) {
+      event.target.blur();
     }
   }
 

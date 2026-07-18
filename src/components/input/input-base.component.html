@@ -5,7 +5,15 @@
 <ng-content />
 
 @if (error(); as errorText) {
-  <p class="ib-msg ib-error" role="alert">{{ errorText }}</p>
+  <p
+    class="ib-msg ib-error"
+    role="alert"
+    [attr.id]="for() ? for() + '-error' : null"
+  >
+    {{ errorText }}
+  </p>
 } @else if (hint(); as hintText) {
-  <p class="ib-msg ib-hint">{{ hintText }}</p>
+  <p class="ib-msg ib-hint" [attr.id]="for() ? for() + '-hint' : null">
+    {{ hintText }}
+  </p>
 }

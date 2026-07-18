@@ -21,6 +21,7 @@ import type {
     [snapToStep]="snapToStep()"
     [decimals]="decimals()"
     [integer]="integer()"
+    [hint]="hint()"
     [(value)]="value"
   />`,
 })
@@ -35,6 +36,7 @@ class HostComponent {
   readonly snapToStep = signal(false);
   readonly decimals = signal<number | undefined>(undefined);
   readonly integer = signal(false);
+  readonly hint = signal<string | undefined>(undefined);
   readonly value = signal<number | null>(null);
 }
 
@@ -282,5 +284,58 @@ describe("Sh3NumberInputComponent", () => {
     fixture.detectChanges();
     inc().click();
     expect(Number.isInteger(fixture.componentInstance.value())).toBe(true);
+  });
+
+  it("steps via ArrowUp/ArrowDown through the same snap/clamp path as the buttons", () => {
+    const { fixture, input } = render();
+    fixture.componentInstance.step.set(5);
+    fixture.componentInstance.max.set(10);
+    fixture.componentInstance.snapToStep.set(true);
+    fixture.componentInstance.value.set(8);
+    fixture.detectChanges();
+
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+    expect(fixture.componentInstance.value()).toBe(10); // clamped, not native +native-step
+
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+    expect(fixture.componentInstance.value()).toBe(5); // on the grid
+  });
+
+  it("prevents the native arrow-key stepping it replaces", () => {
+    const { input } = render();
+    const event = new KeyboardEvent("keydown", {
+      key: "ArrowUp",
+      cancelable: true,
+    });
+    input.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it("blurs on wheel so a focused field does not change on scroll", () => {
+    const { input } = render();
+    const blur = vi.spyOn(input, "blur");
+    input.dispatchEvent(new WheelEvent("wheel"));
+    expect(blur).toHaveBeenCalled();
+  });
+
+  it("keeps the step buttons out of the tab order and the a11y tree", () => {
+    const { inc, dec } = render();
+    for (const btn of [inc(), dec()]) {
+      expect(btn.getAttribute("tabindex")).toBe("-1");
+      expect(btn.getAttribute("aria-hidden")).toBe("true");
+    }
+  });
+
+  it("wires aria-describedby to the hint, then to the error once touched", () => {
+    const { fixture, input } = render();
+    expect(input.getAttribute("aria-describedby")).toBeNull();
+
+    fixture.componentInstance.hint.set("Whole numbers.");
+    fixture.detectChanges();
+    const describedBy = input.getAttribute("aria-describedby");
+    expect(describedBy).toMatch(/-hint$/);
+    expect(
+      document.getElementById(describedBy as string)?.textContent,
+    ).toContain("Whole numbers.");
   });
 });

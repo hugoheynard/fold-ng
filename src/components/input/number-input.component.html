@@ -14,6 +14,8 @@
   >
     <button
       type="button"
+      tabindex="-1"
+      aria-hidden="true"
       [class]="cls"
       [disabled]="off"
       [attr.aria-label]="dir === 1 ? 'Increment' : 'Decrement'"
@@ -57,9 +59,13 @@
         [attr.disabled]="disabled() || null"
         [attr.required]="required() || null"
         [attr.aria-invalid]="errorMessage() ? true : null"
+        [attr.aria-describedby]="describedBy()"
         [value]="value()"
         (input)="onInputChange($event)"
         (blur)="onBlur()"
+        (keydown.arrowUp)="onArrow(1, $event)"
+        (keydown.arrowDown)="onArrow(-1, $event)"
+        (wheel)="onWheel($event)"
       />
 
       @if (showStep() && step() != null) {
