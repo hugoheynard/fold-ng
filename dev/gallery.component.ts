@@ -35,6 +35,8 @@ import {
   type Sh3IconName,
   Sh3InputComponent,
   Sh3NumberInputComponent,
+  type Sh3NumberSpinner,
+  type Sh3NumberControls,
   Sh3SearchComponent,
   Sh3LinkComponent,
   Sh3MenuComponent,
@@ -836,6 +838,42 @@ export class GalleryComponent {
   protected readonly demoBpm = signal<number | null>(120);
   protected readonly demoArrows = signal<number | null>(8);
   protected readonly demoStepper = signal<number | null>(2);
+
+  /* ── Number-input playground — params drive a live preview + code ─────── */
+  protected readonly npSpinner = signal<Sh3NumberSpinner>("arrows");
+  protected readonly npControls = signal<Sh3NumberControls>("inside");
+  protected readonly npSize = signal<"sm" | "md" | "lg">("md");
+  protected readonly npStep = signal(1);
+  protected readonly npMin = signal(0);
+  protected readonly npMax = signal(20);
+  protected readonly npShowStep = signal(false);
+  protected readonly npSnap = signal(false);
+  protected readonly npValue = signal<number | null>(4);
+
+  protected readonly numberPlaygroundCode = computed(() => {
+    const lines = ["<sh3-number-input", '  label="Quantity"'];
+    if (this.npSize() !== "md") {
+      lines.push(`  size="${this.npSize()}"`);
+    }
+    if (this.npSpinner() !== "arrows") {
+      lines.push(`  spinner="${this.npSpinner()}"`);
+    }
+    if (this.npControls() !== "inside") {
+      lines.push(`  controls="${this.npControls()}"`);
+    }
+    lines.push(`  [min]="${this.npMin()}"`, `  [max]="${this.npMax()}"`);
+    if (this.npStep() !== 1) {
+      lines.push(`  [step]="${this.npStep()}"`);
+    }
+    if (this.npShowStep()) {
+      lines.push("  showStep");
+    }
+    if (this.npSnap()) {
+      lines.push("  snapToStep");
+    }
+    lines.push('  [(value)]="qty"', "/>");
+    return lines.join("\n");
+  });
 
   /* A Signal Forms field with a required validator — blur while empty to
      surface the error under the control. */

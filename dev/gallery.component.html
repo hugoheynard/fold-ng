@@ -2102,6 +2102,178 @@
                   <div class="gal-stack">
                     <div class="gal-cell">
                       <span class="gal-tag"
+                        >playground · param · preview · code</span
+                      >
+                      <div class="np-row">
+                        <div class="np-params">
+                          <div class="np-field">
+                            <span class="gal-tag">spinner</span>
+                            <div class="ss-seg">
+                              <button
+                                type="button"
+                                [class.is-on]="npSpinner() === 'arrows'"
+                                (click)="npSpinner.set('arrows')"
+                              >
+                                arrows
+                              </button>
+                              <button
+                                type="button"
+                                [class.is-on]="npSpinner() === 'plusminus'"
+                                (click)="npSpinner.set('plusminus')"
+                              >
+                                +−
+                              </button>
+                              <button
+                                type="button"
+                                [class.is-on]="npSpinner() === 'none'"
+                                (click)="npSpinner.set('none')"
+                              >
+                                none
+                              </button>
+                            </div>
+                          </div>
+                          <div class="np-field">
+                            <span class="gal-tag">controls</span>
+                            <div class="ss-seg">
+                              <button
+                                type="button"
+                                [class.is-on]="npControls() === 'inside'"
+                                (click)="npControls.set('inside')"
+                              >
+                                inside
+                              </button>
+                              <button
+                                type="button"
+                                [class.is-on]="npControls() === 'outside'"
+                                (click)="npControls.set('outside')"
+                              >
+                                outside
+                              </button>
+                            </div>
+                          </div>
+                          <div class="np-field">
+                            <span class="gal-tag">size</span>
+                            <div class="ss-seg">
+                              <button
+                                type="button"
+                                [class.is-on]="npSize() === 'sm'"
+                                (click)="npSize.set('sm')"
+                              >
+                                sm
+                              </button>
+                              <button
+                                type="button"
+                                [class.is-on]="npSize() === 'md'"
+                                (click)="npSize.set('md')"
+                              >
+                                md
+                              </button>
+                              <button
+                                type="button"
+                                [class.is-on]="npSize() === 'lg'"
+                                (click)="npSize.set('lg')"
+                              >
+                                lg
+                              </button>
+                            </div>
+                          </div>
+                          <div class="np-field">
+                            <span class="gal-tag">step {{ npStep() }}</span>
+                            <input
+                              #st
+                              type="range"
+                              min="1"
+                              max="10"
+                              step="1"
+                              [value]="npStep()"
+                              (input)="npStep.set(+st.value)"
+                              aria-label="Step"
+                            />
+                          </div>
+                          <div class="np-field">
+                            <span class="gal-tag">min {{ npMin() }}</span>
+                            <input
+                              #mn
+                              type="range"
+                              min="0"
+                              max="10"
+                              [value]="npMin()"
+                              (input)="npMin.set(+mn.value)"
+                              aria-label="Min"
+                            />
+                          </div>
+                          <div class="np-field">
+                            <span class="gal-tag">max {{ npMax() }}</span>
+                            <input
+                              #mx
+                              type="range"
+                              min="10"
+                              max="50"
+                              [value]="npMax()"
+                              (input)="npMax.set(+mx.value)"
+                              aria-label="Max"
+                            />
+                          </div>
+                          <div class="np-field">
+                            <span class="gal-tag">flags</span>
+                            <div class="ss-seg">
+                              <button
+                                type="button"
+                                [class.is-on]="npShowStep()"
+                                (click)="npShowStep.set(!npShowStep())"
+                              >
+                                showStep
+                              </button>
+                              <button
+                                type="button"
+                                [class.is-on]="npSnap()"
+                                (click)="npSnap.set(!npSnap())"
+                              >
+                                snapToStep
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="np-preview">
+                          <span class="gal-tag">preview</span>
+                          <sh3-number-input
+                            label="Quantity"
+                            [size]="npSize()"
+                            [spinner]="npSpinner()"
+                            [controls]="npControls()"
+                            [min]="npMin()"
+                            [max]="npMax()"
+                            [step]="npStep()"
+                            [showStep]="npShowStep()"
+                            [snapToStep]="npSnap()"
+                            [(value)]="npValue"
+                          />
+                        </div>
+
+                        <div class="np-code code-block">
+                          <div class="code-top">
+                            <span class="code-lang">html</span>
+                            <button
+                              type="button"
+                              class="code-copy"
+                              (click)="copyDemoCode(numberPlaygroundCode())"
+                            >
+                              <sh3-icon
+                                [name]="demoCopied() ? 'check-circle' : 'copy'"
+                                size="sm"
+                              />
+                              {{ demoCopied() ? "Copied" : "Copy" }}
+                            </button>
+                          </div>
+                          <pre
+                            class="code-pre"
+                          ><code>{{ numberPlaygroundCode() }}</code></pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="gal-cell">
+                      <span class="gal-tag"
                         >spinner glyph (arrows / +−) × placement (inside /
                         outside)</span
                       >
