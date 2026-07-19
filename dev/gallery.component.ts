@@ -38,6 +38,7 @@ import {
   Sh3NumberInputComponent,
   type Sh3NumberSpinner,
   type Sh3NumberControls,
+  Sh3FileDropzoneComponent,
   Sh3SearchComponent,
   Sh3SelectComponent,
   Sh3SliderComponent,
@@ -168,6 +169,7 @@ interface NavGroup {
     Sh3FieldListComponent,
     Sh3InputComponent,
     Sh3NumberInputComponent,
+    Sh3FileDropzoneComponent,
     Sh3SearchComponent,
     Sh3SelectComponent,
     Sh3SliderComponent,
@@ -771,6 +773,7 @@ export class GalleryComponent {
           badgeTone: "info",
         },
         { id: "form-layout", label: "form layout" },
+        { id: "dropzone", label: "file dropzone" },
       ],
     },
     {
@@ -823,6 +826,13 @@ export class GalleryComponent {
   ];
   protected readonly inputTab = signal("text");
   protected readonly searchTerm = signal("");
+
+  /* ── file dropzone demo ──────────────────────────────────────────────── */
+  protected readonly dzFiles = signal<readonly string[]>([]);
+  protected readonly dzBusy = signal(false);
+  protected onDzPick(files: File[]): void {
+    this.dzFiles.set(files.map((f) => f.name));
+  }
 
   /* ── select demo ─────────────────────────────────────────────────────── */
   protected readonly selCurrency = signal("");
