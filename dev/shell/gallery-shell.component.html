@@ -1,0 +1,57 @@
+<sh3-app-shell>
+  <!-- ── rail primary: a stable static nav ─────────────────────────── -->
+  <sh3-menu railPrimary tint="primary">
+    <div header class="rail-brand">S3</div>
+    @for (i of railNav; track i.id) {
+      <button
+        sh3-menu-item
+        [icon]="i.icon"
+        [label]="i.label"
+        [active]="railActive() === i.id"
+        (click)="railActive.set(i.id)"
+      ></button>
+    }
+    <button footer sh3-menu-item icon="settings" label="Settings"></button>
+  </sh3-menu>
+
+  <!-- ── rail secondary: the "Library" nav — each item is a route ──── -->
+  <sh3-menu railSecondary level="secondary" [expanded]="true">
+    <div header class="lib-head">Library</div>
+    @for (group of navGroups; track group.label) {
+      <sh3-menu-section [label]="group.label" [color]="group.color" collapsible>
+        @for (item of group.items; track item.id) {
+          <a
+            sh3-menu-item
+            [icon]="item.icon ?? 'grid'"
+            [label]="item.label"
+            [routerLink]="'/' + item.id"
+            routerLinkActive
+            #rla="routerLinkActive"
+            [active]="rla.isActive"
+            [badge]="item.badge"
+            [badgeTone]="item.badgeTone ?? 'follow'"
+          ></a>
+        }
+      </sh3-menu-section>
+    }
+  </sh3-menu>
+
+  <!-- ── header ────────────────────────────────────────────────── -->
+  <header header class="gal-header">
+    <span class="gal-title">&#64;sh3pherd/ui — gallery</span>
+    <button type="button" class="gal-theme" (click)="toggleTheme()">
+      <sh3-icon name="settings" size="sm" />
+      Theme: {{ theme() }}
+    </button>
+  </header>
+
+  <!-- ── content: the routed page + docked token editor ─────────── -->
+  <div class="gal-content">
+    <div class="gal-scroll" (dblclick)="onInspect($event)">
+      <router-outlet />
+    </div>
+    <app-token-panel />
+  </div>
+</sh3-app-shell>
+
+<sh3-panel-host />
