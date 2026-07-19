@@ -84,7 +84,10 @@ export { Sh3RangeSliderComponent } from "./components/slider/range-slider.compon
 export type { Sh3RangeValue } from "./components/slider/range-slider.component";
 export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export { Sh3TimelineComponent } from "./components/timeline/timeline.component";
-export type { Sh3TimelineNode } from "./components/timeline/timeline.component";
+export type {
+  Sh3TimelineNode,
+  Sh3TimelineDatePlacement,
+} from "./components/timeline/timeline.component";
 export { Sh3LoadingStateComponent } from "./components/state/loading-state.component";
 export { Sh3EmptyStateComponent } from "./components/state/empty-state.component";
 export type { Sh3IconSize } from "./components/icon/icon.component";

@@ -26,7 +26,9 @@ class HostComponent {
   readonly orientation = signal<"vertical" | "horizontal">("vertical");
   readonly progress = signal<number | null>(null);
   readonly square = signal(false);
-  readonly datePlacement = signal<"above" | "below">("below");
+  readonly datePlacement = signal<"above" | "below" | "inline" | "hidden">(
+    "below",
+  );
   readonly nodes = signal<readonly Sh3TimelineNode[]>([
     { key: "start", id: null, label: "Start", icon: "contracts" },
     { key: "a1", id: "add_1", label: "Avenant 1", date: null, icon: "edit" },
@@ -153,5 +155,28 @@ describe("Sh3TimelineComponent", () => {
     fixture.detectChanges();
     expect(root.classList.contains("square")).toBe(true);
     expect(root.classList.contains("date-above")).toBe(true);
+  });
+
+  it("hides every date when datePlacement is 'hidden'", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.nodes.set([
+      { key: "a", id: null, label: "A", displayDate: "Q1 2024" },
+      { key: "b", id: "b", label: "B", date: new Date("2024-06-01T00:00:00Z") },
+    ]);
+    fixture.componentInstance.datePlacement.set("hidden");
+    fixture.detectChanges();
+    expect(host.querySelectorAll(".date")).toHaveLength(0);
+    // Labels still render.
+    expect(host.textContent).toContain("A");
+    expect(host.textContent).toContain("B");
+  });
+
+  it("puts the date on the same row via the 'inline' class", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.datePlacement.set("inline");
+    fixture.detectChanges();
+    expect(host.querySelector(".tlv")!.classList.contains("date-inline")).toBe(
+      true,
+    );
   });
 });

@@ -9,6 +9,9 @@ import { DatePipe, NgTemplateOutlet } from "@angular/common";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
 
+/** Where a node's date renders relative to its label. */
+export type Sh3TimelineDatePlacement = "above" | "below" | "inline" | "hidden";
+
 /** One node of a {@link Sh3TimelineComponent}. */
 export interface Sh3TimelineNode {
   /** Stable track key. */
@@ -98,8 +101,12 @@ export class Sh3TimelineComponent {
   readonly nodeTitle = input<string>("");
   /** Render the dots as rounded squares instead of circles. */
   readonly square = input(false, { transform: booleanAttribute });
-  /** Whether a node's date sits above or below its label (default `below`). */
-  readonly datePlacement = input<"above" | "below">("below");
+  /**
+   * Where a node's date renders relative to its label — `above`/`below`
+   * (stacked), `inline` (on the same row), or `hidden` (not shown). Default
+   * `below`.
+   */
+  readonly datePlacement = input<Sh3TimelineDatePlacement>("below");
 
   /** Emits the clicked node's id (never fires for `id === null` nodes). */
   readonly nodeClick = output<string>();

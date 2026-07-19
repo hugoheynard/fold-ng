@@ -121,6 +121,13 @@
   order: 0;
 }
 
+/* Inline: date and label share a row (date trails the label). */
+.tlv.date-inline .txt {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+}
+
 /* ── Horizontal: a progress stepper (dots on a filled line) ── */
 .tlv.h {
   flex-direction: row;

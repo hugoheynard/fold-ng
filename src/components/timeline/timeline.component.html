@@ -6,10 +6,12 @@
     }
   </span>
   <span class="txt">
-    @if (n.displayDate; as dd) {
-      <span class="date">{{ dd }}</span>
-    } @else if (n.date; as d) {
-      <span class="date">{{ d | date: "mediumDate" }}</span>
+    @if (datePlacement() !== "hidden") {
+      @if (n.displayDate; as dd) {
+        <span class="date">{{ dd }}</span>
+      } @else if (n.date; as d) {
+        <span class="date">{{ d | date: "mediumDate" }}</span>
+      }
     }
     <span class="nlabel">{{ n.label }}</span>
   </span>
@@ -53,6 +55,7 @@
     [class.h]="orientation() === 'horizontal'"
     [class.square]="square()"
     [class.date-above]="datePlacement() === 'above'"
+    [class.date-inline]="datePlacement() === 'inline'"
     [attr.aria-label]="ariaLabel()"
   >
     <ng-container [ngTemplateOutlet]="body" />
@@ -64,6 +67,7 @@
     [class.h]="orientation() === 'horizontal'"
     [class.square]="square()"
     [class.date-above]="datePlacement() === 'above'"
+    [class.date-inline]="datePlacement() === 'inline'"
     [attr.aria-label]="ariaLabel()"
   >
     <ng-container [ngTemplateOutlet]="body" />
