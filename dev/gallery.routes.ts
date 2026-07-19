@@ -21,7 +21,10 @@ const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
   "element-title": () => import("./pages/element-title.page"),
   "context-card": () => import("./pages/context-card.page"),
   badges: () => import("./pages/badges.page"),
+  field: () => import("./pages/field.page"),
   timeline: () => import("./pages/timeline.page"),
+  "form-layout": () => import("./pages/form-layout.page"),
+  dropzone: () => import("./pages/dropzone.page"),
 };
 
 /**
