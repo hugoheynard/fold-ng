@@ -24,6 +24,9 @@ export default class AsideLayoutPage {
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
   protected readonly aslOffset = signal(8);
+  /** asideLeft / asideRight rail widths (px) — slide to 0 or wide to see limits. */
+  protected readonly aslRailWidth = signal(56);
+  protected readonly aslSideWidth = signal(96);
 
   protected readonly asideLayoutCode = computed(() => {
     const left = this.aslLeft();

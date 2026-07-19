@@ -55,12 +55,39 @@
       [valueText]="aslOffset() + 'px'"
       [(value)]="aslOffset"
     />
+    @if (aslLeft() && !aslEqual()) {
+    <sh3-slider
+      params
+      label="asideLeft width"
+      [min]="0"
+      [max]="200"
+      [step]="4"
+      [valueText]="aslRailWidth() + 'px'"
+      [(value)]="aslRailWidth"
+    />
+    } @if (!aslEqual()) {
+    <sh3-slider
+      params
+      label="asideRight width"
+      [min]="0"
+      [max]="200"
+      [step]="4"
+      [valueText]="aslSideWidth() + 'px'"
+      [(value)]="aslSideWidth"
+    />
+    }
 
     <div class="asl-demo">
       <sh3-aside-layout
         class="asl-demo-layout"
         [class.is-equal]="aslEqual()"
         [topOffset]="aslOffset()"
+        [style.--sh3-aside-layout-rail-width]="
+          aslEqual() ? null : aslRailWidth() + 'px'
+        "
+        [style.--sh3-aside-layout-side-width]="
+          aslEqual() ? null : aslSideWidth() + 'px'
+        "
       >
         @if (aslLeft()) {
         <div asideLeft class="asl-rail">📍 left</div>
