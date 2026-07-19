@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import { Sh3LinkComponent, Sh3PageLayoutComponent } from "../../src/index";
 
 /** `/link` — the `sh3-link` gallery page. */
@@ -6,8 +7,9 @@ import { Sh3LinkComponent, Sh3PageLayoutComponent } from "../../src/index";
   selector: "gal-link-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3LinkComponent],
+  imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3LinkComponent],
   template: `<sh3-page-layout fluid title="link">
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row">
       <sh3-link icon="company" trailingIcon="chevron-right"
         >accent + icons</sh3-link

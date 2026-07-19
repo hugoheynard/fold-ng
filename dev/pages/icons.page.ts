@@ -1,4 +1,5 @@
 import { Component, signal } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   SH3_BUILTIN_ICONS,
   Sh3IconComponent,
@@ -10,7 +11,7 @@ import {
   selector: "gal-icons-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3IconComponent],
+  imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3IconComponent],
   templateUrl: "./icons.page.html",
 })
 export default class IconsPage {

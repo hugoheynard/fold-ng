@@ -1,4 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3AsideLayoutComponent,
   Sh3ChoiceRowComponent,
@@ -19,6 +20,7 @@ import {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,
     Sh3PageSectionComponent,

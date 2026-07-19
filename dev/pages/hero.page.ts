@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import { Sh3HeroComponent, Sh3PageLayoutComponent } from "../../src/index";
 
 /** `/hero` — the `sh3-hero` gallery page (surface × accent matrix). */
@@ -6,8 +7,9 @@ import { Sh3HeroComponent, Sh3PageLayoutComponent } from "../../src/index";
   selector: "gal-hero-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3HeroComponent],
+  imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3HeroComponent],
   template: `<sh3-page-layout fluid title="hero">
+    <gal-kind-badge titleBadge kind="component" />
     @for (surface of heroSurfaces; track surface) {
       <div class="gal-row gal-row--wide">
         @for (accent of heroAccents; track accent) {

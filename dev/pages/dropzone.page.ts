@@ -1,4 +1,5 @@
 import { Component, signal } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3FileDropzoneComponent,
   Sh3PageLayoutComponent,
@@ -9,12 +10,17 @@ import {
   selector: "gal-dropzone-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3FileDropzoneComponent],
+  imports: [
+    KindBadgeComponent,
+    Sh3PageLayoutComponent,
+    Sh3FileDropzoneComponent,
+  ],
   template: `<sh3-page-layout
     fluid
     title="file dropzone"
     description="sh3-file-dropzone — a form-family affordance (a whole drag/drop + browse target emitting File[]). Drag files on, or click to browse."
   >
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">default · drag or click · emits File[]</span>

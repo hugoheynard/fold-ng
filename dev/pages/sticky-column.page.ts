@@ -1,4 +1,5 @@
 import { Component, computed, signal } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3IconComponent,
   Sh3PageLayoutComponent,
@@ -13,6 +14,7 @@ import {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3SliderComponent,
     Sh3StickyColumnDirective,

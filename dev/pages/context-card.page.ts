@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3ContextCardComponent,
   Sh3LinkComponent,
@@ -10,8 +11,14 @@ import {
   selector: "gal-context-card-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3ContextCardComponent, Sh3LinkComponent],
+  imports: [
+    KindBadgeComponent,
+    Sh3PageLayoutComponent,
+    Sh3ContextCardComponent,
+    Sh3LinkComponent,
+  ],
   template: `<sh3-page-layout fluid title="context-card">
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row gal-row--wide">
       @for (tone of iconTones; track tone) {
         <sh3-context-card

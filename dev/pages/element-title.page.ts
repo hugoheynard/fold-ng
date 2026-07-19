@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3ElementTitleComponent,
   Sh3PageLayoutComponent,
@@ -9,8 +10,13 @@ import {
   selector: "gal-element-title-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3ElementTitleComponent],
+  imports: [
+    KindBadgeComponent,
+    Sh3PageLayoutComponent,
+    Sh3ElementTitleComponent,
+  ],
   template: `<sh3-page-layout fluid title="element-title">
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">eyebrow</span>

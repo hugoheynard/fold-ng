@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3BadgeComponent,
   Sh3IconComponent,
@@ -12,12 +13,14 @@ import {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3BadgeComponent,
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
   ],
   template: `<sh3-page-layout fluid title="badge · status · icon">
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row">
       @for (v of badgeVariants; track v) {
         <sh3-badge [content]="v" [variant]="v" />

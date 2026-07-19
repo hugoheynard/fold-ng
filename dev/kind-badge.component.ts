@@ -1,4 +1,4 @@
-import { Component, computed, input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { Sh3BadgeComponent } from "../src/index";
 
 /** What a gallery page documents — a component, a directive (or both). */

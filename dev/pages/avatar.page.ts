@@ -67,6 +67,7 @@ interface DemoGroup<T> {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3PageSectionComponent,
     Sh3TabNavComponent,

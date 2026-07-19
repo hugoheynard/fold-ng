@@ -21,6 +21,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,
     Sh3CardComponent,

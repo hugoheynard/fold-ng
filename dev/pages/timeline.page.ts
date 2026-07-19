@@ -1,4 +1,5 @@
 import { Component, computed, signal } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3BadgeComponent,
   Sh3CardComponent,
@@ -17,6 +18,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3PageSectionComponent,
     Sh3CardComponent,

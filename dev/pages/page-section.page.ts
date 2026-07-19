@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3IconComponent,
   Sh3PageLayoutComponent,
@@ -10,8 +11,14 @@ import {
   selector: "gal-page-section-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3PageSectionComponent, Sh3IconComponent],
+  imports: [
+    KindBadgeComponent,
+    Sh3PageLayoutComponent,
+    Sh3PageSectionComponent,
+    Sh3IconComponent,
+  ],
   template: `<sh3-page-layout fluid title="page-section">
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row gal-row--wide">
       <sh3-page-section surface="transparent" title="Transparent">
         <p class="gal-body">Flat on the page — no surface, no radius.</p>

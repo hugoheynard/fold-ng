@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3BadgeComponent,
   Sh3FieldComponent,
@@ -15,6 +16,7 @@ import {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3FieldComponent,
     Sh3FieldListComponent,
@@ -28,6 +30,7 @@ import {
     title="field · field-list"
     description="The read-only half of a record — a dl/dt/dd list of label/value pairs. The display counterpart of sh3-input."
   >
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">basic recap · [empty] placeholder</span>

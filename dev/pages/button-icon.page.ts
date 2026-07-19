@@ -1,4 +1,5 @@
 import { Component, signal } from "@angular/core";
+import { KindBadgeComponent } from "../kind-badge.component";
 import {
   Sh3ButtonIconComponent,
   Sh3PageLayoutComponent,
@@ -9,8 +10,9 @@ import {
   selector: "gal-button-icon-page",
   standalone: true,
   host: { class: "gal-page" },
-  imports: [Sh3PageLayoutComponent, Sh3ButtonIconComponent],
+  imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3ButtonIconComponent],
   template: `<sh3-page-layout fluid title="button-icon">
+    <gal-kind-badge titleBadge kind="component" />
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">tones (md square)</span>

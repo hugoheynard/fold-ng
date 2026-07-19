@@ -36,6 +36,7 @@ type ShellMode = "desktop" | "tablet" | "mobile";
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3AppShellComponent,
     Sh3MenuComponent,

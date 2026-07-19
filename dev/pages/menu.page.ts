@@ -42,6 +42,7 @@ interface MenuSection {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3ContextCardComponent,
     Sh3MenuComponent,
