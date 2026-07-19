@@ -1888,6 +1888,25 @@
                 </div>
               </div>
               <div class="np-field" params>
+                <span class="gal-tag">variant</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="tlpVariant() === 'plain'"
+                    (click)="tlpVariant.set('plain')"
+                  >
+                    plain
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="tlpVariant() === 'hollow'"
+                    (click)="tlpVariant.set('hollow')"
+                  >
+                    hollow
+                  </button>
+                </div>
+              </div>
+              <div class="np-field" params>
                 <span class="gal-tag">datePlacement</span>
                 <div class="ss-seg">
                   @for (p of tlpPlacements; track p) {
@@ -1918,6 +1937,22 @@
                 />
               </sh3-card>
             </dev-playground>
+          </div>
+
+          <div class="gal-cell" style="max-width: 520px">
+            <span class="gal-tag"
+              >custom #node template — a badge from node.state</span
+            >
+            <sh3-card surface="sunken" style="padding: 22px 18px">
+              <sh3-timeline orientation="horizontal" [nodes]="tlCustom">
+                <ng-template #node let-n>
+                  <span class="nlabel">{{ n.label }}</span>
+                  @if (n.state === "pending") {
+                    <sh3-badge variant="warning" [content]="'en attente'" />
+                  }
+                </ng-template>
+              </sh3-timeline>
+            </sh3-card>
           </div>
         </sh3-page-section>
       </section>

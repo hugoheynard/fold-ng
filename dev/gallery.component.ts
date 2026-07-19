@@ -877,6 +877,26 @@ export class GalleryComponent {
     { key: "active", id: null, label: "Active", done: false },
   ];
 
+  /** Custom-content demo: a `state` per node drives a projected #node template. */
+  protected readonly tlCustom: readonly Sh3TimelineNode[] = [
+    { key: "created", id: null, label: "Créé", done: true, icon: "check" },
+    {
+      key: "company",
+      id: null,
+      label: "Signé société",
+      done: true,
+      icon: "check",
+    },
+    {
+      key: "employee",
+      id: "sign_employee",
+      label: "Signé employé",
+      clickable: true,
+      state: "pending",
+    },
+    { key: "active", id: null, label: "Actif", state: "todo" },
+  ];
+
   /* ── Timeline playground — params drive a live preview + code ─────────── */
   protected readonly tlpOrientation = signal<"vertical" | "horizontal">(
     "horizontal",
@@ -894,6 +914,8 @@ export class GalleryComponent {
     signal<Sh3TimelineDatePlacement>("below");
   /** Make the horizontal steps clickable (buttons that emit their key). */
   protected readonly tlpClickable = signal(false);
+  /** Dot design applied to every previewed node. */
+  protected readonly tlpVariant = signal<"plain" | "hollow">("plain");
   protected readonly tlpClicked = signal<string | null>(null);
   private readonly TLP_STEPS = [
     { label: "Created", date: "15 Jan" },
@@ -904,8 +926,9 @@ export class GalleryComponent {
 
   /** Nodes for the previewed timeline — history (vertical) or steps (horizontal). */
   protected readonly tlpNodes = computed<readonly Sh3TimelineNode[]>(() => {
+    const variant = this.tlpVariant();
     if (this.tlpOrientation() === "vertical") {
-      return this.tlNodes;
+      return this.tlNodes.map((n) => ({ ...n, variant }));
     }
     const done = this.tlpDone();
     const clickable = this.tlpClickable();
@@ -913,6 +936,7 @@ export class GalleryComponent {
       key: step.label,
       id: null,
       clickable,
+      variant,
       label: step.label,
       displayDate: i < done ? step.date : undefined,
       done: i < done,
