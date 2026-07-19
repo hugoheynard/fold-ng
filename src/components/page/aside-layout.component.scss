@@ -1,5 +1,8 @@
 :host {
   display: block;
+  /* Fold on our OWN width, not the viewport — so the layout collapses when its
+     container is narrow (a panel, a preview frame) regardless of the window. */
+  container-type: inline-size;
 }
 
 .al-grid {
@@ -92,7 +95,7 @@
 }
 
 /* Collapse to a single column: centre first, then the rails; un-stick. */
-@media (max-width: 1040px) {
+@container (max-width: 1040px) {
   .al-grid,
   :host:has([asideright]) .al-grid,
   :host:has([asideleft]) .al-grid,
@@ -117,7 +120,7 @@
   }
 }
 
-@media (max-width: 700px) {
+@container (max-width: 700px) {
   .al-grid {
     padding: var(--sh3-aside-layout-pad-sm, 16px 14px 48px);
     gap: 16px;
