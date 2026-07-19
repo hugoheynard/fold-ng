@@ -1,0 +1,59 @@
+<sh3-page-layout
+  title="icon"
+  description="The single surface for every SVG icon. An icon inherits colour (currentColor) and size from CSS: size via a token (xs…xl) or a pixel number, colour by setting color on any ancestor. name is a typed built-in or any registered string."
+>
+  <div class="gal-stack">
+    <div class="gal-cell">
+      <span class="gal-tag"
+        >size · xs / sm / md / lg / xl · or a pixel number</span
+      >
+      <div class="icon-sizes">
+        @for (s of iconSizeSteps; track s) {
+        <div class="isz">
+          <sh3-icon name="bell" [size]="s" />
+          <span>{{ s }}</span>
+        </div>
+        }
+        <div class="isz">
+          <sh3-icon name="bell" [size]="40" />
+          <span>40px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gal-cell">
+      <span class="gal-tag"
+        >color · inherits currentColor (semantic tokens)</span
+      >
+      <div class="icon-colors">
+        @for (t of iconColorTokens; track t) {
+        <span class="icol" [style.color]="'var(--sh3-color-' + t + ')'">
+          <sh3-icon name="fire" size="lg" />
+        </span>
+        }
+      </div>
+    </div>
+
+    <div class="gal-cell">
+      <span class="gal-tag"
+        >all icons ({{ allIconNames.length }}) — click a tile to copy its
+        name</span
+      >
+      <div class="icon-grid">
+        @for (n of allIconNames; track n) {
+        <button
+          type="button"
+          class="icon-cell"
+          [class.is-copied]="copiedIcon() === n"
+          (click)="copyIconName(n)"
+        >
+          <sh3-icon [name]="n" size="lg" [title]="n" />
+          <span class="icon-cell-name"
+            >{{ copiedIcon() === n ? "copied!" : n }}</span
+          >
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+</sh3-page-layout>

@@ -8,6 +8,7 @@ import {
   Sh3MenuSectionComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
+  Sh3ToastContainerComponent,
 } from "../../src/index";
 import { TokenPanelComponent } from "../token-panel.component";
 import { InspectPanelComponent } from "../inspect-panel.component";
@@ -34,6 +35,7 @@ import { GALLERY_NAV } from "./gallery-nav";
     Sh3MenuSectionComponent,
     Sh3IconComponent,
     Sh3PanelHostComponent,
+    Sh3ToastContainerComponent,
     TokenPanelComponent,
   ],
   host: {
