@@ -272,9 +272,9 @@ components still inline. Template stays inline (no `templateUrl`).
 
 ## Phase 4 · Publish
 
-**Public mirror + showcase plan → [`documentation/todos/TODO-fold-ui-mirror.md`](../../documentation/todos/TODO-fold-ui-mirror.md)**
-(repo `fold-ui`, package `@sh3pherd/fold`, dark theme `umbra`; one-way subtree
-mirror → public `dev`, gallery served on GitHub Pages via hash routing).
+**Public mirror + showcase plan → [`documentation/todos/TODO-fold-ng-mirror.md`](../../documentation/todos/TODO-fold-ng-mirror.md)**
+(repo `fold-ng`, package `@sh3pherd/fold`, dark theme `umbra`, MIT; one-way
+subtree mirror → public `dev`, gallery served on GitHub Pages via hash routing).
 
 - [ ] Decide the build: `ng-packagr` (needed once we ship Angular components) vs
       source-consumed (today's monorepo pattern).
