@@ -154,7 +154,7 @@ Add roles only once we're certain of their usage.
   - [x] **Expanded body scrolls** — a nav taller than the rail was overflowing
         off the bottom with no way down. The expanded `.menu-body` now scrolls
         (`overflow-y: auto` + `min-height: 0`); collapsed keeps `overflow:
-    visible` so hover tooltips still escape.
+visible` so hover tooltips still escape.
   - [x] **Collapsible sections** — opt-in `collapsible` on `sh3-menu-section`:
         the header becomes a fold toggle, `[(collapsed)]` two-way (starts open).
         The section holding the **active** item stays open regardless (read via
@@ -346,6 +346,21 @@ avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
   snapped `max` sits off the step grid. Missing even in a `type=text` future:
   PageUp/PageDown (×10) + Home/End (→min/max), stepper acceleration, RTL /
   non-Latin numerals.
+- **App-side: string-modelled contract forms block `sh3-number-input` adoption.**
+  The company contract-detail forms (`AddendumForm`, the terms form in
+  `contract-detail-page.helpers.ts`) model their numeric fields as **`string`**
+  (`comp_amount`/`comp_pct`/`trial_period_days`/`work_time_percentage`), because
+  the controllers reconcile `%↔amount` and keep the raw typed text. So those
+  `<input type="number">` fields were **left native** in the select/text sweep:
+  `sh3-number-input` is `number | null` (model mismatch + risk to the financial
+  reconciliation), and downgrading them to `sh3-input` (text) would lose the
+  numeric keypad + `min`/`max`/`step`. **Fix = refactor those form models
+  `string → number` first**, then adopt `sh3-number-input` (and drop the manual
+  `inputValue` parsing). Until then the currency/pct/amount/% fields stay native
+  — a deliberate, tracked gap. Migrated cleanly already: the selects (Devise) and
+  the text fields (`Intitulé du poste`, both `Motif` — the latter dogfooding the
+  new `optional` label marker). Dates stay native (no DS date component yet);
+  file upload is the dropzone, not a field.
 
 ## Hardcore-review follow-ups (2026-07) — see `dev-rules.md` ledger
 
