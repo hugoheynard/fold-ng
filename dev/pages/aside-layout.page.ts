@@ -27,9 +27,12 @@ export default class AsideLayoutPage {
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
   protected readonly aslOffset = signal(8);
-  /** asideLeft / asideRight rail widths (px) — slide to 0 or wide to see limits. */
-  protected readonly aslRailWidth = signal(56);
-  protected readonly aslSideWidth = signal(96);
+  /** asideLeft / asideRight rail widths (real px) — slide to 0 or wide to see limits. */
+  protected readonly aslRailWidth = signal(220);
+  protected readonly aslSideWidth = signal(300);
+  /** Window zoom (%) — the layout renders at real desktop width, scaled down so
+   *  it fits without tripping the responsive breakpoints (viewport media queries). */
+  protected readonly aslZoom = signal(40);
 
   protected readonly asideLayoutCode = computed(() => {
     const left = this.aslLeft();
