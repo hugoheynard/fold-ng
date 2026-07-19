@@ -15,6 +15,7 @@ import {
     [orientation]="orientation()"
     [progress]="progress()"
     [square]="square()"
+    [variant]="variant()"
     [datePlacement]="datePlacement()"
     [nodes]="nodes()"
     (nodeClick)="clicked.set($event)"
@@ -26,6 +27,7 @@ class HostComponent {
   readonly orientation = signal<"vertical" | "horizontal">("vertical");
   readonly progress = signal<number | null>(null);
   readonly square = signal(false);
+  readonly variant = signal<"plain" | "hollow">("plain");
   readonly datePlacement = signal<"above" | "below" | "inline" | "hidden">(
     "below",
   );
@@ -243,16 +245,18 @@ describe("Sh3TimelineComponent", () => {
     );
   });
 
-  it("marks a node's dot hollow via `variant`", () => {
+  it("a node's `variant` overrides the timeline-level default (cascade)", () => {
     const { fixture, host } = render();
+    // Timeline default hollow → both nodes hollow…
+    fixture.componentInstance.variant.set("hollow");
     fixture.componentInstance.nodes.set([
-      { key: "a", id: null, label: "A", done: true, variant: "hollow" },
-      { key: "b", id: null, label: "B", done: true },
+      { key: "a", id: null, label: "A", done: true },
+      { key: "b", id: null, label: "B", done: true, variant: "plain" },
     ]);
     fixture.detectChanges();
     const nodes = Array.from(host.querySelectorAll(".node"));
-    expect(nodes[0].classList.contains("hollow")).toBe(true);
-    expect(nodes[1].classList.contains("hollow")).toBe(false);
+    expect(nodes[0].classList.contains("hollow")).toBe(true); // inherits default
+    expect(nodes[1].classList.contains("hollow")).toBe(false); // overrides to plain
   });
 
   it("renders a projected #node template (with node.state) in place of the label", () => {

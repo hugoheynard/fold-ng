@@ -42,9 +42,9 @@ export interface Sh3TimelineNode {
    */
   readonly done?: boolean;
   /**
-   * Dot style: `plain` (default) fills the accent dot solid; `hollow` shows the
-   * accent as a ring (colored border, transparent centre) — the outlined look of
-   * the vertical rail's clickable dots.
+   * Per-node dot style — **overrides** the timeline's {@link
+   * Sh3TimelineComponent.variant}. `plain` fills the accent dot solid; `hollow`
+   * shows it as a ring (the outlined look of the vertical rail's clickable dots).
    */
   readonly variant?: "plain" | "hollow";
   /**
@@ -130,6 +130,8 @@ export class Sh3TimelineComponent {
   readonly nodeTitle = input<string>("");
   /** Render the dots as rounded squares instead of circles. */
   readonly square = input(false, { transform: booleanAttribute });
+  /** Default dot style for every node — a node's own `variant` overrides it. */
+  readonly variant = input<"plain" | "hollow">("plain");
   /**
    * Where a node's date renders relative to its label — `above`/`below`
    * (stacked), `inline` (on the same row), or `hidden` (not shown). Default
@@ -185,6 +187,11 @@ export class Sh3TimelineComponent {
   /** Accent ("filled") dot: an explicit `done`, else the inert-anchor rule. */
   protected isFilled(node: Sh3TimelineNode): boolean {
     return node.done ?? node.id === null;
+  }
+
+  /** Resolved dot style: the node's `variant` overrides the timeline default. */
+  protected isHollow(node: Sh3TimelineNode): boolean {
+    return (node.variant ?? this.variant()) === "hollow";
   }
 
   protected onNode(node: Sh3TimelineNode): void {

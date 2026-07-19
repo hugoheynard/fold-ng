@@ -45,7 +45,7 @@
         type="button"
         class="node"
         [class.filled]="isFilled(n)"
-        [class.hollow]="n.variant === 'hollow'"
+        [class.hollow]="isHollow(n)"
         [title]="nodeTitle()"
         (click)="onNode(n)"
       >
@@ -58,7 +58,7 @@
       <div
         class="node inert"
         [class.filled]="isFilled(n)"
-        [class.hollow]="n.variant === 'hollow'"
+        [class.hollow]="isHollow(n)"
       >
         <ng-container
           [ngTemplateOutlet]="dot"
