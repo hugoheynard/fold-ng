@@ -68,6 +68,13 @@
   color: var(--sh3-color-on-primary);
 }
 
+/* Hollow variant — the accent shown as a ring rather than a solid fill. */
+.node.hollow.filled .dot {
+  background: var(--sh3-color-surface-raised);
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-primary-text);
+}
+
 /* Clickable, not-yet-filled: a navigable affordance. */
 .node:not(.inert):not(.filled) .dot {
   border-color: color-mix(

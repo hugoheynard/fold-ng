@@ -13,7 +13,14 @@
         <span class="date">{{ d | date: "mediumDate" }}</span>
       }
     }
-    <span class="nlabel">{{ n.label }}</span>
+    @if (nodeTemplate(); as tpl) {
+      <ng-container
+        [ngTemplateOutlet]="tpl"
+        [ngTemplateOutletContext]="{ $implicit: n }"
+      />
+    } @else {
+      <span class="nlabel">{{ n.label }}</span>
+    }
   </span>
 </ng-template>
 
@@ -38,6 +45,7 @@
         type="button"
         class="node"
         [class.filled]="isFilled(n)"
+        [class.hollow]="n.variant === 'hollow'"
         [title]="nodeTitle()"
         (click)="onNode(n)"
       >
@@ -47,7 +55,11 @@
         />
       </button>
     } @else {
-      <div class="node inert" [class.filled]="isFilled(n)">
+      <div
+        class="node inert"
+        [class.filled]="isFilled(n)"
+        [class.hollow]="n.variant === 'hollow'"
+      >
         <ng-container
           [ngTemplateOutlet]="dot"
           [ngTemplateOutletContext]="{ $implicit: n }"

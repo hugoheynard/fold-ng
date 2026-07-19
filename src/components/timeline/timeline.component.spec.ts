@@ -36,6 +36,21 @@ class HostComponent {
   readonly clicked = signal<string | null>(null);
 }
 
+@Component({
+  standalone: true,
+  imports: [Sh3TimelineComponent],
+  template: `<sh3-timeline [nodes]="nodes()">
+    <ng-template #node let-n>
+      <span class="custom">C:{{ n.label }}:{{ n.state }}</span>
+    </ng-template>
+  </sh3-timeline>`,
+})
+class TemplateHostComponent {
+  readonly nodes = signal<readonly Sh3TimelineNode[]>([
+    { key: "b", id: "b", label: "B", state: "pending" },
+  ]);
+}
+
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
@@ -226,5 +241,26 @@ describe("Sh3TimelineComponent", () => {
     expect(host.querySelector(".tlv")!.classList.contains("date-inline")).toBe(
       true,
     );
+  });
+
+  it("marks a node's dot hollow via `variant`", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.nodes.set([
+      { key: "a", id: null, label: "A", done: true, variant: "hollow" },
+      { key: "b", id: null, label: "B", done: true },
+    ]);
+    fixture.detectChanges();
+    const nodes = Array.from(host.querySelectorAll(".node"));
+    expect(nodes[0].classList.contains("hollow")).toBe(true);
+    expect(nodes[1].classList.contains("hollow")).toBe(false);
+  });
+
+  it("renders a projected #node template (with node.state) in place of the label", () => {
+    const fixture = TestBed.createComponent(TemplateHostComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector(".custom")?.textContent).toBe("C:B:pending");
+    // The default label span is replaced by the custom content.
+    expect(host.querySelector(".nlabel")).toBeNull();
   });
 });

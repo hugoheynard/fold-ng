@@ -2,8 +2,10 @@ import {
   booleanAttribute,
   Component,
   computed,
+  contentChild,
   input,
   output,
+  type TemplateRef,
 } from "@angular/core";
 import { DatePipe, NgTemplateOutlet } from "@angular/common";
 import { Sh3IconComponent } from "../icon/icon.component";
@@ -39,6 +41,18 @@ export interface Sh3TimelineNode {
    * an origin/anchor. So `done` and the inert-anchor rule are the same accent.
    */
   readonly done?: boolean;
+  /**
+   * Dot style: `plain` (default) fills the accent dot solid; `hollow` shows the
+   * accent as a ring (colored border, transparent centre) — the outlined look of
+   * the vertical rail's clickable dots.
+   */
+  readonly variant?: "plain" | "hollow";
+  /**
+   * Opaque per-node metadata for a custom node template (see the projected
+   * `#node` template). The component never reads it — it's yours to branch on,
+   * e.g. `state: 'pending'` → render an "en attente" badge.
+   */
+  readonly state?: string;
 }
 
 /**
@@ -70,6 +84,12 @@ export interface Sh3TimelineNode {
  * no card of its own, so the consumer places it inside whatever surface fits.
  * Presentational + generic: the consumer maps its domain data to
  * {@link Sh3TimelineNode}s and owns the click meaning.
+ *
+ * **Custom node content** — project an `<ng-template #node let-n>` to replace a
+ * node's label with arbitrary content (a badge, a status line, an action). The
+ * timeline keeps ownership of the dot, date, layout and the derived progressbar;
+ * the template only styles the label region. This is the escape hatch for
+ * heterogeneous nodes without exploding the node interface into props.
  *
  * @selector `sh3-timeline`
  *
@@ -119,6 +139,10 @@ export class Sh3TimelineComponent {
 
   /** Emits a clicked node's `id ?? key` (never fires for non-clickable nodes). */
   readonly nodeClick = output<string>();
+
+  /** Optional consumer template that renders a node's label region. */
+  protected readonly nodeTemplate =
+    contentChild<TemplateRef<{ $implicit: Sh3TimelineNode }>>("node");
 
   /** Resolved interactivity: explicit `clickable`, else `id !== null`. */
   protected isClickable(node: Sh3TimelineNode): boolean {
