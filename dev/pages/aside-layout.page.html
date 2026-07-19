@@ -10,6 +10,25 @@
   <sh3-page-section title="Playground" divider>
     <dev-playground [code]="asideLayoutCode()">
       <div class="np-field" params>
+        <span class="gal-tag">viewport</span>
+        <div class="ss-seg">
+          <button
+            type="button"
+            [class.is-on]="aslMode() === 'desktop'"
+            (click)="aslMode.set('desktop')"
+          >
+            desktop
+          </button>
+          <button
+            type="button"
+            [class.is-on]="aslMode() === 'mobile'"
+            (click)="aslMode.set('mobile')"
+          >
+            mobile
+          </button>
+        </div>
+      </div>
+      <div class="np-field" params>
         <span class="gal-tag">left rail</span>
         <div class="ss-seg">
           <button
@@ -90,7 +109,11 @@
       <!-- A real desktop-width layout, only zoomed down (CSS `zoom` keeps sticky
          working + the viewport media queries never fire → no responsive fold). -->
       <div class="asl-window">
-        <div class="asl-window-inner" [style.zoom]="aslZoom() / 100">
+        <div
+          class="asl-window-inner"
+          [style.width.px]="aslMode() === 'mobile' ? 380 : 1000"
+          [style.zoom]="aslZoom() / 100"
+        >
           <sh3-aside-layout
             class="asl-real"
             [class.is-equal]="aslEqual()"

@@ -1028,8 +1028,7 @@ sh3-app-shell {
   background: var(--sh3-color-bg-page);
 }
 .asl-window-inner {
-  width: 1000px;
-  /* zoom is bound inline from the slider. */
+  /* width (desktop 1000 / mobile 380) + zoom are bound inline from the params. */
 }
 .asl-real {
   --sh3-aside-layout-max: none;
