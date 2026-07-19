@@ -7,8 +7,8 @@
     (via <code>:has()</code>). Zero inputs; each track is a CSS var.
   </p>
 
-  <div class="gal-cell">
-    <div class="gal-row">
+  <dev-playground [code]="asideLayoutCode()">
+    <div class="np-field" params>
       <span class="gal-tag">left rail</span>
       <div class="ss-seg">
         <button
@@ -26,6 +26,8 @@
           on (3-col)
         </button>
       </div>
+    </div>
+    <div class="np-field" params>
       <span class="gal-tag">columns</span>
       <div class="ss-seg">
         <button
@@ -43,18 +45,17 @@
           equal
         </button>
       </div>
-      <sh3-slider
-        label="offset"
-        [min]="0"
-        [max]="40"
-        [step]="2"
-        [valueText]="aslOffset() + 'px'"
-        [(value)]="aslOffset"
-      />
     </div>
-    <span class="gal-tag"
-      >preview — scroll inside the frame, the rails stick</span
-    >
+    <sh3-slider
+      params
+      label="offset"
+      [min]="0"
+      [max]="40"
+      [step]="2"
+      [valueText]="aslOffset() + 'px'"
+      [(value)]="aslOffset"
+    />
+
     <div class="asl-demo">
       <sh3-aside-layout
         class="asl-demo-layout"
@@ -69,16 +70,5 @@
         <aside asideRight class="asl-card">📌 aside</aside>
       </sh3-aside-layout>
     </div>
-  </div>
-
-  <div class="code-block">
-    <div class="code-top">
-      <span class="code-lang">html</span>
-      <button type="button" class="code-copy" (click)="copyDemoCode()">
-        <sh3-icon [name]="demoCopied() ? 'check-circle' : 'copy'" size="sm" />
-        {{ demoCopied() ? "Copied" : "Copy" }}
-      </button>
-    </div>
-    <pre class="code-pre"><code>{{ asideLayoutCode() }}</code></pre>
-  </div>
+  </dev-playground>
 </sh3-page-layout>

@@ -1,10 +1,10 @@
 import { Component, computed, signal } from "@angular/core";
 import {
   Sh3AsideLayoutComponent,
-  Sh3IconComponent,
   Sh3PageLayoutComponent,
   Sh3SliderComponent,
 } from "../../src/index";
+import { DevPlaygroundComponent } from "../playground.component";
 
 /** `/aside-layout` — the `sh3-aside-layout` gallery page. */
 @Component({
@@ -15,12 +15,11 @@ import {
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,
     Sh3SliderComponent,
-    Sh3IconComponent,
+    DevPlaygroundComponent,
   ],
   templateUrl: "./aside-layout.page.html",
 })
 export default class AsideLayoutPage {
-  protected readonly demoCopied = signal(false);
   protected readonly aslRows = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
@@ -45,11 +44,4 @@ export default class AsideLayoutPage {
       "</sh3-aside-layout>",
     ].join("\n");
   });
-
-  protected copyDemoCode(): void {
-    void navigator.clipboard.writeText(this.asideLayoutCode()).then(() => {
-      this.demoCopied.set(true);
-      setTimeout(() => this.demoCopied.set(false), 1500);
-    });
-  }
 }
