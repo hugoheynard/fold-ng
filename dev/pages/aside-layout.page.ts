@@ -30,6 +30,9 @@ export default class AsideLayoutPage {
   /** asideLeft / asideRight rail widths (real px) — slide to 0 or wide to see limits. */
   protected readonly aslRailWidth = signal(220);
   protected readonly aslSideWidth = signal(300);
+  /** Window scale (%) via CSS `zoom` — shrinks the real-width render to fit the
+   *  preview card. Paint-only: the fold + sticky still resolve at the real width. */
+  protected readonly aslScale = signal(50);
   /** Preview viewport: desktop (1120px, 3 cols) or mobile (380px, folded) — the
    *  layout folds on its own width now (container queries), so this really folds. */
   protected readonly aslMode = signal<"desktop" | "mobile">("desktop");

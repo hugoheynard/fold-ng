@@ -72,6 +72,15 @@
         [valueText]="aslOffset() + 'px'"
         [(value)]="aslOffset"
       />
+      <sh3-slider
+        params
+        label="scale"
+        [min]="30"
+        [max]="100"
+        [step]="5"
+        [valueText]="aslScale() + '%'"
+        [(value)]="aslScale"
+      />
       @if (aslLeft() && !aslEqual()) {
       <sh3-slider
         params
@@ -94,13 +103,16 @@
       />
       }
 
-      <!-- A real window at real pixel sizes: the layout folds on its own width
-         (container queries), so mobile actually collapses to one column; desktop
-         renders full-size and the window scrolls. -->
+      <!-- A real window rendered at a real width (desktop 1120 > the 1040 fold
+         threshold → 3 cols; mobile 380 → 1 col), then scaled down with CSS `zoom`
+         so it fits. `zoom` only scales the paint — layout + the container-query
+         fold still resolve at the real local width, so the fold stays honest and
+         `position: sticky` keeps working. -->
       <div class="asl-window">
         <div
           class="asl-window-inner"
           [style.width.px]="aslMode() === 'mobile' ? 380 : 1120"
+          [style.zoom]="aslScale() / 100"
         >
           <sh3-aside-layout
             class="asl-real"
