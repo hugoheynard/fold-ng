@@ -892,6 +892,8 @@ export class GalleryComponent {
   ] as const satisfies readonly Sh3TimelineDatePlacement[];
   protected readonly tlpDatePlacement =
     signal<Sh3TimelineDatePlacement>("below");
+  /** Make the horizontal steps clickable (buttons that emit their key). */
+  protected readonly tlpClickable = signal(false);
   protected readonly tlpClicked = signal<string | null>(null);
   private readonly TLP_STEPS = [
     { label: "Created", date: "15 Jan" },
@@ -906,9 +908,11 @@ export class GalleryComponent {
       return this.tlNodes;
     }
     const done = this.tlpDone();
+    const clickable = this.tlpClickable();
     return this.TLP_STEPS.map((step, i) => ({
       key: step.label,
       id: null,
+      clickable,
       label: step.label,
       displayDate: i < done ? step.date : undefined,
       done: i < done,
@@ -930,6 +934,9 @@ export class GalleryComponent {
       // No [progress] — the fill derives from each node's `done`.
       lines.push('  orientation="horizontal"');
       lines.push('  ariaLabel="Signature progress"');
+      if (this.tlpClickable()) {
+        lines.push('  (nodeClick)="onStep($event)"');
+      }
     } else {
       lines.push('  ariaLabel="Contract history"');
       lines.push('  nodeTitle="Go to item"');

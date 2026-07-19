@@ -1845,11 +1845,29 @@
                   [valueText]="tlpDone() + ' / 4 · ' + tlpProgress() + '%'"
                   [(value)]="tlpDone"
                 />
-              } @else {
-                <p class="doc-p" params>
-                  Last clicked id: “{{ tlpClicked() ?? "—" }}”
-                </p>
+                <div class="np-field" params>
+                  <span class="gal-tag">steps</span>
+                  <div class="ss-seg">
+                    <button
+                      type="button"
+                      [class.is-on]="!tlpClickable()"
+                      (click)="tlpClickable.set(false)"
+                    >
+                      static
+                    </button>
+                    <button
+                      type="button"
+                      [class.is-on]="tlpClickable()"
+                      (click)="tlpClickable.set(true)"
+                    >
+                      clickable
+                    </button>
+                  </div>
+                </div>
               }
+              <p class="doc-p" params>
+                Last clicked: “{{ tlpClicked() ?? "—" }}”
+              </p>
               <div class="np-field" params>
                 <span class="gal-tag">dot shape</span>
                 <div class="ss-seg">
