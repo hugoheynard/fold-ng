@@ -90,11 +90,11 @@
         "
       >
         @if (aslLeft()) {
-        <div asideLeft class="asl-rail">📍 left</div>
+        <sh3-card asideLeft padding="sm">aside left</sh3-card>
         } @for (i of aslRows; track i) {
         <div class="asl-block">Section {{ i }}</div>
         }
-        <aside asideRight class="asl-card">📌 aside</aside>
+        <sh3-card asideRight padding="sm">aside right</sh3-card>
       </sh3-aside-layout>
     </div>
   </dev-playground>

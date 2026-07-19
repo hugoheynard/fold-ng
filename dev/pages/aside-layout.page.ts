@@ -1,6 +1,7 @@
 import { Component, computed, signal } from "@angular/core";
 import {
   Sh3AsideLayoutComponent,
+  Sh3CardComponent,
   Sh3PageLayoutComponent,
   Sh3SliderComponent,
 } from "../../src/index";
@@ -14,6 +15,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   imports: [
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,
+    Sh3CardComponent,
     Sh3SliderComponent,
     DevPlaygroundComponent,
   ],
