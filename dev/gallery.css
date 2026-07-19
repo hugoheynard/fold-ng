@@ -1082,7 +1082,10 @@ sh3-app-shell {
 .asl-actions {
   display: flex;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 10px;
+}
+.asl-actions--stack {
+  flex-direction: column;
 }
 .asl-btn {
   flex: 1;
