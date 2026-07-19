@@ -44,6 +44,7 @@ import {
   Sh3SliderComponent,
   Sh3TimelineComponent,
   type Sh3TimelineNode,
+  type Sh3TimelineDatePlacement,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -883,13 +884,20 @@ export class GalleryComponent {
   /** Completed step count for the horizontal stepper (drives `done` + fill). */
   protected readonly tlpDone = signal(2);
   protected readonly tlpSquare = signal(false);
-  protected readonly tlpDatePlacement = signal<"above" | "below">("below");
+  protected readonly tlpPlacements = [
+    "above",
+    "below",
+    "inline",
+    "hidden",
+  ] as const satisfies readonly Sh3TimelineDatePlacement[];
+  protected readonly tlpDatePlacement =
+    signal<Sh3TimelineDatePlacement>("below");
   protected readonly tlpClicked = signal<string | null>(null);
   private readonly TLP_STEPS = [
-    "Created",
-    "Company signed",
-    "Employee signed",
-    "Active",
+    { label: "Created", date: "15 Jan" },
+    { label: "Company signed", date: "18 Jan" },
+    { label: "Employee signed", date: "22 Jan" },
+    { label: "Active", date: "1 Feb" },
   ] as const;
 
   /** Nodes for the previewed timeline — history (vertical) or steps (horizontal). */
@@ -898,10 +906,11 @@ export class GalleryComponent {
       return this.tlNodes;
     }
     const done = this.tlpDone();
-    return this.TLP_STEPS.map((label, i) => ({
-      key: label,
+    return this.TLP_STEPS.map((step, i) => ({
+      key: step.label,
       id: null,
-      label,
+      label: step.label,
+      displayDate: i < done ? step.date : undefined,
       done: i < done,
       icon: i < done ? "check" : undefined,
     }));
@@ -930,7 +939,7 @@ export class GalleryComponent {
       lines.push("  square");
     }
     if (this.tlpDatePlacement() !== "below") {
-      lines.push('  datePlacement="above"');
+      lines.push(`  datePlacement="${this.tlpDatePlacement()}"`);
     }
     lines.push('  [nodes]="nodes"', "/>");
     return lines.join("\n");

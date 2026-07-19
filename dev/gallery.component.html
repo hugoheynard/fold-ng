@@ -1872,20 +1872,15 @@
               <div class="np-field" params>
                 <span class="gal-tag">datePlacement</span>
                 <div class="ss-seg">
-                  <button
-                    type="button"
-                    [class.is-on]="tlpDatePlacement() === 'above'"
-                    (click)="tlpDatePlacement.set('above')"
-                  >
-                    above
-                  </button>
-                  <button
-                    type="button"
-                    [class.is-on]="tlpDatePlacement() === 'below'"
-                    (click)="tlpDatePlacement.set('below')"
-                  >
-                    below
-                  </button>
+                  @for (p of tlpPlacements; track p) {
+                    <button
+                      type="button"
+                      [class.is-on]="tlpDatePlacement() === p"
+                      (click)="tlpDatePlacement.set(p)"
+                    >
+                      {{ p }}
+                    </button>
+                  }
                 </div>
               </div>
 
