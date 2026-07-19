@@ -1,0 +1,24 @@
+<nav class="tlv" [attr.aria-label]="ariaLabel()">
+  @for (n of nodes(); track n.key) {
+    <button
+      type="button"
+      class="node"
+      [class.inert]="n.id === null"
+      [disabled]="n.id === null"
+      [title]="n.id === null ? '' : nodeTitle()"
+      (click)="onNode(n.id)"
+    >
+      <span class="dot">
+        @if (n.icon; as ic) {
+          <sh3-icon [name]="ic" [size]="11" />
+        }
+      </span>
+      <span class="txt">
+        @if (n.date; as d) {
+          <span class="date">{{ d | date: "mediumDate" }}</span>
+        }
+        <span class="nlabel">{{ n.label }}</span>
+      </span>
+    </button>
+  }
+</nav>

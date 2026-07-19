@@ -1,0 +1,106 @@
+:host {
+  display: block;
+}
+
+.tlv {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tlv::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: var(--sh3-color-border);
+  border-radius: 2px;
+}
+
+.node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 7px 6px;
+  border: 0;
+  background: none;
+  border-radius: var(--sh3-radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--sh3-motion-fast);
+}
+
+.node[disabled] {
+  cursor: default;
+}
+
+.node:not(.inert):hover {
+  background: var(--sh3-color-surface-raised);
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sh3-color-surface-raised);
+  border: 2px solid var(--sh3-color-border);
+  color: var(--sh3-color-text-muted);
+  transition:
+    border-color var(--sh3-motion-fast),
+    color var(--sh3-motion-fast),
+    background var(--sh3-motion-fast);
+}
+
+.node.inert .dot {
+  background: var(--sh3-color-primary);
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-on-primary);
+}
+
+.node:not(.inert) .dot {
+  border-color: color-mix(
+    in srgb,
+    var(--sh3-color-primary) 45%,
+    var(--sh3-color-border)
+  );
+  color: var(--sh3-color-primary-text);
+}
+
+.node:not(.inert):hover .dot {
+  background: var(--sh3-color-primary-surface);
+  border-color: var(--sh3-color-primary);
+}
+
+.txt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 1px;
+  min-width: 0;
+}
+
+.date {
+  font-size: 10px;
+  color: var(--sh3-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.nlabel {
+  font-size: var(--sh3-text-xs);
+  font-weight: 600;
+  color: var(--sh3-color-text-secondary);
+  line-height: 1.3;
+}
+
+.node.inert .nlabel,
+.node:not(.inert):hover .nlabel {
+  color: var(--sh3-color-text);
+}
