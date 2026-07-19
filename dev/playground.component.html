@@ -1,8 +1,7 @@
 <div class="pg-row">
   <section class="pg-panel pg-params">
     <header class="pg-head">
-      <sh3-icon name="settings" size="sm" />
-      <span class="pg-head-title">Settings</span>
+      <sh3-element-title variant="title" icon="sliders" title="Settings" />
     </header>
     <div class="pg-body pg-params-body">
       <ng-content select="[params]" />
@@ -11,8 +10,7 @@
 
   <section class="pg-panel pg-preview">
     <header class="pg-head">
-      <sh3-icon name="eye" size="sm" />
-      <span class="pg-head-title">Preview</span>
+      <sh3-element-title variant="title" icon="eye" title="Preview" />
       <div class="pg-head-actions">
         <ng-content select="[preview-actions]" />
       </div>
@@ -23,13 +21,16 @@
   </section>
 
   <section class="pg-panel pg-code">
-    <header class="pg-head pg-head-code">
-      <span class="pg-head-title">Code</span>
-      <span class="pg-lang">{{ lang() }}</span>
-      <button type="button" class="pg-copy" (click)="copy()">
-        <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
-        {{ copied() ? "Copied" : "Copy" }}
-      </button>
+    <header class="pg-head">
+      <sh3-element-title variant="title" icon="code" title="Code">
+        <div titleAction class="pg-code-actions">
+          <span class="pg-lang">{{ lang() }}</span>
+          <button type="button" class="pg-copy" (click)="copy()">
+            <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
+            {{ copied() ? "Copied" : "Copy" }}
+          </button>
+        </div>
+      </sh3-element-title>
     </header>
     <pre class="pg-pre"><code>{{ code() }}</code></pre>
   </section>

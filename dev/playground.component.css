@@ -42,12 +42,10 @@
   border-bottom: 1px solid var(--sh3-color-border-subtle);
   color: var(--sh3-color-text-secondary);
 }
-.pg-head-title {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--sh3-color-text);
+/* the element-title fills the header so its [titleAction] sits at the right */
+.pg-head sh3-element-title {
+  flex: 1;
+  min-width: 0;
 }
 .pg-body {
   padding: 14px;
@@ -94,8 +92,10 @@
   min-width: 260px;
   background: var(--sh3-color-surface-sunken);
 }
-.pg-head-code {
-  padding-right: 10px;
+.pg-code-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 .pg-lang {
   font-size: 10px;
