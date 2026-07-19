@@ -10,6 +10,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
+ * - `[titleBadge]` → an inline pill beside the title (e.g. a status/kind badge).
  * - `[pageActions]` → the top-right header slot (e.g. an export button).
  *
  * ```html

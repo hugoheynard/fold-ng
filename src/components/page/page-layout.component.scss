@@ -39,6 +39,15 @@
   flex: none;
   color: var(--sh3-color-primary-text);
 }
+/* A pill (status / kind) sitting inline after the title text. */
+.page-title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.page-title-badge:empty {
+  display: none;
+}
 .page-desc {
   margin: 0;
   font-size: var(--sh3-text-sm);

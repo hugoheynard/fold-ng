@@ -7,6 +7,9 @@
             <sh3-icon class="page-icon" [name]="ic" [size]="22" />
           }
           <span>{{ title() }}</span>
+          <span class="page-title-badge"
+            ><ng-content select="[titleBadge]"
+          /></span>
         </h1>
       }
       @if (description()) {

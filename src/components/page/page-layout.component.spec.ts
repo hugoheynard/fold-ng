@@ -14,6 +14,7 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
     [fluid]="fluid()"
   >
     <button pageActions class="act">Export</button>
+    <span titleBadge class="kind">Directive</span>
     <div class="body-item">Body</div>
   </sh3-page-layout>`,
 })
@@ -34,9 +35,11 @@ function render() {
 describe("Sh3PageLayoutComponent", () => {
   it("renders the title + description", () => {
     const { root } = render();
-    expect(root.querySelector(".page-title")?.textContent?.trim()).toBe(
-      "Facturation",
-    );
+    expect(
+      root
+        .querySelector(".page-title > span:not(.page-title-badge)")
+        ?.textContent?.trim(),
+    ).toBe("Facturation");
     expect(root.querySelector(".page-desc")?.textContent?.trim()).toBe(
       "Abonnement",
     );
@@ -46,6 +49,13 @@ describe("Sh3PageLayoutComponent", () => {
     const { root } = render();
     expect(root.querySelector(".page-body .body-item")).not.toBeNull();
     expect(root.querySelector(".page-head .page-actions .act")).not.toBeNull();
+  });
+
+  it("projects [titleBadge] inline beside the title", () => {
+    const { root } = render();
+    expect(
+      root.querySelector(".page-title .page-title-badge .kind"),
+    ).not.toBeNull();
   });
 
   it("omits the header when there is no title or description", () => {
