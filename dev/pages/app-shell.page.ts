@@ -27,6 +27,7 @@ import {
   withOverride,
   type PageTokenGroup,
 } from "../token-sandbox";
+import { KindBadgeComponent } from "../kind-badge.component";
 
 type ShellMode = "desktop" | "tablet" | "mobile";
 

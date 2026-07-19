@@ -27,6 +27,7 @@ import {
   withOverride,
   type PageTokenGroup,
 } from "../token-sandbox";
+import { KindBadgeComponent } from "../kind-badge.component";
 
 /** A menu section in the live builder: a colored separator + N simulated items. */
 interface MenuSection {

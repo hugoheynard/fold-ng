@@ -14,6 +14,7 @@ import {
   Sh3SliderComponent,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
+import { KindBadgeComponent } from "../kind-badge.component";
 
 /** `/aside-layout` — the `sh3-aside-layout` gallery page. */
 @Component({

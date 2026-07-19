@@ -33,6 +33,7 @@ import {
   withOverride,
   type PageTokenGroup,
 } from "../token-sandbox";
+import { KindBadgeComponent } from "../kind-badge.component";
 
 /** A clickable avatar demo — its config drives both the rendered vignette and
  *  the markup shown in the code panel when you click it. */
