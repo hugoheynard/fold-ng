@@ -1895,9 +1895,6 @@
                   nodeTitle="Go to item"
                   [square]="tlpSquare()"
                   [datePlacement]="tlpDatePlacement()"
-                  [progress]="
-                    tlpOrientation() === 'horizontal' ? tlpProgress() : null
-                  "
                   [nodes]="tlpNodes()"
                   (nodeClick)="tlpClicked.set($event)"
                 />

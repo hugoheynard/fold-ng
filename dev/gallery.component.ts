@@ -916,7 +916,7 @@ export class GalleryComponent {
     }));
   });
 
-  /** Fill width (%) reaching the last completed step (matches the real usage). */
+  /** Derived fill % (display only — the component derives it from `done` too). */
   protected readonly tlpProgress = computed(() => {
     const done = this.tlpDone();
     const n = this.TLP_STEPS.length;
@@ -927,8 +927,8 @@ export class GalleryComponent {
     const horizontal = this.tlpOrientation() === "horizontal";
     const lines = ["<sh3-timeline"];
     if (horizontal) {
+      // No [progress] — the fill derives from each node's `done`.
       lines.push('  orientation="horizontal"');
-      lines.push(`  [progress]="${this.tlpProgress()}"`);
       lines.push('  ariaLabel="Signature progress"');
     } else {
       lines.push('  ariaLabel="Contract history"');
