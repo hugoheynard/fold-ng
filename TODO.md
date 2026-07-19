@@ -362,6 +362,46 @@ avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
   new `optional` label marker). Dates stay native (no DS date component yet);
   file upload is the dropzone, not a field.
 
+- **`sh3-timeline` — revisit the design + usage once a 3rd shape lands.** The
+  component grew fast (2 real consumers: the vertical avenants rail + the
+  horizontal signature stepper) and is healthy, but it now carries **two
+  personalities behind one `orientation` switch**: _vertical = navigable history_
+  (`<nav>`, buttons, click-emit) vs _horizontal = progress stepper_
+  (`role="group"`, a derived `role=progressbar` fill, mobile collapse). They share
+  the dot-rail primitive (dot + label + date + `variant` + `icon` + `#node`
+  template + `clickable`), which is exactly why we fused them — but the fusion is
+  the seam where debt will accrete. Reflections to act on _when_ it earns it:
+  - **Don't split preemptively** (generalize on the 2nd real use, keep the through
+    line). The clean decomposition, if a trigger fires, is a low-level
+    `Sh3TimelineRail` primitive with two thin compositions over it —
+    `sh3-timeline` (vertical/navigable) and `sh3-stepper` (horizontal/progress,
+    owns the progressbar). **Triggers:** (1) a 3rd orientation/mode; (2) the
+    progress stepper is wanted **outside** a timeline (the progressbar earns its
+    own life); (3) mode-specific inputs multiply (today only `progress` is
+    strictly horizontal).
+  - **Cascade consistency.** `variant` (plain/hollow) now cascades
+    timeline-default → node-override (`node.variant ?? timeline.variant`), matching
+    the intended pattern. `square` and `datePlacement` are still **timeline-only**
+    (no per-node override) — fine today (mixed dot shapes / date placement per node
+    has no real use), but if one is ever needed per node, apply the **same
+    `node.x ?? timeline.x` cascade**, not a new ad-hoc knob.
+  - **`#node` template + opaque `state` string = the extensibility valve.** It's
+    the deliberate escape hatch for heterogeneous nodes (a "en attente" badge)
+    **without** exploding the node into props or introducing an `sh3-milestone`
+    child component (evaluated and **rejected** — it fights the derived
+    progressbar/aria, which needs the parent to own aggregate node state; and
+    dynamic lists still need `@for` over data). Watch that `state` doesn't become
+    a grab-bag; if consumers start encoding structured data in it, promote to a
+    typed generic `Sh3TimelineNode<T>` with `data?: T`.
+  - **Mode-specific inputs aren't signalled.** `progress` is a no-op in vertical;
+    nothing warns. Cheap clarity win (not yet done): a `isDevMode()` warning on a
+    mode-mismatched input (the `isStepAligned` pattern from `sh3-number-input`) +
+    doc which inputs matter in which orientation.
+  - **Node interface is at ~10 optional fields** (`key`/`id`/`clickable`/`label`/
+    `date`/`displayDate`/`icon`/`done`/`variant`/`state`). Still coherent, but it's
+    the metric to watch — the next 2–3 additions are the signal to reach for the
+    rail-primitive split or a richer template context rather than more fields.
+
 ## Hardcore-review follow-ups (2026-07) — see `dev-rules.md` ledger
 
 Done in the review pass: elevation tokens + the component-usage colour guard
