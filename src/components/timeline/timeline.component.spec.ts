@@ -73,6 +73,27 @@ describe("Sh3TimelineComponent", () => {
     expect(fixture.componentInstance.clicked()).toBe("add_1");
   });
 
+  it("`clickable` forces button-ness in both directions, decoupled from id", () => {
+    const { fixture, host, buttons } = render();
+    fixture.componentInstance.orientation.set("horizontal");
+    fixture.componentInstance.nodes.set([
+      // clickable step with no id → a button that emits its key
+      { key: "step_a", id: null, label: "A", clickable: true },
+      // id-bearing node forced presentational
+      { key: "b", id: "b", label: "B", clickable: false },
+    ]);
+    fixture.detectChanges();
+
+    expect(buttons()).toHaveLength(1);
+    expect(buttons()[0].textContent).toContain("A");
+    // The id-bearing node is a plain element, not a button.
+    const nodeEls = Array.from(host.querySelectorAll<HTMLElement>(".node"));
+    expect(nodeEls[1].tagName).toBe("DIV");
+    // Clicking the id-less clickable node emits its key.
+    buttons()[0].click();
+    expect(fixture.componentInstance.clicked()).toBe("step_a");
+  });
+
   it("is surface-agnostic (no card) and labels its nav for AT", () => {
     const { fixture, host } = render();
     const nav = host.querySelector("nav.tlv");

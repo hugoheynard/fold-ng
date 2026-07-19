@@ -33,13 +33,13 @@
     </span>
   }
   @for (n of nodes(); track n.key) {
-    @if (n.id !== null) {
+    @if (isClickable(n)) {
       <button
         type="button"
         class="node"
         [class.filled]="isFilled(n)"
         [title]="nodeTitle()"
-        (click)="onNode(n.id)"
+        (click)="onNode(n)"
       >
         <ng-container
           [ngTemplateOutlet]="dot"

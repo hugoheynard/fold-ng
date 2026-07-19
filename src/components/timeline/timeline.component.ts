@@ -14,10 +14,17 @@ export type Sh3TimelineDatePlacement = "above" | "below" | "inline" | "hidden";
 
 /** One node of a {@link Sh3TimelineComponent}. */
 export interface Sh3TimelineNode {
-  /** Stable track key. */
+  /** Stable track key. Also the click payload when {@link id} is `null`. */
   readonly key: string;
-  /** Emitted on click; `null` marks a **non-clickable** node. */
+  /** Click payload; `null` means no id (see {@link clickable}). */
   readonly id: string | null;
+  /**
+   * Force the node interactive (a `<button>`) or not, in either orientation.
+   * When omitted it defaults to `id !== null`. A clickable node emits `id ?? key`
+   * on click. Lets a horizontal step be clickable without a routing id, or an
+   * id-bearing node stay presentational.
+   */
+  readonly clickable?: boolean;
   /** Primary label. */
   readonly label: string;
   /** Optional date, formatted with the `date` pipe (`mediumDate`). */
@@ -45,12 +52,13 @@ export interface Sh3TimelineNode {
  *   fill line under the dots; each node's `done` drives its accent. Collapses to
  *   a vertical list on narrow viewports.
  *
- * Interactivity is per node, not per component: a node with an `id` renders as a
- * `<button>` (navigable); an `id === null` node renders as a plain presentational
- * element (never a disabled button — so a purely-presentational timeline, e.g. a
- * signature stepper, carries no button semantics). The container is a `<nav>`
- * landmark only when at least one node is navigable; otherwise a labelled
- * `role="group"`.
+ * Interactivity is per node, not per component, and works the same in both
+ * orientations: a node renders as a `<button>` when it is clickable — by default
+ * that means `id !== null`, but each node can force it via `clickable`. A
+ * non-clickable node renders as a plain presentational element (never a disabled
+ * button — so a purely-presentational timeline, e.g. a signature stepper, carries
+ * no button semantics). The container is a `<nav>` landmark only when at least one
+ * node is clickable; otherwise a labelled `role="group"`.
  *
  * The accent ("filled") dot is `done ?? (id === null)`, so the inert anchor and a
  * `done` step are the same rule. Dots are round by default (`square` for
@@ -109,12 +117,17 @@ export class Sh3TimelineComponent {
    */
   readonly datePlacement = input<Sh3TimelineDatePlacement>("below");
 
-  /** Emits the clicked node's id (never fires for `id === null` nodes). */
+  /** Emits a clicked node's `id ?? key` (never fires for non-clickable nodes). */
   readonly nodeClick = output<string>();
 
-  /** True when any node is navigable — the container is a `<nav>` only then. */
+  /** Resolved interactivity: explicit `clickable`, else `id !== null`. */
+  protected isClickable(node: Sh3TimelineNode): boolean {
+    return node.clickable ?? node.id !== null;
+  }
+
+  /** True when any node is clickable — the container is a `<nav>` only then. */
   protected readonly interactive = computed(() =>
-    this.nodes().some((n) => n.id !== null),
+    this.nodes().some((n) => this.isClickable(n)),
   );
 
   /** Count of completed nodes (drives the derived fill + the progressbar text). */
@@ -150,9 +163,9 @@ export class Sh3TimelineComponent {
     return node.done ?? node.id === null;
   }
 
-  protected onNode(id: string | null): void {
-    if (id !== null) {
-      this.nodeClick.emit(id);
+  protected onNode(node: Sh3TimelineNode): void {
+    if (this.isClickable(node)) {
+      this.nodeClick.emit(node.id ?? node.key);
     }
   }
 }
