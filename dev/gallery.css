@@ -1039,6 +1039,67 @@ sh3-app-shell {
   --sh3-aside-layout-center-width: minmax(0, 1fr);
   --sh3-aside-layout-side-width: minmax(0, 1fr);
 }
+/* Demo rail contents — left rail is a short nav, right rail a taller
+   details + actions stack, so the two rails differ in size and purpose. */
+.asl-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+}
+.asl-nav a {
+  padding: 6px 10px;
+  border-radius: var(--sh3-radius-sm);
+  color: var(--sh3-color-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+}
+.asl-nav a.is-on {
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font-weight: 600;
+}
+.asl-meta {
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.asl-meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+.asl-meta dt {
+  color: var(--sh3-color-text-muted);
+}
+.asl-meta dd {
+  margin: 0;
+  color: var(--sh3-color-text);
+  font-weight: 600;
+}
+.asl-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.asl-btn {
+  flex: 1;
+  padding: 7px 12px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+  background: var(--sh3-color-surface-raised);
+  color: var(--sh3-color-text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.asl-btn.is-primary {
+  border-color: var(--sh3-color-primary);
+  background: var(--sh3-color-primary);
+  color: var(--sh3-color-on-primary);
+}
 /* sh3-field-list demos: a light surface framing (the list host is
    display:contents, so the frame lives on this wrapper, not the component). */
 .fld-demo {

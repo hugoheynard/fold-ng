@@ -114,7 +114,14 @@
           "
           >
             @if (aslLeft()) {
-            <sh3-card asideLeft>aside left</sh3-card>
+            <sh3-card asideLeft>
+              <span class="gal-tag">On this page</span>
+              <nav class="asl-nav">
+                <a class="is-on">Overview</a>
+                <a>Terms</a>
+                <a>Signatures</a>
+              </nav>
+            </sh3-card>
             }
             <sh3-page-section surface="card" title="Section one">
               <p class="gal-body">
@@ -135,7 +142,19 @@
                 vitae dicta sunt.
               </p>
             </sh3-page-section>
-            <sh3-card asideRight>aside right</sh3-card>
+            <sh3-card asideRight>
+              <span class="gal-tag">Details</span>
+              <dl class="asl-meta">
+                <div><dt>Status</dt><dd>Active</dd></div>
+                <div><dt>Owner</dt><dd>Marc Machine</dd></div>
+                <div><dt>Signed</dt><dd>12 Jun 2026</dd></div>
+                <div><dt>Renews</dt><dd>12 Jun 2027</dd></div>
+              </dl>
+              <div class="asl-actions">
+                <button type="button" class="asl-btn is-primary">Edit</button>
+                <button type="button" class="asl-btn">Archive</button>
+              </div>
+            </sh3-card>
           </sh3-aside-layout>
         </div>
       </div>
