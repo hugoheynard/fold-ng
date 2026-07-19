@@ -26,94 +26,81 @@
           [togglePlacement]="menuArrow()"
         >
           @if (menuHeader()) {
-            <div header class="rail-brand">S3</div>
-          }
-          @for (s of menuSectionList(); track s.id; let si = $index) {
-            @if (menuSections()) {
-              <sh3-menu-section
-                [label]="s.name"
-                [color]="s.color"
-                [collapsible]="menuSectionCollapsible()"
-              >
-                @for (icon of iconsFor(s.icons); track $index) {
-                  <button
-                    sh3-menu-item
-                    [icon]="icon"
-                    [label]="labelFor(icon)"
-                    [active]="menuActive() === s.id + '-' + $index"
-                    [badge]="previewBadge(si, $index)"
-                    [badgeTone]="menuBadgeTone()"
-                    (click)="menuActive.set(s.id + '-' + $index)"
-                  ></button>
-                }
-              </sh3-menu-section>
-            } @else {
-              @for (icon of iconsFor(s.icons); track $index) {
-                <button
-                  sh3-menu-item
-                  [icon]="icon"
-                  [label]="labelFor(icon)"
-                  [active]="menuActive() === s.id + '-' + $index"
-                  [badge]="previewBadge(si, $index)"
-                  [badgeTone]="menuBadgeTone()"
-                  (click)="menuActive.set(s.id + '-' + $index)"
-                ></button>
-              }
-            }
-          }
-          @if (menuFooter()) {
+          <div header class="rail-brand">S3</div>
+          } @for (s of menuSectionList(); track s.id; let si = $index) { @if
+          (menuSections()) {
+          <sh3-menu-section
+            [label]="s.name"
+            [color]="s.color"
+            [collapsible]="menuSectionCollapsible()"
+          >
+            @for (icon of iconsFor(s.icons); track $index) {
             <button
-              footer
               sh3-menu-item
-              icon="settings"
-              label="Settings"
+              [icon]="icon"
+              [label]="labelFor(icon)"
+              [active]="menuActive() === s.id + '-' + $index"
+              [badge]="previewBadge(si, $index)"
+              [badgeTone]="menuBadgeTone()"
+              (click)="menuActive.set(s.id + '-' + $index)"
             ></button>
+            }
+          </sh3-menu-section>
+          } @else { @for (icon of iconsFor(s.icons); track $index) {
+          <button
+            sh3-menu-item
+            [icon]="icon"
+            [label]="labelFor(icon)"
+            [active]="menuActive() === s.id + '-' + $index"
+            [badge]="previewBadge(si, $index)"
+            [badgeTone]="menuBadgeTone()"
+            (click)="menuActive.set(s.id + '-' + $index)"
+          ></button>
+          } } } @if (menuFooter()) {
+          <button
+            footer
+            sh3-menu-item
+            icon="settings"
+            label="Settings"
+          ></button>
           }
         </sh3-menu>
 
         <!-- "code" overlay — HTML usage (top) | CSS variables (bottom).
            Stacked, since the preview column is narrow and tall. -->
         @if (menuShowCode()) {
-          <div class="code-overlay code-overlay--stack">
-            <div class="code-overlay-pane">
-              <div class="code-overlay-top">
-                <span class="code-lang">html</span>
-                <button
-                  type="button"
-                  class="code-copy"
-                  (click)="copyMenuCode()"
-                >
-                  <sh3-icon
-                    [name]="menuCopied() ? 'check-circle' : 'copy'"
-                    size="sm"
-                  />
-                  {{ menuCopied() ? "Copied" : "Copy" }}
-                </button>
-              </div>
-              <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
+        <div class="code-overlay code-overlay--stack">
+          <div class="code-overlay-pane">
+            <div class="code-overlay-top">
+              <span class="code-lang">html</span>
+              <button type="button" class="code-copy" (click)="copyMenuCode()">
+                <sh3-icon
+                  [name]="menuCopied() ? 'check-circle' : 'copy'"
+                  size="sm"
+                />
+                {{ menuCopied() ? "Copied" : "Copy" }}
+              </button>
             </div>
-            <div class="code-overlay-pane">
-              <div class="code-overlay-top">
-                <span class="code-lang"
-                  >css · variables to override</span
-                >
-                <button
-                  type="button"
-                  class="code-copy"
-                  (click)="copyMenuTokensCss()"
-                >
-                  <sh3-icon
-                    [name]="menuCssCopied() ? 'check-circle' : 'copy'"
-                    size="sm"
-                  />
-                  {{ menuCssCopied() ? "Copied" : "Copy" }}
-                </button>
-              </div>
-              <pre
-                class="code-pre"
-              ><code>{{ menuTokensCss() }}</code></pre>
-            </div>
+            <pre class="code-pre"><code>{{ menuCode() }}</code></pre>
           </div>
+          <div class="code-overlay-pane">
+            <div class="code-overlay-top">
+              <span class="code-lang">css · variables to override</span>
+              <button
+                type="button"
+                class="code-copy"
+                (click)="copyMenuTokensCss()"
+              >
+                <sh3-icon
+                  [name]="menuCssCopied() ? 'check-circle' : 'copy'"
+                  size="sm"
+                />
+                {{ menuCssCopied() ? "Copied" : "Copy" }}
+              </button>
+            </div>
+            <pre class="code-pre"><code>{{ menuTokensCss() }}</code></pre>
+          </div>
+        </div>
         }
       </div>
     </div>
@@ -145,22 +132,22 @@
         </div>
 
         @if (menuCollapsible()) {
-          <div class="ss-group">
-            <span class="ss-label"
-              >collapse arrow → <b>{{ resolvedArrow() }}</b></span
+        <div class="ss-group">
+          <span class="ss-label"
+            >collapse arrow → <b>{{ resolvedArrow() }}</b></span
+          >
+          <div class="ss-seg">
+            @for (a of menuArrows; track a) {
+            <button
+              type="button"
+              [class.is-on]="menuArrow() === a"
+              (click)="menuArrow.set(a)"
             >
-            <div class="ss-seg">
-              @for (a of menuArrows; track a) {
-                <button
-                  type="button"
-                  [class.is-on]="menuArrow() === a"
-                  (click)="menuArrow.set(a)"
-                >
-                  {{ a }}
-                </button>
-              }
-            </div>
+              {{ a }}
+            </button>
+            }
           </div>
+        </div>
         }
 
         <div class="ss-group">
@@ -191,38 +178,38 @@
         </div>
 
         @if (menuSections()) {
-          <div class="ss-group">
-            <span class="ss-label">section behaviour</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="!menuSectionCollapsible()"
-                (click)="menuSectionCollapsible.set(false)"
-              >
-                static
-              </button>
-              <button
-                type="button"
-                [class.is-on]="menuSectionCollapsible()"
-                (click)="menuSectionCollapsible.set(true)"
-              >
-                collapsible
-              </button>
-            </div>
+        <div class="ss-group">
+          <span class="ss-label">section behaviour</span>
+          <div class="ss-seg">
+            <button
+              type="button"
+              [class.is-on]="!menuSectionCollapsible()"
+              (click)="menuSectionCollapsible.set(false)"
+            >
+              static
+            </button>
+            <button
+              type="button"
+              [class.is-on]="menuSectionCollapsible()"
+              (click)="menuSectionCollapsible.set(true)"
+            >
+              collapsible
+            </button>
           </div>
+        </div>
         }
 
         <div class="ss-group">
           <span class="ss-label">tint</span>
           <div class="ss-seg">
             @for (t of menuTints; track t) {
-              <button
-                type="button"
-                [class.is-on]="menuTint() === t"
-                (click)="menuTint.set(t)"
-              >
-                {{ t }}
-              </button>
+            <button
+              type="button"
+              [class.is-on]="menuTint() === t"
+              (click)="menuTint.set(t)"
+            >
+              {{ t }}
+            </button>
             }
           </div>
         </div>
@@ -231,13 +218,13 @@
           <span class="ss-label">level</span>
           <div class="ss-seg">
             @for (l of menuLevels; track l) {
-              <button
-                type="button"
-                [class.is-on]="menuLevel() === l"
-                (click)="menuLevel.set(l)"
-              >
-                {{ l }}
-              </button>
+            <button
+              type="button"
+              [class.is-on]="menuLevel() === l"
+              (click)="menuLevel.set(l)"
+            >
+              {{ l }}
+            </button>
             }
           </div>
         </div>
@@ -270,20 +257,20 @@
         </div>
 
         @if (menuBadge() !== "none") {
-          <div class="ss-group">
-            <span class="ss-label">badge tone</span>
-            <div class="ss-seg">
-              @for (t of menuBadgeTones; track t) {
-                <button
-                  type="button"
-                  [class.is-on]="menuBadgeTone() === t"
-                  (click)="menuBadgeTone.set(t)"
-                >
-                  {{ t }}
-                </button>
-              }
-            </div>
+        <div class="ss-group">
+          <span class="ss-label">badge tone</span>
+          <div class="ss-seg">
+            @for (t of menuBadgeTones; track t) {
+            <button
+              type="button"
+              [class.is-on]="menuBadgeTone() === t"
+              (click)="menuBadgeTone.set(t)"
+            >
+              {{ t }}
+            </button>
+            }
           </div>
+        </div>
         }
 
         <div class="ss-group">
@@ -314,49 +301,49 @@
           </div>
 
           @for (s of menuSectionList(); track s.id) {
-            <div class="sec-row">
-              <input
-                #colorInput
-                type="color"
-                class="sec-color"
-                [value]="s.color"
-                (input)="setSectionColor(s.id, colorInput.value)"
-                aria-label="Section color"
-              />
-              <input
-                #nameInput
-                type="text"
-                class="sec-name"
-                [value]="s.name"
-                (input)="setSectionName(s.id, nameInput.value)"
-                aria-label="Section name"
-              />
-              <div class="ss-step">
-                <button
-                  type="button"
-                  (click)="stepSectionIcons(s.id, -1)"
-                  aria-label="Fewer items"
-                >
-                  −
-                </button>
-                <b>{{ s.icons }}</b>
-                <button
-                  type="button"
-                  (click)="stepSectionIcons(s.id, 1)"
-                  aria-label="More items"
-                >
-                  +
-                </button>
-              </div>
+          <div class="sec-row">
+            <input
+              #colorInput
+              type="color"
+              class="sec-color"
+              [value]="s.color"
+              (input)="setSectionColor(s.id, colorInput.value)"
+              aria-label="Section color"
+            />
+            <input
+              #nameInput
+              type="text"
+              class="sec-name"
+              [value]="s.name"
+              (input)="setSectionName(s.id, nameInput.value)"
+              aria-label="Section name"
+            />
+            <div class="ss-step">
               <button
                 type="button"
-                class="sec-del"
-                (click)="removeSection(s.id)"
-                aria-label="Delete section"
+                (click)="stepSectionIcons(s.id, -1)"
+                aria-label="Fewer items"
               >
-                ×
+                −
+              </button>
+              <b>{{ s.icons }}</b>
+              <button
+                type="button"
+                (click)="stepSectionIcons(s.id, 1)"
+                aria-label="More items"
+              >
+                +
               </button>
             </div>
+            <button
+              type="button"
+              class="sec-del"
+              (click)="removeSection(s.id)"
+              aria-label="Delete section"
+            >
+              ×
+            </button>
+          </div>
           }
         </div>
       </sh3-context-card>
@@ -369,45 +356,43 @@
         subtitle="live sandbox — edit a value to override the preview; semantics preferred"
       >
         @for (group of menuTokens; track group.label) {
-          <div class="tok-group">
-            <span class="ss-label tok-group-label">{{
-              group.label
-            }}</span>
-            @for (t of group.tokens; track t.prop) {
-              <div class="tok-row">
-                @if (t.kind === "color") {
-                  <span
-                    class="tok-swatch"
-                    [style.background]="
+        <div class="tok-group">
+          <span class="ss-label tok-group-label">{{ group.label }}</span>
+          @for (t of group.tokens; track t.prop) {
+          <div class="tok-row">
+            @if (t.kind === "color") {
+            <span
+              class="tok-swatch"
+              [style.background]="
                       menuOverrides()[t.prop] || 'var(' + t.prop + ')'
                     "
-                  ></span>
-                } @else {
-                  <span
-                    class="tok-swatch tok-swatch--radius"
-                    [style.borderRadius]="
+            ></span>
+            } @else {
+            <span
+              class="tok-swatch tok-swatch--radius"
+              [style.borderRadius]="
                       menuOverrides()[t.prop] || 'var(' + t.prop + ')'
                     "
-                  ></span>
-                }
-                <div class="tok-meta">
-                  <code class="tok-name">{{ t.prop }}</code>
-                  <span class="tok-desc">{{ t.desc }}</span>
-                </div>
-                <input
-                  #ov
-                  type="text"
-                  class="tok-input"
-                  [value]="menuOverrides()[t.prop] || ''"
-                  [placeholder]="
+            ></span>
+            }
+            <div class="tok-meta">
+              <code class="tok-name">{{ t.prop }}</code>
+              <span class="tok-desc">{{ t.desc }}</span>
+            </div>
+            <input
+              #ov
+              type="text"
+              class="tok-input"
+              [value]="menuOverrides()[t.prop] || ''"
+              [placeholder]="
                     t.kind === 'color' ? '#7c5bbf' : '12px'
                   "
-                  (input)="setMenuOverride(t.prop, ov.value)"
-                  [attr.aria-label]="'Override ' + t.prop"
-                />
-              </div>
-            }
+              (input)="setMenuOverride(t.prop, ov.value)"
+              [attr.aria-label]="'Override ' + t.prop"
+            />
           </div>
+          }
+        </div>
         }
         <button
           type="button"
