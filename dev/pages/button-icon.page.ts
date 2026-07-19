@@ -1,0 +1,66 @@
+import { Component, signal } from "@angular/core";
+import {
+  Sh3ButtonIconComponent,
+  Sh3PageLayoutComponent,
+} from "../../src/index";
+
+/** `/button-icon` — the `sh3-button-icon` gallery page. */
+@Component({
+  selector: "gal-button-icon-page",
+  standalone: true,
+  imports: [Sh3PageLayoutComponent, Sh3ButtonIconComponent],
+  template: `<sh3-page-layout title="button-icon">
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag">tones (md square)</span>
+        <div class="gal-row" style="align-items: center">
+          <sh3-button-icon icon="edit" tooltip="Ghost (default)" />
+          <sh3-button-icon icon="check" tone="accent" tooltip="Accent" />
+          <sh3-button-icon icon="bin" tone="critical" tooltip="Critical" />
+        </div>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">sizes (ghost square)</span>
+        <div class="gal-row" style="align-items: center">
+          <sh3-button-icon icon="reload" size="xs" tooltip="xs · 22px" />
+          <sh3-button-icon icon="reload" size="sm" tooltip="sm · 28px" />
+          <sh3-button-icon icon="reload" size="md" tooltip="md · 32px" />
+          <sh3-button-icon icon="reload" size="lg" tooltip="lg · 38px" />
+        </div>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">round · accent (transport)</span>
+        <div class="gal-row" style="align-items: center">
+          <sh3-button-icon
+            icon="play"
+            shape="round"
+            tone="accent"
+            size="lg"
+            tooltip="Play"
+          />
+          <sh3-button-icon
+            icon="reload"
+            shape="round"
+            size="md"
+            tooltip="Restart"
+          />
+        </div>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">toggle ([(active)]) · disabled</span>
+        <div class="gal-row" style="align-items: center">
+          <sh3-button-icon
+            icon="eye"
+            tooltip="Toggle mask"
+            [(active)]="biMasked"
+          />
+          <span class="gal-tag">masked: {{ biMasked() }}</span>
+          <sh3-button-icon icon="edit" [disabled]="true" tooltip="Disabled" />
+        </div>
+      </div>
+    </div>
+  </sh3-page-layout>`,
+})
+export default class ButtonIconPage {
+  protected readonly biMasked = signal(false);
+}
