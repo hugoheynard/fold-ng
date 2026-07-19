@@ -28,6 +28,8 @@ const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
   toast: () => import("./pages/toast.page"),
   icons: () => import("./pages/icons.page"),
   form: () => import("./pages/form.page"),
+  avatar: () => import("./pages/avatar.page"),
+  tokens: () => import("./pages/tokens.page"),
 };
 
 /**
