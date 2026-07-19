@@ -1813,6 +1813,62 @@
               </sh3-card>
             </div>
           </div>
+
+          <div class="gal-cell np-playground-cell">
+            <span class="gal-tag">playground · param · preview · code</span>
+            <dev-playground [code]="timelinePlaygroundCode()" equal>
+              <div class="np-field" params>
+                <span class="gal-tag">orientation</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="tlpOrientation() === 'vertical'"
+                    (click)="tlpOrientation.set('vertical')"
+                  >
+                    vertical
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="tlpOrientation() === 'horizontal'"
+                    (click)="tlpOrientation.set('horizontal')"
+                  >
+                    horizontal
+                  </button>
+                </div>
+              </div>
+              @if (tlpOrientation() === "horizontal") {
+                <sh3-slider
+                  params
+                  label="completed"
+                  [min]="0"
+                  [max]="4"
+                  [valueText]="tlpDone() + ' / 4 · ' + tlpProgress() + '%'"
+                  [(value)]="tlpDone"
+                />
+              } @else {
+                <p class="doc-p" params>
+                  Last clicked id: “{{ tlpClicked() ?? "—" }}”
+                </p>
+              }
+
+              <sh3-card surface="sunken" style="padding: 22px 18px">
+                <sh3-timeline
+                  [orientation]="tlpOrientation()"
+                  [ariaLabel]="
+                    tlpOrientation() === 'horizontal'
+                      ? 'Signature progress'
+                      : 'Contract history'
+                  "
+                  nodeTitle="Go to item"
+                  [progress]="
+                    tlpOrientation() === 'horizontal' ? tlpProgress() : null
+                  "
+                  [nodes]="tlpNodes()"
+                  (nodeClick)="tlpClicked.set($event)"
+                />
+              </sh3-card>
+            </dev-playground>
+          </div>
         </sh3-page-section>
       </section>
 

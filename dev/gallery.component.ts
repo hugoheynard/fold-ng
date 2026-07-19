@@ -876,6 +876,58 @@ export class GalleryComponent {
     { key: "active", id: null, label: "Active", done: false },
   ];
 
+  /* ── Timeline playground — params drive a live preview + code ─────────── */
+  protected readonly tlpOrientation = signal<"vertical" | "horizontal">(
+    "horizontal",
+  );
+  /** Completed step count for the horizontal stepper (drives `done` + fill). */
+  protected readonly tlpDone = signal(2);
+  protected readonly tlpClicked = signal<string | null>(null);
+  private readonly TLP_STEPS = [
+    "Created",
+    "Company signed",
+    "Employee signed",
+    "Active",
+  ] as const;
+
+  /** Nodes for the previewed timeline — history (vertical) or steps (horizontal). */
+  protected readonly tlpNodes = computed<readonly Sh3TimelineNode[]>(() => {
+    if (this.tlpOrientation() === "vertical") {
+      return this.tlNodes;
+    }
+    const done = this.tlpDone();
+    return this.TLP_STEPS.map((label, i) => ({
+      key: label,
+      id: null,
+      label,
+      done: i < done,
+      icon: i < done ? "check" : undefined,
+    }));
+  });
+
+  /** Fill width (%) reaching the last completed step (matches the real usage). */
+  protected readonly tlpProgress = computed(() => {
+    const done = this.tlpDone();
+    const n = this.TLP_STEPS.length;
+    return done <= 0 ? 0 : Math.round(((done - 1) / (n - 1)) * 100);
+  });
+
+  protected readonly timelinePlaygroundCode = computed(() => {
+    const horizontal = this.tlpOrientation() === "horizontal";
+    const lines = ["<sh3-timeline"];
+    if (horizontal) {
+      lines.push('  orientation="horizontal"');
+      lines.push(`  [progress]="${this.tlpProgress()}"`);
+      lines.push('  ariaLabel="Signature progress"');
+    } else {
+      lines.push('  ariaLabel="Contract history"');
+      lines.push('  nodeTitle="Go to item"');
+      lines.push('  (nodeClick)="onNode($event)"');
+    }
+    lines.push('  [nodes]="nodes"', "/>");
+    return lines.join("\n");
+  });
+
   /* ── file dropzone demo ──────────────────────────────────────────────── */
   protected readonly dzFiles = signal<readonly string[]>([]);
   protected readonly dzBusy = signal(false);
