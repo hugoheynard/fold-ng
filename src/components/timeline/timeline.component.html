@@ -52,7 +52,7 @@
     class="tlv"
     [class.h]="orientation() === 'horizontal'"
     [class.square]="square()"
-    [class.date-below]="datePlacement() === 'below'"
+    [class.date-above]="datePlacement() === 'above'"
     [attr.aria-label]="ariaLabel()"
   >
     <ng-container [ngTemplateOutlet]="body" />
@@ -63,7 +63,7 @@
     role="group"
     [class.h]="orientation() === 'horizontal'"
     [class.square]="square()"
-    [class.date-below]="datePlacement() === 'below'"
+    [class.date-above]="datePlacement() === 'above'"
     [attr.aria-label]="ariaLabel()"
   >
     <ng-container [ngTemplateOutlet]="body" />

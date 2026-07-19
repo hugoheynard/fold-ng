@@ -98,8 +98,8 @@ export class Sh3TimelineComponent {
   readonly nodeTitle = input<string>("");
   /** Render the dots as rounded squares instead of circles. */
   readonly square = input(false, { transform: booleanAttribute });
-  /** Whether a node's date sits above or below its label. */
-  readonly datePlacement = input<"above" | "below">("above");
+  /** Whether a node's date sits above or below its label (default `below`). */
+  readonly datePlacement = input<"above" | "below">("below");
 
   /** Emits the clicked node's id (never fires for `id === null` nodes). */
   readonly nodeClick = output<string>();

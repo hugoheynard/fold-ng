@@ -883,7 +883,7 @@ export class GalleryComponent {
   /** Completed step count for the horizontal stepper (drives `done` + fill). */
   protected readonly tlpDone = signal(2);
   protected readonly tlpSquare = signal(false);
-  protected readonly tlpDatePlacement = signal<"above" | "below">("above");
+  protected readonly tlpDatePlacement = signal<"above" | "below">("below");
   protected readonly tlpClicked = signal<string | null>(null);
   private readonly TLP_STEPS = [
     "Created",
@@ -929,8 +929,8 @@ export class GalleryComponent {
     if (this.tlpSquare()) {
       lines.push("  square");
     }
-    if (this.tlpDatePlacement() !== "above") {
-      lines.push('  datePlacement="below"');
+    if (this.tlpDatePlacement() !== "below") {
+      lines.push('  datePlacement="above"');
     }
     lines.push('  [nodes]="nodes"', "/>");
     return lines.join("\n");

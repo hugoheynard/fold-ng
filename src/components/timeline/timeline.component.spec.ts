@@ -26,7 +26,7 @@ class HostComponent {
   readonly orientation = signal<"vertical" | "horizontal">("vertical");
   readonly progress = signal<number | null>(null);
   readonly square = signal(false);
-  readonly datePlacement = signal<"above" | "below">("above");
+  readonly datePlacement = signal<"above" | "below">("below");
   readonly nodes = signal<readonly Sh3TimelineNode[]>([
     { key: "start", id: null, label: "Start", icon: "contracts" },
     { key: "a1", id: "add_1", label: "Avenant 1", date: null, icon: "edit" },
@@ -141,16 +141,17 @@ describe("Sh3TimelineComponent", () => {
     expect(dates[1]).toContain("2024"); // Date formatted by the pipe
   });
 
-  it("toggles square dots and date placement via the container classes", () => {
+  it("toggles square dots; date sits below by default, `above` opts out", () => {
     const { fixture, host } = render();
     const root = host.querySelector(".tlv")!;
     expect(root.classList.contains("square")).toBe(false);
-    expect(root.classList.contains("date-below")).toBe(false);
+    // Default placement is 'below' → no opt-out class.
+    expect(root.classList.contains("date-above")).toBe(false);
 
     fixture.componentInstance.square.set(true);
-    fixture.componentInstance.datePlacement.set("below");
+    fixture.componentInstance.datePlacement.set("above");
     fixture.detectChanges();
     expect(root.classList.contains("square")).toBe(true);
-    expect(root.classList.contains("date-below")).toBe(true);
+    expect(root.classList.contains("date-above")).toBe(true);
   });
 });
