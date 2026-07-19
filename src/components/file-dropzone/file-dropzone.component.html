@@ -1,0 +1,34 @@
+<div
+  class="dropzone"
+  [class.over]="isDragOver()"
+  [class.busy]="busy()"
+  [class.disabled]="disabled()"
+  role="button"
+  tabindex="0"
+  [attr.aria-disabled]="disabled() || busy()"
+  (click)="openFilePicker()"
+  (keydown.enter)="openFilePicker()"
+  (keydown.space)="openFilePicker(); $event.preventDefault()"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave()"
+  (drop)="onDrop($event)"
+>
+  <sh3-icon name="upload" [size]="22" />
+  @if (busy()) {
+    <span class="label">{{ busyLabel() }}</span>
+  } @else {
+    <span class="label">{{ label() }}</span>
+    @if (hint(); as h) {
+      <small class="hint">{{ h }}</small>
+    }
+  }
+  <input
+    #fileInput
+    type="file"
+    [accept]="accept()"
+    [multiple]="multiple()"
+    [disabled]="disabled() || busy()"
+    hidden
+    (change)="onFilesSelected($event.target)"
+  />
+</div>

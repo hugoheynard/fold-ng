@@ -35,6 +35,7 @@ export type {
 export { Sh3CardComponent } from "./components/card/card.component";
 export { Sh3ContextCardComponent } from "./components/context-card/context-card.component";
 export { Sh3ElementTitleComponent } from "./components/element-title/element-title.component";
+export { Sh3FileDropzoneComponent } from "./components/file-dropzone/file-dropzone.component";
 export { Sh3FieldListComponent } from "./components/field/field-list.component";
 export { Sh3FieldComponent } from "./components/field/field.component";
 export { Sh3LinkComponent } from "./components/link/link.component";
