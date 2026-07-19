@@ -9,7 +9,7 @@ import {
   selector: "gal-element-title-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3ElementTitleComponent],
-  template: `<sh3-page-layout title="element-title">
+  template: `<sh3-page-layout fluid title="element-title">
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">eyebrow</span>

@@ -10,7 +10,7 @@ import {
   selector: "gal-page-section-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3PageSectionComponent, Sh3IconComponent],
-  template: `<sh3-page-layout title="page-section">
+  template: `<sh3-page-layout fluid title="page-section">
     <div class="gal-row gal-row--wide">
       <sh3-page-section surface="transparent" title="Transparent">
         <p class="gal-body">Flat on the page — no surface, no radius.</p>

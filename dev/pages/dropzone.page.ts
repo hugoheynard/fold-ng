@@ -10,6 +10,7 @@ import {
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3FileDropzoneComponent],
   template: `<sh3-page-layout
+    fluid
     title="file dropzone"
     description="sh3-file-dropzone — a form-family affordance (a whole drag/drop + browse target emitting File[]). Drag files on, or click to browse."
   >

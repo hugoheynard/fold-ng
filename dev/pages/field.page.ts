@@ -23,6 +23,7 @@ import {
     Sh3LinkComponent,
   ],
   template: `<sh3-page-layout
+    fluid
     title="field · field-list"
     description="The read-only half of a record — a dl/dt/dd list of label/value pairs. The display counterpart of sh3-input."
   >

@@ -16,7 +16,7 @@ import {
     Sh3StatusBadgeComponent,
     Sh3IconComponent,
   ],
-  template: `<sh3-page-layout title="badge · status · icon">
+  template: `<sh3-page-layout fluid title="badge · status · icon">
     <div class="gal-row">
       @for (v of badgeVariants; track v) {
         <sh3-badge [content]="v" [variant]="v" />

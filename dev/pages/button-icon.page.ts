@@ -9,7 +9,7 @@ import {
   selector: "gal-button-icon-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3ButtonIconComponent],
-  template: `<sh3-page-layout title="button-icon">
+  template: `<sh3-page-layout fluid title="button-icon">
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">tones (md square)</span>

@@ -13,7 +13,7 @@ import { TabPanelComponent } from "../tab-panel.component";
   selector: "gal-tab-nav-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3TabNavComponent, Sh3IconComponent],
-  template: `<sh3-page-layout title="tab-nav">
+  template: `<sh3-page-layout fluid title="tab-nav">
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">underline · compact (default)</span>

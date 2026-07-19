@@ -552,34 +552,13 @@ sh3-app-shell {
 }
 
 /* ── Content: scrollable gallery + docked token editor ──────── */
-.gal-content {
-  height: 100%;
-  display: flex;
-  min-height: 0;
-}
+/* The routed page fills the shell content region and scrolls on its own —
+   never chaining to the document (which would shove the fixed header off). */
 .gal-scroll {
-  flex: 1;
-  min-width: 0;
+  height: 100%;
   overflow-y: auto;
-  /* Keep the scroll here — never chain to the document (which would shove the
-     fixed header off the top when overscrolling past the ends). */
   overscroll-behavior: contain;
-  padding: 0 32px;
-  /* Each section is a screenful — snap gently to its top when paging. */
-  scroll-snap-type: y proximity;
-  scroll-padding-top: 28px;
-}
-
-.gal-sec {
-  /* One "page" per component — at least a full content-screen tall. */
-  min-height: 100%;
-  box-sizing: border-box;
-  padding: 32px 0 40px;
-  scroll-snap-align: start;
-  border-bottom: 1px solid var(--sh3-color-border-subtle);
-}
-.gal-sec:last-child {
-  border-bottom: none;
+  padding: 28px 32px 40px;
 }
 
 .gal-stack {

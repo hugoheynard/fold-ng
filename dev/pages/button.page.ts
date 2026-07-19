@@ -12,7 +12,7 @@ import {
   selector: "gal-button-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3ButtonComponent, Sh3IconComponent],
-  template: `<sh3-page-layout title="button">
+  template: `<sh3-page-layout fluid title="button">
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag">variants (md)</span>

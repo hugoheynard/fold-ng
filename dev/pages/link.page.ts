@@ -6,7 +6,7 @@ import { Sh3LinkComponent, Sh3PageLayoutComponent } from "../../src/index";
   selector: "gal-link-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3LinkComponent],
-  template: `<sh3-page-layout title="link">
+  template: `<sh3-page-layout fluid title="link">
     <div class="gal-row">
       <sh3-link icon="company" trailingIcon="chevron-right"
         >accent + icons</sh3-link

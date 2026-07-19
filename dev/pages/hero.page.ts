@@ -6,7 +6,7 @@ import { Sh3HeroComponent, Sh3PageLayoutComponent } from "../../src/index";
   selector: "gal-hero-page",
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3HeroComponent],
-  template: `<sh3-page-layout title="hero" wide>
+  template: `<sh3-page-layout fluid title="hero">
     @for (surface of heroSurfaces; track surface) {
       <div class="gal-row gal-row--wide">
         @for (accent of heroAccents; track accent) {

@@ -16,6 +16,7 @@ import {
   standalone: true,
   imports: [Sh3PageLayoutComponent, Sh3CardComponent],
   template: `<sh3-page-layout
+    fluid
     [title]="title()"
     [icon]="icon()"
     description="Cette démo est en cours de migration vers sa propre page routée."
