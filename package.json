@@ -47,6 +47,7 @@
     "@angular/core": "^22.0.7",
     "@angular/forms": "^22.0.7",
     "@angular/platform-browser": "^22.0.7",
+    "@angular/router": "^22.0.7",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@eslint/js": "^9.28.0",
     "@sh3pherd/eslint-config": "workspace:*",
