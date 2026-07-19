@@ -4,13 +4,13 @@
      both rails at mobile) via its container queries. -->
   <div class="shell-preview-modes">
     @for (m of shellModes; track m) {
-      <button
-        type="button"
-        [class.is-on]="shellMode() === m"
-        (click)="shellMode.set(m)"
-      >
-        {{ m }}
-      </button>
+    <button
+      type="button"
+      [class.is-on]="shellMode() === m"
+      (click)="shellMode.set(m)"
+    >
+      {{ m }}
+    </button>
     }
     <span class="spm-width">{{ shellPreviewWidth() }}px</span>
     <button
@@ -42,13 +42,13 @@
         <sh3-menu railPrimary tint="primary">
           <div header class="rail-brand">S3</div>
           @for (i of railNav; track i.id) {
-            <button
-              sh3-menu-item
-              [icon]="i.icon"
-              [label]="i.label"
-              [active]="previewNav() === i.id"
-              (click)="previewNav.set(i.id)"
-            ></button>
+          <button
+            sh3-menu-item
+            [icon]="i.icon"
+            [label]="i.label"
+            [active]="previewNav() === i.id"
+            (click)="previewNav.set(i.id)"
+          ></button>
           }
           <button
             footer
@@ -65,20 +65,13 @@
             label="Overview"
             [active]="true"
           ></button>
-          <button
-            sh3-menu-item
-            icon="contracts"
-            label="Contracts"
-          ></button>
+          <button sh3-menu-item icon="contracts" label="Contracts"></button>
           <button sh3-menu-item icon="music" label="Library"></button>
         </sh3-menu>
         <div header class="sp-header">
           <span>Header</span>
           <div class="sp-actions">
-            <button
-              type="button"
-              (click)="openPreviewPanel(sph.service)"
-            >
+            <button type="button" (click)="openPreviewPanel(sph.service)">
               <sh3-icon name="contracts" size="sm" />
               Open panel
             </button>
@@ -106,44 +99,35 @@
     <!-- "code" overlay — a glass sheet over the preview: HTML usage on the
        left, the CSS variables to override on the right. -->
     @if (showCode()) {
-      <div class="code-overlay">
-        <div class="code-overlay-pane">
-          <div class="code-overlay-top">
-            <span class="code-lang">html</span>
-            <button
-              type="button"
-              class="code-copy"
-              (click)="copyShellCode()"
-            >
-              <sh3-icon
-                [name]="copied() ? 'check-circle' : 'copy'"
-                size="sm"
-              />
-              {{ copied() ? "Copied" : "Copy" }}
-            </button>
-          </div>
-          <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
+    <div class="code-overlay">
+      <div class="code-overlay-pane">
+        <div class="code-overlay-top">
+          <span class="code-lang">html</span>
+          <button type="button" class="code-copy" (click)="copyShellCode()">
+            <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
+            {{ copied() ? "Copied" : "Copy" }}
+          </button>
         </div>
-        <div class="code-overlay-pane">
-          <div class="code-overlay-top">
-            <span class="code-lang">css · variables to override</span>
-            <button
-              type="button"
-              class="code-copy"
-              (click)="copyShellTokensCss()"
-            >
-              <sh3-icon
-                [name]="cssCopied() ? 'check-circle' : 'copy'"
-                size="sm"
-              />
-              {{ cssCopied() ? "Copied" : "Copy" }}
-            </button>
-          </div>
-          <pre
-            class="code-pre"
-          ><code>{{ shellTokensCss() }}</code></pre>
-        </div>
+        <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
       </div>
+      <div class="code-overlay-pane">
+        <div class="code-overlay-top">
+          <span class="code-lang">css · variables to override</span>
+          <button
+            type="button"
+            class="code-copy"
+            (click)="copyShellTokensCss()"
+          >
+            <sh3-icon
+              [name]="cssCopied() ? 'check-circle' : 'copy'"
+              size="sm"
+            />
+            {{ cssCopied() ? "Copied" : "Copy" }}
+          </button>
+        </div>
+        <pre class="code-pre"><code>{{ shellTokensCss() }}</code></pre>
+      </div>
+    </div>
     }
   </div>
 
@@ -219,45 +203,43 @@
         subtitle="live sandbox — edit a value to override the preview; semantics preferred"
       >
         @for (group of shellTokens; track group.label) {
-          <div class="tok-group">
-            <span class="ss-label tok-group-label">{{
-              group.label
-            }}</span>
-            @for (t of group.tokens; track t.prop) {
-              <div class="tok-row">
-                @if (t.kind === "color") {
-                  <span
-                    class="tok-swatch"
-                    [style.background]="
+        <div class="tok-group">
+          <span class="ss-label tok-group-label">{{ group.label }}</span>
+          @for (t of group.tokens; track t.prop) {
+          <div class="tok-row">
+            @if (t.kind === "color") {
+            <span
+              class="tok-swatch"
+              [style.background]="
                       shellOverrides()[t.prop] || 'var(' + t.prop + ')'
                     "
-                  ></span>
-                } @else {
-                  <span
-                    class="tok-swatch tok-swatch--radius"
-                    [style.borderRadius]="
+            ></span>
+            } @else {
+            <span
+              class="tok-swatch tok-swatch--radius"
+              [style.borderRadius]="
                       shellOverrides()[t.prop] || 'var(' + t.prop + ')'
                     "
-                  ></span>
-                }
-                <div class="tok-meta">
-                  <code class="tok-name">{{ t.prop }}</code>
-                  <span class="tok-desc">{{ t.desc }}</span>
-                </div>
-                <input
-                  #ov
-                  type="text"
-                  class="tok-input"
-                  [value]="shellOverrides()[t.prop] || ''"
-                  [placeholder]="
+            ></span>
+            }
+            <div class="tok-meta">
+              <code class="tok-name">{{ t.prop }}</code>
+              <span class="tok-desc">{{ t.desc }}</span>
+            </div>
+            <input
+              #ov
+              type="text"
+              class="tok-input"
+              [value]="shellOverrides()[t.prop] || ''"
+              [placeholder]="
                     t.kind === 'color' ? '#7c5bbf' : '12px'
                   "
-                  (input)="setShellOverride(t.prop, ov.value)"
-                  [attr.aria-label]="'Override ' + t.prop"
-                />
-              </div>
-            }
+              (input)="setShellOverride(t.prop, ov.value)"
+              [attr.aria-label]="'Override ' + t.prop"
+            />
           </div>
+          }
+        </div>
         }
         <button
           type="button"
