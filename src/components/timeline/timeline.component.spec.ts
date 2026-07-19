@@ -12,6 +12,8 @@ import {
   template: `<sh3-timeline
     [ariaLabel]="ariaLabel()"
     [nodeTitle]="nodeTitle()"
+    [orientation]="orientation()"
+    [progress]="progress()"
     [nodes]="nodes()"
     (nodeClick)="clicked.set($event)"
   />`,
@@ -19,6 +21,8 @@ import {
 class HostComponent {
   readonly ariaLabel = signal<string | undefined>(undefined);
   readonly nodeTitle = signal("");
+  readonly orientation = signal<"vertical" | "horizontal">("vertical");
+  readonly progress = signal<number | null>(null);
   readonly nodes = signal<readonly Sh3TimelineNode[]>([
     { key: "start", id: null, label: "Start", icon: "contracts" },
     { key: "a1", id: "add_1", label: "Avenant 1", date: null, icon: "edit" },
@@ -77,5 +81,39 @@ describe("Sh3TimelineComponent", () => {
     fixture.detectChanges();
     expect(nodes()[0].getAttribute("title")).toBe(""); // inert
     expect(nodes()[1].getAttribute("title")).toBe("Aller à l’avenant");
+  });
+
+  it("fills the inert anchor by default (done ?? id === null)", () => {
+    const { nodes } = render();
+    expect(nodes()[0].classList.contains("filled")).toBe(true); // anchor
+    expect(nodes()[1].classList.contains("filled")).toBe(false); // clickable
+  });
+
+  it("horizontal: a `done` step drives the fill, non-clickable, with progress line", () => {
+    const { fixture, host, nodes } = render();
+    fixture.componentInstance.orientation.set("horizontal");
+    fixture.componentInstance.progress.set(50);
+    fixture.componentInstance.nodes.set([
+      { key: "s1", id: null, label: "Créé", done: true },
+      { key: "s2", id: null, label: "Actif", done: false },
+    ]);
+    fixture.detectChanges();
+
+    expect(host.querySelector("nav.tlv.h")).not.toBeNull();
+    const fill = host.querySelector<HTMLElement>(".rail-fill");
+    expect(fill?.style.width).toBe("50%");
+    // `done` overrides the inert-anchor rule: done → filled, not-done → not.
+    expect(nodes()[0].classList.contains("filled")).toBe(true);
+    expect(nodes()[1].classList.contains("filled")).toBe(false);
+    // Progress steps are non-clickable regardless of fill.
+    expect(nodes()[0].disabled).toBe(true);
+    expect(nodes()[1].disabled).toBe(true);
+  });
+
+  it("renders no progress line when progress is null", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.orientation.set("horizontal");
+    fixture.detectChanges();
+    expect(host.querySelector(".rail")).toBeNull();
   });
 });

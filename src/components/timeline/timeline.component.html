@@ -1,9 +1,19 @@
-<nav class="tlv" [attr.aria-label]="ariaLabel()">
+<nav
+  class="tlv"
+  [class.h]="orientation() === 'horizontal'"
+  [attr.aria-label]="ariaLabel()"
+>
+  @if (orientation() === "horizontal" && progress() !== null) {
+    <span class="rail" aria-hidden="true">
+      <span class="rail-fill" [style.width.%]="progress()"></span>
+    </span>
+  }
   @for (n of nodes(); track n.key) {
     <button
       type="button"
       class="node"
       [class.inert]="n.id === null"
+      [class.filled]="isFilled(n)"
       [disabled]="n.id === null"
       [title]="n.id === null ? '' : nodeTitle()"
       (click)="onNode(n.id)"

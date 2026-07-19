@@ -7,7 +7,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
 export interface Sh3TimelineNode {
   /** Stable track key. */
   readonly key: string;
-  /** Emitted on click; `null` marks an **inert** (non-clickable, accented) node. */
+  /** Emitted on click; `null` marks a **non-clickable** node. */
   readonly id: string | null;
   /** Primary label. */
   readonly label: string;
@@ -15,13 +15,27 @@ export interface Sh3TimelineNode {
   readonly date?: Date | null;
   /** Optional dot icon. */
   readonly icon?: Sh3IconName;
+  /**
+   * Completion state (progress steppers). When set, it drives the accent
+   * ("filled") dot; when omitted, a non-clickable (`id === null`) node fills as
+   * an origin/anchor. So `done` and the inert-anchor rule are the same accent.
+   */
+  readonly done?: boolean;
 }
 
 /**
- * `<sh3-timeline>` — a vertical, connected timeline: a dot rail on the left, each
- * node showing an optional date + a label. Nodes with a `null`
- * {@link Sh3TimelineNode.id} render inert and accented (an origin/anchor point);
- * the rest are buttons that emit their id on click.
+ * `<sh3-timeline>` — a connected rail of nodes (dot + optional date + label),
+ * in two orientations that share one primitive:
+ *
+ * - `orientation="vertical"` (default) — a **navigable history**: a dot rail on
+ *   the left; clickable nodes emit their id, a `null`-id node is an inert
+ *   accented anchor.
+ * - `orientation="horizontal"` — a **progress stepper**: an optional `progress`
+ *   fill line under the dots; each node's `done` drives its accent. Collapses to
+ *   a vertical list on narrow viewports.
+ *
+ * The accent ("filled") dot is `done ?? (id === null)`, so the inert anchor and a
+ * `done` step are the same rule.
  *
  * **Surface-agnostic** — it renders content only (a labelled `<nav>` of nodes),
  * no card of its own, so the consumer places it inside whatever surface fits.
@@ -35,6 +49,12 @@ export interface Sh3TimelineNode {
  * <sh3-card surface="sunken">
  *   <sh3-timeline ariaLabel="History" [nodes]="nodes()" (nodeClick)="scrollTo($event)" />
  * </sh3-card>
+ * <sh3-timeline
+ *   orientation="horizontal"
+ *   ariaLabel="Signature progress"
+ *   [progress]="pct()"
+ *   [nodes]="steps()"
+ * />
  * ```
  */
 @Component({
@@ -47,13 +67,25 @@ export interface Sh3TimelineNode {
 export class Sh3TimelineComponent {
   /** The ordered nodes to render. */
   readonly nodes = input.required<readonly Sh3TimelineNode[]>();
+  /** Rail direction — vertical history rail vs horizontal progress stepper. */
+  readonly orientation = input<"vertical" | "horizontal">("vertical");
+  /**
+   * Progress-fill width (%) for the horizontal rail. `null` (default) renders no
+   * fill line; ignored in vertical mode.
+   */
+  readonly progress = input<number | null>(null);
   /** Accessible name for the timeline's `<nav>` landmark (screen-reader only). */
   readonly ariaLabel = input<string>();
   /** Tooltip (`title`) on the clickable nodes. */
   readonly nodeTitle = input<string>("");
 
-  /** Emits the clicked node's id (never fires for inert `id === null` nodes). */
+  /** Emits the clicked node's id (never fires for `id === null` nodes). */
   readonly nodeClick = output<string>();
+
+  /** Accent ("filled") dot: an explicit `done`, else the inert-anchor rule. */
+  protected isFilled(node: Sh3TimelineNode): boolean {
+    return node.done ?? node.id === null;
+  }
 
   protected onNode(id: string | null): void {
     if (id !== null) {
