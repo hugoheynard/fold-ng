@@ -3,6 +3,7 @@ import {
   Sh3BadgeComponent,
   Sh3CardComponent,
   Sh3PageLayoutComponent,
+  Sh3PageSectionComponent,
   Sh3SliderComponent,
   Sh3TimelineComponent,
   type Sh3TimelineDatePlacement,
@@ -17,6 +18,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
+    Sh3PageSectionComponent,
     Sh3CardComponent,
     Sh3TimelineComponent,
     Sh3BadgeComponent,

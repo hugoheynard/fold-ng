@@ -7,124 +7,127 @@
     (via <code>:has()</code>). Zero inputs; each track is a CSS var.
   </p>
 
-  <dev-playground [code]="asideLayoutCode()">
-    <div class="np-field" params>
-      <span class="gal-tag">left rail</span>
-      <div class="ss-seg">
-        <button
-          type="button"
-          [class.is-on]="!aslLeft()"
-          (click)="aslLeft.set(false)"
-        >
-          off (2-col)
-        </button>
-        <button
-          type="button"
-          [class.is-on]="aslLeft()"
-          (click)="aslLeft.set(true)"
-        >
-          on (3-col)
-        </button>
+  <sh3-page-section title="Playground" divider>
+    <dev-playground [code]="asideLayoutCode()">
+      <div class="np-field" params>
+        <span class="gal-tag">left rail</span>
+        <div class="ss-seg">
+          <button
+            type="button"
+            [class.is-on]="!aslLeft()"
+            (click)="aslLeft.set(false)"
+          >
+            off (2-col)
+          </button>
+          <button
+            type="button"
+            [class.is-on]="aslLeft()"
+            (click)="aslLeft.set(true)"
+          >
+            on (3-col)
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="np-field" params>
-      <span class="gal-tag">columns</span>
-      <div class="ss-seg">
-        <button
-          type="button"
-          [class.is-on]="!aslEqual()"
-          (click)="aslEqual.set(false)"
-        >
-          fixed rails
-        </button>
-        <button
-          type="button"
-          [class.is-on]="aslEqual()"
-          (click)="aslEqual.set(true)"
-        >
-          equal
-        </button>
+      <div class="np-field" params>
+        <span class="gal-tag">columns</span>
+        <div class="ss-seg">
+          <button
+            type="button"
+            [class.is-on]="!aslEqual()"
+            (click)="aslEqual.set(false)"
+          >
+            fixed rails
+          </button>
+          <button
+            type="button"
+            [class.is-on]="aslEqual()"
+            (click)="aslEqual.set(true)"
+          >
+            equal
+          </button>
+        </div>
       </div>
-    </div>
-    <sh3-slider
-      params
-      label="offset"
-      [min]="0"
-      [max]="40"
-      [step]="2"
-      [valueText]="aslOffset() + 'px'"
-      [(value)]="aslOffset"
-    />
-    <sh3-slider
-      params
-      label="zoom"
-      [min]="25"
-      [max]="100"
-      [step]="5"
-      [valueText]="aslZoom() + '%'"
-      [(value)]="aslZoom"
-    />
-    @if (aslLeft() && !aslEqual()) {
-    <sh3-slider
-      params
-      label="asideLeft width"
-      [min]="0"
-      [max]="360"
-      [step]="10"
-      [valueText]="aslRailWidth() + 'px'"
-      [(value)]="aslRailWidth"
-    />
-    } @if (!aslEqual()) {
-    <sh3-slider
-      params
-      label="asideRight width"
-      [min]="0"
-      [max]="400"
-      [step]="10"
-      [valueText]="aslSideWidth() + 'px'"
-      [(value)]="aslSideWidth"
-    />
-    }
+      <sh3-slider
+        params
+        label="offset"
+        [min]="0"
+        [max]="40"
+        [step]="2"
+        [valueText]="aslOffset() + 'px'"
+        [(value)]="aslOffset"
+      />
+      <sh3-slider
+        params
+        label="zoom"
+        [min]="25"
+        [max]="100"
+        [step]="5"
+        [valueText]="aslZoom() + '%'"
+        [(value)]="aslZoom"
+      />
+      @if (aslLeft() && !aslEqual()) {
+      <sh3-slider
+        params
+        label="asideLeft width"
+        [min]="0"
+        [max]="360"
+        [step]="10"
+        [valueText]="aslRailWidth() + 'px'"
+        [(value)]="aslRailWidth"
+      />
+      } @if (!aslEqual()) {
+      <sh3-slider
+        params
+        label="asideRight width"
+        [min]="0"
+        [max]="400"
+        [step]="10"
+        [valueText]="aslSideWidth() + 'px'"
+        [(value)]="aslSideWidth"
+      />
+      }
 
-    <!-- A real desktop-width layout, only zoomed down (CSS `zoom` keeps sticky
+      <!-- A real desktop-width layout, only zoomed down (CSS `zoom` keeps sticky
          working + the viewport media queries never fire → no responsive fold). -->
-    <div class="asl-window">
-      <div class="asl-window-inner" [style.zoom]="aslZoom() / 100">
-        <sh3-aside-layout
-          class="asl-real"
-          [class.is-equal]="aslEqual()"
-          [topOffset]="aslOffset()"
-          [style.--sh3-aside-layout-rail-width]="
+      <div class="asl-window">
+        <div class="asl-window-inner" [style.zoom]="aslZoom() / 100">
+          <sh3-aside-layout
+            class="asl-real"
+            [class.is-equal]="aslEqual()"
+            [topOffset]="aslOffset()"
+            [style.--sh3-aside-layout-rail-width]="
             aslEqual() ? null : aslRailWidth() + 'px'
           "
-          [style.--sh3-aside-layout-side-width]="
+            [style.--sh3-aside-layout-side-width]="
             aslEqual() ? null : aslSideWidth() + 'px'
           "
-        >
-          @if (aslLeft()) {
-          <sh3-card asideLeft>aside left</sh3-card>
-          }
-          <sh3-page-section surface="card" title="Section one">
-            <p class="gal-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum.
-            </p>
-          </sh3-page-section>
-          <sh3-page-section surface="card" title="Section two">
-            <p class="gal-body">
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit anim id est laborum. Sed ut perspiciatis
-              unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
-              veritatis et quasi architecto beatae vitae dicta sunt.
-            </p>
-          </sh3-page-section>
-          <sh3-card asideRight>aside right</sh3-card>
-        </sh3-aside-layout>
+          >
+            @if (aslLeft()) {
+            <sh3-card asideLeft>aside left</sh3-card>
+            }
+            <sh3-page-section surface="card" title="Section one">
+              <p class="gal-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum.
+              </p>
+            </sh3-page-section>
+            <sh3-page-section surface="card" title="Section two">
+              <p class="gal-body">
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                qui officia deserunt mollit anim id est laborum. Sed ut
+                perspiciatis unde omnis iste natus error sit voluptatem
+                accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+                quae ab illo inventore veritatis et quasi architecto beatae
+                vitae dicta sunt.
+              </p>
+            </sh3-page-section>
+            <sh3-card asideRight>aside right</sh3-card>
+          </sh3-aside-layout>
+        </div>
       </div>
-    </div>
-  </dev-playground>
+    </dev-playground>
+  </sh3-page-section>
 </sh3-page-layout>

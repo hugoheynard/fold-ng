@@ -7,6 +7,7 @@ import {
   type Sh3NumberSpinner,
   type Sh3NumberControls,
   Sh3PageLayoutComponent,
+  Sh3PageSectionComponent,
   Sh3SearchComponent,
   Sh3SelectComponent,
   Sh3SliderComponent,
@@ -22,6 +23,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
+    Sh3PageSectionComponent,
     Sh3AsideLayoutComponent,
     Sh3TabNavComponent,
     Sh3InputComponent,
