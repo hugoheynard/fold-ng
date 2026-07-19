@@ -406,6 +406,34 @@ avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
     the metric to watch — the next 2–3 additions are the signal to reach for the
     rail-primitive split or a richer template context rather than more fields.
 
+- **`sh3-toast` — library-grade gaps (judged 2026-07-19).** Verdict : archi +
+  a11y de base + cycle de vie = top décile ; ce qui le sépare de Sonner / Radix /
+  React-Aria = 4 manques UX, classés. Déjà **excellent** (à ne pas casser) : SRP
+  net (toast présentationnel qui possède son propre timer via `effect(onCleanup)` /
+  container = stacking / service = queue / config = policy), a11y (`role`+
+  `aria-live` error=assertive vs polite, close explicite `aria-label`, icônes
+  `aria-hidden`), policy de durée (`durationByVariant→default→baked`, `??`
+  préserve `0=sticky`, **error sticky par défaut**), `animate.leave` +
+  `prefers-reduced-motion`, `@Service()` (idiome Angular 22, vérifié réel).
+  À faire, dans l'ordre :
+  - [ ] **Pause au survol/focus (LE gros manque, WCAG 2.2.1 Timing Adjustable).**
+        Le timer tourne quoi qu'il arrive → un toast disparaît pendant qu'on le lit
+        ou qu'on vise sa croix. Hover **et** focus doivent geler `duration`, reprise
+        au leave. C'est l'affordance n°1 (Sonner/Radix/React-Aria l'ont toutes).
+  - [ ] **Cap de stack + dedup.** Queue non bornée → une boucle/tempête de retries
+        empile N snackbars. Ajouter `maxVisible` (collapse « +N ») + dédup des
+        messages identiques. Cohérent avec la barre qualité burst→audit→durcissement.
+  - [ ] **`show()` retourne l'id (ou un handle).** Aujourd'hui l'id est généré puis
+        jeté côté appelant → impossible de dismiss un toast précis ni de le mettre à
+        jour (« Upload… » → « Uploadé »). Retourner l'id = cheap, très utile.
+  - [ ] **Id via compteur, pas `crypto.randomUUID()`.** Pas de risque hydratation
+        (créé côté client), mais `randomUUID` **throw en contexte non-sécurisé**
+        (http non-localhost), hasard crypto inutile, et **incohérent avec
+        `Sh3IdService`** (compteur monotone fait pour bannir `randomUUID`). `#seq++`.
+  - [ ] Secondaires (scope à assumer) : input `position` (figé bottom-right
+        aujourd'hui) ; slot **action** (« Annuler »/« Réessayer ») ; hotkey pour
+        focaliser la région toasts (F6, cf. Radix/Sonner).
+
 ## Hardcore-review follow-ups (2026-07) — see `dev-rules.md` ledger
 
 Done in the review pass: elevation tokens + the component-usage colour guard
