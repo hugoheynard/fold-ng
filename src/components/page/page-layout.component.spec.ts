@@ -11,6 +11,7 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
     [icon]="icon()"
     [description]="description()"
     [wide]="wide()"
+    [fluid]="fluid()"
   >
     <button pageActions class="act">Export</button>
     <div class="body-item">Body</div>
@@ -21,6 +22,7 @@ class HostComponent {
   readonly icon = signal<"grid" | undefined>(undefined);
   readonly description = signal<string | undefined>("Abonnement");
   readonly wide = signal(false);
+  readonly fluid = signal(false);
 }
 
 function render() {
@@ -62,6 +64,15 @@ describe("Sh3PageLayoutComponent", () => {
     fixture.componentInstance.icon.set("grid");
     fixture.detectChanges();
     expect(root.querySelector(".page-title .page-icon")).not.toBeNull();
+  });
+
+  it("drops the width cap with [fluid] (is-fluid)", () => {
+    const { fixture, root } = render();
+    const host = root.querySelector("sh3-page-layout");
+    expect(host?.classList.contains("is-fluid")).toBe(false);
+    fixture.componentInstance.fluid.set(true);
+    fixture.detectChanges();
+    expect(host?.classList.contains("is-fluid")).toBe(true);
   });
 
   it("adds the wide modifier when [wide] is set", () => {

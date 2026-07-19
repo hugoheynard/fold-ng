@@ -1,4 +1,4 @@
-import { Component, input } from "@angular/core";
+import { booleanAttribute, Component, input } from "@angular/core";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
 
@@ -25,7 +25,10 @@ import type { Sh3IconName } from "../icon/icon.registry";
   selector: "sh3-page-layout",
   standalone: true,
   imports: [Sh3IconComponent],
-  host: { "[class.is-wide]": "wide()" },
+  host: {
+    "[class.is-wide]": "wide()",
+    "[class.is-fluid]": "fluid()",
+  },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
 })
@@ -38,4 +41,6 @@ export class Sh3PageLayoutComponent {
   readonly description = input<string>();
   /** Widen the column to 940px (two-column pages). */
   readonly wide = input(false);
+  /** Drop the max-width cap entirely — the page fills its container. */
+  readonly fluid = input(false, { transform: booleanAttribute });
 }

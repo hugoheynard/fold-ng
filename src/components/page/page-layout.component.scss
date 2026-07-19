@@ -8,6 +8,10 @@
 :host(.is-wide) {
   max-width: 940px;
 }
+/* Fill the container — no readable-width cap (dashboards, galleries). */
+:host(.is-fluid) {
+  max-width: none;
+}
 .page-head {
   display: flex;
   align-items: flex-start;
