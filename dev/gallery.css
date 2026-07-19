@@ -1015,11 +1015,13 @@ sh3-app-shell {
 }
 
 /* ── sh3-aside-layout demo ────────────────────────────────── */
-/* A real window scaled to fit: the layout renders at its real width (desktop
-   1120 > the 1040 fold threshold → 3 cols; mobile 380 → 1 col) and is scaled
-   down with CSS `zoom`. `zoom` scales only the paint — layout, the container-query
-   fold and `position: sticky` all still resolve at the real local width, so the
-   fold stays honest and the rails stick as the window scrolls. */
+/* A real window auto-scaled to fit: the layout renders at its real width (desktop
+   1120 > the 1040 fold threshold → 3 cols; mobile 380 → 1 col) and is scaled down
+   with CSS `zoom` to exactly the window width (a ResizeObserver feeds the scale),
+   so it fills without horizontal scroll. `zoom` scales only the paint — layout,
+   the container-query fold and `position: sticky` all still resolve at the real
+   local width, so the fold stays honest and the rails stick as the (taller than
+   the window) centre column scrolls. */
 .asl-window {
   height: 340px;
   overflow: auto;
@@ -1029,7 +1031,7 @@ sh3-app-shell {
   background: var(--sh3-color-bg-page);
 }
 .asl-window-inner {
-  /* width (desktop 1120 / mobile 380) + zoom are bound inline from the params. */
+  /* width (desktop 1120 / mobile 380) + auto-fit zoom are bound inline. */
 }
 .asl-real {
   --sh3-aside-layout-max: none;
