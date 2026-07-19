@@ -1850,6 +1850,44 @@
                   Last clicked id: “{{ tlpClicked() ?? "—" }}”
                 </p>
               }
+              <div class="np-field" params>
+                <span class="gal-tag">dot shape</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="!tlpSquare()"
+                    (click)="tlpSquare.set(false)"
+                  >
+                    round
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="tlpSquare()"
+                    (click)="tlpSquare.set(true)"
+                  >
+                    square
+                  </button>
+                </div>
+              </div>
+              <div class="np-field" params>
+                <span class="gal-tag">datePlacement</span>
+                <div class="ss-seg">
+                  <button
+                    type="button"
+                    [class.is-on]="tlpDatePlacement() === 'above'"
+                    (click)="tlpDatePlacement.set('above')"
+                  >
+                    above
+                  </button>
+                  <button
+                    type="button"
+                    [class.is-on]="tlpDatePlacement() === 'below'"
+                    (click)="tlpDatePlacement.set('below')"
+                  >
+                    below
+                  </button>
+                </div>
+              </div>
 
               <sh3-card surface="sunken" style="padding: 22px 18px">
                 <sh3-timeline
@@ -1860,6 +1898,8 @@
                       : 'Contract history'
                   "
                   nodeTitle="Go to item"
+                  [square]="tlpSquare()"
+                  [datePlacement]="tlpDatePlacement()"
                   [progress]="
                     tlpOrientation() === 'horizontal' ? tlpProgress() : null
                   "

@@ -882,6 +882,8 @@ export class GalleryComponent {
   );
   /** Completed step count for the horizontal stepper (drives `done` + fill). */
   protected readonly tlpDone = signal(2);
+  protected readonly tlpSquare = signal(false);
+  protected readonly tlpDatePlacement = signal<"above" | "below">("above");
   protected readonly tlpClicked = signal<string | null>(null);
   private readonly TLP_STEPS = [
     "Created",
@@ -923,6 +925,12 @@ export class GalleryComponent {
       lines.push('  ariaLabel="Contract history"');
       lines.push('  nodeTitle="Go to item"');
       lines.push('  (nodeClick)="onNode($event)"');
+    }
+    if (this.tlpSquare()) {
+      lines.push("  square");
+    }
+    if (this.tlpDatePlacement() !== "above") {
+      lines.push('  datePlacement="below"');
     }
     lines.push('  [nodes]="nodes"', "/>");
     return lines.join("\n");
