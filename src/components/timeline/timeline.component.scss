@@ -36,7 +36,7 @@
   transition: background var(--sh3-motion-fast);
 }
 
-.node[disabled] {
+.node.inert {
   cursor: default;
 }
 

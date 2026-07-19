@@ -36,30 +36,34 @@ function render() {
   const host = fixture.nativeElement.querySelector(
     "sh3-timeline",
   ) as HTMLElement;
-  const nodes = (): HTMLButtonElement[] =>
+  /** Every node element (buttons + presentational divs). */
+  const nodeEls = (): HTMLElement[] =>
+    Array.from(host.querySelectorAll(".node"));
+  /** Only the navigable nodes (rendered as buttons). */
+  const buttons = (): HTMLButtonElement[] =>
     Array.from(host.querySelectorAll("button.node"));
-  return { fixture, host, nodes };
+  return { fixture, host, nodeEls, buttons };
 }
 
 describe("Sh3TimelineComponent", () => {
-  it("renders one node button per node", () => {
-    const { nodes } = render();
-    expect(nodes()).toHaveLength(2);
-    expect(nodes()[1].textContent).toContain("Avenant 1");
+  it("renders one node per entry; only clickable ones are <button>", () => {
+    const { nodeEls, buttons } = render();
+    expect(nodeEls()).toHaveLength(2);
+    expect(buttons()).toHaveLength(1); // only the addendum is navigable
+    expect(buttons()[0].textContent).toContain("Avenant 1");
   });
 
-  it("renders inert (id === null) nodes as disabled, the rest enabled", () => {
-    const { nodes } = render();
-    expect(nodes()[0].disabled).toBe(true); // start
-    expect(nodes()[0].classList.contains("inert")).toBe(true);
-    expect(nodes()[1].disabled).toBe(false);
+  it("renders an inert (id === null) node as presentational, not a button", () => {
+    const { nodeEls, buttons } = render();
+    expect(nodeEls()[0].tagName).toBe("DIV"); // the anchor
+    expect(nodeEls()[0].classList.contains("inert")).toBe(true);
+    expect(buttons()[0].tagName).toBe("BUTTON"); // the addendum
+    expect(buttons()[0].classList.contains("inert")).toBe(false);
   });
 
-  it("emits the id on click, never for an inert node", () => {
-    const { fixture, nodes } = render();
-    nodes()[0].click(); // inert
-    expect(fixture.componentInstance.clicked()).toBeNull();
-    nodes()[1].click();
+  it("emits the id on click of a navigable node", () => {
+    const { fixture, buttons } = render();
+    buttons()[0].click();
     expect(fixture.componentInstance.clicked()).toBe("add_1");
   });
 
@@ -76,21 +80,21 @@ describe("Sh3TimelineComponent", () => {
   });
 
   it("puts the nodeTitle on clickable nodes only", () => {
-    const { fixture, nodes } = render();
+    const { fixture, nodeEls, buttons } = render();
     fixture.componentInstance.nodeTitle.set("Aller à l’avenant");
     fixture.detectChanges();
-    expect(nodes()[0].getAttribute("title")).toBe(""); // inert
-    expect(nodes()[1].getAttribute("title")).toBe("Aller à l’avenant");
+    expect(nodeEls()[0].getAttribute("title")).toBeNull(); // inert div
+    expect(buttons()[0].getAttribute("title")).toBe("Aller à l’avenant");
   });
 
   it("fills the inert anchor by default (done ?? id === null)", () => {
-    const { nodes } = render();
-    expect(nodes()[0].classList.contains("filled")).toBe(true); // anchor
-    expect(nodes()[1].classList.contains("filled")).toBe(false); // clickable
+    const { nodeEls, buttons } = render();
+    expect(nodeEls()[0].classList.contains("filled")).toBe(true); // anchor
+    expect(buttons()[0].classList.contains("filled")).toBe(false); // clickable
   });
 
-  it("horizontal: a `done` step drives the fill, non-clickable, with progress line", () => {
-    const { fixture, host, nodes } = render();
+  it("presentational timeline (no navigable node) is a role=group, not a nav, with no buttons", () => {
+    const { fixture, host, nodeEls, buttons } = render();
     fixture.componentInstance.orientation.set("horizontal");
     fixture.componentInstance.progress.set(50);
     fixture.componentInstance.nodes.set([
@@ -99,15 +103,17 @@ describe("Sh3TimelineComponent", () => {
     ]);
     fixture.detectChanges();
 
-    expect(host.querySelector("nav.tlv.h")).not.toBeNull();
+    // Not a navigation landmark — a labelled group of status items.
+    expect(host.querySelector("nav")).toBeNull();
+    const group = host.querySelector('[role="group"].tlv.h');
+    expect(group).not.toBeNull();
+    expect(buttons()).toHaveLength(0); // pure status, no button semantics
+
     const fill = host.querySelector<HTMLElement>(".rail-fill");
     expect(fill?.style.width).toBe("50%");
     // `done` overrides the inert-anchor rule: done → filled, not-done → not.
-    expect(nodes()[0].classList.contains("filled")).toBe(true);
-    expect(nodes()[1].classList.contains("filled")).toBe(false);
-    // Progress steps are non-clickable regardless of fill.
-    expect(nodes()[0].disabled).toBe(true);
-    expect(nodes()[1].disabled).toBe(true);
+    expect(nodeEls()[0].classList.contains("filled")).toBe(true);
+    expect(nodeEls()[1].classList.contains("filled")).toBe(false);
   });
 
   it("renders no progress line when progress is null", () => {

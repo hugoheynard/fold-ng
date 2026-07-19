@@ -1,34 +1,65 @@
-<nav
-  class="tlv"
-  [class.h]="orientation() === 'horizontal'"
-  [attr.aria-label]="ariaLabel()"
->
+<!-- Shared inner content of a node (dot + date + label). -->
+<ng-template #dot let-n>
+  <span class="dot">
+    @if (n.icon; as ic) {
+      <sh3-icon [name]="ic" [size]="11" />
+    }
+  </span>
+  <span class="txt">
+    @if (n.date; as d) {
+      <span class="date">{{ d | date: "mediumDate" }}</span>
+    }
+    <span class="nlabel">{{ n.label }}</span>
+  </span>
+</ng-template>
+
+<!-- The rail (optional progress fill) + the nodes — reused in both containers. -->
+<ng-template #body>
   @if (orientation() === "horizontal" && progress() !== null) {
     <span class="rail" aria-hidden="true">
       <span class="rail-fill" [style.width.%]="progress()"></span>
     </span>
   }
   @for (n of nodes(); track n.key) {
-    <button
-      type="button"
-      class="node"
-      [class.inert]="n.id === null"
-      [class.filled]="isFilled(n)"
-      [disabled]="n.id === null"
-      [title]="n.id === null ? '' : nodeTitle()"
-      (click)="onNode(n.id)"
-    >
-      <span class="dot">
-        @if (n.icon; as ic) {
-          <sh3-icon [name]="ic" [size]="11" />
-        }
-      </span>
-      <span class="txt">
-        @if (n.date; as d) {
-          <span class="date">{{ d | date: "mediumDate" }}</span>
-        }
-        <span class="nlabel">{{ n.label }}</span>
-      </span>
-    </button>
+    @if (n.id !== null) {
+      <button
+        type="button"
+        class="node"
+        [class.filled]="isFilled(n)"
+        [title]="nodeTitle()"
+        (click)="onNode(n.id)"
+      >
+        <ng-container
+          [ngTemplateOutlet]="dot"
+          [ngTemplateOutletContext]="{ $implicit: n }"
+        />
+      </button>
+    } @else {
+      <div class="node inert" [class.filled]="isFilled(n)">
+        <ng-container
+          [ngTemplateOutlet]="dot"
+          [ngTemplateOutletContext]="{ $implicit: n }"
+        />
+      </div>
+    }
   }
-</nav>
+</ng-template>
+
+@if (interactive()) {
+  <nav
+    class="tlv"
+    [class.h]="orientation() === 'horizontal'"
+    [attr.aria-label]="ariaLabel()"
+  >
+    <ng-container [ngTemplateOutlet]="body" />
+  </nav>
+} @else {
+  <div
+    class="tlv"
+    role="group"
+    [class.h]="orientation() === 'horizontal'"
+    [attr.aria-label]="ariaLabel()"
+  >
+    <ng-container [ngTemplateOutlet]="body" />
+  </div>
+}

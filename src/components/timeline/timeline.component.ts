@@ -1,5 +1,5 @@
-import { Component, input, output } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import { Component, computed, input, output } from "@angular/core";
+import { DatePipe, NgTemplateOutlet } from "@angular/common";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
 
@@ -34,6 +34,13 @@ export interface Sh3TimelineNode {
  *   fill line under the dots; each node's `done` drives its accent. Collapses to
  *   a vertical list on narrow viewports.
  *
+ * Interactivity is per node, not per component: a node with an `id` renders as a
+ * `<button>` (navigable); an `id === null` node renders as a plain presentational
+ * element (never a disabled button — so a purely-presentational timeline, e.g. a
+ * signature stepper, carries no button semantics). The container is a `<nav>`
+ * landmark only when at least one node is navigable; otherwise a labelled
+ * `role="group"`.
+ *
  * The accent ("filled") dot is `done ?? (id === null)`, so the inert anchor and a
  * `done` step are the same rule.
  *
@@ -60,7 +67,7 @@ export interface Sh3TimelineNode {
 @Component({
   selector: "sh3-timeline",
   standalone: true,
-  imports: [DatePipe, Sh3IconComponent],
+  imports: [DatePipe, NgTemplateOutlet, Sh3IconComponent],
   templateUrl: "./timeline.component.html",
   styleUrl: "./timeline.component.scss",
 })
@@ -81,6 +88,11 @@ export class Sh3TimelineComponent {
 
   /** Emits the clicked node's id (never fires for `id === null` nodes). */
   readonly nodeClick = output<string>();
+
+  /** True when any node is navigable — the container is a `<nav>` only then. */
+  protected readonly interactive = computed(() =>
+    this.nodes().some((n) => n.id !== null),
+  );
 
   /** Accent ("filled") dot: an explicit `done`, else the inert-anchor rule. */
   protected isFilled(node: Sh3TimelineNode): boolean {
