@@ -1015,10 +1015,10 @@ sh3-app-shell {
 }
 
 /* ── sh3-aside-layout demo ────────────────────────────────── */
-/* A scaled "browser window": the layout renders at a real desktop width, then
-   the inner is scaled with CSS `zoom` (not transform) so `position: sticky`
-   keeps working and the viewport media queries never fire → real proportions,
-   just smaller, no responsive fold. The window scrolls (rails stick). */
+/* A real scrollable window: the layout renders at real pixel sizes and folds on
+   its own width (container queries), so mobile truly collapses to one column and
+   desktop shows all three, scrolling if it overflows. The window scrolls (rails
+   stick). */
 .asl-window {
   height: 340px;
   overflow: auto;
@@ -1028,7 +1028,7 @@ sh3-app-shell {
   background: var(--sh3-color-bg-page);
 }
 .asl-window-inner {
-  /* width (desktop 1000 / mobile 380) + zoom are bound inline from the params. */
+  /* width (desktop 1120 / mobile 380) is bound inline from the viewport switch. */
 }
 .asl-real {
   --sh3-aside-layout-max: none;

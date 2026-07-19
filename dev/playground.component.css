@@ -67,6 +67,18 @@
   min-width: 180px;
   background: var(--sh3-color-surface-card);
 }
+/* preview header can host centered actions (e.g. a viewport switch) */
+.pg-preview .pg-head {
+  position: relative;
+}
+.pg-head-actions {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+}
 .pg-preview-body {
   display: flex;
   flex-direction: column;

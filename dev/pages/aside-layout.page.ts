@@ -30,9 +30,7 @@ export default class AsideLayoutPage {
   /** asideLeft / asideRight rail widths (real px) — slide to 0 or wide to see limits. */
   protected readonly aslRailWidth = signal(220);
   protected readonly aslSideWidth = signal(300);
-  /** Window zoom (%) — the layout renders at a real width, scaled down to fit. */
-  protected readonly aslZoom = signal(40);
-  /** Preview viewport: desktop (1000px, 3 cols) or mobile (380px, folded) — the
+  /** Preview viewport: desktop (1120px, 3 cols) or mobile (380px, folded) — the
    *  layout folds on its own width now (container queries), so this really folds. */
   protected readonly aslMode = signal<"desktop" | "mobile">("desktop");
 
