@@ -8,6 +8,7 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
   imports: [Sh3PageLayoutComponent],
   template: `<sh3-page-layout
     [title]="title()"
+    [icon]="icon()"
     [description]="description()"
     [wide]="wide()"
   >
@@ -17,6 +18,7 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
 })
 class HostComponent {
   readonly title = signal<string | undefined>("Facturation");
+  readonly icon = signal<"grid" | undefined>(undefined);
   readonly description = signal<string | undefined>("Abonnement");
   readonly wide = signal(false);
 }
@@ -52,6 +54,14 @@ describe("Sh3PageLayoutComponent", () => {
     expect(root.querySelector(".page-head")).toBeNull();
     // Body still renders.
     expect(root.querySelector(".page-body .body-item")).not.toBeNull();
+  });
+
+  it("renders a leading icon beside the title when [icon] is set", () => {
+    const { fixture, root } = render();
+    expect(root.querySelector(".page-title .page-icon")).toBeNull();
+    fixture.componentInstance.icon.set("grid");
+    fixture.detectChanges();
+    expect(root.querySelector(".page-title .page-icon")).not.toBeNull();
   });
 
   it("adds the wide modifier when [wide] is set", () => {

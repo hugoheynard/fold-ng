@@ -2,7 +2,12 @@
   <header class="page-head">
     <div class="page-head-text">
       @if (title()) {
-        <h1 class="page-title">{{ title() }}</h1>
+        <h1 class="page-title">
+          @if (icon(); as ic) {
+            <sh3-icon class="page-icon" [name]="ic" [size]="22" />
+          }
+          <span>{{ title() }}</span>
+        </h1>
       }
       @if (description()) {
         <p class="page-desc">{{ description() }}</p>
