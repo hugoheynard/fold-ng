@@ -22,26 +22,17 @@ import {
   Sh3SliderComponent,
   Sh3TabNavComponent,
   type Sh3TabNavItem,
-  type Sh3RadiusToken,
-  type Sh3SemanticColorToken,
-  sh3ColorProperty,
   Sh3PaletteRegistry,
   type Sh3AutoPaletteName,
 } from "../../src/index";
-
-/** A design token a page exposes for overriding — its full custom-property name
- *  is derived from the typed catalog, so a renamed/removed token is a compile
- *  error here (the list can't silently go stale). */
-type PageTokenKind = "color" | "radius";
-interface PageToken {
-  readonly prop: string;
-  readonly desc: string;
-  readonly kind: PageTokenKind;
-}
-interface PageTokenGroup {
-  readonly label: string;
-  readonly tokens: readonly PageToken[];
-}
+import {
+  applyOverrides,
+  colorToken,
+  overrideCss,
+  radiusToken,
+  withOverride,
+  type PageTokenGroup,
+} from "../token-sandbox";
 
 /** A clickable avatar demo — its config drives both the rendered vignette and
  *  the markup shown in the code panel when you click it. */
@@ -335,70 +326,4 @@ function detailDemoCode(d: DetailDemo): string {
     d.image ? `[imageUrl]="logoUrl"` : "",
   ].filter(Boolean);
   return `<sh3-avatar-detail ${attrs.join(" ")} />`;
-}
-
-/** A colour token → a page token. The id is typed against the catalog, so a
- *  renamed/removed colour is a compile error (the list can't go stale). */
-function colorToken(token: Sh3SemanticColorToken, desc: string): PageToken {
-  return { prop: sh3ColorProperty(token), desc, kind: "color" };
-}
-
-/** A radius token → a page token (typed against the catalog, same as above). */
-function radiusToken(token: Sh3RadiusToken, desc: string): PageToken {
-  return { prop: `--sh3-radius-${token}`, desc, kind: "radius" };
-}
-
-/** Set (or, for a blank value, clear) one override — returns a new map. */
-function withOverride(
-  map: Record<string, string>,
-  prop: string,
-  value: string,
-): Record<string, string> {
-  const next = { ...map };
-  const trimmed = value.trim();
-  if (trimmed) {
-    next[prop] = trimmed;
-  } else {
-    delete next[prop];
-  }
-  return next;
-}
-
-/** The CSS block a user would paste to apply their overrides. */
-function overrideCss(
-  selector: string,
-  overrides: Record<string, string>,
-): string {
-  const entries = Object.entries(overrides);
-  if (entries.length === 0) {
-    return "/* adjust a token on the left to see the CSS here */";
-  }
-  const lines = [`${selector} {`];
-  for (const [prop, value] of entries) {
-    lines.push(`  ${prop}: ${value};`);
-  }
-  lines.push("}");
-  return lines.join("\n");
-}
-
-/** Write the current overrides onto `el` — cleared tokens are removed so the
- *  element falls back to the theme. A DOM write → call from an effect. */
-function applyOverrides(
-  el: HTMLElement | undefined,
-  groups: readonly PageTokenGroup[],
-  overrides: Record<string, string>,
-): void {
-  if (!el) {
-    return;
-  }
-  for (const group of groups) {
-    for (const token of group.tokens) {
-      const value = overrides[token.prop];
-      if (value) {
-        el.style.setProperty(token.prop, value);
-      } else {
-        el.style.removeProperty(token.prop);
-      }
-    }
-  }
 }
