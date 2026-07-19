@@ -1782,6 +1782,29 @@
         }
       </section>
 
+      <!-- ── sh3-timeline — surface-agnostic vertical chronology ──────── -->
+      <section id="timeline" class="gal-sec">
+        <sh3-page-section
+          title="timeline"
+          description="sh3-timeline — a surface-agnostic vertical chronology: a dot rail of nodes (optional date + label), inert accented nodes when id is null, the rest emit their id on click. It renders content only (a labelled <nav>) — the consumer supplies the surface, so it's shown here inside a sunken sh3-card."
+        >
+          <div class="gal-row gal-row--wide">
+            <div class="gal-cell" style="max-width: 320px">
+              <span class="gal-tag">inside a card · click a node</span>
+              <sh3-card surface="sunken" style="padding: 18px">
+                <sh3-timeline
+                  ariaLabel="Contract history"
+                  nodeTitle="Go to item"
+                  [nodes]="tlNodes"
+                  (nodeClick)="tlClicked.set($event)"
+                />
+              </sh3-card>
+              <p class="doc-p">Last clicked id: “{{ tlClicked() ?? "—" }}”</p>
+            </div>
+          </div>
+        </sh3-page-section>
+      </section>
+
       <!-- ── sh3-toast — three sub-pages behind a vertical tab-nav ────── -->
       <section id="toast" class="gal-sec">
         <sh3-page-section

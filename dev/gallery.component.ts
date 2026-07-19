@@ -42,6 +42,8 @@ import {
   Sh3SearchComponent,
   Sh3SelectComponent,
   Sh3SliderComponent,
+  Sh3TimelineComponent,
+  type Sh3TimelineNode,
   Sh3LinkComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -173,6 +175,7 @@ interface NavGroup {
     Sh3SearchComponent,
     Sh3SelectComponent,
     Sh3SliderComponent,
+    Sh3TimelineComponent,
     FormField,
     DevPlaygroundComponent,
     Sh3ChoiceRowComponent,
@@ -754,6 +757,12 @@ export class GalleryComponent {
         },
         { id: "badges", label: "badge · status · icon" },
         { id: "avatar", label: "avatar", icon: "team" },
+        {
+          id: "timeline",
+          label: "timeline",
+          badge: "new",
+          badgeTone: "info",
+        },
       ],
     },
     {
@@ -826,6 +835,32 @@ export class GalleryComponent {
   ];
   protected readonly inputTab = signal("text");
   protected readonly searchTerm = signal("");
+
+  /* ── timeline demo ───────────────────────────────────────────────────── */
+  protected readonly tlClicked = signal<string | null>(null);
+  protected readonly tlNodes: readonly Sh3TimelineNode[] = [
+    {
+      key: "start",
+      id: null,
+      label: "Contract signed",
+      date: new Date("2024-01-15"),
+      icon: "contracts",
+    },
+    {
+      key: "a1",
+      id: "a1",
+      label: "Salary raise +6%",
+      date: new Date("2024-06-01"),
+      icon: "edit",
+    },
+    {
+      key: "a2",
+      id: "a2",
+      label: "Extended to full-time",
+      date: new Date("2024-11-20"),
+      icon: "edit",
+    },
+  ];
 
   /* ── file dropzone demo ──────────────────────────────────────────────── */
   protected readonly dzFiles = signal<readonly string[]>([]);
