@@ -1786,11 +1786,11 @@
       <section id="timeline" class="gal-sec">
         <sh3-page-section
           title="timeline"
-          description="sh3-timeline — a surface-agnostic vertical chronology: a dot rail of nodes (optional date + label), inert accented nodes when id is null, the rest emit their id on click. It renders content only (a labelled <nav>) — the consumer supplies the surface, so it's shown here inside a sunken sh3-card."
+          description="sh3-timeline — one surface-agnostic dot-rail primitive, two orientations. Vertical: a navigable chronology (nodes emit their id, a null-id node is an inert accented anchor). Horizontal: a progress stepper (a `progress` fill line, each node's `done` drives its accent). It renders content only (a labelled <nav>) — the consumer supplies the surface."
         >
           <div class="gal-row gal-row--wide">
             <div class="gal-cell" style="max-width: 320px">
-              <span class="gal-tag">inside a card · click a node</span>
+              <span class="gal-tag">vertical · navigable · click a node</span>
               <sh3-card surface="sunken" style="padding: 18px">
                 <sh3-timeline
                   ariaLabel="Contract history"
@@ -1800,6 +1800,17 @@
                 />
               </sh3-card>
               <p class="doc-p">Last clicked id: “{{ tlClicked() ?? "—" }}”</p>
+            </div>
+            <div class="gal-cell" style="max-width: 440px">
+              <span class="gal-tag">horizontal · progress stepper</span>
+              <sh3-card surface="sunken" style="padding: 22px 18px">
+                <sh3-timeline
+                  orientation="horizontal"
+                  ariaLabel="Signature progress"
+                  [progress]="33"
+                  [nodes]="tlSteps"
+                />
+              </sh3-card>
             </div>
           </div>
         </sh3-page-section>

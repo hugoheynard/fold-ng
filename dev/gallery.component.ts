@@ -862,6 +862,20 @@ export class GalleryComponent {
     },
   ];
 
+  /** Same primitive, horizontal: a progress stepper driven by `done` + `progress`. */
+  protected readonly tlSteps: readonly Sh3TimelineNode[] = [
+    { key: "created", id: null, label: "Created", done: true, icon: "check" },
+    {
+      key: "company",
+      id: null,
+      label: "Company signed",
+      done: true,
+      icon: "check",
+    },
+    { key: "employee", id: null, label: "Employee signed", done: false },
+    { key: "active", id: null, label: "Active", done: false },
+  ];
+
   /* ── file dropzone demo ──────────────────────────────────────────────── */
   protected readonly dzFiles = signal<readonly string[]>([]);
   protected readonly dzBusy = signal(false);
