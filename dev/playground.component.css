@@ -23,6 +23,9 @@
 :host(.pg-equal) .pg-body,
 :host(.pg-equal) .pg-pre {
   flex: 1 1 auto;
+  /* share the common height; scroll internally when the content is taller */
+  min-height: 0;
+  overflow: auto;
 }
 
 /* shared card shell */
