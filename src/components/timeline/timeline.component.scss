@@ -205,3 +205,12 @@
     margin-left: auto;
   }
 }
+
+/* Respect users who ask for less motion — kill the animated transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .node,
+  .dot,
+  .rail-fill {
+    transition: none;
+  }
+}
