@@ -9,6 +9,10 @@ import { StubPage } from "./pages/stub.page";
  * time. To port a page: add its `id → () => import(...)` entry.
  */
 const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
+  hero: () => import("./pages/hero.page"),
+  "sticky-column": () => import("./pages/sticky-column.page"),
+  "aside-layout": () => import("./pages/aside-layout.page"),
+  "tab-nav": () => import("./pages/tab-nav.page"),
   "page-section": () => import("./pages/page-section.page"),
   card: () => import("./pages/card.page"),
   button: () => import("./pages/button.page"),
