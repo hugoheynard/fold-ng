@@ -926,9 +926,8 @@ export class GalleryComponent {
 
   /** Nodes for the previewed timeline — history (vertical) or steps (horizontal). */
   protected readonly tlpNodes = computed<readonly Sh3TimelineNode[]>(() => {
-    const variant = this.tlpVariant();
     if (this.tlpOrientation() === "vertical") {
-      return this.tlNodes.map((n) => ({ ...n, variant }));
+      return this.tlNodes;
     }
     const done = this.tlpDone();
     const clickable = this.tlpClickable();
@@ -936,7 +935,6 @@ export class GalleryComponent {
       key: step.label,
       id: null,
       clickable,
-      variant,
       label: step.label,
       displayDate: i < done ? step.date : undefined,
       done: i < done,
@@ -968,6 +966,9 @@ export class GalleryComponent {
     }
     if (this.tlpSquare()) {
       lines.push("  square");
+    }
+    if (this.tlpVariant() !== "plain") {
+      lines.push('  variant="hollow"');
     }
     if (this.tlpDatePlacement() !== "below") {
       lines.push(`  datePlacement="${this.tlpDatePlacement()}"`);
