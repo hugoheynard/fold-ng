@@ -91,8 +91,9 @@ export class Sh3TimelineComponent {
   /** Rail direction — vertical history rail vs horizontal progress stepper. */
   readonly orientation = input<"vertical" | "horizontal">("vertical");
   /**
-   * Progress-fill width (%) for the horizontal rail. `null` (default) renders no
-   * fill line; ignored in vertical mode.
+   * Progress-fill width (%) for the horizontal rail — an **override**. When
+   * `null` (default) the fill is derived from the ratio of `done` nodes, so the
+   * bar and the completed dots can never disagree. Ignored in vertical mode.
    */
   readonly progress = input<number | null>(null);
   /** Accessible name for the timeline's `<nav>` landmark (screen-reader only). */
@@ -115,6 +116,34 @@ export class Sh3TimelineComponent {
   protected readonly interactive = computed(() =>
     this.nodes().some((n) => n.id !== null),
   );
+
+  /** Count of completed nodes (drives the derived fill + the progressbar text). */
+  protected readonly doneCount = computed(
+    () => this.nodes().filter((n) => n.done).length,
+  );
+
+  /**
+   * Horizontal fill width (%): the explicit `progress` override when given, else
+   * derived so the fill reaches the last completed dot.
+   */
+  protected readonly fillPct = computed(() => {
+    const override = this.progress();
+    if (override !== null) {
+      return override;
+    }
+    const total = this.nodes().length;
+    const done = this.doneCount();
+    return total > 1 && done > 0 ? ((done - 1) / (total - 1)) * 100 : 0;
+  });
+
+  /** `aria-valuenow` for the progressbar — a clean integer. */
+  protected readonly fillNow = computed(() => Math.round(this.fillPct()));
+
+  /** `aria-valuetext` ("2 / 4") when completion is tracked via `done`. */
+  protected readonly stepText = computed(() => {
+    const done = this.doneCount();
+    return done > 0 ? `${done} / ${this.nodes().length}` : null;
+  });
 
   /** Accent ("filled") dot: an explicit `done`, else the inert-anchor rule. */
   protected isFilled(node: Sh3TimelineNode): boolean {

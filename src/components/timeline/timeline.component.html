@@ -17,11 +17,19 @@
   </span>
 </ng-template>
 
-<!-- The rail (optional progress fill) + the nodes — reused in both containers. -->
+<!-- The progress rail + the nodes — reused in both containers. -->
 <ng-template #body>
-  @if (orientation() === "horizontal" && progress() !== null) {
-    <span class="rail" aria-hidden="true">
-      <span class="rail-fill" [style.width.%]="progress()"></span>
+  @if (orientation() === "horizontal") {
+    <span
+      class="rail"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [attr.aria-valuenow]="fillNow()"
+      [attr.aria-valuetext]="stepText()"
+      [attr.aria-label]="ariaLabel()"
+    >
+      <span class="rail-fill" [style.width.%]="fillPct()"></span>
     </span>
   }
   @for (n of nodes(); track n.key) {

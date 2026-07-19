@@ -122,11 +122,38 @@ describe("Sh3TimelineComponent", () => {
     expect(nodeEls()[1].classList.contains("filled")).toBe(false);
   });
 
-  it("renders no progress line when progress is null", () => {
+  it("horizontal rail is a progressbar; fill derives from done when progress omitted", () => {
     const { fixture, host } = render();
     fixture.componentInstance.orientation.set("horizontal");
+    fixture.componentInstance.nodes.set([
+      { key: "1", id: null, label: "A", done: true },
+      { key: "2", id: null, label: "B", done: true },
+      { key: "3", id: null, label: "C", done: false },
+      { key: "4", id: null, label: "D", done: false },
+    ]);
     fixture.detectChanges();
-    expect(host.querySelector(".rail")).toBeNull();
+    const bar = host.querySelector(".rail")!;
+    expect(bar.getAttribute("role")).toBe("progressbar");
+    // (2 - 1) / (4 - 1) = 33% — the fill reaches the last completed dot.
+    expect(bar.getAttribute("aria-valuenow")).toBe("33");
+    expect(bar.getAttribute("aria-valuetext")).toBe("2 / 4");
+  });
+
+  it("explicit progress overrides the derived fill", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.orientation.set("horizontal");
+    fixture.componentInstance.progress.set(80);
+    fixture.componentInstance.nodes.set([
+      { key: "1", id: null, label: "A", done: true },
+      { key: "2", id: null, label: "B", done: false },
+    ]);
+    fixture.detectChanges();
+    expect(host.querySelector<HTMLElement>(".rail-fill")?.style.width).toBe(
+      "80%",
+    );
+    expect(host.querySelector(".rail")!.getAttribute("aria-valuenow")).toBe(
+      "80",
+    );
   });
 
   it("prefers a node's displayDate over its Date, formatting Date otherwise", () => {
