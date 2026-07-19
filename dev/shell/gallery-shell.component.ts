@@ -10,7 +10,6 @@ import {
   Sh3PanelHostService,
   Sh3ToastContainerComponent,
 } from "../../src/index";
-import { TokenPanelComponent } from "../token-panel.component";
 import { InspectPanelComponent } from "../inspect-panel.component";
 import { closestSh3, inspect } from "../inspect";
 import { GALLERY_NAV } from "./gallery-nav";
@@ -36,7 +35,6 @@ import { GALLERY_NAV } from "./gallery-nav";
     Sh3IconComponent,
     Sh3PanelHostComponent,
     Sh3ToastContainerComponent,
-    TokenPanelComponent,
   ],
   host: {
     class: "gal-root",

@@ -107,10 +107,7 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
   {
     label: "Foundations",
     color: "#64748b",
-    items: [
-      { id: "icons", label: "icons" },
-      { id: "tokens", label: "design tokens" },
-    ],
+    items: [{ id: "icons", label: "icons" }],
   },
 ];
 

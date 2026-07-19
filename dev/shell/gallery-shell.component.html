@@ -45,12 +45,11 @@
     </button>
   </header>
 
-  <!-- ── content: the routed page + docked token editor ─────────── -->
+  <!-- ── content: the routed page ─────────────────────────────── -->
   <div class="gal-content">
     <div class="gal-scroll" (dblclick)="onInspect($event)">
       <router-outlet />
     </div>
-    <app-token-panel />
   </div>
 </sh3-app-shell>
 

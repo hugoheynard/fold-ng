@@ -29,7 +29,6 @@ const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
   icons: () => import("./pages/icons.page"),
   form: () => import("./pages/form.page"),
   avatar: () => import("./pages/avatar.page"),
-  tokens: () => import("./pages/tokens.page"),
   "app-shell": () => import("./pages/app-shell.page"),
   menu: () => import("./pages/menu.page"),
 };
