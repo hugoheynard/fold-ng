@@ -3,369 +3,363 @@
   title="input"
   description="The edit half of a record (sh3-field reads). Signal Forms via [formField] or standalone [(value)]; label / required / hint / error are provided by sh3-input-base."
 >
-  <div class="form-layout">
-    <aside class="form-nav">
-      <sh3-tab-nav
-        direction="vertical"
-        activeStyle="fill"
-        [tabs]="inputTabs"
-        [activeKey]="inputTab()"
-        (tabChange)="inputTab.set($event)"
-      />
-    </aside>
-
-    <div class="form-body">
-      @switch (inputTab()) { @case ("text") {
-      <div class="gal-stack">
-        <div class="gal-cell">
-          <span class="gal-tag">sizes · sm / md / lg</span>
-          <div class="fld-inputs">
-            <sh3-input size="sm" placeholder="sm — inline edits" />
-            <sh3-input size="md" placeholder="md — default" />
-            <sh3-input size="lg" placeholder="lg — prominent" />
-          </div>
-        </div>
-        <div class="gal-cell">
-          <span class="gal-tag"
-            >label · required · optional · hint · error</span
-          >
-          <div class="fld-inputs">
-            <sh3-input
-              label="Email"
-              required
-              hint="We'll never share it."
-              placeholder="you@example.com"
-            />
-            <sh3-input
-              label="Motif"
-              optional
-              optionalLabel="optionnel"
-              placeholder="lighter marker in parentheses"
-            />
-            <sh3-input
-              label="Name"
-              required
-              hint="Blur while empty to see the error"
-              [formField]="demoReqForm"
-            />
-          </div>
-        </div>
-        <div class="gal-cell">
-          <span class="gal-tag">variants · states</span>
-          <div class="fld-inputs">
-            <sh3-input label="Default" [(value)]="demoText" />
-            <sh3-input
-              variant="panel"
-              label="Panel"
-              placeholder="flatter side-panel chrome"
-            />
-            <sh3-input
-              label="Read-only"
-              [value]="'Locked value'"
-              [readOnly]="true"
-            />
-            <sh3-input
-              label="Disabled"
-              placeholder="unavailable"
-              [disabled]="true"
-            />
-          </div>
+  <sh3-aside-layout class="gal-nav-layout">
+    <sh3-tab-nav
+      asideLeft
+      direction="vertical"
+      activeStyle="fill"
+      [tabs]="inputTabs"
+      [activeKey]="inputTab()"
+      (tabChange)="inputTab.set($event)"
+    />
+    @switch (inputTab()) { @case ("text") {
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag">sizes · sm / md / lg</span>
+        <div class="fld-inputs">
+          <sh3-input size="sm" placeholder="sm — inline edits" />
+          <sh3-input size="md" placeholder="md — default" />
+          <sh3-input size="lg" placeholder="lg — prominent" />
         </div>
       </div>
-      } @case ("number") {
-      <div class="gal-stack">
-        <div class="gal-cell">
-          <span class="gal-tag"
-            >spinner glyph (arrows / +−) × placement (inside / outside)</span
-          >
-          <div class="fld-inputs">
-            <sh3-number-input
-              label="arrows · inside"
-              spinner="arrows"
-              controls="inside"
-              [min]="0"
-              [max]="20"
-              [(value)]="demoArrows"
-            />
-            <sh3-number-input
-              label="arrows · outside"
-              spinner="arrows"
-              controls="outside"
-              [min]="0"
-              [max]="20"
-              [(value)]="demoArrows"
-            />
-            <sh3-number-input
-              label="+− · inside"
-              spinner="plusminus"
-              controls="inside"
-              [(value)]="demoStepper"
-            />
-            <sh3-number-input
-              label="+− · outside"
-              spinner="plusminus"
-              controls="outside"
-              [(value)]="demoStepper"
-            />
-          </div>
-        </div>
-        <div class="gal-cell">
-          <span class="gal-tag">step · showStep · snapToStep</span>
-          <div class="fld-inputs">
-            <sh3-number-input
-              label="show step"
-              spinner="arrows"
-              [step]="5"
-              showStep
-              [(value)]="demoArrows"
-            />
-            <sh3-number-input
-              label="snap to step"
-              spinner="arrows"
-              [step]="5"
-              snapToStep
-              showStep
-              hint="Type 7, blur → 5"
-              [(value)]="demoStepper"
-            />
-            <sh3-number-input
-              align="center"
-              label="BPM · centered"
-              [(value)]="demoBpm"
-            />
-            <sh3-number-input label="Age" required [min]="0" hint="Years." />
-          </div>
-        </div>
-
-        <div class="gal-cell np-playground-cell">
-          <span class="gal-tag">playground · param · preview · code</span>
-          <dev-playground [code]="numberPlaygroundCode()" equal>
-            <div class="np-field" params>
-              <span class="gal-tag">spinner</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="npSpinner() === 'arrows'"
-                  (click)="npSpinner.set('arrows')"
-                >
-                  arrows
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npSpinner() === 'plusminus'"
-                  (click)="npSpinner.set('plusminus')"
-                >
-                  +−
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npSpinner() === 'none'"
-                  (click)="npSpinner.set('none')"
-                >
-                  none
-                </button>
-              </div>
-            </div>
-            <div class="np-field" params>
-              <span class="gal-tag">controls</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="npControls() === 'inside'"
-                  (click)="npControls.set('inside')"
-                >
-                  inside
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npControls() === 'outside'"
-                  (click)="npControls.set('outside')"
-                >
-                  outside
-                </button>
-              </div>
-            </div>
-            <div class="np-field" params>
-              <span class="gal-tag">size</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="npSize() === 'sm'"
-                  (click)="npSize.set('sm')"
-                >
-                  sm
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npSize() === 'md'"
-                  (click)="npSize.set('md')"
-                >
-                  md
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npSize() === 'lg'"
-                  (click)="npSize.set('lg')"
-                >
-                  lg
-                </button>
-              </div>
-            </div>
-            <sh3-slider
-              params
-              label="step"
-              [min]="1"
-              [max]="10"
-              [(value)]="npStep"
-            />
-            <sh3-slider
-              params
-              label="min"
-              [min]="0"
-              [max]="10"
-              [valueText]="npMin() ? npMin() + '' : 'off'"
-              [(value)]="npMin"
-            />
-            <sh3-slider
-              params
-              label="max"
-              [min]="0"
-              [max]="50"
-              [valueText]="npMax() ? npMax() + '' : 'off'"
-              [(value)]="npMax"
-            />
-            <div class="np-field" params>
-              <span class="gal-tag">flags</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="npShowStep()"
-                  (click)="npShowStep.set(!npShowStep())"
-                >
-                  showStep
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npSnap()"
-                  (click)="npSnap.set(!npSnap())"
-                >
-                  snapToStep
-                </button>
-              </div>
-            </div>
-            <div class="np-field" params>
-              <span class="gal-tag">decimals</span>
-              <div class="ss-seg">
-                <button
-                  type="button"
-                  [class.is-on]="npDecimals() === undefined"
-                  (click)="npDecimals.set(undefined)"
-                >
-                  free
-                </button>
-                <button
-                  type="button"
-                  [class.is-on]="npDecimals() === 0"
-                  (click)="npDecimals.set(0)"
-                >
-                  int
-                </button>
-                @for (d of [1, 2, 3]; track d) {
-                <button
-                  type="button"
-                  [class.is-on]="npDecimals() === d"
-                  (click)="npDecimals.set(d)"
-                >
-                  {{ d }}
-                </button>
-                }
-              </div>
-            </div>
-
-            <sh3-number-input
-              label="Quantity"
-              [size]="npSize()"
-              [spinner]="npSpinner()"
-              [controls]="npControls()"
-              [min]="npMin() || undefined"
-              [max]="npMax() || undefined"
-              [step]="npStep()"
-              [showStep]="npShowStep()"
-              [snapToStep]="npSnap()"
-              [decimals]="npDecimals()"
-              [(value)]="npValue"
-            />
-          </dev-playground>
+      <div class="gal-cell">
+        <span class="gal-tag">label · required · optional · hint · error</span>
+        <div class="fld-inputs">
+          <sh3-input
+            label="Email"
+            required
+            hint="We'll never share it."
+            placeholder="you@example.com"
+          />
+          <sh3-input
+            label="Motif"
+            optional
+            optionalLabel="optionnel"
+            placeholder="lighter marker in parentheses"
+          />
+          <sh3-input
+            label="Name"
+            required
+            hint="Blur while empty to see the error"
+            [formField]="demoReqForm"
+          />
         </div>
       </div>
-      } @case ("select") {
-      <div class="gal-stack">
-        <div class="gal-cell">
-          <span class="gal-tag"
-            >sh3-select · native &lt;select&gt;, options projected</span
-          >
-          <div class="fld-inputs">
-            <sh3-select
-              label="Devise"
-              placeholder="Choisir…"
-              hint="Native under the hood — options are projected."
-              [(value)]="selCurrency"
-            >
-              @for (c of currencies; track c) {
-              <option [value]="c">{{ c }}</option>
-              }
-            </sh3-select>
-          </div>
-          <p class="doc-p">Selected: “{{ selCurrency() }}”</p>
-        </div>
-
-        <div class="gal-cell">
-          <span class="gal-tag">sizes · sm / md / lg</span>
-          <div class="fld-inputs">
-            <sh3-select size="sm" label="sm" [(value)]="selSize">
-              <option value="a">Alpha</option>
-              <option value="b">Bravo</option>
-            </sh3-select>
-            <sh3-select size="md" label="md" [(value)]="selSize">
-              <option value="a">Alpha</option>
-              <option value="b">Bravo</option>
-            </sh3-select>
-            <sh3-select size="lg" label="lg" [(value)]="selSize">
-              <option value="a">Alpha</option>
-              <option value="b">Bravo</option>
-            </sh3-select>
-          </div>
-        </div>
-
-        <div class="gal-cell">
-          <span class="gal-tag">variant · panel</span>
-          <div class="fld-inputs">
-            <sh3-select
-              variant="panel"
-              label="Rôle"
-              placeholder="—"
-              [(value)]="selSize"
-            >
-              <option value="lead">Lead</option>
-              <option value="member">Member</option>
-            </sh3-select>
-          </div>
+      <div class="gal-cell">
+        <span class="gal-tag">variants · states</span>
+        <div class="fld-inputs">
+          <sh3-input label="Default" [(value)]="demoText" />
+          <sh3-input
+            variant="panel"
+            label="Panel"
+            placeholder="flatter side-panel chrome"
+          />
+          <sh3-input
+            label="Read-only"
+            [value]="'Locked value'"
+            [readOnly]="true"
+          />
+          <sh3-input
+            label="Disabled"
+            placeholder="unavailable"
+            [disabled]="true"
+          />
         </div>
       </div>
-      } @case ("search") {
-      <div class="gal-stack">
-        <div class="gal-cell">
-          <span class="gal-tag">sh3-search · debounced (emits on settle)</span>
-          <div class="fld-inputs">
-            <sh3-search
-              placeholder="Search name, email…"
-              (searchChange)="searchTerm.set($event)"
-            />
-          </div>
-          <p class="doc-p">Last emitted: “{{ searchTerm() }}”</p>
-        </div>
-      </div>
-      } }
     </div>
-  </div>
+    } @case ("number") {
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag"
+          >spinner glyph (arrows / +−) × placement (inside / outside)</span
+        >
+        <div class="fld-inputs">
+          <sh3-number-input
+            label="arrows · inside"
+            spinner="arrows"
+            controls="inside"
+            [min]="0"
+            [max]="20"
+            [(value)]="demoArrows"
+          />
+          <sh3-number-input
+            label="arrows · outside"
+            spinner="arrows"
+            controls="outside"
+            [min]="0"
+            [max]="20"
+            [(value)]="demoArrows"
+          />
+          <sh3-number-input
+            label="+− · inside"
+            spinner="plusminus"
+            controls="inside"
+            [(value)]="demoStepper"
+          />
+          <sh3-number-input
+            label="+− · outside"
+            spinner="plusminus"
+            controls="outside"
+            [(value)]="demoStepper"
+          />
+        </div>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">step · showStep · snapToStep</span>
+        <div class="fld-inputs">
+          <sh3-number-input
+            label="show step"
+            spinner="arrows"
+            [step]="5"
+            showStep
+            [(value)]="demoArrows"
+          />
+          <sh3-number-input
+            label="snap to step"
+            spinner="arrows"
+            [step]="5"
+            snapToStep
+            showStep
+            hint="Type 7, blur → 5"
+            [(value)]="demoStepper"
+          />
+          <sh3-number-input
+            align="center"
+            label="BPM · centered"
+            [(value)]="demoBpm"
+          />
+          <sh3-number-input label="Age" required [min]="0" hint="Years." />
+        </div>
+      </div>
+
+      <div class="gal-cell np-playground-cell">
+        <span class="gal-tag">playground · param · preview · code</span>
+        <dev-playground [code]="numberPlaygroundCode()" equal>
+          <div class="np-field" params>
+            <span class="gal-tag">spinner</span>
+            <div class="ss-seg">
+              <button
+                type="button"
+                [class.is-on]="npSpinner() === 'arrows'"
+                (click)="npSpinner.set('arrows')"
+              >
+                arrows
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npSpinner() === 'plusminus'"
+                (click)="npSpinner.set('plusminus')"
+              >
+                +−
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npSpinner() === 'none'"
+                (click)="npSpinner.set('none')"
+              >
+                none
+              </button>
+            </div>
+          </div>
+          <div class="np-field" params>
+            <span class="gal-tag">controls</span>
+            <div class="ss-seg">
+              <button
+                type="button"
+                [class.is-on]="npControls() === 'inside'"
+                (click)="npControls.set('inside')"
+              >
+                inside
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npControls() === 'outside'"
+                (click)="npControls.set('outside')"
+              >
+                outside
+              </button>
+            </div>
+          </div>
+          <div class="np-field" params>
+            <span class="gal-tag">size</span>
+            <div class="ss-seg">
+              <button
+                type="button"
+                [class.is-on]="npSize() === 'sm'"
+                (click)="npSize.set('sm')"
+              >
+                sm
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npSize() === 'md'"
+                (click)="npSize.set('md')"
+              >
+                md
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npSize() === 'lg'"
+                (click)="npSize.set('lg')"
+              >
+                lg
+              </button>
+            </div>
+          </div>
+          <sh3-slider
+            params
+            label="step"
+            [min]="1"
+            [max]="10"
+            [(value)]="npStep"
+          />
+          <sh3-slider
+            params
+            label="min"
+            [min]="0"
+            [max]="10"
+            [valueText]="npMin() ? npMin() + '' : 'off'"
+            [(value)]="npMin"
+          />
+          <sh3-slider
+            params
+            label="max"
+            [min]="0"
+            [max]="50"
+            [valueText]="npMax() ? npMax() + '' : 'off'"
+            [(value)]="npMax"
+          />
+          <div class="np-field" params>
+            <span class="gal-tag">flags</span>
+            <div class="ss-seg">
+              <button
+                type="button"
+                [class.is-on]="npShowStep()"
+                (click)="npShowStep.set(!npShowStep())"
+              >
+                showStep
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npSnap()"
+                (click)="npSnap.set(!npSnap())"
+              >
+                snapToStep
+              </button>
+            </div>
+          </div>
+          <div class="np-field" params>
+            <span class="gal-tag">decimals</span>
+            <div class="ss-seg">
+              <button
+                type="button"
+                [class.is-on]="npDecimals() === undefined"
+                (click)="npDecimals.set(undefined)"
+              >
+                free
+              </button>
+              <button
+                type="button"
+                [class.is-on]="npDecimals() === 0"
+                (click)="npDecimals.set(0)"
+              >
+                int
+              </button>
+              @for (d of [1, 2, 3]; track d) {
+              <button
+                type="button"
+                [class.is-on]="npDecimals() === d"
+                (click)="npDecimals.set(d)"
+              >
+                {{ d }}
+              </button>
+              }
+            </div>
+          </div>
+
+          <sh3-number-input
+            label="Quantity"
+            [size]="npSize()"
+            [spinner]="npSpinner()"
+            [controls]="npControls()"
+            [min]="npMin() || undefined"
+            [max]="npMax() || undefined"
+            [step]="npStep()"
+            [showStep]="npShowStep()"
+            [snapToStep]="npSnap()"
+            [decimals]="npDecimals()"
+            [(value)]="npValue"
+          />
+        </dev-playground>
+      </div>
+    </div>
+    } @case ("select") {
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag"
+          >sh3-select · native &lt;select&gt;, options projected</span
+        >
+        <div class="fld-inputs">
+          <sh3-select
+            label="Devise"
+            placeholder="Choisir…"
+            hint="Native under the hood — options are projected."
+            [(value)]="selCurrency"
+          >
+            @for (c of currencies; track c) {
+            <option [value]="c">{{ c }}</option>
+            }
+          </sh3-select>
+        </div>
+        <p class="doc-p">Selected: “{{ selCurrency() }}”</p>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">sizes · sm / md / lg</span>
+        <div class="fld-inputs">
+          <sh3-select size="sm" label="sm" [(value)]="selSize">
+            <option value="a">Alpha</option>
+            <option value="b">Bravo</option>
+          </sh3-select>
+          <sh3-select size="md" label="md" [(value)]="selSize">
+            <option value="a">Alpha</option>
+            <option value="b">Bravo</option>
+          </sh3-select>
+          <sh3-select size="lg" label="lg" [(value)]="selSize">
+            <option value="a">Alpha</option>
+            <option value="b">Bravo</option>
+          </sh3-select>
+        </div>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">variant · panel</span>
+        <div class="fld-inputs">
+          <sh3-select
+            variant="panel"
+            label="Rôle"
+            placeholder="—"
+            [(value)]="selSize"
+          >
+            <option value="lead">Lead</option>
+            <option value="member">Member</option>
+          </sh3-select>
+        </div>
+      </div>
+    </div>
+    } @case ("search") {
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag">sh3-search · debounced (emits on settle)</span>
+        <div class="fld-inputs">
+          <sh3-search
+            placeholder="Search name, email…"
+            (searchChange)="searchTerm.set($event)"
+          />
+        </div>
+        <p class="doc-p">Last emitted: “{{ searchTerm() }}”</p>
+      </div>
+    </div>
+    } }
+  </sh3-aside-layout>
 </sh3-page-layout>

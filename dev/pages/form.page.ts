@@ -1,6 +1,7 @@
 import { Component, computed, signal } from "@angular/core";
 import { form, required, FormField } from "@angular/forms/signals";
 import {
+  Sh3AsideLayoutComponent,
   Sh3InputComponent,
   Sh3NumberInputComponent,
   type Sh3NumberSpinner,
@@ -20,6 +21,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   standalone: true,
   imports: [
     Sh3PageLayoutComponent,
+    Sh3AsideLayoutComponent,
     Sh3TabNavComponent,
     Sh3InputComponent,
     Sh3NumberInputComponent,

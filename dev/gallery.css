@@ -431,23 +431,13 @@ sh3-app-shell {
 }
 
 /* ── form page — vertical tab-nav rail + a settings-style form ────────── */
-.form-layout {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  align-items: flex-start;
-}
-.form-nav {
-  flex: 0 0 190px;
-  position: sticky;
-  top: 0;
-}
-.form-body {
-  flex: 1 1 420px;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* A vertical sh3-tab-nav rail + full-width content, driven by sh3-aside-layout's
+   own CSS vars (its documented extension surface — no bespoke grid here). */
+.gal-nav-layout {
+  --sh3-aside-layout-max: none;
+  --sh3-aside-layout-pad: 0 0 32px;
+  --sh3-aside-layout-rail-width: 190px;
+  --sh3-aside-layout-gap: 24px;
 }
 .field {
   display: flex;

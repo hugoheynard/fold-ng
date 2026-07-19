@@ -3,18 +3,16 @@
   title="toast"
   description="A transient frosted-glass snackbar: a variant status glyph, the message (projected), and an optional dismiss button. sh3-toast-container stacks them bottom-right; Sh3ToastService owns the queue."
 >
-  <div class="form-layout">
-    <aside class="form-nav">
-      <sh3-tab-nav
-        direction="vertical"
-        activeStyle="fill"
-        [tabs]="toastTabs"
-        [activeKey]="toastTab()"
-        (tabChange)="toastTab.set($event)"
-      />
-    </aside>
-
-    <div class="form-body">
+  <sh3-aside-layout class="gal-nav-layout">
+    <sh3-tab-nav
+      asideLeft
+      direction="vertical"
+      activeStyle="fill"
+      [tabs]="toastTabs"
+      [activeKey]="toastTab()"
+      (tabChange)="toastTab.set($event)"
+    />
+    <div class="gal-stack">
       @switch (toastTab()) { @case ("variants") {
       <sh3-page-section
         surface="card"
@@ -115,5 +113,5 @@
       </sh3-page-section>
       } }
     </div>
-  </div>
+  </sh3-aside-layout>
 </sh3-page-layout>

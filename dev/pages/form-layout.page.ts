@@ -1,5 +1,6 @@
 import { Component, signal } from "@angular/core";
 import {
+  Sh3AsideLayoutComponent,
   Sh3ChoiceRowComponent,
   Sh3IconComponent,
   Sh3InputComponent,
@@ -16,6 +17,7 @@ import {
   standalone: true,
   imports: [
     Sh3PageLayoutComponent,
+    Sh3AsideLayoutComponent,
     Sh3PageSectionComponent,
     Sh3TabNavComponent,
     Sh3InputComponent,
