@@ -27,6 +27,7 @@ const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
   dropzone: () => import("./pages/dropzone.page"),
   toast: () => import("./pages/toast.page"),
   icons: () => import("./pages/icons.page"),
+  form: () => import("./pages/form.page"),
 };
 
 /**
