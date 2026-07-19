@@ -1029,9 +1029,23 @@ sh3-app-shell {
   border: 1px solid var(--sh3-color-border);
   border-radius: var(--sh3-radius-md);
   background: var(--sh3-color-bg-page);
+  /* a window simulator: center the rendered "device" on the backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 .asl-window-inner {
   /* width (desktop 1120 / mobile 380) + auto-fit zoom are bound inline. */
+}
+/* mobile: the narrow render reads as a phone/device — framed, centered, floated
+   on the backdrop instead of stretched flush across the window. */
+.asl-window-inner.is-mobile {
+  margin: 18px 0;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--sh3-color-border);
+  box-shadow: var(--sh3-shadow-lg, 0 12px 34px rgba(0, 0, 0, 0.4));
+  background: var(--sh3-color-bg-page);
 }
 .asl-real {
   --sh3-aside-layout-max: none;
