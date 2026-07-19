@@ -14,6 +14,8 @@ import {
     [nodeTitle]="nodeTitle()"
     [orientation]="orientation()"
     [progress]="progress()"
+    [square]="square()"
+    [datePlacement]="datePlacement()"
     [nodes]="nodes()"
     (nodeClick)="clicked.set($event)"
   />`,
@@ -23,6 +25,8 @@ class HostComponent {
   readonly nodeTitle = signal("");
   readonly orientation = signal<"vertical" | "horizontal">("vertical");
   readonly progress = signal<number | null>(null);
+  readonly square = signal(false);
+  readonly datePlacement = signal<"above" | "below">("above");
   readonly nodes = signal<readonly Sh3TimelineNode[]>([
     { key: "start", id: null, label: "Start", icon: "contracts" },
     { key: "a1", id: "add_1", label: "Avenant 1", date: null, icon: "edit" },
@@ -121,5 +125,32 @@ describe("Sh3TimelineComponent", () => {
     fixture.componentInstance.orientation.set("horizontal");
     fixture.detectChanges();
     expect(host.querySelector(".rail")).toBeNull();
+  });
+
+  it("prefers a node's displayDate over its Date, formatting Date otherwise", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.nodes.set([
+      { key: "a", id: null, label: "A", displayDate: "Q1 2024" },
+      { key: "b", id: "b", label: "B", date: new Date("2024-06-01T00:00:00Z") },
+    ]);
+    fixture.detectChanges();
+    const dates = Array.from(host.querySelectorAll(".date")).map((d) =>
+      d.textContent?.trim(),
+    );
+    expect(dates[0]).toBe("Q1 2024"); // displayDate wins
+    expect(dates[1]).toContain("2024"); // Date formatted by the pipe
+  });
+
+  it("toggles square dots and date placement via the container classes", () => {
+    const { fixture, host } = render();
+    const root = host.querySelector(".tlv")!;
+    expect(root.classList.contains("square")).toBe(false);
+    expect(root.classList.contains("date-below")).toBe(false);
+
+    fixture.componentInstance.square.set(true);
+    fixture.componentInstance.datePlacement.set("below");
+    fixture.detectChanges();
+    expect(root.classList.contains("square")).toBe(true);
+    expect(root.classList.contains("date-below")).toBe(true);
   });
 });

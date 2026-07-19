@@ -1,4 +1,10 @@
-import { Component, computed, input, output } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  input,
+  output,
+} from "@angular/core";
 import { DatePipe, NgTemplateOutlet } from "@angular/common";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
@@ -13,6 +19,8 @@ export interface Sh3TimelineNode {
   readonly label: string;
   /** Optional date, formatted with the `date` pipe (`mediumDate`). */
   readonly date?: Date | null;
+  /** Pre-formatted date text — takes precedence over {@link date} when set. */
+  readonly displayDate?: string;
   /** Optional dot icon. */
   readonly icon?: Sh3IconName;
   /**
@@ -42,7 +50,10 @@ export interface Sh3TimelineNode {
  * `role="group"`.
  *
  * The accent ("filled") dot is `done ?? (id === null)`, so the inert anchor and a
- * `done` step are the same rule.
+ * `done` step are the same rule. Dots are round by default (`square` for
+ * rounded-square), and each node's `icon` names its glyph. A node's date can be a
+ * `Date` (formatted with the `date` pipe) or a pre-formatted `displayDate`, placed
+ * above or below the label via `datePlacement`.
  *
  * **Surface-agnostic** — it renders content only (a labelled `<nav>` of nodes),
  * no card of its own, so the consumer places it inside whatever surface fits.
@@ -85,6 +96,10 @@ export class Sh3TimelineComponent {
   readonly ariaLabel = input<string>();
   /** Tooltip (`title`) on the clickable nodes. */
   readonly nodeTitle = input<string>("");
+  /** Render the dots as rounded squares instead of circles. */
+  readonly square = input(false, { transform: booleanAttribute });
+  /** Whether a node's date sits above or below its label. */
+  readonly datePlacement = input<"above" | "below">("above");
 
   /** Emits the clicked node's id (never fires for `id === null` nodes). */
   readonly nodeClick = output<string>();

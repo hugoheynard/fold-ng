@@ -82,6 +82,11 @@
   border-color: var(--sh3-color-primary);
 }
 
+/* Square dots — a rounded rectangle instead of a circle. */
+.tlv.square .dot {
+  border-radius: var(--sh3-radius-sm);
+}
+
 .txt {
   display: flex;
   flex-direction: column;
@@ -106,6 +111,11 @@
 .node.filled .nlabel,
 .node:not(.inert):hover .nlabel {
   color: var(--sh3-color-text);
+}
+
+/* Date below the label instead of above (default order is date-first). */
+.tlv.date-below .date {
+  order: 1;
 }
 
 /* ── Horizontal: a progress stepper (dots on a filled line) ── */
@@ -147,11 +157,6 @@
   align-items: center;
   padding-top: 0;
   text-align: center;
-}
-
-/* Stepper look: label above date. */
-.tlv.h .date {
-  order: 1;
 }
 
 /* Narrow viewports: fall back to a vertical list. */

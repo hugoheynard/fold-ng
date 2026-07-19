@@ -6,7 +6,9 @@
     }
   </span>
   <span class="txt">
-    @if (n.date; as d) {
+    @if (n.displayDate; as dd) {
+      <span class="date">{{ dd }}</span>
+    } @else if (n.date; as d) {
       <span class="date">{{ d | date: "mediumDate" }}</span>
     }
     <span class="nlabel">{{ n.label }}</span>
@@ -49,6 +51,8 @@
   <nav
     class="tlv"
     [class.h]="orientation() === 'horizontal'"
+    [class.square]="square()"
+    [class.date-below]="datePlacement() === 'below'"
     [attr.aria-label]="ariaLabel()"
   >
     <ng-container [ngTemplateOutlet]="body" />
@@ -58,6 +62,8 @@
     class="tlv"
     role="group"
     [class.h]="orientation() === 'horizontal'"
+    [class.square]="square()"
+    [class.date-below]="datePlacement() === 'below'"
     [attr.aria-label]="ariaLabel()"
   >
     <ng-container [ngTemplateOutlet]="body" />
