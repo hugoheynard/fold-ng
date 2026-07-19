@@ -17,6 +17,7 @@ import {
 @Component({
   selector: "gal-toast-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,

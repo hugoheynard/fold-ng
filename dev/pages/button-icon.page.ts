@@ -8,6 +8,7 @@ import {
 @Component({
   selector: "gal-button-icon-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3ButtonIconComponent],
   template: `<sh3-page-layout fluid title="button-icon">
     <div class="gal-stack">

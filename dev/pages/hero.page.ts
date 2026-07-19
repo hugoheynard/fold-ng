@@ -5,6 +5,7 @@ import { Sh3HeroComponent, Sh3PageLayoutComponent } from "../../src/index";
 @Component({
   selector: "gal-hero-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3HeroComponent],
   template: `<sh3-page-layout fluid title="hero">
     @for (surface of heroSurfaces; track surface) {

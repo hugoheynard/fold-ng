@@ -12,6 +12,7 @@ import { TabPanelComponent } from "../tab-panel.component";
 @Component({
   selector: "gal-tab-nav-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3TabNavComponent, Sh3IconComponent],
   template: `<sh3-page-layout fluid title="tab-nav">
     <div class="gal-stack">

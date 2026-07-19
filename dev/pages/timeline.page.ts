@@ -14,6 +14,7 @@ import { DevPlaygroundComponent } from "../playground.component";
 @Component({
   selector: "gal-timeline-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3CardComponent,

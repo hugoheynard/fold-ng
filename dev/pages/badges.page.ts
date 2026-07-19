@@ -10,6 +10,7 @@ import {
 @Component({
   selector: "gal-badges-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3BadgeComponent,

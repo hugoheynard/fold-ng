@@ -40,6 +40,7 @@ interface MenuSection {
 @Component({
   selector: "gal-menu-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3ContextCardComponent,

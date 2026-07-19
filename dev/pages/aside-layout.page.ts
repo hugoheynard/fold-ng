@@ -10,6 +10,7 @@ import {
 @Component({
   selector: "gal-aside-layout-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,

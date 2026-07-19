@@ -9,6 +9,7 @@ import {
 @Component({
   selector: "gal-page-section-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3PageSectionComponent, Sh3IconComponent],
   template: `<sh3-page-layout fluid title="page-section">
     <div class="gal-row gal-row--wide">

@@ -65,6 +65,7 @@ interface DemoGroup<T> {
 @Component({
   selector: "gal-avatar-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3PageSectionComponent,

@@ -11,6 +11,7 @@ import {
 @Component({
   selector: "gal-sticky-column-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [
     Sh3PageLayoutComponent,
     Sh3SliderComponent,

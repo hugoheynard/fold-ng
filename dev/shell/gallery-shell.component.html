@@ -1,4 +1,4 @@
-<sh3-app-shell>
+<sh3-app-shell (dblclick)="onInspect($event)">
   <!-- ── rail primary: a stable static nav ─────────────────────────── -->
   <sh3-menu railPrimary tint="primary">
     <div header class="rail-brand">S3</div>
@@ -45,10 +45,8 @@
     </button>
   </header>
 
-  <!-- ── content: the routed page ─────────────────────────────── -->
-  <div class="gal-scroll" (dblclick)="onInspect($event)">
-    <router-outlet />
-  </div>
+  <!-- ── content: the routed page owns its own scroll ─────────── -->
+  <router-outlet />
 </sh3-app-shell>
 
 <sh3-panel-host />

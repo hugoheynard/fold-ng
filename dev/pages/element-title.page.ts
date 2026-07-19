@@ -8,6 +8,7 @@ import {
 @Component({
   selector: "gal-element-title-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3ElementTitleComponent],
   template: `<sh3-page-layout fluid title="element-title">
     <div class="gal-stack">

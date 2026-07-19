@@ -8,6 +8,7 @@ import {
 @Component({
   selector: "gal-dropzone-page",
   standalone: true,
+  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3FileDropzoneComponent],
   template: `<sh3-page-layout
     fluid

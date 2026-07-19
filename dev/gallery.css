@@ -542,10 +542,13 @@ sh3-app-shell {
 }
 
 /* ── Content: scrollable gallery + docked token editor ──────── */
-/* The routed page fills the shell content region and scrolls on its own —
-   never chaining to the document (which would shove the fixed header off). */
-.gal-scroll {
-  height: 100%;
+/* Each routed page host IS its own scroll container — it fills the shell's
+   content cell (a flex column) and scrolls itself, so there's no wrapper div
+   between the app-shell and the page. Never chains to the document. */
+.gal-page {
+  display: block;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 28px 32px 40px;
