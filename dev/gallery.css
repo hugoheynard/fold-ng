@@ -1040,14 +1040,6 @@ sh3-app-shell {
   --sh3-aside-layout-center-width: minmax(0, 1fr);
   --sh3-aside-layout-side-width: minmax(0, 1fr);
 }
-.asl-block {
-  padding: 14px 12px;
-  border-radius: var(--sh3-radius-sm);
-  background: var(--sh3-color-surface-raised);
-  border: 1px solid var(--sh3-color-border-subtle);
-  font-size: 12px;
-  color: var(--sh3-color-text-secondary);
-}
 /* sh3-field-list demos: a light surface framing (the list host is
    display:contents, so the frame lives on this wrapper, not the component). */
 .fld-demo {

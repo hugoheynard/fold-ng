@@ -91,9 +91,21 @@
       >
         @if (aslLeft()) {
         <sh3-card asideLeft padding="sm">aside left</sh3-card>
-        } @for (i of aslRows; track i) {
-        <div class="asl-block">Section {{ i }}</div>
         }
+        <sh3-page-section surface="card" title="Section one">
+          <p class="gal-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris.
+          </p>
+        </sh3-page-section>
+        <sh3-page-section surface="card" title="Section two">
+          <p class="gal-body">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt.
+          </p>
+        </sh3-page-section>
         <sh3-card asideRight padding="sm">aside right</sh3-card>
       </sh3-aside-layout>
     </div>

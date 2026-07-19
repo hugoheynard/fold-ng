@@ -3,6 +3,7 @@ import {
   Sh3AsideLayoutComponent,
   Sh3CardComponent,
   Sh3PageLayoutComponent,
+  Sh3PageSectionComponent,
   Sh3SliderComponent,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
@@ -16,13 +17,13 @@ import { DevPlaygroundComponent } from "../playground.component";
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,
     Sh3CardComponent,
+    Sh3PageSectionComponent,
     Sh3SliderComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./aside-layout.page.html",
 })
 export default class AsideLayoutPage {
-  protected readonly aslRows = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
   protected readonly aslOffset = signal(8);
