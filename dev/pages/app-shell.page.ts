@@ -104,7 +104,11 @@ export default class AppShellPage {
       `  [railWidth]="${this.shellRailWidth()}"`,
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
-      "  <!-- railPrimary · railSecondary · header · content -->",
+      "  <sh3-menu railPrimary>…</sh3-menu>",
+      "  <sh3-menu railSecondary>…</sh3-menu>",
+      "  <header header>…</header>",
+      "  <!-- untagged content → the main area -->",
+      "  <main>…</main>",
       "</sh3-app-shell>",
     ].join("\n"),
   );
