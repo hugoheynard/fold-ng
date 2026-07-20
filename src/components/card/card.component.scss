@@ -67,10 +67,16 @@
   padding: var(--_pad);
 }
 
-/* Optional raised tint on the header/footer bands, set apart from the body. */
-:host(.raised-bands) .card-header:not(:empty),
+/* Optional raised tint on the header/footer bands, set apart from the body. The
+   raise keeps a faint hairline edge (an inset shadow, so it composes with the
+   `separators` border) so the band still reads a crisp separation. */
+:host(.raised-bands) .card-header:not(:empty) {
+  background: var(--_band-raise);
+  box-shadow: inset 0 -1px 0 var(--sh3-color-border);
+}
 :host(.raised-bands) .card-footer:not(:empty) {
   background: var(--_band-raise);
+  box-shadow: inset 0 1px 0 var(--sh3-color-border);
 }
 
 /* Optional hairline between header/body and body/footer. */
