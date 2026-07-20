@@ -79,8 +79,10 @@
    stacked so a low-alpha token still reads). */
 :host(.raised-bands) .card-header:not(:empty),
 :host(.raised-bands) .card-footer:not(:empty) {
-  background:
-    linear-gradient(var(--_band-raise), var(--_band-raise)), var(--_band-raise);
+  /* explicit longhands — a trailing var() colour in the `background` shorthand is
+     ambiguous and gets dropped by the parser. Two overlay layers ≈ double alpha. */
+  background-color: var(--_band-raise);
+  background-image: linear-gradient(var(--_band-raise), var(--_band-raise));
 }
 /* separators: a fine hairline between a band and the body. */
 :host(.has-sep) .card-header:not(:empty) {
