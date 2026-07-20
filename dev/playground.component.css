@@ -17,36 +17,22 @@
 :host(.pg-equal) .pg-panel {
   flex: 1 1 0;
   min-width: 220px;
-  display: flex;
-  flex-direction: column;
 }
-:host(.pg-equal) .pg-body,
-:host(.pg-equal) .pg-pre {
-  flex: 1 1 auto;
-  /* share the common height; scroll internally when the content is taller */
-  min-height: 0;
+/* the body shares the common height and scrolls internally when it is taller */
+:host(.pg-equal) .pg-body {
   overflow: auto;
 }
 
-/* shared card shell — surface + border + radius come from sh3-card; clip so the
-   header rule and code block sit inside the rounded corners */
+/* surface + border + radius + the header/body bands come from sh3-card; clip so
+   the header separator and code block sit inside the rounded corners */
 .pg-panel {
   overflow: hidden;
 }
-/* the sh3-card `separators` flag draws the header divider now */
-.pg-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  color: var(--sh3-color-text-secondary);
-}
-/* the element-title fills the header so its [titleAction] sits at the right */
-.pg-head sh3-element-title {
-  flex: 1;
-  min-width: 0;
-}
+/* each panel projects its header into the card [cardHeader] band; the body is
+   the card default slot — it carries the panel padding and fills the height. */
 .pg-body {
+  flex: 1 1 auto;
+  min-height: 0;
   padding: 14px;
 }
 
@@ -60,14 +46,11 @@
   gap: 12px;
 }
 
-/* preview card */
+/* preview card — the card header band is position:relative, so the viewport
+   switch can float centered over it */
 .pg-preview {
   flex: 1 1 200px;
   min-width: 180px;
-}
-/* preview header can host centered actions (e.g. a viewport switch) */
-.pg-preview .pg-head {
-  position: relative;
 }
 .pg-head-actions {
   position: absolute;
@@ -120,7 +103,6 @@
 }
 .pg-pre {
   margin: 0;
-  padding: 14px;
   overflow-x: auto;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: 12px;
