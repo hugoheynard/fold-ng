@@ -1,10 +1,11 @@
 /* Defaults: lg radius + md padding. Modifier classes override. */
 :host {
+  --_pad: 16px;
   display: block;
   background: var(--sh3-color-surface-card);
   border: 1px solid var(--sh3-color-border);
   border-radius: var(--sh3-radius-lg);
-  padding: 16px;
+  padding: var(--_pad);
 }
 /* Sunken (deep container) pairs with a fainter hairline. */
 :host(.s-sunken) {
@@ -18,14 +19,40 @@
   border-radius: var(--sh3-radius-sm);
 }
 :host(.p-none) {
-  padding: 0;
+  --_pad: 0;
 }
 :host(.p-sm) {
-  padding: 10px;
+  --_pad: 10px;
 }
 :host(.p-lg) {
-  padding: 20px;
+  --_pad: 20px;
 }
+
+/* Header / footer bands render only when something is projected into them. */
+.card-header:empty,
+.card-footer:empty {
+  display: none;
+}
+/* When a header or footer exists, the padding moves from the host onto each band
+   so a separator can span the full width; a plain body-only card is unchanged
+   (host keeps its padding, and still honours an inline `style="padding"`). */
+:host(:has([cardHeader], [cardFooter])) {
+  padding: 0;
+}
+:host(:has([cardHeader], [cardFooter])) .card-header,
+:host(:has([cardHeader], [cardFooter])) .card-body,
+:host(:has([cardHeader], [cardFooter])) .card-footer {
+  padding: var(--_pad);
+}
+
+/* Optional hairline between header/body and body/footer. */
+:host(.has-sep) .card-header:not(:empty) {
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+}
+:host(.has-sep) .card-footer:not(:empty) {
+  border-top: 1px solid var(--sh3-color-border-subtle);
+}
+
 :host(.is-interactive) {
   cursor: pointer;
   transition:

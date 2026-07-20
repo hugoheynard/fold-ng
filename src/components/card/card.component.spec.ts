@@ -11,8 +11,15 @@ import { Sh3CardComponent } from "./card.component";
     [radius]="radius()"
     [padding]="padding()"
     [interactive]="interactive()"
+    [separators]="separators()"
   >
+    @if (withHeader()) {
+      <span cardHeader class="head">Header</span>
+    }
     <span class="body">Content</span>
+    @if (withFooter()) {
+      <span cardFooter class="foot">Footer</span>
+    }
   </sh3-card>`,
 })
 class HostComponent {
@@ -20,6 +27,9 @@ class HostComponent {
   readonly radius = signal<"sm" | "md" | "lg">("lg");
   readonly padding = signal<"none" | "sm" | "md" | "lg">("md");
   readonly interactive = signal(false);
+  readonly separators = signal(false);
+  readonly withHeader = signal(false);
+  readonly withFooter = signal(false);
 }
 
 function render() {
@@ -57,5 +67,28 @@ describe("Sh3CardComponent", () => {
     fixture.componentInstance.surface.set("sunken");
     fixture.detectChanges();
     expect(card.classList.contains("s-sunken")).toBe(true);
+  });
+
+  it("projects [cardHeader] and [cardFooter] into their bands", () => {
+    const { fixture, card } = render();
+    expect(card.querySelector(".card-header .head")).toBeNull();
+    expect(card.querySelector(".card-footer .foot")).toBeNull();
+    fixture.componentInstance.withHeader.set(true);
+    fixture.componentInstance.withFooter.set(true);
+    fixture.detectChanges();
+    expect(card.querySelector(".card-header .head")?.textContent).toBe(
+      "Header",
+    );
+    expect(card.querySelector(".card-footer .foot")?.textContent).toBe(
+      "Footer",
+    );
+  });
+
+  it("toggles the separators modifier via the `separators` input", () => {
+    const { fixture, card } = render();
+    expect(card.classList.contains("has-sep")).toBe(false);
+    fixture.componentInstance.separators.set(true);
+    fixture.detectChanges();
+    expect(card.classList.contains("has-sep")).toBe(true);
   });
 });
