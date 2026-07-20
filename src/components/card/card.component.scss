@@ -66,10 +66,14 @@
 }
 
 /* Independent chrome: `raisedBands` tints the band, `separators` draws the
-   hairline — each toggles on its own so they never mask one another. */
+   hairline — each toggles on its own so they never mask one another. The raise
+   overlay is stacked (a gradient layer over the same overlay colour) so a low-
+   alpha token still reads as a clear step above the body. */
 :host(.raised-bands) .card-header:not(:empty),
 :host(.raised-bands) .card-footer:not(:empty) {
-  background: var(--_band-raise);
+  background:
+    linear-gradient(var(--_band-raise), var(--_band-raise)),
+    var(--_band-raise);
 }
 
 /* A fine hairline between header/body and body/footer; still reads on a raised
