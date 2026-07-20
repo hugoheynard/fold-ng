@@ -1,5 +1,6 @@
 import { booleanAttribute, Component, input } from "@angular/core";
 import { Sh3ElementTitleComponent } from "../element-title/element-title.component";
+import type { Sh3IconName } from "../icon/icon.registry";
 
 /**
  * `<sh3-page-section>` — a titled sub-section inside a {@link Sh3PageLayoutComponent}:
@@ -51,6 +52,8 @@ import { Sh3ElementTitleComponent } from "../element-title/element-title.compone
 export class Sh3PageSectionComponent {
   /** The section heading (rendered small + uppercase). */
   readonly title = input<string>();
+  /** An optional leading icon beside the title. */
+  readonly icon = input<Sh3IconName>();
   /** A one-line description under the title. */
   readonly description = input<string>();
   /** Base surface — `transparent` (flat, default), `card` (raised + radius), `sunken` (deep + radius). */

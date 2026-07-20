@@ -1,7 +1,11 @@
 @if (title() || description()) {
   <div class="section-head">
     @if (title(); as t) {
-      <sh3-element-title [variant]="divider() ? 'bar' : 'eyebrow'" [title]="t">
+      <sh3-element-title
+        [variant]="divider() ? 'bar' : 'eyebrow'"
+        [title]="t"
+        [icon]="icon()"
+      >
         <ng-content select="[sectionActions]" titleAction />
       </sh3-element-title>
     }
