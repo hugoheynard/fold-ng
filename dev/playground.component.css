@@ -47,10 +47,15 @@
 }
 
 /* preview card — the card header band is position:relative, so the viewport
-   switch can float centered over it */
+   switch can float centered over it. It may grow but never shrinks, so the live
+   component keeps a stable, legible width while settings/code give way. */
 .pg-preview {
-  flex: 1 1 200px;
-  min-width: 180px;
+  flex: 1 0 420px;
+  min-width: 420px;
+}
+:host(.pg-equal) .pg-preview {
+  flex: 1 0 420px;
+  min-width: 420px;
 }
 .pg-head-actions {
   position: absolute;
