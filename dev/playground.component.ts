@@ -3,6 +3,7 @@ import {
   Sh3CardComponent,
   Sh3ElementTitleComponent,
   Sh3IconComponent,
+  Sh3PageSectionComponent,
 } from "../src/index";
 
 /**
@@ -21,11 +22,19 @@ import {
  *
  * Set `equal` to force the three cards to share the width evenly and stretch to
  * a common height (otherwise each sizes to its content).
+ *
+ * The component owns its `sh3-page-section title="Playground"` wrapper, so a page
+ * just drops in `<dev-playground>` without repeating the section on every page.
  */
 @Component({
   selector: "dev-playground",
   standalone: true,
-  imports: [Sh3IconComponent, Sh3ElementTitleComponent, Sh3CardComponent],
+  imports: [
+    Sh3IconComponent,
+    Sh3ElementTitleComponent,
+    Sh3CardComponent,
+    Sh3PageSectionComponent,
+  ],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",
   host: { "[class.pg-equal]": "equal()" },

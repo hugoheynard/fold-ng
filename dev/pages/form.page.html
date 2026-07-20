@@ -133,165 +133,163 @@
         </div>
       </div>
 
-      <sh3-page-section title="Playground">
-        <dev-playground [code]="numberPlaygroundCode()" equal>
-          <div class="np-field" params>
-            <span class="gal-tag">spinner</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="npSpinner() === 'arrows'"
-                (click)="npSpinner.set('arrows')"
-              >
-                arrows
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npSpinner() === 'plusminus'"
-                (click)="npSpinner.set('plusminus')"
-              >
-                +−
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npSpinner() === 'none'"
-                (click)="npSpinner.set('none')"
-              >
-                none
-              </button>
-            </div>
+      <dev-playground [code]="numberPlaygroundCode()" equal>
+        <div class="np-field" params>
+          <span class="gal-tag">spinner</span>
+          <div class="ss-seg">
+            <button
+              type="button"
+              [class.is-on]="npSpinner() === 'arrows'"
+              (click)="npSpinner.set('arrows')"
+            >
+              arrows
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npSpinner() === 'plusminus'"
+              (click)="npSpinner.set('plusminus')"
+            >
+              +−
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npSpinner() === 'none'"
+              (click)="npSpinner.set('none')"
+            >
+              none
+            </button>
           </div>
-          <div class="np-field" params>
-            <span class="gal-tag">controls</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="npControls() === 'inside'"
-                (click)="npControls.set('inside')"
-              >
-                inside
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npControls() === 'outside'"
-                (click)="npControls.set('outside')"
-              >
-                outside
-              </button>
-            </div>
+        </div>
+        <div class="np-field" params>
+          <span class="gal-tag">controls</span>
+          <div class="ss-seg">
+            <button
+              type="button"
+              [class.is-on]="npControls() === 'inside'"
+              (click)="npControls.set('inside')"
+            >
+              inside
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npControls() === 'outside'"
+              (click)="npControls.set('outside')"
+            >
+              outside
+            </button>
           </div>
-          <div class="np-field" params>
-            <span class="gal-tag">size</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="npSize() === 'sm'"
-                (click)="npSize.set('sm')"
-              >
-                sm
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npSize() === 'md'"
-                (click)="npSize.set('md')"
-              >
-                md
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npSize() === 'lg'"
-                (click)="npSize.set('lg')"
-              >
-                lg
-              </button>
-            </div>
+        </div>
+        <div class="np-field" params>
+          <span class="gal-tag">size</span>
+          <div class="ss-seg">
+            <button
+              type="button"
+              [class.is-on]="npSize() === 'sm'"
+              (click)="npSize.set('sm')"
+            >
+              sm
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npSize() === 'md'"
+              (click)="npSize.set('md')"
+            >
+              md
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npSize() === 'lg'"
+              (click)="npSize.set('lg')"
+            >
+              lg
+            </button>
           </div>
-          <sh3-slider
-            params
-            label="step"
-            [min]="1"
-            [max]="10"
-            [(value)]="npStep"
-          />
-          <sh3-slider
-            params
-            label="min"
-            [min]="0"
-            [max]="10"
-            [valueText]="npMin() ? npMin() + '' : 'off'"
-            [(value)]="npMin"
-          />
-          <sh3-slider
-            params
-            label="max"
-            [min]="0"
-            [max]="50"
-            [valueText]="npMax() ? npMax() + '' : 'off'"
-            [(value)]="npMax"
-          />
-          <div class="np-field" params>
-            <span class="gal-tag">flags</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="npShowStep()"
-                (click)="npShowStep.set(!npShowStep())"
-              >
-                showStep
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npSnap()"
-                (click)="npSnap.set(!npSnap())"
-              >
-                snapToStep
-              </button>
-            </div>
+        </div>
+        <sh3-slider
+          params
+          label="step"
+          [min]="1"
+          [max]="10"
+          [(value)]="npStep"
+        />
+        <sh3-slider
+          params
+          label="min"
+          [min]="0"
+          [max]="10"
+          [valueText]="npMin() ? npMin() + '' : 'off'"
+          [(value)]="npMin"
+        />
+        <sh3-slider
+          params
+          label="max"
+          [min]="0"
+          [max]="50"
+          [valueText]="npMax() ? npMax() + '' : 'off'"
+          [(value)]="npMax"
+        />
+        <div class="np-field" params>
+          <span class="gal-tag">flags</span>
+          <div class="ss-seg">
+            <button
+              type="button"
+              [class.is-on]="npShowStep()"
+              (click)="npShowStep.set(!npShowStep())"
+            >
+              showStep
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npSnap()"
+              (click)="npSnap.set(!npSnap())"
+            >
+              snapToStep
+            </button>
           </div>
-          <div class="np-field" params>
-            <span class="gal-tag">decimals</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="npDecimals() === undefined"
-                (click)="npDecimals.set(undefined)"
-              >
-                free
-              </button>
-              <button
-                type="button"
-                [class.is-on]="npDecimals() === 0"
-                (click)="npDecimals.set(0)"
-              >
-                int
-              </button>
-              @for (d of [1, 2, 3]; track d) {
-              <button
-                type="button"
-                [class.is-on]="npDecimals() === d"
-                (click)="npDecimals.set(d)"
-              >
-                {{ d }}
-              </button>
-              }
-            </div>
+        </div>
+        <div class="np-field" params>
+          <span class="gal-tag">decimals</span>
+          <div class="ss-seg">
+            <button
+              type="button"
+              [class.is-on]="npDecimals() === undefined"
+              (click)="npDecimals.set(undefined)"
+            >
+              free
+            </button>
+            <button
+              type="button"
+              [class.is-on]="npDecimals() === 0"
+              (click)="npDecimals.set(0)"
+            >
+              int
+            </button>
+            @for (d of [1, 2, 3]; track d) {
+            <button
+              type="button"
+              [class.is-on]="npDecimals() === d"
+              (click)="npDecimals.set(d)"
+            >
+              {{ d }}
+            </button>
+            }
           </div>
+        </div>
 
-          <sh3-number-input
-            label="Quantity"
-            [size]="npSize()"
-            [spinner]="npSpinner()"
-            [controls]="npControls()"
-            [min]="npMin() || undefined"
-            [max]="npMax() || undefined"
-            [step]="npStep()"
-            [showStep]="npShowStep()"
-            [snapToStep]="npSnap()"
-            [decimals]="npDecimals()"
-            [(value)]="npValue"
-          />
-        </dev-playground>
-      </sh3-page-section>
+        <sh3-number-input
+          label="Quantity"
+          [size]="npSize()"
+          [spinner]="npSpinner()"
+          [controls]="npControls()"
+          [min]="npMin() || undefined"
+          [max]="npMax() || undefined"
+          [step]="npStep()"
+          [showStep]="npShowStep()"
+          [snapToStep]="npSnap()"
+          [decimals]="npDecimals()"
+          [(value)]="npValue"
+        />
+      </dev-playground>
     </div>
     } @case ("select") {
     <div class="gal-stack">

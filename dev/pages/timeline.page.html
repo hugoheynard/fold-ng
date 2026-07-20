@@ -1,9 +1,9 @@
 <sh3-page-layout
   fluid
   title="timeline"
-  description="sh3-timeline — one surface-agnostic dot-rail primitive, two orientations. Vertical: a navigable chronology (nodes emit their id, a null-id node is an inert accented anchor). Horizontal: a progress stepper (a `progress` fill line, each node's `done` drives its accent). It renders content only (a labelled <nav>
-    <gal-kind-badge titleBadge kind="component" />) — the consumer supplies the surface."
+  description="sh3-timeline — one surface-agnostic dot-rail primitive, two orientations. Vertical: a navigable chronology (nodes emit their id, a null-id node is an inert accented anchor). Horizontal: a progress stepper (a `progress` fill line, each node's `done` drives its accent). It renders content only (a labelled nav element) — the consumer supplies the surface."
 >
+  <gal-kind-badge titleBadge kind="component" />
   <div class="gal-row gal-row--wide">
     <div class="gal-cell" style="max-width: 320px">
       <span class="gal-tag">vertical · navigable · click a node</span>
@@ -30,128 +30,126 @@
     </div>
   </div>
 
-  <sh3-page-section title="Playground">
-    <dev-playground [code]="timelinePlaygroundCode()" equal>
-      <div class="np-field" params>
-        <span class="gal-tag">orientation</span>
-        <div class="ss-seg">
-          <button
-            type="button"
-            [class.is-on]="tlpOrientation() === 'vertical'"
-            (click)="tlpOrientation.set('vertical')"
-          >
-            vertical
-          </button>
-          <button
-            type="button"
-            [class.is-on]="tlpOrientation() === 'horizontal'"
-            (click)="tlpOrientation.set('horizontal')"
-          >
-            horizontal
-          </button>
-        </div>
+  <dev-playground [code]="timelinePlaygroundCode()" equal>
+    <div class="np-field" params>
+      <span class="gal-tag">orientation</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tlpOrientation() === 'vertical'"
+          (click)="tlpOrientation.set('vertical')"
+        >
+          vertical
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tlpOrientation() === 'horizontal'"
+          (click)="tlpOrientation.set('horizontal')"
+        >
+          horizontal
+        </button>
       </div>
-      @if (tlpOrientation() === "horizontal") {
-      <sh3-slider
-        params
-        label="completed"
-        [min]="0"
-        [max]="4"
-        [valueText]="tlpDone() + ' / 4 · ' + tlpProgress() + '%'"
-        [(value)]="tlpDone"
-      />
-      <div class="np-field" params>
-        <span class="gal-tag">steps</span>
-        <div class="ss-seg">
-          <button
-            type="button"
-            [class.is-on]="!tlpClickable()"
-            (click)="tlpClickable.set(false)"
-          >
-            static
-          </button>
-          <button
-            type="button"
-            [class.is-on]="tlpClickable()"
-            (click)="tlpClickable.set(true)"
-          >
-            clickable
-          </button>
-        </div>
+    </div>
+    @if (tlpOrientation() === "horizontal") {
+    <sh3-slider
+      params
+      label="completed"
+      [min]="0"
+      [max]="4"
+      [valueText]="tlpDone() + ' / 4 · ' + tlpProgress() + '%'"
+      [(value)]="tlpDone"
+    />
+    <div class="np-field" params>
+      <span class="gal-tag">steps</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!tlpClickable()"
+          (click)="tlpClickable.set(false)"
+        >
+          static
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tlpClickable()"
+          (click)="tlpClickable.set(true)"
+        >
+          clickable
+        </button>
       </div>
-      }
-      <p class="doc-p" params>Last clicked: “{{ tlpClicked() ?? "—" }}”</p>
-      <div class="np-field" params>
-        <span class="gal-tag">dot shape</span>
-        <div class="ss-seg">
-          <button
-            type="button"
-            [class.is-on]="!tlpSquare()"
-            (click)="tlpSquare.set(false)"
-          >
-            round
-          </button>
-          <button
-            type="button"
-            [class.is-on]="tlpSquare()"
-            (click)="tlpSquare.set(true)"
-          >
-            square
-          </button>
-        </div>
+    </div>
+    }
+    <p class="doc-p" params>Last clicked: “{{ tlpClicked() ?? "—" }}”</p>
+    <div class="np-field" params>
+      <span class="gal-tag">dot shape</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!tlpSquare()"
+          (click)="tlpSquare.set(false)"
+        >
+          round
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tlpSquare()"
+          (click)="tlpSquare.set(true)"
+        >
+          square
+        </button>
       </div>
-      <div class="np-field" params>
-        <span class="gal-tag">variant</span>
-        <div class="ss-seg">
-          <button
-            type="button"
-            [class.is-on]="tlpVariant() === 'plain'"
-            (click)="tlpVariant.set('plain')"
-          >
-            plain
-          </button>
-          <button
-            type="button"
-            [class.is-on]="tlpVariant() === 'hollow'"
-            (click)="tlpVariant.set('hollow')"
-          >
-            hollow
-          </button>
-        </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">variant</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tlpVariant() === 'plain'"
+          (click)="tlpVariant.set('plain')"
+        >
+          plain
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tlpVariant() === 'hollow'"
+          (click)="tlpVariant.set('hollow')"
+        >
+          hollow
+        </button>
       </div>
-      <div class="np-field" params>
-        <span class="gal-tag">datePlacement</span>
-        <div class="ss-seg">
-          @for (p of tlpPlacements; track p) {
-          <button
-            type="button"
-            [class.is-on]="tlpDatePlacement() === p"
-            (click)="tlpDatePlacement.set(p)"
-          >
-            {{ p }}
-          </button>
-          }
-        </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">datePlacement</span>
+      <div class="ss-seg">
+        @for (p of tlpPlacements; track p) {
+        <button
+          type="button"
+          [class.is-on]="tlpDatePlacement() === p"
+          (click)="tlpDatePlacement.set(p)"
+        >
+          {{ p }}
+        </button>
+        }
       </div>
+    </div>
 
-      <sh3-card surface="sunken" style="padding: 22px 18px">
-        <sh3-timeline
-          [orientation]="tlpOrientation()"
-          [ariaLabel]="
+    <sh3-card surface="sunken" style="padding: 22px 18px">
+      <sh3-timeline
+        [orientation]="tlpOrientation()"
+        [ariaLabel]="
             tlpOrientation() === 'horizontal'
               ? 'Signature progress'
               : 'Contract history'
           "
-          nodeTitle="Go to item"
-          [square]="tlpSquare()"
-          [variant]="tlpVariant()"
-          [datePlacement]="tlpDatePlacement()"
-          [nodes]="tlpNodes()"
-          (nodeClick)="tlpClicked.set($event)"
-        />
-      </sh3-card>
-    </dev-playground>
-  </sh3-page-section>
+        nodeTitle="Go to item"
+        [square]="tlpSquare()"
+        [variant]="tlpVariant()"
+        [datePlacement]="tlpDatePlacement()"
+        [nodes]="tlpNodes()"
+        (nodeClick)="tlpClicked.set($event)"
+      />
+    </sh3-card>
+  </dev-playground>
 
   <div class="gal-cell" style="max-width: 520px">
     <span class="gal-tag">custom #node template — a badge from node.state</span>

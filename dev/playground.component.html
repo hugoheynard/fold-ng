@@ -1,36 +1,48 @@
-<div class="pg-row">
-  <sh3-card class="pg-panel pg-params" padding="none" separators>
-    <sh3-element-title
-      cardHeader
-      variant="title"
-      icon="sliders"
-      title="Settings"
-    />
-    <div class="pg-body pg-params-body">
-      <ng-content select="[params]" />
-    </div>
-  </sh3-card>
-
-  <sh3-card class="pg-panel pg-preview" padding="none" separators>
-    <sh3-element-title cardHeader variant="title" icon="eye" title="Preview" />
-    <div cardHeader class="pg-head-actions">
-      <ng-content select="[preview-actions]" />
-    </div>
-    <div class="pg-body pg-preview-body">
-      <ng-content />
-    </div>
-  </sh3-card>
-
-  <sh3-card class="pg-panel pg-code" surface="sunken" padding="none" separators>
-    <sh3-element-title cardHeader variant="title" icon="code" title="Code">
-      <div titleAction class="pg-code-actions">
-        <span class="pg-lang">{{ lang() }}</span>
-        <button type="button" class="pg-copy" (click)="copy()">
-          <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
-          {{ copied() ? "Copied" : "Copy" }}
-        </button>
+<sh3-page-section title="Playground" icon="play">
+  <div class="pg-row">
+    <sh3-card class="pg-panel pg-params" padding="none" separators>
+      <sh3-element-title
+        cardHeader
+        variant="title"
+        icon="sliders"
+        title="Settings"
+      />
+      <div class="pg-body pg-params-body">
+        <ng-content select="[params]" />
       </div>
-    </sh3-element-title>
-    <pre class="pg-body pg-pre"><code>{{ code() }}</code></pre>
-  </sh3-card>
-</div>
+    </sh3-card>
+
+    <sh3-card class="pg-panel pg-preview" padding="none" separators>
+      <sh3-element-title
+        cardHeader
+        variant="title"
+        icon="eye"
+        title="Preview"
+      />
+      <div cardHeader class="pg-head-actions">
+        <ng-content select="[preview-actions]" />
+      </div>
+      <div class="pg-body pg-preview-body">
+        <ng-content />
+      </div>
+    </sh3-card>
+
+    <sh3-card
+      class="pg-panel pg-code"
+      surface="sunken"
+      padding="none"
+      separators
+    >
+      <sh3-element-title cardHeader variant="title" icon="code" title="Code">
+        <div titleAction class="pg-code-actions">
+          <span class="pg-lang">{{ lang() }}</span>
+          <button type="button" class="pg-copy" (click)="copy()">
+            <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
+            {{ copied() ? "Copied" : "Copy" }}
+          </button>
+        </div>
+      </sh3-element-title>
+      <pre class="pg-body pg-pre"><code>{{ code() }}</code></pre>
+    </sh3-card>
+  </div>
+</sh3-page-section>
