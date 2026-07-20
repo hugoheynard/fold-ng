@@ -1,10 +1,15 @@
-import { Component } from "@angular/core";
+import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
+import { DevPlaygroundComponent } from "../playground.component";
 import {
   Sh3ButtonComponent,
   Sh3CardComponent,
   Sh3PageLayoutComponent,
 } from "../../src/index";
+
+type CardSurface = "card" | "sunken";
+type CardRadius = "sm" | "md" | "lg";
+type CardPadding = "none" | "sm" | "md" | "lg";
 
 /** `/card` — the `sh3-card` gallery page. */
 @Component({
@@ -16,42 +21,51 @@ import {
     Sh3PageLayoutComponent,
     Sh3CardComponent,
     Sh3ButtonComponent,
+    DevPlaygroundComponent,
   ],
-  template: `<sh3-page-layout fluid title="card">
-    <gal-kind-badge titleBadge kind="component" />
-    <div class="gal-cell">
-      <span class="gal-tag">surface · radius · padding</span>
-      <div class="gal-row gal-row--wide">
-        <sh3-card>card (default)</sh3-card>
-        <sh3-card surface="sunken">sunken</sh3-card>
-        <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
-      </div>
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag">header · footer · separators</span>
-      <div class="gal-row gal-row--wide">
-        <sh3-card separators raisedBands style="max-width: 300px">
-          <strong cardHeader>Card title</strong>
-          <p style="margin: 0; color: var(--sh3-color-text-muted)">
-            The header and footer are optional projected bands; the separators
-            flag draws the hairline between them and the body.
-          </p>
-          <div
-            cardFooter
-            style="display: flex; gap: 8px; justify-content: flex-end"
-          >
-            <sh3-button size="sm" variant="ghost">Cancel</sh3-button>
-            <sh3-button size="sm">Save</sh3-button>
-          </div>
-        </sh3-card>
-        <sh3-card surface="sunken" style="max-width: 300px">
-          <strong cardHeader>No separators</strong>
-          <p style="margin: 0; color: var(--sh3-color-text-muted)">
-            Same bands without the divider — a quieter grouping.
-          </p>
-        </sh3-card>
-      </div>
-    </div>
-  </sh3-page-layout>`,
+  templateUrl: "./card.page.html",
 })
-export default class CardPage {}
+export default class CardPage {
+  protected readonly radii: readonly CardRadius[] = ["sm", "md", "lg"];
+  protected readonly paddings: readonly CardPadding[] = [
+    "none",
+    "sm",
+    "md",
+    "lg",
+  ];
+
+  protected readonly cpSurface = signal<CardSurface>("card");
+  protected readonly cpRadius = signal<CardRadius>("lg");
+  protected readonly cpPadding = signal<CardPadding>("md");
+  protected readonly cpSeparators = signal(true);
+  protected readonly cpRaised = signal(true);
+  protected readonly cpHeader = signal(true);
+  protected readonly cpFooter = signal(true);
+
+  protected readonly cardCode = computed(() => {
+    const attrs: string[] = [];
+    if (this.cpSurface() === "sunken") {
+      attrs.push('surface="sunken"');
+    }
+    if (this.cpRadius() !== "lg") {
+      attrs.push(`radius="${this.cpRadius()}"`);
+    }
+    if (this.cpPadding() !== "md") {
+      attrs.push(`padding="${this.cpPadding()}"`);
+    }
+    if (this.cpSeparators()) {
+      attrs.push("separators");
+    }
+    if (this.cpRaised()) {
+      attrs.push("raisedBands");
+    }
+    const open = attrs.length ? `<sh3-card ${attrs.join(" ")}>` : "<sh3-card>";
+    return [
+      open,
+      ...(this.cpHeader() ? ["  <strong cardHeader>Card title</strong>"] : []),
+      "  Body content",
+      ...(this.cpFooter() ? ["  <div cardFooter>…actions…</div>"] : []),
+      "</sh3-card>",
+    ].join("\n");
+  });
+}

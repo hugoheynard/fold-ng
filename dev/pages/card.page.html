@@ -1,0 +1,134 @@
+<sh3-page-layout
+  fluid
+  title="card"
+  description="The canonical raised content surface — a solid tint, a hairline border and a consistent radius, so cards never drift on colour or corner. Optional projected header/footer bands (with separators or a raised tint) turn it into a titled panel."
+>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <div class="gal-cell">
+    <span class="gal-tag">surface · radius · padding</span>
+    <div class="gal-row gal-row--wide">
+      <sh3-card>card (default)</sh3-card>
+      <sh3-card surface="sunken">sunken</sh3-card>
+      <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
+    </div>
+  </div>
+
+  <dev-playground [code]="cardCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">surface</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="cpSurface() === 'card'"
+          (click)="cpSurface.set('card')"
+        >
+          card
+        </button>
+        <button
+          type="button"
+          [class.is-on]="cpSurface() === 'sunken'"
+          (click)="cpSurface.set('sunken')"
+        >
+          sunken
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">radius</span>
+      <div class="ss-seg">
+        @for (r of radii; track r) {
+        <button
+          type="button"
+          [class.is-on]="cpRadius() === r"
+          (click)="cpRadius.set(r)"
+        >
+          {{ r }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">padding</span>
+      <div class="ss-seg">
+        @for (p of paddings; track p) {
+        <button
+          type="button"
+          [class.is-on]="cpPadding() === p"
+          (click)="cpPadding.set(p)"
+        >
+          {{ p }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">bands</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="cpHeader()"
+          (click)="cpHeader.set(!cpHeader())"
+        >
+          header
+        </button>
+        <button
+          type="button"
+          [class.is-on]="cpFooter()"
+          (click)="cpFooter.set(!cpFooter())"
+        >
+          footer
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">chrome</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="cpSeparators()"
+          (click)="cpSeparators.set(!cpSeparators())"
+        >
+          separators
+        </button>
+        <button
+          type="button"
+          [class.is-on]="cpRaised()"
+          (click)="cpRaised.set(!cpRaised())"
+        >
+          raisedBands
+        </button>
+      </div>
+    </div>
+
+    <sh3-card
+      [surface]="cpSurface()"
+      [radius]="cpRadius()"
+      [padding]="cpPadding()"
+      [separators]="cpSeparators()"
+      [raisedBands]="cpRaised()"
+      style="max-width: 320px"
+    >
+      @if (cpHeader()) {
+      <strong cardHeader>Card title</strong>
+      }
+      <p class="gal-body" style="margin: 0">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+      @if (cpFooter()) {
+      <div
+        cardFooter
+        style="display: flex; gap: 8px; justify-content: flex-end"
+      >
+        <sh3-button size="sm" variant="ghost">Cancel</sh3-button>
+        <sh3-button size="sm">Save</sh3-button>
+      </div>
+      }
+    </sh3-card>
+  </dev-playground>
+</sh3-page-layout>
