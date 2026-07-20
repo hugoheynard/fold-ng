@@ -1,4 +1,4 @@
-import { Component, input, signal } from "@angular/core";
+import { booleanAttribute, Component, input, signal } from "@angular/core";
 import {
   Sh3ButtonComponent,
   Sh3CardComponent,
@@ -36,12 +36,16 @@ import {
   ],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",
+  host: { "[class.pg-stage]": "stage()" },
 })
 export class DevPlaygroundComponent {
   /** The generated code snippet shown (and copied) on the right. */
   readonly code = input("");
   /** Language label on the code block. */
   readonly lang = input("html");
+  /** Render the preview on an app-background stage (inset, padded) instead of on
+   *  the card surface — clearer hierarchy when the demo is itself a card. */
+  readonly stage = input(false, { transform: booleanAttribute });
 
   protected readonly copied = signal(false);
 

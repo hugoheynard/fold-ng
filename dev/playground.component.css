@@ -76,6 +76,16 @@
   flex-direction: column;
   gap: 10px;
 }
+/* `stage` mode: sit the preview on an app-background backdrop, inset + padded
+   inside the card, so a demo that is itself a card reads with clear hierarchy. */
+:host(.pg-stage) .pg-preview-body {
+  margin: 14px;
+  padding: 20px;
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-bg-page);
+  align-items: center;
+  justify-content: center;
+}
 
 /* code card */
 .pg-code-actions {
