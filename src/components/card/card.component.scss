@@ -69,19 +69,15 @@
   padding: var(--_pad);
 }
 
-/* Optional raised tint on the header/footer bands, set apart from the body. The
-   raise keeps a faint hairline edge (an inset shadow, so it composes with the
-   `separators` border) so the band still reads a crisp separation. */
-:host(.raised-bands) .card-header:not(:empty) {
-  background: var(--_band-raise);
-  box-shadow: inset 0 -1px 0 var(--_sep-line);
-}
+/* Independent chrome: `raisedBands` tints the band, `separators` draws the
+   hairline — each toggles on its own so they never mask one another. */
+:host(.raised-bands) .card-header:not(:empty),
 :host(.raised-bands) .card-footer:not(:empty) {
   background: var(--_band-raise);
-  box-shadow: inset 0 1px 0 var(--_sep-line);
 }
 
-/* Optional hairline between header/body and body/footer. */
+/* A fine hairline between header/body and body/footer; still reads on a raised
+   band because it sits on the (darker) body edge. */
 :host(.has-sep) .card-header:not(:empty) {
   border-bottom: 1px solid var(--_sep-line);
 }
