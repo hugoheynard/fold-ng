@@ -22,7 +22,10 @@ import {
     [icon]="icon()"
     description="Cette démo est en cours de migration vers sa propre page routée."
   >
-    <sh3-card surface="sunken" style="padding: 28px; text-align: center">
+    <sh3-card
+      surface="sunken"
+      style="--sh3-card-padding: 28px; text-align: center"
+    >
       <p style="margin: 0; color: var(--sh3-color-text-muted)">
         Contenu à migrer depuis l'ancienne galerie.
       </p>

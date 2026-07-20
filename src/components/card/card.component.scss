@@ -1,28 +1,39 @@
-/* Defaults: lg radius + md padding. Modifier classes override. */
+/* A card is a flex column of three regions: an optional header band, the body,
+   and an optional footer band. The host owns the surface, border and radius —
+   never padding — so the body's padding is identical whether or not the bands
+   are shown (toggling a header/footer never shifts the content). */
 :host {
+  /* body padding (the `padding` input); override any value with --sh3-card-padding */
   --_pad: 16px;
-  /* the header/footer raise — a white overlay over the surface (see `raisedBands`);
-     proportional to whatever the band sits on, and fainter on the sunken tint. */
+  /* header/footer padding, independent of the body so a padding=none card can
+     still have padded chrome (e.g. a titled panel with a flush body). */
+  --_chrome: 12px 16px;
+  /* corner radius, shared with the bands so a raised/bordered band never squares
+     off the rounded card. */
+  --_radius: var(--sh3-radius-lg);
+  /* raisedBands overlay + separators hairline. */
   --_band-raise: var(--sh3-color-surface-raised);
-  /* a fine but visible hairline for the `separators` band divider. */
   --_sep-line: var(--sh3-color-border-subtle);
-  display: block;
+
+  display: flex;
+  flex-direction: column;
   background: var(--sh3-color-surface-card);
   border: 1px solid var(--sh3-color-border);
-  border-radius: var(--sh3-radius-lg);
-  padding: var(--_pad);
+  border-radius: var(--_radius);
 }
-/* Sunken (deep container) pairs with a fainter hairline + a fainter band raise. */
+
+/* Sunken — a deeper container; pairs with a fainter hairline + a fainter raise. */
 :host(.s-sunken) {
   background: var(--sh3-color-surface-sunken);
   border-color: var(--sh3-color-border-subtle);
   --_band-raise: var(--sh3-color-surface-subtle);
 }
+
 :host(.r-md) {
-  border-radius: var(--sh3-radius-md);
+  --_radius: var(--sh3-radius-md);
 }
 :host(.r-sm) {
-  border-radius: var(--sh3-radius-sm);
+  --_radius: var(--sh3-radius-sm);
 }
 :host(.p-none) {
   --_pad: 0;
@@ -34,50 +45,44 @@
   --_pad: 20px;
 }
 
-/* Header / footer bands render only when something is projected into them; they
-   anchor absolutely-positioned children (badges, overlays). */
+/* ── Regions ─────────────────────────────────────────────────────────────── */
+/* Bands render only when something is projected into them, and anchor
+   absolutely-positioned children (badges, a centered overlay). Their outer
+   corners follow the card radius. */
+.card-header,
+.card-footer {
+  position: relative;
+  padding: var(--_chrome);
+}
 .card-header:empty,
 .card-footer:empty {
   display: none;
 }
-.card-header,
+.card-header {
+  border-radius: var(--_radius) var(--_radius) 0 0;
+}
 .card-footer {
-  position: relative;
+  border-radius: 0 0 var(--_radius) var(--_radius);
 }
-/* With a header or footer, the card becomes a flex column of bands: the host
-   stops padding, the header/footer carry a fixed chrome padding, and the body
-   owns the `padding` input + fills the height. A plain body-only card is
-   untouched (host keeps its padding, so inline `style="padding"` still works). */
-:host(:has([cardHeader], [cardFooter])) {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-}
-:host(:has([cardHeader], [cardFooter])) .card-header,
-:host(:has([cardHeader], [cardFooter])) .card-footer {
-  padding: 12px 16px;
-}
-:host(:has([cardHeader], [cardFooter])) .card-body {
+/* The body always carries the padding, fills the height, and lays its content
+   out as a stack (matching a card-with-bands, so the two are never different). */
+.card-body {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: var(--_pad);
+  padding: var(--sh3-card-padding, var(--_pad));
 }
 
-/* Independent chrome: `raisedBands` tints the band, `separators` draws the
-   hairline — each toggles on its own so they never mask one another. The raise
-   overlay is stacked (a gradient layer over the same overlay colour) so a low-
-   alpha token still reads as a clear step above the body. */
+/* ── Optional chrome — independent, so each toggles on its own ────────────── */
+/* raisedBands: tint the bands a clear step above the body (the overlay is
+   stacked so a low-alpha token still reads). */
 :host(.raised-bands) .card-header:not(:empty),
 :host(.raised-bands) .card-footer:not(:empty) {
   background:
-    linear-gradient(var(--_band-raise), var(--_band-raise)),
-    var(--_band-raise);
+    linear-gradient(var(--_band-raise), var(--_band-raise)), var(--_band-raise);
 }
-
-/* A fine hairline between header/body and body/footer; still reads on a raised
-   band because it sits on the (darker) body edge. */
+/* separators: a fine hairline between a band and the body. */
 :host(.has-sep) .card-header:not(:empty) {
   border-bottom: 1px solid var(--_sep-line);
 }
@@ -85,6 +90,7 @@
   border-top: 1px solid var(--_sep-line);
 }
 
+/* interactive: a hover lift for clickable cards. */
 :host(.is-interactive) {
   cursor: pointer;
   transition:

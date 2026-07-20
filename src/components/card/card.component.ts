@@ -10,7 +10,8 @@ import { booleanAttribute, Component, input } from "@angular/core";
  *   surface for large containers, below the card — the ref's second card tint;
  *   pairs with a fainter `border-subtle` hairline).
  * - `radius` — `lg` (14px, default) · `md` · `sm`.
- * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`.
+ * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`. Sets the *body*
+ *   padding; override with a custom value via `--sh3-card-padding`.
  * - `interactive` — adds a hover lift (for clickable cards).
  * - `separators` — draw a hairline between a projected header/footer and the body.
  * - `raisedBands` — tint the header/footer bands a step above the surface
@@ -21,8 +22,10 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * - `[cardHeader]` → an optional header band above the body.
  * - `[cardFooter]` → an optional footer band below the body.
  *
- * When a header or footer is projected the padding moves onto each band so a
- * `separators` divider spans the full width; a plain body-only card is unchanged.
+ * The card is a flex column of three regions: the body always owns the `padding`,
+ * the header/footer carry their own (independent) chrome padding, and the host
+ * never pads. So the content padding is identical whether or not the bands show —
+ * toggling a header/footer never shifts the body.
  *
  * ```html
  * <sh3-card>Static content</sh3-card>
@@ -58,7 +61,8 @@ export class Sh3CardComponent {
   readonly surface = input<"card" | "sunken">("card");
   /** Corner radius — `lg` (default), `md`, or `sm`. */
   readonly radius = input<"sm" | "md" | "lg">("lg");
-  /** Inner padding — `md` (default), `none`, `sm`, or `lg`. */
+  /** Body padding — `md` (default), `none`, `sm`, or `lg`; a custom value can be
+   *  set with the `--sh3-card-padding` CSS variable. */
   readonly padding = input<"none" | "sm" | "md" | "lg">("md");
   /** Add a hover lift for clickable cards. */
   readonly interactive = input(false);

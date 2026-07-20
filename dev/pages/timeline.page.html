@@ -7,7 +7,7 @@
   <div class="gal-row gal-row--wide">
     <div class="gal-cell" style="max-width: 320px">
       <span class="gal-tag">vertical · navigable · click a node</span>
-      <sh3-card surface="sunken" style="padding: 18px">
+      <sh3-card surface="sunken" style="--sh3-card-padding: 18px">
         <sh3-timeline
           ariaLabel="Contract history"
           nodeTitle="Go to item"
@@ -19,7 +19,7 @@
     </div>
     <div class="gal-cell" style="max-width: 440px">
       <span class="gal-tag">horizontal · progress stepper</span>
-      <sh3-card surface="sunken" style="padding: 22px 18px">
+      <sh3-card surface="sunken" style="--sh3-card-padding: 22px 18px">
         <sh3-timeline
           orientation="horizontal"
           ariaLabel="Signature progress"
@@ -133,7 +133,7 @@
       </div>
     </div>
 
-    <sh3-card surface="sunken" style="padding: 22px 18px">
+    <sh3-card surface="sunken" style="--sh3-card-padding: 22px 18px">
       <sh3-timeline
         [orientation]="tlpOrientation()"
         [ariaLabel]="
@@ -153,7 +153,7 @@
 
   <div class="gal-cell" style="max-width: 520px">
     <span class="gal-tag">custom #node template — a badge from node.state</span>
-    <sh3-card surface="sunken" style="padding: 22px 18px">
+    <sh3-card surface="sunken" style="--sh3-card-padding: 22px 18px">
       <sh3-timeline orientation="horizontal" [nodes]="tlCustom">
         <ng-template #node let-n>
           <span class="nlabel">{{ n.label }}</span>
