@@ -1,256 +1,146 @@
 <sh3-page-layout fluid title="app-shell" icon="grid">
   <gal-kind-badge titleBadge kind="component" />
-  <!-- Responsive preview — the settings drive this shell; the mode switch
-     resizes the container so the shell folds (secondary rail at tablet,
-     both rails at mobile) via its container queries. -->
-  <div class="shell-preview-modes">
-    @for (m of shellModes; track m) {
-    <button
-      type="button"
-      [class.is-on]="shellMode() === m"
-      (click)="shellMode.set(m)"
-    >
-      {{ m }}
-    </button>
-    }
-    <span class="spm-width">{{ shellPreviewWidth() }}px</span>
-    <button
-      type="button"
-      class="spm-code"
-      [class.is-on]="showCode()"
-      (click)="showCode.set(!showCode())"
-    >
-      code
-    </button>
-  </div>
-  <div class="shell-preview-frame">
-    <div
-      class="shell-preview"
-      [style.width.px]="shellPreviewWidth()"
-      panelScope
-      #sph="panelScope"
-    >
-      <sh3-app-shell
-        #previewShell
-        [appearance]="shellAppearance()"
-        [headerLayout]="shellHeaderLayout()"
-        [railWidth]="shellRailWidth()"
-        [headerHeight]="shellHeaderHeight()"
-      >
-        <!-- Real components in the rails — the preview can't drift from
-           how sh3-menu actually behaves (rounds itself in floating,
-           reads --sh3-shell-rail-width, tooltips when collapsed). -->
-        <sh3-menu railPrimary tint="primary">
-          <div header class="rail-brand">S3</div>
-          @for (i of railNav; track i.id) {
-          <button
-            sh3-menu-item
-            [icon]="i.icon"
-            [label]="i.label"
-            [active]="previewNav() === i.id"
-            (click)="previewNav.set(i.id)"
-          ></button>
-          }
-          <button
-            footer
-            sh3-menu-item
-            icon="settings"
-            label="Settings"
-          ></button>
-        </sh3-menu>
-        <sh3-menu railSecondary level="secondary" [expanded]="true">
-          <div header class="lib-head">Workspace</div>
-          <button
-            sh3-menu-item
-            icon="grid"
-            label="Overview"
-            [active]="true"
-          ></button>
-          <button sh3-menu-item icon="contracts" label="Contracts"></button>
-          <button sh3-menu-item icon="music" label="Library"></button>
-        </sh3-menu>
-        <div header class="sp-header">
-          <span>Header</span>
-          <div class="sp-actions">
-            <button type="button" (click)="openPreviewPanel(sph.service)">
-              <sh3-icon name="contracts" size="sm" />
-              Open panel
-            </button>
-            <button type="button" (click)="toggleTheme()">
-              <sh3-icon
-                [name]="
-                  theme() === 'dark' ? 'theme-light' : 'theme-dark'
-                "
-                size="sm"
-              />
-              {{ theme() === "dark" ? "Light" : "Dark" }}
-            </button>
-          </div>
-        </div>
-        <div class="sp-content">
-          <div class="sp-block"></div>
-          <div class="sp-block"></div>
-        </div>
 
-        <!-- the preview's own panel host — panels open inside the preview -->
-        <sh3-panel-host />
-      </sh3-app-shell>
-    </div>
-
-    <!-- "code" overlay — a glass sheet over the preview: HTML usage on the
-       left, the CSS variables to override on the right. -->
-    @if (showCode()) {
-    <div class="code-overlay">
-      <div class="code-overlay-pane">
-        <div class="code-overlay-top">
-          <span class="code-lang">html</span>
-          <button type="button" class="code-copy" (click)="copyShellCode()">
-            <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
-            {{ copied() ? "Copied" : "Copy" }}
-          </button>
-        </div>
-        <pre class="code-pre"><code>{{ shellCode() }}</code></pre>
-      </div>
-      <div class="code-overlay-pane">
-        <div class="code-overlay-top">
-          <span class="code-lang">css · variables to override</span>
-          <button
-            type="button"
-            class="code-copy"
-            (click)="copyShellTokensCss()"
-          >
-            <sh3-icon
-              [name]="cssCopied() ? 'check-circle' : 'copy'"
-              size="sm"
-            />
-            {{ cssCopied() ? "Copied" : "Copy" }}
-          </button>
-        </div>
-        <pre class="code-pre"><code>{{ shellTokensCss() }}</code></pre>
-      </div>
-    </div>
-    }
-  </div>
-
-  <div class="shell-demo">
-    <div class="gal-card-narrow">
-      <sh3-context-card
-        icon="grid"
-        title="App Shell Settings"
-        subtitle="Drives the preview above — resize with Desktop / Tablet / Mobile."
-      >
-        <div class="ss-group">
-          <span class="ss-label">appearance</span>
-          <div class="ss-seg">
-            <button
-              type="button"
-              [class.is-on]="shellAppearance() === 'flat'"
-              (click)="setAppearance('flat')"
-            >
-              flat
-            </button>
-            <button
-              type="button"
-              [class.is-on]="shellAppearance() === 'floating'"
-              (click)="setAppearance('floating')"
-            >
-              floating
-            </button>
-          </div>
-        </div>
-
-        <div class="ss-group">
-          <span class="ss-label">headerLayout</span>
-          <div class="ss-seg">
-            <button
-              type="button"
-              [class.is-on]="shellHeaderLayout() === 'inset'"
-              (click)="setHeaderLayout('inset')"
-            >
-              inset
-            </button>
-            <button
-              type="button"
-              [class.is-on]="shellHeaderLayout() === 'full'"
-              (click)="setHeaderLayout('full')"
-            >
-              full
-            </button>
-          </div>
-        </div>
-
-        <sh3-slider
-          label="railWidth"
-          [min]="48"
-          [max]="120"
-          [valueText]="shellRailWidth() + 'px'"
-          [(value)]="shellRailWidth"
-        />
-
-        <sh3-slider
-          label="headerHeight"
-          [min]="44"
-          [max]="88"
-          [valueText]="shellHeaderHeight() + 'px'"
-          [(value)]="shellHeaderHeight"
-        />
-      </sh3-context-card>
-    </div>
-
-    <div class="tok-card-wrap">
-      <sh3-context-card
-        icon="grid"
-        title="Tokens"
-        subtitle="live sandbox — edit a value to override the preview; semantics preferred"
-      >
-        @for (group of shellTokens; track group.label) {
-        <div class="tok-group">
-          <span class="ss-label tok-group-label">{{ group.label }}</span>
-          @for (t of group.tokens; track t.prop) {
-          <div class="tok-row">
-            @if (t.kind === "color") {
-            <span
-              class="tok-swatch"
-              [style.background]="
-                      shellOverrides()[t.prop] || 'var(' + t.prop + ')'
-                    "
-            ></span>
-            } @else {
-            <span
-              class="tok-swatch tok-swatch--radius"
-              [style.borderRadius]="
-                      shellOverrides()[t.prop] || 'var(' + t.prop + ')'
-                    "
-            ></span>
-            }
-            <div class="tok-meta">
-              <code class="tok-name">{{ t.prop }}</code>
-              <span class="tok-desc">{{ t.desc }}</span>
-            </div>
-            <input
-              #ov
-              type="text"
-              class="tok-input"
-              [value]="shellOverrides()[t.prop] || ''"
-              [placeholder]="
-                    t.kind === 'color' ? '#7c5bbf' : '12px'
-                  "
-              (input)="setShellOverride(t.prop, ov.value)"
-              [attr.aria-label]="'Override ' + t.prop"
-            />
-          </div>
-          }
-        </div>
-        }
+  <dev-playground [code]="shellCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">appearance</span>
+      <div class="ss-seg">
         <button
           type="button"
-          class="tok-reset"
-          (click)="resetShellOverrides()"
-          [disabled]="!hasShellOverrides()"
+          [class.is-on]="shellAppearance() === 'flat'"
+          (click)="setAppearance('flat')"
         >
-          Reset overrides
+          flat
         </button>
-      </sh3-context-card>
+        <button
+          type="button"
+          [class.is-on]="shellAppearance() === 'floating'"
+          (click)="setAppearance('floating')"
+        >
+          floating
+        </button>
+      </div>
     </div>
-  </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">headerLayout</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="shellHeaderLayout() === 'inset'"
+          (click)="setHeaderLayout('inset')"
+        >
+          inset
+        </button>
+        <button
+          type="button"
+          [class.is-on]="shellHeaderLayout() === 'full'"
+          (click)="setHeaderLayout('full')"
+        >
+          full
+        </button>
+      </div>
+    </div>
+
+    <sh3-slider
+      params
+      label="railWidth"
+      [min]="48"
+      [max]="120"
+      [valueText]="shellRailWidth() + 'px'"
+      [(value)]="shellRailWidth"
+    />
+    <sh3-slider
+      params
+      label="headerHeight"
+      [min]="44"
+      [max]="88"
+      [valueText]="shellHeaderHeight() + 'px'"
+      [(value)]="shellHeaderHeight"
+    />
+
+    <div class="ss-seg" preview-actions>
+      @for (m of shellModes; track m) {
+      <button
+        type="button"
+        [class.is-on]="shellMode() === m"
+        (click)="shellMode.set(m)"
+      >
+        {{ m }}
+      </button>
+      }
+    </div>
+
+    <!-- A real shell at real pixel width, scaled to fit; folds on its own width
+       (container queries) so the mode switch truly collapses the rails. -->
+    <div class="shell-window" #shellWindow>
+      <div
+        class="shell-preview"
+        [style.width.px]="shellWidth()"
+        [style.zoom]="shellScale()"
+        panelScope
+        #sph="panelScope"
+      >
+        <sh3-app-shell
+          [appearance]="shellAppearance()"
+          [headerLayout]="shellHeaderLayout()"
+          [railWidth]="shellRailWidth()"
+          [headerHeight]="shellHeaderHeight()"
+        >
+          <sh3-menu railPrimary tint="primary">
+            <div header class="rail-brand">S3</div>
+            @for (i of railNav; track i.id) {
+            <button
+              sh3-menu-item
+              [icon]="i.icon"
+              [label]="i.label"
+              [active]="previewNav() === i.id"
+              (click)="previewNav.set(i.id)"
+            ></button>
+            }
+            <button
+              footer
+              sh3-menu-item
+              icon="settings"
+              label="Settings"
+            ></button>
+          </sh3-menu>
+          <sh3-menu railSecondary level="secondary" [expanded]="true">
+            <div header class="lib-head">Workspace</div>
+            <button
+              sh3-menu-item
+              icon="grid"
+              label="Overview"
+              [active]="true"
+            ></button>
+            <button sh3-menu-item icon="contracts" label="Contracts"></button>
+            <button sh3-menu-item icon="music" label="Library"></button>
+          </sh3-menu>
+          <div header class="sp-header">
+            <span>Header</span>
+            <div class="sp-actions">
+              <button type="button" (click)="openPreviewPanel(sph.service)">
+                <sh3-icon name="contracts" size="sm" />
+                Open panel
+              </button>
+              <button type="button" (click)="toggleTheme()">
+                <sh3-icon
+                  [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"
+                  size="sm"
+                />
+                {{ theme() === "dark" ? "Light" : "Dark" }}
+              </button>
+            </div>
+          </div>
+          <div class="sp-content">
+            <div class="sp-block"></div>
+            <div class="sp-block"></div>
+          </div>
+
+          <!-- the preview's own panel host — panels open inside the preview -->
+          <sh3-panel-host />
+        </sh3-app-shell>
+      </div>
+    </div>
+  </dev-playground>
 </sh3-page-layout>

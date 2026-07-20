@@ -8,7 +8,6 @@ import {
 } from "@angular/core";
 import {
   Sh3AppShellComponent,
-  Sh3ContextCardComponent,
   Sh3IconComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -19,19 +18,12 @@ import {
 } from "../../src/index";
 import { PanelScopeDirective } from "../panel-scope.directive";
 import { TabPanelComponent } from "../tab-panel.component";
-import {
-  applyOverrides,
-  colorToken,
-  overrideCss,
-  radiusToken,
-  withOverride,
-  type PageTokenGroup,
-} from "../token-sandbox";
 import { KindBadgeComponent } from "../kind-badge.component";
+import { DevPlaygroundComponent } from "../playground.component";
 
 type ShellMode = "desktop" | "tablet" | "mobile";
 
-/** `/app-shell` — the `sh3-app-shell` gallery page (live preview + token sandbox). */
+/** `/app-shell` — the `sh3-app-shell` gallery page (live preview playground). */
 @Component({
   selector: "gal-app-shell-page",
   standalone: true,
@@ -43,24 +35,24 @@ type ShellMode = "desktop" | "tablet" | "mobile";
     Sh3MenuComponent,
     Sh3MenuItemComponent,
     Sh3IconComponent,
-    Sh3ContextCardComponent,
     Sh3SliderComponent,
     Sh3PanelHostComponent,
     PanelScopeDirective,
+    DevPlaygroundComponent,
   ],
   templateUrl: "./app-shell.page.html",
 })
 export default class AppShellPage {
   protected readonly theme = signal<"dark" | "light">("dark");
 
-  /* ── Live shell parameters (driven by the App Shell Settings card) ── */
+  /* ── Live shell parameters (driven by the Settings panel) ── */
   protected readonly shellAppearance = signal<"flat" | "floating">("flat");
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
 
-  /* ── Responsive preview modes (drive the preview box's width via a container
-   *    query in sh3-app-shell) ── */
+  /* ── Preview viewport — the switch resizes the shell so its container queries
+   *    fold it (secondary rail at tablet, both rails at mobile). ── */
   protected readonly shellModes = ["desktop", "tablet", "mobile"] as const;
   protected readonly shellMode = signal<ShellMode>("desktop");
   private readonly SHELL_MODE_WIDTH: Record<ShellMode, number> = {
@@ -68,9 +60,33 @@ export default class AppShellPage {
     tablet: 880,
     mobile: 380,
   };
-  protected readonly shellPreviewWidth = computed(
+  /** Real render width per viewport — clears the shell's fold thresholds. */
+  protected readonly shellWidth = computed(
     () => this.SHELL_MODE_WIDTH[this.shellMode()],
   );
+
+  private readonly windowEl = viewChild<ElementRef<HTMLElement>>("shellWindow");
+  private readonly windowWidth = signal(0);
+  /** Auto-fit scale (CSS `zoom`) so the real-width shell fits the preview panel;
+   *  paint-only, so the fold (container queries) resolves at the real width. */
+  protected readonly shellScale = computed(() => {
+    const avail = this.windowWidth();
+    return avail === 0 ? 1 : Math.min(1, avail / this.shellWidth());
+  });
+
+  constructor() {
+    effect((onCleanup) => {
+      const el = this.windowEl()?.nativeElement;
+      if (!el || typeof ResizeObserver === "undefined") {
+        return;
+      }
+      const ro = new ResizeObserver((entries) => {
+        this.windowWidth.set(entries[0].contentRect.width);
+      });
+      ro.observe(el);
+      onCleanup(() => ro.disconnect());
+    });
+  }
 
   protected setAppearance(value: "flat" | "floating"): void {
     this.shellAppearance.set(value);
@@ -92,67 +108,6 @@ export default class AppShellPage {
       "</sh3-app-shell>",
     ].join("\n"),
   );
-  protected readonly copied = signal(false);
-
-  protected copyShellCode(): void {
-    void navigator.clipboard.writeText(this.shellCode()).then(() => {
-      this.copied.set(true);
-      setTimeout(() => this.copied.set(false), 1500);
-    });
-  }
-
-  /* ── "Show code" overlay + the page's overridable tokens ──────────────
-   *  The code switch (in the mode bar) drops a glass sheet over the preview:
-   *  HTML usage on the left, the CSS you'd paste to apply your overrides on the
-   *  right. The Tokens card below is a live sandbox — adjust a token and the
-   *  preview updates. Semantics are the preferred override surface. */
-  protected readonly showCode = signal(false);
-
-  /** The shell's overridable tokens — derived from the typed catalog. Rail
-   *  width / header height are omitted here: they already have live sliders. */
-  protected readonly shellTokens: readonly PageTokenGroup[] = [
-    {
-      label: "roundness",
-      tokens: [radiusToken("lg", "floating region cards")],
-    },
-    {
-      label: "surfaces",
-      tokens: [
-        colorToken("bg-page", "page + floating gutter"),
-        colorToken("bg-rail-primary", "primary rail"),
-        colorToken("bg-rail-secondary", "secondary rail"),
-        colorToken("bg-header", "header band"),
-        colorToken("border", "region separators"),
-      ],
-    },
-  ];
-
-  private readonly previewShellRef =
-    viewChild<ElementRef<HTMLElement>>("previewShell");
-  /** Live sandbox state — the token overrides the user has typed (prop → value).
-   *  Applied to the preview shell in an effect; emitted as the CSS block. */
-  protected readonly shellOverrides = signal<Record<string, string>>({});
-  protected readonly hasShellOverrides = computed(
-    () => Object.keys(this.shellOverrides()).length > 0,
-  );
-  protected setShellOverride(prop: string, value: string): void {
-    this.shellOverrides.update((o) => withOverride(o, prop, value));
-  }
-  protected resetShellOverrides(): void {
-    this.shellOverrides.set({});
-  }
-
-  /** The CSS block for the overlay's right pane — the overrides you've made. */
-  protected readonly shellTokensCss = computed(() =>
-    overrideCss("sh3-app-shell", this.shellOverrides()),
-  );
-  protected readonly cssCopied = signal(false);
-  protected copyShellTokensCss(): void {
-    void navigator.clipboard.writeText(this.shellTokensCss()).then(() => {
-      this.cssCopied.set(true);
-      setTimeout(() => this.cssCopied.set(false), 1500);
-    });
-  }
 
   protected toggleTheme(): void {
     this.theme.update((t) => (t === "dark" ? "light" : "dark"));
@@ -170,20 +125,6 @@ export default class AppShellPage {
     { id: "contracts", icon: "contracts", label: "Contracts" },
     { id: "music", icon: "music", label: "Music" },
   ] as const;
-  /** The app-shell preview's own primary-rail selection (decoupled from the
-   *  gallery's outer rail, which reuses the same nav data). */
+  /** The app-shell preview's own primary-rail selection. */
   protected readonly previewNav = signal<string>("home");
-
-  constructor() {
-    // Live sandbox: write the token overrides onto the preview element. A DOM
-    // write (setProperty/removeProperty) → an effect, not a computed. It
-    // re-runs when the override map (or the target element) changes.
-    effect(() =>
-      applyOverrides(
-        this.previewShellRef()?.nativeElement,
-        this.shellTokens,
-        this.shellOverrides(),
-      ),
-    );
-  }
 }
