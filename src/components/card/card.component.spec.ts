@@ -12,6 +12,7 @@ import { Sh3CardComponent } from "./card.component";
     [padding]="padding()"
     [interactive]="interactive()"
     [separators]="separators()"
+    [raisedBands]="raisedBands()"
   >
     @if (withHeader()) {
       <span cardHeader class="head">Header</span>
@@ -28,6 +29,7 @@ class HostComponent {
   readonly padding = signal<"none" | "sm" | "md" | "lg">("md");
   readonly interactive = signal(false);
   readonly separators = signal(false);
+  readonly raisedBands = signal(false);
   readonly withHeader = signal(false);
   readonly withFooter = signal(false);
 }
@@ -90,5 +92,13 @@ describe("Sh3CardComponent", () => {
     fixture.componentInstance.separators.set(true);
     fixture.detectChanges();
     expect(card.classList.contains("has-sep")).toBe(true);
+  });
+
+  it("toggles the raised-bands modifier via the `raisedBands` input", () => {
+    const { fixture, card } = render();
+    expect(card.classList.contains("raised-bands")).toBe(false);
+    fixture.componentInstance.raisedBands.set(true);
+    fixture.detectChanges();
+    expect(card.classList.contains("raised-bands")).toBe(true);
   });
 });

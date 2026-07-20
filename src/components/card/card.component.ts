@@ -13,6 +13,8 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`.
  * - `interactive` — adds a hover lift (for clickable cards).
  * - `separators` — draw a hairline between a projected header/footer and the body.
+ * - `raisedBands` — tint the header/footer bands a step above the surface
+ *   (fainter on `sunken`).
  *
  * Content projection:
  * - default slot → the card body.
@@ -46,6 +48,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
     "[class.p-lg]": "padding() === 'lg'",
     "[class.is-interactive]": "interactive()",
     "[class.has-sep]": "separators()",
+    "[class.raised-bands]": "raisedBands()",
   },
   templateUrl: "./card.component.html",
   styleUrl: "./card.component.scss",
@@ -61,4 +64,7 @@ export class Sh3CardComponent {
   readonly interactive = input(false);
   /** Draw a hairline between a projected header/footer and the body. */
   readonly separators = input(false, { transform: booleanAttribute });
+  /** Lift the header/footer bands with a subtle raised tint over the card
+   *  surface (fainter on `sunken`), to set the chrome apart from the body. */
+  readonly raisedBands = input(false, { transform: booleanAttribute });
 }

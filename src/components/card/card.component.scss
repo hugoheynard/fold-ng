@@ -1,16 +1,24 @@
 /* Defaults: lg radius + md padding. Modifier classes override. */
 :host {
   --_pad: 16px;
+  /* the header/footer raise — a white overlay over the surface (see `raisedBands`);
+     proportional to whatever the band sits on, and fainter on the sunken tint. */
+  --_band-raise: var(--sh3-color-surface-subtle);
   display: block;
   background: var(--sh3-color-surface-card);
   border: 1px solid var(--sh3-color-border);
   border-radius: var(--sh3-radius-lg);
   padding: var(--_pad);
 }
-/* Sunken (deep container) pairs with a fainter hairline. */
+/* Sunken (deep container) pairs with a fainter hairline + a fainter band raise. */
 :host(.s-sunken) {
   background: var(--sh3-color-surface-sunken);
   border-color: var(--sh3-color-border-subtle);
+  --_band-raise: color-mix(
+    in srgb,
+    var(--sh3-color-surface-subtle) 55%,
+    transparent
+  );
 }
 :host(.r-md) {
   border-radius: var(--sh3-radius-md);
@@ -57,6 +65,12 @@
   display: flex;
   flex-direction: column;
   padding: var(--_pad);
+}
+
+/* Optional raised tint on the header/footer bands, set apart from the body. */
+:host(.raised-bands) .card-header:not(:empty),
+:host(.raised-bands) .card-footer:not(:empty) {
+  background: var(--_band-raise);
 }
 
 /* Optional hairline between header/body and body/footer. */
