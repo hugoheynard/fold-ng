@@ -28,10 +28,9 @@
   overflow: auto;
 }
 
-/* shared card shell */
+/* shared card shell — surface + border + radius come from sh3-card; clip so the
+   header rule and code block sit inside the rounded corners */
 .pg-panel {
-  border-radius: var(--sh3-radius-lg);
-  border: 1px solid var(--sh3-color-border);
   overflow: hidden;
 }
 .pg-head {
@@ -54,7 +53,6 @@
 /* settings card */
 .pg-params {
   flex: 0 0 220px;
-  background: var(--sh3-color-surface-card);
 }
 .pg-params-body {
   display: flex;
@@ -66,7 +64,6 @@
 .pg-preview {
   flex: 1 1 200px;
   min-width: 180px;
-  background: var(--sh3-color-surface-card);
 }
 /* preview header can host centered actions (e.g. a viewport switch) */
 .pg-preview .pg-head {
@@ -90,7 +87,6 @@
 .pg-code {
   flex: 1 1 300px;
   min-width: 260px;
-  background: var(--sh3-color-surface-sunken);
 }
 .pg-code-actions {
   display: inline-flex;

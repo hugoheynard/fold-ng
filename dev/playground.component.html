@@ -1,14 +1,14 @@
 <div class="pg-row">
-  <section class="pg-panel pg-params">
+  <sh3-card class="pg-panel pg-params" padding="none">
     <header class="pg-head">
       <sh3-element-title variant="title" icon="sliders" title="Settings" />
     </header>
     <div class="pg-body pg-params-body">
       <ng-content select="[params]" />
     </div>
-  </section>
+  </sh3-card>
 
-  <section class="pg-panel pg-preview">
+  <sh3-card class="pg-panel pg-preview" padding="none">
     <header class="pg-head">
       <sh3-element-title variant="title" icon="eye" title="Preview" />
       <div class="pg-head-actions">
@@ -18,9 +18,9 @@
     <div class="pg-body pg-preview-body">
       <ng-content />
     </div>
-  </section>
+  </sh3-card>
 
-  <section class="pg-panel pg-code">
+  <sh3-card class="pg-panel pg-code" surface="sunken" padding="none">
     <header class="pg-head">
       <sh3-element-title variant="title" icon="code" title="Code">
         <div titleAction class="pg-code-actions">
@@ -33,5 +33,5 @@
       </sh3-element-title>
     </header>
     <pre class="pg-pre"><code>{{ code() }}</code></pre>
-  </section>
+  </sh3-card>
 </div>

@@ -1,5 +1,9 @@
 import { booleanAttribute, Component, input, signal } from "@angular/core";
-import { Sh3ElementTitleComponent, Sh3IconComponent } from "../src/index";
+import {
+  Sh3CardComponent,
+  Sh3ElementTitleComponent,
+  Sh3IconComponent,
+} from "../src/index";
 
 /**
  * `<dev-playground>` — a gallery dev tool: the param / preview / code triptych.
@@ -21,7 +25,7 @@ import { Sh3ElementTitleComponent, Sh3IconComponent } from "../src/index";
 @Component({
   selector: "dev-playground",
   standalone: true,
-  imports: [Sh3IconComponent, Sh3ElementTitleComponent],
+  imports: [Sh3IconComponent, Sh3ElementTitleComponent, Sh3CardComponent],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",
   host: { "[class.pg-equal]": "equal()" },
