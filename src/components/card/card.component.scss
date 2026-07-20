@@ -28,20 +28,34 @@
   --_pad: 20px;
 }
 
-/* Header / footer bands render only when something is projected into them. */
+/* Header / footer bands render only when something is projected into them; they
+   anchor absolutely-positioned children (badges, overlays). */
 .card-header:empty,
 .card-footer:empty {
   display: none;
 }
-/* When a header or footer exists, the padding moves from the host onto each band
-   so a separator can span the full width; a plain body-only card is unchanged
-   (host keeps its padding, and still honours an inline `style="padding"`). */
+.card-header,
+.card-footer {
+  position: relative;
+}
+/* With a header or footer, the card becomes a flex column of bands: the host
+   stops padding, the header/footer carry a fixed chrome padding, and the body
+   owns the `padding` input + fills the height. A plain body-only card is
+   untouched (host keeps its padding, so inline `style="padding"` still works). */
 :host(:has([cardHeader], [cardFooter])) {
+  display: flex;
+  flex-direction: column;
   padding: 0;
 }
 :host(:has([cardHeader], [cardFooter])) .card-header,
-:host(:has([cardHeader], [cardFooter])) .card-body,
 :host(:has([cardHeader], [cardFooter])) .card-footer {
+  padding: 12px 16px;
+}
+:host(:has([cardHeader], [cardFooter])) .card-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   padding: var(--_pad);
 }
 

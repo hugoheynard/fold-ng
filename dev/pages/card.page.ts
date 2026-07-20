@@ -30,7 +30,7 @@ import {
     <div class="gal-cell">
       <span class="gal-tag">header · footer · separators</span>
       <div class="gal-row gal-row--wide">
-        <sh3-card padding="none" separators style="max-width: 300px">
+        <sh3-card separators style="max-width: 300px">
           <strong cardHeader>Card title</strong>
           <p style="margin: 0; color: var(--sh3-color-text-muted)">
             The header and footer are optional projected bands; the separators
@@ -44,7 +44,7 @@ import {
             <sh3-button size="sm">Save</sh3-button>
           </div>
         </sh3-card>
-        <sh3-card surface="sunken" padding="none" style="max-width: 300px">
+        <sh3-card surface="sunken" style="max-width: 300px">
           <strong cardHeader>No separators</strong>
           <p style="margin: 0; color: var(--sh3-color-text-muted)">
             Same bands without the divider — a quieter grouping.
