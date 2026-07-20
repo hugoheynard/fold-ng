@@ -1,8 +1,8 @@
 import { Component, input, signal } from "@angular/core";
 import {
+  Sh3ButtonComponent,
   Sh3CardComponent,
   Sh3ElementTitleComponent,
-  Sh3IconComponent,
   Sh3PageSectionComponent,
 } from "../src/index";
 
@@ -29,7 +29,7 @@ import {
   selector: "dev-playground",
   standalone: true,
   imports: [
-    Sh3IconComponent,
+    Sh3ButtonComponent,
     Sh3ElementTitleComponent,
     Sh3CardComponent,
     Sh3PageSectionComponent,

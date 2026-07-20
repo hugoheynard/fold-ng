@@ -36,10 +36,14 @@
       <sh3-element-title cardHeader variant="title" icon="code" title="Code">
         <div titleAction class="pg-code-actions">
           <span class="pg-lang">{{ lang() }}</span>
-          <button type="button" class="pg-copy" (click)="copy()">
-            <sh3-icon [name]="copied() ? 'check-circle' : 'copy'" size="sm" />
+          <sh3-button
+            size="sm"
+            variant="ghost"
+            [icon]="copied() ? 'check-circle' : 'copy'"
+            (clicked)="copy()"
+          >
             {{ copied() ? "Copied" : "Copy" }}
-          </button>
+          </sh3-button>
         </div>
       </sh3-element-title>
       <pre class="pg-body pg-pre"><code>{{ code() }}</code></pre>
