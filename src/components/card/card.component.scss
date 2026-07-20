@@ -3,9 +3,9 @@
   --_pad: 16px;
   /* the header/footer raise — a white overlay over the surface (see `raisedBands`);
      proportional to whatever the band sits on, and fainter on the sunken tint. */
-  --_band-raise: var(--sh3-color-surface-subtle);
-  /* a fine hairline for the band separators (raised edge + `separators`). */
-  --_sep-line: color-mix(in srgb, var(--sh3-color-border-subtle) 70%, transparent);
+  --_band-raise: var(--sh3-color-surface-raised);
+  /* a fine but visible hairline for the `separators` band divider. */
+  --_sep-line: var(--sh3-color-border-subtle);
   display: block;
   background: var(--sh3-color-surface-card);
   border: 1px solid var(--sh3-color-border);
@@ -16,11 +16,7 @@
 :host(.s-sunken) {
   background: var(--sh3-color-surface-sunken);
   border-color: var(--sh3-color-border-subtle);
-  --_band-raise: color-mix(
-    in srgb,
-    var(--sh3-color-surface-subtle) 55%,
-    transparent
-  );
+  --_band-raise: var(--sh3-color-surface-subtle);
 }
 :host(.r-md) {
   border-radius: var(--sh3-radius-md);
