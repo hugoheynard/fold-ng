@@ -4,6 +4,8 @@
   /* the header/footer raise — a white overlay over the surface (see `raisedBands`);
      proportional to whatever the band sits on, and fainter on the sunken tint. */
   --_band-raise: var(--sh3-color-surface-subtle);
+  /* a fine hairline for the band separators (raised edge + `separators`). */
+  --_sep-line: color-mix(in srgb, var(--sh3-color-border-subtle) 70%, transparent);
   display: block;
   background: var(--sh3-color-surface-card);
   border: 1px solid var(--sh3-color-border);
@@ -72,19 +74,19 @@
    `separators` border) so the band still reads a crisp separation. */
 :host(.raised-bands) .card-header:not(:empty) {
   background: var(--_band-raise);
-  box-shadow: inset 0 -1px 0 var(--sh3-color-border);
+  box-shadow: inset 0 -1px 0 var(--_sep-line);
 }
 :host(.raised-bands) .card-footer:not(:empty) {
   background: var(--_band-raise);
-  box-shadow: inset 0 1px 0 var(--sh3-color-border);
+  box-shadow: inset 0 1px 0 var(--_sep-line);
 }
 
 /* Optional hairline between header/body and body/footer. */
 :host(.has-sep) .card-header:not(:empty) {
-  border-bottom: 1px solid var(--sh3-color-border-subtle);
+  border-bottom: 1px solid var(--_sep-line);
 }
 :host(.has-sep) .card-footer:not(:empty) {
-  border-top: 1px solid var(--sh3-color-border-subtle);
+  border-top: 1px solid var(--_sep-line);
 }
 
 :host(.is-interactive) {
