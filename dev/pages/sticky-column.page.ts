@@ -1,7 +1,7 @@
 import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
+import { DevPlaygroundComponent } from "../playground.component";
 import {
-  Sh3IconComponent,
   Sh3PageLayoutComponent,
   Sh3SliderComponent,
   Sh3StickyColumnDirective,
@@ -18,12 +18,11 @@ import {
     Sh3PageLayoutComponent,
     Sh3SliderComponent,
     Sh3StickyColumnDirective,
-    Sh3IconComponent,
+    DevPlaygroundComponent,
   ],
   templateUrl: "./sticky-column.page.html",
 })
 export default class StickyColumnPage {
-  protected readonly demoCopied = signal(false);
   protected readonly stickyDemoRows = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly stickyDemoAnchor = signal<Sh3StickyColumnAnchor>("top");
   protected readonly stickyDemoAnchors: readonly Sh3StickyColumnAnchor[] = [
@@ -53,11 +52,4 @@ export default class StickyColumnPage {
       "}",
     ].join("\n");
   });
-
-  protected copyDemoCode(): void {
-    void navigator.clipboard.writeText(this.stickyColumnCode()).then(() => {
-      this.demoCopied.set(true);
-      setTimeout(() => this.demoCopied.set(false), 1500);
-    });
-  }
 }

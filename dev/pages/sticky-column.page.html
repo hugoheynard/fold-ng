@@ -10,8 +10,8 @@
     <code>--sh3-sticky-column-position</code>.
   </p>
 
-  <div class="gal-cell">
-    <div class="gal-row">
+  <dev-playground [code]="stickyColumnCode()" lang="html · scss">
+    <div class="np-field" params>
       <span class="gal-tag">sticky</span>
       <div class="ss-seg">
         @for (a of stickyDemoAnchors; track a) {
@@ -24,18 +24,17 @@
         </button>
         }
       </div>
-      <sh3-slider
-        label="offset"
-        [min]="0"
-        [max]="48"
-        [step]="2"
-        [valueText]="stickyDemoOffset() + 'px'"
-        [(value)]="stickyDemoOffset"
-      />
     </div>
-    <span class="gal-tag"
-      >preview — scroll inside the frame, the aside sticks</span
-    >
+    <sh3-slider
+      params
+      label="offset"
+      [min]="0"
+      [max]="48"
+      [step]="2"
+      [valueText]="stickyDemoOffset() + 'px'"
+      [(value)]="stickyDemoOffset"
+    />
+
     <div class="sticky-demo">
       <div class="sticky-demo-grid">
         <div class="sticky-demo-main">
@@ -54,16 +53,5 @@
         </aside>
       </div>
     </div>
-  </div>
-
-  <div class="code-block">
-    <div class="code-top">
-      <span class="code-lang">html · scss</span>
-      <button type="button" class="code-copy" (click)="copyDemoCode()">
-        <sh3-icon [name]="demoCopied() ? 'check-circle' : 'copy'" size="sm" />
-        {{ demoCopied() ? "Copied" : "Copy" }}
-      </button>
-    </div>
-    <pre class="code-pre"><code>{{ stickyColumnCode() }}</code></pre>
-  </div>
+  </dev-playground>
 </sh3-page-layout>
