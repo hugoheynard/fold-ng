@@ -1,26 +1,44 @@
 :host {
   display: block;
+  container-type: inline-size;
 }
 
-/* settings / preview / code — three matching cards, wrapping on narrow viewports */
+/* settings · preview · code. Wide: three columns (settings | preview | code).
+   As it narrows, the preview — the focus — takes the full top row with settings
+   and code beneath it; narrower still, all three stack vertically. Rows stretch,
+   so panels sharing a row match heights. */
 .pg-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 20px;
-  align-items: flex-start;
-}
-
-/* equal mode: same width (share the row evenly) and same height (stretch) */
-:host(.pg-equal) .pg-row {
   align-items: stretch;
+  grid-template-columns: 220px minmax(420px, 1fr) minmax(260px, 320px);
+  grid-template-areas: "settings preview code";
 }
-:host(.pg-equal) .pg-panel {
-  flex: 1 1 0;
-  min-width: 220px;
+@container (max-width: 980px) {
+  .pg-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "preview preview"
+      "settings code";
+  }
 }
-/* the body shares the common height and scrolls internally when it is taller */
-:host(.pg-equal) .pg-body {
-  overflow: auto;
+@container (max-width: 560px) {
+  .pg-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "preview"
+      "settings"
+      "code";
+  }
+}
+.pg-params {
+  grid-area: settings;
+}
+.pg-preview {
+  grid-area: preview;
+}
+.pg-code {
+  grid-area: code;
 }
 
 /* surface + border + radius + the header/body bands come from sh3-card; clip so
@@ -29,16 +47,13 @@
   overflow: hidden;
 }
 /* each panel projects its header into the card [cardHeader] band; the body is
-   the card default slot — it carries the panel padding and fills the height. */
+   the card default slot — it carries the panel padding, fills the height, and
+   scrolls internally when its content is taller than the shared row. */
 .pg-body {
   flex: 1 1 auto;
   min-height: 0;
   padding: 14px;
-}
-
-/* settings card */
-.pg-params {
-  flex: 0 0 220px;
+  overflow: auto;
 }
 .pg-params-body {
   display: flex;
@@ -47,16 +62,7 @@
 }
 
 /* preview card — the card header band is position:relative, so the viewport
-   switch can float centered over it. It may grow but never shrinks, so the live
-   component keeps a stable, legible width while settings/code give way. */
-.pg-preview {
-  flex: 1 0 420px;
-  min-width: 420px;
-}
-:host(.pg-equal) .pg-preview {
-  flex: 1 0 420px;
-  min-width: 420px;
-}
+   switch can float centered over it */
 .pg-head-actions {
   position: absolute;
   left: 50%;
@@ -72,10 +78,6 @@
 }
 
 /* code card */
-.pg-code {
-  flex: 1 1 300px;
-  min-width: 260px;
-}
 .pg-code-actions {
   display: inline-flex;
   align-items: center;

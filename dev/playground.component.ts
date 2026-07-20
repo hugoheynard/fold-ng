@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, input, signal } from "@angular/core";
+import { Component, input, signal } from "@angular/core";
 import {
   Sh3CardComponent,
   Sh3ElementTitleComponent,
@@ -20,11 +20,10 @@ import {
  * </dev-playground>
  * ```
  *
- * Set `equal` to force the three cards to share the width evenly and stretch to
- * a common height (otherwise each sizes to its content).
- *
- * The component owns its `sh3-page-section title="Playground"` wrapper, so a page
- * just drops in `<dev-playground>` without repeating the section on every page.
+ * The three panels lay out on a responsive grid (settings | preview | code →
+ * preview on top with settings + code below → stacked). The component owns its
+ * `sh3-page-section title="Playground"` wrapper, so a page just drops in
+ * `<dev-playground>` without repeating the section on every page.
  */
 @Component({
   selector: "dev-playground",
@@ -37,15 +36,12 @@ import {
   ],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",
-  host: { "[class.pg-equal]": "equal()" },
 })
 export class DevPlaygroundComponent {
   /** The generated code snippet shown (and copied) on the right. */
   readonly code = input("");
   /** Language label on the code block. */
   readonly lang = input("html");
-  /** Equal-width and equal-height cards instead of content sizing. */
-  readonly equal = input(false, { transform: booleanAttribute });
 
   protected readonly copied = signal(false);
 
