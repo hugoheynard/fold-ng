@@ -5,6 +5,9 @@ the **contributor's contract**. Every rule here is either enforced by a test/lin
 or is a deliberate convention we hold the line on. When a rule is broken, the fix
 is to obey the rule — not to widen the exception.
 
+Writing the **gallery** (`dev/`) is a separate contract: see
+[`CLAUDE.md`](CLAUDE.md).
+
 The bar: **strict TypeScript, tested to the contract, token-pure, portable.**
 "Portable" is load-bearing — this package is meant to be dropped into another
 project, so nothing app-specific (a language, a feature type, a hard-coded
