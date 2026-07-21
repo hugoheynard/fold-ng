@@ -1,0 +1,139 @@
+<sh3-page-layout
+  fluid
+  title="tab-nav"
+  description="A tab bar of buttons — it renders the navigation only, the parent renders the content for the active key. Horizontal for a page-level bar, vertical for a sidebar rail (which auto-collapses to a horizontal icon row on mobile). Tabs carry an optional leading icon and a trailing badge."
+>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <dev-playground [code]="tabNavCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">activeStyle</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnStyle() === 'underline'"
+          (click)="tnStyle.set('underline')"
+        >
+          underline
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tnStyle() === 'fill'"
+          (click)="tnStyle.set('fill')"
+        >
+          fill
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">direction</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnDirection() === 'horizontal'"
+          (click)="tnDirection.set('horizontal')"
+        >
+          horizontal
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tnDirection() === 'vertical'"
+          (click)="tnDirection.set('vertical')"
+        >
+          vertical
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">size</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnSize() === 'compact'"
+          (click)="tnSize.set('compact')"
+        >
+          compact
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tnSize() === 'comfortable'"
+          (click)="tnSize.set('comfortable')"
+        >
+          comfortable
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">background</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnBackground() === 'surface'"
+          (click)="tnBackground.set('surface')"
+        >
+          surface
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tnBackground() === 'transparent'"
+          (click)="tnBackground.set('transparent')"
+        >
+          transparent
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">tabs</span>
+      <div class="ss-seg">
+        @for (n of tabCounts; track n) {
+        <button
+          type="button"
+          [class.is-on]="tnCount() === n"
+          (click)="tnCount.set(n)"
+        >
+          {{ n }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">badges</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnBadge()"
+          (click)="tnBadge.set(!tnBadge())"
+        >
+          show
+        </button>
+      </div>
+    </div>
+
+    <p class="doc-p" params>Active: “{{ tnActiveKey() }}”</p>
+
+    <div [style.width]="tnDirection() === 'vertical' ? '240px' : '100%'">
+      <sh3-tab-nav
+        [tabs]="tnTabs()"
+        [activeKey]="tnActiveKey()"
+        [activeStyle]="tnStyle()"
+        [direction]="tnDirection()"
+        [size]="tnSize()"
+        [background]="tnBackground()"
+        (tabChange)="tnActive.set($event)"
+      />
+    </div>
+  </dev-playground>
+
+  <div class="gal-cell">
+    <span class="gal-tag">in a side panel (sh3-panel)</span>
+    <button type="button" class="gal-theme" (click)="openTabPanel()">
+      <sh3-icon name="contracts" size="sm" />
+      Open panel with tabs
+    </button>
+  </div>
+</sh3-page-layout>
