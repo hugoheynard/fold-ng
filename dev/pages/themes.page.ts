@@ -7,6 +7,7 @@ import {
   Sh3PageSectionComponent,
 } from "../../src/index";
 import { KindBadgeComponent } from "../kind-badge.component";
+import { THEME_SMELLS, THEME_STEPS } from "./theme-recipe";
 
 /** One theme, as the page documents it. */
 interface ThemeEntry {
@@ -107,6 +108,10 @@ export default class ThemesPage {
       roles: ["info", "success", "warning", "alert"],
     },
   ];
+
+  /** The authoring guide — steps + the checks to run once it renders. */
+  protected readonly steps = THEME_STEPS;
+  protected readonly smells = THEME_SMELLS;
 
   /** Swatches are heavy; a theme opens on demand (navi first — the odd one). */
   protected readonly open = signal<string>("navi");

@@ -70,6 +70,39 @@
   </sh3-page-section>
 
   <sh3-page-section
+    title="How to design a theme"
+    icon="edit"
+    description="Eight steps, in order. Every example below is a decision taken — or a bug hit — while building midnight, sepia and navi."
+  >
+    <ol class="th-steps">
+      @for (s of steps; track s.title; let i = $index) {
+      <li class="th-step">
+        <span class="th-step-n">{{ i + 1 }}</span>
+        <div class="th-step-body">
+          <h3 class="th-step-title">{{ s.title }}</h3>
+          <p class="gal-body">{{ s.body }}</p>
+          <p class="th-step-ex">
+            <span class="gal-tag">in practice</span>{{ s.example }}
+          </p>
+          @if (s.code) {
+          <pre class="code-pre"><code>{{ s.code }}</code></pre>
+          }
+        </div>
+      </li>
+      }
+    </ol>
+
+    <sh3-card class="th-smells" separators raisedBands>
+      <strong cardHeader>Then look at it, and distrust these</strong>
+      <ul class="th-smell-list">
+        @for (smell of smells; track smell) {
+        <li>{{ smell }}</li>
+        }
+      </ul>
+    </sh3-card>
+  </sh3-page-section>
+
+  <sh3-page-section
     title="Overriding"
     icon="code"
     description="Four scopes, same mechanism — a custom property declared on an ancestor."

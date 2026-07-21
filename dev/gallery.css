@@ -1425,3 +1425,75 @@ sh3-app-shell > .content > *:not(router-outlet) {
   gap: 6px;
   min-width: 0;
 }
+
+/* themes page · the authoring guide */
+.th-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.th-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.th-step-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--sh3-radius-pill);
+  background: var(--sh3-color-primary-surface);
+  border: 1px solid var(--sh3-color-primary-border);
+  color: var(--sh3-color-primary-text);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.th-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  max-width: 90ch;
+}
+.th-step-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sh3-color-text);
+}
+/* The example carries the weight of the step, so it gets a rule rather than
+   sitting as one more grey paragraph. */
+.th-step-ex {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--sh3-color-border);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--sh3-color-text-secondary);
+}
+.th-step-ex .gal-tag {
+  flex: none;
+  padding-top: 2px;
+}
+.th-smells {
+  margin-top: 26px;
+}
+.th-smell-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sh3-color-text-secondary);
+}
