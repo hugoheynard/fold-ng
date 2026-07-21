@@ -44,6 +44,7 @@ export default class TabNavPage {
   protected readonly tnBackground = signal<TabBackground>("surface");
   protected readonly tnBadge = signal(true);
   protected readonly tnIcon = signal(true);
+  protected readonly tnCollapsed = signal(false);
   protected readonly tnCount = signal<number>(3);
   protected readonly tnActive = signal("overview");
 
@@ -88,6 +89,9 @@ export default class TabNavPage {
     }
     if (this.tnBackground() !== "surface") {
       attrs.push(`background="${this.tnBackground()}"`);
+    }
+    if (this.tnCollapsed()) {
+      attrs.push("collapsed");
     }
     attrs.push('(tabChange)="active.set($event)"');
     return ["<sh3-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"].join("\n");

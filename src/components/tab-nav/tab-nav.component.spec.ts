@@ -13,6 +13,7 @@ import { Sh3TabNavComponent, type Sh3TabNavItem } from "./tab-nav.component";
     [direction]="direction"
     [size]="size"
     [background]="background"
+    [collapsed]="collapsed"
     (tabChange)="picked = $event"
   />`,
 })
@@ -26,6 +27,7 @@ class HostComponent {
   direction: "horizontal" | "vertical" = "horizontal";
   size: "compact" | "comfortable" = "compact";
   background: "transparent" | "surface" = "transparent";
+  collapsed = false;
   picked: string | undefined;
 }
 
@@ -79,6 +81,13 @@ describe("Sh3TabNavComponent", () => {
     const { buttons } = setup({ activeKey: "a" });
     expect(
       buttons[0].querySelector(".tab-nav-badge")?.classList.contains("accent"),
+    ).toBe(true);
+  });
+
+  it("marks the nav collapsed via the `collapsed` input", () => {
+    expect(setup().nav.classList.contains("is-collapsed")).toBe(false);
+    expect(
+      setup({ collapsed: true }).nav.classList.contains("is-collapsed"),
     ).toBe(true);
   });
 

@@ -30,8 +30,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 6px 4px;
+  gap: 7px;
+  padding: 6px 8px;
   background: none;
   border: none;
   color: var(--sh3-color-text-muted);
@@ -52,7 +52,7 @@
 /* Comfortable — a prominent, page-level bar (vs the compact default). */
 .size-comfortable .tab-nav-item {
   flex: 0 1 auto;
-  gap: 7px;
+  gap: 10px;
   padding: 11px 16px;
   font-size: var(--sh3-text-sm);
 }
@@ -116,6 +116,22 @@
   background: var(--sh3-color-primary-surface);
   color: var(--sh3-color-primary-text);
   font-weight: 600;
+}
+
+/* Collapsed — an icon accordion: every tab but the active one shows just its
+   icon, the active one keeps its label and takes the room. A tab with no icon
+   keeps its label, so nothing is left unlabelled. Works in both directions. */
+.is-collapsed .tab-nav-item:not(.is-active) {
+  flex: 0 0 auto;
+  gap: 0;
+}
+.is-collapsed .tab-nav-item:not(.is-active) .tab-nav-icon ~ .tab-nav-label,
+.is-collapsed .tab-nav-item:not(.is-active) .tab-nav-badge {
+  display: none;
+}
+.is-collapsed .tab-nav-item.is-active {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 /* Vertical collapses to a horizontal icon-accordion on mobile. */

@@ -1,4 +1,4 @@
-import { Component, input, output } from "@angular/core";
+import { booleanAttribute, Component, input, output } from "@angular/core";
 import { Sh3BadgeComponent } from "../badge/badge.component";
 import { Sh3IconComponent } from "../icon/icon.component";
 import type { Sh3IconName } from "../icon/icon.registry";
@@ -64,6 +64,15 @@ export class Sh3TabNavComponent {
 
   /** `surface` (filled bar, default) or `transparent` (blends with the app). */
   readonly background = input<"transparent" | "surface">("surface");
+
+  /**
+   * Collapse the bar to icons: every tab but the active one drops its label (and
+   * badge) to just its icon, while the active tab keeps its label and takes the
+   * remaining room. Works in both directions — drive it from your own breakpoint
+   * when the bar is too tight for every label. Tabs without an `icon` keep their
+   * label, so nothing becomes unlabelled.
+   */
+  readonly collapsed = input(false, { transform: booleanAttribute });
 
   /** Emits the `key` of the clicked tab. */
   readonly tabChange = output<string>();

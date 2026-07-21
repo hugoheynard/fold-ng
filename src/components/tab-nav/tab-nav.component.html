@@ -5,6 +5,7 @@
   [class.dir-vertical]="direction() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
   [class.bg-surface]="background() === 'surface'"
+  [class.is-collapsed]="collapsed()"
 >
   @for (tab of tabs(); track tab.key) {
     <button

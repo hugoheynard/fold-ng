@@ -121,6 +121,19 @@
       </div>
     </div>
 
+    <div class="np-field" params>
+      <span class="gal-tag">collapsed</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnCollapsed()"
+          (click)="tnCollapsed.set(!tnCollapsed())"
+        >
+          icons only
+        </button>
+      </div>
+    </div>
+
     <p class="doc-p" params>Active: “{{ tnActiveKey() }}”</p>
 
     <!-- A page mock: header, the nav, then the content the active tab drives —
@@ -142,6 +155,7 @@
           [direction]="tnDirection()"
           [size]="tnSize()"
           [background]="tnBackground()"
+          [collapsed]="tnCollapsed()"
           (tabChange)="tnActive.set($event)"
         />
 
