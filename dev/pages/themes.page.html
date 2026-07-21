@@ -1,0 +1,123 @@
+<sh3-page-layout fluid title="themes">
+  <gal-kind-badge titleBadge kind="foundation" />
+  <p description>
+    Five themes, and not one of them touches a component. A theme re-points the
+    <em>semantic roles</em> (<code>--sh3-color-*</code>) at different
+    <em>primitives</em> (<code>--sh3-ref-*</code>) — the only place a hex is
+    allowed to live. Components name roles, never colours, so they follow
+    wherever a theme goes.
+  </p>
+
+  <sh3-page-section
+    title="The themes"
+    icon="grid"
+    description="Open one to see the roles it actually resolves to — every swatch below is live, rendered inside that theme rather than listed from a table."
+  >
+    @for (t of themes; track t.name) {
+    <sh3-card class="th-card" padding="none" separators>
+      <div cardHeader class="th-head">
+        <div class="th-id">
+          <span class="th-name">{{ t.name }}</span>
+          <code class="th-attr"
+            >{{ t.attr ? '[data-theme="' + t.attr + '"]' : ":root · default"
+            }}</code
+          >
+        </div>
+        <sh3-button
+          size="sm"
+          variant="ghost"
+          [icon]="open() === t.name ? 'chevron-up' : 'chevron-down'"
+          (clicked)="toggle(t.name)"
+        >
+          {{ open() === t.name ? "Hide" : "Palette" }}
+        </sh3-button>
+      </div>
+
+      <div class="th-body">
+        <p class="gal-body th-summary">{{ t.summary }}</p>
+        <p class="th-palette">
+          <span class="gal-tag">palette</span>
+          <span>{{ t.palette }}</span>
+        </p>
+
+        @if (t.note) {
+        <sh3-callout variant="info">{{ t.note }}</sh3-callout>
+        } @if (open() === t.name) {
+        <!-- The attribute is what makes this live: every var() inside
+                 resolves against this theme, exactly as a real page would. -->
+        <div class="th-swatches" [attr.data-theme]="t.attr">
+          @for (g of roleGroups; track g.label) {
+          <div class="th-group">
+            <span class="gal-tag">{{ g.label }}</span>
+            <div class="th-chips">
+              @for (role of g.roles; track role) {
+              <span class="th-chip">
+                <span
+                  class="th-swatch"
+                  [style.background]="'var(--sh3-color-' + role + ')'"
+                ></span>
+                <code>{{ role }}</code>
+              </span>
+              }
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </sh3-card>
+    }
+  </sh3-page-section>
+
+  <sh3-page-section
+    title="Overriding"
+    icon="code"
+    description="Four scopes, same mechanism — a custom property declared on an ancestor."
+  >
+    <pre class="code-pre th-code"><code>{{ overrideCode }}</code></pre>
+
+    <div class="th-rules">
+      <sh3-callout variant="warning">
+        A theme block must declare the <strong>whole</strong> catalogue. A
+        missing role silently falls back to the base theme's value — a light
+        surface with dark-theme text, one token at a time. The contract test
+        fails on any gap, in every theme.
+      </sh3-callout>
+      <sh3-callout variant="neutral">
+        Re-point, never re-hex. <code>--sh3-color-*</code> may only reference a
+        <code>--sh3-ref-*</code> primitive (or a <code>color-mix()</code> of
+        one). A literal in the semantic layer is a colour no other theme can
+        follow — also enforced.
+      </sh3-callout>
+      <sh3-callout variant="neutral">
+        Radius is the only scale a theme may re-declare: corner softness is a
+        brand axis, and the one scale that changes without moving a box. Type,
+        space, motion and elevation stay theme-invariant — retheming must never
+        re-flow a page.
+      </sh3-callout>
+    </div>
+  </sh3-page-section>
+
+  <sh3-page-section
+    title="Consuming"
+    icon="play"
+    description="What an app writes — and what it must never write."
+  >
+    <div class="th-consume">
+      <div>
+        <span class="gal-tag">pick a theme</span>
+        <pre class="code-pre"><code>{{ consumeCode }}</code></pre>
+      </div>
+      <div>
+        <span class="gal-tag">style against roles</span>
+        <pre class="code-pre"><code>{{ consumeCss }}</code></pre>
+      </div>
+    </div>
+    <sh3-callout variant="alert">
+      Never read a <code>--sh3-ref-*</code> primitive from a component: it is
+      theme-invariant by design, so a component that names one keeps umbra's
+      teal in every theme. That is the whole failure the two tiers exist to
+      prevent.
+    </sh3-callout>
+  </sh3-page-section>
+</sh3-page-layout>

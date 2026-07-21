@@ -30,6 +30,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   toast: () => import("./pages/toast.page"),
   callout: () => import("./pages/callout.page"),
   icons: () => import("./pages/icons.page"),
+  themes: () => import("./pages/themes.page"),
   form: () => import("./pages/form.page"),
   avatar: () => import("./pages/avatar.page"),
   "app-shell": () => import("./pages/app-shell.page"),

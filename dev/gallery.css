@@ -1320,3 +1320,108 @@ sh3-app-shell > .content > *:not(router-outlet) {
   border: 1px solid var(--sh3-color-border-subtle);
   background: var(--sh3-color-surface-card);
 }
+
+/* ── themes page: theme cards + live swatch grids ─────────────── */
+.th-card + .th-card {
+  margin-top: 16px;
+}
+.th-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.th-id {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.th-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--sh3-color-text);
+}
+.th-attr {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--sh3-color-text-muted);
+}
+.th-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+.th-summary {
+  max-width: 80ch;
+}
+.th-palette {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 12px;
+  color: var(--sh3-color-text-secondary);
+}
+
+/* The swatch grid renders INSIDE the theme it documents (data-theme on the
+   wrapper), so it paints itself: page background, card surface, text ramp. */
+.th-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-bg-page);
+  color: var(--sh3-color-text);
+}
+.th-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.th-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.th-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--sh3-color-text-secondary);
+}
+.th-swatch {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--sh3-radius-sm);
+  border: 1px solid var(--sh3-color-border);
+}
+.th-code {
+  max-width: none;
+}
+.th-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.th-consume {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.th-consume > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
