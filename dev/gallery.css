@@ -543,6 +543,19 @@ sh3-app-shell > .content > *:not(router-outlet) {
   flex: 1 1 240px;
   min-width: 240px;
 }
+/* Two specimens per line — for demos wide enough that a single column wastes
+   the page and a wrapping row would break the pairing. One column once a
+   column would be narrower than it is readable. */
+.gal-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 760px) {
+  .gal-pair {
+    grid-template-columns: 1fr;
+  }
+}
 .gal-cell {
   display: flex;
   flex-direction: column;
