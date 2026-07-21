@@ -4,10 +4,15 @@
   description="The edit half of a record (sh3-field reads). Signal Forms via [formField] or standalone [(value)]; label / required / hint / error are provided by sh3-input-base."
 >
   <gal-kind-badge titleBadge kind="component" />
-  <sh3-aside-layout class="gal-nav-layout">
+  <sh3-aside-layout
+    class="gal-nav-layout"
+    stackLeftFirst
+    galNarrow
+    #nav="galNarrow"
+  >
     <sh3-tab-nav
       asideLeft
-      direction="vertical"
+      [direction]="nav.narrow() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
       [tabs]="inputTabs"
       [activeKey]="inputTab()"

@@ -11,6 +11,7 @@ import {
   type Sh3ChoiceOption,
   type Sh3TabNavItem,
 } from "../../src/index";
+import { GalNarrowDirective } from "../narrow.directive";
 
 /** `/form-layout` — a settings-style form driven by a vertical tab-nav. */
 @Component({
@@ -18,6 +19,7 @@ import {
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    GalNarrowDirective,
     KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3AsideLayoutComponent,

@@ -16,6 +16,7 @@ import {
   type Sh3TabNavItem,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
+import { GalNarrowDirective } from "../narrow.directive";
 
 /** `/form` — the `sh3-input` gallery page (text · number · select · search). */
 @Component({
@@ -23,6 +24,7 @@ import { DevPlaygroundComponent } from "../playground.component";
   standalone: true,
   host: { class: "gal-page" },
   imports: [
+    GalNarrowDirective,
     KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3PageSectionComponent,
