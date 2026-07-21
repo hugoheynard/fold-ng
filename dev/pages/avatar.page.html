@@ -244,7 +244,6 @@
         </div>
 
         <sh3-avatar-list
-          #alPreview
           [avatars]="alFaces()"
           [limit]="alLimit()"
           [top]="alTop()"
@@ -252,62 +251,6 @@
           [square]="alSquare()"
         />
       </dev-playground>
-
-      <div class="tok-card-wrap">
-        <sh3-context-card
-          icon="grid"
-          title="Tokens"
-          subtitle="live sandbox — edit a value to override the preview; the CSS joins the code panel above"
-        >
-          @for (group of alTokens; track group.label) {
-          <div class="tok-group">
-            <span class="ss-label tok-group-label">{{ group.label }}</span>
-            @for (t of group.tokens; track t.prop) {
-            <div class="tok-row">
-              @if (t.kind === "color") {
-              <span
-                class="tok-swatch"
-                [style.background]="
-                            alOverrides()[t.prop] || 'var(' + t.prop + ')'
-                          "
-              ></span>
-              } @else {
-              <span
-                class="tok-swatch tok-swatch--radius"
-                [style.borderRadius]="
-                            alOverrides()[t.prop] || 'var(' + t.prop + ')'
-                          "
-              ></span>
-              }
-              <div class="tok-meta">
-                <code class="tok-name">{{ t.prop }}</code>
-                <span class="tok-desc">{{ t.desc }}</span>
-              </div>
-              <input
-                #ov
-                type="text"
-                class="tok-input"
-                [value]="alOverrides()[t.prop] || ''"
-                [placeholder]="
-                          t.kind === 'color' ? '#7c5bbf' : '12px'
-                        "
-                (input)="setAlOverride(t.prop, ov.value)"
-                [attr.aria-label]="'Override ' + t.prop"
-              />
-            </div>
-            }
-          </div>
-          }
-          <button
-            type="button"
-            class="tok-reset"
-            (click)="resetAlOverrides()"
-            [disabled]="!hasAlOverrides()"
-          >
-            Reset overrides
-          </button>
-        </sh3-context-card>
-      </div>
     </sh3-page-section>
     } }
   </sh3-tab-layout>

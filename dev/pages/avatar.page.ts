@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  computed,
-  effect,
-  inject,
-  signal,
-  viewChild,
-} from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import {
   Sh3AvatarComponent,
   Sh3AvatarDetailComponent,
@@ -15,7 +7,6 @@ import {
   type Sh3AvatarVariant,
   type Sh3AvatarRing,
   type Sh3AvatarRingStyle,
-  Sh3ContextCardComponent,
   Sh3IconComponent,
   Sh3PageLayoutComponent,
   Sh3PageSectionComponent,
@@ -26,14 +17,6 @@ import {
   Sh3PaletteRegistry,
   type Sh3AutoPaletteName,
 } from "../../src/index";
-import {
-  applyOverrides,
-  colorToken,
-  overrideCss,
-  radiusToken,
-  withOverride,
-  type PageTokenGroup,
-} from "../token-sandbox";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
 
@@ -78,7 +61,6 @@ interface DemoGroup<T> {
     Sh3AvatarComponent,
     Sh3AvatarDetailComponent,
     Sh3AvatarListComponent,
-    Sh3ContextCardComponent,
     Sh3SliderComponent,
     Sh3IconComponent,
     DevPlaygroundComponent,
@@ -219,7 +201,7 @@ export default class AvatarPage {
     });
   }
 
-  /* ── avatar-list showcase: preview + settings + code + token sandbox ─── */
+  /* ── avatar-list playground: settings → preview → live markup ───────── */
   protected readonly tops = ["first", "last"] as const;
   protected readonly sizes = ["sm", "md", "lg"] as const;
   protected readonly alCount = signal(7);
@@ -232,9 +214,7 @@ export default class AvatarPage {
     this.team.slice(0, this.alCount()),
   );
 
-  /** The `<sh3-avatar-list>` markup reflecting the settings, with the token
-   *  sandbox's CSS appended once something is actually overridden — the code
-   *  panel then shows everything it takes to reproduce the preview. */
+  /** The `<sh3-avatar-list>` markup reflecting the settings — live. */
   protected readonly alCode = computed(() => {
     const attrs = [
       '[avatars]="team"',
@@ -243,64 +223,8 @@ export default class AvatarPage {
       this.alSize() === "md" ? "" : `size="${this.alSize()}"`,
       this.alSquare() ? "square" : "",
     ].filter(Boolean);
-    const markup = `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
-    return this.hasAlOverrides()
-      ? `${markup}\n\n<!-- css -->\n${this.alTokensCss()}`
-      : markup;
+    return `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
   });
-
-  /** avatar-list's overridable tokens — its own ring var + the chip surfaces. */
-  protected readonly alTokens: readonly PageTokenGroup[] = [
-    {
-      label: "ring",
-      tokens: [
-        {
-          prop: "--sh3-avatar-list-ring",
-          desc: "ring around each face",
-          kind: "color",
-        },
-      ],
-    },
-    {
-      label: "overflow chip",
-      tokens: [
-        colorToken("primary-surface", "+N chip background"),
-        colorToken("primary-text", "+N chip text"),
-      ],
-    },
-    { label: "roundness", tokens: [radiusToken("sm", "square face rounding")] },
-  ];
-  /** `read: ElementRef` is load-bearing: `#alPreview` sits on a component, so
-   *  the query would otherwise hand back the instance, not the host element —
-   *  and the sandbox would write its overrides nowhere. */
-  private readonly alPreviewRef = viewChild("alPreview", {
-    read: ElementRef<HTMLElement>,
-  });
-  protected readonly alOverrides = signal<Record<string, string>>({});
-  protected readonly hasAlOverrides = computed(
-    () => Object.keys(this.alOverrides()).length > 0,
-  );
-  protected setAlOverride(prop: string, value: string): void {
-    this.alOverrides.update((o) => withOverride(o, prop, value));
-  }
-  protected resetAlOverrides(): void {
-    this.alOverrides.set({});
-  }
-  protected readonly alTokensCss = computed(() =>
-    overrideCss("sh3-avatar-list", this.alOverrides()),
-  );
-
-  constructor() {
-    // Live sandbox: write the token overrides onto the preview element. A DOM
-    // write (setProperty/removeProperty) → an effect, not a computed.
-    effect(() =>
-      applyOverrides(
-        this.alPreviewRef()?.nativeElement,
-        this.alTokens,
-        this.alOverrides(),
-      ),
-    );
-  }
 }
 
 /** The `<sh3-avatar>` markup for a demo — only the non-default props. */
