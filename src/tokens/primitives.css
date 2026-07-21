@@ -105,11 +105,12 @@
   --sh3-ref-navy-950: #0b152b; /* sunken surface on the chrome */
 
   /* ── Ivory — the NAVI page ────────────────────────────────────
-     A barely-warm white, set against the cool navy chrome. The
-     opposition is the point: a cool page beside a cool rail is merely
-     consistent, where warm-on-cool is what makes navy read as navy.
-     Distinct from sepia's paper, which is a warm theme throughout.  */
-  --sh3-ref-ivory-50: #faf8f3; /* page background (navi)        */
+     An almost-white, warm by a hair. The opposition is the point: a
+     cool page beside a cool rail is merely consistent, where warm-on-
+     cool is what makes navy read as navy — and it works at a very low
+     dose. Any warmer and the page starts looking like paper, which is
+     sepia's job (a warm theme throughout, not a warm page).          */
+  --sh3-ref-ivory-50: #fcfbf8; /* page background (navi)        */
 
   /* ── Paper / Clay / Umber — the SEPIA theme families ───────────
      Warm light: cream paper instead of cool cloud, a terracotta
