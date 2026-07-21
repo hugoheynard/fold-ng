@@ -10,7 +10,7 @@ import { Sh3AppShellComponent } from "./app-shell.component";
     <nav railPrimary data-t="rp">rail one</nav>
     <nav railSecondary data-t="rs">rail two</nav>
     <div header data-t="hd">header</div>
-    <main data-t="content">page</main>
+    <div data-t="content">page</div>
   </sh3-app-shell>`,
 })
 class HostComponent {}
@@ -98,6 +98,15 @@ describe("Sh3AppShellComponent", () => {
     fixture.componentInstance.rail.set(undefined);
     fixture.detectChanges();
     expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("");
+  });
+
+  it("names its regions semantically — <header> and <main>", () => {
+    const host = setup();
+    expect(host.querySelector("header.header")).not.toBeNull();
+    expect(host.querySelector("main.content")).not.toBeNull();
+    // One <main> per document: the frame owns it, so nothing projected into it
+    // may declare another (nor a nested <header>, which HTML forbids).
+    expect(host.querySelectorAll("main").length).toBe(1);
   });
 
   it("gutters the content region by default, so no page declares its own", () => {

@@ -33,8 +33,8 @@ import { Component, computed, input } from "@angular/core";
  * |------------------|-------------------------------------------|
  * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--sh3-shell-rail-width`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
- * | `header`         | Top bar (content column, or full-width — see `headerLayout`). |
- * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. |
+ * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
+ * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. |
  *
  * ## Sizing knobs
  * | Input                | CSS variable                       | Default | Meaning                    |
