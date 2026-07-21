@@ -118,6 +118,10 @@
   .al-aside-right {
     order: 3;
   }
+  /* Navigation rail: keep the menu above the content it drives. */
+  :host(.stack-left-first) .al-aside-left {
+    order: 0;
+  }
 }
 
 @container (max-width: 700px) {

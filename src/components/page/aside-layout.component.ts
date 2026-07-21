@@ -1,4 +1,4 @@
-import { Component, computed, input } from "@angular/core";
+import { booleanAttribute, Component, computed, input } from "@angular/core";
 
 /**
  * `<sh3-aside-layout>` — a centered, self-scrolling content column flanked by
@@ -71,9 +71,19 @@ import { Component, computed, input } from "@angular/core";
   standalone: true,
   templateUrl: "./aside-layout.component.html",
   styleUrl: "./aside-layout.component.scss",
-  host: { "[style.--sh3-aside-layout-top]": "topOffsetCss()" },
+  host: {
+    "[style.--sh3-aside-layout-top]": "topOffsetCss()",
+    "[class.stack-left-first]": "stackLeftFirst()",
+  },
 })
 export class Sh3AsideLayoutComponent {
+  /**
+   * When the layout collapses to one column, place the left rail **above** the
+   * centre instead of below it. Use it when the rail is navigation (a tab-nav),
+   * so the menu still precedes the content it drives; leave it off for a
+   * companion rail (a timeline, history) where the content should come first.
+   */
+  readonly stackLeftFirst = input(false, { transform: booleanAttribute });
   /**
    * Accessible label for the left rail. Set it and the rail is exposed as a
    * labelled `complementary` landmark; leave it unset and the rail is a plain
