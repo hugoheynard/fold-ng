@@ -498,13 +498,14 @@ sh3-app-shell {
 /* Each routed page host IS its own scroll container — it fills the shell's
    content cell (a flex column) and scrolls itself, so there's no wrapper div
    between the app-shell and the page. Never chains to the document. */
+/* A routed page: it owns its scroll, the shell owns the gutter around it
+   (sh3-app-shell contentPadding) — no page re-declares page margins. */
 .gal-page {
   display: block;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 28px 32px 40px;
 }
 
 .gal-stack {

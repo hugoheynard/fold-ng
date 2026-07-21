@@ -42,6 +42,7 @@ import { Component, computed, input } from "@angular/core";
  * | `railWidth`          | `--sh3-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
  * | `headerHeight`       | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
  * | `headerHeightMobile` | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
+ * | `contentPadding`     | `--sh3-shell-content-padding`      | `24px`  | Gutter around the content region (`"0"` = full-bleed). |
  *
  * ## Layout knobs
  * | Input          | Values                | Default   | Meaning                                    |
@@ -70,6 +71,7 @@ import { Component, computed, input } from "@angular/core";
   selector: "sh3-app-shell",
   standalone: true,
   host: {
+    "[style.--sh3-shell-content-padding]": "contentPadding()",
     "[style.--sh3-shell-rail-width]": "railWidthVar()",
     "[style.--sh3-shell-header-height]": "headerHeightVar()",
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
@@ -87,6 +89,16 @@ export class Sh3AppShellComponent {
   readonly headerHeight = input<number>();
   /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
+
+  /**
+   * The gutter around the content region — any CSS padding shorthand.
+   *
+   * The frame owns it so no page has to re-declare its own margins: routed
+   * pages fill the slot and inherit the same gutter everywhere. Pass `"0"` for
+   * a full-bleed content region (a page that paints edge-to-edge, or one that
+   * anchors its own overlays against the region's real edges).
+   */
+  readonly contentPadding = input<string>("24px");
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");
