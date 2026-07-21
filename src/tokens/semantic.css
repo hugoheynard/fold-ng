@@ -711,11 +711,14 @@
 [data-theme="navi"]
   sh3-app-shell
   > :is(.header, .rail-primary, .rail-secondary) {
-  /* Light text on the dark chrome … */
+  /* Light text on the dark chrome. The whole ramp sits one step above umbra's:
+     navy is a lighter, bluer ground than ink, so the borrowed values landed
+     dim — `faded` on the expanded rail was barely legible. Four distinct
+     steps, no new primitive. */
   --sh3-color-text: var(--sh3-ref-slate-50);
-  --sh3-color-text-secondary: var(--sh3-ref-slate-400);
-  --sh3-color-text-muted: var(--sh3-ref-slate-500);
-  --sh3-color-text-faded: var(--sh3-ref-slate-700);
+  --sh3-color-text-secondary: var(--sh3-ref-slate-350);
+  --sh3-color-text-muted: var(--sh3-ref-slate-400);
+  --sh3-color-text-faded: var(--sh3-ref-slate-500);
   --sh3-color-border: color-mix(in srgb, var(--sh3-ref-white) 8%, transparent);
   --sh3-color-border-subtle: color-mix(
     in srgb,
