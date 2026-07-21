@@ -586,8 +586,8 @@
    being a demo.                                                 */
 [data-theme="navi"] {
   /* Surfaces */
-  --sh3-color-bg-page: var(--sh3-ref-navy-25);
-  --sh3-color-bg-header: var(--sh3-ref-navy-800);
+  --sh3-color-bg-page: var(--sh3-ref-ivory-50);
+  --sh3-color-bg-header: var(--sh3-ref-navy-750);
   --sh3-color-bg-rail-primary: var(--sh3-ref-navy-900);
   --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-850);
   --sh3-color-bg-rail-tertiary: color-mix(
