@@ -15,6 +15,8 @@ export const NAV_ICONS = {
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24,1.5V22.5c0,.83-.67,1.5-1.5,1.5s-1.5-.67-1.5-1.5V1.5c0-.83,.67-1.5,1.5-1.5s1.5,.67,1.5,1.5Zm-6.5,9H4.25l3.33-3.46c.57-.6,.56-1.55-.04-2.12-.6-.58-1.55-.56-2.12,.04L1.03,9.52c-.66,.66-1.03,1.54-1.03,2.48s.36,1.81,1.01,2.45l4.41,4.59c.29,.31,.69,.46,1.08,.46s.75-.14,1.04-.42c.6-.57,.62-1.52,.04-2.12l-3.33-3.46h13.25c.83,0,1.5-.67,1.5-1.5s-.67-1.5-1.5-1.5Z"/></svg>',
   music:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V5l10-2v12"/><circle cx="7" cy="17" r="2.5"/><circle cx="17" cy="15" r="2.5"/></svg>',
+  "org-chart":
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3h7zM7 9H4V5h3v4zm10 6h3v4h-3v-4zm0-10v4h3V5h-3z"/></svg>',
   planning:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.25" y="5" width="17.5" height="15.5" rx="2.25"/><path d="M3.25 9h17.5"/><path d="M7.5 5V3.2M12 5V3.2M16.5 5V3.2"/><circle cx="7.5" cy="2.5" r="1.1"/><circle cx="12" cy="2.5" r="1.1"/><circle cx="16.5" cy="2.5" r="1.1"/><path d="M7.9 11.05 10.6 13.75M10.6 11.05 7.9 13.75"/><rect x="13.15" y="10.8" width="3.2" height="3.2" rx="0.6"/><rect x="7.65" y="15.4" width="3.2" height="3.2" rx="0.6"/><path d="M13.4 15.65 16.1 18.35M16.1 15.65 13.4 18.35"/></svg>',
   program:
