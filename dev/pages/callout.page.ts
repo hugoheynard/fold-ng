@@ -27,6 +27,7 @@ import { DevPlaygroundComponent } from "../playground.component";
 export default class CalloutPage {
   protected readonly variants = [
     "neutral",
+    "accent",
     "info",
     "success",
     "warning",

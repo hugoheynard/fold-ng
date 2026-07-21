@@ -51,6 +51,12 @@
 
 /* Status variants — the glyph takes the text colour rather than a dimmer one,
    so it carries the same weight as the message it introduces. */
+:host(.v-accent) {
+  --_surface: var(--sh3-color-primary-surface);
+  --_border: var(--sh3-color-primary-border);
+  --_text: var(--sh3-color-primary-text);
+  --_glyph: var(--sh3-color-primary-text);
+}
 :host(.v-info) {
   --_surface: var(--sh3-color-info-surface);
   --_border: var(--sh3-color-info-border);

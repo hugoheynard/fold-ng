@@ -5,6 +5,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
 /** Severity of a {@link Sh3CalloutComponent} — colour + default icon. */
 export type Sh3CalloutVariant =
   | "neutral"
+  | "accent"
   | "info"
   | "success"
   | "warning"
@@ -16,6 +17,7 @@ export type Sh3CalloutAppearance = "inset" | "flat";
 /** Default glyph per variant — overridable with the `icon` input. */
 const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
   neutral: "info",
+  accent: "lightning",
   info: "info",
   success: "completed",
   warning: "warning",
@@ -35,12 +37,15 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
  *
  * The message is projected, so it can carry `<strong>`, links or a second
  * sentence. Colour comes from the status token families, so every theme is
- * handled without the callout knowing any of them.
+ * handled without the callout knowing any of them. `accent` is the odd one:
+ * it states no severity, it tints with the brand — for a callout that promotes
+ * rather than warns (a new capability, a tip). Same name as `sh3-badge`'s
+ * brand tint, on purpose.
  *
  * ## Inputs
  * | Input        | Type                                                 | Default     |
  * |--------------|------------------------------------------------------|-------------|
- * | `variant`    | `neutral \| info \| success \| warning \| alert`      | `neutral`   |
+ * | `variant`    | `neutral \| accent \| info \| success \| warning \| alert` | `neutral` |
  * | `appearance` | `inset \| flat`                                       | `inset`     |
  * | `icon`       | `Sh3IconName` — overrides the variant's glyph         | —           |
  * | `announce`   | `boolean` — see below                                 | `false`     |
@@ -79,6 +84,7 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
     "[attr.role]": "role()",
     "[attr.aria-live]": "ariaLive()",
     "[class.v-neutral]": "variant() === 'neutral'",
+    "[class.v-accent]": "variant() === 'accent'",
     "[class.v-info]": "variant() === 'info'",
     "[class.v-success]": "variant() === 'success'",
     "[class.v-warning]": "variant() === 'warning'",

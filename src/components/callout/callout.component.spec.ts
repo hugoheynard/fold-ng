@@ -55,6 +55,17 @@ describe("Sh3CalloutComponent", () => {
     expect(callout.getAttribute("aria-live")).toBeNull();
   });
 
+  it("tints with the brand on accent — a promotion, not a severity", () => {
+    const { fixture, callout } = render();
+    fixture.componentInstance.variant.set("accent");
+    fixture.detectChanges();
+    expect(callout.classList.contains("v-accent")).toBe(true);
+    // Announced, it stays polite: nothing about the brand tint is critical.
+    fixture.componentInstance.announce.set(true);
+    fixture.detectChanges();
+    expect(callout.getAttribute("role")).toBe("status");
+  });
+
   it("marks the variant and the flat appearance", () => {
     const { fixture, callout } = render();
     fixture.componentInstance.variant.set("warning");
@@ -72,7 +83,13 @@ describe("Sh3CalloutComponent", () => {
     expect(glyph()).not.toBeNull();
 
     // Each variant resolves to *a* glyph — the mapping itself is the contract.
-    for (const v of ["info", "success", "warning", "alert"] as const) {
+    for (const v of [
+      "accent",
+      "info",
+      "success",
+      "warning",
+      "alert",
+    ] as const) {
       fixture.componentInstance.variant.set(v);
       fixture.detectChanges();
       expect(glyph(), `variant ${v} renders no icon`).not.toBeNull();
