@@ -10,6 +10,12 @@ import {
 } from "@angular/core";
 
 /**
+ * Dead band (px) between folding and unfolding. Wider than any scrollbar, so the
+ * width a fold gives back can never flip the layout straight back.
+ */
+const HYSTERESIS = 32;
+
+/**
  * `<sh3-tab-layout>` — pairs a tab bar with the content it drives, and owns the
  * one thing every tabbed page hand-rolls: where the nav sits.
  *
@@ -58,17 +64,16 @@ export class Sh3TabLayoutComponent {
   /** Width (px) at or below which a `side` nav folds back on top. */
   readonly foldAt = input(720, { transform: numberAttribute });
 
-  private readonly width = signal(0);
+  /** Whether a `side` rail has folded. Hysteretic — see {@link HYSTERESIS}. */
+  private readonly folded = signal(false);
 
   /**
    * Whether the nav currently sits **above** the content — always true for
-   * `top`, and true for `side` once the layout is narrower than {@link foldAt}.
+   * `top`, and true for `side` once the layout has folded.
    * Bind a projected bar's `direction` to it.
    */
   readonly stacked = computed(
-    () =>
-      this.placement() === "top" ||
-      (this.width() > 0 && this.width() <= this.foldAt()),
+    () => this.placement() === "top" || this.folded(),
   );
 
   constructor() {
@@ -78,10 +83,29 @@ export class Sh3TabLayoutComponent {
         return;
       }
       const ro = new ResizeObserver((entries) => {
-        this.width.set(entries[0].contentRect.width);
+        this.measure(entries[0].contentRect.width);
       });
       ro.observe(host);
       onCleanup(() => ro.disconnect());
     });
+  }
+
+  /**
+   * Fold at `foldAt`, but only unfold once we are clearly past it.
+   *
+   * Folding makes the content taller, which can bring a scrollbar in and take
+   * ~15px of width back — enough to cross a single threshold again and flip
+   * forever. A dead band wider than any scrollbar breaks that loop.
+   */
+  private measure(width: number): void {
+    if (width === 0) {
+      return;
+    }
+    const fold = this.foldAt();
+    if (!this.folded() && width <= fold) {
+      this.folded.set(true);
+    } else if (this.folded() && width > fold + HYSTERESIS) {
+      this.folded.set(false);
+    }
   }
 }
