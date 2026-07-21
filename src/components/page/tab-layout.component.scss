@@ -6,12 +6,20 @@
   gap: var(--sh3-tab-layout-gap, 16px);
   min-width: 0;
 }
+/* No align-items: the rail stretches to the row's height on purpose. A tab bar
+   carries its own surface (`background="surface"`), and a rail that hugged its
+   tabs would leave that band floating above the content it belongs to. The bar
+   fills whatever box it is given — this is the layout's half of that deal. */
 :host(.is-row) {
   flex-direction: row;
-  align-items: flex-start;
 }
 
+/* Grid, not block: a grid item stretches on BOTH axes by default, so the
+   projected bar fills the region without the layout having to style it (view
+   encapsulation puts projected content out of reach of a `.tl-nav > *` rule,
+   and ::ng-deep is not an option). */
 .tl-nav {
+  display: grid;
   min-width: 0;
 }
 /* Only the rail gets a track — stacked, the nav spans the full width. */
