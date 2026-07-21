@@ -125,8 +125,11 @@
   flex: 0 0 auto;
   gap: 0;
 }
-.size-reduce .tab-nav-item .tab-nav-icon ~ .tab-nav-label,
-.size-reduce .tab-nav-item .tab-nav-badge {
+/* Scoped to :not(.is-active) rather than hide-then-show: view encapsulation
+   appends an attribute to every compound selector, so the `~` hide rule would
+   outweigh any show rule on the active tab whatever the source order. */
+.size-reduce .tab-nav-item:not(.is-active) .tab-nav-icon ~ .tab-nav-label,
+.size-reduce .tab-nav-item:not(.is-active) .tab-nav-badge {
   display: none;
 }
 .size-reduce .tab-nav-item.is-active {
@@ -134,12 +137,9 @@
   min-width: 0;
   gap: 7px;
 }
-/* after the hide rules (equal specificity) so the active tab reads fully */
 .size-reduce .tab-nav-item.is-active .tab-nav-label {
-  display: inline;
-}
-.size-reduce .tab-nav-item.is-active .tab-nav-badge {
-  display: inline-flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Vertical collapses to a horizontal icon-accordion on mobile. */
