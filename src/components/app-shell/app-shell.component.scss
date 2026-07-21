@@ -20,6 +20,17 @@
     "rail-primary rail-secondary header"
     "rail-primary rail-secondary content";
 }
+/* Each region resolves `text` locally instead of inheriting a colour computed
+   on an ancestor. Identical under a uniform theme — but it is what lets a
+   theme re-declare the role for one region (navi's dark chrome on a light
+   page): a custom property override only reaches properties resolved inside
+   the subtree, never a colour already inherited from above. */
+.rail-primary,
+.rail-secondary,
+.header,
+.content {
+  color: var(--sh3-color-text);
+}
 .rail-primary {
   grid-area: rail-primary;
   min-height: 0;

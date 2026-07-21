@@ -16,18 +16,24 @@ Import the CSS once at your app's style entry point:
 @import "@sh3pherd/ui/tokens.css";
 ```
 
-Everything renders **dark by default**. To switch a subtree (or the whole app),
+Everything renders **umbra** (the dark theme) **by default**. To switch a subtree (or the whole app),
 set `data-theme` on an ancestor — usually `<html>`:
 
 ```html
 <html data-theme="light"></html>
 ```
 
-Four themes ship: `dark` (the base, no attribute), `light`, `midnight` (indigo
-chrome, violet brand) and `sepia` (warm paper, terracotta brand). The last two
-exist to prove the point — each is the dark or light block with its primitive
-families re-pointed, nothing else. Adding a fifth is a new `[data-theme]` block
-in `semantic.css` plus the primitives it names; no component changes, ever.
+Five themes ship: `umbra` (the dark base, no attribute), `light`, `midnight`
+(indigo chrome, violet brand), `sepia` (warm paper, terracotta brand) and
+`navi` (dark chrome, light page). The extras exist to prove the point — each is
+the umbra or light block with its primitive families re-pointed. Adding a sixth
+is a new `[data-theme]` block in `semantic.css` plus the primitives it names.
+
+`navi` is the interesting one: mixing chrome and page means one theme needs the
+`text`/`border`/`surface` roles to differ **per region**, which a single set of
+roles cannot express. It gets there by re-declaring those roles on the shell's
+chrome regions — variables only, no component change. If mixed chrome ever
+stops being a demo, the catalogue should grow real `*-on-chrome` roles.
 
 Then style against the semantic tokens — never a raw colour:
 

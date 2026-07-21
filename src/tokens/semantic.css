@@ -6,9 +6,10 @@
    and points at a TIER-1 primitive. Re-theming = re-pointing
    here, never editing a hex.
 
-   Dark is the base: it lives on :root, so an app with no theme
-   attribute renders dark. Light is an explicit override applied
-   by setting `data-theme="light"` on <html> (or any ancestor).
+   UMBRA (the dark theme) is the base: it lives on :root, so an
+   app with no theme attribute renders umbra. Every other theme is
+   an explicit override applied by setting `data-theme="<name>"`
+   on <html> (or any ancestor — a subtree themes independently).
 
    The status families (primary/info/warning/alert) each expose a
    tinted-chip triad on top of the solid base:
@@ -23,7 +24,7 @@
    contract test fails if they drift.
    ============================================================ */
 
-/* ── Base theme: DARK ─────────────────────────────────────── */
+/* ── Base theme: UMBRA (dark) ─────────────────────────────── */
 :root {
   /* Surfaces (bg- = a fill role, darkest chrome → lightest page) */
   --sh3-color-bg-page: var(--sh3-ref-ink-850); /* page background        */
@@ -291,7 +292,7 @@
 
 /* ── Extra theme: MIDNIGHT ────────────────────────────────────
    Proof that a theme is nothing but re-pointing: every role below
-   is the DARK block with its primitive family swapped — indigo
+   is the UMBRA block with its primitive family swapped — indigo
    chrome (void), a violet brand (iris), cool text (mist), and a
    cyan info family (azure), since purple would collide with the
    brand. No component, no structure, no extra token.            */
@@ -563,6 +564,183 @@
   --sh3-color-glass-border: color-mix(
     in srgb,
     var(--sh3-ref-black) 12%,
+    transparent
+  );
+}
+
+/* ── Extra theme: NAVI ────────────────────────────────────────
+   Dark chrome, light content — the classic "app rail beside a
+   white page". It is the LIGHT block with three surfaces moved to
+   ink, plus one scoped override: the shell's chrome regions take
+   the UMBRA text/border/surface roles back, because a dark rail
+   needs light text on it.
+
+   That second block is the honest part. The palette has no
+   "on-chrome" text role — text/border/surface are single roles
+   shared by page and chrome — so a mixed theme cannot be
+   expressed by re-pointing alone. Scoping to the shell's own
+   regions gets there with variables only, no component change,
+   and it is exactly how cascading custom properties are meant to
+   be used: a subtree re-declares the roles it needs. Give the
+   catalogue real `*-on-chrome` roles the day mixed chrome stops
+   being a demo.                                                 */
+[data-theme="navi"] {
+  /* Surfaces */
+  --sh3-color-bg-page: var(--sh3-ref-cloud-100);
+  --sh3-color-bg-header: var(--sh3-ref-ink-950);
+  --sh3-color-bg-rail-primary: var(--sh3-ref-ink-925);
+  --sh3-color-bg-rail-secondary: var(--sh3-ref-ink-900);
+  --sh3-color-bg-rail-tertiary: color-mix(
+    in srgb,
+    var(--sh3-ref-black) 2%,
+    transparent
+  );
+
+  /* Primary / accent — brand mutes on light, hover darkens further */
+  --sh3-color-primary: var(--sh3-ref-teal-550);
+  --sh3-color-primary-strong: var(--sh3-ref-teal-600);
+  --sh3-color-on-primary: var(--sh3-ref-white);
+  --sh3-color-primary-text: var(--sh3-ref-teal-500);
+  --sh3-color-primary-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-teal-500) 8%,
+    transparent
+  );
+  --sh3-color-primary-border: color-mix(
+    in srgb,
+    var(--sh3-ref-teal-500) 25%,
+    transparent
+  );
+
+  /* Info (purple) */
+  --sh3-color-info: var(--sh3-ref-purple-600);
+  --sh3-color-info-text: var(--sh3-ref-purple-500);
+  --sh3-color-info-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-purple-600) 8%,
+    transparent
+  );
+  --sh3-color-info-border: color-mix(
+    in srgb,
+    var(--sh3-ref-purple-600) 22%,
+    transparent
+  );
+
+  /* Warning (amber) */
+  --sh3-color-warning: var(--sh3-ref-amber-600);
+  --sh3-color-warning-text: var(--sh3-ref-amber-550);
+  --sh3-color-warning-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-amber-600) 8%,
+    transparent
+  );
+  --sh3-color-warning-border: color-mix(
+    in srgb,
+    var(--sh3-ref-amber-600) 22%,
+    transparent
+  );
+
+  /* Alert (red) */
+  --sh3-color-alert: var(--sh3-ref-red-600);
+  --sh3-color-alert-text: var(--sh3-ref-red-450);
+  --sh3-color-alert-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-red-600) 8%,
+    transparent
+  );
+  --sh3-color-alert-border: color-mix(
+    in srgb,
+    var(--sh3-ref-red-600) 22%,
+    transparent
+  );
+
+  /* Success (green) — base holds across themes; tint + surfaces soften on light */
+  --sh3-color-success: var(--sh3-ref-green-500);
+  --sh3-color-success-text: var(--sh3-ref-green-550);
+  --sh3-color-success-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-green-500) 10%,
+    transparent
+  );
+  --sh3-color-success-border: color-mix(
+    in srgb,
+    var(--sh3-ref-green-500) 25%,
+    transparent
+  );
+
+  /* Text */
+  --sh3-color-text: var(--sh3-ref-slate-900);
+  --sh3-color-text-secondary: var(--sh3-ref-slate-600);
+  --sh3-color-text-muted: var(--sh3-ref-slate-550);
+  --sh3-color-text-faded: var(--sh3-ref-slate-350);
+
+  /* Card — a solid raised content surface (white on light) */
+  --sh3-color-surface-card: var(--sh3-ref-white);
+  /* Sunken — light theme flattens the depth cue to white, matching the ref. */
+  --sh3-color-surface-sunken: var(--sh3-ref-white);
+
+  /* Neutral surfaces + border — alpha overlays (black on light) */
+  --sh3-color-surface-subtle: color-mix(
+    in srgb,
+    var(--sh3-ref-black) 2%,
+    transparent
+  );
+  --sh3-color-surface-raised: color-mix(
+    in srgb,
+    var(--sh3-ref-black) 4%,
+    transparent
+  );
+  --sh3-color-surface-hover: var(--sh3-ref-cloud-150); /* solid raised hover */
+  --sh3-color-border: color-mix(in srgb, var(--sh3-ref-black) 8%, transparent);
+  /* Fainter hairline — row dividers, subtle panel edges (below `border`). */
+  --sh3-color-border-subtle: color-mix(
+    in srgb,
+    var(--sh3-ref-black) 4%,
+    transparent
+  );
+
+  /* Glass — translucent frosted overlay (panels, floating menus) */
+  --sh3-color-glass: color-mix(in srgb, var(--sh3-ref-white) 65%, transparent);
+  --sh3-color-glass-border: color-mix(
+    in srgb,
+    var(--sh3-ref-black) 12%,
+    transparent
+  );
+}
+
+[data-theme="navi"]
+  sh3-app-shell
+  > :is(.header, .rail-primary, .rail-secondary) {
+  --sh3-color-text: var(--sh3-ref-slate-50);
+  --sh3-color-text-secondary: var(--sh3-ref-slate-400);
+  --sh3-color-text-muted: var(--sh3-ref-slate-500);
+  --sh3-color-text-faded: var(--sh3-ref-slate-700);
+  --sh3-color-border: color-mix(in srgb, var(--sh3-ref-white) 8%, transparent);
+  --sh3-color-border-subtle: color-mix(
+    in srgb,
+    var(--sh3-ref-white) 4%,
+    transparent
+  );
+  --sh3-color-surface-card: var(--sh3-ref-ink-800);
+  --sh3-color-surface-sunken: color-mix(
+    in srgb,
+    var(--sh3-ref-ink-800) 35%,
+    var(--sh3-ref-ink-850)
+  );
+  --sh3-color-surface-subtle: color-mix(
+    in srgb,
+    var(--sh3-ref-white) 3%,
+    transparent
+  );
+  --sh3-color-surface-raised: color-mix(
+    in srgb,
+    var(--sh3-ref-white) 5%,
+    transparent
+  );
+  --sh3-color-surface-hover: var(--sh3-ref-ink-700);
+  --sh3-color-bg-rail-tertiary: color-mix(
+    in srgb,
+    var(--sh3-ref-white) 3%,
     transparent
   );
 }

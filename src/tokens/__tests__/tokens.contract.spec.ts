@@ -70,9 +70,15 @@ describe("token contract · catalogue ↔ CSS", () => {
   it("every theme override declares exactly the catalogue colours (theme parity)", () => {
     // Normalise quotes first — Prettier may write [data-theme="light"] or '…'.
     const normalised = semantic.replace(/['"]/g, '"');
-    const themes = [...normalised.matchAll(/\[data-theme="([\w-]+)"\]/g)].map(
-      (m) => m[1] as string,
-    );
+    // A theme may also carry scoped sub-blocks (navi re-declares chrome roles
+    // on the shell's regions), so dedupe — `block()` finds the top-level one.
+    const themes = [
+      ...new Set(
+        [...normalised.matchAll(/\[data-theme="([\w-]+)"\]/g)].map(
+          (m) => m[1] as string,
+        ),
+      ),
+    ];
 
     // Guards the guard: a typo'd selector would otherwise test nothing.
     expect(themes.length).toBeGreaterThanOrEqual(1);

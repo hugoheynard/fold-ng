@@ -15,7 +15,7 @@ import { closestSh3, inspect } from "../inspect";
 import { GALLERY_NAV } from "./gallery-nav";
 
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
-type GalleryTheme = "dark" | "light" | "midnight" | "sepia";
+type GalleryTheme = "umbra" | "light" | "midnight" | "sepia" | "navi";
 
 /**
  * The gallery shell — the fixed `sh3-app-shell` chrome (a stable static primary
@@ -41,17 +41,23 @@ type GalleryTheme = "dark" | "light" | "midnight" | "sepia";
   ],
   host: {
     class: "gal-root",
-    "[attr.data-theme]": "theme() === 'dark' ? null : theme()",
+    "[attr.data-theme]": "theme() === 'umbra' ? null : theme()",
   },
   templateUrl: "./gallery-shell.component.html",
 })
 export class GalleryShellComponent {
   private readonly panelHost = inject(Sh3PanelHostService);
 
-  /** Every theme the token layer ships. `dark` is the base (`:root`), so it
+  /** Every theme the token layer ships. `umbra` is the base (`:root`), so it
    *  sets no attribute; the rest are `[data-theme]` overrides. */
-  protected readonly themes = ["dark", "light", "midnight", "sepia"] as const;
-  protected readonly theme = signal<GalleryTheme>("dark");
+  protected readonly themes = [
+    "umbra",
+    "light",
+    "midnight",
+    "sepia",
+    "navi",
+  ] as const;
+  protected readonly theme = signal<GalleryTheme>("umbra");
   protected readonly navGroups = GALLERY_NAV;
 
   /** railPrimary: a stable static nav, decoupled from any page. */
