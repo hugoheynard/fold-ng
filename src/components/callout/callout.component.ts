@@ -58,7 +58,14 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
  *
  * ## Slots
  * - default → the message.
- * - `[actions]` → trailing controls (a button, a link).
+ * - `[actions]` → trailing controls. Project a small control (`size="sm"`) —
+ *   a callout is a line of text, and a full-size button turns it into a bar.
+ *   The callout cannot enforce it: view encapsulation puts projected content
+ *   out of its reach.
+ *
+ * The resolved {@link role} and {@link ariaLive} are exposed (`exportAs:
+ * "sh3Callout"`) because `announce` changes nothing on screen — reading them
+ * back is the only way to see it work.
  *
  * @selector `sh3-callout`
  *
@@ -79,6 +86,7 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
 @Component({
   selector: "sh3-callout",
   standalone: true,
+  exportAs: "sh3Callout",
   imports: [Sh3IconComponent],
   host: {
     "[attr.role]": "role()",
@@ -106,15 +114,17 @@ export class Sh3CalloutComponent {
     () => this.icon() ?? DEFAULT_ICON[this.variant()],
   );
 
-  /** `alert` interrupts; anything else announced is polite; else passive. */
-  protected readonly role = computed(() => {
+  /** The resolved ARIA role — public so a consumer (or the gallery) can show
+   *  what `announce` actually did, since it changes nothing visually. */
+  readonly role = computed(() => {
     if (!this.announce()) {
       return "note";
     }
     return this.variant() === "alert" ? "alert" : "status";
   });
 
-  protected readonly ariaLive = computed(() => {
+  /** The resolved live-region politeness, or `null` when passive. */
+  readonly ariaLive = computed(() => {
     if (!this.announce()) {
       return null;
     }

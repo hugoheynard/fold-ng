@@ -7,7 +7,10 @@
   --_glyph: var(--sh3-color-text-muted);
 
   display: flex;
-  align-items: flex-start;
+  /* Centred: a callout is one line of text by contract, and with actions the
+     row grows to the control's height — top-aligned text then floats above a
+     button sitting mid-row. */
+  align-items: center;
   gap: var(--sh3-space-sm);
   padding: 10px var(--sh3-space-md);
   border: 1px solid var(--_border);
@@ -30,7 +33,6 @@
 
 .callout-icon {
   flex: none;
-  margin-top: 1px;
   color: var(--_glyph);
 }
 .callout-body {

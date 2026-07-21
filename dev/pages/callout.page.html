@@ -100,6 +100,7 @@
 
     <sh3-card padding="none" style="width: 100%; max-width: 520px">
       <sh3-callout
+        #co="sh3Callout"
         [variant]="coVariant()"
         [appearance]="coAppearance()"
         [announce]="coAnnounce()"
@@ -115,6 +116,12 @@
         Container content — switch to <code>flat</code> to see the callout meet
         its edges.
       </p>
+      <div class="co-aria" cardFooter>
+        <span class="gal-tag">announced as</span>
+        <code
+          >role="{{ co.role() }}" aria-live="{{ co.ariaLive() ?? "—" }}"</code
+        >
+      </div>
     </sh3-card>
   </dev-playground>
 </sh3-page-layout>
