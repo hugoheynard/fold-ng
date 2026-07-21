@@ -13,6 +13,12 @@
 :host(.square) {
   border-radius: var(--sh3-radius-sm);
 }
+/* Neutral — a dim count/tag pill with no semantic colour. */
+:host(.neutral) {
+  background: var(--sh3-color-surface-subtle);
+  border: 1px solid var(--sh3-color-border-subtle);
+  color: var(--sh3-color-text-muted);
+}
 :host(.accent) {
   background: var(--sh3-color-primary-surface);
   border: 1px solid var(--sh3-color-primary-border);

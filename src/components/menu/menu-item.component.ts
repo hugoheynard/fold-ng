@@ -16,6 +16,7 @@ export type Sh3MenuItemBadgeTone = "follow" | Sh3BadgeVariant;
 
 /** Solid accent colour per semantic tone (drives the dot + follow-pill). */
 const TONE_ACCENT: Record<Sh3BadgeVariant, string> = {
+  neutral: "var(--sh3-color-text-muted)",
   accent: "var(--sh3-color-primary)",
   info: "var(--sh3-color-info)",
   warning: "var(--sh3-color-warning)",

@@ -11,6 +11,7 @@ import { Component, input } from "@angular/core";
  * - `success` — green, positive / complete
  */
 export type Sh3BadgeVariant =
+  | "neutral"
   | "accent"
   | "info"
   | "warning"
@@ -53,6 +54,7 @@ export class Sh3BadgeComponent {
 
   /**
    * Semantic colour variant, mapped to design tokens.
+   * - `neutral` — dim + unsaturated, for counts and non-semantic tags
    * - `accent` (default) — teal, general purpose
    * - `info` — purple, informative / categorical
    * - `warning` — amber, attention needed
