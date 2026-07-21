@@ -6,7 +6,6 @@ import { Sh3LinkComponent, Sh3PageLayoutComponent } from "../../src/index";
 @Component({
   selector: "gal-link-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3LinkComponent],
   template: `<sh3-page-layout fluid title="link">
     <gal-kind-badge titleBadge kind="component" />

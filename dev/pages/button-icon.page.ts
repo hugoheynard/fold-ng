@@ -9,7 +9,6 @@ import {
 @Component({
   selector: "gal-button-icon-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3ButtonIconComponent],
   template: `<sh3-page-layout fluid title="button-icon">
     <gal-kind-badge titleBadge kind="component" />

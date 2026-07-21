@@ -16,7 +16,6 @@ import {
 @Component({
   selector: "gal-form-layout-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

@@ -10,7 +10,6 @@ import {
 @Component({
   selector: "gal-page-section-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

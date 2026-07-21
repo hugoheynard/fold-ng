@@ -9,7 +9,6 @@ import {
 @Component({
   selector: "gal-dropzone-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

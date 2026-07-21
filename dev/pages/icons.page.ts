@@ -10,7 +10,6 @@ import {
 @Component({
   selector: "gal-icons-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3IconComponent],
   templateUrl: "./icons.page.html",
 })

@@ -27,7 +27,6 @@ type ShellMode = "desktop" | "tablet" | "mobile";
 @Component({
   selector: "gal-app-shell-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

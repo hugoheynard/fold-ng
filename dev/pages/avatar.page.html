@@ -8,6 +8,7 @@
       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       background="transparent"
       size="comfortable"
+      [activeStyle]="'fill'"
       (tabChange)="avatarTab.set($event)"
     />
     @switch (avatarTab()) { @case ("avatar") {

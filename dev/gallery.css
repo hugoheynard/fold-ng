@@ -495,17 +495,13 @@ sh3-app-shell {
 }
 
 /* ── Content: scrollable gallery + docked token editor ──────── */
-/* Each routed page host IS its own scroll container — it fills the shell's
-   content cell (a flex column) and scrolls itself, so there's no wrapper div
-   between the app-shell and the page. Never chains to the document. */
-/* A routed page: it owns its scroll, the shell owns the gutter around it
-   (sh3-app-shell contentPadding) — no page re-declares page margins. */
-.gal-page {
-  display: block;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+/* A routed page host is structural only — the page *is* its sh3-page-layout.
+   display:contents dissolves the host so the layout becomes the real child of
+   the shell's content cell, where it fills the height and scrolls itself.
+   (In the gallery the content cell holds nothing else: the panel host and the
+   toast container live outside the shell.) */
+sh3-app-shell > .content > *:not(router-outlet) {
+  display: contents;
 }
 
 .gal-stack {

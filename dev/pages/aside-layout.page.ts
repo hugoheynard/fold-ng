@@ -20,7 +20,6 @@ import { KindBadgeComponent } from "../kind-badge.component";
 @Component({
   selector: "gal-aside-layout-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

@@ -12,7 +12,6 @@ import {
 @Component({
   selector: "gal-sticky-column-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

@@ -41,7 +41,6 @@ interface MenuSection {
 @Component({
   selector: "gal-menu-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

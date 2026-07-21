@@ -9,7 +9,6 @@ import {
 @Component({
   selector: "gal-element-title-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

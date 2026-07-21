@@ -3,6 +3,14 @@
   flex-direction: column;
   gap: 32px;
   max-width: 780px;
+  /* The page is its own scroll box: it fills the height its frame gives it and
+     scrolls inside, so the frame's chrome (rails, header, gutter) stays put.
+     Inert until something constrains the height — a page in a taller container
+     just grows as before. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 /* Widen for two-column pages (e.g. a form + a context aside). */
 :host(.is-wide) {

@@ -13,7 +13,6 @@ import {
 @Component({
   selector: "gal-tab-layout-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

@@ -15,7 +15,6 @@ type CardPadding = "none" | "sm" | "md" | "lg";
 @Component({
   selector: "gal-card-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

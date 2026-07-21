@@ -12,7 +12,6 @@ import {
 @Component({
   selector: "gal-button-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

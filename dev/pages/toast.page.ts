@@ -18,7 +18,6 @@ import {
 @Component({
   selector: "gal-toast-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,

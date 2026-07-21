@@ -14,7 +14,6 @@ import {
 @Component({
   selector: "gal-stub-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [Sh3PageLayoutComponent, Sh3CardComponent],
   template: `<sh3-page-layout
     fluid

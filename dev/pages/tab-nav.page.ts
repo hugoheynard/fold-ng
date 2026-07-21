@@ -23,7 +23,6 @@ type TabBackground = "transparent" | "surface";
 @Component({
   selector: "gal-tab-nav-page",
   standalone: true,
-  host: { class: "gal-page" },
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,
