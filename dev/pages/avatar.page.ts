@@ -34,6 +34,7 @@ import {
   type PageTokenGroup,
 } from "../token-sandbox";
 import { KindBadgeComponent } from "../kind-badge.component";
+import { DevPlaygroundComponent } from "../playground.component";
 
 /** A clickable avatar demo — its config drives both the rendered vignette and
  *  the markup shown in the code panel when you click it. */
@@ -78,6 +79,7 @@ interface DemoGroup<T> {
     Sh3ContextCardComponent,
     Sh3SliderComponent,
     Sh3IconComponent,
+    DevPlaygroundComponent,
   ],
   templateUrl: "./avatar.page.html",
 })
@@ -216,6 +218,8 @@ export default class AvatarPage {
   }
 
   /* ── avatar-list showcase: preview + settings + code + token sandbox ─── */
+  protected readonly tops = ["first", "last"] as const;
+  protected readonly sizes = ["sm", "md", "lg"] as const;
   protected readonly alCount = signal(7);
   protected readonly alLimit = signal(4);
   protected readonly alTop = signal<"first" | "last">("first");
@@ -226,8 +230,9 @@ export default class AvatarPage {
     this.team.slice(0, this.alCount()),
   );
 
-  /** The `<sh3-avatar-list>` markup reflecting the settings — live. */
-  protected readonly alShowCode = signal(false);
+  /** The `<sh3-avatar-list>` markup reflecting the settings, with the token
+   *  sandbox's CSS appended once something is actually overridden — the code
+   *  panel then shows everything it takes to reproduce the preview. */
   protected readonly alCode = computed(() => {
     const attrs = [
       '[avatars]="team"',
@@ -236,15 +241,11 @@ export default class AvatarPage {
       this.alSize() === "md" ? "" : `size="${this.alSize()}"`,
       this.alSquare() ? "square" : "",
     ].filter(Boolean);
-    return `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
+    const markup = `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
+    return this.hasAlOverrides()
+      ? `${markup}\n\n<!-- css -->\n${this.alTokensCss()}`
+      : markup;
   });
-  protected readonly alCopied = signal(false);
-  protected copyAlCode(): void {
-    void navigator.clipboard.writeText(this.alCode()).then(() => {
-      this.alCopied.set(true);
-      setTimeout(() => this.alCopied.set(false), 1500);
-    });
-  }
 
   /** avatar-list's overridable tokens — its own ring var + the chip surfaces. */
   protected readonly alTokens: readonly PageTokenGroup[] = [
@@ -267,8 +268,12 @@ export default class AvatarPage {
     },
     { label: "roundness", tokens: [radiusToken("sm", "square face rounding")] },
   ];
-  private readonly alPreviewRef =
-    viewChild<ElementRef<HTMLElement>>("alPreview");
+  /** `read: ElementRef` is load-bearing: `#alPreview` sits on a component, so
+   *  the query would otherwise hand back the instance, not the host element —
+   *  and the sandbox would write its overrides nowhere. */
+  private readonly alPreviewRef = viewChild("alPreview", {
+    read: ElementRef<HTMLElement>,
+  });
   protected readonly alOverrides = signal<Record<string, string>>({});
   protected readonly hasAlOverrides = computed(
     () => Object.keys(this.alOverrides()).length > 0,
@@ -282,13 +287,6 @@ export default class AvatarPage {
   protected readonly alTokensCss = computed(() =>
     overrideCss("sh3-avatar-list", this.alOverrides()),
   );
-  protected readonly alCssCopied = signal(false);
-  protected copyAlTokensCss(): void {
-    void navigator.clipboard.writeText(this.alTokensCss()).then(() => {
-      this.alCssCopied.set(true);
-      setTimeout(() => this.alCssCopied.set(false), 1500);
-    });
-  }
 
   constructor() {
     // Live sandbox: write the token overrides onto the preview element. A DOM

@@ -4,6 +4,8 @@
     <sh3-tab-nav
       [tabs]="avatarTabs"
       [activeKey]="avatarTab()"
+      background="transparent"
+      size="comfortable"
       (tabChange)="avatarTab.set($event)"
     />
   </div>
@@ -171,20 +173,74 @@
   } @case ("list") {
   <sh3-page-section
     title="sh3-avatar-list"
-    description="A row of slightly-overlapping avatars — the org-chart 'who sits on this node' cluster. Past limit, the remainder collapses into a trailing +N chip. top chooses which end stacks on top. Drive it live below; the 'code' switch shows the markup + your token overrides."
+    description="A row of slightly-overlapping avatars — the org-chart 'who sits on this node' cluster. Past limit, the remainder collapses into a trailing +N chip. top chooses which end stacks on top."
   >
-    <!-- preview + code overlay -->
-    <div class="menu-preview-bar">
-      <button
-        type="button"
-        class="spm-code"
-        [class.is-on]="alShowCode()"
-        (click)="alShowCode.set(!alShowCode())"
-      >
-        code
-      </button>
-    </div>
-    <div class="al-preview">
+    <dev-playground [code]="alCode()" stage>
+      <div class="np-field" params>
+        <sh3-slider label="faces" [min]="1" [max]="7" [(value)]="alCount" />
+      </div>
+
+      <div class="np-field" params>
+        <sh3-slider
+          label="limit (0 = all)"
+          [min]="0"
+          [max]="7"
+          [(value)]="alLimit"
+        />
+      </div>
+
+      <div class="np-field" params>
+        <span class="gal-tag">top (overlap direction)</span>
+        <div class="ss-seg">
+          @for (t of tops; track t) {
+          <button
+            type="button"
+            [class.is-on]="alTop() === t"
+            (click)="alTop.set(t)"
+          >
+            {{ t }}
+          </button>
+          }
+        </div>
+      </div>
+
+      <div class="np-field" params>
+        <span class="gal-tag">size</span>
+        <div class="ss-seg">
+          @for (s of sizes; track s) {
+          <button
+            type="button"
+            [class.is-on]="alSize() === s"
+            (click)="alSize.set(s)"
+          >
+            {{ s }}
+          </button>
+          }
+        </div>
+      </div>
+
+      <div class="np-field" params>
+        <span class="gal-tag"
+          >shape (uniform — per-face state is in the data)</span
+        >
+        <div class="ss-seg">
+          <button
+            type="button"
+            [class.is-on]="!alSquare()"
+            (click)="alSquare.set(false)"
+          >
+            round
+          </button>
+          <button
+            type="button"
+            [class.is-on]="alSquare()"
+            (click)="alSquare.set(true)"
+          >
+            square
+          </button>
+        </div>
+      </div>
+
       <sh3-avatar-list
         #alPreview
         [avatars]="alFaces()"
@@ -193,181 +249,62 @@
         [size]="alSize()"
         [square]="alSquare()"
       />
-      @if (alShowCode()) {
-      <div class="code-overlay">
-        <div class="code-overlay-pane">
-          <div class="code-overlay-top">
-            <span class="code-lang">html</span>
-            <button type="button" class="code-copy" (click)="copyAlCode()">
-              <sh3-icon
-                [name]="alCopied() ? 'check-circle' : 'copy'"
-                size="sm"
-              />
-              {{ alCopied() ? "Copied" : "Copy" }}
-            </button>
-          </div>
-          <pre class="code-pre"><code>{{ alCode() }}</code></pre>
-        </div>
-        <div class="code-overlay-pane">
-          <div class="code-overlay-top">
-            <span class="code-lang">css · variables to override</span>
-            <button type="button" class="code-copy" (click)="copyAlTokensCss()">
-              <sh3-icon
-                [name]="alCssCopied() ? 'check-circle' : 'copy'"
-                size="sm"
-              />
-              {{ alCssCopied() ? "Copied" : "Copy" }}
-            </button>
-          </div>
-          <pre class="code-pre"><code>{{ alTokensCss() }}</code></pre>
-        </div>
-      </div>
-      }
-    </div>
+    </dev-playground>
 
-    <!-- settings + tokens -->
-    <div class="shell-demo">
-      <div class="gal-card-narrow">
-        <sh3-context-card
-          icon="company"
-          title="Avatar List Settings"
-          subtitle="drives the preview above"
-        >
-          <sh3-slider label="faces" [min]="1" [max]="7" [(value)]="alCount" />
-
-          <sh3-slider
-            label="limit (0 = all)"
-            [min]="0"
-            [max]="7"
-            [(value)]="alLimit"
-          />
-
-          <div class="ss-group">
-            <span class="ss-label">top (overlap direction)</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="alTop() === 'first'"
-                (click)="alTop.set('first')"
-              >
-                first
-              </button>
-              <button
-                type="button"
-                [class.is-on]="alTop() === 'last'"
-                (click)="alTop.set('last')"
-              >
-                last
-              </button>
-            </div>
-          </div>
-
-          <div class="ss-group">
-            <span class="ss-label">size</span>
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="alSize() === 'sm'"
-                (click)="alSize.set('sm')"
-              >
-                sm
-              </button>
-              <button
-                type="button"
-                [class.is-on]="alSize() === 'md'"
-                (click)="alSize.set('md')"
-              >
-                md
-              </button>
-              <button
-                type="button"
-                [class.is-on]="alSize() === 'lg'"
-                (click)="alSize.set('lg')"
-              >
-                lg
-              </button>
-            </div>
-          </div>
-
-          <div class="ss-group">
-            <span class="ss-label"
-              >shape (uniform — per-face state is in the data)</span
-            >
-            <div class="ss-seg">
-              <button
-                type="button"
-                [class.is-on]="!alSquare()"
-                (click)="alSquare.set(false)"
-              >
-                round
-              </button>
-              <button
-                type="button"
-                [class.is-on]="alSquare()"
-                (click)="alSquare.set(true)"
-              >
-                square
-              </button>
-            </div>
-          </div>
-        </sh3-context-card>
-      </div>
-
-      <div class="tok-card-wrap">
-        <sh3-context-card
-          icon="grid"
-          title="Tokens"
-          subtitle="live sandbox — edit a value to override the preview; semantics preferred"
-        >
-          @for (group of alTokens; track group.label) {
-          <div class="tok-group">
-            <span class="ss-label tok-group-label">{{ group.label }}</span>
-            @for (t of group.tokens; track t.prop) {
-            <div class="tok-row">
-              @if (t.kind === "color") {
-              <span
-                class="tok-swatch"
-                [style.background]="
+    <div class="tok-card-wrap">
+      <sh3-context-card
+        icon="grid"
+        title="Tokens"
+        subtitle="live sandbox — edit a value to override the preview; the CSS joins the code panel above"
+      >
+        @for (group of alTokens; track group.label) {
+        <div class="tok-group">
+          <span class="ss-label tok-group-label">{{ group.label }}</span>
+          @for (t of group.tokens; track t.prop) {
+          <div class="tok-row">
+            @if (t.kind === "color") {
+            <span
+              class="tok-swatch"
+              [style.background]="
                             alOverrides()[t.prop] || 'var(' + t.prop + ')'
                           "
-              ></span>
-              } @else {
-              <span
-                class="tok-swatch tok-swatch--radius"
-                [style.borderRadius]="
+            ></span>
+            } @else {
+            <span
+              class="tok-swatch tok-swatch--radius"
+              [style.borderRadius]="
                             alOverrides()[t.prop] || 'var(' + t.prop + ')'
                           "
-              ></span>
-              }
-              <div class="tok-meta">
-                <code class="tok-name">{{ t.prop }}</code>
-                <span class="tok-desc">{{ t.desc }}</span>
-              </div>
-              <input
-                #ov
-                type="text"
-                class="tok-input"
-                [value]="alOverrides()[t.prop] || ''"
-                [placeholder]="
+            ></span>
+            }
+            <div class="tok-meta">
+              <code class="tok-name">{{ t.prop }}</code>
+              <span class="tok-desc">{{ t.desc }}</span>
+            </div>
+            <input
+              #ov
+              type="text"
+              class="tok-input"
+              [value]="alOverrides()[t.prop] || ''"
+              [placeholder]="
                           t.kind === 'color' ? '#7c5bbf' : '12px'
                         "
-                (input)="setAlOverride(t.prop, ov.value)"
-                [attr.aria-label]="'Override ' + t.prop"
-              />
-            </div>
-            }
+              (input)="setAlOverride(t.prop, ov.value)"
+              [attr.aria-label]="'Override ' + t.prop"
+            />
           </div>
           }
-          <button
-            type="button"
-            class="tok-reset"
-            (click)="resetAlOverrides()"
-            [disabled]="!hasAlOverrides()"
-          >
-            Reset overrides
-          </button>
-        </sh3-context-card>
-      </div>
+        </div>
+        }
+        <button
+          type="button"
+          class="tok-reset"
+          (click)="resetAlOverrides()"
+          [disabled]="!hasAlOverrides()"
+        >
+          Reset overrides
+        </button>
+      </sh3-context-card>
     </div>
   </sh3-page-section>
   } }
