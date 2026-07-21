@@ -500,3 +500,23 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 
 Land 1–4 and it's a clean **9**; 5 is what earns the last half-point — a design
 system is only proven by a second user and a versioned release.
+
+## Migrate app/shared/soft-warning → sh3-callout
+
+`app/shared/soft-warning` (selector `sh3-soft-warning`, 7 usages) predates the
+DS component and is superseded by `sh3-callout`. It also carries three things
+the DS version fixes: app-only tokens (`--color-warning-dim`, `--radius-md`),
+a `::ng-deep` rule, and a fixed `role="note"`.
+
+Migration, one commit:
+
+- `variant="primary"` → `variant="info"` (a callout states a status, not a brand).
+- The rest map 1:1; `icon` and the projected message are unchanged.
+- Call sites: `contract-detail-page` (×3), `admin-integrations`, `admin-billing`,
+  `admin-quotas`, `admin-danger`.
+- Then delete `app/shared/soft-warning/` — its spec included.
+
+Worth doing at the same time: `email-verification-banner` and
+`post-termination-banner` are both hand-rolled callouts (the latter with a
+literal ⏳ emoji as its icon). Both should be compositions over `sh3-callout`
+rather than their own chrome.

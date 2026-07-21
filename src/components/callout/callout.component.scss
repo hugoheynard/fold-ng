@@ -1,0 +1,77 @@
+/* One tint per variant, set once as local vars — every rule below reads these,
+   so a variant is three token references and nothing else. */
+:host {
+  --_surface: var(--sh3-color-surface-subtle);
+  --_border: var(--sh3-color-border-subtle);
+  --_text: var(--sh3-color-text-secondary);
+  --_glyph: var(--sh3-color-text-muted);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sh3-space-sm);
+  padding: 10px var(--sh3-space-md);
+  border: 1px solid var(--_border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--_surface);
+  color: var(--_text);
+  font-size: var(--sh3-text-sm);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* A band of its container, not a block in it: the side borders and the radius
+   go, so the strip meets the container's own edges. Vertical hairlines stay —
+   they are what separates it from what sits above and below. */
+:host(.is-flat) {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+}
+
+.callout-icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--_glyph);
+}
+.callout-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* Empty (no actions projected) → no box, no gap on the trailing edge. */
+.callout-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--sh3-space-xs);
+  margin-left: var(--sh3-space-sm);
+}
+.callout-actions:empty {
+  display: none;
+}
+
+/* Status variants — the glyph takes the text colour rather than a dimmer one,
+   so it carries the same weight as the message it introduces. */
+:host(.v-info) {
+  --_surface: var(--sh3-color-info-surface);
+  --_border: var(--sh3-color-info-border);
+  --_text: var(--sh3-color-info-text);
+  --_glyph: var(--sh3-color-info-text);
+}
+:host(.v-success) {
+  --_surface: var(--sh3-color-success-surface);
+  --_border: var(--sh3-color-success-border);
+  --_text: var(--sh3-color-success-text);
+  --_glyph: var(--sh3-color-success-text);
+}
+:host(.v-warning) {
+  --_surface: var(--sh3-color-warning-surface);
+  --_border: var(--sh3-color-warning-border);
+  --_text: var(--sh3-color-warning-text);
+  --_glyph: var(--sh3-color-warning-text);
+}
+:host(.v-alert) {
+  --_surface: var(--sh3-color-alert-surface);
+  --_border: var(--sh3-color-alert-border);
+  --_text: var(--sh3-color-alert-text);
+  --_glyph: var(--sh3-color-alert-text);
+}

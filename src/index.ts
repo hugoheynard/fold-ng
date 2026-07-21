@@ -82,6 +82,11 @@ export { Sh3SelectComponent } from "./components/input/select.component";
 export { Sh3SliderComponent } from "./components/slider/slider.component";
 export { Sh3RangeSliderComponent } from "./components/slider/range-slider.component";
 export type { Sh3RangeValue } from "./components/slider/range-slider.component";
+export { Sh3CalloutComponent } from "./components/callout/callout.component";
+export type {
+  Sh3CalloutVariant,
+  Sh3CalloutAppearance,
+} from "./components/callout/callout.component";
 export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export { Sh3TimelineComponent } from "./components/timeline/timeline.component";
 export type {

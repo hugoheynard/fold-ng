@@ -1,0 +1,118 @@
+<sh3-page-layout fluid title="callout">
+  <gal-kind-badge titleBadge kind="component" />
+  <p description>
+    A tinted message row — a status colour, an icon, a short message, optional
+    actions. Two appearances, and the difference is where it sits rather than
+    how loud it is: <code>inset</code> is a bordered row in the flow;
+    <code>flat</code> is a full-bleed band with no radius and no side borders,
+    so it reads as a strip <em>of</em> its container. The message is projected,
+    so it takes <code>&lt;strong&gt;</code> and links.
+  </p>
+
+  <div class="gal-cell">
+    <span class="gal-tag"
+      >variant — neutral · info · success · warning · alert</span
+    >
+    <div class="gal-stack">
+      @for (v of variants; track v) {
+      <sh3-callout [variant]="v">
+        The <strong>{{ v }}</strong> variant, on its own tint.
+      </sh3-callout>
+      }
+    </div>
+  </div>
+
+  <div class="gal-cell">
+    <span class="gal-tag"
+      >flat — a band of its container, not a block in it</span
+    >
+    <sh3-card padding="none">
+      <sh3-callout variant="warning" appearance="flat">
+        Read-only: this period is closed.
+      </sh3-callout>
+      <p class="gal-body" style="margin: 0; padding: 16px">
+        Card content below the band — the strip meets both card edges, so it
+        belongs to the surface instead of floating on it.
+      </p>
+    </sh3-card>
+  </div>
+
+  <div class="gal-cell">
+    <span class="gal-tag">actions — trailing controls</span>
+    <sh3-callout variant="alert">
+      Storage quota exceeded — uploads are paused.
+      <sh3-button actions size="sm" variant="ghost">Upgrade</sh3-button>
+    </sh3-callout>
+  </div>
+
+  <dev-playground [code]="calloutCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">variant</span>
+      <div class="ss-seg">
+        @for (v of variants; track v) {
+        <button
+          type="button"
+          [class.is-on]="coVariant() === v"
+          (click)="coVariant.set(v)"
+        >
+          {{ v }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">appearance</span>
+      <div class="ss-seg">
+        @for (a of appearances; track a) {
+        <button
+          type="button"
+          [class.is-on]="coAppearance() === a"
+          (click)="coAppearance.set(a)"
+        >
+          {{ a }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">content</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="coActions()"
+          (click)="coActions.set(!coActions())"
+        >
+          actions
+        </button>
+        <button
+          type="button"
+          [class.is-on]="coAnnounce()"
+          (click)="coAnnounce.set(!coAnnounce())"
+        >
+          announce
+        </button>
+      </div>
+    </div>
+
+    <sh3-card padding="none" style="width: 100%; max-width: 520px">
+      <sh3-callout
+        [variant]="coVariant()"
+        [appearance]="coAppearance()"
+        [announce]="coAnnounce()"
+      >
+        This contract is <strong>locked</strong> — no more edits. @if
+        (coActions()) {
+        <sh3-button actions size="sm" variant="ghost"
+          >Request access</sh3-button
+        >
+        }
+      </sh3-callout>
+      <p class="gal-body" style="margin: 0; padding: 16px">
+        Container content — switch to <code>flat</code> to see the callout meet
+        its edges.
+      </p>
+    </sh3-card>
+  </dev-playground>
+</sh3-page-layout>

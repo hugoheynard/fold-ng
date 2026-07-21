@@ -93,7 +93,10 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
   {
     label: "Feedback",
     color: "#ec4899",
-    items: [{ id: "toast", label: "toast", icon: "toast" }],
+    items: [
+      { id: "toast", label: "toast", icon: "toast" },
+      { id: "callout", label: "callout", icon: "info", badge: "new" },
+    ],
   },
   {
     label: "Forms",
