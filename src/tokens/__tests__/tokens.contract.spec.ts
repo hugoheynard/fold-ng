@@ -138,8 +138,33 @@ describe("token contract · theme invariance", () => {
     expect(primitives).not.toContain("data-theme");
   });
 
-  it("scales.css carries no theme-specific block (sizes never theme)", () => {
-    expect(scales).not.toContain("data-theme");
+  it("only RADIUS may vary by theme in scales.css (type/space/motion/shadow never)", () => {
+    // Corner softness is a brand axis; every other scale is a measurement, and
+    // retheming must never re-flow a page.
+    const normalised = scales.replace(/['"]/g, '"');
+    const themes = [
+      ...new Set(
+        [...normalised.matchAll(/\[data-theme="([\w-]+)"\]/g)].map(
+          (m) => m[1] as string,
+        ),
+      ),
+    ];
+    for (const theme of themes) {
+      const declared = declaredVars(
+        block(normalised, `[data-theme="${theme}"]`),
+      );
+      const offenders = declared.filter((v) => !v.startsWith("--sh3-radius-"));
+      expect(offenders, `theme "${theme}" re-scales more than radius`).toEqual(
+        [],
+      );
+      // And every step it does declare must be a real catalogue step.
+      const unknown = declared.filter(
+        (v) => !SH3_RADIUS_TOKENS.some((t) => v === `--sh3-radius-${t}`),
+      );
+      expect(unknown, `theme "${theme}" declares an unknown radius`).toEqual(
+        [],
+      );
+    }
   });
 });
 

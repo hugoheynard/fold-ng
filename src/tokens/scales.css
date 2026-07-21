@@ -2,10 +2,17 @@
    SH3PHERD · Design tokens — SCALES (radius, type)
    ------------------------------------------------------------
    Sizing + elevation scales. Single-tier: a radius or a font size
-   IS its value, there's nothing to theme, so there is no
-   primitive/semantic split — just the scale, on :root. Elevation is
-   the one exception that touches colour, but stays theme-invariant
-   (black-ink shadows via the black primitive, legible on both themes).
+   IS its value, so there is no primitive/semantic split — just the
+   scale, on :root. Elevation is the one exception that touches
+   colour, but stays theme-invariant (black-ink shadows via the black
+   primitive, legible on every theme).
+
+   RADIUS is the one scale a theme may re-declare. Corner softness is
+   a brand axis, not a measurement: the same product reads friendly
+   or institutional on the same layout. Type, space, motion and
+   elevation stay theme-invariant — retheming must never re-flow a
+   page, and only radius can change without moving a single box. The
+   contract test enforces exactly that split.
    ============================================================ */
 
 :root {
@@ -64,4 +71,15 @@
   --sh3-shadow-panel-left:
     12px 0 40px color-mix(in srgb, var(--sh3-ref-black) 45%, transparent),
     inset -1px 0 0 color-mix(in srgb, var(--sh3-ref-white) 4%, transparent);
+}
+
+/* ── Theme shape override: NAVI ───────────────────────────────
+   Back-office corporate: corners nearly squared off. `pill` and
+   `round` are shapes, not scale steps — flattening them would turn
+   avatars into squares and capsules into slabs — so they stay. */
+[data-theme="navi"] {
+  --sh3-radius-xs: 1px;
+  --sh3-radius-sm: 2px;
+  --sh3-radius-md: 3px;
+  --sh3-radius-lg: 4px;
 }

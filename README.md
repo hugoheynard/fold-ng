@@ -29,6 +29,12 @@ Five themes ship: `umbra` (the dark base, no attribute), `light`, `midnight`
 the umbra or light block with its primitive families re-pointed. Adding a sixth
 is a new `[data-theme]` block in `semantic.css` plus the primitives it names.
 
+`navi` also squares its corners — **radius is the one scale a theme may
+re-declare**, because corner softness is a brand axis (friendly vs
+institutional) and it is the only scale that changes nothing about where a box
+sits. Type, space, motion and elevation stay theme-invariant: retheming must
+never re-flow a page. The contract test enforces that split.
+
 `navi` is the interesting one: mixing chrome and page means one theme needs the
 `text`/`border`/`surface` roles to differ **per region**, which a single set of
 roles cannot express. It gets there by re-declaring those roles on the shell's
