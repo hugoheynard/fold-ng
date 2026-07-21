@@ -126,15 +126,16 @@
         <span class="tn-page-sub">Acme Records</span>
       </div>
 
-      <div
-        class="tn-page-main"
-        [class.is-vertical]="tnDirection() === 'vertical'"
+      <sh3-tab-layout
+        [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
+        #tl="sh3TabLayout"
       >
         <sh3-tab-nav
+          tabNav
           [tabs]="tnTabs()"
           [activeKey]="tnActiveKey()"
           [activeStyle]="tnStyle()"
-          [direction]="tnDirection()"
+          [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
           [size]="tnSize()"
           [background]="tnBackground()"
           (tabChange)="tnActive.set($event)"
@@ -196,7 +197,7 @@
           </div>
           } }
         </div>
-      </div>
+      </sh3-tab-layout>
     </div>
   </dev-playground>
 

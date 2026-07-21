@@ -1134,24 +1134,6 @@ sh3-app-shell {
   font-size: var(--sh3-text-xs);
   color: var(--sh3-color-text-muted);
 }
-/* horizontal: nav above the content · vertical: nav beside it */
-.tn-page-main {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 0;
-}
-.tn-page-main.is-vertical {
-  flex-direction: row;
-  align-items: flex-start;
-}
-.tn-page-main.is-vertical > sh3-tab-nav {
-  flex: 0 0 190px;
-}
-.tn-panel {
-  flex: 1;
-  min-width: 0;
-}
 
 /* Overview — stat tiles */
 .tn-stats {

@@ -6,6 +6,7 @@ import {
   Sh3IconComponent,
   Sh3PageLayoutComponent,
   Sh3PanelHostService,
+  Sh3TabLayoutComponent,
   Sh3TabNavComponent,
   type Sh3BadgeVariant,
   type Sh3IconName,
@@ -26,6 +27,7 @@ type TabBackground = "transparent" | "surface";
   imports: [
     KindBadgeComponent,
     Sh3PageLayoutComponent,
+    Sh3TabLayoutComponent,
     Sh3TabNavComponent,
     Sh3IconComponent,
     Sh3BadgeComponent,
@@ -77,12 +79,17 @@ export default class TabNavPage {
   });
 
   protected readonly tabNavCode = computed(() => {
+    const side = this.tnDirection() === "vertical";
     const attrs = ['[tabs]="tabs"', '[activeKey]="active()"'];
+    if (side) {
+      // In a rail the bar follows the layout: vertical, horizontal once folded.
+      attrs.push(
+        "tabNav",
+        `[direction]="tl.stacked() ? 'horizontal' : 'vertical'"`,
+      );
+    }
     if (this.tnStyle() !== "underline") {
       attrs.push(`activeStyle="${this.tnStyle()}"`);
-    }
-    if (this.tnDirection() !== "horizontal") {
-      attrs.push(`direction="${this.tnDirection()}"`);
     }
     if (this.tnSize() !== "compact") {
       attrs.push(`size="${this.tnSize()}"`);
@@ -91,7 +98,16 @@ export default class TabNavPage {
       attrs.push(`background="${this.tnBackground()}"`);
     }
     attrs.push('(tabChange)="active.set($event)"');
-    return ["<sh3-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"].join("\n");
+    const nav = ["<sh3-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"];
+    if (!side) {
+      return nav.join("\n");
+    }
+    return [
+      '<sh3-tab-layout placement="side" #tl="sh3TabLayout">',
+      ...nav.map((l) => `  ${l}`),
+      "  <app-tab-content />",
+      "</sh3-tab-layout>",
+    ].join("\n");
   });
 
   /* ── Mock page content — one distinct layout per tab ────────────────────── */
