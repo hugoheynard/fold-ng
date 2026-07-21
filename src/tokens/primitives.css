@@ -100,7 +100,8 @@
   --sh3-ref-navy-600: #1b3573; /* hover / readable brand text  */
   --sh3-ref-navy-800: #16294f; /* header — the lighter chrome  */
   --sh3-ref-navy-900: #101d3a; /* rail 2 · workspace menu      */
-  --sh3-ref-navy-950: #0b152b; /* rail 1 · app menu (deepest)  */
+  --sh3-ref-navy-950: #0b152b; /* rail 2 · workspace menu      */
+  --sh3-ref-navy-975: #060c1a; /* rail 1 · app menu (deepest)  */
 
   /* ── Paper / Clay / Umber — the SEPIA theme families ───────────
      Warm light: cream paper instead of cool cloud, a terracotta

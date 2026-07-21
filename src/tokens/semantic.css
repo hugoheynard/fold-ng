@@ -588,8 +588,8 @@
   /* Surfaces */
   --sh3-color-bg-page: var(--sh3-ref-cloud-100);
   --sh3-color-bg-header: var(--sh3-ref-navy-800);
-  --sh3-color-bg-rail-primary: var(--sh3-ref-navy-950);
-  --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-900);
+  --sh3-color-bg-rail-primary: var(--sh3-ref-navy-975);
+  --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-950);
   --sh3-color-bg-rail-tertiary: color-mix(
     in srgb,
     var(--sh3-ref-black) 2%,
@@ -742,8 +742,11 @@
     var(--sh3-ref-white) 3%,
     transparent
   );
-  /* The brand tints flip too: navy-on-white is invisible against a navy rail,
-     so the active item reads in the light tints of the same family. */
+  /* The whole brand flips, solid included: a menu item tints its active icon
+     with `primary` itself, and the page's navy-on-white lands dark-on-dark
+     against a navy rail. On the chrome the brand lives in its light tints. */
+  --sh3-color-primary: var(--sh3-ref-navy-400);
+  --sh3-color-primary-strong: var(--sh3-ref-navy-300);
   --sh3-color-primary-text: var(--sh3-ref-navy-300);
   --sh3-color-primary-surface: color-mix(
     in srgb,
