@@ -1,0 +1,25 @@
+/* Nav above the content by default; `is-row` (a side placement that has not
+   folded) turns it into a rail beside the content. */
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sh3-tab-layout-gap, 16px);
+  min-width: 0;
+}
+:host(.is-row) {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.tl-nav {
+  min-width: 0;
+}
+/* Only the rail gets a track — stacked, the nav spans the full width. */
+:host(.is-row) .tl-nav {
+  flex: 0 0 var(--sh3-tab-layout-nav-width, 200px);
+}
+
+.tl-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}

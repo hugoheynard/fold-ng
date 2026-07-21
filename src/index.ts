@@ -102,6 +102,7 @@ export type {
   Sh3BuiltinIconName,
 } from "./components/icon/icon.registry";
 export { Sh3AsideLayoutComponent } from "./components/page/aside-layout.component";
+export { Sh3TabLayoutComponent } from "./components/page/tab-layout.component";
 export { Sh3PageLayoutComponent } from "./components/page/page-layout.component";
 export { Sh3PageSectionComponent } from "./components/page/page-section.component";
 export { Sh3PaginatorComponent } from "./components/paginator/paginator.component";

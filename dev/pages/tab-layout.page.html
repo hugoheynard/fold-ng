@@ -1,0 +1,76 @@
+<sh3-page-layout
+  fluid
+  title="tab-layout"
+  description="Pairs a tab bar with the content it drives, and owns the one thing every tabbed page hand-rolls: where the nav sits. placement=top puts it above the content; placement=side makes it a rail beside it, folding back on top when the layout gets narrow — so the menu always precedes its content, never below. The nav stays yours (projected into [tabNav]); the layout exposes `stacked` so the bar's direction follows the layout in one binding."
+>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <dev-playground [code]="tabLayoutCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">placement</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tlPlacement() === 'top'"
+          (click)="tlPlacement.set('top')"
+        >
+          top
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tlPlacement() === 'side'"
+          (click)="tlPlacement.set('side')"
+        >
+          side
+        </button>
+      </div>
+    </div>
+
+    <sh3-slider
+      params
+      label="foldAt"
+      [min]="320"
+      [max]="900"
+      [step]="20"
+      [valueText]="tlFoldAt() + 'px'"
+      [(value)]="tlFoldAt"
+    />
+
+    <sh3-slider
+      params
+      label="preview width"
+      [min]="320"
+      [max]="900"
+      [step]="20"
+      [valueText]="tlWidth() + 'px'"
+      [(value)]="tlWidth"
+    />
+
+    <p class="doc-p" params>
+      stacked: “{{ tlStacked() }}” — drag the width past foldAt to see a side rail
+      fold back on top.
+    </p>
+
+    <div [style.width.px]="tlWidth()" [style.maxWidth]="'100%'">
+      <sh3-tab-layout
+        [placement]="tlPlacement()"
+        [foldAt]="tlFoldAt()"
+        #tl="sh3TabLayout"
+      >
+        <sh3-tab-nav
+          tabNav
+          activeStyle="fill"
+          [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
+          [tabs]="tabs"
+          [activeKey]="active()"
+          (tabChange)="active.set($event)"
+        />
+        <div class="tl-demo-body">
+          <span class="gal-tag">content for “{{ active() }}”</span>
+          <div class="tl-demo-block"></div>
+          <div class="tl-demo-block"></div>
+        </div>
+      </sh3-tab-layout>
+    </div>
+  </dev-playground>
+</sh3-page-layout>

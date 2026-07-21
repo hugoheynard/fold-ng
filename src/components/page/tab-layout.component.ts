@@ -1,0 +1,87 @@
+import {
+  computed,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  numberAttribute,
+  signal,
+} from "@angular/core";
+
+/**
+ * `<sh3-tab-layout>` — pairs a tab bar with the content it drives, and owns the
+ * one thing every tabbed page hand-rolls: where the nav sits.
+ *
+ * - `placement="top"` (default) — the nav above the content.
+ * - `placement="side"` — the nav as a rail beside the content, folding back on
+ *   top when the layout gets narrower than {@link foldAt} (so the menu always
+ *   precedes the content it drives, never below it).
+ *
+ * Content projection — the nav stays yours (tabs, active key, events):
+ * - `[tabNav]` → the tab bar (an `sh3-tab-nav`, or anything else).
+ * - default slot → the content for the active tab.
+ *
+ * A side rail needs a *vertical* bar, a folded one a *horizontal* bar. Rather
+ * than guess, the layout exposes {@link stacked} (`exportAs`) so the projected
+ * nav follows the layout in one binding:
+ *
+ * ```html
+ * <sh3-tab-layout placement="side" #tl="sh3TabLayout">
+ *   <sh3-tab-nav
+ *     tabNav
+ *     [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
+ *     [tabs]="tabs"
+ *     [activeKey]="tab()"
+ *     (tabChange)="tab.set($event)"
+ *   />
+ *   <app-tab-content />
+ * </sh3-tab-layout>
+ * ```
+ *
+ * Sizing is CSS custom properties: `--sh3-tab-layout-gap` (16px) and
+ * `--sh3-tab-layout-nav-width` (200px, the side rail track).
+ *
+ * @selector `sh3-tab-layout`
+ */
+@Component({
+  selector: "sh3-tab-layout",
+  standalone: true,
+  exportAs: "sh3TabLayout",
+  host: { "[class.is-row]": "!stacked()" },
+  templateUrl: "./tab-layout.component.html",
+  styleUrl: "./tab-layout.component.scss",
+})
+export class Sh3TabLayoutComponent {
+  /** Where the nav sits: above the content, or as a rail beside it. */
+  readonly placement = input<"top" | "side">("top");
+  /** Width (px) at or below which a `side` nav folds back on top. */
+  readonly foldAt = input(720, { transform: numberAttribute });
+
+  private readonly width = signal(0);
+
+  /**
+   * Whether the nav currently sits **above** the content — always true for
+   * `top`, and true for `side` once the layout is narrower than {@link foldAt}.
+   * Bind a projected bar's `direction` to it.
+   */
+  readonly stacked = computed(
+    () =>
+      this.placement() === "top" ||
+      (this.width() > 0 && this.width() <= this.foldAt()),
+  );
+
+  constructor() {
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+    effect((onCleanup) => {
+      if (typeof ResizeObserver === "undefined") {
+        return;
+      }
+      const ro = new ResizeObserver((entries) => {
+        this.width.set(entries[0].contentRect.width);
+      });
+      ro.observe(host);
+      onCleanup(() => ro.disconnect());
+    });
+  }
+}
