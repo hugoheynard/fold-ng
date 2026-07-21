@@ -1,4 +1,5 @@
-import type { Routes } from "@angular/router";
+import type { Type } from "@angular/core";
+import type { Route, Routes } from "@angular/router";
 import { GALLERY_NAV_ITEMS } from "./shell/gallery-nav";
 import { StubPage } from "./pages/stub.page";
 
@@ -8,7 +9,7 @@ import { StubPage } from "./pages/stub.page";
  * gallery is always navigable + green while the migration proceeds one page at a
  * time. To port a page: add its `id → () => import(...)` entry.
  */
-const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
+const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   hero: () => import("./pages/hero.page"),
   "sticky-column": () => import("./pages/sticky-column.page"),
   "aside-layout": () => import("./pages/aside-layout.page"),
@@ -39,7 +40,7 @@ const PORTED: Record<string, () => Promise<{ default: unknown }>> = {
  * `withComponentInputBinding`). Default path → the first entry.
  */
 export const GALLERY_ROUTES: Routes = [
-  ...GALLERY_NAV_ITEMS.map((item) => {
+  ...GALLERY_NAV_ITEMS.map((item): Route => {
     const data = { title: item.label, icon: item.icon };
     const load = PORTED[item.id];
     return load
