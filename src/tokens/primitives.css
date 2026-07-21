@@ -89,6 +89,19 @@
   --sh3-ref-azure-400: #38bdf8; /* surface/border base          */
   --sh3-ref-azure-500: #0ea5e9; /* base                         */
 
+  /* ── Navy — the NAVI theme family ─────────────────────────────
+     One corporate midnight-blue family serving both jobs: the brand
+     on the light page (500/600) and the dark chrome behind it
+     (800→950), so rails, header and primary are visibly related.
+     300/400 are the tints readable ON the dark chrome.             */
+  --sh3-ref-navy-300: #9db8ea; /* text tint on dark chrome     */
+  --sh3-ref-navy-400: #5a7fd0; /* hover tint on dark chrome    */
+  --sh3-ref-navy-500: #24448f; /* brand base (light page)      */
+  --sh3-ref-navy-600: #1b3573; /* hover / readable brand text  */
+  --sh3-ref-navy-800: #16294f; /* header — the lighter chrome  */
+  --sh3-ref-navy-900: #101d3a; /* rail 2 · workspace menu      */
+  --sh3-ref-navy-950: #0b152b; /* rail 1 · app menu (deepest)  */
+
   /* ── Paper / Clay / Umber — the SEPIA theme families ───────────
      Warm light: cream paper instead of cool cloud, a terracotta
      brand, and browned neutrals for text.                          */

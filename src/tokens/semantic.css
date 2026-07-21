@@ -587,9 +587,9 @@
 [data-theme="navi"] {
   /* Surfaces */
   --sh3-color-bg-page: var(--sh3-ref-cloud-100);
-  --sh3-color-bg-header: var(--sh3-ref-ink-950);
-  --sh3-color-bg-rail-primary: var(--sh3-ref-ink-925);
-  --sh3-color-bg-rail-secondary: var(--sh3-ref-ink-900);
+  --sh3-color-bg-header: var(--sh3-ref-navy-800);
+  --sh3-color-bg-rail-primary: var(--sh3-ref-navy-950);
+  --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-900);
   --sh3-color-bg-rail-tertiary: color-mix(
     in srgb,
     var(--sh3-ref-black) 2%,
@@ -597,18 +597,18 @@
   );
 
   /* Primary / accent — brand mutes on light, hover darkens further */
-  --sh3-color-primary: var(--sh3-ref-teal-550);
-  --sh3-color-primary-strong: var(--sh3-ref-teal-600);
+  --sh3-color-primary: var(--sh3-ref-navy-500);
+  --sh3-color-primary-strong: var(--sh3-ref-navy-600);
   --sh3-color-on-primary: var(--sh3-ref-white);
-  --sh3-color-primary-text: var(--sh3-ref-teal-500);
+  --sh3-color-primary-text: var(--sh3-ref-navy-600);
   --sh3-color-primary-surface: color-mix(
     in srgb,
-    var(--sh3-ref-teal-500) 8%,
+    var(--sh3-ref-navy-500) 8%,
     transparent
   );
   --sh3-color-primary-border: color-mix(
     in srgb,
-    var(--sh3-ref-teal-500) 25%,
+    var(--sh3-ref-navy-500) 24%,
     transparent
   );
 
@@ -711,6 +711,7 @@
 [data-theme="navi"]
   sh3-app-shell
   > :is(.header, .rail-primary, .rail-secondary) {
+  /* Light text on the dark chrome … */
   --sh3-color-text: var(--sh3-ref-slate-50);
   --sh3-color-text-secondary: var(--sh3-ref-slate-400);
   --sh3-color-text-muted: var(--sh3-ref-slate-500);
@@ -721,12 +722,11 @@
     var(--sh3-ref-white) 4%,
     transparent
   );
-  --sh3-color-surface-card: var(--sh3-ref-ink-800);
-  --sh3-color-surface-sunken: color-mix(
-    in srgb,
-    var(--sh3-ref-ink-800) 35%,
-    var(--sh3-ref-ink-850)
-  );
+  /* … and navy surfaces, so a hovered or raised row belongs to the rail
+     instead of looking like a grey patch pasted onto it. */
+  --sh3-color-surface-card: var(--sh3-ref-navy-800);
+  --sh3-color-surface-sunken: var(--sh3-ref-navy-900);
+  --sh3-color-surface-hover: var(--sh3-ref-navy-800);
   --sh3-color-surface-subtle: color-mix(
     in srgb,
     var(--sh3-ref-white) 3%,
@@ -737,10 +737,22 @@
     var(--sh3-ref-white) 5%,
     transparent
   );
-  --sh3-color-surface-hover: var(--sh3-ref-ink-700);
   --sh3-color-bg-rail-tertiary: color-mix(
     in srgb,
     var(--sh3-ref-white) 3%,
+    transparent
+  );
+  /* The brand tints flip too: navy-on-white is invisible against a navy rail,
+     so the active item reads in the light tints of the same family. */
+  --sh3-color-primary-text: var(--sh3-ref-navy-300);
+  --sh3-color-primary-surface: color-mix(
+    in srgb,
+    var(--sh3-ref-navy-400) 22%,
+    transparent
+  );
+  --sh3-color-primary-border: color-mix(
+    in srgb,
+    var(--sh3-ref-navy-400) 40%,
     transparent
   );
 }
