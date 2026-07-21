@@ -116,16 +116,85 @@
 
     <p class="doc-p" params>Active: “{{ tnActiveKey() }}”</p>
 
-    <div [style.width]="tnDirection() === 'vertical' ? '240px' : '100%'">
-      <sh3-tab-nav
-        [tabs]="tnTabs()"
-        [activeKey]="tnActiveKey()"
-        [activeStyle]="tnStyle()"
-        [direction]="tnDirection()"
-        [size]="tnSize()"
-        [background]="tnBackground()"
-        (tabChange)="tnActive.set($event)"
-      />
+    <!-- A page mock: header, the nav, then the content the active tab drives —
+       each tab renders a genuinely different layout. -->
+    <div class="tn-page">
+      <div class="tn-page-head">
+        <span class="tn-page-title">Workspace</span>
+        <span class="tn-page-sub">Acme Records</span>
+      </div>
+
+      <div
+        class="tn-page-main"
+        [class.is-vertical]="tnDirection() === 'vertical'"
+      >
+        <sh3-tab-nav
+          [tabs]="tnTabs()"
+          [activeKey]="tnActiveKey()"
+          [activeStyle]="tnStyle()"
+          [direction]="tnDirection()"
+          [size]="tnSize()"
+          [background]="tnBackground()"
+          (tabChange)="tnActive.set($event)"
+        />
+
+        <div class="tn-panel">
+          @switch (tnActiveKey()) { @case ("overview") {
+          <div class="tn-stats">
+            @for (s of overviewStats; track s.label) {
+            <div class="tn-stat">
+              <span class="tn-stat-value">{{ s.value }}</span>
+              <span class="tn-stat-label">{{ s.label }}</span>
+            </div>
+            }
+          </div>
+          } @case ("members") {
+          <div class="tn-rows">
+            @for (m of members; track m.name) {
+            <div class="tn-row">
+              <span class="tn-avatar">{{ m.initials }}</span>
+              <span class="tn-row-main">
+                <span class="tn-row-title">{{ m.name }}</span>
+                <span class="tn-row-sub">{{ m.role }}</span>
+              </span>
+              <sh3-badge [content]="m.status" [variant]="m.tone" />
+            </div>
+            }
+          </div>
+          } @case ("settings") {
+          <div class="tn-form">
+            @for (f of settingsFields; track f.label) {
+            <div class="tn-field">
+              <span class="tn-field-label">{{ f.label }}</span>
+              <span class="tn-field-control">{{ f.value }}</span>
+            </div>
+            }
+          </div>
+          } @case ("activity") {
+          <div class="tn-feed">
+            @for (e of activity; track e.text) {
+            <div class="tn-event">
+              <span class="tn-dot"></span>
+              <span class="tn-row-main">
+                <span class="tn-row-title">{{ e.text }}</span>
+                <span class="tn-row-sub">{{ e.when }}</span>
+              </span>
+            </div>
+            }
+          </div>
+          } @case ("billing") {
+          <div class="tn-table">
+            @for (i of invoices; track i.ref) {
+            <div class="tn-tr">
+              <span class="tn-row-title">{{ i.ref }}</span>
+              <span class="tn-row-sub">{{ i.date }}</span>
+              <span class="tn-amount">{{ i.amount }}</span>
+            </div>
+            }
+          </div>
+          } }
+        </div>
+      </div>
     </div>
   </dev-playground>
 

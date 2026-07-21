@@ -1119,3 +1119,171 @@ sh3-app-shell {
 .fld-inputs sh3-input {
   width: 200px;
 }
+
+/* ── tab-nav page mock: a page shell (header + nav + content) whose body renders
+   a distinct layout per tab, so the nav is shown driving real content. ── */
+.tn-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.tn-page-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tn-page-title {
+  font-size: var(--sh3-text-md);
+  font-weight: 700;
+  color: var(--sh3-color-text);
+}
+.tn-page-sub {
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+}
+/* horizontal: nav above the content · vertical: nav beside it */
+.tn-page-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.tn-page-main.is-vertical {
+  flex-direction: row;
+  align-items: flex-start;
+}
+.tn-page-main.is-vertical > sh3-tab-nav {
+  flex: 0 0 190px;
+}
+.tn-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Overview — stat tiles */
+.tn-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.tn-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-card);
+}
+.tn-stat-value {
+  font-size: var(--sh3-text-lg);
+  font-weight: 700;
+  color: var(--sh3-color-text);
+  font-variant-numeric: tabular-nums;
+}
+.tn-stat-label {
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+}
+
+/* Members — avatar rows */
+.tn-rows,
+.tn-form,
+.tn-feed,
+.tn-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tn-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-card);
+}
+.tn-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+  font-size: 11px;
+  font-weight: 700;
+}
+.tn-row-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.tn-row-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sh3-color-text);
+}
+.tn-row-sub {
+  font-size: var(--sh3-text-xs);
+  color: var(--sh3-color-text-muted);
+}
+
+/* Settings — label / value field rows */
+.tn-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+}
+.tn-field-label {
+  font-size: 13px;
+  color: var(--sh3-color-text-secondary);
+}
+.tn-field-control {
+  padding: 5px 10px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font-size: 12px;
+}
+
+/* Activity — a dotted feed */
+.tn-event {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0;
+}
+.tn-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: var(--sh3-color-primary);
+}
+
+/* Billing — a compact table */
+.tn-tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+}
+.tn-amount {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--sh3-color-text);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
