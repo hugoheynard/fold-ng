@@ -550,6 +550,7 @@ sh3-app-shell > .content > *:not(router-outlet) {
   color: var(--sh3-color-text-secondary);
 }
 .doc-p code,
+[description] code,
 .api-table code {
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: 12px;

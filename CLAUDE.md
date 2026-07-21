@@ -31,14 +31,19 @@ given and scrolls inside it. A page never scrolls the document.
 1.4 **Every page opens the same way** — title, kind badge, description:
 
 ```html
-<sh3-page-layout fluid title="card" description="…what it is, in one breath…">
+<sh3-page-layout fluid title="card">
   <gal-kind-badge titleBadge kind="component" />
+  <p description>…what it is, in one breath — <code>inputs</code> welcome…</p>
   …
 </sh3-page-layout>
 ```
 
 `kind` is `component` or `directive`. `fluid` for pages whose demos need the
 width (playgrounds, grids); leave it off for reading-width pages.
+
+The description is a **slot**, so it takes `<code>`, links and a second
+sentence — the layout supplies the typography. Never re-style it on the page;
+if it needs its own layout, project nothing and put a block in the body.
 
 1.5 **A page with sub-pages uses `sh3-tab-layout`**, not a bare bar in a spacer
 div. Bind the projected nav to the layout so it folds with it:

@@ -9,10 +9,10 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
   template: `<sh3-page-layout
     [title]="title()"
     [icon]="icon()"
-    [description]="description()"
     [wide]="wide()"
     [fluid]="fluid()"
   >
+    <p description class="desc">Abonnement <code>pro</code></p>
     <button pageActions class="act">Export</button>
     <span titleBadge class="kind">Directive</span>
     <div class="body-item">Body</div>
@@ -21,7 +21,6 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
 class HostComponent {
   readonly title = signal<string | undefined>("Facturation");
   readonly icon = signal<"grid" | undefined>(undefined);
-  readonly description = signal<string | undefined>("Abonnement");
   readonly wide = signal(false);
   readonly fluid = signal(false);
 }
@@ -33,15 +32,16 @@ function render() {
 }
 
 describe("Sh3PageLayoutComponent", () => {
-  it("renders the title + description", () => {
+  it("renders the title, and projects the description with its markup intact", () => {
     const { root } = render();
     expect(
       root
         .querySelector(".page-title > span:not(.page-title-badge)")
         ?.textContent?.trim(),
     ).toBe("Facturation");
-    expect(root.querySelector(".page-desc")?.textContent?.trim()).toBe(
-      "Abonnement",
+    // A slot, so rich content survives — that is the whole point of the change.
+    expect(root.querySelector(".page-desc .desc code")?.textContent).toBe(
+      "pro",
     );
   });
 
@@ -58,10 +58,9 @@ describe("Sh3PageLayoutComponent", () => {
     ).not.toBeNull();
   });
 
-  it("omits the header when there is no title or description", () => {
+  it("omits the header when there is no title — the body takes over", () => {
     const { fixture, root } = render();
     fixture.componentInstance.title.set(undefined);
-    fixture.componentInstance.description.set(undefined);
     fixture.detectChanges();
     expect(root.querySelector(".page-head")).toBeNull();
     // Body still renders.

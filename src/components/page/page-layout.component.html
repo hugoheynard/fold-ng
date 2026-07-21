@@ -1,4 +1,4 @@
-@if (title() || description()) {
+@if (title()) {
   <header class="page-head">
     <div class="page-head-text">
       @if (title()) {
@@ -12,9 +12,7 @@
           /></span>
         </h1>
       }
-      @if (description()) {
-        <p class="page-desc">{{ description() }}</p>
-      }
+      <div class="page-desc"><ng-content select="[description]" /></div>
     </div>
     <div class="page-actions"><ng-content select="[pageActions]" /></div>
   </header>

@@ -1,8 +1,12 @@
-<sh3-page-layout
-  fluid
-  title="tab-layout"
-  description="Pairs a tab bar with the content it drives, and owns the one thing every tabbed page hand-rolls: where the nav sits. placement=top puts it above the content; placement=side makes it a rail beside it, folding back on top when the layout gets narrow — so the menu always precedes its content, never below. The nav stays yours (projected into [tabNav]); the layout exposes `stacked` so the bar's direction follows the layout in one binding."
->
+<sh3-page-layout fluid title="tab-layout">
+  <p description>
+    Pairs a tab bar with the content it drives, and owns the one thing every
+    tabbed page hand-rolls: where the nav sits. placement=top puts it above the
+    content; placement=side makes it a rail beside it, folding back on top when
+    the layout gets narrow — so the menu always precedes its content, never
+    below. The nav stays yours (projected into [tabNav]); the layout exposes
+    `stacked` so the bar's direction follows the layout in one binding.
+  </p>
   <gal-kind-badge titleBadge kind="component" />
 
   <dev-playground [code]="tabLayoutCode()" stage>

@@ -56,12 +56,20 @@
 .page-title-badge:empty {
   display: none;
 }
+/* The description slot carries the typography so the consumer owns only the
+   markup: a plain <p>, or one with <code>/<a> inside, reads the same either
+   way. Empty (nothing projected) → no box, no gap under the title. */
 .page-desc {
-  margin: 0;
   font-size: var(--sh3-text-sm);
   line-height: 1.5;
   max-width: 60ch;
   color: var(--sh3-color-text-muted);
+}
+.page-desc:empty {
+  display: none;
+}
+.page-desc > * {
+  margin: 0;
 }
 .page-actions {
   flex: none;
