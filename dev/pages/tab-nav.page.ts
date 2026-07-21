@@ -15,7 +15,7 @@ import { TabPanelComponent } from "../tab-panel.component";
 
 type TabStyle = "underline" | "fill";
 type TabDirection = "horizontal" | "vertical";
-type TabSize = "compact" | "comfortable";
+type TabSize = "reduce" | "compact" | "comfortable";
 type TabBackground = "transparent" | "surface";
 
 /** `/tab-nav` — the `sh3-tab-nav` gallery page. */
@@ -38,13 +38,13 @@ export default class TabNavPage {
 
   /* ── Playground ─────────────────────────────────────────────────────────── */
   protected readonly tabCounts = [2, 3, 5] as const;
+  protected readonly tabSizes = ["reduce", "compact", "comfortable"] as const;
   protected readonly tnStyle = signal<TabStyle>("underline");
   protected readonly tnDirection = signal<TabDirection>("horizontal");
   protected readonly tnSize = signal<TabSize>("compact");
   protected readonly tnBackground = signal<TabBackground>("surface");
   protected readonly tnBadge = signal(true);
   protected readonly tnIcon = signal(true);
-  protected readonly tnCollapsed = signal(false);
   protected readonly tnCount = signal<number>(3);
   protected readonly tnActive = signal("overview");
 
@@ -89,9 +89,6 @@ export default class TabNavPage {
     }
     if (this.tnBackground() !== "surface") {
       attrs.push(`background="${this.tnBackground()}"`);
-    }
-    if (this.tnCollapsed()) {
-      attrs.push("collapsed");
     }
     attrs.push('(tabChange)="active.set($event)"');
     return ["<sh3-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"].join("\n");

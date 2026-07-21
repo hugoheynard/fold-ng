@@ -118,20 +118,28 @@
   font-weight: 600;
 }
 
-/* Collapsed — an icon accordion: every tab but the active one shows just its
-   icon, the active one keeps its label and takes the room. A tab with no icon
-   keeps its label, so nothing is left unlabelled. Works in both directions. */
-.is-collapsed .tab-nav-item:not(.is-active) {
+/* Reduce — the tightest density: an icon accordion. Every tab but the active one
+   shows just its icon; the active one keeps its label and takes the room. A tab
+   with no icon keeps its label, so nothing is left unlabelled. Both directions. */
+.size-reduce .tab-nav-item {
   flex: 0 0 auto;
   gap: 0;
 }
-.is-collapsed .tab-nav-item:not(.is-active) .tab-nav-icon ~ .tab-nav-label,
-.is-collapsed .tab-nav-item:not(.is-active) .tab-nav-badge {
+.size-reduce .tab-nav-item .tab-nav-icon ~ .tab-nav-label,
+.size-reduce .tab-nav-item .tab-nav-badge {
   display: none;
 }
-.is-collapsed .tab-nav-item.is-active {
+.size-reduce .tab-nav-item.is-active {
   flex: 1 1 auto;
   min-width: 0;
+  gap: 7px;
+}
+/* after the hide rules (equal specificity) so the active tab reads fully */
+.size-reduce .tab-nav-item.is-active .tab-nav-label {
+  display: inline;
+}
+.size-reduce .tab-nav-item.is-active .tab-nav-badge {
+  display: inline-flex;
 }
 
 /* Vertical collapses to a horizontal icon-accordion on mobile. */

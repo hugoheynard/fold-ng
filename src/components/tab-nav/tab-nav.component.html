@@ -4,8 +4,8 @@
   [class.style-fill]="activeStyle() === 'fill'"
   [class.dir-vertical]="direction() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
+  [class.size-reduce]="size() === 'reduce'"
   [class.bg-surface]="background() === 'surface'"
-  [class.is-collapsed]="collapsed()"
 >
   @for (tab of tabs(); track tab.key) {
     <button
