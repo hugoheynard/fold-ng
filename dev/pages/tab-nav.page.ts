@@ -8,6 +8,7 @@ import {
   Sh3PanelHostService,
   Sh3TabNavComponent,
   type Sh3BadgeVariant,
+  type Sh3IconName,
   type Sh3TabNavItem,
 } from "../../src/index";
 import { TabPanelComponent } from "../tab-panel.component";
@@ -42,25 +43,28 @@ export default class TabNavPage {
   protected readonly tnSize = signal<TabSize>("compact");
   protected readonly tnBackground = signal<TabBackground>("surface");
   protected readonly tnBadge = signal(true);
+  protected readonly tnIcon = signal(true);
   protected readonly tnCount = signal<number>(3);
   protected readonly tnActive = signal("overview");
 
   private readonly TAB_POOL: readonly {
     key: string;
     label: string;
+    icon: Sh3IconName;
     badge?: number;
   }[] = [
-    { key: "overview", label: "Overview" },
-    { key: "members", label: "Members", badge: 3 },
-    { key: "settings", label: "Settings" },
-    { key: "activity", label: "Activity" },
-    { key: "billing", label: "Billing", badge: 2 },
+    { key: "overview", label: "Overview", icon: "grid" },
+    { key: "members", label: "Members", icon: "team", badge: 3 },
+    { key: "settings", label: "Settings", icon: "settings" },
+    { key: "activity", label: "Activity", icon: "timeline" },
+    { key: "billing", label: "Billing", icon: "contracts", badge: 2 },
   ];
 
   protected readonly tnTabs = computed<Sh3TabNavItem[]>(() =>
     this.TAB_POOL.slice(0, this.tnCount()).map((t) => ({
       key: t.key,
       label: t.label,
+      icon: this.tnIcon() ? t.icon : undefined,
       badge: this.tnBadge() ? (t.badge ?? null) : null,
     })),
   );

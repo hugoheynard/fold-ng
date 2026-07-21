@@ -102,14 +102,21 @@
     </div>
 
     <div class="np-field" params>
-      <span class="gal-tag">badges</span>
+      <span class="gal-tag">tab content</span>
       <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tnIcon()"
+          (click)="tnIcon.set(!tnIcon())"
+        >
+          icons
+        </button>
         <button
           type="button"
           [class.is-on]="tnBadge()"
           (click)="tnBadge.set(!tnBadge())"
         >
-          show
+          badges
         </button>
       </div>
     </div>
