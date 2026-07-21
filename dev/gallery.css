@@ -407,14 +407,6 @@ sh3-app-shell {
 }
 
 /* ── form page — vertical tab-nav rail + a settings-style form ────────── */
-/* A vertical sh3-tab-nav rail + full-width content, driven by sh3-aside-layout's
-   own CSS vars (its documented extension surface — no bespoke grid here). */
-.gal-nav-layout {
-  --sh3-aside-layout-max: none;
-  --sh3-aside-layout-pad: 0 0 32px;
-  --sh3-aside-layout-rail-width: 190px;
-  --sh3-aside-layout-gap: 24px;
-}
 .field {
   display: flex;
   flex-direction: column;
@@ -1286,4 +1278,17 @@ sh3-app-shell {
   color: var(--sh3-color-text);
   font-variant-numeric: tabular-nums;
   text-align: right;
+}
+
+/* ── tab-layout page: a stand-in content panel for the active tab ── */
+.tl-demo-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tl-demo-block {
+  height: 52px;
+  border-radius: var(--sh3-radius-md);
+  border: 1px solid var(--sh3-color-border-subtle);
+  background: var(--sh3-color-surface-card);
 }

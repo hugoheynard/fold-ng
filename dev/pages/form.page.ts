@@ -2,7 +2,7 @@ import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { form, required, FormField } from "@angular/forms/signals";
 import {
-  Sh3AsideLayoutComponent,
+  Sh3TabLayoutComponent,
   Sh3InputComponent,
   Sh3NumberInputComponent,
   type Sh3NumberSpinner,
@@ -16,7 +16,6 @@ import {
   type Sh3TabNavItem,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
-import { GalNarrowDirective } from "../narrow.directive";
 
 /** `/form` — the `sh3-input` gallery page (text · number · select · search). */
 @Component({
@@ -24,11 +23,10 @@ import { GalNarrowDirective } from "../narrow.directive";
   standalone: true,
   host: { class: "gal-page" },
   imports: [
-    GalNarrowDirective,
     KindBadgeComponent,
     Sh3PageLayoutComponent,
     Sh3PageSectionComponent,
-    Sh3AsideLayoutComponent,
+    Sh3TabLayoutComponent,
     Sh3TabNavComponent,
     Sh3InputComponent,
     Sh3NumberInputComponent,

@@ -47,6 +47,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badge: "new",
         badgeTone: "info",
       },
+      {
+        id: "tab-layout",
+        label: "tab-layout",
+        badge: "new",
+        badgeTone: "info",
+      },
     ],
   },
   {

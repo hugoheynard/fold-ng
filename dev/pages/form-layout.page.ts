@@ -1,7 +1,7 @@
 import { Component, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import {
-  Sh3AsideLayoutComponent,
+  Sh3TabLayoutComponent,
   Sh3ChoiceRowComponent,
   Sh3IconComponent,
   Sh3InputComponent,
@@ -11,7 +11,6 @@ import {
   type Sh3ChoiceOption,
   type Sh3TabNavItem,
 } from "../../src/index";
-import { GalNarrowDirective } from "../narrow.directive";
 
 /** `/form-layout` — a settings-style form driven by a vertical tab-nav. */
 @Component({
@@ -19,10 +18,9 @@ import { GalNarrowDirective } from "../narrow.directive";
   standalone: true,
   host: { class: "gal-page" },
   imports: [
-    GalNarrowDirective,
     KindBadgeComponent,
     Sh3PageLayoutComponent,
-    Sh3AsideLayoutComponent,
+    Sh3TabLayoutComponent,
     Sh3PageSectionComponent,
     Sh3TabNavComponent,
     Sh3InputComponent,

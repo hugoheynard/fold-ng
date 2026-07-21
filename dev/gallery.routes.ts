@@ -13,6 +13,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   hero: () => import("./pages/hero.page"),
   "sticky-column": () => import("./pages/sticky-column.page"),
   "aside-layout": () => import("./pages/aside-layout.page"),
+  "tab-layout": () => import("./pages/tab-layout.page"),
   "tab-nav": () => import("./pages/tab-nav.page"),
   "page-section": () => import("./pages/page-section.page"),
   card: () => import("./pages/card.page"),
