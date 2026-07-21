@@ -39,10 +39,19 @@
   <!-- ── header ────────────────────────────────────────────────── -->
   <div header class="gal-header">
     <span class="gal-title">&#64;sh3pherd/ui — gallery</span>
-    <button type="button" class="gal-theme" (click)="toggleTheme()">
+    <div class="gal-themes">
       <sh3-icon name="settings" size="sm" />
-      Theme: {{ theme() }}
-    </button>
+      @for (t of themes; track t) {
+        <button
+          type="button"
+          class="gal-theme"
+          [class.is-on]="theme() === t"
+          (click)="setTheme(t)"
+        >
+          {{ t }}
+        </button>
+      }
+    </div>
   </div>
 
   <!-- ── content: the routed page owns its own scroll ─────────── -->

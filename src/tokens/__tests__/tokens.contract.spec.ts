@@ -67,11 +67,25 @@ describe("token contract · catalogue ↔ CSS", () => {
     expect(new Set(declared)).toEqual(new Set(expectedSemantic));
   });
 
-  it("the LIGHT override declares exactly the catalogue colours (theme parity)", () => {
+  it("every theme override declares exactly the catalogue colours (theme parity)", () => {
     // Normalise quotes first — Prettier may write [data-theme="light"] or '…'.
     const normalised = semantic.replace(/['"]/g, '"');
-    const declared = declaredVars(block(normalised, '[data-theme="light"]'));
-    expect(new Set(declared)).toEqual(new Set(expectedSemantic));
+    const themes = [...normalised.matchAll(/\[data-theme="([\w-]+)"\]/g)].map(
+      (m) => m[1] as string,
+    );
+
+    // Guards the guard: a typo'd selector would otherwise test nothing.
+    expect(themes.length).toBeGreaterThanOrEqual(1);
+
+    for (const theme of themes) {
+      const declared = declaredVars(
+        block(normalised, `[data-theme="${theme}"]`),
+      );
+      expect(
+        new Set(declared),
+        `theme "${theme}" is missing or has extra tokens`,
+      ).toEqual(new Set(expectedSemantic));
+    }
   });
 
   it("scales.css declares exactly the radius + type + space + motion + shadow catalogue", () => {

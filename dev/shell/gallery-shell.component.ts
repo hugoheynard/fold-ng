@@ -14,6 +14,9 @@ import { InspectPanelComponent } from "../inspect-panel.component";
 import { closestSh3, inspect } from "../inspect";
 import { GALLERY_NAV } from "./gallery-nav";
 
+/** The themes the token layer ships — see `src/tokens/semantic.css`. */
+type GalleryTheme = "dark" | "light" | "midnight" | "sepia";
+
 /**
  * The gallery shell — the fixed `sh3-app-shell` chrome (a stable static primary
  * rail, the Library nav as `routerLink`s, the header + theme toggle) with a
@@ -38,14 +41,17 @@ import { GALLERY_NAV } from "./gallery-nav";
   ],
   host: {
     class: "gal-root",
-    "[attr.data-theme]": "theme() === 'light' ? 'light' : null",
+    "[attr.data-theme]": "theme() === 'dark' ? null : theme()",
   },
   templateUrl: "./gallery-shell.component.html",
 })
 export class GalleryShellComponent {
   private readonly panelHost = inject(Sh3PanelHostService);
 
-  protected readonly theme = signal<"dark" | "light">("dark");
+  /** Every theme the token layer ships. `dark` is the base (`:root`), so it
+   *  sets no attribute; the rest are `[data-theme]` overrides. */
+  protected readonly themes = ["dark", "light", "midnight", "sepia"] as const;
+  protected readonly theme = signal<GalleryTheme>("dark");
   protected readonly navGroups = GALLERY_NAV;
 
   /** railPrimary: a stable static nav, decoupled from any page. */
@@ -56,8 +62,8 @@ export class GalleryShellComponent {
   ] as const;
   protected readonly railActive = signal<string>("home");
 
-  protected toggleTheme(): void {
-    this.theme.update((t) => (t === "dark" ? "light" : "dark"));
+  protected setTheme(theme: GalleryTheme): void {
+    this.theme.set(theme);
   }
 
   /** Double-click any DS element to open its token/props inspector. */

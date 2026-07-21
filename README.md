@@ -16,12 +16,18 @@ Import the CSS once at your app's style entry point:
 @import "@sh3pherd/ui/tokens.css";
 ```
 
-Everything renders **dark by default**. To switch a subtree (or the whole app)
-to light, set `data-theme` on an ancestor — usually `<html>`:
+Everything renders **dark by default**. To switch a subtree (or the whole app),
+set `data-theme` on an ancestor — usually `<html>`:
 
 ```html
 <html data-theme="light"></html>
 ```
+
+Four themes ship: `dark` (the base, no attribute), `light`, `midnight` (indigo
+chrome, violet brand) and `sepia` (warm paper, terracotta brand). The last two
+exist to prove the point — each is the dark or light block with its primitive
+families re-pointed, nothing else. Adding a fifth is a new `[data-theme]` block
+in `semantic.css` plus the primitives it names; no component changes, ever.
 
 Then style against the semantic tokens — never a raw colour:
 
@@ -83,14 +89,15 @@ So `bg-` reads as "this paints a background."
 `src/tokens/__tests__/tokens.contract.spec.ts` is the lock. It fails the build
 if:
 
-- the dark (`:root`) and light (`[data-theme="light"]`) blocks fall out of parity;
+- any theme block falls out of parity with the catalogue (the dark `:root` base
+  and **every** `[data-theme]` override are checked);
 - a semantic token points at a primitive that doesn't exist (dangling `var`);
 - a semantic token hard-codes a hex instead of referencing a primitive;
 - a primitive is declared but never used;
 - the CSS drifts from the typed catalogue in `tokens.catalog.ts`.
 
-Add a token → add it to `tokens.catalog.ts` **and** both theme blocks, or the
-test goes red. That is how the theme stays complete.
+Add a token → add it to `tokens.catalog.ts` **and** every theme block, or the
+test goes red. That is how a theme stays complete.
 
 ```bash
 pnpm --filter @sh3pherd/ui test
