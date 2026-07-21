@@ -586,10 +586,10 @@
    being a demo.                                                 */
 [data-theme="navi"] {
   /* Surfaces */
-  --sh3-color-bg-page: var(--sh3-ref-cloud-100);
+  --sh3-color-bg-page: var(--sh3-ref-navy-25);
   --sh3-color-bg-header: var(--sh3-ref-navy-800);
-  --sh3-color-bg-rail-primary: var(--sh3-ref-navy-975);
-  --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-950);
+  --sh3-color-bg-rail-primary: var(--sh3-ref-navy-900);
+  --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-850);
   --sh3-color-bg-rail-tertiary: color-mix(
     in srgb,
     var(--sh3-ref-black) 2%,
@@ -725,7 +725,7 @@
   /* … and navy surfaces, so a hovered or raised row belongs to the rail
      instead of looking like a grey patch pasted onto it. */
   --sh3-color-surface-card: var(--sh3-ref-navy-800);
-  --sh3-color-surface-sunken: var(--sh3-ref-navy-900);
+  --sh3-color-surface-sunken: var(--sh3-ref-navy-950);
   --sh3-color-surface-hover: var(--sh3-ref-navy-800);
   --sh3-color-surface-subtle: color-mix(
     in srgb,
