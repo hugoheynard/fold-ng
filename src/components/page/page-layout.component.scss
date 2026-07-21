@@ -58,11 +58,16 @@
 }
 /* The description slot carries the typography so the consumer owns only the
    markup: a plain <p>, or one with <code>/<a> inside, reads the same either
-   way. Empty (nothing projected) → no box, no gap under the title. */
+   way. Empty (nothing projected) → no box, no gap under the title.
+
+   It spans the column by default — the page's own max-width (780/940/none) is
+   the one that decides how wide a page reads, and a second cap here only ever
+   fought it. Set --sh3-page-desc-measure (e.g. 60ch) on a fluid page where the
+   line would otherwise get long. */
 .page-desc {
   font-size: var(--sh3-text-sm);
   line-height: 1.5;
-  max-width: 60ch;
+  max-width: var(--sh3-page-desc-measure, none);
   color: var(--sh3-color-text-muted);
 }
 .page-desc:empty {

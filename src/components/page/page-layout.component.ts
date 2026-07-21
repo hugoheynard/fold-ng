@@ -14,8 +14,9 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * - `[description]` → the intro under the title. A **slot**, not a string
  *   input: a description that needs a `<code>`, a link or a second sentence is
  *   the common case, not the exception. The layout styles what you project
- *   (muted, small, capped at 60ch) so the markup stays yours. Project nothing
- *   and the header is just the title — put your own intro block in the body.
+ *   (muted, small, full column width) so the markup stays yours. Project
+ *   nothing and the header is just the title — put your own intro block in the
+ *   body. Cap the line with `--sh3-page-desc-measure` on a fluid page.
  * - `[pageActions]` → the top-right header slot (e.g. an export button).
  *
  * ```html
