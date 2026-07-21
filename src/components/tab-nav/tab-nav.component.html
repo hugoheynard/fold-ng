@@ -13,20 +13,16 @@
       [class.is-active]="activeKey() === tab.key"
       (click)="tabChange.emit(tab.key)"
     >
-      @if (tab.icon) {
-        <svg
-          class="tab-nav-icon"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path [attr.d]="tab.icon" />
-        </svg>
+      @if (tab.icon; as ic) {
+        <sh3-icon class="tab-nav-icon" [name]="ic" size="sm" />
       }
       <span class="tab-nav-label">{{ tab.label }}</span>
       @if (tab.badge !== undefined && tab.badge !== null) {
-        <span class="tab-nav-badge">{{ tab.badge }}</span>
+        <sh3-badge
+          class="tab-nav-badge"
+          [content]="tab.badge + ''"
+          [variant]="activeKey() === tab.key ? 'accent' : 'neutral'"
+        />
       }
     </button>
   }

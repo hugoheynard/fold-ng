@@ -19,7 +19,7 @@ import { Sh3TabNavComponent, type Sh3TabNavItem } from "./tab-nav.component";
 class HostComponent {
   tabs: Sh3TabNavItem[] = [
     { key: "a", label: "Alpha", badge: 3 },
-    { key: "b", label: "Beta", icon: "M12 2 2 22h20z" },
+    { key: "b", label: "Beta", icon: "settings" },
   ];
   activeKey = "a";
   activeStyle: "underline" | "fill" = "underline";
@@ -68,9 +68,18 @@ describe("Sh3TabNavComponent", () => {
       buttons[0].querySelector(".tab-nav-badge")?.textContent?.trim(),
     ).toBe("3");
     expect(buttons[0].querySelector(".tab-nav-icon")).toBeNull();
+    expect(buttons[1].querySelector(".tab-nav-badge")).toBeNull();
+    // The icon is an sh3-icon (registry-named), not a hand-rolled <svg><path>.
+    const icon = buttons[1].querySelector("sh3-icon.tab-nav-icon");
+    expect(icon).not.toBeNull();
+    expect(icon?.querySelector("svg")).not.toBeNull();
+  });
+
+  it("tints the badge accent on the active tab, neutral otherwise", () => {
+    const { buttons } = setup({ activeKey: "a" });
     expect(
-      buttons[1].querySelector(".tab-nav-icon path")?.getAttribute("d"),
-    ).toBe("M12 2 2 22h20z");
+      buttons[0].querySelector(".tab-nav-badge")?.classList.contains("accent"),
+    ).toBe(true);
   });
 
   it("reflects activeStyle + direction on the nav", () => {

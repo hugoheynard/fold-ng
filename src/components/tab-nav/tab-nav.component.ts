@@ -1,15 +1,15 @@
 import { Component, input, output } from "@angular/core";
+import { Sh3BadgeComponent } from "../badge/badge.component";
+import { Sh3IconComponent } from "../icon/icon.component";
+import type { Sh3IconName } from "../icon/icon.registry";
 
 export type Sh3TabNavItem = {
   /** Unique key — identifies the tab and is emitted on click. */
   key: string;
   /** Display label. */
   label: string;
-  /**
-   * Optional leading icon: the `d` of a single Material-style `<path>`
-   * (`viewBox="0 0 24 24"`), rendered 14×14 with `fill="currentColor"`.
-   */
-  icon?: string;
+  /** Optional leading icon, by registry name (rendered as an `sh3-icon`). */
+  icon?: Sh3IconName;
   /** Optional trailing badge (e.g. a count). `undefined`/`null` hides it. */
   badge?: string | number | null;
 };
@@ -39,6 +39,7 @@ export type Sh3TabNavItem = {
 @Component({
   selector: "sh3-tab-nav",
   standalone: true,
+  imports: [Sh3IconComponent, Sh3BadgeComponent],
   templateUrl: "./tab-nav.component.html",
   // Inline + token-driven. Neutral 1px lines use --sh3-color-border /
   // -surface-raised so they flip correctly in light mode (the app original

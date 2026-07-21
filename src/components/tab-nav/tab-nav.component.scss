@@ -172,25 +172,9 @@
   flex-shrink: 0;
 }
 
-/* Count pill — dim on idle, accent-tinted on the active tab. */
+/* Count pill — an sh3-badge: `neutral` when idle, `accent` on the active tab
+   (the component owns the chrome; only the count alignment is set here). */
 .tab-nav-badge {
-  min-width: 16px;
-  padding: 0 6px;
-  border-radius: var(--sh3-radius-pill);
-  background: var(--sh3-color-surface-subtle);
-  color: var(--sh3-color-text-faded);
-  font-size: 9px;
-  font-weight: 700;
-  text-align: center;
+  flex-shrink: 0;
   font-variant-numeric: tabular-nums;
-}
-.tab-nav-item.is-active .tab-nav-badge {
-  background: var(--sh3-color-primary-surface);
-  color: var(--sh3-color-primary-text);
-}
-.size-comfortable .tab-nav-badge {
-  min-width: 20px;
-  padding: 0 7px;
-  font-size: 11px;
-  font-weight: 600;
 }
