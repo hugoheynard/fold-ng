@@ -49,10 +49,11 @@
   <dev-playground [code]="calloutCode()" stage>
     <div class="np-field" params>
       <span class="gal-tag">variant</span>
-      <div class="ss-seg">
+      <div class="ss-seg ss-seg--tinted">
         @for (v of variants; track v) {
         <button
           type="button"
+          [attr.data-tint]="v"
           [class.is-on]="coVariant() === v"
           (click)="coVariant.set(v)"
         >

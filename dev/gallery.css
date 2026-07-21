@@ -835,6 +835,38 @@ sh3-app-shell > .content > *:not(router-outlet) {
   background: var(--sh3-color-primary-surface);
   color: var(--sh3-color-primary-text);
 }
+/* A segment whose options ARE colours: two per line (six in a row is unreadable
+   at this width), and the selected one wears the tint it stands for, so the
+   control previews the choice instead of describing it. */
+.ss-seg--tinted {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ss-seg button.is-on[data-tint="neutral"] {
+  border-color: var(--sh3-color-border);
+  background: var(--sh3-color-surface-subtle);
+  color: var(--sh3-color-text-secondary);
+}
+.ss-seg button.is-on[data-tint="info"] {
+  border-color: var(--sh3-color-info-border);
+  background: var(--sh3-color-info-surface);
+  color: var(--sh3-color-info-text);
+}
+.ss-seg button.is-on[data-tint="success"] {
+  border-color: var(--sh3-color-success-border);
+  background: var(--sh3-color-success-surface);
+  color: var(--sh3-color-success-text);
+}
+.ss-seg button.is-on[data-tint="warning"] {
+  border-color: var(--sh3-color-warning-border);
+  background: var(--sh3-color-warning-surface);
+  color: var(--sh3-color-warning-text);
+}
+.ss-seg button.is-on[data-tint="alert"] {
+  border-color: var(--sh3-color-alert-border);
+  background: var(--sh3-color-alert-surface);
+  color: var(--sh3-color-alert-text);
+}
 .ss-seg button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
