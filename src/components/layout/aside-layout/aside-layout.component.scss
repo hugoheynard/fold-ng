@@ -127,6 +127,7 @@
 @container (max-width: 700px) {
   .al-grid {
     padding: var(--fold-aside-layout-pad-sm, 16px 14px 48px);
-    gap: 16px;
+    /* Tighter gap on narrow containers — tokenised like the padding above. */
+    gap: var(--fold-aside-layout-gap-sm, 16px);
   }
 }

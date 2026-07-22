@@ -11,6 +11,7 @@ import { FoldAsideLayoutComponent } from "./aside-layout.component";
   template: `<fold-aside-layout
     [asideRightLabel]="rightLabel()"
     [topOffset]="offset()"
+    [stackLeftFirst]="stackFirst()"
   >
     @if (left()) {
       <div asideLeft>L</div>
@@ -23,6 +24,7 @@ class HostComponent {
   readonly left = signal(true);
   readonly rightLabel = signal<string | undefined>(undefined);
   readonly offset = signal<number | string | undefined>(undefined);
+  readonly stackFirst = signal(false);
 }
 
 function render() {
@@ -76,6 +78,18 @@ describe("FoldAsideLayoutComponent", () => {
     fixture.componentInstance.rightLabel.set(undefined);
     fixture.detectChanges();
     expect(railRight.getAttribute("role")).toBeNull();
+  });
+
+  it("toggles the stack-left-first host class from the input", () => {
+    // The reorder itself is a container-query rule (order: 0) that happy-dom
+    // can't compute; the unit-testable contract is the input → host class the
+    // rule keys off, so a collapsed nav rail can precede the content it drives.
+    const { fixture, layout } = render();
+    expect(layout.classList.contains("stack-left-first")).toBe(false);
+
+    fixture.componentInstance.stackFirst.set(true);
+    fixture.detectChanges();
+    expect(layout.classList.contains("stack-left-first")).toBe(true);
   });
 
   it("drives the sticky-offset var from the topOffset input", () => {

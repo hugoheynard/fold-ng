@@ -36,7 +36,7 @@ and the gallery nav — **layout first**.
 | `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                         |
 | `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap)    |
 | `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card |
-| `fold-aside-layout` | 🟢  |  🟡   |  🟡  | README row; `stackLeftFirst` test                      |
+| `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)    |
 | `fold-tab-layout`   | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row                |
 | `fold-hero`         | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                |
 
@@ -106,9 +106,9 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                  |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo               |
 
-**Ship-ready today (12):** app-shell, page-layout, page-section, avatar-list,
-callout, element-title, field, field-list, nav-launcher, timeline, toast,
-surface. Everything else has scoped, mostly mechanical work below.
+**Ship-ready today (13):** app-shell, page-layout, page-section, aside-layout,
+avatar-list, callout, element-title, field, field-list, nav-launcher, timeline,
+toast, surface. Everything else has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -180,7 +180,7 @@ to both. (`page-layout.wide`/`fluid` no longer apply — both inputs were remove
 the page fills its container, width is a content concern.)
 
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
-**no README row**: `fold-callout`, `fold-aside-layout`, `fold-tab-layout`,
+**no README row**: `fold-callout`, `fold-tab-layout`,
 `fold-disclosure`, `fold-select`, `fold-slider`, `fold-range-slider`,
 `fold-file-dropzone`, `fold-repeat-press`. (`fold-page-section` now has its own
 row.) Add each row.
@@ -287,9 +287,10 @@ defect: add its missing README row (C-2).
 decorative `eyebrow`/`bar` variants should really carry `role="heading"`
 (a11y-outline noise).
 
-**`fold-aside-layout`** 🟢🟡🟡 — Right model (`:has()`-reactive columns, landmark
-gated by label). Actions: (1) README row (C-2); (2) `stackLeftFirst` class-toggle
-spec (currently zero coverage on that input).
+**`fold-aside-layout`** 🟢🟢🟢 — Ship-ready. Right model (`:has()`-reactive
+columns, container-query fold, landmark gated by label). Closed: README row +
+`stackLeftFirst` class-toggle spec; the stray responsive `gap` is tokenised
+(`--fold-aside-layout-gap-sm`). Sizing is a documented CSS-var contract.
 
 **`fold-page-layout`** 🟢🟢🟢 — Ship-ready. Now has its own gallery page
 (`/page-layout`: header slots, the live `--fold-page-gutter` token, a bleed
@@ -474,8 +475,7 @@ loading spinner) · C-4 `@selector`/`@example` tags · C-5 gallery pages
 
 **Wave 4 — Test depth.** avatar luminance-ink · avatar-detail forwarding ·
 data-table toggles/guards · badge neutral/success · menu `resolvedPlacement` ·
-disclosure aria-hidden/`toggle()` · aside-layout `stackLeftFirst` · context-card
-`iconTone`.
+disclosure aria-hidden/`toggle()` · context-card `iconTone`.
 
 **Wave 5 — Polish (aspirational).** C-9 retokenise spacing/motion on touch ·
 hero `on-primary` assertion · choice-row/tab-nav keyboard a11y · per-node timeline
