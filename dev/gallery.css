@@ -1684,6 +1684,62 @@ sh3-app-shell > .content > *:not(router-outlet) {
   margin-top: 6px;
 }
 
+/* ── use now: a primary disclosure at the top of the centre column ── */
+.home-usenow {
+  --sh3-disclosure-summary-bg: var(--sh3-color-primary);
+  --sh3-disclosure-summary-color: var(--sh3-color-on-primary);
+  border-color: var(--sh3-color-primary);
+}
+.home-usenow-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+.home-usenow-hint {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+.home-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.home-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.home-step-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--sh3-radius-pill);
+  background: var(--sh3-color-primary-surface);
+  border: 1px solid var(--sh3-color-primary-border);
+  color: var(--sh3-color-primary-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+.home-step-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.home-step-main .code-pre {
+  margin: 0;
+  max-width: none;
+}
+
 /* ── features ─────────────────────────────────────────────────── */
 .home-features {
   display: grid;

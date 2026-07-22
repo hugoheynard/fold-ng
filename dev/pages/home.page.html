@@ -41,7 +41,29 @@
       </div>
     </sh3-card>
 
-    <!-- centre: the feature cards + close -->
+    <!-- centre: use-now, then the feature cards + close -->
+    <sh3-disclosure class="home-usenow" [(open)]="useNowOpen">
+      <span summary class="home-usenow-summary">
+        <sh3-icon name="lightning" size="sm" />
+        <span>Use now</span>
+        <span class="home-usenow-hint"
+          >{{ useNowOpen() ? "hide the steps" : "three steps" }}</span
+        >
+      </span>
+
+      <ol class="home-steps">
+        @for (step of useSteps; track step.label) {
+        <li class="home-step">
+          <span class="home-step-n">{{ $index + 1 }}</span>
+          <div class="home-step-main">
+            <strong>{{ step.label }}</strong>
+            <pre class="code-pre"><code>{{ step.code }}</code></pre>
+          </div>
+        </li>
+        }
+      </ol>
+    </sh3-disclosure>
+
     <section class="home-features">
       @for (f of features; track f.title) {
       <sh3-card class="home-feature" separators raisedBands>

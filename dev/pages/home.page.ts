@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
   Sh3AsideLayoutComponent,
@@ -7,6 +7,7 @@ import {
   Sh3ButtonComponent,
   Sh3CalloutComponent,
   Sh3CardComponent,
+  Sh3DisclosureComponent,
   Sh3IconComponent,
   type Sh3IconName,
 } from "../../src/index";
@@ -32,6 +33,7 @@ interface Feature {
     RouterLink,
     Sh3AsideLayoutComponent,
     Sh3AvatarDetailComponent,
+    Sh3DisclosureComponent,
     Sh3IconComponent,
     Sh3ButtonComponent,
     Sh3BadgeComponent,
@@ -41,6 +43,23 @@ interface Feature {
   templateUrl: "./home.page.html",
 })
 export default class HomePage {
+  /** The "Use now" disclosure state. */
+  protected readonly useNowOpen = signal(false);
+  protected readonly useSteps: readonly { label: string; code: string }[] = [
+    {
+      label: "Add the tokens once, at the root",
+      code: `@import "@sh3pherd/ui/tokens.css";`,
+    },
+    {
+      label: "Import a standalone component",
+      code: `import { Sh3ButtonComponent } from "@sh3pherd/ui";`,
+    },
+    {
+      label: "Use it — it reads roles, so it follows your theme",
+      code: `<sh3-button variant="primary">Ship it</sh3-button>`,
+    },
+  ];
+
   protected readonly stats: readonly Stat[] = [
     { value: "26", label: "components" },
     { value: "5", label: "themes" },
