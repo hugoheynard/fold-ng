@@ -4,6 +4,65 @@ Building this the same way we work everywhere: **small, confirmed steps**. Each
 row lands, gets read, then we move on. Tokens are the foundation — they get
 locked before a single component is extracted.
 
+## Roadmap 1.0.1 — `sh3-app-shell` polish
+
+Post-1.0 the shell is **8.5/10**: structure + decoupling are big-lib grade
+(pure structural, `data-attr` + var-contract elevation, no `:host-context`,
+strictTemplates-gated). This milestone is the honest gap to **9.5** — it closes
+the a11y promise, adds the coverage a serious lib carries, and keeps the two
+depth items trigger-gated (generalise on the 2nd real use, never by
+anticipation). Order = a11y first (it contradicts what the component claims),
+then coverage, then the trigger-gated depth.
+
+**Do — the a11y promise (the component advertises accessibility):**
+
+- [ ] **Rails as named landmarks.** `.rail-primary` / `.rail-secondary` are bare
+      `<div>`s → a screen reader gets no `navigation` landmark (only
+      header/main/footer are semantic). Add `railPrimaryLabel` /
+      `railSecondaryLabel` inputs → `role="navigation"` + `aria-label` on the
+      wrappers. Cheap; pairs with the shipped skip-link.
+- [ ] **Secondary rail reachable on mobile.** Below the breakpoint only the
+      **primary** rail returns (the drawer); an app using `railSecondary` for a
+      workspace switcher / sub-nav loses it on a phone. Stack both rails in the
+      drawer, or a segmented toggle inside it. (Was "deferred until a bi-rail
+      consumer needs it" — promoted: it's a real functional hole for bi-rail apps.)
+
+**Do — coverage the unit tests can't give:**
+
+- [ ] **Visual-regression snapshots** (Playwright) over the mode combinations the
+      CSS owns and jsdom can't exercise: drawer open/closed, elevated rail
+      (`:has` gutter), footer `scroll` vs `pinned`, `header/footerLayout` full,
+      the mobile collapse. The crop bug shipped precisely because these layout
+      paths had no automated eye.
+
+**When earned — depth, trigger-gated (M3 direction):**
+
+- [ ] **`sh3Elevated` named scale** (`sm|md|lg`). Elevation is boolean today; the
+      level is dialed by overriding `--sh3-surface-shadow`/`-radius` in scope
+      (enough now, and more Radix-minimal than Material's `z0…z24`). **Trigger:**
+      a real need for ≥2 _named_ levels (a raised card vs an overlay dialog with
+      different shadows) → add the enum mapping to shadow tokens. Not by anticipation.
+- [ ] **`sh3Surface` owns the background** — the last step to a full M3-style
+      surface model. Today each chrome component paints its own bg (`sh3-menu` →
+      `bg-rail-primary`), which is why `sh3Elevated` sets **no** bg (it would
+      fight the component's). If surface = {bg + text role}, `sh3Elevated`
+      becomes fully self-contained (no "bring your own background" footgun on a
+      bare wrapper). Sizeable — touches how all chrome paints. **Trigger:** a 2nd
+      surface-without-its-own-bg need.
+- [ ] **Drawer mechanics → `Sh3Drawer*` primitive.** The shell owns the
+      mobile-drawer behaviour inline (`mobileNavOpen` model, `drawerOpen` gate,
+      `Escape`, widen-reset effect, focus-trap gating). Cohesive, and there is
+      only **one** drawer, so it stays inline (the width-observer, the shared
+      half, is already `observeElementWidth`). **Trigger:** a **2nd** off-canvas
+      drawer (a filters/detail drawer) → extract `Sh3DrawerController` (or
+      `[sh3Drawer]`) owning open-state + `Escape` + focus-trap + scrim.
+
+**Decide — product calls that gate structure:**
+
+- [ ] No persistent **right rail** (assume `sh3-aside-layout` + panels?), and
+      **tertiary-rail** as a token vs a 3rd rail slot on the shell. Record the
+      decision before either grows organically.
+
 ## Phase 0 · Foundation (in progress)
 
 - [x] Scaffold the package (`@sh3pherd/ui`, ESM, strict tsconfig, Vitest).
@@ -328,39 +387,7 @@ not forgotten.
 - **`PanelHostComponent :host { display: contents }`** landed as layout hygiene
   (the overlay host claims no layout box); whether it also settles the open-panel
   glitch is unverified — revisit once the glitch is diagnosed.
-- **`sh3-app-shell` drawer mechanics could become a `Sh3Drawer*` primitive.** The
-  shell owns the mobile-drawer behaviour inline — the `mobileNavOpen` model, the
-  `drawerOpen` gate, the `Escape` handler, the widen-reset effect, and the
-  focus-trap gating. It's cohesive today and there is only **one** drawer, so it
-  stays in the component (the width-observer was the shared half and is already
-  extracted to `observeElementWidth`). **Trigger to extract** a `Sh3DrawerController`
-  (or `[sh3Drawer]` directive) owning open-state + `Escape` + focus-trap + scrim:
-  a **2nd** off-canvas drawer elsewhere (e.g. a filters/detail drawer). Generalise
-  on the 2nd real use, not by anticipation.
-- **`sh3-app-shell`: the secondary rail is unreachable on mobile.** Below the
-  breakpoint only the **primary** rail returns (as the drawer); an app that uses
-  `railSecondary` for a workspace switcher / sub-nav loses it on a phone. Options
-  when a bi-rail app needs it: stack both rails in the drawer, or a segmented
-  toggle inside the drawer. Deferred until a bi-rail consumer needs mobile access.
-- **`sh3-app-shell`: rails aren't named landmarks.** `.rail-primary` /
-  `.rail-secondary` are bare `<div>`s, so a screen reader gets no `navigation`
-  landmark for them (the header/main/footer are semantic). Add
-  `railPrimaryLabel` / `railSecondaryLabel` inputs → `role="navigation"` +
-  `aria-label` on the wrappers. Cheap; pairs with the skip-link already shipped.
-- **`sh3Elevated`: named elevation scale.** Elevation is a boolean today; the
-  level is dialed by overriding `--sh3-surface-shadow`/`-radius` in scope (enough
-  for the current needs, and more Radix-minimal than Material's `z0…z24`). A big
-  lib parametrizes it. **Trigger:** a real need for ≥2 _named_ levels (e.g. a
-  raised card vs an overlay dialog wanting different shadows) → add
-  `sh3Elevated="sm|md|lg"` (or an elevation token), mapping to shadow tokens.
-  Don't add the enum by anticipation.
-- **`sh3Surface` doesn't own the background.** The last step to a full M3-style
-  surface model: today each chrome component paints its own bg (`sh3-menu` →
-  `bg-rail-primary`), which is why `sh3Elevated` deliberately sets **no** bg (it
-  would fight the component's). If `sh3Surface` owned the bg (surface = {bg +
-  text role}), `sh3Elevated` could be fully self-contained (no "bring your own
-  background" footgun on a bare wrapper). Sizeable — it touches how all chrome
-  paints. **Trigger:** a 2nd surface-without-its-own-bg need.
+- _`sh3-app-shell` / `sh3Elevated` items moved to **Roadmap 1.0.1** (top of file)._
 - [x] **Re-export shims — paid back.** The `app/shared/{panel,toast,avatar,
 avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
       consumers now import `@sh3pherd/ui` directly (duplicate imports merged). Only
