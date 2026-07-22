@@ -11,6 +11,16 @@
 :host(.is-bleed) {
   margin-inline: calc(-1 * var(--sh3-page-gutter, 32px));
 }
+/* A bleed band at an *edge* of the page also swallows the page's block padding
+   so it sits flush to the very top/bottom — a hero as the first band, a footer
+   band as the last. Same token as the padding, so it stays exact. A band in the
+   middle keeps the vertical rhythm; only the edges flush. */
+:host(.is-bleed):first-child {
+  margin-top: calc(-1 * var(--sh3-page-pad-top, 28px));
+}
+:host(.is-bleed):last-child {
+  margin-bottom: calc(-1 * var(--sh3-page-pad-bottom, 40px));
+}
 /* Column: the title row (sh3-element-title owns title + action) then the
        optional description below it. */
 .section-head {

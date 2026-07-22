@@ -23,8 +23,10 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * - `bleed` — break the section out of the page gutter to span the layout
  *   edge-to-edge (a full-width band amid padded sections). It cancels exactly
  *   `--sh3-page-gutter` — the same token {@link Sh3PageLayoutComponent} pads
- *   with — so it stays flush at every breakpoint and never overflows. Only
- *   meaningful inside an `sh3-page-layout`.
+ *   with — so it stays flush at every breakpoint and never overflows. As the
+ *   **first** band it also swallows the page's top padding (a hero flush to the
+ *   top); as the **last**, the bottom padding (a footer band). A band in the
+ *   middle keeps the vertical rhythm. Only meaningful inside an `sh3-page-layout`.
  *
  * ```html
  * <sh3-page-section title="Moyens de paiement" description="Le moyen par défaut…">
@@ -69,7 +71,8 @@ export class Sh3PageSectionComponent {
   /** Lay the body out as an evenly-spaced vertical stack of form fields. */
   readonly stack = input(false, { transform: booleanAttribute });
   /** Break out of the page gutter to span the layout edge-to-edge — cancels
-   *  `--sh3-page-gutter` exactly, so it stays flush at every breakpoint. Only
+   *  `--sh3-page-gutter` exactly, so it stays flush at every breakpoint. As the
+   *  first/last band it also flushes to the page's top/bottom edge. Only
    *  meaningful inside an `sh3-page-layout`. */
   readonly bleed = input(false, { transform: booleanAttribute });
 }

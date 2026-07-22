@@ -11,7 +11,9 @@
      a `sh3-page-section[bleed]` cancels it with `calc(-1 * …)` to span the page
      edge-to-edge, so the two stay in lockstep at every breakpoint. Vertical
      breathing room is fixed. Set --sh3-page-gutter: 0 for a bleeding page. */
-  padding-block: 28px 40px;
+  /* Block padding is tokenised too, so a bleed band at the top/bottom edge can
+     cancel it exactly (--sh3-page-pad-top / -bottom) and sit flush to the edge. */
+  padding-block: var(--sh3-page-pad-top, 28px) var(--sh3-page-pad-bottom, 40px);
   padding-inline: var(--sh3-page-gutter, 32px);
   /* The page is its own scroll box: it fills the height its frame gives it and
      scrolls inside, so the frame's chrome (rails, header, gutter) stays put.
