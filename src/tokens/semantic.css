@@ -165,6 +165,16 @@
   );
 }
 
+/* ── Named surfaces ───────────────────────────────────────────
+   A `[data-surface]` (stamped by the `[sh3Surface]` directive) resolves its own
+   text, so a theme that re-declares `--sh3-color-text` for one surface actually
+   lands there — a custom-property override reaches only what is resolved inside
+   the subtree, never a colour already inherited from an ancestor. Inert under a
+   uniform theme; the seam a mixed theme (navi) overrides across. */
+[data-surface] {
+  color: var(--sh3-color-text);
+}
+
 /* ── Override theme: LIGHT ────────────────────────────────── */
 [data-theme="light"] {
   /* Surfaces */
@@ -578,12 +588,11 @@
    That second block is the honest part. The palette has no
    "on-chrome" text role — text/border/surface are single roles
    shared by page and chrome — so a mixed theme cannot be
-   expressed by re-pointing alone. Scoping to the shell's own
-   regions gets there with variables only, no component change,
-   and it is exactly how cascading custom properties are meant to
-   be used: a subtree re-declares the roles it needs. Give the
-   catalogue real `*-on-chrome` roles the day mixed chrome stops
-   being a demo.                                                 */
+   expressed by re-pointing alone. It re-declares those roles on
+   the `[data-surface="chrome"]` regions instead: variables only,
+   no component change, and addressed by a contract the shell opts
+   into rather than by its class names. Give the catalogue real
+   `*-on-chrome` roles the day mixed chrome stops being a demo.  */
 [data-theme="navi"] {
   /* Surfaces */
   --sh3-color-bg-page: var(--sh3-ref-ivory-50);
@@ -708,9 +717,11 @@
   );
 }
 
-[data-theme="navi"]
-  sh3-app-shell
-  > :is(.header, .rail-primary, .rail-secondary) {
+/* navi is mixed — light page, dark chrome — so the chrome surfaces need their
+   own text, surfaces and brand. Addressed by contract (`[data-surface="chrome"]`,
+   which the shell stamps on its rails + header), never by the shell's class
+   names: a renamed rail must not be able to break a theme. */
+[data-theme="navi"] [data-surface="chrome"] {
   /* Light text on the dark chrome. The whole ramp sits one step above umbra's:
      navy is a lighter, bluer ground than ink, so the borrowed values landed
      dim — `faded` on the expanded rail was barely legible. Four distinct

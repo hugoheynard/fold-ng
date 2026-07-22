@@ -1,6 +1,10 @@
-<div class="rail-primary">
+<div class="rail-primary" sh3Surface="chrome">
   <ng-content select="[railPrimary]" />
 </div>
-<div class="rail-secondary"><ng-content select="[railSecondary]" /></div>
-<header class="header"><ng-content select="[header]" /></header>
-<main class="content"><ng-content /></main>
+<div class="rail-secondary" sh3Surface="chrome">
+  <ng-content select="[railSecondary]" />
+</div>
+<header class="header" sh3Surface="chrome">
+  <ng-content select="[header]" />
+</header>
+<main class="content" sh3Surface="page"><ng-content /></main>

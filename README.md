@@ -37,8 +37,10 @@ never re-flow a page. The contract test enforces that split.
 
 `navi` is the interesting one: mixing chrome and page means one theme needs the
 `text`/`border`/`surface` roles to differ **per region**, which a single set of
-roles cannot express. It gets there by re-declaring those roles on the shell's
-chrome regions — variables only, no component change. If mixed chrome ever
+roles cannot express. It gets there by re-declaring those roles on
+`[data-surface="chrome"]` — a contract any element opts into with the
+`sh3Surface` directive (the app-shell stamps it on its rails + header) — so the
+theme never names a component's internals. Variables only. If mixed chrome ever
 stops being a demo, the catalogue should grow real `*-on-chrome` roles.
 
 Then style against the semantic tokens — never a raw colour:

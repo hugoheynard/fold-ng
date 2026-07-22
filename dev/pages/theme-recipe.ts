@@ -41,8 +41,8 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     title: "Check the brand twice — on the page and on the chrome",
     body: "A brand colour chosen against the page can be invisible against the rails. If your theme mixes a light page with dark chrome, the chrome needs its own values for the whole brand — the solid included, not just its tints.",
     example:
-      "navi's active menu icon tints with `primary` directly. The page's navy-500 on a near-black rail was dark on dark; the chrome flips primary/strong/text to 400/300.",
-    code: `[data-theme="navi"] sh3-app-shell > :is(.header, .rail-primary, .rail-secondary) {
+      "navi's active menu icon tints with `primary` directly. The page's navy-500 on a near-black rail was dark on dark; the chrome flips primary/strong/text to 400/300. It targets [data-surface=\"chrome\"] — the contract the shell opts into — not the shell's class names.",
+    code: `[data-theme="navi"] [data-surface="chrome"] {
   --sh3-color-primary: var(--sh3-ref-navy-400);
   --sh3-color-primary-strong: var(--sh3-ref-navy-300);
   --sh3-color-primary-text: var(--sh3-ref-navy-300);

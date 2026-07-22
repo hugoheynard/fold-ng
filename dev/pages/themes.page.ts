@@ -78,7 +78,7 @@ export default class ThemesPage {
       summary:
         "Dark chrome, light page — the back-office frame. One navy family serves both the brand on the page and the rails behind it, and the corners square off: radius is themeable, because corner softness is a brand axis that moves no box.",
       palette: "navy (chrome + brand) · ivory (page) · slate (text)",
-      note: "Mixing chrome and page needs text/surface/brand to differ per region, which one set of roles cannot express — so navi re-declares them on the shell's chrome regions. Variables only, no component change.",
+      note: 'Mixing chrome and page needs text/surface/brand to differ per region, which one set of roles cannot express — so navi re-declares them on [data-surface="chrome"], a contract the shell (and any element) opts into via the sh3Surface directive. Variables only, no reaching into a component.',
     },
   ];
 

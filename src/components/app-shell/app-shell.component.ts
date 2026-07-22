@@ -1,4 +1,5 @@
 import { Component, computed, input } from "@angular/core";
+import { Sh3SurfaceDirective } from "../../directives/surface.directive";
 
 /**
  * `<sh3-app-shell>` — the responsive application skeleton.
@@ -70,6 +71,7 @@ import { Component, computed, input } from "@angular/core";
 @Component({
   selector: "sh3-app-shell",
   standalone: true,
+  imports: [Sh3SurfaceDirective],
   host: {
     "[style.--sh3-shell-content-padding]": "contentPadding()",
     "[style.--sh3-shell-rail-width]": "railWidthVar()",

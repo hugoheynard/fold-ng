@@ -111,7 +111,11 @@ describe("token contract · catalogue ↔ CSS", () => {
 describe("token contract · layering integrity", () => {
   it("every primitive a semantic token points at is defined", () => {
     const defined = new Set(declaredVars(block(primitives, ":root")));
-    const dangling = referencedVars(semantic).filter((v) => !defined.has(v));
+    // Only primitive references must resolve here; a semantic token may also
+    // read another semantic role (e.g. a surface resolving `--sh3-color-text`).
+    const dangling = referencedVars(semantic).filter(
+      (v) => v.startsWith("--sh3-ref-") && !defined.has(v),
+    );
     expect(dangling).toEqual([]);
   });
 
@@ -130,6 +134,16 @@ describe("token contract · layering integrity", () => {
       (v) => !referenced.has(v),
     );
     expect(unused).toEqual([]);
+  });
+
+  it("the theme layer names no component internals (surfaces by contract)", () => {
+    // A theme must not reach into a component's markup: a per-region override
+    // targets [data-surface] (the `[sh3Surface]` contract), never a class name
+    // — a renamed rail would otherwise break a theme silently and untested.
+    const css = stripComments(semantic);
+    expect(css).not.toContain("sh3-app-shell");
+    expect(css).not.toMatch(/\.rail-(primary|secondary)\b/);
+    expect(css).not.toMatch(/\.(header|content)\s*[,{]/);
   });
 });
 
