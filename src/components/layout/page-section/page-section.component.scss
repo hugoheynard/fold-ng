@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--fold-space-lg);
 }
 /* `bleed` — span the page layout edge-to-edge. Cancels *exactly* the gutter
    fold-page-layout pads with (the same --fold-page-gutter token), so the section
@@ -26,7 +26,7 @@
 .section-head {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--fold-space-sm); /* was 6px → 8px */
   min-width: 0;
 }
 .section-desc {
@@ -43,14 +43,14 @@
 :host(.stack) .section-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--fold-space-lg);
 }
 
 /* ── Surface: a card (raised) or sunken box wrapping the section. The radius
        is what makes it read as a card — a transparent section has none. ── */
 :host(.s-card),
 :host(.s-sunken) {
-  padding: 20px;
+  padding: var(--fold-space-xl);
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-lg);
 }
@@ -70,17 +70,21 @@
   overflow: hidden;
 }
 :host(.divider) .section-head {
-  padding: 14px 20px;
+  /* was 14px 20px → 12px 20px */
+  padding: var(--fold-space-md) var(--fold-space-xl);
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
 :host(.divider) .section-body {
-  padding: 8px 20px 14px;
+  /* was 8px 20px 14px → 8px 20px 12px */
+  padding: var(--fold-space-sm) var(--fold-space-xl) var(--fold-space-md);
 }
 @media (max-width: 700px) {
   :host(.divider) .section-head {
-    padding: 12px 15px;
+    /* was 12px 15px → 12px 16px */
+    padding: var(--fold-space-md) var(--fold-space-lg);
   }
   :host(.divider) .section-body {
-    padding: 6px 15px 12px;
+    /* was 6px 15px 12px → 4px 16px 12px */
+    padding: var(--fold-space-xs) var(--fold-space-lg) var(--fold-space-md);
   }
 }
