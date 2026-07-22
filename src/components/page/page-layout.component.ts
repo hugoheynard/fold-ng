@@ -56,7 +56,7 @@ export class FoldPageLayoutComponent {
   /** An optional leading icon shown beside the title. */
   readonly icon = input<FoldIconName>();
   /** Widen the column to 940px (two-column pages). */
-  readonly wide = input(false);
+  readonly wide = input(false, { transform: booleanAttribute });
   /** Drop the max-width cap entirely — the page fills its container. */
   readonly fluid = input(false, { transform: booleanAttribute });
 }
