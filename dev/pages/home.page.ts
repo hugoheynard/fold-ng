@@ -43,27 +43,13 @@ interface Feature {
   templateUrl: "./home.page.html",
 })
 export default class HomePage {
-  /** The "Use now" disclosure state. */
-  protected readonly useNowOpen = signal(false);
-  protected readonly useSteps: readonly { label: string; code: string }[] = [
-    {
-      label: "Add the tokens once, at the root",
-      code: `@import "@sh3pherd/ui/tokens.css";`,
-    },
-    {
-      label: "Import a standalone component",
-      code: `import { Sh3ButtonComponent } from "@sh3pherd/ui";`,
-    },
-    {
-      label: "Use it — it reads roles, so it follows your theme",
-      code: `<sh3-button variant="primary">Ship it</sh3-button>`,
-    },
-  ];
+  /** The "Start now" disclosure — reveals the terminal install. */
+  protected readonly startNowOpen = signal(false);
 
   protected readonly stats: readonly Stat[] = [
     { value: "26", label: "components" },
-    { value: "5", label: "themes" },
-    { value: "396", label: "tests" },
+    { value: "4", label: "themes" },
+    { value: "400", label: "tests" },
     { value: "0", label: "runtime theming cost" },
   ];
 
@@ -71,7 +57,7 @@ export default class HomePage {
     {
       icon: "grid",
       title: "Themeable to the bone",
-      body: "Five themes, and not one touches a component. A theme re-points semantic roles at different primitives — the swatch, not the widget. Add a sixth in one CSS block.",
+      body: "Four themes, and not one touches a component. A theme re-points semantic roles at different primitives — the swatch, not the widget. Add a fifth in one CSS block.",
     },
     {
       icon: "lightning",
@@ -81,7 +67,7 @@ export default class HomePage {
     {
       icon: "shield",
       title: "Tested to a contract",
-      body: "396 specs, and a token contract that fails the build if a theme drops a role, a colour goes literal, or a primitive dies. The design system cannot rot quietly.",
+      body: "400 specs, and a token contract that fails the build if a theme drops a role, a colour goes literal, or a primitive dies. The design system cannot rot quietly.",
     },
     {
       icon: "diamond",

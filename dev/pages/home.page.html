@@ -13,7 +13,7 @@
     <h1 class="home-title">Fold</h1>
     <p class="home-lede">
       A design system that re-themes by re-pointing tokens — never by touching a
-      component. Dark by default, five themes, and a contract that fails the
+      component. Dark by default, four themes, and a contract that fails the
       build before the design can rot.
     </p>
     <div class="home-cta">
@@ -25,6 +25,32 @@
       </sh3-button>
     </div>
   </header>
+
+  <!-- ── start now: a primary disclosure above the layout ───────── -->
+  <sh3-disclosure class="home-startnow" [(open)]="startNowOpen">
+    <span summary class="home-startnow-summary">
+      <sh3-icon name="lightning" size="sm" />
+      <span>Start now</span>
+      <span class="home-startnow-hint"
+        >{{ startNowOpen() ? "hide" : "one command" }}</span
+      >
+    </span>
+
+    <div class="home-terminal">
+      <div class="home-terminal-bar">
+        <span class="home-terminal-dot"></span>
+        <span class="home-terminal-dot"></span>
+        <span class="home-terminal-dot"></span>
+        <span class="home-terminal-title">bash</span>
+      </div>
+      <pre
+        class="home-terminal-body"
+      ><code><span class="home-terminal-line"><span class="home-terminal-prompt">$</span> npm install @sh3pherd/ui</span>
+<span class="home-terminal-out">added 1 package in 1.4s</span>
+<span class="home-terminal-line"><span class="home-terminal-prompt">$</span> <span class="home-terminal-comment"># then import the tokens once, at your root</span></span>
+<span class="home-terminal-line"><span class="home-terminal-prompt">$</span> echo '@import "@sh3pherd/ui/tokens.css";' &gt;&gt; styles.css</span></code></pre>
+    </div>
+  </sh3-disclosure>
 
   <!-- ── below: rails flank the feature cards ───────────────────── -->
   <sh3-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
@@ -41,28 +67,7 @@
       </div>
     </sh3-card>
 
-    <!-- centre: use-now, then the feature cards + close -->
-    <sh3-disclosure class="home-usenow" [(open)]="useNowOpen">
-      <span summary class="home-usenow-summary">
-        <sh3-icon name="lightning" size="sm" />
-        <span>Use now</span>
-        <span class="home-usenow-hint"
-          >{{ useNowOpen() ? "hide the steps" : "three steps" }}</span
-        >
-      </span>
-
-      <ol class="home-steps">
-        @for (step of useSteps; track step.label) {
-        <li class="home-step">
-          <span class="home-step-n">{{ $index + 1 }}</span>
-          <div class="home-step-main">
-            <strong>{{ step.label }}</strong>
-            <pre class="code-pre"><code>{{ step.code }}</code></pre>
-          </div>
-        </li>
-        }
-      </ol>
-    </sh3-disclosure>
+    <!-- centre: the feature cards + close -->
 
     <section class="home-features">
       @for (f of features; track f.title) {

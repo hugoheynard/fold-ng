@@ -1684,60 +1684,77 @@ sh3-app-shell > .content > *:not(router-outlet) {
   margin-top: 6px;
 }
 
-/* ── use now: a primary disclosure at the top of the centre column ── */
-.home-usenow {
+/* ── start now: a primary disclosure above the layout, a terminal inside ── */
+.home-startnow {
   --sh3-disclosure-summary-bg: var(--sh3-color-primary);
   --sh3-disclosure-summary-color: var(--sh3-color-on-primary);
   border-color: var(--sh3-color-primary);
+  margin-bottom: 32px;
 }
-.home-usenow-summary {
+.home-startnow-summary {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 16px;
 }
-.home-usenow-hint {
+.home-startnow-hint {
   margin-left: auto;
   font-size: 12px;
   font-weight: 600;
   opacity: 0.85;
 }
-.home-steps {
+
+/* A terminal window: a title bar with traffic-light dots, then the session. */
+.home-terminal {
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  overflow: clip;
+  background: var(--sh3-color-surface-sunken);
+}
+.home-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+  background: var(--sh3-color-surface-subtle);
+}
+.home-terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--sh3-radius-round);
+  background: var(--sh3-color-border);
+}
+.home-terminal-title {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--sh3-color-text-muted);
+}
+.home-terminal-body {
   margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  padding: 14px 16px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--sh3-color-text);
+  overflow-x: auto;
 }
-.home-step {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+.home-terminal-line {
+  display: block;
+  white-space: pre;
 }
-.home-step-n {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: var(--sh3-radius-pill);
-  background: var(--sh3-color-primary-surface);
-  border: 1px solid var(--sh3-color-primary-border);
+.home-terminal-prompt {
   color: var(--sh3-color-primary-text);
-  font-size: 12px;
-  font-weight: 700;
+  user-select: none;
 }
-.home-step-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-  flex: 1 1 auto;
+.home-terminal-out {
+  display: block;
+  color: var(--sh3-color-text-muted);
 }
-.home-step-main .code-pre {
-  margin: 0;
-  max-width: none;
+.home-terminal-comment {
+  color: var(--sh3-color-text-muted);
 }
 
 /* ── features ─────────────────────────────────────────────────── */
