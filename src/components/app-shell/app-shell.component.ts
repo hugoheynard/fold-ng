@@ -1,17 +1,16 @@
 import { NgTemplateOutlet } from "@angular/common";
 import {
   Component,
-  DestroyRef,
-  ElementRef,
   HostListener,
   computed,
   effect,
   inject,
   input,
   model,
-  signal,
 } from "@angular/core";
 import { FocusTrapDirective } from "../../a11y/focus-trap.directive";
+import { Sh3IdService } from "../../a11y/id.service";
+import { observeElementWidth } from "../../dom/observe-element-width";
 import { Sh3SurfaceDirective } from "../../directives/surface.directive";
 
 /** Width (px) at or below which the rails collapse and the primary rail becomes
@@ -80,10 +79,16 @@ const MOBILE_BREAKPOINT = 768;
  * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
  * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset), and the shell owns the content scroll, so project *flow* content, not a page that manages its own full-height scroll. |
  * | `appearance`   | `"flat" \| "floating"`| `"flat"`  | `flat` = regions are edge-to-edge blocks; `floating` = each region is a rounded, elevated card on a page-colour gutter (inset-dashboard look). |
+ * | `contentScroll`| `"clip" \| "auto"`    | `"clip"`  | `clip` = the shell clips the content region; the page inside owns its scroll (`sh3-page-layout`). `auto` = the content region scrolls itself, for plain content. Ignored under `footerBehavior="scroll"`. |
  *
  * In `floating` mode the content cell becomes a rounded card; because it already
  * clips its overflow, a floating panel anchored inside it inherits that radius
  * for free — no extra wiring.
+ *
+ * ## Accessibility
+ * The shell renders a **skip-link** as its first Tab stop — jumping keyboard
+ * users past the rails straight to the `<main>` content (`skipLinkLabel` sets
+ * its text). The `<main>` is focusable (`tabindex="-1"`) so the jump lands.
  *
  * @selector `sh3-app-shell`
  *
@@ -118,6 +123,7 @@ const MOBILE_BREAKPOINT = 768;
     "[class.floating]": 'appearance() === "floating"',
     "[class.mobile-drawer]": 'mobileNav() === "drawer"',
     "[class.mobile-nav-open]": "drawerOpen()",
+    "[class.content-auto]": 'contentScroll() === "auto"',
   },
   templateUrl: "./app-shell.component.html",
   styleUrl: "./app-shell.component.scss",
@@ -139,6 +145,24 @@ export class Sh3AppShellComponent {
   readonly footerBehavior = input<"pinned" | "scroll">("pinned");
   /** `"floating"` renders each region as a rounded, elevated card on a page-colour gutter; `"flat"` (default) is edge-to-edge blocks. */
   readonly appearance = input<"flat" | "floating">("flat");
+
+  /**
+   * Who owns the content region's scroll:
+   * - `"clip"` (default) — the shell clips it; the page inside owns its scroll
+   *   (an `sh3-page-layout` is its own scroll box). A full-bleed page paints to
+   *   the edges and never double-scrolls.
+   * - `"auto"` — the shell's content region scrolls itself. For plain content
+   *   that isn't wrapped in a self-scrolling page. Ignored under
+   *   `footerBehavior="scroll"` (which already makes the region scroll).
+   */
+  readonly contentScroll = input<"clip" | "auto">("clip");
+
+  /** The skip-link's label — the first Tab stop, jumping keyboard users past the
+   *  rails straight to `<main>`. Override for a non-English app. */
+  readonly skipLinkLabel = input("Skip to content");
+
+  /** SSR-safe id linking the skip-link to the `<main>` it targets. */
+  protected readonly contentId = inject(Sh3IdService).next("sh3-shell-content");
 
   /**
    * How the primary rail's navigation is reached on mobile:
@@ -165,14 +189,18 @@ export class Sh3AppShellComponent {
    */
   readonly mobileNavOpen = model(false);
 
-  private readonly hostEl = inject<ElementRef<HTMLElement>>(ElementRef);
+  /** The shell's own width, kept live by a shared `ResizeObserver` primitive. */
+  private readonly width = observeElementWidth();
 
-  /** Whether the shell is narrow enough to collapse — tracked from the shell's
-   *  **own** width (a `ResizeObserver`), not the viewport, so the drawer engages
-   *  in step with the CSS collapse whether that fires on `@media` (the shell
-   *  fills the viewport) or `@container` (an embedded preview). SSR / no-DOM →
-   *  `false` (the wide layout, which is also the SSR-safe first paint). */
-  private readonly isNarrow = signal(false);
+  /** Whether the shell is narrow enough to collapse — tracked from its **own**
+   *  width, not the viewport, so the drawer engages in step with the CSS
+   *  collapse whether that fires on `@media` (the shell fills the viewport) or
+   *  `@container` (an embedded preview). `0` (unmeasured / SSR) reads as wide —
+   *  the SSR-safe first paint. */
+  private readonly isNarrow = computed(() => {
+    const w = this.width();
+    return w > 0 && w <= MOBILE_BREAKPOINT;
+  });
 
   /** The drawer is live only in `drawer` mode, when the shell is narrow **and**
    *  open — so the focus-trap and scrim never engage over a full-width rail, nor
@@ -183,19 +211,6 @@ export class Sh3AppShellComponent {
   );
 
   constructor() {
-    const host = this.hostEl.nativeElement;
-    // Track the shell's own width. Guarded for SSR / jsdom (no ResizeObserver).
-    if (typeof ResizeObserver !== "undefined") {
-      const observer = new ResizeObserver((entries) => {
-        const width = entries[0]?.contentRect.width ?? 0;
-        // width 0 = detached/hidden — leave the last reading rather than flip.
-        if (width > 0) {
-          this.isNarrow.set(width <= MOBILE_BREAKPOINT);
-        }
-      });
-      observer.observe(host);
-      inject(DestroyRef).onDestroy(() => observer.disconnect());
-    }
     // Widening past the breakpoint closes the drawer so it can't linger as a
     // stuck off-canvas panel once the rails are back in view.
     effect(() => {

@@ -27,6 +27,35 @@
     "rail-primary rail-secondary content";
 }
 
+/* Skip-link — the first Tab stop. Off-screen (not display:none, which drops it
+   from the tab order) until focused, then it slides into the top-left corner,
+   above every region. Clicking / activating it jumps to the focusable <main>. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  margin: var(--sh3-space-sm, 8px);
+  padding: 8px 14px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-card);
+  color: var(--sh3-color-text);
+  font-size: var(--sh3-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform 120ms ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
 /* headerLayout="full" — header spans every column, above the rails, instead of
    sitting over the content column with the rails climbing its side. */
 :host(.header-full) {
@@ -104,6 +133,11 @@
   min-height: 0;
   overflow: hidden;
 }
+/* <main> is focusable (tabindex=-1) only so the skip-link can land on it — it
+   is not an interactive control, so it shows no focus ring. */
+.content:focus {
+  outline: none;
+}
 
 /* footerBehavior="scroll" — the content region owns the scroll and the footer
    flows at its end, revealed on the way down. `margin-top: auto` gives the
@@ -111,7 +145,8 @@
    the page is short, and scrolls below the fold when the page is tall. Inset
    only (it lives in the content column), so `footerLayout="full"` has no effect
    here — project flow content, not a page that owns its own full-height scroll. */
-:host(.footer-scroll) .content {
+:host(.footer-scroll) .content,
+:host(.content-auto) .content {
   overflow: auto;
 }
 .footer-inflow {

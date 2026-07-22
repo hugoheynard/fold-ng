@@ -219,6 +219,32 @@ describe("Sh3AppShellComponent", () => {
     fixture.detectChanges();
     expect(shell.classList.contains("floating")).toBe(false);
   });
+
+  it("renders a skip-link, first, targeting the focusable <main>", () => {
+    const host = setup();
+    const skip = host.querySelector("a.skip-link") as HTMLAnchorElement;
+    const main = host.querySelector("main.content") as HTMLElement;
+    expect(skip).not.toBeNull();
+    expect(skip.textContent?.trim()).toBe("Skip to content");
+    // <main> is focusable so the jump lands, and the link targets its id.
+    expect(main.getAttribute("tabindex")).toBe("-1");
+    const id = main.getAttribute("id");
+    expect(id).toBeTruthy();
+    expect(skip.getAttribute("href")).toBe(`#${id}`);
+    // It is the first focusable element in the shell (before the rails).
+    expect(host.querySelector("a[href], button, [tabindex]")).toBe(skip);
+  });
+
+  it('scrolls the content region itself when contentScroll="auto"', () => {
+    const fixture = TestBed.createComponent(Sh3AppShellComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement as HTMLElement;
+    expect(shell.classList.contains("content-auto")).toBe(false);
+
+    fixture.componentRef.setInput("contentScroll", "auto");
+    fixture.detectChanges();
+    expect(shell.classList.contains("content-auto")).toBe(true);
+  });
 });
 
 /** Feeds the shell's ResizeObserver a width so a test can drive the narrow /

@@ -1,3 +1,7 @@
+<!-- Skip-link: the first Tab stop — visually hidden until focused, then jumps
+     keyboard users past the rails to <main> (which is focusable, tabindex=-1). -->
+<a class="skip-link" [href]="'#' + contentId">{{ skipLinkLabel() }}</a>
+
 <div
   class="rail-primary"
   sh3Surface="chrome"
@@ -34,7 +38,7 @@
   </footer>
 </ng-template>
 
-<main class="content" sh3Surface="page">
+<main class="content" sh3Surface="page" [id]="contentId" tabindex="-1">
   <ng-content />
   @if (footerBehavior() === "scroll") {
     <ng-container [ngTemplateOutlet]="footerTpl" />
