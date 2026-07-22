@@ -49,14 +49,17 @@
   color: var(--sh3-color-text);
 }
 
-/* The grid lays the projected tiles out; each tile styles + stages itself. */
+/* The grid lays the projected tiles out; each tile styles + stages itself. The
+   column count comes from the component (`--nav-cols`, `auto` = scaled to the
+   tile count), so fewer tiles read as larger flat tiles in the same width. */
 .nl-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--nav-cols, 3), 1fr);
   gap: 12px;
   width: 100%;
   max-width: 360px;
 }
+/* On a very narrow phone, never more than two across whatever the count. */
 @media (max-width: 360px) {
   .nl-grid {
     grid-template-columns: repeat(2, 1fr);

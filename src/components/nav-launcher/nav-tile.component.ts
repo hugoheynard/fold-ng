@@ -12,12 +12,18 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * (`:host(:nth-child)`) — so a launcher's tiles animate in without the launcher
  * having to thread an index down to projected content.
  *
+ * Two looks via `variant`:
+ * - `"surface"` (default) — a subtle raised tile (faint fill, hairline border).
+ * - `"filled"` — a solid brand tile: `primary` fill, `on-primary` icon + label.
+ *   The flat, "app-icon" look — a navy tile with a white glyph under `navi`, a
+ *   teal one under umbra — since it names the brand roles, not a colour.
+ *
  * @selector `a[sh3-nav-tile]`, `button[sh3-nav-tile]`
  *
  * @example
  * ```html
  * <a sh3-nav-tile icon="home" label="Home" routerLink="/"></a>
- * <button sh3-nav-tile icon="music" label="Music" [active]="true"></button>
+ * <button sh3-nav-tile icon="music" label="Music" variant="filled"></button>
  * ```
  */
 @Component({
@@ -28,6 +34,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
   styleUrl: "./nav-tile.component.scss",
   host: {
     class: "sh3-nav-tile",
+    "[class.is-filled]": "variant() === 'filled'",
     "[class.is-active]": "active()",
     "[attr.aria-current]": "active() ? 'page' : null",
   },
@@ -37,6 +44,8 @@ export class Sh3NavTileComponent {
   readonly icon = input.required<Sh3IconName>();
   /** The label under the icon (also the accessible name of the control). */
   readonly label = input.required<string>();
+  /** `"surface"` (default, subtle raised) or `"filled"` (solid brand fill). */
+  readonly variant = input<"surface" | "filled">("surface");
   /** Lights the active indicator — the current destination. */
   readonly active = input(false, { transform: booleanAttribute });
 }

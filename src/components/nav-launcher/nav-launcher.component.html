@@ -16,7 +16,7 @@
     >
       <sh3-icon name="close" size="md" />
     </button>
-    <div class="nl-grid">
+    <div class="nl-grid" [style.--nav-cols]="resolvedCols()">
       <ng-content />
     </div>
   </div>

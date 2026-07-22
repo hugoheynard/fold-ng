@@ -6,10 +6,17 @@ import { Sh3NavTileComponent } from "./nav-tile.component";
 @Component({
   standalone: true,
   imports: [Sh3NavTileComponent],
-  template: `<a sh3-nav-tile icon="home" label="Home" [active]="active()"></a>`,
+  template: `<a
+    sh3-nav-tile
+    icon="home"
+    label="Home"
+    [variant]="variant()"
+    [active]="active()"
+  ></a>`,
 })
 class HostComponent {
   readonly active = signal(false);
+  readonly variant = signal<"surface" | "filled">("surface");
 }
 
 function setup() {
@@ -37,5 +44,14 @@ describe("Sh3NavTileComponent", () => {
     fixture.detectChanges();
     expect(tile.classList.contains("is-active")).toBe(true);
     expect(tile.getAttribute("aria-current")).toBe("page");
+  });
+
+  it("toggles the filled look from variant", () => {
+    const { fixture, tile } = setup();
+    expect(tile.classList.contains("is-filled")).toBe(false);
+
+    fixture.componentInstance.variant.set("filled");
+    fixture.detectChanges();
+    expect(tile.classList.contains("is-filled")).toBe(true);
   });
 });

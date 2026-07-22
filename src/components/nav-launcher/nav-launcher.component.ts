@@ -2,6 +2,8 @@ import {
   Component,
   DestroyRef,
   HostListener,
+  computed,
+  contentChildren,
   effect,
   inject,
   input,
@@ -10,6 +12,7 @@ import {
 import { FocusTrapDirective } from "../../a11y/focus-trap.directive";
 import { ScrollLockService } from "../../a11y/scroll-lock.service";
 import { Sh3IconComponent } from "../icon/icon.component";
+import { Sh3NavTileComponent } from "./nav-tile.component";
 
 /**
  * `<sh3-nav-launcher>` — a full-screen mobile navigation launcher: a centred
@@ -50,6 +53,24 @@ export class Sh3NavLauncherComponent {
   readonly open = model(false);
   /** Accessible name for the launcher dialog. */
   readonly label = input("Navigation");
+  /**
+   * Grid column count. `"auto"` (default) scales to the number of tiles so a few
+   * destinations read as large flat tiles and many stay compact: ≤4 → 2 columns,
+   * more → 3. Pass a number to pin it.
+   */
+  readonly columns = input<number | "auto">("auto");
+
+  /** The projected tiles — their count drives `auto` column sizing. */
+  private readonly tiles = contentChildren(Sh3NavTileComponent);
+
+  /** The resolved column count (always a number for the grid var). */
+  protected readonly resolvedCols = computed(() => {
+    const cols = this.columns();
+    if (cols !== "auto") {
+      return Number(cols);
+    }
+    return this.tiles().length <= 4 ? 2 : 3;
+  });
 
   private readonly scrollLock = inject(ScrollLockService);
   private locked = false;

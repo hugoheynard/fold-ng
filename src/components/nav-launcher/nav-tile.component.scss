@@ -36,6 +36,25 @@
   border-color: var(--sh3-color-primary);
   color: var(--sh3-color-primary-text);
 }
+
+/* Filled — a solid brand tile (the flat "app-icon" look). Names the brand
+   roles, so it's a navy tile with a white glyph under navi, teal under umbra. */
+:host(.is-filled) {
+  background: var(--sh3-color-primary);
+  border-color: transparent;
+  color: var(--sh3-color-on-primary);
+}
+:host(.is-filled:hover) {
+  background: var(--sh3-color-primary-strong);
+  border-color: transparent;
+  color: var(--sh3-color-on-primary);
+}
+/* Active filled tile: an inset ring in the on-fill colour marks the current
+   destination without breaking the solid fill. */
+:host(.is-filled.is-active) {
+  outline: 2px solid var(--sh3-color-on-primary);
+  outline-offset: -5px;
+}
 .nt-icon {
   flex: none;
 }
