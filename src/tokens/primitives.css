@@ -67,27 +67,10 @@
   --sh3-ref-slate-700: #4a5470; /* faded text (dark theme)     */
   --sh3-ref-slate-900: #1a1d23; /* primary text (light theme)  */
 
-  /* ── Void / Iris / Mist / Azure — the MIDNIGHT theme families ──
-     A cooler, deeper night: indigo-black chrome, a violet brand, and
-     a cyan info family (purple would collide with the brand).        */
-  --sh3-ref-void-950: #070911; /* header bar               */
-  --sh3-ref-void-925: #06080e; /* rail 1 · app menu        */
-  --sh3-ref-void-900: #0a0d17; /* rail 2 · workspace menu  */
-  --sh3-ref-void-850: #0f1220; /* page background          */
-  --sh3-ref-void-800: #1c2036; /* raised card surface      */
-  --sh3-ref-void-700: #262b45; /* raised hover surface     */
-
-  --sh3-ref-iris-400: #a78bfa; /* lightest — hover on dark    */
-  --sh3-ref-iris-500: #7c5cf0; /* brand base (midnight)       */
-
-  --sh3-ref-mist-50: #ece9ff; /* primary text (midnight)      */
-  --sh3-ref-mist-400: #8f8ab8; /* secondary text              */
-  --sh3-ref-mist-500: #6b6790; /* muted text                  */
-  --sh3-ref-mist-700: #4c4a6b; /* faded text                  */
-
-  --sh3-ref-azure-300: #7dd3fc; /* light tint — info (midnight) */
-  --sh3-ref-azure-400: #38bdf8; /* surface/border base          */
-  --sh3-ref-azure-500: #0ea5e9; /* base                         */
+  /* ── Azure — a cyan, BUBBLY's info family ──────────────────────
+     Moved bubbly's info off its violet brand's hue, the way a status
+     that collides with the brand always must.                        */
+  --sh3-ref-azure-500: #0ea5e9; /* base — bubbly info          */
 
   /* ── Navy — the NAVI theme family ─────────────────────────────
      One corporate midnight-blue family serving both jobs: the brand

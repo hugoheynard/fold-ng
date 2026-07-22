@@ -23,12 +23,11 @@ set `data-theme` on an ancestor — usually `<html>`:
 <html data-theme="light"></html>
 ```
 
-Five themes ship: `umbra` (the dark base, no attribute), `light`, `midnight`
-(indigo chrome, violet brand), `bubbly` (festive lavender, violet brand,
-rounded) and `navi` (dark chrome, light page). The extras exist to prove the
-point — each is the umbra or light block with its primitive families re-pointed.
-Adding a sixth is a new `[data-theme]` block in `semantic.css` plus the
-primitives it names.
+Four themes ship: `umbra` (the dark base, no attribute), `light`, `bubbly`
+(festive lavender, violet brand, rounded) and `navi` (dark chrome, light page).
+The extras exist to prove the point — each is the umbra or light block with its
+primitive families re-pointed. Adding a fifth is a new `[data-theme]` block in
+`semantic.css` plus the primitives it names.
 
 `bubbly` and `navi` also change their corners — **radius is the one scale a theme may
 re-declare**, because corner softness is a brand axis (friendly vs

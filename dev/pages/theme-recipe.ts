@@ -10,7 +10,7 @@ export interface ThemeStep {
 
 /**
  * The authoring guide, as data. Every example is a decision taken (or a bug
- * hit) while building midnight, bubbly and navi — a rule with a scar is worth
+ * hit) while building bubbly and navi — a rule with a scar is worth
  * ten rules without one.
  */
 export const THEME_STEPS: readonly ThemeStep[] = [
@@ -18,18 +18,18 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     title: "Start from the closest base, not from zero",
     body: 'A theme is a diff. Copy the block whose light/dark polarity you already want — :root (umbra) or [data-theme="light"] — and change what must differ. Writing 40 roles from scratch guarantees you forget three.',
     example:
-      "midnight is umbra with four families swapped; bubbly is light with two (bubble, grape) and two reused (slate, azure). Neither invented a role.",
+      "bubbly is the light block with two families swapped (cloud→bubble, teal→grape) and two reused (slate for text, azure for info). It invented no role.",
   },
   {
     title: "Re-point families, not roles",
     body: "Roles come in families (chrome, brand, text, one per status). Decide the family, then substitute it everywhere — the role-by-role pass is where inconsistencies enter.",
     example:
-      "midnight, in full: ink→void, teal→iris, slate→mist, purple→azure.",
+      "bubbly's brand move, in full: teal→grape across every primary role, not one at a time.",
     code: `/* the whole brand move, not one role at a time */
---sh3-color-primary:        var(--sh3-ref-iris-500);
---sh3-color-primary-strong: var(--sh3-ref-iris-400);
---sh3-color-primary-text:   var(--sh3-ref-iris-400);
---sh3-color-primary-surface: color-mix(in srgb, var(--sh3-ref-iris-500) 14%, transparent);`,
+--sh3-color-primary:        var(--sh3-ref-grape-500);
+--sh3-color-primary-strong: var(--sh3-ref-grape-600);
+--sh3-color-primary-text:   var(--sh3-ref-grape-700);
+--sh3-color-primary-surface: color-mix(in srgb, var(--sh3-ref-grape-500) 12%, transparent);`,
   },
   {
     title: "Keep the chrome descent short",
@@ -52,7 +52,7 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     title: "Move a status family that collides with the brand",
     body: "Status colours must stay distinguishable from the brand at a glance. If the brand lands on a status family's hue, move the status — never the meaning.",
     example:
-      "midnight's violet brand sat on top of the purple info family, so info moved to cyan (azure). Warning stayed amber, alert stayed red: only the collision moved.",
+      "bubbly's violet grape brand would have sat on top of the purple info family, so info moved to cyan (azure). Warning stayed amber, alert stayed red: only the collision moved.",
   },
   {
     title: "Re-tune the text ramp for the new ground",

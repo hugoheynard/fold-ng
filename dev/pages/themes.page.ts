@@ -59,13 +59,6 @@ export default class ThemesPage {
       palette: "cloud + white (chrome) · teal (brand) · slate (text)",
     },
     {
-      attr: "midnight",
-      name: "midnight",
-      summary:
-        "Umbra re-pointed, nothing else: indigo chrome, a violet brand, cool text. Its info family moves to cyan — purple would collide with the brand.",
-      palette: "void (chrome) · iris (brand) · mist (text) · azure (info)",
-    },
-    {
       attr: "bubbly",
       name: "bubbly",
       summary:
@@ -134,7 +127,7 @@ export default class ThemesPage {
 
 /* 3 · A subtree. Themes are just custom properties, so any element can carry
       one — a dark hero on a light page, a preview pane in another theme. */
-<section data-theme="midnight">…</section>
+<section data-theme="navi">…</section>
 
 /* 4 · Shape. Radius is the one scale a theme may re-declare. */
 [data-theme="brandx"] {
