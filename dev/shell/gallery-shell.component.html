@@ -1,14 +1,18 @@
 <sh3-app-shell
   footerLayout="inset"
   footerBehavior="scroll"
-  [appearance]="cfg().appearance"
   [mobileNav]="cfg().mobileNav"
   [(mobileNavOpen)]="mobileNavOpen"
   (dblclick)="onInspect($event)"
 >
   <!-- ── rail primary: the Fold app rail. Expands into labels when it becomes
        the mobile drawer; closes the drawer on navigation. ──────────── -->
-  <sh3-menu railPrimary tint="primary" [expanded]="mobileNavOpen()">
+  <sh3-menu
+    railPrimary
+    tint="primary"
+    [expanded]="mobileNavOpen()"
+    [sh3Elevated]="cfg().elevated.includes('railPrimary')"
+  >
     <a header class="rail-brand" routerLink="/" aria-label="Fold — home">
       <sh3-icon name="fold" [size]="24" />
     </a>
@@ -35,7 +39,12 @@
   </sh3-menu>
 
   <!-- ── rail secondary: the "Library" nav — each item is a route ──── -->
-  <sh3-menu railSecondary level="secondary" [expanded]="true">
+  <sh3-menu
+    railSecondary
+    level="secondary"
+    [expanded]="true"
+    [sh3Elevated]="cfg().elevated.includes('railSecondary')"
+  >
     <div header class="lib-head">
       <sh3-icon name="library" size="sm" />
       <span>Library</span>

@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from "@angular/core";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import {
   Sh3AppShellComponent,
+  Sh3ElevatedDirective,
   Sh3IconComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -42,6 +43,7 @@ import pkg from "../../package.json";
     Sh3MenuSectionComponent,
     Sh3NavLauncherComponent,
     Sh3NavTileComponent,
+    Sh3ElevatedDirective,
     Sh3IconComponent,
     Sh3PanelHostComponent,
     Sh3ToastContainerComponent,
@@ -61,7 +63,7 @@ export class GalleryShellComponent {
   protected readonly navGroups = GALLERY_NAV;
 
   /** The active theme's chrome config — the single source the template reads
-   *  every theme-varying binding from (appearance, mobileNav, data-theme…), so
+   *  every theme-varying binding from (elevated, mobileNav, data-theme…), so
    *  the switch lives here, not as a ternary per binding. */
   protected readonly cfg = computed(() => GALLERY_THEME_CONFIG[this.theme()]);
 

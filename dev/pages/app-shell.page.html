@@ -4,30 +4,31 @@
     header band, the content area and a self-collapsing footer, wired as one
     responsive scaffold. It folds on its own width via container queries — the
     secondary rail collapses first, then the primary — so the same markup serves
-    desktop, tablet and mobile. Appearance (flat or floating), header + footer
-    layout (inset or full), footer behaviour (pinned player-bar or scroll-to-
-    reveal legal footer), rail width and header height are inputs; everything
-    else is a design token you can override.
+    desktop, tablet and mobile. Header + footer layout (inset or full), footer
+    behaviour (pinned player-bar or scroll-to-reveal legal footer), rail width
+    and header height are inputs; everything else is a design token you can
+    override. Regions float per-surface with <code>sh3Elevated</code> — the
+    shell owns structure, not skin.
   </p>
   <gal-kind-badge titleBadge kind="component" />
 
   <dev-playground [code]="shellCode()">
     <div class="np-field" params>
-      <span class="gal-tag">appearance</span>
+      <span class="gal-tag">rail sh3Elevated</span>
       <div class="ss-seg">
         <button
           type="button"
-          [class.is-on]="shellAppearance() === 'flat'"
-          (click)="setAppearance('flat')"
+          [class.is-on]="!railElevated()"
+          (click)="railElevated.set(false)"
         >
           flat
         </button>
         <button
           type="button"
-          [class.is-on]="shellAppearance() === 'floating'"
-          (click)="setAppearance('floating')"
+          [class.is-on]="railElevated()"
+          (click)="railElevated.set(true)"
         >
-          floating
+          elevated
         </button>
       </div>
     </div>
@@ -139,7 +140,6 @@
         #sph="panelScope"
       >
         <sh3-app-shell
-          [appearance]="shellAppearance()"
           [headerLayout]="shellHeaderLayout()"
           [footerLayout]="shellFooterLayout()"
           [footerBehavior]="shellFooterBehavior()"
@@ -147,7 +147,12 @@
           [headerHeight]="shellHeaderHeight()"
           [(mobileNavOpen)]="previewNavOpen"
         >
-          <sh3-menu railPrimary tint="primary" [expanded]="previewNavOpen()">
+          <sh3-menu
+            railPrimary
+            tint="primary"
+            [expanded]="previewNavOpen()"
+            [sh3Elevated]="railElevated()"
+          >
             <div header class="rail-brand">S3</div>
             @for (i of railNav; track i.id) {
             <button

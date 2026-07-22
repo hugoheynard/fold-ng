@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import {
   Sh3AppShellComponent,
+  Sh3ElevatedDirective,
   Sh3IconComponent,
   Sh3MenuComponent,
   Sh3MenuItemComponent,
@@ -33,6 +34,7 @@ type ShellMode = "desktop" | "tablet" | "mobile";
     Sh3AppShellComponent,
     Sh3MenuComponent,
     Sh3MenuItemComponent,
+    Sh3ElevatedDirective,
     Sh3IconComponent,
     Sh3SliderComponent,
     Sh3PanelHostComponent,
@@ -45,7 +47,8 @@ export default class AppShellPage {
   protected readonly theme = signal<"dark" | "light">("dark");
 
   /* ── Live shell parameters (driven by the Settings panel) ── */
-  protected readonly shellAppearance = signal<"flat" | "floating">("flat");
+  /** Raise the primary rail into a floating card (per-region `sh3Elevated`). */
+  protected readonly railElevated = signal(false);
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellFooterLayout = signal<"inset" | "full">("full");
   protected readonly shellFooterBehavior = signal<"pinned" | "scroll">(
@@ -93,9 +96,6 @@ export default class AppShellPage {
     });
   }
 
-  protected setAppearance(value: "flat" | "floating"): void {
-    this.shellAppearance.set(value);
-  }
   protected setHeaderLayout(value: "inset" | "full"): void {
     this.shellHeaderLayout.set(value);
   }
@@ -110,7 +110,6 @@ export default class AppShellPage {
   protected readonly shellCode = computed(() =>
     [
       "<sh3-app-shell",
-      `  appearance="${this.shellAppearance()}"`,
       `  headerLayout="${this.shellHeaderLayout()}"`,
       ...(this.shellFooter()
         ? [
@@ -121,7 +120,7 @@ export default class AppShellPage {
       `  [railWidth]="${this.shellRailWidth()}"`,
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
-      "  <sh3-menu railPrimary>…</sh3-menu>",
+      `  <sh3-menu railPrimary${this.railElevated() ? " sh3Elevated" : ""}>…</sh3-menu>`,
       "  <sh3-menu railSecondary>…</sh3-menu>",
       "  <header header>…</header>",
       "  <!-- untagged content → the main area -->",

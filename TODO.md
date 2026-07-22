@@ -347,6 +347,27 @@ not forgotten.
   landmark for them (the header/main/footer are semantic). Add
   `railPrimaryLabel` / `railSecondaryLabel` inputs → `role="navigation"` +
   `aria-label` on the wrappers. Cheap; pairs with the skip-link already shipped.
+- **`sh3Elevated`: named elevation scale.** Elevation is a boolean today; the
+  level is dialed by overriding `--sh3-surface-shadow`/`-radius` in scope (enough
+  for the current needs, and more Radix-minimal than Material's `z0…z24`). A big
+  lib parametrizes it. **Trigger:** a real need for ≥2 _named_ levels (e.g. a
+  raised card vs an overlay dialog wanting different shadows) → add
+  `sh3Elevated="sm|md|lg"` (or an elevation token), mapping to shadow tokens.
+  Don't add the enum by anticipation.
+- **`sh3Surface` doesn't own the background.** The last step to a full M3-style
+  surface model: today each chrome component paints its own bg (`sh3-menu` →
+  `bg-rail-primary`), which is why `sh3Elevated` deliberately sets **no** bg (it
+  would fight the component's). If `sh3Surface` owned the bg (surface = {bg +
+  text role}), `sh3Elevated` could be fully self-contained (no "bring your own
+  background" footgun on a bare wrapper). Sizeable — it touches how all chrome
+  paints. **Trigger:** a 2nd surface-without-its-own-bg need.
+- **`sh3Elevated` inset leaks one level into a flat region.** The shell sets
+  `--sh3-surface-inset` on `:host`, so it inherits to descendants. A nested
+  `[data-elevated]` card inside a _flat_ content region would pick up the moat
+  margin (one level — an elevated element doesn't currently reset the token for
+  its children). Harmless today (nothing nests `sh3Elevated` yet); opt out with
+  `--sh3-surface-inset: 0`. If it bites, have `[data-elevated]` reset the token
+  for its subtree (needs a two-var capture to avoid the self-reference).
 - [x] **Re-export shims — paid back.** The `app/shared/{panel,toast,avatar,
 avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
       consumers now import `@sh3pherd/ui` directly (duplicate imports merged). Only

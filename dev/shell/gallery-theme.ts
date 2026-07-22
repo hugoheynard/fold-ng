@@ -1,6 +1,11 @@
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
 export type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
 
+/** A shell region the gallery can raise into a floating card (via `sh3Elevated`).
+ *  Rails only here — they're full-height and inset cleanly; a fixed-height header
+ *  row would fight a vertical margin. */
+export type ShellRegion = "railPrimary" | "railSecondary";
+
 /** Every theme, in switcher order. `umbra` is the base (`:root`, no attribute). */
 export const GALLERY_THEMES: readonly GalleryTheme[] = [
   "umbra",
@@ -19,8 +24,9 @@ export const GALLERY_THEMES: readonly GalleryTheme[] = [
 export interface GalleryThemeConfig {
   /** `[data-theme]` attribute value — `null` for umbra (the `:root` base). */
   readonly dataTheme: string | null;
-  /** app-shell appearance — bubbly floats its regions, the rest are flat. */
-  readonly appearance: "flat" | "floating";
+  /** Which shell regions float (via `sh3Elevated`) — bubbly lifts its chrome
+   *  into cards, the rest stay flat. Per-region, not a global switch. */
+  readonly elevated: readonly ShellRegion[];
   /** Mobile-nav system — `none` hands off to the tile launcher, else the drawer. */
   readonly mobileNav: "drawer" | "none";
   /** Whether to mount the tile launcher — i.e. `mobileNav === "none"`, named so
@@ -35,28 +41,30 @@ export interface GalleryThemeConfig {
 export const GALLERY_THEME_CONFIG: Record<GalleryTheme, GalleryThemeConfig> = {
   umbra: {
     dataTheme: null,
-    appearance: "flat",
+    elevated: [],
     mobileNav: "none",
     usesLauncher: true,
     tileVariant: "surface",
   },
   lumen: {
     dataTheme: "lumen",
-    appearance: "flat",
+    elevated: [],
     mobileNav: "drawer",
     usesLauncher: false,
     tileVariant: "surface",
   },
   navi: {
     dataTheme: "navi",
-    appearance: "flat",
+    elevated: [],
     mobileNav: "none",
     usesLauncher: true,
     tileVariant: "filled",
   },
   bubbly: {
     dataTheme: "bubbly",
-    appearance: "floating",
+    // Rails float (full-height, they inset cleanly); the fixed-height header
+    // row stays flat — a vertical margin there would fight its row height.
+    elevated: ["railPrimary", "railSecondary"],
     mobileNav: "drawer",
     usesLauncher: false,
     tileVariant: "surface",
