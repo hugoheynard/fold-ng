@@ -2,6 +2,7 @@
   footerLayout="inset"
   footerBehavior="scroll"
   [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
+  [mobileNav]="usesTileLauncher() ? 'none' : 'drawer'"
   [(mobileNavOpen)]="mobileNavOpen"
   (dblclick)="onInspect($event)"
 >
@@ -169,6 +170,42 @@
     </div>
   </div>
 </sh3-app-shell>
+
+<!-- Tile mode (navi + umbra): the shell renders no drawer, so the header
+     hamburger opens this full-screen launcher instead — a curated grid of
+     top-level destinations, dogfooding sh3-nav-launcher. -->
+@if (usesTileLauncher()) {
+  <sh3-nav-launcher [(open)]="mobileNavOpen" label="Go to">
+    <a
+      sh3-nav-tile
+      icon="home"
+      label="Home"
+      routerLink="/"
+      (click)="mobileNavOpen.set(false)"
+    ></a>
+    <a
+      sh3-nav-tile
+      icon="library"
+      label="Library"
+      [routerLink]="'/' + firstComponent"
+      (click)="mobileNavOpen.set(false)"
+    ></a>
+    <a
+      sh3-nav-tile
+      icon="palette"
+      label="Themes"
+      routerLink="/themes"
+      (click)="mobileNavOpen.set(false)"
+    ></a>
+    <a
+      sh3-nav-tile
+      icon="grid"
+      label="Icons"
+      routerLink="/icons"
+      (click)="mobileNavOpen.set(false)"
+    ></a>
+  </sh3-nav-launcher>
+}
 
 <sh3-panel-host />
 <sh3-toast-container />

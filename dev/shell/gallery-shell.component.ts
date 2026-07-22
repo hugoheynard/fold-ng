@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import {
   Sh3AppShellComponent,
@@ -6,6 +6,8 @@ import {
   Sh3MenuComponent,
   Sh3MenuItemComponent,
   Sh3MenuSectionComponent,
+  Sh3NavLauncherComponent,
+  Sh3NavTileComponent,
   Sh3PanelHostComponent,
   Sh3PanelHostService,
   Sh3ToastContainerComponent,
@@ -36,6 +38,8 @@ type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
     Sh3MenuComponent,
     Sh3MenuItemComponent,
     Sh3MenuSectionComponent,
+    Sh3NavLauncherComponent,
+    Sh3NavTileComponent,
     Sh3IconComponent,
     Sh3PanelHostComponent,
     Sh3ToastContainerComponent,
@@ -55,9 +59,16 @@ export class GalleryShellComponent {
   protected readonly theme = signal<GalleryTheme>("umbra");
   protected readonly navGroups = GALLERY_NAV;
 
-  /** The mobile nav drawer, two-way bound to the shell. The header hamburger
-   *  (mobile-only) toggles it; the shell owns the slide-in + scrim + Escape. */
+  /** The mobile nav open state, two-way bound to the shell (and, in tile mode,
+   *  to the launcher). The header hamburger (mobile-only) toggles it. */
   protected readonly mobileNavOpen = signal(false);
+
+  /** Which mobile-nav system this theme dogfoods: `navi` + `umbra` use the
+   *  full-screen tile launcher (`sh3-nav-launcher`), the lighter themes use the
+   *  app-shell's off-canvas drawer — so the gallery shows both live. */
+  protected readonly usesTileLauncher = computed(
+    () => this.theme() === "navi" || this.theme() === "umbra",
+  );
 
   /** Where the primary rail's "Library" jumps in — the first library entry. */
   protected readonly firstComponent = GALLERY_NAV_ITEMS[0].id;
