@@ -10,6 +10,8 @@ import {
   Sh3DisclosureComponent,
   Sh3IconComponent,
   type Sh3IconName,
+  Sh3PageLayoutComponent,
+  Sh3PageSectionComponent,
 } from "../../src/index";
 import pkg from "../../package.json";
 
@@ -40,6 +42,8 @@ interface Feature {
     Sh3BadgeComponent,
     Sh3CardComponent,
     Sh3CalloutComponent,
+    Sh3PageLayoutComponent,
+    Sh3PageSectionComponent,
   ],
   templateUrl: "./home.page.html",
 })

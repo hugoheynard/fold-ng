@@ -1,37 +1,40 @@
-<div class="home">
-  <!-- ── hero: a full-width band, down to the two CTAs ──────────── -->
-  <header class="home-hero">
-    <!-- A giant gradient version number, blurred, behind the text — it is the
-         hero's gradient, shaped. Decorative, so hidden from the a11y tree. -->
-    <span class="home-version-bg" aria-hidden="true">{{ version }}</span>
-    <span class="home-version">v{{ version }}</span>
+<sh3-page-layout fluid class="home">
+  <!-- ── hero: a full-bleed band — a page-section that breaks the page gutter
+       to span edge-to-edge, no longer a bordered card. ──────────── -->
+  <sh3-page-section bleed>
+    <div class="home-hero">
+      <!-- A giant gradient version number, blurred, behind the text — it is the
+           hero's gradient, shaped. Decorative, so hidden from the a11y tree. -->
+      <span class="home-version-bg" aria-hidden="true">{{ version }}</span>
+      <span class="home-version">v{{ version }}</span>
 
-    <div class="home-mark">
-      <sh3-icon name="fold" [size]="52" title="Fold" />
+      <div class="home-mark">
+        <sh3-icon name="fold" [size]="52" title="Fold" />
+      </div>
+      <sh3-badge
+        class="home-eyebrow"
+        content="Angular 22 · responsive · accessible"
+        variant="accent"
+        radius="pill"
+      />
+      <h1 class="home-title">Fold</h1>
+      <p class="home-lede">
+        A signals-first, zoneless design system for <strong>Angular 22</strong>.
+        Every component is <strong>responsive</strong> on its own container
+        width and <strong>accessible</strong> by default — roles, focus
+        management and live regions baked in — and the whole system re-themes by
+        re-pointing tokens, never by touching a component.
+      </p>
+      <div class="home-cta">
+        <sh3-button routerLink="/app-shell" variant="primary" size="lg">
+          Browse the library
+        </sh3-button>
+        <sh3-button routerLink="/themes" variant="ghost" size="lg">
+          See the themes
+        </sh3-button>
+      </div>
     </div>
-    <sh3-badge
-      class="home-eyebrow"
-      content="Angular 22 · responsive · accessible"
-      variant="accent"
-      radius="pill"
-    />
-    <h1 class="home-title">Fold</h1>
-    <p class="home-lede">
-      A signals-first, zoneless design system for <strong>Angular 22</strong>.
-      Every component is <strong>responsive</strong> on its own container width
-      and <strong>accessible</strong> by default — roles, focus management and
-      live regions baked in — and the whole system re-themes by re-pointing
-      tokens, never by touching a component.
-    </p>
-    <div class="home-cta">
-      <sh3-button routerLink="/app-shell" variant="primary" size="lg">
-        Browse the library
-      </sh3-button>
-      <sh3-button routerLink="/themes" variant="ghost" size="lg">
-        See the themes
-      </sh3-button>
-    </div>
-  </header>
+  </sh3-page-section>
 
   <!-- ── start now: above the layout, aligned with its centre column ── -->
   <div class="home-startnow-row">
@@ -180,4 +183,4 @@
       </div>
     </sh3-card>
   </sh3-aside-layout>
-</div>
+</sh3-page-layout>
