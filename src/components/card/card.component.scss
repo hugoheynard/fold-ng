@@ -21,6 +21,14 @@
   background: var(--sh3-color-surface-card);
   border: 1px solid var(--sh3-color-border);
   border-radius: var(--_radius);
+  /* Clip to the radius so anything full-bleed inside — a flat sh3-callout, an
+     image, a table header — follows the corners. The bands round themselves,
+     but projected content cannot.
+
+     `clip`, not `hidden`: hidden would make the card a scroll container and
+     break a `position: sticky` child. Override with --sh3-card-overflow on the
+     rare card that must let content escape. */
+  overflow: var(--sh3-card-overflow, clip);
 }
 
 /* Sunken — a deeper container; pairs with a fainter hairline + a subtler raise

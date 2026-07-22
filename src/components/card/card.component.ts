@@ -37,6 +37,10 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * </sh3-card>
  * ```
  *
+ * Sizing / escape hatches (CSS custom properties):
+ * `--sh3-card-padding` overrides the body padding; `--sh3-card-overflow`
+ * (default `clip`) lets content escape the rounded corners.
+ *
  * @selector `sh3-card`
  */
 @Component({
