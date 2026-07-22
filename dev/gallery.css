@@ -1527,22 +1527,60 @@ sh3-app-shell > .content > *:not(router-outlet) {
    is the scroll box the sh3-aside-layout sticks its rails within — exactly the
    scroll container every other page gets from sh3-page-layout. */
 .home {
+  /* Shared layout metrics: the aside-layout below reads them for its tracks, and
+     the start-now row above mirrors them so it lines up with the centre column.
+     One source of truth keeps the two aligned. */
+  --home-rail: 200px;
+  --home-side: 280px;
+  --home-gap: 28px;
+  --home-max: 1240px;
+
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
+  /* Query our own width so the start-now row collapses in step with the
+     aside-layout (which folds on its own, equal, width). */
+  container-type: inline-size;
 }
 /* The two rails flank the feature cards; the shell already owns the side gutter,
    so the layout adds only top/bottom. */
 .home-layout {
-  --sh3-aside-layout-rail-width: 200px;
-  --sh3-aside-layout-side-width: 280px;
+  --sh3-aside-layout-rail-width: var(--home-rail);
+  --sh3-aside-layout-side-width: var(--home-side);
+  --sh3-aside-layout-gap: var(--home-gap);
+  --sh3-aside-layout-max: var(--home-max);
   --sh3-aside-layout-pad: 0 0 56px;
   --sh3-aside-layout-pad-sm: 0 0 40px;
   --sh3-aside-layout-top: 16px;
   --sh3-aside-layout-stack: 24px;
+}
+
+/* Start-now row: the aside-layout's grid, mirrored, so the disclosure lands in
+   column 2 — aligned with the feature cards below, rails empty above it. */
+.home-startnow-row {
+  display: grid;
+  grid-template-columns:
+    var(--home-rail)
+    minmax(0, 1fr)
+    var(--home-side);
+  gap: var(--home-gap);
+  max-width: var(--home-max);
+  margin-inline: auto;
+  width: 100%;
+}
+.home-startnow-row .home-startnow {
+  grid-column: 2;
+}
+@container (max-width: 1040px) {
+  .home-startnow-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-startnow-row .home-startnow {
+    grid-column: 1;
+  }
 }
 
 /* ── left rail: the numbers, one card ─────────────────────────── */
@@ -1685,11 +1723,13 @@ sh3-app-shell > .content > *:not(router-outlet) {
 }
 
 /* ── start now: a primary disclosure above the layout, a terminal inside ── */
+.home-startnow-row {
+  margin-bottom: 32px;
+}
 .home-startnow {
   --sh3-disclosure-summary-bg: var(--sh3-color-primary);
   --sh3-disclosure-summary-color: var(--sh3-color-on-primary);
   border-color: var(--sh3-color-primary);
-  margin-bottom: 32px;
 }
 .home-startnow-summary {
   display: flex;

@@ -26,31 +26,33 @@
     </div>
   </header>
 
-  <!-- ── start now: a primary disclosure above the layout ───────── -->
-  <sh3-disclosure class="home-startnow" [(open)]="startNowOpen">
-    <span summary class="home-startnow-summary">
-      <sh3-icon name="lightning" size="sm" />
-      <span>Start now</span>
-      <span class="home-startnow-hint"
-        >{{ startNowOpen() ? "hide" : "one command" }}</span
-      >
-    </span>
+  <!-- ── start now: above the layout, aligned with its centre column ── -->
+  <div class="home-startnow-row">
+    <sh3-disclosure class="home-startnow" [(open)]="startNowOpen">
+      <span summary class="home-startnow-summary">
+        <sh3-icon name="lightning" size="sm" />
+        <span>Start now</span>
+        <span class="home-startnow-hint"
+          >{{ startNowOpen() ? "hide" : "one command" }}</span
+        >
+      </span>
 
-    <div class="home-terminal">
-      <div class="home-terminal-bar">
-        <span class="home-terminal-dot"></span>
-        <span class="home-terminal-dot"></span>
-        <span class="home-terminal-dot"></span>
-        <span class="home-terminal-title">bash</span>
-      </div>
-      <pre
-        class="home-terminal-body"
-      ><code><span class="home-terminal-line"><span class="home-terminal-prompt">$</span> npm install @sh3pherd/ui</span>
+      <div class="home-terminal">
+        <div class="home-terminal-bar">
+          <span class="home-terminal-dot"></span>
+          <span class="home-terminal-dot"></span>
+          <span class="home-terminal-dot"></span>
+          <span class="home-terminal-title">bash</span>
+        </div>
+        <pre
+          class="home-terminal-body"
+        ><code><span class="home-terminal-line"><span class="home-terminal-prompt">$</span> npm install @sh3pherd/ui</span>
 <span class="home-terminal-out">added 1 package in 1.4s</span>
 <span class="home-terminal-line"><span class="home-terminal-prompt">$</span> <span class="home-terminal-comment"># then import the tokens once, at your root</span></span>
 <span class="home-terminal-line"><span class="home-terminal-prompt">$</span> echo '@import "@sh3pherd/ui/tokens.css";' &gt;&gt; styles.css</span></code></pre>
-    </div>
-  </sh3-disclosure>
+      </div>
+    </sh3-disclosure>
+  </div>
 
   <!-- ── below: rails flank the feature cards ───────────────────── -->
   <sh3-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
