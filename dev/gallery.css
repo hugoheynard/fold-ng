@@ -554,9 +554,9 @@ sh3-app-shell {
 
 /* ── Footer: dogfoods sh3-app-shell's footer slot in scroll mode — a full
    site footer that flows at the end of the content and is revealed on the way
-   down. Bleeds to the content edges (negates the shell's content gutter). ── */
+   down. The shell content is full-bleed, so it spans the width on its own. ── */
 .gal-footer {
-  margin: 40px -32px -40px;
+  margin-top: 40px;
   padding: 32px 32px 24px;
   background: var(--sh3-color-bg-header);
   border-top: 1px solid var(--sh3-color-border);

@@ -8,6 +8,12 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * top-right actions slot, and a body that stacks its children with a consistent
  * rhythm. Pair it with {@link Sh3PageSectionComponent} for grouped sub-sections.
  *
+ * **It owns the page gutter.** The `sh3-app-shell` content region is full-bleed
+ * (so a page can paint edge-to-edge); this component supplies the themed margins
+ * via its own padding. Wrap a page's content in `sh3-page-layout` to get them,
+ * or leave the shell content bare for a full-width surface. Retune the gutter
+ * with `--sh3-page-layout-padding` (e.g. `0` for a bleeding dashboard).
+ *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
  * - `[titleBadge]` → an inline pill beside the title (e.g. a status/kind badge).

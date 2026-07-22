@@ -39,7 +39,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--sh3-shell-rail-width`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
- * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. |
+ * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. **Full-bleed**: the shell adds no gutter, so a page can paint edge-to-edge (a full-width banner, a hero, a bleeding panel). Want the themed page gutter? Wrap the page in `sh3-page-layout` — padding is *its* job, not the shell's. |
  * | `footer`         | Bottom bar — a player / status strip (`footerBehavior="pinned"`, always in sight) or a legal / support footer (`footerBehavior="scroll"`, revealed at the end of the content). Rendered as `<footer>` (the document's `contentinfo` landmark). **Content-sized and self-collapsing**: an empty slot takes no space (unlike the fixed-height header). Content column, or full-width — see `footerLayout`. |
  *
  * ## Sizing knobs
@@ -48,7 +48,6 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * | `railWidth`          | `--sh3-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
  * | `headerHeight`       | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
  * | `headerHeightMobile` | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
- * | `contentPadding`     | `--sh3-shell-content-padding`      | `24px`  | Gutter around the content region (`"0"` = full-bleed). |
  *
  * ## Layout knobs
  * | Input          | Values                | Default   | Meaning                                    |
@@ -81,7 +80,6 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
   standalone: true,
   imports: [Sh3SurfaceDirective, NgTemplateOutlet],
   host: {
-    "[style.--sh3-shell-content-padding]": "contentPadding()",
     "[style.--sh3-shell-rail-width]": "railWidthVar()",
     "[style.--sh3-shell-header-height]": "headerHeightVar()",
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
@@ -101,16 +99,6 @@ export class Sh3AppShellComponent {
   readonly headerHeight = input<number>();
   /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
-
-  /**
-   * The gutter around the content region — any CSS padding shorthand.
-   *
-   * The frame owns it so no page has to re-declare its own margins: routed
-   * pages fill the slot and inherit the same gutter everywhere. Pass `"0"` for
-   * a full-bleed content region (a page that paints edge-to-edge, or one that
-   * anchors its own overlays against the region's real edges).
-   */
-  readonly contentPadding = input<string>("24px");
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");

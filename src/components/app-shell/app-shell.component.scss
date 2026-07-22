@@ -93,10 +93,8 @@
 .content {
   grid-area: content;
   position: relative;
-  /* The frame owns the page gutter so no page has to re-declare it. Any CSS
-     padding shorthand; `0` for a full-bleed content region. */
-  padding: var(--sh3-shell-content-padding, 24px);
-  box-sizing: border-box;
+  /* Full-bleed — the shell adds no gutter, so a page can paint edge-to-edge.
+     The themed page gutter is `sh3-page-layout`'s job, not the shell's. */
   display: flex;
   flex-direction: column;
   min-width: 0;

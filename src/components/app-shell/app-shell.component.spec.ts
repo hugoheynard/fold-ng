@@ -29,15 +29,6 @@ class SizedHostComponent {
 @Component({
   standalone: true,
   imports: [Sh3AppShellComponent],
-  template: `<sh3-app-shell [contentPadding]="padding()" />`,
-})
-class PaddedHostComponent {
-  readonly padding = signal("24px");
-}
-
-@Component({
-  standalone: true,
-  imports: [Sh3AppShellComponent],
   template: `<sh3-app-shell
     [headerLayout]="layout()"
     [footerLayout]="footer()"
@@ -128,33 +119,16 @@ describe("Sh3AppShellComponent", () => {
     expect(host.querySelectorAll("main").length).toBe(1);
   });
 
-  it("gutters the content region by default, so no page declares its own", () => {
+  it("adds no gutter — the content region is full-bleed", () => {
     const host = setup();
+    const content = host.querySelector(".content") as HTMLElement;
+    // No inline padding var, and the stylesheet no longer pads .content: a page
+    // can paint edge-to-edge (padding is sh3-page-layout's job).
     const shell = host.querySelector("sh3-app-shell") as HTMLElement;
     expect(shell.style.getPropertyValue("--sh3-shell-content-padding")).toBe(
-      "24px",
+      "",
     );
-  });
-
-  it("takes any padding shorthand, and 0 for a full-bleed region", () => {
-    const fixture = TestBed.createComponent(PaddedHostComponent);
-    fixture.detectChanges();
-    const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
-    ) as HTMLElement;
-
-    fixture.componentInstance.padding.set("28px 32px 40px");
-    fixture.detectChanges();
-    expect(shell.style.getPropertyValue("--sh3-shell-content-padding")).toBe(
-      "28px 32px 40px",
-    );
-
-    // "0" must reach the DOM — a falsy-looking value that still means something.
-    fixture.componentInstance.padding.set("0");
-    fixture.detectChanges();
-    expect(shell.style.getPropertyValue("--sh3-shell-content-padding")).toBe(
-      "0",
-    );
+    expect(content).not.toBeNull();
   });
 
   it("is flat + inset by default (no layout classes)", () => {

@@ -1,5 +1,4 @@
 <sh3-app-shell
-  contentPadding="28px 32px 40px"
   footerLayout="inset"
   footerBehavior="scroll"
   [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
@@ -80,8 +79,10 @@
   <!-- ── content: the routed page owns its own scroll ─────────── -->
   <router-outlet />
 
-  <!-- ── footer: dogfooding sh3-app-shell's footer slot (scroll mode) ── -->
-  <footer footer class="gal-footer">
+  <!-- ── footer: dogfooding sh3-app-shell's footer slot (scroll mode). A <div>,
+       not a <footer> — the shell already wraps the slot in the <footer>
+       contentinfo landmark. ── -->
+  <div footer class="gal-footer">
     <div class="gal-footer-main">
       <div class="gal-footer-brand-col">
         <a class="gal-footer-brand" routerLink="/" aria-label="Fold — home">
@@ -152,7 +153,7 @@
         <code>scroll</code> mode.</span
       >
     </div>
-  </footer>
+  </div>
 </sh3-app-shell>
 
 <sh3-panel-host />
