@@ -13,6 +13,7 @@ import {
 import { InspectPanelComponent } from "../inspect-panel.component";
 import { closestSh3, inspect } from "../inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
+import pkg from "../../package.json";
 
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
 type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
@@ -56,6 +57,10 @@ export class GalleryShellComponent {
 
   /** Where the primary rail's "Library" jumps in — the first library entry. */
   protected readonly firstComponent = GALLERY_NAV_ITEMS[0].id;
+
+  /** Footer chrome — version straight from package.json, year at render time. */
+  protected readonly version = pkg.version;
+  protected readonly year = new Date().getFullYear();
 
   protected setTheme(theme: GalleryTheme): void {
     this.theme.set(theme);

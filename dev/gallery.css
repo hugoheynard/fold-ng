@@ -552,6 +552,68 @@ sh3-app-shell {
   color: var(--sh3-color-primary-text);
 }
 
+/* ── Footer: dogfoods sh3-app-shell's footer slot (MIT · © · support) ── */
+.gal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 10px 20px;
+  background: var(--sh3-color-bg-header);
+  border-top: 1px solid var(--sh3-color-border);
+  font-size: 12px;
+  color: var(--sh3-color-text-muted);
+}
+.gal-footer-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gal-footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--sh3-color-text);
+  text-decoration: none;
+}
+.gal-footer-brand sh3-icon {
+  color: var(--sh3-color-primary-text);
+}
+.gal-footer-ver {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.gal-footer-dot {
+  color: var(--sh3-color-border);
+}
+.gal-footer-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.gal-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--sh3-radius-sm);
+  color: var(--sh3-color-text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.gal-footer-link:hover {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-primary-text);
+}
+.gal-footer-copy {
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Content: scrollable gallery + docked token editor ──────── */
 /* A routed page host is structural only — the page *is* its sh3-page-layout.
    display:contents dissolves the host so the layout becomes the real child of

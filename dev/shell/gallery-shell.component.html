@@ -1,5 +1,6 @@
 <sh3-app-shell
   contentPadding="28px 32px 40px"
+  footerLayout="full"
   [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
   (dblclick)="onInspect($event)"
 >
@@ -77,6 +78,52 @@
 
   <!-- ── content: the routed page owns its own scroll ─────────── -->
   <router-outlet />
+
+  <!-- ── footer: dogfooding sh3-app-shell's footer slot ────────── -->
+  <footer footer class="gal-footer">
+    <div class="gal-footer-meta">
+      <a class="gal-footer-brand" routerLink="/" aria-label="Fold — home">
+        <sh3-icon name="fold" size="sm" />
+        <span>Fold</span>
+      </a>
+      <span class="gal-footer-ver">v{{ version }}</span>
+      <span class="gal-footer-dot" aria-hidden="true">·</span>
+      <a
+        class="gal-footer-link"
+        href="https://github.com/hugoheynard/fold/blob/main/LICENSE"
+        target="_blank"
+        rel="noopener noreferrer"
+        >MIT License</a
+      >
+      <span class="gal-footer-dot" aria-hidden="true">·</span>
+      <span class="gal-footer-copy">© {{ year }} Hugo Heynard</span>
+    </div>
+
+    <nav class="gal-footer-links" aria-label="Support and contact">
+      <a
+        class="gal-footer-link"
+        href="https://github.com/hugoheynard/fold"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <sh3-icon name="github" size="sm" />
+        <span>Star on GitHub</span>
+      </a>
+      <a
+        class="gal-footer-link"
+        href="https://www.paypal.com/paypalme/hugoheynard"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <sh3-icon name="heart" size="sm" />
+        <span>Support</span>
+      </a>
+      <a class="gal-footer-link" href="mailto:hheynard@gmail.com">
+        <sh3-icon name="mail" size="sm" />
+        <span>Contact</span>
+      </a>
+    </nav>
+  </footer>
 </sh3-app-shell>
 
 <sh3-panel-host />
