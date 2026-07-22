@@ -1,43 +1,47 @@
 <div class="home">
-  <sh3-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
-    <!-- ── left rail: the numbers ─────────────────────────────── -->
-    <div asideLeft class="home-figures">
-      <span class="gal-tag">by the numbers</span>
-      @for (s of stats; track s.label) {
-      <div class="home-figure">
-        <span class="home-figure-value">{{ s.value }}</span>
-        <span class="home-figure-label">{{ s.label }}</span>
-      </div>
-      }
+  <!-- ── hero: a full-width band, down to the two CTAs ──────────── -->
+  <header class="home-hero">
+    <div class="home-mark">
+      <sh3-icon name="fold" [size]="52" title="Fold" />
     </div>
+    <sh3-badge
+      class="home-eyebrow"
+      content="Angular 22 · signals-first"
+      variant="accent"
+      radius="pill"
+    />
+    <h1 class="home-title">Fold</h1>
+    <p class="home-lede">
+      A design system that re-themes by re-pointing tokens — never by touching a
+      component. Dark by default, five themes, and a contract that fails the
+      build before the design can rot.
+    </p>
+    <div class="home-cta">
+      <sh3-button routerLink="/app-shell" variant="primary" size="lg">
+        Browse the library
+      </sh3-button>
+      <sh3-button routerLink="/themes" variant="ghost" size="lg">
+        See the themes
+      </sh3-button>
+    </div>
+  </header>
 
-    <!-- ── centre: hero + features + close ────────────────────── -->
-    <header class="home-hero">
-      <div class="home-mark">
-        <sh3-icon name="fold" [size]="52" title="Fold" />
+  <!-- ── below: rails flank the feature cards ───────────────────── -->
+  <sh3-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
+    <!-- left rail: one card, the numbers -->
+    <sh3-card asideLeft class="home-figures" separators raisedBands>
+      <strong cardHeader>By the numbers</strong>
+      <div class="home-figures-body">
+        @for (s of stats; track s.label) {
+        <div class="home-figure">
+          <span class="home-figure-value">{{ s.value }}</span>
+          <span class="home-figure-label">{{ s.label }}</span>
+        </div>
+        }
       </div>
-      <sh3-badge
-        class="home-eyebrow"
-        content="Angular 22 · signals-first"
-        variant="accent"
-        radius="pill"
-      />
-      <h1 class="home-title">Fold</h1>
-      <p class="home-lede">
-        A design system that re-themes by re-pointing tokens — never by touching
-        a component. Dark by default, five themes, and a contract that fails the
-        build before the design can rot.
-      </p>
-      <div class="home-cta">
-        <sh3-button routerLink="/app-shell" variant="primary" size="lg">
-          Browse the library
-        </sh3-button>
-        <sh3-button routerLink="/themes" variant="ghost" size="lg">
-          See the themes
-        </sh3-button>
-      </div>
-    </header>
+    </sh3-card>
 
+    <!-- centre: the feature cards + close -->
     <section class="home-features">
       @for (f of features; track f.title) {
       <sh3-card class="home-feature" separators raisedBands>
@@ -60,7 +64,7 @@
       </sh3-button>
     </sh3-callout>
 
-    <!-- ── right rail: support ────────────────────────────────── -->
+    <!-- right rail: support -->
     <sh3-card asideRight class="home-support" separators raisedBands>
       <strong cardHeader>Support Fold</strong>
       <div class="home-support-body">
