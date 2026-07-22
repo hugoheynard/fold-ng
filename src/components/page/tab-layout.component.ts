@@ -2,12 +2,11 @@ import {
   computed,
   Component,
   effect,
-  ElementRef,
-  inject,
   input,
   numberAttribute,
   signal,
 } from "@angular/core";
+import { observeElementWidth } from "../../dom/observe-element-width";
 
 /**
  * Dead band (px) between folding and unfolding. Wider than any scrollbar, so the
@@ -76,18 +75,12 @@ export class Sh3TabLayoutComponent {
     () => this.placement() === "top" || this.folded(),
   );
 
+  /** The layout's own width, kept live by the shared `ResizeObserver` primitive. */
+  private readonly width = observeElementWidth();
+
   constructor() {
-    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
-    effect((onCleanup) => {
-      if (typeof ResizeObserver === "undefined") {
-        return;
-      }
-      const ro = new ResizeObserver((entries) => {
-        this.measure(entries[0].contentRect.width);
-      });
-      ro.observe(host);
-      onCleanup(() => ro.disconnect());
-    });
+    // Re-run the hysteretic fold decision on every width change.
+    effect(() => this.measure(this.width()));
   }
 
   /**
