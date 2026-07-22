@@ -15,7 +15,7 @@ import { closestSh3, inspect } from "../inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
 
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
-type GalleryTheme = "umbra" | "lumen" | "bubbly" | "navi";
+type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
 
 /**
  * The gallery shell — the fixed `sh3-app-shell` chrome (a stable static primary
@@ -50,7 +50,7 @@ export class GalleryShellComponent {
 
   /** Every theme the token layer ships. `umbra` is the base (`:root`), so it
    *  sets no attribute; the rest are `[data-theme]` overrides. */
-  protected readonly themes = ["umbra", "lumen", "bubbly", "navi"] as const;
+  protected readonly themes = ["umbra", "lumen", "navi", "bubbly"] as const;
   protected readonly theme = signal<GalleryTheme>("umbra");
   protected readonly navGroups = GALLERY_NAV;
 
