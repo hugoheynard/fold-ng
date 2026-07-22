@@ -2,10 +2,12 @@
   footerLayout="inset"
   footerBehavior="scroll"
   [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
+  [(mobileNavOpen)]="mobileNavOpen"
   (dblclick)="onInspect($event)"
 >
-  <!-- ── rail primary: the Fold app rail ───────────────────────────── -->
-  <sh3-menu railPrimary tint="primary">
+  <!-- ── rail primary: the Fold app rail. Expands into labels when it becomes
+       the mobile drawer; closes the drawer on navigation. ──────────── -->
+  <sh3-menu railPrimary tint="primary" [expanded]="mobileNavOpen()">
     <a header class="rail-brand" routerLink="/" aria-label="Fold — home">
       <sh3-icon name="fold" [size]="24" />
     </a>
@@ -18,6 +20,7 @@
       #homeRla="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"
       [active]="homeRla.isActive"
+      (click)="mobileNavOpen.set(false)"
     ></a>
     <a
       sh3-menu-item
@@ -25,6 +28,7 @@
       label="Library"
       [routerLink]="'/' + firstComponent"
       [active]="!homeRla.isActive"
+      (click)="mobileNavOpen.set(false)"
     ></a>
     <button footer sh3-menu-item icon="settings" label="Settings"></button>
   </sh3-menu>
@@ -56,6 +60,16 @@
 
   <!-- ── header ────────────────────────────────────────────────── -->
   <div header class="gal-header">
+    <!-- Mobile-only: toggles the primary rail's drawer. Hidden ≥769px. -->
+    <button
+      type="button"
+      class="gal-hamburger"
+      (click)="mobileNavOpen.set(!mobileNavOpen())"
+      [attr.aria-expanded]="mobileNavOpen()"
+      aria-label="Toggle navigation"
+    >
+      <sh3-icon [name]="mobileNavOpen() ? 'close' : 'menu'" size="md" />
+    </button>
     <a class="gal-title" routerLink="/">
       <sh3-icon name="fold" size="md" />
       <span>Fold</span>
@@ -90,9 +104,9 @@
           <span>Fold</span>
         </a>
         <p class="gal-footer-tagline">
-          A signals-first Angular design system, themeable to the bone —
-          dark by default, four themes, a contract that fails the build before
-          the design can rot.
+          A signals-first Angular design system, themeable to the bone — dark by
+          default, four themes, a contract that fails the build before the
+          design can rot.
         </p>
         <span class="gal-footer-ver">v{{ version }}</span>
       </div>

@@ -115,6 +115,28 @@ sh3-app-shell {
   font-weight: 700;
   font-size: 13px;
 }
+/* Preview drawer toggle — only rendered in mobile mode (see the page). Keeps the
+   "Header" label hugging it, actions pushed to the right. */
+.sp-hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-left: -4px;
+  border: 0;
+  border-radius: var(--sh3-radius-sm);
+  background: transparent;
+  color: var(--sh3-color-text-secondary);
+  cursor: pointer;
+}
+.sp-hamburger:hover {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-text);
+}
+.sp-header > span {
+  margin-right: auto;
+}
 .sp-actions {
   display: flex;
   gap: 8px;
@@ -498,6 +520,38 @@ sh3-app-shell {
   padding: 0 20px;
   background: var(--sh3-color-bg-header);
   border-bottom: 1px solid var(--sh3-color-border);
+}
+/* nav-launcher page — the live "open it" row. */
+.nlp-live {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Mobile drawer toggle — hidden on desktop, shown when the rails collapse. */
+.gal-hamburger {
+  display: none;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-left: -6px;
+  border: 0;
+  border-radius: var(--sh3-radius-md);
+  background: transparent;
+  color: var(--sh3-color-text-secondary);
+  cursor: pointer;
+}
+.gal-hamburger:hover {
+  background: var(--sh3-color-surface-hover);
+  color: var(--sh3-color-text);
+}
+@media (max-width: 768px) {
+  .gal-hamburger {
+    display: inline-flex;
+  }
 }
 .gal-title {
   display: inline-flex;

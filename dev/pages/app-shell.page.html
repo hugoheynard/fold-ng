@@ -145,8 +145,9 @@
           [footerBehavior]="shellFooterBehavior()"
           [railWidth]="shellRailWidth()"
           [headerHeight]="shellHeaderHeight()"
+          [(mobileNavOpen)]="previewNavOpen"
         >
-          <sh3-menu railPrimary tint="primary">
+          <sh3-menu railPrimary tint="primary" [expanded]="previewNavOpen()">
             <div header class="rail-brand">S3</div>
             @for (i of railNav; track i.id) {
             <button
@@ -154,7 +155,7 @@
               [icon]="i.icon"
               [label]="i.label"
               [active]="previewNav() === i.id"
-              (click)="previewNav.set(i.id)"
+              (click)="previewNav.set(i.id); previewNavOpen.set(false)"
             ></button>
             }
             <button
@@ -176,6 +177,20 @@
             <button sh3-menu-item icon="music" label="Library"></button>
           </sh3-menu>
           <div header class="sp-header">
+            @if (shellMode() === "mobile") {
+            <button
+              type="button"
+              class="sp-hamburger"
+              (click)="previewNavOpen.set(!previewNavOpen())"
+              [attr.aria-expanded]="previewNavOpen()"
+              aria-label="Toggle navigation"
+            >
+              <sh3-icon
+                [name]="previewNavOpen() ? 'close' : 'menu'"
+                size="sm"
+              />
+            </button>
+            }
             <span>Header</span>
             <div class="sp-actions">
               <button type="button" (click)="openPreviewPanel(sph.service)">

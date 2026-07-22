@@ -1,0 +1,53 @@
+<sh3-page-layout title="nav-launcher" icon="grid">
+  <p description>
+    A full-screen mobile navigation launcher — a centred grid of large tiles
+    over a blurred scrim. The "app-grid" alternative to the app-shell's slide-in
+    drawer, for a curated set of top-level destinations distinct from the
+    desktop rail. It owns the whole overlay contract itself: scrim,
+    <code>Escape</code> / scrim / close-button dismissal, focus-trap and body
+    scroll-lock.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <sh3-page-section
+    title="Live"
+    icon="play"
+    description="Open it — it takes over the screen, exactly as it would on a phone. Escape, the close button, or the scrim dismisses it; a tile picks a destination and closes."
+  >
+    <div class="nlp-live">
+      <sh3-button variant="primary" icon="menu" (clicked)="open.set(true)">
+        Open the launcher
+      </sh3-button>
+      <span class="gal-body">
+        Current destination: <strong>{{ active() }}</strong>
+      </span>
+    </div>
+  </sh3-page-section>
+
+  <sh3-page-section
+    title="Pairing with the shell"
+    icon="code"
+    description='Set the shell to mobileNav="none" and bind the launcher&apos;s open state to the same signal a header hamburger toggles.'
+  >
+    <pre class="code-pre"><code>{{ usageCode }}</code></pre>
+    <sh3-callout variant="info">
+      The launcher is deliberately decoupled from <code>sh3-app-shell</code>: it
+      is a standalone overlay you can open from anywhere. The shell only exposes
+      <code>[(mobileNavOpen)]</code> — pair the two, or use the shell's built-in
+      <code>drawer</code> mode instead.
+    </sh3-callout>
+  </sh3-page-section>
+</sh3-page-layout>
+
+<!-- The live launcher. position:fixed → it genuinely fills the viewport. -->
+<sh3-nav-launcher [(open)]="open" label="Go to">
+  @for (d of dests; track d.id) {
+  <button
+    sh3-nav-tile
+    [icon]="d.icon"
+    [label]="d.label"
+    [active]="active() === d.id"
+    (click)="pick(d.id)"
+  ></button>
+  }
+</sh3-nav-launcher>

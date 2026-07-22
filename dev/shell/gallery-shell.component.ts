@@ -55,6 +55,10 @@ export class GalleryShellComponent {
   protected readonly theme = signal<GalleryTheme>("umbra");
   protected readonly navGroups = GALLERY_NAV;
 
+  /** The mobile nav drawer, two-way bound to the shell. The header hamburger
+   *  (mobile-only) toggles it; the shell owns the slide-in + scrim + Escape. */
+  protected readonly mobileNavOpen = signal(false);
+
   /** Where the primary rail's "Library" jumps in — the first library entry. */
   protected readonly firstComponent = GALLERY_NAV_ITEMS[0].id;
 

@@ -152,6 +152,10 @@ export default class AppShellPage {
   /** The app-shell preview's own primary-rail selection. */
   protected readonly previewNav = signal<string>("home");
 
+  /** The preview's mobile-drawer state — two-way bound to the shell, toggled by
+   *  the header hamburger that appears in `mobile` mode. */
+  protected readonly previewNavOpen = signal(false);
+
   /** Filler blocks so the preview content overflows — lets `footerBehavior`
    *  "scroll" reveal the footer at the bottom of the scroll. */
   protected readonly previewBlocks = Array.from({ length: 8 }, (_, i) => i);

@@ -60,6 +60,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     color: "#8b5cf6",
     items: [
       { id: "menu", label: "menu" },
+      {
+        id: "nav-launcher",
+        label: "nav-launcher",
+        badge: "new",
+        badgeTone: "info",
+      },
       { id: "tab-nav", label: "tab-nav" },
     ],
   },
