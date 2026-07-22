@@ -305,6 +305,17 @@ body` are already `overflow: hidden`, so the body lock is a no-op). Reproduce
   monorepo and only building for external publish (see Phase 4).
 - **SCSS surface.** Expose the SCSS mixins alongside the CSS tokens, or ship
   CSS-only?
+- **A small `sh3-strong` (inline emphasis) component?** An inline text primitive
+  for emphasised words — a `tone`/`color` option (primary · muted · a status
+  colour) and an optional `href` so an emphasised word can also be a link.
+  Motivating case: the home lede already bolds "Angular 22 · responsive ·
+  accessible" with a one-off `.home-lede strong` rule, and this recurs (feature
+  copy, callouts). **Open question first (generalise on the 2nd real use, not by
+  anticipation):** does it earn a component, or is it just `<strong>` + a token
+  utility class? Probe: count the real emphasis-with-colour/link sites across the
+  app before extracting. If it lands, keep it inline-only (no block behaviour),
+  reuse the semantic colour roles, and let the link half compose with
+  `sh3-link` rather than re-implementing anchor/`rel` handling.
 
 ## Tech debt
 
