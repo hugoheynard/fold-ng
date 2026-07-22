@@ -108,7 +108,7 @@ describe("FoldAsideLayoutComponent", () => {
     const raw = readFileSync(
       join(
         process.cwd(),
-        "src/components/layout/page/aside-layout.component.scss",
+        "src/components/layout/aside-layout/aside-layout.component.scss",
       ),
       "utf-8",
     );

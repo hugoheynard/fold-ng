@@ -113,10 +113,10 @@ export type {
   FoldIconName,
   FoldBuiltinIconName,
 } from "./components/foundations/icon/icon.registry";
-export { FoldAsideLayoutComponent } from "./components/layout/page/aside-layout.component";
-export { FoldTabLayoutComponent } from "./components/layout/page/tab-layout.component";
-export { FoldPageLayoutComponent } from "./components/layout/page/page-layout.component";
-export { FoldPageSectionComponent } from "./components/layout/page/page-section.component";
+export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
+export { FoldTabLayoutComponent } from "./components/layout/tab-layout/tab-layout.component";
+export { FoldPageLayoutComponent } from "./components/layout/page-layout/page-layout.component";
+export { FoldPageSectionComponent } from "./components/layout/page-section/page-section.component";
 export { FoldPaginatorComponent } from "./components/content/paginator/paginator.component";
 export type { FoldPageItem } from "./components/content/paginator/paginator.component";
 export { FoldTabNavComponent } from "./components/navigation/tab-nav/tab-nav.component";
