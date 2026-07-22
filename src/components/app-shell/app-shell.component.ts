@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from "@angular/common";
 import { Component, computed, input } from "@angular/core";
 import { Sh3SurfaceDirective } from "../../directives/surface.directive";
 
@@ -39,7 +40,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. |
- * | `footer`         | Bottom bar — a persistent player / status / action strip. Rendered as `<footer>` (the document's `contentinfo` landmark). **Content-sized and self-collapsing**: an empty slot takes no space (unlike the fixed-height header). Content column, or full-width — see `footerLayout`. |
+ * | `footer`         | Bottom bar — a player / status strip (`footerBehavior="pinned"`, always in sight) or a legal / support footer (`footerBehavior="scroll"`, revealed at the end of the content). Rendered as `<footer>` (the document's `contentinfo` landmark). **Content-sized and self-collapsing**: an empty slot takes no space (unlike the fixed-height header). Content column, or full-width — see `footerLayout`. |
  *
  * ## Sizing knobs
  * | Input                | CSS variable                       | Default | Meaning                    |
@@ -53,7 +54,8 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * | Input          | Values                | Default   | Meaning                                    |
  * |----------------|-----------------------|-----------|--------------------------------------------|
  * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
- * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). |
+ * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
+ * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset), and the shell owns the content scroll, so project *flow* content, not a page that manages its own full-height scroll. |
  * | `appearance`   | `"flat" \| "floating"`| `"flat"`  | `flat` = regions are edge-to-edge blocks; `floating` = each region is a rounded, elevated card on a page-colour gutter (inset-dashboard look). |
  *
  * In `floating` mode the content cell becomes a rounded card; because it already
@@ -77,7 +79,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
 @Component({
   selector: "sh3-app-shell",
   standalone: true,
-  imports: [Sh3SurfaceDirective],
+  imports: [Sh3SurfaceDirective, NgTemplateOutlet],
   host: {
     "[style.--sh3-shell-content-padding]": "contentPadding()",
     "[style.--sh3-shell-rail-width]": "railWidthVar()",
@@ -85,6 +87,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
     "[class.header-full]": 'headerLayout() === "full"',
     "[class.footer-full]": 'footerLayout() === "full"',
+    "[class.footer-scroll]": 'footerBehavior() === "scroll"',
     "[class.floating]": 'appearance() === "floating"',
   },
   templateUrl: "./app-shell.component.html",
@@ -111,8 +114,10 @@ export class Sh3AppShellComponent {
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");
-  /** `"full"` spans the footer across every column, below the rails (the usual player-bar look); `"inset"` (default) keeps it under the content column. The footer row is content-sized and collapses to `0` when the slot is empty. */
+  /** `"full"` spans the footer across every column, below the rails (the usual player-bar look); `"inset"` (default) keeps it under the content column. The footer row is content-sized and collapses to `0` when the slot is empty. Ignored when `footerBehavior="scroll"`. */
   readonly footerLayout = input<"inset" | "full">("inset");
+  /** `"pinned"` (default) keeps the footer always in sight as a fixed row (a player / status bar); `"scroll"` lets it flow at the end of the content, revealed when you scroll to the bottom (a legal / support footer). `scroll` is inset-only and makes the shell own the content scroll — project flow content, not a page that manages its own full-height scroll. */
+  readonly footerBehavior = input<"pinned" | "scroll">("pinned");
   /** `"floating"` renders each region as a rounded, elevated card on a page-colour gutter; `"flat"` (default) is edge-to-edge blocks. */
   readonly appearance = input<"flat" | "floating">("flat");
 

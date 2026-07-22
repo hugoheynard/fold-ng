@@ -35,29 +35,31 @@
 /* A projected footer adds a third, content-sized (`auto`) row that collapses to
    nothing when the slot is empty. Gated on `:has([footer])` so an absent footer
    leaves *no row* — otherwise floating mode would gutter around a 0-height track
-   and leave a phantom bottom gap. `footerLayout="full"` spans it across every
-   column (the usual player-bar look); the four header×footer combinations each
-   name their own areas, and the more-specific selector wins when both are full. */
-:host(:has([footer])) {
+   and leave a phantom bottom gap. Also gated on `:not(.footer-scroll)`: in
+   scroll mode the footer lives inside the content scroll (below), so there is no
+   grid row for it. `footerLayout="full"` spans it across every column (the usual
+   player-bar look); the four header×footer combinations each name their own
+   areas, and the more-specific selector wins when both are full. */
+:host(:not(.footer-scroll):has([footer])) {
   grid-template-rows: var(--sh3-shell-header-height, 56px) 1fr auto;
   grid-template-areas:
     "rail-primary rail-secondary header"
     "rail-primary rail-secondary content"
     "rail-primary rail-secondary footer";
 }
-:host(.header-full:has([footer])) {
+:host(.header-full:not(.footer-scroll):has([footer])) {
   grid-template-areas:
     "header       header         header"
     "rail-primary rail-secondary content"
     "rail-primary rail-secondary footer";
 }
-:host(.footer-full:has([footer])) {
+:host(.footer-full:not(.footer-scroll):has([footer])) {
   grid-template-areas:
     "rail-primary rail-secondary header"
     "rail-primary rail-secondary content"
     "footer       footer         footer";
 }
-:host(.header-full.footer-full:has([footer])) {
+:host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
   grid-template-areas:
     "header       header         header"
     "rail-primary rail-secondary content"
@@ -102,6 +104,19 @@
   overflow: hidden;
 }
 
+/* footerBehavior="scroll" — the content region owns the scroll and the footer
+   flows at its end, revealed on the way down. `margin-top: auto` gives the
+   classic sticky-footer behaviour: it sits at the bottom of the viewport when
+   the page is short, and scrolls below the fold when the page is tall. Inset
+   only (it lives in the content column), so `footerLayout="full"` has no effect
+   here — project flow content, not a page that owns its own full-height scroll. */
+:host(.footer-scroll) .content {
+  overflow: auto;
+}
+.footer-inflow {
+  margin-top: auto;
+}
+
 /* appearance="floating" — inset-dashboard look: a page-colour gutter around
        every region, each region a rounded, elevated card. The content cell keeps
        its overflow clip, so a panel anchored inside inherits the radius. */
@@ -143,10 +158,10 @@
       "header"
       "content";
   }
-  :host(:has([footer])),
-  :host(.header-full:has([footer])),
-  :host(.footer-full:has([footer])),
-  :host(.header-full.footer-full:has([footer])) {
+  :host(:not(.footer-scroll):has([footer])),
+  :host(.header-full:not(.footer-scroll):has([footer])),
+  :host(.footer-full:not(.footer-scroll):has([footer])),
+  :host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr auto;
     grid-template-areas:
@@ -179,10 +194,10 @@
       "header"
       "content";
   }
-  :host(:has([footer])),
-  :host(.header-full:has([footer])),
-  :host(.footer-full:has([footer])),
-  :host(.header-full.footer-full:has([footer])) {
+  :host(:not(.footer-scroll):has([footer])),
+  :host(.header-full:not(.footer-scroll):has([footer])),
+  :host(.footer-full:not(.footer-scroll):has([footer])),
+  :host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr auto;
     grid-template-areas:

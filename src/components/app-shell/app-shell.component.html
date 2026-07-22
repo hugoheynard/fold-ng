@@ -7,7 +7,26 @@
 <header class="header" sh3Surface="chrome">
   <ng-content select="[header]" />
 </header>
-<main class="content" sh3Surface="page"><ng-content /></main>
-<footer class="footer" sh3Surface="chrome">
-  <ng-content select="[footer]" />
-</footer>
+
+<!-- One footer, stamped in one of two positions — a grid row (pinned, always in
+     sight) or inside the content scroll (revealed on the way down). A single
+     <ng-content> in a template avoids duplicate-selector projection loss. -->
+<ng-template #footerTpl>
+  <footer
+    class="footer"
+    [class.footer-inflow]="footerBehavior() === 'scroll'"
+    sh3Surface="chrome"
+  >
+    <ng-content select="[footer]" />
+  </footer>
+</ng-template>
+
+<main class="content" sh3Surface="page">
+  <ng-content />
+  @if (footerBehavior() === "scroll") {
+    <ng-container [ngTemplateOutlet]="footerTpl" />
+  }
+</main>
+@if (footerBehavior() !== "scroll") {
+  <ng-container [ngTemplateOutlet]="footerTpl" />
+}

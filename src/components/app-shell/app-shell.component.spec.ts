@@ -50,6 +50,18 @@ class LayoutHostComponent {
   readonly appearance = signal<"flat" | "floating">("flat");
 }
 
+@Component({
+  standalone: true,
+  imports: [Sh3AppShellComponent],
+  template: `<sh3-app-shell [footerBehavior]="behavior()">
+    <div data-t="content">page</div>
+    <div footer data-t="ft">player</div>
+  </sh3-app-shell>`,
+})
+class FooterBehaviorHostComponent {
+  readonly behavior = signal<"pinned" | "scroll">("pinned");
+}
+
 function setup() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
@@ -183,6 +195,39 @@ describe("Sh3AppShellComponent", () => {
     fixture.componentInstance.footer.set("inset");
     fixture.detectChanges();
     expect(shell.classList.contains("footer-full")).toBe(false);
+  });
+
+  it('pins the footer as a grid row by default (footerBehavior="pinned")', () => {
+    const fixture = TestBed.createComponent(FooterBehaviorHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    expect(shell.classList.contains("footer-scroll")).toBe(false);
+    // The footer is a grid row (sibling of .content), not inside the scroll.
+    expect(shell.querySelector(".content .footer-inflow")).toBeNull();
+    expect(shell.querySelector(".footer [data-t='ft']")).not.toBeNull();
+  });
+
+  it('flows the footer inside the content scroll when footerBehavior="scroll"', () => {
+    const fixture = TestBed.createComponent(FooterBehaviorHostComponent);
+    fixture.componentInstance.behavior.set("scroll");
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    expect(shell.classList.contains("footer-scroll")).toBe(true);
+    // The footer now flows at the end of the content, not as a grid row.
+    expect(
+      shell.querySelector(".content .footer-inflow [data-t='ft']"),
+    ).not.toBeNull();
+    // Toggling back returns it to the pinned grid row.
+    fixture.componentInstance.behavior.set("pinned");
+    fixture.detectChanges();
+    expect(shell.querySelector(".content .footer-inflow")).toBeNull();
+    expect(shell.querySelector(".footer [data-t='ft']")).not.toBeNull();
   });
 
   it('toggles the floating class from appearance="floating"', () => {
