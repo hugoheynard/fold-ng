@@ -49,10 +49,18 @@ export class DevPlaygroundComponent {
 
   protected readonly copied = signal(false);
 
+  /** Mobile only: the code panel collapses to a glass overlay over the preview,
+   *  toggled from a "Code" button on the preview header. */
+  protected readonly codeOpen = signal(false);
+
   protected copy(): void {
     void navigator.clipboard.writeText(this.code()).then(() => {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 1500);
     });
+  }
+
+  protected toggleCode(): void {
+    this.codeOpen.update((open) => !open);
   }
 }

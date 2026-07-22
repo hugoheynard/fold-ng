@@ -27,13 +27,24 @@
       "settings code";
   }
 }
+/* Mobile: the code panel is too tall to stack a third time. Drop it and fold
+   the snippet into a glass overlay over the preview, opened from a "Code" button
+   on the preview header — same pattern as the app-shell / menu previews. */
 @container (max-width: 560px) {
   .pg-row {
     grid-template-columns: 1fr;
     grid-template-areas:
       "preview"
-      "settings"
-      "code";
+      "settings";
+  }
+  .pg-code {
+    display: none;
+  }
+  .pg-code-toggle {
+    display: inline-flex;
+  }
+  .pg-code-overlay {
+    display: flex;
   }
 }
 .pg-params {
@@ -77,6 +88,7 @@
   align-items: center;
 }
 .pg-preview-body {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -103,6 +115,46 @@
   align-items: center;
   justify-content: center;
   overflow: auto;
+}
+
+/* The "Code" toggle on the preview header is desktop-hidden — the code panel is
+   visible then. It appears only when the panel collapses (mobile, above). */
+.pg-code-toggle {
+  display: none;
+}
+
+/* Glass code overlay over the preview — mobile only (shown via the container
+   query above). Frosted panel with a top bar (lang · copy · close) + snippet. */
+.pg-code-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  flex-direction: column;
+  min-height: 0;
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-glass);
+  backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
+}
+.pg-code-overlay-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 8px 8px 14px;
+  border-bottom: 1px solid var(--sh3-color-glass-border);
+}
+.pg-code-overlay-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.pg-code-overlay-pre {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 14px;
 }
 
 /* code card */
