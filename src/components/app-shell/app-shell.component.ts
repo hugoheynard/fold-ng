@@ -1,6 +1,23 @@
 import { NgTemplateOutlet } from "@angular/common";
-import { Component, computed, input } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  HostListener,
+  computed,
+  effect,
+  inject,
+  input,
+  model,
+  signal,
+} from "@angular/core";
+import { FocusTrapDirective } from "../../a11y/focus-trap.directive";
 import { Sh3SurfaceDirective } from "../../directives/surface.directive";
+
+/** Width (px) at or below which the rails collapse and the primary rail becomes
+ *  a mobile drawer. Kept in lockstep with the `@media`/`@container` breakpoint
+ *  in the stylesheet. */
+const MOBILE_BREAKPOINT = 768;
 
 /**
  * `<sh3-app-shell>` — the responsive application skeleton.
@@ -30,13 +47,20 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * └────────┴──────────────┴─────────────────────┘
  * ```
  *
- * At ≤768px the rails drop out and it becomes a single header + content +
- * footer column.
+ * At ≤768px it becomes a single header + content + footer column and the rails
+ * drop out. How the nav comes back is `mobileNav`:
+ * - `"drawer"` (default) — the **primary** rail turns into an off-canvas drawer;
+ *   bind `[(mobileNavOpen)]` and give the app a mobile-only hamburger to slide
+ *   it in over a scrim (`Escape` / scrim / widening close it). Render the
+ *   projected rail expanded in the drawer, since the collapsed icon rail is the
+ *   desktop chrome.
+ * - `"none"` — no built-in mobile nav; compose an `sh3-nav-launcher` (a
+ *   full-screen tile grid) bound to the same `mobileNavOpen`.
  *
  * ## Slots
  * | Attribute        | Region                                    |
  * |------------------|-------------------------------------------|
- * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--sh3-shell-rail-width`). |
+ * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--sh3-shell-rail-width`). At ≤768px it becomes the mobile drawer (see `mobileNavOpen`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. **Full-bleed**: the shell adds no gutter, so a page can paint edge-to-edge (a full-width banner, a hero, a bleeding panel). Want the themed page gutter? Wrap the page in `sh3-page-layout` — padding is *its* job, not the shell's. |
@@ -65,10 +89,15 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  *
  * @example
  * ```html
- * <sh3-app-shell [railWidth]="72" headerLayout="full" appearance="floating">
+ * <sh3-app-shell
+ *   [railWidth]="72"
+ *   headerLayout="full"
+ *   appearance="floating"
+ *   [(mobileNavOpen)]="navOpen"
+ * >
  *   <app-menu railPrimary />
  *   <app-workspace-rail railSecondary />
- *   <app-header header />
+ *   <app-header header /><!-- its hamburger toggles navOpen at ≤768px -->
  *   <router-outlet />
  *   <!-- panels / overlays / banners also go in the default slot -->
  *   <app-player footer /><!-- optional; omit it and the footer row collapses -->
@@ -78,7 +107,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
 @Component({
   selector: "sh3-app-shell",
   standalone: true,
-  imports: [Sh3SurfaceDirective, NgTemplateOutlet],
+  imports: [Sh3SurfaceDirective, NgTemplateOutlet, FocusTrapDirective],
   host: {
     "[style.--sh3-shell-rail-width]": "railWidthVar()",
     "[style.--sh3-shell-header-height]": "headerHeightVar()",
@@ -87,6 +116,8 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
     "[class.footer-full]": 'footerLayout() === "full"',
     "[class.footer-scroll]": 'footerBehavior() === "scroll"',
     "[class.floating]": 'appearance() === "floating"',
+    "[class.mobile-drawer]": 'mobileNav() === "drawer"',
+    "[class.mobile-nav-open]": "drawerOpen()",
   },
   templateUrl: "./app-shell.component.html",
   styleUrl: "./app-shell.component.scss",
@@ -108,6 +139,84 @@ export class Sh3AppShellComponent {
   readonly footerBehavior = input<"pinned" | "scroll">("pinned");
   /** `"floating"` renders each region as a rounded, elevated card on a page-colour gutter; `"flat"` (default) is edge-to-edge blocks. */
   readonly appearance = input<"flat" | "floating">("flat");
+
+  /**
+   * How the primary rail's navigation is reached on mobile:
+   * - `"drawer"` (default) — the built-in off-canvas drawer slides the projected
+   *   `[railPrimary]` in over a scrim (driven by `mobileNavOpen`).
+   * - `"none"` — the shell renders **no** mobile nav; the rails just drop out.
+   *   Compose your own, typically an {@link Sh3NavLauncherComponent} bound to the
+   *   same `mobileNavOpen`, when a curated full-screen tile grid fits better than
+   *   sliding the desktop rail in.
+   */
+  readonly mobileNav = input<"drawer" | "none">("drawer");
+
+  /**
+   * Two-way: is the mobile nav open?
+   *
+   * Below the mobile breakpoint the rails drop out; instead of vanishing, the
+   * **primary** rail becomes an off-canvas drawer this flag slides in. The app
+   * owns the trigger — a mobile-only hamburger in its header, bound
+   * `[(mobileNavOpen)]` — and typically flips it back to `false` on navigation;
+   * the shell owns the mechanics (slide-in, scrim, `Escape`, focus-trap). It is
+   * a no-op above the breakpoint (the rails are always in view there), and it
+   * resets to `false` on the way back to a wide viewport so a widened window
+   * never keeps a stuck drawer.
+   */
+  readonly mobileNavOpen = model(false);
+
+  private readonly hostEl = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  /** Whether the shell is narrow enough to collapse — tracked from the shell's
+   *  **own** width (a `ResizeObserver`), not the viewport, so the drawer engages
+   *  in step with the CSS collapse whether that fires on `@media` (the shell
+   *  fills the viewport) or `@container` (an embedded preview). SSR / no-DOM →
+   *  `false` (the wide layout, which is also the SSR-safe first paint). */
+  private readonly isNarrow = signal(false);
+
+  /** The drawer is live only in `drawer` mode, when the shell is narrow **and**
+   *  open — so the focus-trap and scrim never engage over a full-width rail, nor
+   *  when a `none`-mode shell defers the mobile nav to a launcher. */
+  protected readonly drawerOpen = computed(
+    () =>
+      this.mobileNav() === "drawer" && this.isNarrow() && this.mobileNavOpen(),
+  );
+
+  constructor() {
+    const host = this.hostEl.nativeElement;
+    // Track the shell's own width. Guarded for SSR / jsdom (no ResizeObserver).
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver((entries) => {
+        const width = entries[0]?.contentRect.width ?? 0;
+        // width 0 = detached/hidden — leave the last reading rather than flip.
+        if (width > 0) {
+          this.isNarrow.set(width <= MOBILE_BREAKPOINT);
+        }
+      });
+      observer.observe(host);
+      inject(DestroyRef).onDestroy(() => observer.disconnect());
+    }
+    // Widening past the breakpoint closes the drawer so it can't linger as a
+    // stuck off-canvas panel once the rails are back in view.
+    effect(() => {
+      if (!this.isNarrow() && this.mobileNavOpen()) {
+        this.mobileNavOpen.set(false);
+      }
+    });
+  }
+
+  /** `Escape` closes the drawer — the same contract as the panel host. */
+  @HostListener("document:keydown.escape")
+  protected onEscape(): void {
+    if (this.drawerOpen()) {
+      this.mobileNavOpen.set(false);
+    }
+  }
+
+  /** Dismiss the drawer — the scrim's click target. */
+  protected closeMobileNav(): void {
+    this.mobileNavOpen.set(false);
+  }
 
   /* Map each input to its CSS var — `null` when unset so the stylesheet
      variable (or its fallback default) keeps winning; a set input overrides it. */

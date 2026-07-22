@@ -1,6 +1,6 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { Sh3AppShellComponent } from "./app-shell.component";
 
 @Component({
@@ -218,5 +218,126 @@ describe("Sh3AppShellComponent", () => {
     fixture.componentInstance.appearance.set("flat");
     fixture.detectChanges();
     expect(shell.classList.contains("floating")).toBe(false);
+  });
+});
+
+/** Feeds the shell's ResizeObserver a width so a test can drive the narrow /
+ *  wide state that gates the mobile drawer. */
+let emitWidth: ((width: number) => void) | undefined;
+const realResizeObserver = globalThis.ResizeObserver;
+
+function stubResizeObserver(): void {
+  class FakeResizeObserver {
+    constructor(callback: ResizeObserverCallback) {
+      emitWidth = (width) =>
+        callback(
+          [{ contentRect: { width } } as ResizeObserverEntry],
+          this as unknown as ResizeObserver,
+        );
+    }
+    observe(): void {}
+    disconnect(): void {}
+    unobserve(): void {}
+  }
+  globalThis.ResizeObserver =
+    FakeResizeObserver as unknown as typeof ResizeObserver;
+}
+
+@Component({
+  standalone: true,
+  imports: [Sh3AppShellComponent],
+  template: `<sh3-app-shell [mobileNav]="mode()" [(mobileNavOpen)]="open">
+    <nav railPrimary><button data-t="rail-btn">Home</button></nav>
+    <div data-t="content">page</div>
+  </sh3-app-shell>`,
+})
+class DrawerHostComponent {
+  readonly open = signal(false);
+  readonly mode = signal<"drawer" | "none">("drawer");
+}
+
+describe("Sh3AppShellComponent · mobile drawer", () => {
+  beforeEach(() => stubResizeObserver());
+  afterEach(() => {
+    globalThis.ResizeObserver = realResizeObserver;
+    emitWidth = undefined;
+  });
+
+  function render() {
+    const fixture = TestBed.createComponent(DrawerHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+    return { fixture, shell };
+  }
+
+  it("does not open the drawer while the shell is wide (desktop safety)", () => {
+    const { fixture, shell } = render();
+    emitWidth?.(1200);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    // Open flag set, but a wide shell keeps the rails in view — no drawer.
+    expect(shell.classList.contains("mobile-nav-open")).toBe(false);
+    expect(shell.querySelector(".mobile-scrim")).toBeNull();
+  });
+
+  it("opens the drawer (class + scrim) only when narrow AND open", () => {
+    const { fixture, shell } = render();
+    emitWidth?.(480);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    expect(shell.classList.contains("mobile-nav-open")).toBe(true);
+    expect(shell.querySelector(".mobile-scrim")).not.toBeNull();
+  });
+
+  it("closes the drawer when the scrim is clicked", () => {
+    const { fixture, shell } = render();
+    emitWidth?.(480);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+
+    const scrim = shell.querySelector(".mobile-scrim") as HTMLElement;
+    scrim.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.open()).toBe(false);
+    expect(shell.classList.contains("mobile-nav-open")).toBe(false);
+  });
+
+  it("closes the drawer on Escape", () => {
+    const { fixture, shell } = render();
+    emitWidth?.(480);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.open()).toBe(false);
+    expect(shell.classList.contains("mobile-nav-open")).toBe(false);
+  });
+
+  it('renders no built-in drawer when mobileNav="none" (launcher composed apart)', () => {
+    const { fixture, shell } = render();
+    fixture.componentInstance.mode.set("none");
+    emitWidth?.(480);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    // Narrow + open, but `none` mode defers to an app-composed launcher: no
+    // drawer class, no scrim. `mobileNavOpen` stays live for the launcher.
+    expect(shell.classList.contains("mobile-nav-open")).toBe(false);
+    expect(shell.querySelector(".mobile-scrim")).toBeNull();
+  });
+
+  it("resets the open flag when the shell widens past the breakpoint", () => {
+    const { fixture } = render();
+    emitWidth?.(480);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.open()).toBe(true);
+
+    // Rotate / widen back to desktop — the stuck drawer must not linger.
+    emitWidth?.(1200);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.open()).toBe(false);
   });
 });

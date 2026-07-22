@@ -1,9 +1,22 @@
-<div class="rail-primary" sh3Surface="chrome">
+<div
+  class="rail-primary"
+  sh3Surface="chrome"
+  [sh3FocusTrap]="drawerOpen()"
+  tabindex="-1"
+>
   <ng-content select="[railPrimary]" />
 </div>
 <div class="rail-secondary" sh3Surface="chrome">
   <ng-content select="[railSecondary]" />
 </div>
+
+<!-- Mobile drawer scrim — only rendered while the drawer is actually open (the
+     shell is narrow AND mobileNavOpen). A darkening veil that dismisses on
+     click; Escape and widening close it too. aria-hidden: the focus-trapped
+     drawer + Escape are the accessible path, the scrim is a mouse convenience. -->
+@if (drawerOpen()) {
+  <div class="mobile-scrim" (click)="closeMobileNav()" aria-hidden="true"></div>
+}
 <header class="header" sh3Surface="chrome">
   <ng-content select="[header]" />
 </header>

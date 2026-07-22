@@ -2,6 +2,9 @@
   display: grid;
   height: 100%;
   width: 100%;
+  /* Positioning anchor for the mobile drawer + its scrim (both position:absolute
+     to the shell, so they stay within the frame, not the viewport). */
+  position: relative;
   /* border-box so the floating mode's padding stays inside 100% × 100% instead
      of adding to it (which would push the grid past the frame, bottom + right). */
   box-sizing: border-box;
@@ -143,11 +146,14 @@
   overflow: visible;
 }
 
-/* Rails drop out on narrow viewports → a single header + content (+ footer)
-   column. Every layout class collapses to the same stack; the with-footer
-   selectors mirror the base ones at matching specificity so they win in source
-   order over their wider-viewport counterparts. */
-@media (max-width: 768px) {
+/* The narrow layout — a single header + content (+ footer) column. Shared by
+   the viewport (@media, the app) and container (@container, an embedded preview)
+   paths via a mixin so the two never drift. The secondary rail drops out; the
+   primary rail becomes an off-canvas drawer the `mobile-nav-open` class slides
+   in over a scrim. Every layout class collapses to the same stack; the
+   with-footer selectors mirror the base ones at matching specificity so they
+   win in source order over their wider-viewport counterparts. */
+@mixin narrow-collapse {
   :host,
   :host(.header-full) {
     grid-template-columns: minmax(0, 1fr);
@@ -167,44 +173,89 @@
       "content"
       "footer";
   }
+  /* Both rails are gone on mobile by default. In `drawer` mode the primary
+     comes back as an off-canvas drawer (below); in `none` mode it stays hidden
+     and the app composes its own launcher. */
   .rail-primary,
   .rail-secondary {
     display: none;
   }
+  /* Off-canvas drawer (`mobileNav="drawer"`): pinned below the header (so the
+     header + its hamburger stay in reach), intrinsic width (the projected rail
+     sizes itself, capped so it never swallows the screen), hidden off the left
+     edge until opened. `visibility` — not just the transform — takes it out of
+     the tab order while closed, so keyboard focus can't land on an off-screen
+     rail. The secondary rail stays gone. */
+  :host(.mobile-drawer) .rail-primary {
+    display: block;
+    position: absolute;
+    top: var(--sh3-shell-header-height-mobile, 52px);
+    bottom: 0;
+    left: 0;
+    z-index: 41;
+    width: auto;
+    max-width: 85%;
+    overflow-y: auto;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform 240ms cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 240ms;
+  }
+  :host(.mobile-drawer.mobile-nav-open) .rail-primary {
+    visibility: visible;
+    transform: translateX(0);
+  }
+  /* The scrim covers the content (below the header), dimming it and catching the
+     dismiss click. Only in the DOM while the drawer is open (see template). */
+  .mobile-scrim {
+    position: absolute;
+    inset: var(--sh3-shell-header-height-mobile, 52px) 0 0 0;
+    z-index: 40;
+    border: 0;
+    padding: 0;
+    background: var(--sh3-color-scrim);
+    animation: sh3-shell-scrim-in 240ms ease;
+  }
+  /* Freeze the content scroll behind an open drawer. */
+  :host(.mobile-nav-open) .content {
+    overflow: hidden;
+  }
 }
 
-/* Container-query responsiveness — mirrors the viewport rules but keyed to the
-   shell's own width. Only fires inside an ancestor with `container-type` (e.g.
-   the gallery's responsive-mode preview); the app has none, so it stays on the
-   @media rules above. Two steps: the secondary rail folds first (tablet), then
-   both rails (mobile). */
+@media (max-width: 768px) {
+  @include narrow-collapse;
+}
+
+/* Container-query responsiveness — the same collapse keyed to the shell's own
+   width. Only fires inside an ancestor with `container-type` (e.g. the gallery's
+   responsive-mode preview); the app has none, so it stays on the @media rule
+   above. Two steps: the secondary rail folds first (tablet), then the full
+   collapse (mobile). */
 @container (max-width: 1024px) {
   .rail-secondary {
     display: none;
   }
 }
 @container (max-width: 768px) {
-  :host,
-  :host(.header-full) {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr;
-    grid-template-areas:
-      "header"
-      "content";
+  @include narrow-collapse;
+}
+
+@keyframes sh3-shell-scrim-in {
+  from {
+    opacity: 0;
   }
-  :host(:not(.footer-scroll):has([footer])),
-  :host(.header-full:not(.footer-scroll):has([footer])),
-  :host(.footer-full:not(.footer-scroll):has([footer])),
-  :host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr auto;
-    grid-template-areas:
-      "header"
-      "content"
-      "footer";
+  to {
+    opacity: 1;
   }
+}
+
+/* Respect a reduced-motion preference — the drawer still opens, just without the
+   slide or the scrim fade. */
+@media (prefers-reduced-motion: reduce) {
   .rail-primary,
-  .rail-secondary {
-    display: none;
+  .mobile-scrim {
+    transition: none;
+    animation: none;
   }
 }
