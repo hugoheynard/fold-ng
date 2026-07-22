@@ -52,10 +52,10 @@ export default class ThemesPage {
       palette: "ink (chrome) · teal (brand) · slate (text)",
     },
     {
-      attr: "light",
-      name: "light",
+      attr: "lumen",
+      name: "lumen",
       summary:
-        "The daylight counterpart: cloud-grey surfaces, the same teal muted so it holds up on white, and the text ramp inverted.",
+        "The daylight counterpart to umbra: cloud-grey surfaces, the same teal muted so it holds up on white, and the text ramp inverted.",
       palette: "cloud + white (chrome) · teal (brand) · slate (text)",
     },
     {

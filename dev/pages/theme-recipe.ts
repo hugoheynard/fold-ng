@@ -16,9 +16,9 @@ export interface ThemeStep {
 export const THEME_STEPS: readonly ThemeStep[] = [
   {
     title: "Start from the closest base, not from zero",
-    body: 'A theme is a diff. Copy the block whose light/dark polarity you already want — :root (umbra) or [data-theme="light"] — and change what must differ. Writing 40 roles from scratch guarantees you forget three.',
+    body: 'A theme is a diff. Copy the block whose light/dark polarity you already want — :root (umbra) or [data-theme="lumen"] — and change what must differ. Writing 40 roles from scratch guarantees you forget three.',
     example:
-      "bubbly is the light block with two families swapped (cloud→bubble, teal→grape) and two reused (slate for text, azure for info). It invented no role.",
+      "bubbly is the lumen block with two families swapped (cloud→bubble, teal→grape) and two reused (slate for text, azure for info). It invented no role.",
   },
   {
     title: "Re-point families, not roles",

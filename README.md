@@ -1,7 +1,7 @@
 # @sh3pherd/ui
 
 SH3PHERD's design system, extracted for reuse across projects. **Dark-first**:
-the base theme lives on `:root`, light is an opt-in override. Built to the same
+the base theme lives on `:root`, lumen (light) is an opt-in override. Built to the same
 bar as the app — strict TypeScript, tested to the contract.
 
 It ships **design tokens** + a growing set of **standalone Angular components**,
@@ -20,12 +20,13 @@ Everything renders **umbra** (the dark theme) **by default**. To switch a subtre
 set `data-theme` on an ancestor — usually `<html>`:
 
 ```html
-<html data-theme="light"></html>
+<html data-theme="lumen"></html>
 ```
 
-Four themes ship: `umbra` (the dark base, no attribute), `light`, `bubbly`
+Four themes ship: `umbra` (the dark base, no attribute), `lumen` (light),
+`bubbly`
 (festive lavender, violet brand, rounded) and `navi` (dark chrome, light page).
-The extras exist to prove the point — each is the umbra or light block with its
+The extras exist to prove the point — each is the umbra or lumen block with its
 primitive families re-pointed. Adding a fifth is a new `[data-theme]` block in
 `semantic.css` plus the primitives it names.
 

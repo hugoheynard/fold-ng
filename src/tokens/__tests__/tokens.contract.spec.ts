@@ -68,7 +68,7 @@ describe("token contract · catalogue ↔ CSS", () => {
   });
 
   it("every theme override declares exactly the catalogue colours (theme parity)", () => {
-    // Normalise quotes first — Prettier may write [data-theme="light"] or '…'.
+    // Normalise quotes first — Prettier may write [data-theme="lumen"] or '…'.
     const normalised = semantic.replace(/['"]/g, '"');
     // A theme may also carry scoped sub-blocks (navi re-declares chrome roles
     // on the shell's regions), so dedupe — `block()` finds the top-level one.

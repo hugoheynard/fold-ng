@@ -3,7 +3,7 @@
  *
  * These lists are the CONTRACT. The token contract test asserts that the CSS
  * declares exactly these tokens — for colours, that the `:root` (dark) and
- * `[data-theme="light"]` blocks each declare exactly the colour set (parity);
+ * `[data-theme="lumen"]` blocks each declare exactly the colour set (parity);
  * for scales, that `scales.css` declares exactly the radius/type steps. Add a
  * token here and to the CSS in the same change, or the test fails. That is how
  * the theme stays complete and drift-free.

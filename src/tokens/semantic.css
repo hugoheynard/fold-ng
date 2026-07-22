@@ -175,8 +175,8 @@
   color: var(--sh3-color-text);
 }
 
-/* ── Override theme: LIGHT ────────────────────────────────── */
-[data-theme="light"] {
+/* ── Override theme: LUMEN (light) ────────────────────────── */
+[data-theme="lumen"] {
   /* Surfaces */
   --sh3-color-bg-page: var(--sh3-ref-cloud-100);
   --sh3-color-bg-header: var(--sh3-ref-white);
@@ -301,7 +301,7 @@
 }
 
 /* ── Extra theme: BUBBLY ───────────────────────────────────────
-   Festive light: the LIGHT block re-pointed onto soft lavender chrome
+   Festive light: the LUMEN block re-pointed onto soft lavender chrome
    (bubble) with a joyful violet brand (grape), rounded off in
    scales.css. White cards float on the lavender page — the theme's
    name is the look. Info moves to azure (cyan) so it never blurs into
@@ -439,7 +439,7 @@
 
 /* ── Extra theme: NAVI ────────────────────────────────────────
    Dark chrome, light content — the classic "app rail beside a
-   white page". It is the LIGHT block with three surfaces moved to
+   white page". It is the LUMEN block with three surfaces moved to
    ink, plus one scoped override: the shell's chrome regions take
    the UMBRA text/border/surface roles back, because a dark rail
    needs light text on it.
