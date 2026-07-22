@@ -26,50 +26,85 @@ spec (see P0-6). Method: six parallel per-cluster audits, each reading every
 
 ## 1 · Scoreboard
 
-| Component                          | DX  | Tests | Docs | Verdict                                             |
-| ---------------------------------- | :-: | :---: | :--: | --------------------------------------------------- |
-| `fold-app-shell`                   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-avatar`                      | 🟢  |  🟢   |  🟢  | Add luminance-ink test + `@example` tag             |
-| `fold-avatar-detail`               | 🟢  |  🔴   |  🟡  | Test forwarded inputs; `@example`                   |
-| `fold-avatar-list`                 | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-badge`                       | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                   |
-| `fold-button`                      | 🟡  |  🟢   |  🟡  | `booleanAttribute` on `disabled`; `@example` tag    |
-| `fold-button-icon`                 | 🔴  |  🟡   |  🟡  | **Momentary buttons emit `aria-pressed` (bug)**     |
-| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row        |
-| `fold-card`                        | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `interactive`                 |
-| `fold-choice-row`                  | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                        |
-| `fold-context-card`                | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                        |
-| `fold-data-table`                  | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**      |
-| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                   |
-| `fold-element-title`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-empty-state`                 | 🟢  |  🟢   |  🟡  | No gallery page                                     |
-| `fold-field` / `fold-field-list`   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-file-dropzone`               | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row   |
-| `fold-hero`                        | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip             |
-| `fold-icon`                        | 🟢  |  🟢   |  🟡  | `@selector`; stale count; `warn` in `computed()`    |
-| `fold-input`                       | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                 |
-| `fold-link`                        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                   |
-| `fold-loading`                     | 🟡  |  🟢   |  🟡  | **README claims a spinner that doesn't exist**      |
-| `fold-menu` (+ item/section/sep)   | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs    |
-| `fold-nav-launcher` (+ nav-tile)   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-number-input`                | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate |
-| `fold-page-layout`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap) |
-| `fold-page-section`                | 🟡  |  🟢   |  🟡  | Own README row; document `divider`↔`surface`        |
-| `fold-paginator`                   | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**    |
-| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**        |
-| `fold-range-slider`                | 🟡  |  🟢   |  🟡  | **Hardcoded aria suffixes; no README/gallery**      |
-| `fold-search`                      | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                  |
-| `fold-select`                      | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                   |
-| `fold-slider`                      | 🟡  |  🟢   |  🟡  | Not a `FormValueControl`; README row                |
-| `fold-aside-layout`                | 🟢  |  🟡   |  🟡  | README row; `stackLeftFirst` test                   |
-| `fold-status-badge`                | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`               |
-| `fold-tab-layout`                  | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row             |
-| `fold-tab-nav`                     | 🟢  |  🟡   |  🟢  | **No `role="tab"`/`aria-selected`**                 |
-| `fold-timeline`                    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard      |
-| `[foldSurface]`                    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `[foldStickyColumn]`               | 🟢  |  🟢   |  🟡  | Add `@selector`                                     |
-| `[foldRepeatPress]`                | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo                  |
+Grouped by the same hierarchy as the component folders (`src/components/<category>/`)
+and the gallery nav — **layout first**.
+
+**Layout** — `src/components/layout/`
+
+| Component           | DX  | Tests | Docs | Verdict                                             |
+| ------------------- | :-: | :---: | :--: | --------------------------------------------------- |
+| `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap) |
+| `fold-page-section` | 🟡  |  🟢   |  🟡  | Own README row; document `divider`↔`surface`        |
+| `fold-aside-layout` | 🟢  |  🟡   |  🟡  | README row; `stackLeftFirst` test                   |
+| `fold-tab-layout`   | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row             |
+| `fold-hero`         | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip             |
+
+**Navigation** — `src/components/navigation/`
+
+| Component                        | DX  | Tests | Docs | Verdict                                          |
+| -------------------------------- | :-: | :---: | :--: | ------------------------------------------------ |
+| `fold-menu` (+ item/section/sep) | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs |
+| `fold-nav-launcher` (+ nav-tile) | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
+| `fold-tab-nav`                   | 🟢  |  🟡   |  🟢  | **No `role="tab"`/`aria-selected`**              |
+
+**Actions** — `src/components/actions/`
+
+| Component          | DX  | Tests | Docs | Verdict                                          |
+| ------------------ | :-: | :---: | :--: | ------------------------------------------------ |
+| `fold-button`      | 🟡  |  🟢   |  🟡  | `booleanAttribute` on `disabled`; `@example` tag |
+| `fold-button-icon` | 🔴  |  🟡   |  🟡  | **Momentary buttons emit `aria-pressed` (bug)**  |
+| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                |
+
+**Content** — `src/components/content/`
+
+| Component                        | DX  | Tests | Docs | Verdict                                          |
+| -------------------------------- | :-: | :---: | :--: | ------------------------------------------------ |
+| `fold-card`                      | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `interactive`              |
+| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                     |
+| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
+| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
+| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                |
+| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`            |
+| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | Add luminance-ink test + `@example` tag          |
+| `fold-avatar-detail`             | 🟢  |  🔴   |  🟡  | Test forwarded inputs; `@example`                |
+| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
+| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
+| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                     |
+| `fold-data-table`                | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**   |
+| `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery** |
+
+**Feedback** — `src/components/feedback/`
+
+| Component                          | DX  | Tests | Docs | Verdict                                        |
+| ---------------------------------- | :-: | :---: | :--: | ---------------------------------------------- |
+| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row   |
+| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                              |
+| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard |
+| `fold-empty-state`                 | 🟢  |  🟢   |  🟡  | No gallery page                                |
+| `fold-loading`                     | 🟡  |  🟢   |  🟡  | **README claims a spinner that doesn't exist** |
+| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**   |
+
+**Forms** — `src/components/forms/`
+
+| Component            | DX  | Tests | Docs | Verdict                                             |
+| -------------------- | :-: | :---: | :--: | --------------------------------------------------- |
+| `fold-input`         | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                 |
+| `fold-number-input`  | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate |
+| `fold-select`        | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                   |
+| `fold-slider`        | 🟡  |  🟢   |  🟡  | Not a `FormValueControl`; README row                |
+| `fold-range-slider`  | 🟡  |  🟢   |  🟡  | **Hardcoded aria suffixes; no README/gallery**      |
+| `fold-file-dropzone` | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row   |
+| `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                  |
+
+**Foundations** — `src/components/foundations/`
+
+| Component            | DX  | Tests | Docs | Verdict                                          |
+| -------------------- | :-: | :---: | :--: | ------------------------------------------------ |
+| `fold-icon`          | 🟢  |  🟢   |  🟡  | `@selector`; stale count; `warn` in `computed()` |
+| `[foldSurface]`      | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
+| `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                  |
+| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo               |
 
 **Ship-ready today (10):** app-shell, avatar-list, callout, element-title, field,
 field-list, nav-launcher, timeline, toast, surface. Everything else has scoped,

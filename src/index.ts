@@ -4,58 +4,58 @@
 // This entry point exposes the typed token catalogue + helpers so call
 // sites get autocomplete and a compile error on a misspelt token.
 
-export { FoldAppShellComponent } from "./components/app-shell/app-shell.component";
+export { FoldAppShellComponent } from "./components/layout/app-shell/app-shell.component";
 export {
   FoldAvatarComponent,
   type FoldAvatarVariant,
   type FoldAvatarRing,
   type FoldAvatarRingStyle,
-} from "./components/avatar/avatar.component";
-export { FoldAvatarDetailComponent } from "./components/avatar-detail/avatar-detail.component";
+} from "./components/content/avatar/avatar.component";
+export { FoldAvatarDetailComponent } from "./components/content/avatar-detail/avatar-detail.component";
 export {
   FoldAvatarListComponent,
   type FoldAvatarListItem,
-} from "./components/avatar-list/avatar-list.component";
+} from "./components/content/avatar-list/avatar-list.component";
 export {
   FoldBadgeComponent,
   type FoldBadgeVariant,
-} from "./components/badge/badge.component";
-export { FoldButtonComponent } from "./components/button/button.component";
+} from "./components/content/badge/badge.component";
+export { FoldButtonComponent } from "./components/actions/button/button.component";
 export type {
   FoldButtonVariant,
   FoldButtonSize,
   FoldButtonShape,
-} from "./components/button/button.types";
-export { FoldButtonIconComponent } from "./components/button-icon/button-icon.component";
+} from "./components/actions/button/button.types";
+export { FoldButtonIconComponent } from "./components/actions/button-icon/button-icon.component";
 export type {
   FoldButtonIconShape,
   FoldButtonIconSize,
   FoldButtonIconTone,
-} from "./components/button-icon/button-icon.types";
-export { FoldCardComponent } from "./components/card/card.component";
-export { FoldContextCardComponent } from "./components/context-card/context-card.component";
-export { FoldElementTitleComponent } from "./components/element-title/element-title.component";
-export { FoldFileDropzoneComponent } from "./components/file-dropzone/file-dropzone.component";
-export { FoldFieldListComponent } from "./components/field/field-list.component";
-export { FoldFieldComponent } from "./components/field/field.component";
-export { FoldLinkComponent } from "./components/link/link.component";
-export { FoldMenuComponent } from "./components/menu/menu.component";
+} from "./components/actions/button-icon/button-icon.types";
+export { FoldCardComponent } from "./components/content/card/card.component";
+export { FoldContextCardComponent } from "./components/content/context-card/context-card.component";
+export { FoldElementTitleComponent } from "./components/content/element-title/element-title.component";
+export { FoldFileDropzoneComponent } from "./components/forms/file-dropzone/file-dropzone.component";
+export { FoldFieldListComponent } from "./components/content/field/field-list.component";
+export { FoldFieldComponent } from "./components/content/field/field.component";
+export { FoldLinkComponent } from "./components/actions/link/link.component";
+export { FoldMenuComponent } from "./components/navigation/menu/menu.component";
 export type {
   FoldMenuTint,
   FoldMenuTogglePlacement,
   FoldMenuLevel,
-} from "./components/menu/menu.component";
+} from "./components/navigation/menu/menu.component";
 export {
   FoldMenuItemComponent,
   type FoldMenuItemBadgeTone,
-} from "./components/menu/menu-item.component";
-export { FoldMenuSeparatorComponent } from "./components/menu/menu-separator.component";
-export { FoldMenuSectionComponent } from "./components/menu/menu-section.component";
-export { FoldNavLauncherComponent } from "./components/nav-launcher/nav-launcher.component";
-export { FoldNavTileComponent } from "./components/nav-launcher/nav-tile.component";
-export { FoldHeroComponent } from "./components/hero/hero.component";
-export { FoldDataTableComponent } from "./components/data-table/data-table.component";
-export { FoldDataTableCellDirective } from "./components/data-table/data-table-cell.directive";
+} from "./components/navigation/menu/menu-item.component";
+export { FoldMenuSeparatorComponent } from "./components/navigation/menu/menu-separator.component";
+export { FoldMenuSectionComponent } from "./components/navigation/menu/menu-section.component";
+export { FoldNavLauncherComponent } from "./components/navigation/nav-launcher/nav-launcher.component";
+export { FoldNavTileComponent } from "./components/navigation/nav-launcher/nav-tile.component";
+export { FoldHeroComponent } from "./components/layout/hero/hero.component";
+export { FoldDataTableComponent } from "./components/content/data-table/data-table.component";
+export { FoldDataTableCellDirective } from "./components/content/data-table/data-table-cell.directive";
 export {
   FoldStickyColumnDirective,
   type FoldStickyColumnAnchor,
@@ -66,10 +66,10 @@ export type {
   FoldTableSort,
   FoldTableSortDir,
   FoldTableTone,
-} from "./components/data-table/data-table.types";
-export { FoldChoiceRowComponent } from "./components/choice-row/choice-row.component";
-export type { FoldChoiceOption } from "./components/choice-row/choice-row.component";
-export { FoldIconComponent } from "./components/icon/icon.component";
+} from "./components/content/data-table/data-table.types";
+export { FoldChoiceRowComponent } from "./components/content/choice-row/choice-row.component";
+export type { FoldChoiceOption } from "./components/content/choice-row/choice-row.component";
+export { FoldIconComponent } from "./components/foundations/icon/icon.component";
 export { FoldIdService } from "./a11y/id.service";
 export { FoldFieldIdDirective } from "./a11y/field-id.directive";
 export { FoldRepeatPressDirective } from "./directives/repeat-press.directive";
@@ -77,62 +77,62 @@ export { observeElementWidth } from "./dom/observe-element-width";
 export { FoldSurfaceDirective } from "./directives/surface.directive";
 export type { FoldSurfaceName } from "./directives/surface.directive";
 export { FoldElevatedDirective } from "./directives/elevated.directive";
-export { FoldInputComponent } from "./components/input/input.component";
+export { FoldInputComponent } from "./components/forms/input/input.component";
 export {
   FoldNumberInputComponent,
   type FoldNumberSpinner,
   type FoldNumberControls,
-} from "./components/input/number-input.component";
-export { FoldSearchComponent } from "./components/input/search.component";
-export { FoldSelectComponent } from "./components/input/select.component";
-export { FoldSliderComponent } from "./components/slider/slider.component";
-export { FoldRangeSliderComponent } from "./components/slider/range-slider.component";
-export type { FoldRangeValue } from "./components/slider/range-slider.component";
-export { FoldCalloutComponent } from "./components/callout/callout.component";
+} from "./components/forms/input/number-input.component";
+export { FoldSearchComponent } from "./components/forms/input/search.component";
+export { FoldSelectComponent } from "./components/forms/input/select.component";
+export { FoldSliderComponent } from "./components/forms/slider/slider.component";
+export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";
+export type { FoldRangeValue } from "./components/forms/slider/range-slider.component";
+export { FoldCalloutComponent } from "./components/feedback/callout/callout.component";
 export type {
   FoldCalloutVariant,
   FoldCalloutAppearance,
-} from "./components/callout/callout.component";
-export { FoldDisclosureComponent } from "./components/disclosure/disclosure.component";
-export { FoldStatusBadgeComponent } from "./components/status-badge/status-badge.component";
-export { FoldTimelineComponent } from "./components/timeline/timeline.component";
+} from "./components/feedback/callout/callout.component";
+export { FoldDisclosureComponent } from "./components/feedback/disclosure/disclosure.component";
+export { FoldStatusBadgeComponent } from "./components/content/status-badge/status-badge.component";
+export { FoldTimelineComponent } from "./components/content/timeline/timeline.component";
 export type {
   FoldTimelineNode,
   FoldTimelineDatePlacement,
-} from "./components/timeline/timeline.component";
-export { FoldLoadingStateComponent } from "./components/state/loading-state.component";
-export { FoldEmptyStateComponent } from "./components/state/empty-state.component";
-export type { FoldIconSize } from "./components/icon/icon.component";
+} from "./components/content/timeline/timeline.component";
+export { FoldLoadingStateComponent } from "./components/feedback/state/loading-state.component";
+export { FoldEmptyStateComponent } from "./components/feedback/state/empty-state.component";
+export type { FoldIconSize } from "./components/foundations/icon/icon.component";
 export {
   FoldIconRegistry,
   provideFoldIcons,
-} from "./components/icon/icon-registry.service";
-export type { FoldIconSet } from "./components/icon/icon-registry.service";
-export { FOLD_BUILTIN_ICONS } from "./components/icon/icon.registry";
+} from "./components/foundations/icon/icon-registry.service";
+export type { FoldIconSet } from "./components/foundations/icon/icon-registry.service";
+export { FOLD_BUILTIN_ICONS } from "./components/foundations/icon/icon.registry";
 export type {
   FoldIconName,
   FoldBuiltinIconName,
-} from "./components/icon/icon.registry";
-export { FoldAsideLayoutComponent } from "./components/page/aside-layout.component";
-export { FoldTabLayoutComponent } from "./components/page/tab-layout.component";
-export { FoldPageLayoutComponent } from "./components/page/page-layout.component";
-export { FoldPageSectionComponent } from "./components/page/page-section.component";
-export { FoldPaginatorComponent } from "./components/paginator/paginator.component";
-export type { FoldPageItem } from "./components/paginator/paginator.component";
-export { FoldTabNavComponent } from "./components/tab-nav/tab-nav.component";
-export type { FoldTabNavItem } from "./components/tab-nav/tab-nav.component";
-export { FoldToastComponent } from "./components/toast/toast.component";
-export { FoldToastContainerComponent } from "./components/toast/toast-container.component";
-export { FoldToastService } from "./components/toast/toast.service";
+} from "./components/foundations/icon/icon.registry";
+export { FoldAsideLayoutComponent } from "./components/layout/page/aside-layout.component";
+export { FoldTabLayoutComponent } from "./components/layout/page/tab-layout.component";
+export { FoldPageLayoutComponent } from "./components/layout/page/page-layout.component";
+export { FoldPageSectionComponent } from "./components/layout/page/page-section.component";
+export { FoldPaginatorComponent } from "./components/content/paginator/paginator.component";
+export type { FoldPageItem } from "./components/content/paginator/paginator.component";
+export { FoldTabNavComponent } from "./components/navigation/tab-nav/tab-nav.component";
+export type { FoldTabNavItem } from "./components/navigation/tab-nav/tab-nav.component";
+export { FoldToastComponent } from "./components/feedback/toast/toast.component";
+export { FoldToastContainerComponent } from "./components/feedback/toast/toast-container.component";
+export { FoldToastService } from "./components/feedback/toast/toast.service";
 export {
   provideFoldToasts,
   FOLD_TOAST_CONFIG,
-} from "./components/toast/toast.config";
-export type { FoldToastConfig } from "./components/toast/toast.config";
+} from "./components/feedback/toast/toast.config";
+export type { FoldToastConfig } from "./components/feedback/toast/toast.config";
 export type {
   FoldToast,
   FoldToastVariant,
-} from "./components/toast/toast.types";
+} from "./components/feedback/toast/toast.types";
 
 // ── Panels (overlay system) ──────────────────────────────────
 export { FoldPanelHostComponent } from "./panel/panel-host.component";

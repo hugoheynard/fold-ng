@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, output } from "@angular/core";
-import { FoldIconComponent } from "../components/icon/icon.component";
-import type { FoldIconName } from "../components/icon/icon.registry";
+import { FoldIconComponent } from "../components/foundations/icon/icon.component";
+import type { FoldIconName } from "../components/foundations/icon/icon.registry";
 import { FoldPanelRef } from "./panel-ref";
 
 /**

@@ -3,7 +3,7 @@ import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelRef } from "./panel-ref";
-import type { FoldIconName } from "../components/icon/icon.registry";
+import type { FoldIconName } from "../components/foundations/icon/icon.registry";
 
 @Component({
   standalone: true,
