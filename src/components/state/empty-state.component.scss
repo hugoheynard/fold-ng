@@ -12,21 +12,21 @@
   padding: 40px 24px;
 }
 .empty-icon {
-  color: var(--sh3-color-text-faded);
+  color: var(--fold-color-text-faded);
   margin-bottom: 4px;
 }
 .empty-icon:empty {
   display: none;
 }
 .empty-title {
-  font-size: var(--sh3-text-sm);
+  font-size: var(--fold-text-sm);
   font-weight: 600;
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
   margin: 0;
 }
 .empty-sub {
-  font-size: var(--sh3-text-xs);
-  color: var(--sh3-color-text-muted);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
   margin: 0;
   text-align: center;
   max-width: 320px;
@@ -40,5 +40,5 @@
 }
 :host(.alert) .empty-icon,
 :host(.alert) .empty-title {
-  color: var(--sh3-color-alert-text);
+  color: var(--fold-color-alert-text);
 }

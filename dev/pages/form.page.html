@@ -1,12 +1,12 @@
-<sh3-page-layout fluid title="input">
+<fold-page-layout fluid title="input">
   <p description>
-    The edit half of a record (sh3-field reads). Signal Forms via [formField] or
-    standalone [(value)]; label / required / hint / error are provided by
-    sh3-input-base.
+    The edit half of a record (fold-field reads). Signal Forms via [formField]
+    or standalone [(value)]; label / required / hint / error are provided by
+    fold-input-base.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <sh3-tab-layout placement="side" #tl="sh3TabLayout">
-    <sh3-tab-nav
+  <fold-tab-layout placement="side" #tl="foldTabLayout">
+    <fold-tab-nav
       tabNav
       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
@@ -19,27 +19,27 @@
       <div class="gal-cell">
         <span class="gal-tag">sizes · sm / md / lg</span>
         <div class="fld-inputs">
-          <sh3-input size="sm" placeholder="sm — inline edits" />
-          <sh3-input size="md" placeholder="md — default" />
-          <sh3-input size="lg" placeholder="lg — prominent" />
+          <fold-input size="sm" placeholder="sm — inline edits" />
+          <fold-input size="md" placeholder="md — default" />
+          <fold-input size="lg" placeholder="lg — prominent" />
         </div>
       </div>
       <div class="gal-cell">
         <span class="gal-tag">label · required · optional · hint · error</span>
         <div class="fld-inputs">
-          <sh3-input
+          <fold-input
             label="Email"
             required
             hint="We'll never share it."
             placeholder="you@example.com"
           />
-          <sh3-input
+          <fold-input
             label="Motif"
             optional
             optionalLabel="optionnel"
             placeholder="lighter marker in parentheses"
           />
-          <sh3-input
+          <fold-input
             label="Name"
             hint="Blur while empty to see the error"
             [formField]="demoReqForm"
@@ -49,18 +49,18 @@
       <div class="gal-cell">
         <span class="gal-tag">variants · states</span>
         <div class="fld-inputs">
-          <sh3-input label="Default" [(value)]="demoText" />
-          <sh3-input
+          <fold-input label="Default" [(value)]="demoText" />
+          <fold-input
             variant="panel"
             label="Panel"
             placeholder="flatter side-panel chrome"
           />
-          <sh3-input
+          <fold-input
             label="Read-only"
             [value]="'Locked value'"
             [readOnly]="true"
           />
-          <sh3-input
+          <fold-input
             label="Disabled"
             placeholder="unavailable"
             [disabled]="true"
@@ -75,7 +75,7 @@
           >spinner glyph (arrows / +−) × placement (inside / outside)</span
         >
         <div class="fld-inputs">
-          <sh3-number-input
+          <fold-number-input
             label="arrows · inside"
             spinner="arrows"
             controls="inside"
@@ -83,7 +83,7 @@
             [max]="20"
             [(value)]="demoArrows"
           />
-          <sh3-number-input
+          <fold-number-input
             label="arrows · outside"
             spinner="arrows"
             controls="outside"
@@ -91,13 +91,13 @@
             [max]="20"
             [(value)]="demoArrows"
           />
-          <sh3-number-input
+          <fold-number-input
             label="+− · inside"
             spinner="plusminus"
             controls="inside"
             [(value)]="demoStepper"
           />
-          <sh3-number-input
+          <fold-number-input
             label="+− · outside"
             spinner="plusminus"
             controls="outside"
@@ -108,14 +108,14 @@
       <div class="gal-cell">
         <span class="gal-tag">step · showStep · snapToStep</span>
         <div class="fld-inputs">
-          <sh3-number-input
+          <fold-number-input
             label="show step"
             spinner="arrows"
             [step]="5"
             showStep
             [(value)]="demoArrows"
           />
-          <sh3-number-input
+          <fold-number-input
             label="snap to step"
             spinner="arrows"
             [step]="5"
@@ -124,12 +124,12 @@
             hint="Type 7, blur → 5"
             [(value)]="demoStepper"
           />
-          <sh3-number-input
+          <fold-number-input
             align="center"
             label="BPM · centered"
             [(value)]="demoBpm"
           />
-          <sh3-number-input label="Age" required [min]="0" hint="Years." />
+          <fold-number-input label="Age" required [min]="0" hint="Years." />
         </div>
       </div>
 
@@ -205,14 +205,14 @@
             </button>
           </div>
         </div>
-        <sh3-slider
+        <fold-slider
           params
           label="step"
           [min]="1"
           [max]="10"
           [(value)]="npStep"
         />
-        <sh3-slider
+        <fold-slider
           params
           label="min"
           [min]="0"
@@ -220,7 +220,7 @@
           [valueText]="npMin() ? npMin() + '' : 'off'"
           [(value)]="npMin"
         />
-        <sh3-slider
+        <fold-slider
           params
           label="max"
           [min]="0"
@@ -276,7 +276,7 @@
           </div>
         </div>
 
-        <sh3-number-input
+        <fold-number-input
           label="Quantity"
           [size]="npSize()"
           [spinner]="npSpinner()"
@@ -295,10 +295,10 @@
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag"
-          >sh3-select · native &lt;select&gt;, options projected</span
+          >fold-select · native &lt;select&gt;, options projected</span
         >
         <div class="fld-inputs">
-          <sh3-select
+          <fold-select
             label="Devise"
             placeholder="Choisir…"
             hint="Native under the hood — options are projected."
@@ -307,7 +307,7 @@
             @for (c of currencies; track c) {
             <option [value]="c">{{ c }}</option>
             }
-          </sh3-select>
+          </fold-select>
         </div>
         <p class="doc-p">Selected: “{{ selCurrency() }}”</p>
       </div>
@@ -315,25 +315,25 @@
       <div class="gal-cell">
         <span class="gal-tag">sizes · sm / md / lg</span>
         <div class="fld-inputs">
-          <sh3-select size="sm" label="sm" [(value)]="selSize">
+          <fold-select size="sm" label="sm" [(value)]="selSize">
             <option value="a">Alpha</option>
             <option value="b">Bravo</option>
-          </sh3-select>
-          <sh3-select size="md" label="md" [(value)]="selSize">
+          </fold-select>
+          <fold-select size="md" label="md" [(value)]="selSize">
             <option value="a">Alpha</option>
             <option value="b">Bravo</option>
-          </sh3-select>
-          <sh3-select size="lg" label="lg" [(value)]="selSize">
+          </fold-select>
+          <fold-select size="lg" label="lg" [(value)]="selSize">
             <option value="a">Alpha</option>
             <option value="b">Bravo</option>
-          </sh3-select>
+          </fold-select>
         </div>
       </div>
 
       <div class="gal-cell">
         <span class="gal-tag">variant · panel</span>
         <div class="fld-inputs">
-          <sh3-select
+          <fold-select
             variant="panel"
             label="Rôle"
             placeholder="—"
@@ -341,16 +341,16 @@
           >
             <option value="lead">Lead</option>
             <option value="member">Member</option>
-          </sh3-select>
+          </fold-select>
         </div>
       </div>
     </div>
     } @case ("search") {
     <div class="gal-stack">
       <div class="gal-cell">
-        <span class="gal-tag">sh3-search · debounced (emits on settle)</span>
+        <span class="gal-tag">fold-search · debounced (emits on settle)</span>
         <div class="fld-inputs">
-          <sh3-search
+          <fold-search
             placeholder="Search name, email…"
             (searchChange)="searchTerm.set($event)"
           />
@@ -359,5 +359,5 @@
       </div>
     </div>
     } }
-  </sh3-tab-layout>
-</sh3-page-layout>
+  </fold-tab-layout>
+</fold-page-layout>

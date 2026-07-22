@@ -1,13 +1,13 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3LinkComponent } from "./link.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldLinkComponent } from "./link.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 @Component({
   standalone: true,
-  imports: [Sh3LinkComponent],
-  template: `<sh3-link
+  imports: [FoldLinkComponent],
+  template: `<fold-link
     [icon]="icon()"
     [trailingIcon]="trailingIcon()"
     [tone]="tone()"
@@ -16,11 +16,11 @@ import type { Sh3IconName } from "../icon/icon.registry";
     (clicked)="onClick()"
   >
     Voir l'organigramme
-  </sh3-link>`,
+  </fold-link>`,
 })
 class HostComponent {
-  readonly icon = signal<Sh3IconName | undefined>(undefined);
-  readonly trailingIcon = signal<Sh3IconName | undefined>(undefined);
+  readonly icon = signal<FoldIconName | undefined>(undefined);
+  readonly trailingIcon = signal<FoldIconName | undefined>(undefined);
   readonly tone = signal<"accent" | "muted">("accent");
   readonly href = signal<string | undefined>(undefined);
   readonly disabled = signal(false);
@@ -37,7 +37,7 @@ function render() {
   return { fixture, host };
 }
 
-describe("Sh3LinkComponent", () => {
+describe("FoldLinkComponent", () => {
   it("renders a button that emits (clicked) when no href", () => {
     const { fixture, host } = render();
     const btn = host.querySelector("button.lnk");
@@ -62,16 +62,16 @@ describe("Sh3LinkComponent", () => {
 
   it("projects leading + trailing icons", () => {
     const { fixture, host } = render();
-    expect(host.querySelectorAll("sh3-icon").length).toBe(0);
+    expect(host.querySelectorAll("fold-icon").length).toBe(0);
     fixture.componentInstance.icon.set("company");
     fixture.componentInstance.trailingIcon.set("chevron-right");
     fixture.detectChanges();
-    expect(host.querySelectorAll("sh3-icon").length).toBe(2);
+    expect(host.querySelectorAll("fold-icon").length).toBe(2);
   });
 
   it("maps the muted tone to a host class", () => {
     const { fixture, host } = render();
-    const link = host.querySelector("sh3-link") as HTMLElement;
+    const link = host.querySelector("fold-link") as HTMLElement;
     expect(link.classList.contains("tone-muted")).toBe(false);
     fixture.componentInstance.tone.set("muted");
     fixture.detectChanges();

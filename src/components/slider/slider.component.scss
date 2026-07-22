@@ -22,13 +22,13 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
 }
 
 .sl-value {
   font-size: 12px;
   font-weight: 600;
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
   font-variant-numeric: tabular-nums;
 }
 
@@ -41,8 +41,8 @@
   cursor: pointer;
   background: linear-gradient(
     to right,
-    var(--sh3-color-primary) 0 var(--sl-pct, 0%),
-    var(--sh3-color-border-subtle) var(--sl-pct, 0%) 100%
+    var(--fold-color-primary) 0 var(--sl-pct, 0%),
+    var(--fold-color-border-subtle) var(--sl-pct, 0%) 100%
   );
 
   @include slider.thumb;

@@ -7,49 +7,49 @@ import {
   model,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
-import { Sh3IdService } from "../../a11y/id.service";
-import { Sh3InputBaseComponent } from "./input-base.component";
+import { FoldIdService } from "../../a11y/id.service";
+import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
 /**
- * `<sh3-input>` — the text-input control (`value: string`): the *edit* half of a
- * record, where {@link Sh3FieldComponent} is the *read* half. It renders an
+ * `<fold-input>` — the text-input control (`value: string`): the *edit* half of a
+ * record, where {@link FoldFieldComponent} is the *read* half. It renders an
  * optional label + a native `<input>` styled to the tokens, plus the field
- * chrome from {@link Sh3InputBaseComponent} (label / required / hint / error).
+ * chrome from {@link FoldInputBaseComponent} (label / required / hint / error).
  * When bound via `[formField]`, it surfaces the field's first validation error
  * under the input once touched. For numeric fields use {@link
- * Sh3NumberInputComponent} — a separate control so each keeps its true value
+ * FoldNumberInputComponent} — a separate control so each keeps its true value
  * type instead of a `string | number` union.
  *
  * Integrates with signal forms via the `FormValueControl` contract (bind with
  * `[formField]`), or drive it standalone with `[(value)]` / `(valueChange)`.
  * Variant, size and alignment are applied as host classes (`:host(.sm.center)`).
  *
- * @selector `sh3-input`
+ * @selector `fold-input`
  *
  * @example
  * ```html
  * <!-- Signal-forms field -->
- * <sh3-input placeholder="Version name…" [formField]="form.label" />
+ * <fold-input placeholder="Version name…" [formField]="form.label" />
  *
  * <!-- Standalone two-way -->
- * <sh3-input size="sm" placeholder="Filter…" [(value)]="term" />
+ * <fold-input size="sm" placeholder="Filter…" [(value)]="term" />
  *
  * <!-- Read-only display -->
- * <sh3-input [value]="title" [readOnly]="true" />
+ * <fold-input [value]="title" [readOnly]="true" />
  * ```
  */
 @Component({
-  selector: "sh3-input",
+  selector: "fold-input",
   standalone: true,
-  imports: [Sh3InputBaseComponent],
+  imports: [FoldInputBaseComponent],
   templateUrl: "./input.component.html",
   styleUrl: "./input.component.scss",
   host: {
     "[class]": 'size() + " " + align() + " " + variant()',
   },
 })
-export class Sh3InputComponent implements FormValueControl<string> {
+export class FoldInputComponent implements FormValueControl<string> {
   /** The bound value — a `model()` so signal forms' `FormField` and `[(value)]`
    *  both keep it in sync. */
   readonly value = model<string>("");
@@ -61,7 +61,7 @@ export class Sh3InputComponent implements FormValueControl<string> {
   /** Validation errors — bound by `FormField` from the field. */
   readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
   /**
-   * Native input type (text-like only; use {@link Sh3NumberInputComponent} for numbers).
+   * Native input type (text-like only; use {@link FoldNumberInputComponent} for numbers).
    * @default 'text'
    */
   readonly type = input<"text" | "email" | "password" | "tel" | "url">("text");
@@ -85,9 +85,9 @@ export class Sh3InputComponent implements FormValueControl<string> {
 
   /**
    * Visual variant.
-   * - `default` — solid `--sh3-color-surface-card` fill + focus glow ring;
+   * - `default` — solid `--fold-color-surface-card` fill + focus glow ring;
    *   standalone forms (auth, profile, dialogs).
-   * - `panel` — flatter `--sh3-color-surface-raised` fill, no focus glow, roomier
+   * - `panel` — flatter `--fold-color-surface-raised` fill, no focus glow, roomier
    *   box (own padding / `radius-sm` / content-height, so `size` only drives the
    *   font); reproduces the legacy side-panel `.field-input`.
    * @default 'default'
@@ -134,8 +134,8 @@ export class Sh3InputComponent implements FormValueControl<string> {
    */
   readonly autocomplete = input<string | null>(null);
 
-  /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
-  readonly inputId = inject(Sh3IdService).next("sh3-input");
+  /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
+  readonly inputId = inject(FoldIdService).next("fold-input");
 
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {

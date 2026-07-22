@@ -14,9 +14,9 @@ import { BRANDS_ICONS } from "./icons/brands.icons";
  * self-contained — no build-tool loader config leaks to a consumer.
  *
  * A consumer extends this set at runtime — never by editing this file — through
- * {@link Sh3IconRegistry} (`provideSh3Icons()` at bootstrap, or `register()` later).
+ * {@link FoldIconRegistry} (`provideFoldIcons()` at bootstrap, or `register()` later).
  */
-export const SH3_BUILTIN_ICONS = {
+export const FOLD_BUILTIN_ICONS = {
   ...UI_ICONS,
   ...NAV_ICONS,
   ...MUSIC_ICONS,
@@ -26,11 +26,11 @@ export const SH3_BUILTIN_ICONS = {
 } as const;
 
 /** Every built-in icon name — derived from the registry keys (autocompletes). */
-export type Sh3BuiltinIconName = keyof typeof SH3_BUILTIN_ICONS;
+export type FoldBuiltinIconName = keyof typeof FOLD_BUILTIN_ICONS;
 
 /**
- * The `name` a `sh3-icon` accepts: a built-in (autocompleted + type-checked) or
+ * The `name` a `fold-icon` accepts: a built-in (autocompleted + type-checked) or
  * any custom string a consumer has registered. `(string & {})` keeps the
  * built-in literals in autocomplete while still admitting a bare `string`.
  */
-export type Sh3IconName = Sh3BuiltinIconName | (string & {});
+export type FoldIconName = FoldBuiltinIconName | (string & {});

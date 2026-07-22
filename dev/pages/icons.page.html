@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="icon">
+<fold-page-layout fluid title="icon">
   <p description>
     The single surface for every SVG icon. An icon inherits colour
     (currentColor) and size from CSS: size via a token (xs…xl) or a pixel
@@ -14,12 +14,12 @@
       <div class="icon-sizes">
         @for (s of iconSizeSteps; track s) {
         <div class="isz">
-          <sh3-icon name="bell" [size]="s" />
+          <fold-icon name="bell" [size]="s" />
           <span>{{ s }}</span>
         </div>
         }
         <div class="isz">
-          <sh3-icon name="bell" [size]="40" />
+          <fold-icon name="bell" [size]="40" />
           <span>40px</span>
         </div>
       </div>
@@ -31,8 +31,8 @@
       >
       <div class="icon-colors">
         @for (t of iconColorTokens; track t) {
-        <span class="icol" [style.color]="'var(--sh3-color-' + t + ')'">
-          <sh3-icon name="fire" size="lg" />
+        <span class="icol" [style.color]="'var(--fold-color-' + t + ')'">
+          <fold-icon name="fire" size="lg" />
         </span>
         }
       </div>
@@ -51,7 +51,7 @@
           [class.is-copied]="copiedIcon() === n"
           (click)="copyIconName(n)"
         >
-          <sh3-icon [name]="n" size="lg" [title]="n" />
+          <fold-icon [name]="n" size="lg" [title]="n" />
           <span class="icon-cell-name"
             >{{ copiedIcon() === n ? "copied!" : n }}</span
           >
@@ -60,4 +60,4 @@
       </div>
     </div>
   </div>
-</sh3-page-layout>
+</fold-page-layout>

@@ -1,25 +1,28 @@
 import { Component, type TemplateRef, ViewChild, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { Sh3PanelHostComponent } from "../panel-host.component";
-import { Sh3PanelHostService } from "../panel-host.service";
-import type { Sh3PanelSide, Sh3TemplatePanelDescriptor } from "../panel.types";
+import { FoldPanelHostComponent } from "../panel-host.component";
+import { FoldPanelHostService } from "../panel-host.service";
+import type {
+  FoldPanelSide,
+  FoldTemplatePanelDescriptor,
+} from "../panel.types";
 
 @Component({ template: `<ng-template #t>x</ng-template>` })
 class TplHostComponent {
   @ViewChild("t", { static: true }) tpl!: TemplateRef<unknown>;
 }
 
-describe("Sh3PanelHostComponent", () => {
-  let host: Sh3PanelHostService;
+describe("FoldPanelHostComponent", () => {
+  let host: FoldPanelHostService;
   let tpl: TemplateRef<unknown>;
 
   function present(
     title: string,
-    side: Sh3PanelSide,
+    side: FoldPanelSide,
     onClose: () => void = () => undefined,
   ): void {
-    const descriptor: Omit<Sh3TemplatePanelDescriptor, "id" | "kind"> = {
+    const descriptor: Omit<FoldTemplatePanelDescriptor, "id" | "kind"> = {
       templateRef: tpl,
       side,
       title: signal(title),
@@ -31,15 +34,15 @@ describe("Sh3PanelHostComponent", () => {
   }
 
   function render() {
-    const fixture = TestBed.createComponent(Sh3PanelHostComponent);
+    const fixture = TestBed.createComponent(FoldPanelHostComponent);
     fixture.detectChanges();
     const root: HTMLElement = fixture.nativeElement;
     return { fixture, root };
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
-    host = TestBed.inject(Sh3PanelHostService);
+    TestBed.configureTestingModule({ providers: [FoldPanelHostService] });
+    host = TestBed.inject(FoldPanelHostService);
     const tplFixture = TestBed.createComponent(TplHostComponent);
     tplFixture.detectChanges();
     tpl = tplFixture.componentInstance.tpl;

@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="aside-layout">
+<fold-page-layout fluid title="aside-layout">
   <gal-kind-badge titleBadge kind="component" />
   <p description>
     The detail-page archetype: a centered content column flanked by up to two
@@ -63,7 +63,7 @@
         </button>
       </div>
     </div>
-    <sh3-slider
+    <fold-slider
       params
       label="offset"
       [min]="0"
@@ -73,7 +73,7 @@
       [(value)]="aslOffset"
     />
     @if (aslLeft() && !aslEqual()) {
-    <sh3-slider
+    <fold-slider
       params
       label="asideLeft width"
       [min]="0"
@@ -83,7 +83,7 @@
       [(value)]="aslRailWidth"
     />
     } @if (!aslEqual()) {
-    <sh3-slider
+    <fold-slider
       params
       label="asideRight width"
       [min]="0"
@@ -106,28 +106,28 @@
         [style.width.px]="aslWidth()"
         [style.zoom]="aslScale()"
       >
-        <sh3-aside-layout
+        <fold-aside-layout
           class="asl-real"
           [class.is-equal]="aslEqual()"
           [topOffset]="aslOffset()"
-          [style.--sh3-aside-layout-rail-width]="
+          [style.--fold-aside-layout-rail-width]="
             aslEqual() ? null : aslRailWidth() + 'px'
           "
-          [style.--sh3-aside-layout-side-width]="
+          [style.--fold-aside-layout-side-width]="
             aslEqual() ? null : aslSideWidth() + 'px'
           "
         >
           @if (aslLeft()) {
-          <sh3-card asideLeft>
+          <fold-card asideLeft>
             <span class="gal-tag">On this page</span>
             <nav class="asl-nav">
               <a class="is-on">Overview</a>
               <a>Terms</a>
               <a>Signatures</a>
             </nav>
-          </sh3-card>
+          </fold-card>
           }
-          <sh3-page-section surface="card" title="Section one">
+          <fold-page-section surface="card" title="Section one">
             <p class="gal-body">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -140,8 +140,8 @@
               officia deserunt mollit anim id est laborum. Curabitur pretium
               tincidunt lacus, eget gravida odio pretium at.
             </p>
-          </sh3-page-section>
-          <sh3-page-section surface="card" title="Section two">
+          </fold-page-section>
+          <fold-page-section surface="card" title="Section two">
             <p class="gal-body">
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem
               accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
@@ -154,8 +154,8 @@
               consectetur, adipisci velit, sed quia non numquam eius modi
               tempora incidunt ut labore et dolore magnam aliquam quaerat.
             </p>
-          </sh3-page-section>
-          <sh3-page-section surface="card" title="Section three">
+          </fold-page-section>
+          <fold-page-section surface="card" title="Section three">
             <p class="gal-body">
               Ut enim ad minima veniam, quis nostrum exercitationem ullam
               corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
@@ -168,8 +168,8 @@
               dolores et quas molestias excepturi sint occaecati cupiditate non
               provident, similique sunt in culpa qui officia deserunt.
             </p>
-          </sh3-page-section>
-          <sh3-card asideRight>
+          </fold-page-section>
+          <fold-card asideRight>
             <span class="gal-tag">Details</span>
             <dl class="asl-meta">
               <div>
@@ -189,16 +189,16 @@
                 <dd>12 Jun 2027</dd>
               </div>
             </dl>
-          </sh3-card>
-          <sh3-card asideRight>
+          </fold-card>
+          <fold-card asideRight>
             <span class="gal-tag">Actions</span>
             <div class="asl-actions asl-actions--stack">
               <button type="button" class="asl-btn is-primary">Edit</button>
               <button type="button" class="asl-btn">Archive</button>
             </div>
-          </sh3-card>
-        </sh3-aside-layout>
+          </fold-card>
+        </fold-aside-layout>
       </div>
     </div>
   </dev-playground>
-</sh3-page-layout>
+</fold-page-layout>

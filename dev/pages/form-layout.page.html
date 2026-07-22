@@ -1,13 +1,13 @@
-<sh3-page-layout fluid title="form layout">
+<fold-page-layout fluid title="form layout">
   <p description>
     A vertical tab-nav as the section rail, driving a settings-style form:
-    sh3-page-section groups the fields, sh3-input handles the text fields,
-    sh3-choice-row the segmented selects, and native select/textarea stay
+    fold-page-section groups the fields, fold-input handles the text fields,
+    fold-choice-row the segmented selects, and native select/textarea stay
     native.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <sh3-tab-layout placement="side" #tl="sh3TabLayout">
-    <sh3-tab-nav
+  <fold-tab-layout placement="side" #tl="foldTabLayout">
+    <fold-tab-nav
       tabNav
       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
@@ -17,17 +17,17 @@
     />
     <div class="gal-stack">
       @switch (formTab()) { @case ("profile") {
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Profile"
         description="Public identity."
       >
-        <sh3-input label="Full name" [(value)]="fName" />
-        <sh3-input label="Email" type="email" [(value)]="fEmail" />
+        <fold-input label="Full name" [(value)]="fName" />
+        <fold-input label="Email" type="email" [(value)]="fEmail" />
         <div class="field">
           <label>Role</label>
-          <sh3-choice-row
+          <fold-choice-row
             [options]="roleOptions"
             [activeKey]="fRole()"
             (selected)="fRole.set($event)"
@@ -44,15 +44,15 @@
             (input)="fBio.set(fb.value)"
           ></textarea>
         </div>
-      </sh3-page-section>
+      </fold-page-section>
       } @case ("account") {
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Account"
         description="Sign-in + preferences."
       >
-        <sh3-input label="Username" [(value)]="fUsername" />
+        <fold-input label="Username" [(value)]="fUsername" />
         <div class="field">
           <label for="f-lang">Language</label>
           <select
@@ -68,16 +68,16 @@
         </div>
         <div class="field">
           <label>Two-factor auth</label>
-          <sh3-choice-row
+          <fold-choice-row
             [options]="onOff"
             [activeKey]="fTwoFactor()"
             (selected)="fTwoFactor.set($event)"
           />
           <span class="field-hint">Adds a second step at sign-in.</span>
         </div>
-      </sh3-page-section>
+      </fold-page-section>
       } @case ("notifications") {
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Notifications"
@@ -85,7 +85,7 @@
       >
         <div class="field">
           <label>Email digest</label>
-          <sh3-choice-row
+          <fold-choice-row
             [options]="digestOptions"
             [activeKey]="fDigest()"
             (selected)="fDigest.set($event)"
@@ -93,23 +93,26 @@
         </div>
         <div class="field">
           <label>Push</label>
-          <sh3-choice-row
+          <fold-choice-row
             [options]="onOff"
             [activeKey]="fPush()"
             (selected)="fPush.set($event)"
           />
           <span class="field-hint">Browser notifications on this device.</span>
         </div>
-      </sh3-page-section>
+      </fold-page-section>
       } }
 
       <div class="form-actions">
         <button type="button" class="btn-ghost">Cancel</button>
         <button type="button" class="btn-primary" (click)="saveForm()">
-          <sh3-icon [name]="formSaved() ? 'check-circle' : 'check'" size="sm" />
+          <fold-icon
+            [name]="formSaved() ? 'check-circle' : 'check'"
+            size="sm"
+          />
           {{ formSaved() ? "Saved" : "Save changes" }}
         </button>
       </div>
     </div>
-  </sh3-tab-layout>
-</sh3-page-layout>
+  </fold-tab-layout>
+</fold-page-layout>

@@ -9,11 +9,11 @@ import {
 } from "@angular/core";
 
 /**
- * `[sh3RepeatPress]` — press-and-hold auto-repeat.
+ * `[foldRepeatPress]` — press-and-hold auto-repeat.
  *
- * Fires `(sh3RepeatPress)` once immediately on pointer press, then keeps firing
+ * Fires `(foldRepeatPress)` once immediately on pointer press, then keeps firing
  * on a fixed cadence while the pointer is held, stopping on release, leave,
- * cancel or destroy. Bind `[sh3RepeatPressDisabled]` to a reactive bound (e.g.
+ * cancel or destroy. Bind `[foldRepeatPressDisabled]` to a reactive bound (e.g.
  * "at max") so the repeat also stops the instant the action becomes unavailable
  * mid-hold — a plain `pointerup` is unreliable once the host button disables
  * itself under the finger.
@@ -24,14 +24,14 @@ import {
  * @example
  * ```html
  * <button
- *   sh3RepeatPress
- *   [sh3RepeatPressDisabled]="atMax()"
- *   (sh3RepeatPress)="step(1)"
+ *   foldRepeatPress
+ *   [foldRepeatPressDisabled]="atMax()"
+ *   (foldRepeatPress)="step(1)"
  * >+</button>
  * ```
  */
 @Directive({
-  selector: "[sh3RepeatPress]",
+  selector: "[foldRepeatPress]",
   standalone: true,
   host: {
     "(pointerdown)": "start()",
@@ -40,21 +40,21 @@ import {
     "(pointercancel)": "stop()",
   },
 })
-export class Sh3RepeatPressDirective {
+export class FoldRepeatPressDirective {
   /** Fires immediately on press, then repeatedly while the pointer is held. */
-  readonly repeat = output<void>({ alias: "sh3RepeatPress" });
+  readonly repeat = output<void>({ alias: "foldRepeatPress" });
 
   /** When true, a press does nothing and any running repeat stops at once. */
   readonly disabled = input(false, {
     transform: booleanAttribute,
-    alias: "sh3RepeatPressDisabled",
+    alias: "foldRepeatPressDisabled",
   });
 
   /** Delay before the auto-repeat begins, in ms. @default 350 */
-  readonly delay = input(350, { alias: "sh3RepeatPressDelay" });
+  readonly delay = input(350, { alias: "foldRepeatPressDelay" });
 
   /** Cadence of the auto-repeat once started, in ms. @default 60 */
-  readonly period = input(60, { alias: "sh3RepeatPressPeriod" });
+  readonly period = input(60, { alias: "foldRepeatPressPeriod" });
 
   private startTimer: ReturnType<typeof setTimeout> | null = null;
   private tick: ReturnType<typeof setInterval> | null = null;

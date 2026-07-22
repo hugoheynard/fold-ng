@@ -1,9 +1,9 @@
 <button [type]="type()" [disabled]="disabled()" (click)="clicked.emit($event)">
   @if (icon(); as ic) {
-    <sh3-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
+    <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
   }
   <ng-content />
   @if (iconTrailing(); as ic) {
-    <sh3-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
+    <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
   }
 </button>

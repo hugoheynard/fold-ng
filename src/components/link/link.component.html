@@ -1,10 +1,10 @@
 <ng-template #inner>
   @if (icon(); as i) {
-    <sh3-icon [name]="i" size="sm" />
+    <fold-icon [name]="i" size="sm" />
   }
   <span class="lnk-label"><ng-content /></span>
   @if (trailingIcon(); as t) {
-    <sh3-icon [name]="t" size="sm" />
+    <fold-icon [name]="t" size="sm" />
   }
 </ng-template>
 @if (href(); as h) {

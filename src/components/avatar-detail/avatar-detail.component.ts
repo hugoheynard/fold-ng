@@ -1,12 +1,12 @@
 import { booleanAttribute, Component, computed, input } from "@angular/core";
 import {
-  Sh3AvatarComponent,
-  type Sh3AvatarRing,
-  type Sh3AvatarRingStyle,
+  FoldAvatarComponent,
+  type FoldAvatarRing,
+  type FoldAvatarRingStyle,
 } from "../avatar/avatar.component";
 
 /**
- * `<sh3-avatar-detail>` — an avatar next to one or two lines of text: the
+ * `<fold-avatar-detail>` — an avatar next to one or two lines of text: the
  * canonical "identity cell". A bold `primary` line and an optional faded
  * `secondary` line (name + email, entity + subtitle, …). One line centres
  * against the avatar; two lines stack and centre as a block.
@@ -26,19 +26,19 @@ import {
  * | `square`     | `boolean`              | `false`   | Square avatar (orgs).                        |
  * | `imageUrl`   | `string`               | —         | Avatar image; replaces initials when set.    |
  * | `muted`      | `boolean`              | `false`   | Dim the avatar (absence / inactive).         |
- * | `ring`       | `Sh3AvatarRing`        | `'none'`  | Status outline on the avatar.                |
+ * | `ring`       | `FoldAvatarRing`        | `'none'`  | Status outline on the avatar.                |
  * | `ringStyle`  | `'solid' \| 'dotted'`  | `'solid'` | Ring line style (`dotted` = scheduled).      |
  *
- * @selector `sh3-avatar-detail`
+ * @selector `fold-avatar-detail`
  */
 @Component({
-  selector: "sh3-avatar-detail",
+  selector: "fold-avatar-detail",
   standalone: true,
-  imports: [Sh3AvatarComponent],
+  imports: [FoldAvatarComponent],
   templateUrl: "./avatar-detail.component.html",
   styleUrl: "./avatar-detail.component.scss",
 })
-export class Sh3AvatarDetailComponent {
+export class FoldAvatarDetailComponent {
   readonly primary = input.required<string>();
   readonly secondary = input<string>("");
   readonly avatarName = input<string>("");
@@ -46,12 +46,12 @@ export class Sh3AvatarDetailComponent {
   readonly variant = input<"solid" | "ghost">("solid");
   readonly square = input(false, { transform: booleanAttribute });
   readonly imageUrl = input<string | undefined>(undefined);
-  /** Dim the avatar — absence / inactive (forwarded to `sh3-avatar`). */
+  /** Dim the avatar — absence / inactive (forwarded to `fold-avatar`). */
   readonly muted = input(false, { transform: booleanAttribute });
-  /** Status outline colour (forwarded to `sh3-avatar`). */
-  readonly ring = input<Sh3AvatarRing>("none");
-  /** Ring line style (forwarded to `sh3-avatar`). */
-  readonly ringStyle = input<Sh3AvatarRingStyle>("solid");
+  /** Status outline colour (forwarded to `fold-avatar`). */
+  readonly ring = input<FoldAvatarRing>("none");
+  /** Ring line style (forwarded to `fold-avatar`). */
+  readonly ringStyle = input<FoldAvatarRingStyle>("solid");
 
   /** Falls back to the primary line when no explicit avatar name is given. */
   readonly resolvedAvatarName = computed(

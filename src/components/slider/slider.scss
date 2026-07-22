@@ -1,4 +1,4 @@
-// Shared slider thumb — used by both sh3-slider (single) and sh3-range-slider (dual).
+// Shared slider thumb — used by both fold-slider (single) and fold-range-slider (dual).
 @mixin thumb {
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -6,8 +6,8 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: var(--sh3-color-primary);
-    border: 2px solid var(--sh3-color-surface-card);
+    background: var(--fold-color-primary);
+    border: 2px solid var(--fold-color-surface-card);
     cursor: pointer;
     pointer-events: auto;
     transition: transform 0.1s ease;
@@ -19,8 +19,8 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: var(--sh3-color-primary);
-    border: 2px solid var(--sh3-color-surface-card);
+    background: var(--fold-color-primary);
+    border: 2px solid var(--fold-color-surface-card);
     cursor: pointer;
     pointer-events: auto;
   }

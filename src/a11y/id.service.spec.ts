@@ -1,12 +1,12 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, beforeEach } from "vitest";
-import { Sh3IdService } from "./id.service";
+import { FoldIdService } from "./id.service";
 
-describe("Sh3IdService", () => {
-  let service: Sh3IdService;
+describe("FoldIdService", () => {
+  let service: FoldIdService;
 
   beforeEach(() => {
-    service = TestBed.inject(Sh3IdService);
+    service = TestBed.inject(FoldIdService);
   });
 
   it("returns a monotonic sequence, never repeating", () => {
@@ -17,11 +17,11 @@ describe("Sh3IdService", () => {
   });
 
   it("applies the given prefix", () => {
-    expect(service.next("sh3-input")).toMatch(/^sh3-input-\d+$/);
-    expect(service.next("sh3-field")).toMatch(/^sh3-field-\d+$/);
+    expect(service.next("fold-input")).toMatch(/^fold-input-\d+$/);
+    expect(service.next("fold-field")).toMatch(/^fold-field-\d+$/);
   });
 
-  it("defaults the prefix to sh3", () => {
-    expect(service.next()).toMatch(/^sh3-\d+$/);
+  it("defaults the prefix to fold", () => {
+    expect(service.next()).toMatch(/^fold-\d+$/);
   });
 });

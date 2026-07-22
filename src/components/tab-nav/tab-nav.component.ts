@@ -1,21 +1,21 @@
 import { Component, input, output } from "@angular/core";
-import { Sh3BadgeComponent } from "../badge/badge.component";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldBadgeComponent } from "../badge/badge.component";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
-export type Sh3TabNavItem = {
+export type FoldTabNavItem = {
   /** Unique key — identifies the tab and is emitted on click. */
   key: string;
   /** Display label. */
   label: string;
-  /** Optional leading icon, by registry name (rendered as an `sh3-icon`). */
-  icon?: Sh3IconName;
+  /** Optional leading icon, by registry name (rendered as an `fold-icon`). */
+  icon?: FoldIconName;
   /** Optional trailing badge (e.g. a count). `undefined`/`null` hides it. */
   badge?: string | number | null;
 };
 
 /**
- * `<sh3-tab-nav>` — a tab navigation bar (buttons only; the parent renders the
+ * `<fold-tab-nav>` — a tab navigation bar (buttons only; the parent renders the
  * content for the active key).
  *
  * - `activeStyle` — `underline` (accent border on the active tab) or `fill`
@@ -23,11 +23,11 @@ export type Sh3TabNavItem = {
  * - `direction` — `horizontal` (row, equal-width) or `vertical` (stacked
  *   sidebar; auto-collapses to a horizontal icon-accordion at ≤768px).
  *
- * @selector `sh3-tab-nav`
+ * @selector `fold-tab-nav`
  *
  * @example
  * ```html
- * <sh3-tab-nav
+ * <fold-tab-nav
  *   [tabs]="[{ key: 'members', label: 'Members', badge: 3 }, { key: 'settings', label: 'Settings' }]"
  *   [activeKey]="tab()"
  *   activeStyle="underline"
@@ -37,18 +37,18 @@ export type Sh3TabNavItem = {
  * ```
  */
 @Component({
-  selector: "sh3-tab-nav",
+  selector: "fold-tab-nav",
   standalone: true,
-  imports: [Sh3IconComponent, Sh3BadgeComponent],
+  imports: [FoldIconComponent, FoldBadgeComponent],
   templateUrl: "./tab-nav.component.html",
-  // Inline + token-driven. Neutral 1px lines use --sh3-color-border /
+  // Inline + token-driven. Neutral 1px lines use --fold-color-border /
   // -surface-raised so they flip correctly in light mode (the app original
   // hard-coded white-alpha, which would vanish on a light background).
   styleUrl: "./tab-nav.component.scss",
 })
-export class Sh3TabNavComponent {
+export class FoldTabNavComponent {
   /** The tabs to render, in order. */
-  readonly tabs = input.required<Sh3TabNavItem[]>();
+  readonly tabs = input.required<FoldTabNavItem[]>();
 
   /** The `key` of the currently active tab. */
   readonly activeKey = input.required<string>();

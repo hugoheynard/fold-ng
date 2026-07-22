@@ -1,17 +1,17 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { Sh3RepeatPressDirective } from "./repeat-press.directive";
+import { FoldRepeatPressDirective } from "./repeat-press.directive";
 
 @Component({
   standalone: true,
-  imports: [Sh3RepeatPressDirective],
+  imports: [FoldRepeatPressDirective],
   template: `<button
-    sh3RepeatPress
-    [sh3RepeatPressDisabled]="disabled()"
-    [sh3RepeatPressDelay]="delay()"
-    [sh3RepeatPressPeriod]="period()"
-    (sh3RepeatPress)="onRepeat()"
+    foldRepeatPress
+    [foldRepeatPressDisabled]="disabled()"
+    [foldRepeatPressDelay]="delay()"
+    [foldRepeatPressPeriod]="period()"
+    (foldRepeatPress)="onRepeat()"
   >
     hold
   </button>`,
@@ -36,7 +36,7 @@ function render() {
   return { fixture, button, press, release, count };
 }
 
-describe("Sh3RepeatPressDirective", () => {
+describe("FoldRepeatPressDirective", () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 

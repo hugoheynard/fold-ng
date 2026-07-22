@@ -1,7 +1,7 @@
-<sh3-page-layout fluid class="home">
+<fold-page-layout fluid class="home">
   <!-- ── hero: a full-bleed band — a page-section that breaks the page gutter
        to span edge-to-edge, no longer a bordered card. ──────────── -->
-  <sh3-page-section bleed>
+  <fold-page-section bleed>
     <div class="home-hero">
       <!-- A giant gradient version number, blurred, behind the text — it is the
            hero's gradient, shaped. Decorative, so hidden from the a11y tree. -->
@@ -9,9 +9,9 @@
       <span class="home-version">v{{ version }}</span>
 
       <div class="home-mark">
-        <sh3-icon name="fold" [size]="52" title="Fold" />
+        <fold-icon name="fold" [size]="52" title="Fold" />
       </div>
-      <sh3-badge
+      <fold-badge
         class="home-eyebrow"
         content="Angular 22 · responsive · accessible"
         variant="accent"
@@ -26,21 +26,21 @@
         re-pointing tokens, never by touching a component.
       </p>
       <div class="home-cta">
-        <sh3-button routerLink="/app-shell" variant="primary" size="lg">
+        <fold-button routerLink="/app-shell" variant="primary" size="lg">
           Browse the library
-        </sh3-button>
-        <sh3-button routerLink="/themes" variant="ghost" size="lg">
+        </fold-button>
+        <fold-button routerLink="/themes" variant="ghost" size="lg">
           See the themes
-        </sh3-button>
+        </fold-button>
       </div>
     </div>
-  </sh3-page-section>
+  </fold-page-section>
 
   <!-- ── start now: above the layout, aligned with its centre column ── -->
   <div class="home-startnow-row">
-    <sh3-disclosure class="home-startnow" [(open)]="startNowOpen">
+    <fold-disclosure class="home-startnow" [(open)]="startNowOpen">
       <span summary class="home-startnow-summary">
-        <sh3-icon name="lightning" size="sm" />
+        <fold-icon name="lightning" size="sm" />
         <span>Start now</span>
         <span class="home-startnow-hint"
           >{{ startNowOpen() ? "hide" : "one command" }}</span
@@ -56,18 +56,18 @@
         </div>
         <pre
           class="home-terminal-body"
-        ><code><span class="home-terminal-line"><span class="home-terminal-prompt">$</span> npm install @sh3pherd/ui</span>
+        ><code><span class="home-terminal-line"><span class="home-terminal-prompt">$</span> npm install fold-ng</span>
 <span class="home-terminal-out">added 1 package in 1.4s</span>
 <span class="home-terminal-line"><span class="home-terminal-prompt">$</span> <span class="home-terminal-comment"># then import the tokens once, at your root</span></span>
-<span class="home-terminal-line"><span class="home-terminal-prompt">$</span> echo '@import "@sh3pherd/ui/tokens.css";' &gt;&gt; styles.css</span></code></pre>
+<span class="home-terminal-line"><span class="home-terminal-prompt">$</span> echo '@import "fold-ng/tokens.css";' &gt;&gt; styles.css</span></code></pre>
       </div>
-    </sh3-disclosure>
+    </fold-disclosure>
   </div>
 
   <!-- ── below: rails flank the feature cards ───────────────────── -->
-  <sh3-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
+  <fold-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
     <!-- left rail: one card, the numbers -->
-    <sh3-card asideLeft class="home-figures" separators raisedBands>
+    <fold-card asideLeft class="home-figures" separators raisedBands>
       <strong cardHeader>By the numbers</strong>
       <div class="home-figures-body">
         @for (s of stats; track s.label) {
@@ -77,34 +77,34 @@
         </div>
         }
       </div>
-    </sh3-card>
+    </fold-card>
 
     <!-- centre: the feature cards + close -->
 
     <section class="home-features">
       @for (f of features; track f.title) {
-      <sh3-card class="home-feature" separators raisedBands>
+      <fold-card class="home-feature" separators raisedBands>
         <div cardHeader class="home-feature-head">
           <span class="home-feature-icon">
-            <sh3-icon [name]="f.icon" size="md" />
+            <fold-icon [name]="f.icon" size="md" />
           </span>
           <strong>{{ f.title }}</strong>
         </div>
         <p class="gal-body">{{ f.body }}</p>
-      </sh3-card>
+      </fold-card>
       }
     </section>
 
-    <sh3-callout class="home-close" variant="accent">
+    <fold-callout class="home-close" variant="accent">
       Everything on this page — the cards, the buttons, this callout, the rails
       beside it — is Fold rendering itself.
-      <sh3-button actions routerLink="/card" size="sm" variant="ghost">
+      <fold-button actions routerLink="/card" size="sm" variant="ghost">
         Open a component
-      </sh3-button>
-    </sh3-callout>
+      </fold-button>
+    </fold-callout>
 
     <!-- right rail: support -->
-    <sh3-card asideRight class="home-support" separators raisedBands>
+    <fold-card asideRight class="home-support" separators raisedBands>
       <strong cardHeader>Support Fold</strong>
       <div class="home-support-body">
         <p class="gal-body">
@@ -113,9 +113,9 @@
           hi.
         </p>
 
-        <sh3-disclosure class="home-support-menu" [(open)]="supportOpen">
+        <fold-disclosure class="home-support-menu" [(open)]="supportOpen">
           <span summary class="home-support-summary">
-            <sh3-icon name="heart" size="sm" />
+            <fold-icon name="heart" size="sm" />
             <span>Support</span>
           </span>
           <div class="home-support-options">
@@ -125,7 +125,7 @@
               target="_blank"
               rel="noopener noreferrer"
             >
-              <sh3-icon name="paypal" size="sm" />
+              <fold-icon name="paypal" size="sm" />
               <span>Make a donation</span>
             </a>
             <a
@@ -134,7 +134,7 @@
               target="_blank"
               rel="noopener noreferrer"
             >
-              <sh3-icon name="star" size="sm" />
+              <fold-icon name="star" size="sm" />
               <span>Give it a star</span>
             </a>
             <a
@@ -143,19 +143,22 @@
               target="_blank"
               rel="noopener noreferrer"
             >
-              <sh3-icon name="x" size="sm" />
+              <fold-icon name="x" size="sm" />
               <span>Share on X</span>
             </a>
           </div>
-        </sh3-disclosure>
+        </fold-disclosure>
       </div>
-    </sh3-card>
+    </fold-card>
 
     <!-- right rail: the author -->
-    <sh3-card asideRight class="home-author" separators raisedBands>
+    <fold-card asideRight class="home-author" separators raisedBands>
       <strong cardHeader>About the author</strong>
       <div class="home-author-body">
-        <sh3-avatar-detail primary="Hugo Heynard" secondary="Built Fold solo" />
+        <fold-avatar-detail
+          primary="Hugo Heynard"
+          secondary="Built Fold solo"
+        />
         <div class="home-links">
           <a
             class="home-link"
@@ -163,7 +166,7 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <sh3-icon name="github" size="sm" />
+            <fold-icon name="github" size="sm" />
             <span>GitHub</span>
           </a>
           <a
@@ -172,15 +175,15 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <sh3-icon name="linkedin" size="sm" />
+            <fold-icon name="linkedin" size="sm" />
             <span>LinkedIn</span>
           </a>
           <a class="home-link" href="mailto:hheynard@gmail.com">
-            <sh3-icon name="mail" size="sm" />
+            <fold-icon name="mail" size="sm" />
             <span>hheynard&#64;gmail.com</span>
           </a>
         </div>
       </div>
-    </sh3-card>
-  </sh3-aside-layout>
-</sh3-page-layout>
+    </fold-card>
+  </fold-aside-layout>
+</fold-page-layout>

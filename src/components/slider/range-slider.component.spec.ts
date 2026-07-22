@@ -2,14 +2,14 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import {
-  Sh3RangeSliderComponent,
-  type Sh3RangeValue,
+  FoldRangeSliderComponent,
+  type FoldRangeValue,
 } from "./range-slider.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3RangeSliderComponent],
-  template: `<sh3-range-slider
+  imports: [FoldRangeSliderComponent],
+  template: `<fold-range-slider
     label="BPM"
     [min]="min()"
     [max]="max()"
@@ -24,9 +24,9 @@ class HostComponent {
   readonly max = signal(100);
   readonly step = signal(1);
   readonly unit = signal<"number" | "duration">("number");
-  readonly value = signal<Sh3RangeValue | undefined>(undefined);
-  readonly last = signal<Sh3RangeValue | undefined>(undefined);
-  onChange(v: Sh3RangeValue): void {
+  readonly value = signal<FoldRangeValue | undefined>(undefined);
+  readonly last = signal<FoldRangeValue | undefined>(undefined);
+  onChange(v: FoldRangeValue): void {
     this.last.set(v);
   }
 }
@@ -35,14 +35,14 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const host = fixture.nativeElement.querySelector(
-    "sh3-range-slider",
+    "fold-range-slider",
   ) as HTMLElement;
   const min = host.querySelector(".rs-thumb--min") as HTMLInputElement;
   const max = host.querySelector(".rs-thumb--max") as HTMLInputElement;
   return { fixture, host, min, max };
 }
 
-describe("Sh3RangeSliderComponent", () => {
+describe("FoldRangeSliderComponent", () => {
   it("renders two range thumbs", () => {
     const { min, max } = render();
     expect(min.getAttribute("type")).toBe("range");

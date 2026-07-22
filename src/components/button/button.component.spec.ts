@@ -1,16 +1,16 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3ButtonComponent } from "./button.component";
+import { FoldButtonComponent } from "./button.component";
 
 function mount() {
-  const fixture = TestBed.createComponent(Sh3ButtonComponent);
+  const fixture = TestBed.createComponent(FoldButtonComponent);
   const host = fixture.nativeElement as HTMLElement;
   fixture.detectChanges();
   const button = host.querySelector("button") as HTMLButtonElement;
   return { fixture, host, button };
 }
 
-describe("Sh3ButtonComponent", () => {
+describe("FoldButtonComponent", () => {
   it("renders a native button, type=button by default", () => {
     const { button } = mount();
     expect(button).toBeTruthy();
@@ -51,13 +51,13 @@ describe("Sh3ButtonComponent", () => {
 
   it("renders a leading/trailing icon shorthand sized from the button", () => {
     const { fixture, button } = mount();
-    expect(button.querySelector("sh3-icon")).toBeNull();
+    expect(button.querySelector("fold-icon")).toBeNull();
 
     fixture.componentRef.setInput("icon", "check");
     fixture.componentRef.setInput("iconTrailing", "chevron-right");
     fixture.componentRef.setInput("size", "lg");
     fixture.detectChanges();
-    const icons = button.querySelectorAll("sh3-icon");
+    const icons = button.querySelectorAll("fold-icon");
     expect(icons.length).toBe(2);
     // lg → 18px, derived (not hand-passed) so it stays consistent
     expect(fixture.componentInstance.iconSize()).toBe(18);

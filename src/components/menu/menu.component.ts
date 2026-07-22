@@ -12,7 +12,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
+import { FoldIconComponent } from "../icon/icon.component";
 
 /**
  * How menu items colour on hover and when active:
@@ -21,24 +21,24 @@ import { Sh3IconComponent } from "../icon/icon.component";
  * - `neutral` — a plain grey tint, no accent.
  * - `primary` — the app's primary accent.
  */
-export type Sh3MenuTint = "follow" | "neutral" | "primary";
+export type FoldMenuTint = "follow" | "neutral" | "primary";
 
 /**
  * The rail's depth in the shell hierarchy — picks its background tint so a
  * primary rail and a secondary (e.g. workspace) rail read as different layers:
  * `primary` (default) · `secondary` · `tertiary`.
  */
-export type Sh3MenuLevel = "primary" | "secondary" | "tertiary";
+export type FoldMenuLevel = "primary" | "secondary" | "tertiary";
 
 /**
  * Where the collapse toggle sits. `auto` follows band presence (first in the
  * footer, else last in the header, else last in the body); the others pin it to
  * a specific band.
  */
-export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
+export type FoldMenuTogglePlacement = "auto" | "footer" | "header" | "body";
 
 /**
- * `<sh3-menu>` — a vertical icon navigation rail (the app's primary menu shell).
+ * `<fold-menu>` — a vertical icon navigation rail (the app's primary menu shell).
  *
  * Structural + presentational: it owns the rail column, its top/body/bottom
  * bands and the tooltip escape (`overflow: visible`); the app fills the slots
@@ -54,27 +54,27 @@ export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
  * | Attribute   | Band                                                        |
  * |-------------|-------------------------------------------------------------|
  * | `header`    | Top — brand, workspace launcher, dividers.                  |
- * | *(default)* | The nav items — `[sh3-menu-item]` + `<sh3-menu-separator>`. |
+ * | *(default)* | The nav items — `[fold-menu-item]` + `<fold-menu-separator>`. |
  * | `footer`    | Bottom (pinned) — secondary actions, account. Hidden when empty. |
  *
- * @selector `sh3-menu`
+ * @selector `fold-menu`
  *
  * @example
  * ```html
- * <sh3-menu collapsible [(expanded)]="open()">
+ * <fold-menu collapsible [(expanded)]="open()">
  *   <div header>…brand…</div>
- *   <sh3-menu-separator label="Workspace" color="#7c5bbf" />
- *   <a sh3-menu-item [icon]="i.icon" [label]="i.label"
+ *   <fold-menu-separator label="Workspace" color="#7c5bbf" />
+ *   <a fold-menu-item [icon]="i.icon" [label]="i.label"
  *      [routerLink]="i.route" routerLinkActive #r="routerLinkActive"
  *      [active]="r.isActive"></a>
  *   <div footer>…account…</div>
- * </sh3-menu>
+ * </fold-menu>
  * ```
  */
 @Component({
-  selector: "sh3-menu",
+  selector: "fold-menu",
   standalone: true,
-  imports: [Sh3IconComponent, NgTemplateOutlet],
+  imports: [FoldIconComponent, NgTemplateOutlet],
   templateUrl: "./menu.component.html",
   styleUrl: "./menu.component.scss",
   host: {
@@ -83,7 +83,7 @@ export type Sh3MenuTogglePlacement = "auto" | "footer" | "header" | "body";
     "[attr.data-level]": "level()",
   },
 })
-export class Sh3MenuComponent {
+export class FoldMenuComponent {
   /** Show a chevron toggle that flips `expanded`. */
   readonly collapsible = input(false, { transform: booleanAttribute });
   /**
@@ -93,11 +93,11 @@ export class Sh3MenuComponent {
    */
   readonly expanded = model(false);
   /** How items tint on hover / when active (`follow` = section colour). */
-  readonly tint = input<Sh3MenuTint>("follow");
+  readonly tint = input<FoldMenuTint>("follow");
   /** Rail depth → background tint (`primary` default / `secondary` / `tertiary`). */
-  readonly level = input<Sh3MenuLevel>("primary");
+  readonly level = input<FoldMenuLevel>("primary");
   /** Pin the collapse toggle to a band, or `auto` to follow band presence. */
-  readonly togglePlacement = input<Sh3MenuTogglePlacement>("auto");
+  readonly togglePlacement = input<FoldMenuTogglePlacement>("auto");
 
   private readonly headRef =
     viewChild.required<ElementRef<HTMLElement>>("head");

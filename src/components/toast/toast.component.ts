@@ -7,12 +7,12 @@ import {
   numberAttribute,
   output,
 } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
-import type { Sh3ToastVariant } from "./toast.types";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
+import type { FoldToastVariant } from "./toast.types";
 
 /** Variant → leading status icon. */
-const VARIANT_ICON: Record<Sh3ToastVariant, Sh3IconName> = {
+const VARIANT_ICON: Record<FoldToastVariant, FoldIconName> = {
   success: "check-circle",
   info: "info",
   warning: "warning",
@@ -20,9 +20,9 @@ const VARIANT_ICON: Record<Sh3ToastVariant, Sh3IconName> = {
 };
 
 /**
- * `<sh3-toast>` — a single frosted-glass snackbar: a variant status icon, the
+ * `<fold-toast>` — a single frosted-glass snackbar: a variant status icon, the
  * message (projected), and an optional dismiss button. The stacking + queue
- * belong to `sh3-toast-container` + {@link Sh3ToastService}; the toast itself
+ * belong to `fold-toast-container` + {@link FoldToastService}; the toast itself
  * owns its **lifecycle** — it emits {@link dismiss} on its close button and, if
  * given a `duration`, auto-emits `dismiss` after it elapses (the timer is
  * cleared on destroy). `duration = 0` (the default) is sticky — it stays until
@@ -33,15 +33,15 @@ const VARIANT_ICON: Record<Sh3ToastVariant, Sh3IconName> = {
  * an `alert` (assertive) for `error`, a `status` (polite) otherwise.
  *
  * ```html
- * <sh3-toast variant="success" duration="3000" (dismiss)="…">Track uploaded</sh3-toast>
+ * <fold-toast variant="success" duration="3000" (dismiss)="…">Track uploaded</fold-toast>
  * ```
  *
- * @selector `sh3-toast`
+ * @selector `fold-toast`
  */
 @Component({
-  selector: "sh3-toast",
+  selector: "fold-toast",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   templateUrl: "./toast.component.html",
   styleUrl: "./toast.component.scss",
   host: {
@@ -50,9 +50,9 @@ const VARIANT_ICON: Record<Sh3ToastVariant, Sh3IconName> = {
     "[attr.aria-live]": 'variant() === "error" ? "assertive" : "polite"',
   },
 })
-export class Sh3ToastComponent {
+export class FoldToastComponent {
   /** The tone — drives the accent stripe, icon, and live-region politeness. */
-  readonly variant = input<Sh3ToastVariant>("info");
+  readonly variant = input<FoldToastVariant>("info");
   /** Show the dismiss button. */
   readonly dismissible = input(true, { transform: booleanAttribute });
   /** Auto-dismiss after this many ms. `0` (default) is sticky — no timer. */
@@ -62,7 +62,7 @@ export class Sh3ToastComponent {
   readonly dismiss = output<void>();
 
   /** The leading status icon for the current variant. */
-  readonly icon = computed<Sh3IconName>(() => VARIANT_ICON[this.variant()]);
+  readonly icon = computed<FoldIconName>(() => VARIANT_ICON[this.variant()]);
 
   constructor() {
     // The toast owns its own expiry: (re)arm a timer whenever `duration` is a

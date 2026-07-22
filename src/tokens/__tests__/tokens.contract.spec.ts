@@ -3,13 +3,13 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it, expect } from "vitest";
 import {
-  SH3_SEMANTIC_COLOR_TOKENS,
-  SH3_RADIUS_TOKENS,
-  SH3_TEXT_TOKENS,
-  SH3_SPACE_TOKENS,
-  SH3_MOTION_TOKENS,
-  SH3_BLUR_TOKENS,
-  SH3_SHADOW_TOKENS,
+  FOLD_SEMANTIC_COLOR_TOKENS,
+  FOLD_RADIUS_TOKENS,
+  FOLD_TEXT_TOKENS,
+  FOLD_SPACE_TOKENS,
+  FOLD_MOTION_TOKENS,
+  FOLD_BLUR_TOKENS,
+  FOLD_SHADOW_TOKENS,
 } from "../tokens.catalog";
 import { readdirSync } from "node:fs";
 
@@ -55,14 +55,14 @@ function stripComments(css: string): string {
 const primitives = readCss("primitives.css");
 const semantic = readCss("semantic.css");
 const scales = readCss("scales.css");
-const expectedSemantic = SH3_SEMANTIC_COLOR_TOKENS.map(
-  (t) => `--sh3-color-${t}`,
+const expectedSemantic = FOLD_SEMANTIC_COLOR_TOKENS.map(
+  (t) => `--fold-color-${t}`,
 );
 
 describe("token contract · catalogue ↔ CSS", () => {
   it("the DARK base (:root) declares exactly the catalogue colours", () => {
     const declared = declaredVars(block(semantic, ":root")).filter((v) =>
-      v.startsWith("--sh3-color-"),
+      v.startsWith("--fold-color-"),
     );
     expect(new Set(declared)).toEqual(new Set(expectedSemantic));
   });
@@ -97,12 +97,12 @@ describe("token contract · catalogue ↔ CSS", () => {
   it("scales.css declares exactly the radius + type + space + motion + shadow catalogue", () => {
     const declared = declaredVars(block(scales, ":root"));
     const expected = [
-      ...SH3_RADIUS_TOKENS.map((t) => `--sh3-radius-${t}`),
-      ...SH3_TEXT_TOKENS.map((t) => `--sh3-text-${t}`),
-      ...SH3_SPACE_TOKENS.map((t) => `--sh3-space-${t}`),
-      ...SH3_MOTION_TOKENS.map((t) => `--sh3-motion-${t}`),
-      ...SH3_BLUR_TOKENS.map((t) => `--sh3-blur-${t}`),
-      ...SH3_SHADOW_TOKENS.map((t) => `--sh3-shadow-${t}`),
+      ...FOLD_RADIUS_TOKENS.map((t) => `--fold-radius-${t}`),
+      ...FOLD_TEXT_TOKENS.map((t) => `--fold-text-${t}`),
+      ...FOLD_SPACE_TOKENS.map((t) => `--fold-space-${t}`),
+      ...FOLD_MOTION_TOKENS.map((t) => `--fold-motion-${t}`),
+      ...FOLD_BLUR_TOKENS.map((t) => `--fold-blur-${t}`),
+      ...FOLD_SHADOW_TOKENS.map((t) => `--fold-shadow-${t}`),
     ];
     expect(new Set(declared)).toEqual(new Set(expected));
   });
@@ -112,16 +112,18 @@ describe("token contract · layering integrity", () => {
   it("every primitive a semantic token points at is defined", () => {
     const defined = new Set(declaredVars(block(primitives, ":root")));
     // Only primitive references must resolve here; a semantic token may also
-    // read another semantic role (e.g. a surface resolving `--sh3-color-text`).
+    // read another semantic role (e.g. a surface resolving `--fold-color-text`).
     const dangling = referencedVars(semantic).filter(
-      (v) => v.startsWith("--sh3-ref-") && !defined.has(v),
+      (v) => v.startsWith("--fold-ref-") && !defined.has(v),
     );
     expect(dangling).toEqual([]);
   });
 
   it("semantic colours reference primitives only, never a raw hex", () => {
     const values = [
-      ...stripComments(semantic).matchAll(/--sh3-color-[\w-]+\s*:\s*([^;]+);/g),
+      ...stripComments(semantic).matchAll(
+        /--fold-color-[\w-]+\s*:\s*([^;]+);/g,
+      ),
     ].map((m) => (m[1] as string).trim());
     // Values may be `var(...)` or `color-mix(... var(...) ...)` — never a hex.
     const withRawHex = values.filter((v) => /#[0-9a-fA-F]{3,}/.test(v));
@@ -138,10 +140,10 @@ describe("token contract · layering integrity", () => {
 
   it("the theme layer names no component internals (surfaces by contract)", () => {
     // A theme must not reach into a component's markup: a per-region override
-    // targets [data-surface] (the `[sh3Surface]` contract), never a class name
+    // targets [data-surface] (the `[foldSurface]` contract), never a class name
     // — a renamed rail would otherwise break a theme silently and untested.
     const css = stripComments(semantic);
-    expect(css).not.toContain("sh3-app-shell");
+    expect(css).not.toContain("fold-app-shell");
     expect(css).not.toMatch(/\.rail-(primary|secondary)\b/);
     expect(css).not.toMatch(/\.(header|content)\s*[,{]/);
   });
@@ -167,13 +169,13 @@ describe("token contract · theme invariance", () => {
       const declared = declaredVars(
         block(normalised, `[data-theme="${theme}"]`),
       );
-      const offenders = declared.filter((v) => !v.startsWith("--sh3-radius-"));
+      const offenders = declared.filter((v) => !v.startsWith("--fold-radius-"));
       expect(offenders, `theme "${theme}" re-scales more than radius`).toEqual(
         [],
       );
       // And every step it does declare must be a real catalogue step.
       const unknown = declared.filter(
-        (v) => !SH3_RADIUS_TOKENS.some((t) => v === `--sh3-radius-${t}`),
+        (v) => !FOLD_RADIUS_TOKENS.some((t) => v === `--fold-radius-${t}`),
       );
       expect(unknown, `theme "${theme}" declares an unknown radius`).toEqual(
         [],
@@ -223,8 +225,8 @@ function componentStyles(): { file: string; css: string }[] {
 
 describe("token contract · components consume tokens only", () => {
   // A component style must not spell a raw colour or shadow — it names a token.
-  // Colours come from `var(--sh3-color-*)` / `color-mix(… var …)`; depth from
-  // `var(--sh3-shadow-*)`. `currentColor` / `transparent` are colour-free.
+  // Colours come from `var(--fold-color-*)` / `color-mix(… var …)`; depth from
+  // `var(--fold-shadow-*)`. `currentColor` / `transparent` are colour-free.
   const RAW_COLOUR = /#[0-9a-fA-F]{3,8}\b|(?<![\w-])rgba?\(|hsla?\(/;
 
   it("no component style hard-codes a colour or shadow (rgba / hsl / hex)", () => {
@@ -234,14 +236,14 @@ describe("token contract · components consume tokens only", () => {
     expect([...new Set(offenders)]).toEqual([]);
   });
 
-  // A typo like `--sh3-color-text-primary` (the token is `--sh3-color-text`)
+  // A typo like `--fold-color-text-primary` (the token is `--fold-color-text`)
   // resolves to an invalid value and the element silently inherits its colour.
   // The parity/no-hex checks miss it — this closes that gap.
-  it("every --sh3-color-* a component references is a declared semantic token", () => {
+  it("every --fold-color-* a component references is a declared semantic token", () => {
     const declared = new Set(expectedSemantic);
     const offenders = componentStyles().flatMap(({ file, css }) =>
       referencedVars(css)
-        .filter((v) => v.startsWith("--sh3-color-") && !declared.has(v))
+        .filter((v) => v.startsWith("--fold-color-") && !declared.has(v))
         .map((v) => `${v} in ${file.slice(file.indexOf("/src/") + 1)}`),
     );
     expect([...new Set(offenders)]).toEqual([]);

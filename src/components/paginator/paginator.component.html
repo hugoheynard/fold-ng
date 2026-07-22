@@ -36,7 +36,7 @@
     (click)="prev()"
     aria-label="Page précédente"
   >
-    <sh3-icon name="chevron-left" [size]="15" />
+    <fold-icon name="chevron-left" [size]="15" />
   </button>
 
   @for (item of pageItems(); track $index) {
@@ -64,6 +64,6 @@
     (click)="next()"
     aria-label="Page suivante"
   >
-    <sh3-icon name="chevron-right" [size]="15" />
+    <fold-icon name="chevron-right" [size]="15" />
   </button>
 </nav>

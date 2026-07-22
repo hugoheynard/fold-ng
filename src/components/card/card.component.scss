@@ -3,47 +3,47 @@
    never padding — so the body's padding is identical whether or not the bands
    are shown (toggling a header/footer never shifts the content). */
 :host {
-  /* body padding (the `padding` input); override any value with --sh3-card-padding */
+  /* body padding (the `padding` input); override any value with --fold-card-padding */
   --_pad: 16px;
   /* header/footer padding, independent of the body so a padding=none card can
      still have padded chrome (e.g. a titled panel with a flush body). */
   --_chrome: 12px 16px;
   /* corner radius, shared with the bands so a raised/bordered band never squares
      off the rounded card. */
-  --_radius: var(--sh3-radius-lg);
+  --_radius: var(--fold-radius-lg);
   /* raisedBands lift (a solid elevation surface, clearly a step above the body)
      + separators hairline. */
-  --_band-raise: var(--sh3-color-surface-hover);
-  --_sep-line: var(--sh3-color-border-subtle);
+  --_band-raise: var(--fold-color-surface-hover);
+  --_sep-line: var(--fold-color-border-subtle);
 
   display: flex;
   flex-direction: column;
-  background: var(--sh3-color-surface-card);
-  border: 1px solid var(--sh3-color-border);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border);
   border-radius: var(--_radius);
-  /* Clip to the radius so anything full-bleed inside — a flat sh3-callout, an
+  /* Clip to the radius so anything full-bleed inside — a flat fold-callout, an
      image, a table header — follows the corners. The bands round themselves,
      but projected content cannot.
 
      `clip`, not `hidden`: hidden would make the card a scroll container and
-     break a `position: sticky` child. Override with --sh3-card-overflow on the
+     break a `position: sticky` child. Override with --fold-card-overflow on the
      rare card that must let content escape. */
-  overflow: var(--sh3-card-overflow, clip);
+  overflow: var(--fold-card-overflow, clip);
 }
 
 /* Sunken — a deeper container; pairs with a fainter hairline + a subtler raise
    (one step up = the card surface). */
 :host(.s-sunken) {
-  background: var(--sh3-color-surface-sunken);
-  border-color: var(--sh3-color-border-subtle);
-  --_band-raise: var(--sh3-color-surface-card);
+  background: var(--fold-color-surface-sunken);
+  border-color: var(--fold-color-border-subtle);
+  --_band-raise: var(--fold-color-surface-card);
 }
 
 :host(.r-md) {
-  --_radius: var(--sh3-radius-md);
+  --_radius: var(--fold-radius-md);
 }
 :host(.r-sm) {
-  --_radius: var(--sh3-radius-sm);
+  --_radius: var(--fold-radius-sm);
 }
 :host(.p-none) {
   --_pad: 0;
@@ -81,7 +81,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: var(--sh3-card-padding, var(--_pad));
+  padding: var(--fold-card-padding, var(--_pad));
 }
 
 /* ── Optional chrome — independent, so each toggles on its own ────────────── */
@@ -109,5 +109,5 @@
 }
 :host(.is-interactive:hover) {
   transform: translateY(-2px);
-  box-shadow: var(--sh3-shadow-md);
+  box-shadow: var(--fold-shadow-md);
 }

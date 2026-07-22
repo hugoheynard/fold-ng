@@ -1,16 +1,16 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3FieldComponent } from "./field.component";
+import { FoldFieldComponent } from "./field.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3FieldComponent],
-  template: `<sh3-field
+  imports: [FoldFieldComponent],
+  template: `<fold-field
     [label]="label()"
     [empty]="empty()"
     [placeholder]="placeholder()"
-    >{{ value() }}</sh3-field
+    >{{ value() }}</fold-field
   >`,
 })
 class HostComponent {
@@ -23,11 +23,11 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const el = fixture.nativeElement.querySelector("sh3-field") as HTMLElement;
+  const el = fixture.nativeElement.querySelector("fold-field") as HTMLElement;
   return { fixture, el };
 }
 
-describe("Sh3FieldComponent", () => {
+describe("FoldFieldComponent", () => {
   it("renders the label as a dt and the projected value as a dd", () => {
     const { el } = render();
     const dt = el.querySelector("dt.fl-key");

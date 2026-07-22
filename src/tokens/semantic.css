@@ -27,295 +27,317 @@
 /* ── Base theme: UMBRA (dark) ─────────────────────────────── */
 :root {
   /* Surfaces (bg- = a fill role, darkest chrome → lightest page) */
-  --sh3-color-bg-page: var(--sh3-ref-ink-850); /* page background        */
-  --sh3-color-bg-header: var(--sh3-ref-ink-950); /* top header bar        */
-  --sh3-color-bg-rail-primary: var(
-    --sh3-ref-ink-925
+  --fold-color-bg-page: var(--fold-ref-ink-850); /* page background        */
+  --fold-color-bg-header: var(--fold-ref-ink-950); /* top header bar        */
+  --fold-color-bg-rail-primary: var(
+    --fold-ref-ink-925
   ); /* rail 1 — app menu       */
-  --sh3-color-bg-rail-secondary: var(
-    --sh3-ref-ink-900
+  --fold-color-bg-rail-secondary: var(
+    --fold-ref-ink-900
   ); /* rail 2 — workspace menu */
-  --sh3-color-bg-rail-tertiary: color-mix(
+  --fold-color-bg-rail-tertiary: color-mix(
     in srgb,
-    var(--sh3-ref-white) 3%,
+    var(--fold-ref-white) 3%,
     transparent
   ); /* rail 3 — faint overlay */
 
   /* Primary / accent */
-  --sh3-color-primary: var(--sh3-ref-teal-500);
-  --sh3-color-primary-strong: var(--sh3-ref-teal-400); /* hover/active */
-  --sh3-color-on-primary: var(
-    --sh3-ref-white
+  --fold-color-primary: var(--fold-ref-teal-500);
+  --fold-color-primary-strong: var(--fold-ref-teal-400); /* hover/active */
+  --fold-color-on-primary: var(
+    --fold-ref-white
   ); /* text/icon on a solid primary fill */
-  --sh3-color-primary-text: var(--sh3-ref-teal-400);
-  --sh3-color-primary-surface: color-mix(
+  --fold-color-primary-text: var(--fold-ref-teal-400);
+  --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--sh3-ref-teal-500) 14%,
+    var(--fold-ref-teal-500) 14%,
     transparent
   );
-  --sh3-color-primary-border: color-mix(
+  --fold-color-primary-border: color-mix(
     in srgb,
-    var(--sh3-ref-teal-500) 35%,
+    var(--fold-ref-teal-500) 35%,
     transparent
   );
 
   /* Info (purple) */
-  --sh3-color-info: var(--sh3-ref-purple-500);
-  --sh3-color-info-text: var(--sh3-ref-purple-300);
-  --sh3-color-info-surface: color-mix(
+  --fold-color-info: var(--fold-ref-purple-500);
+  --fold-color-info-text: var(--fold-ref-purple-300);
+  --fold-color-info-surface: color-mix(
     in srgb,
-    var(--sh3-ref-purple-400) 12%,
+    var(--fold-ref-purple-400) 12%,
     transparent
   );
-  --sh3-color-info-border: color-mix(
+  --fold-color-info-border: color-mix(
     in srgb,
-    var(--sh3-ref-purple-400) 30%,
+    var(--fold-ref-purple-400) 30%,
     transparent
   );
 
   /* Warning (amber) */
-  --sh3-color-warning: var(--sh3-ref-amber-500);
-  --sh3-color-warning-text: var(--sh3-ref-amber-300);
-  --sh3-color-warning-surface: color-mix(
+  --fold-color-warning: var(--fold-ref-amber-500);
+  --fold-color-warning-text: var(--fold-ref-amber-300);
+  --fold-color-warning-surface: color-mix(
     in srgb,
-    var(--sh3-ref-amber-500) 14%,
+    var(--fold-ref-amber-500) 14%,
     transparent
   );
-  --sh3-color-warning-border: color-mix(
+  --fold-color-warning-border: color-mix(
     in srgb,
-    var(--sh3-ref-amber-300) 30%,
+    var(--fold-ref-amber-300) 30%,
     transparent
   );
 
   /* Alert (red) */
-  --sh3-color-alert: var(--sh3-ref-red-500);
-  --sh3-color-alert-text: var(--sh3-ref-red-400);
-  --sh3-color-alert-surface: color-mix(
+  --fold-color-alert: var(--fold-ref-red-500);
+  --fold-color-alert-text: var(--fold-ref-red-400);
+  --fold-color-alert-surface: color-mix(
     in srgb,
-    var(--sh3-ref-red-500) 12%,
+    var(--fold-ref-red-500) 12%,
     transparent
   );
-  --sh3-color-alert-border: color-mix(
+  --fold-color-alert-border: color-mix(
     in srgb,
-    var(--sh3-ref-red-400) 35%,
+    var(--fold-ref-red-400) 35%,
     transparent
   );
 
   /* Success (green) */
-  --sh3-color-success: var(--sh3-ref-green-500);
-  --sh3-color-success-text: var(--sh3-ref-green-300);
-  --sh3-color-success-surface: color-mix(
+  --fold-color-success: var(--fold-ref-green-500);
+  --fold-color-success-text: var(--fold-ref-green-300);
+  --fold-color-success-surface: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 14%,
+    var(--fold-ref-green-500) 14%,
     transparent
   );
-  --sh3-color-success-border: color-mix(
+  --fold-color-success-border: color-mix(
     in srgb,
-    var(--sh3-ref-green-300) 30%,
+    var(--fold-ref-green-300) 30%,
     transparent
   );
 
   /* Text */
-  --sh3-color-text: var(--sh3-ref-slate-50);
-  --sh3-color-text-secondary: var(--sh3-ref-slate-400);
-  --sh3-color-text-muted: var(--sh3-ref-slate-500);
-  --sh3-color-text-faded: var(--sh3-ref-slate-700);
+  --fold-color-text: var(--fold-ref-slate-50);
+  --fold-color-text-secondary: var(--fold-ref-slate-400);
+  --fold-color-text-muted: var(--fold-ref-slate-500);
+  --fold-color-text-faded: var(--fold-ref-slate-700);
 
   /* Card — a solid raised content surface (opaque, unlike the alpha overlays) */
-  --sh3-color-surface-card: var(--sh3-ref-ink-800);
+  --fold-color-surface-card: var(--fold-ref-ink-800);
   /* Sunken — a deeper solid surface for large content containers (data tables,
      page-level cards). Sits below `surface-card`: darker than the card, lighter
      than the page. */
-  --sh3-color-surface-sunken: color-mix(
+  --fold-color-surface-sunken: color-mix(
     in srgb,
-    var(--sh3-ref-ink-800) 35%,
-    var(--sh3-ref-ink-850)
+    var(--fold-ref-ink-800) 35%,
+    var(--fold-ref-ink-850)
   );
 
   /* Neutral surfaces + border — alpha overlays (white on dark) */
-  --sh3-color-surface-subtle: color-mix(
+  --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-white) 3%,
+    var(--fold-ref-white) 3%,
     transparent
   );
-  --sh3-color-surface-raised: color-mix(
+  --fold-color-surface-raised: color-mix(
     in srgb,
-    var(--sh3-ref-white) 5%,
+    var(--fold-ref-white) 5%,
     transparent
   );
-  --sh3-color-surface-hover: var(--sh3-ref-ink-700); /* solid raised hover */
-  --sh3-color-border: color-mix(in srgb, var(--sh3-ref-white) 8%, transparent);
+  --fold-color-surface-hover: var(--fold-ref-ink-700); /* solid raised hover */
+  --fold-color-border: color-mix(
+    in srgb,
+    var(--fold-ref-white) 8%,
+    transparent
+  );
   /* Fainter hairline — row dividers, subtle panel edges (below `border`). */
-  --sh3-color-border-subtle: color-mix(
+  --fold-color-border-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-white) 4%,
+    var(--fold-ref-white) 4%,
     transparent
   );
 
   /* Glass — translucent frosted overlay (panels, floating menus) */
-  --sh3-color-glass: color-mix(
+  --fold-color-glass: color-mix(
     in srgb,
-    var(--sh3-ref-ink-950) 55%,
+    var(--fold-ref-ink-950) 55%,
     transparent
   );
-  --sh3-color-glass-border: color-mix(
+  --fold-color-glass-border: color-mix(
     in srgb,
-    var(--sh3-ref-white) 13%,
+    var(--fold-ref-white) 13%,
     transparent
   );
 
   /* Scrim — a darkening veil behind the mobile nav drawer. */
-  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 55%, transparent);
+  --fold-color-scrim: color-mix(
+    in srgb,
+    var(--fold-ref-black) 55%,
+    transparent
+  );
 }
 
 /* ── Named surfaces ───────────────────────────────────────────
-   A `[data-surface]` (stamped by the `[sh3Surface]` directive) resolves its own
-   text, so a theme that re-declares `--sh3-color-text` for one surface actually
+   A `[data-surface]` (stamped by the `[foldSurface]` directive) resolves its own
+   text, so a theme that re-declares `--fold-color-text` for one surface actually
    lands there — a custom-property override reaches only what is resolved inside
    the subtree, never a colour already inherited from an ancestor. Inert under a
    uniform theme; the seam a mixed theme (navi) overrides across. */
 [data-surface] {
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
 }
 
 /* ── Elevated surfaces ────────────────────────────────────────
-   A `[data-elevated]` (stamped by the `[sh3Elevated]` directive) is a raised
+   A `[data-elevated]` (stamped by the `[foldElevated]` directive) is a raised
    card: radius + shadow, riding on the element's own background so its colour
    stays its own. It does NOT inset itself — elevation ≠ inset. The gutter around
    a floating region is the *container's* job (padding on the slot), never a
    child margin, so a `height: 100%` region fits with no overflow. Radius/shadow
    are tokenised, so a scope can dial the elevation without a prop. */
 [data-elevated] {
-  border-radius: var(--sh3-surface-radius, var(--sh3-radius-lg));
-  box-shadow: var(--sh3-surface-shadow, var(--sh3-shadow-md));
+  border-radius: var(--fold-surface-radius, var(--fold-radius-lg));
+  box-shadow: var(--fold-surface-shadow, var(--fold-shadow-md));
 }
 
 /* ── Override theme: LUMEN (light) ────────────────────────── */
 [data-theme="lumen"] {
   /* Surfaces */
-  --sh3-color-bg-page: var(--sh3-ref-cloud-100);
-  --sh3-color-bg-header: var(--sh3-ref-white);
-  --sh3-color-bg-rail-primary: var(--sh3-ref-cloud-150);
-  --sh3-color-bg-rail-secondary: var(--sh3-ref-cloud-50);
-  --sh3-color-bg-rail-tertiary: color-mix(
+  --fold-color-bg-page: var(--fold-ref-cloud-100);
+  --fold-color-bg-header: var(--fold-ref-white);
+  --fold-color-bg-rail-primary: var(--fold-ref-cloud-150);
+  --fold-color-bg-rail-secondary: var(--fold-ref-cloud-50);
+  --fold-color-bg-rail-tertiary: color-mix(
     in srgb,
-    var(--sh3-ref-black) 2%,
+    var(--fold-ref-black) 2%,
     transparent
   );
 
   /* Primary / accent — brand mutes on light, hover darkens further */
-  --sh3-color-primary: var(--sh3-ref-teal-550);
-  --sh3-color-primary-strong: var(--sh3-ref-teal-600);
-  --sh3-color-on-primary: var(--sh3-ref-white);
-  --sh3-color-primary-text: var(--sh3-ref-teal-500);
-  --sh3-color-primary-surface: color-mix(
+  --fold-color-primary: var(--fold-ref-teal-550);
+  --fold-color-primary-strong: var(--fold-ref-teal-600);
+  --fold-color-on-primary: var(--fold-ref-white);
+  --fold-color-primary-text: var(--fold-ref-teal-500);
+  --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--sh3-ref-teal-500) 8%,
+    var(--fold-ref-teal-500) 8%,
     transparent
   );
-  --sh3-color-primary-border: color-mix(
+  --fold-color-primary-border: color-mix(
     in srgb,
-    var(--sh3-ref-teal-500) 25%,
+    var(--fold-ref-teal-500) 25%,
     transparent
   );
 
   /* Info (purple) */
-  --sh3-color-info: var(--sh3-ref-purple-600);
-  --sh3-color-info-text: var(--sh3-ref-purple-500);
-  --sh3-color-info-surface: color-mix(
+  --fold-color-info: var(--fold-ref-purple-600);
+  --fold-color-info-text: var(--fold-ref-purple-500);
+  --fold-color-info-surface: color-mix(
     in srgb,
-    var(--sh3-ref-purple-600) 8%,
+    var(--fold-ref-purple-600) 8%,
     transparent
   );
-  --sh3-color-info-border: color-mix(
+  --fold-color-info-border: color-mix(
     in srgb,
-    var(--sh3-ref-purple-600) 22%,
+    var(--fold-ref-purple-600) 22%,
     transparent
   );
 
   /* Warning (amber) */
-  --sh3-color-warning: var(--sh3-ref-amber-600);
-  --sh3-color-warning-text: var(--sh3-ref-amber-550);
-  --sh3-color-warning-surface: color-mix(
+  --fold-color-warning: var(--fold-ref-amber-600);
+  --fold-color-warning-text: var(--fold-ref-amber-550);
+  --fold-color-warning-surface: color-mix(
     in srgb,
-    var(--sh3-ref-amber-600) 8%,
+    var(--fold-ref-amber-600) 8%,
     transparent
   );
-  --sh3-color-warning-border: color-mix(
+  --fold-color-warning-border: color-mix(
     in srgb,
-    var(--sh3-ref-amber-600) 22%,
+    var(--fold-ref-amber-600) 22%,
     transparent
   );
 
   /* Alert (red) */
-  --sh3-color-alert: var(--sh3-ref-red-600);
-  --sh3-color-alert-text: var(--sh3-ref-red-450);
-  --sh3-color-alert-surface: color-mix(
+  --fold-color-alert: var(--fold-ref-red-600);
+  --fold-color-alert-text: var(--fold-ref-red-450);
+  --fold-color-alert-surface: color-mix(
     in srgb,
-    var(--sh3-ref-red-600) 8%,
+    var(--fold-ref-red-600) 8%,
     transparent
   );
-  --sh3-color-alert-border: color-mix(
+  --fold-color-alert-border: color-mix(
     in srgb,
-    var(--sh3-ref-red-600) 22%,
+    var(--fold-ref-red-600) 22%,
     transparent
   );
 
   /* Success (green) — base holds across themes; tint + surfaces soften on light */
-  --sh3-color-success: var(--sh3-ref-green-500);
-  --sh3-color-success-text: var(--sh3-ref-green-550);
-  --sh3-color-success-surface: color-mix(
+  --fold-color-success: var(--fold-ref-green-500);
+  --fold-color-success-text: var(--fold-ref-green-550);
+  --fold-color-success-surface: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 10%,
+    var(--fold-ref-green-500) 10%,
     transparent
   );
-  --sh3-color-success-border: color-mix(
+  --fold-color-success-border: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 25%,
+    var(--fold-ref-green-500) 25%,
     transparent
   );
 
   /* Text */
-  --sh3-color-text: var(--sh3-ref-slate-900);
-  --sh3-color-text-secondary: var(--sh3-ref-slate-600);
-  --sh3-color-text-muted: var(--sh3-ref-slate-550);
-  --sh3-color-text-faded: var(--sh3-ref-slate-350);
+  --fold-color-text: var(--fold-ref-slate-900);
+  --fold-color-text-secondary: var(--fold-ref-slate-600);
+  --fold-color-text-muted: var(--fold-ref-slate-550);
+  --fold-color-text-faded: var(--fold-ref-slate-350);
 
   /* Card — a solid raised content surface (white on light) */
-  --sh3-color-surface-card: var(--sh3-ref-white);
+  --fold-color-surface-card: var(--fold-ref-white);
   /* Sunken — light theme flattens the depth cue to white, matching the ref. */
-  --sh3-color-surface-sunken: var(--sh3-ref-white);
+  --fold-color-surface-sunken: var(--fold-ref-white);
 
   /* Neutral surfaces + border — alpha overlays (black on light) */
-  --sh3-color-surface-subtle: color-mix(
+  --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-black) 2%,
+    var(--fold-ref-black) 2%,
     transparent
   );
-  --sh3-color-surface-raised: color-mix(
+  --fold-color-surface-raised: color-mix(
     in srgb,
-    var(--sh3-ref-black) 4%,
+    var(--fold-ref-black) 4%,
     transparent
   );
-  --sh3-color-surface-hover: var(--sh3-ref-cloud-150); /* solid raised hover */
-  --sh3-color-border: color-mix(in srgb, var(--sh3-ref-black) 8%, transparent);
+  --fold-color-surface-hover: var(
+    --fold-ref-cloud-150
+  ); /* solid raised hover */
+  --fold-color-border: color-mix(
+    in srgb,
+    var(--fold-ref-black) 8%,
+    transparent
+  );
   /* Fainter hairline — row dividers, subtle panel edges (below `border`). */
-  --sh3-color-border-subtle: color-mix(
+  --fold-color-border-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-black) 4%,
+    var(--fold-ref-black) 4%,
     transparent
   );
 
   /* Glass — translucent frosted overlay (panels, floating menus) */
-  --sh3-color-glass: color-mix(in srgb, var(--sh3-ref-white) 65%, transparent);
-  --sh3-color-glass-border: color-mix(
+  --fold-color-glass: color-mix(
     in srgb,
-    var(--sh3-ref-black) 12%,
+    var(--fold-ref-white) 65%,
+    transparent
+  );
+  --fold-color-glass-border: color-mix(
+    in srgb,
+    var(--fold-ref-black) 12%,
     transparent
   );
 
   /* Scrim — a darkening veil behind the mobile nav drawer. */
-  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 45%, transparent);
+  --fold-color-scrim: color-mix(
+    in srgb,
+    var(--fold-ref-black) 45%,
+    transparent
+  );
 }
 
 /* ── Extra theme: BUBBLY ───────────────────────────────────────
@@ -326,136 +348,142 @@
    the violet brand; the other status families stay put. */
 [data-theme="bubbly"] {
   /* Surfaces */
-  --sh3-color-bg-page: var(--sh3-ref-bubble-100);
-  --sh3-color-bg-header: var(--sh3-ref-bubble-0);
-  --sh3-color-bg-rail-primary: var(--sh3-ref-bubble-150);
-  --sh3-color-bg-rail-secondary: var(--sh3-ref-bubble-50);
-  --sh3-color-bg-rail-tertiary: color-mix(
+  --fold-color-bg-page: var(--fold-ref-bubble-100);
+  --fold-color-bg-header: var(--fold-ref-bubble-0);
+  --fold-color-bg-rail-primary: var(--fold-ref-bubble-150);
+  --fold-color-bg-rail-secondary: var(--fold-ref-bubble-50);
+  --fold-color-bg-rail-tertiary: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 5%,
+    var(--fold-ref-grape-500) 5%,
     transparent
   );
 
   /* Primary / accent — the violet brand, festive and saturated */
-  --sh3-color-primary: var(--sh3-ref-grape-500);
-  --sh3-color-primary-strong: var(--sh3-ref-grape-600);
-  --sh3-color-on-primary: var(--sh3-ref-bubble-0);
-  --sh3-color-primary-text: var(--sh3-ref-grape-700);
-  --sh3-color-primary-surface: color-mix(
+  --fold-color-primary: var(--fold-ref-grape-500);
+  --fold-color-primary-strong: var(--fold-ref-grape-600);
+  --fold-color-on-primary: var(--fold-ref-bubble-0);
+  --fold-color-primary-text: var(--fold-ref-grape-700);
+  --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 12%,
+    var(--fold-ref-grape-500) 12%,
     transparent
   );
-  --sh3-color-primary-border: color-mix(
+  --fold-color-primary-border: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 30%,
+    var(--fold-ref-grape-500) 30%,
     transparent
   );
 
   /* Info — moved to azure (cyan), away from the violet brand */
-  --sh3-color-info: var(--sh3-ref-azure-500);
-  --sh3-color-info-text: var(--sh3-ref-azure-500);
-  --sh3-color-info-surface: color-mix(
+  --fold-color-info: var(--fold-ref-azure-500);
+  --fold-color-info-text: var(--fold-ref-azure-500);
+  --fold-color-info-surface: color-mix(
     in srgb,
-    var(--sh3-ref-azure-500) 12%,
+    var(--fold-ref-azure-500) 12%,
     transparent
   );
-  --sh3-color-info-border: color-mix(
+  --fold-color-info-border: color-mix(
     in srgb,
-    var(--sh3-ref-azure-500) 30%,
+    var(--fold-ref-azure-500) 30%,
     transparent
   );
 
   /* Warning (amber) */
-  --sh3-color-warning: var(--sh3-ref-amber-600);
-  --sh3-color-warning-text: var(--sh3-ref-amber-550);
-  --sh3-color-warning-surface: color-mix(
+  --fold-color-warning: var(--fold-ref-amber-600);
+  --fold-color-warning-text: var(--fold-ref-amber-550);
+  --fold-color-warning-surface: color-mix(
     in srgb,
-    var(--sh3-ref-amber-600) 10%,
+    var(--fold-ref-amber-600) 10%,
     transparent
   );
-  --sh3-color-warning-border: color-mix(
+  --fold-color-warning-border: color-mix(
     in srgb,
-    var(--sh3-ref-amber-600) 24%,
+    var(--fold-ref-amber-600) 24%,
     transparent
   );
 
   /* Alert (red) */
-  --sh3-color-alert: var(--sh3-ref-red-600);
-  --sh3-color-alert-text: var(--sh3-ref-red-450);
-  --sh3-color-alert-surface: color-mix(
+  --fold-color-alert: var(--fold-ref-red-600);
+  --fold-color-alert-text: var(--fold-ref-red-450);
+  --fold-color-alert-surface: color-mix(
     in srgb,
-    var(--sh3-ref-red-600) 10%,
+    var(--fold-ref-red-600) 10%,
     transparent
   );
-  --sh3-color-alert-border: color-mix(
+  --fold-color-alert-border: color-mix(
     in srgb,
-    var(--sh3-ref-red-600) 24%,
+    var(--fold-ref-red-600) 24%,
     transparent
   );
 
   /* Success (green) */
-  --sh3-color-success: var(--sh3-ref-green-500);
-  --sh3-color-success-text: var(--sh3-ref-green-550);
-  --sh3-color-success-surface: color-mix(
+  --fold-color-success: var(--fold-ref-green-500);
+  --fold-color-success-text: var(--fold-ref-green-550);
+  --fold-color-success-surface: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 12%,
+    var(--fold-ref-green-500) 12%,
     transparent
   );
-  --sh3-color-success-border: color-mix(
+  --fold-color-success-border: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 28%,
+    var(--fold-ref-green-500) 28%,
     transparent
   );
 
   /* Text — reuses slate, like light */
-  --sh3-color-text: var(--sh3-ref-slate-900);
-  --sh3-color-text-secondary: var(--sh3-ref-slate-600);
-  --sh3-color-text-muted: var(--sh3-ref-slate-550);
-  --sh3-color-text-faded: var(--sh3-ref-slate-350);
+  --fold-color-text: var(--fold-ref-slate-900);
+  --fold-color-text-secondary: var(--fold-ref-slate-600);
+  --fold-color-text-muted: var(--fold-ref-slate-550);
+  --fold-color-text-faded: var(--fold-ref-slate-350);
 
   /* Card — white, so it floats above the lavender page */
-  --sh3-color-surface-card: var(--sh3-ref-bubble-0);
-  --sh3-color-surface-sunken: var(--sh3-ref-bubble-50);
+  --fold-color-surface-card: var(--fold-ref-bubble-0);
+  --fold-color-surface-sunken: var(--fold-ref-bubble-50);
 
   /* Neutral surfaces + border — the brand tints the overlays a hair */
-  --sh3-color-surface-subtle: color-mix(
+  --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 3%,
+    var(--fold-ref-grape-500) 3%,
     transparent
   );
-  --sh3-color-surface-raised: color-mix(
+  --fold-color-surface-raised: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 6%,
+    var(--fold-ref-grape-500) 6%,
     transparent
   );
-  --sh3-color-surface-hover: var(--sh3-ref-bubble-150); /* solid raised hover */
-  --sh3-color-border: color-mix(
+  --fold-color-surface-hover: var(
+    --fold-ref-bubble-150
+  ); /* solid raised hover */
+  --fold-color-border: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 14%,
+    var(--fold-ref-grape-500) 14%,
     transparent
   );
   /* Fainter hairline — row dividers, subtle panel edges (below `border`). */
-  --sh3-color-border-subtle: color-mix(
+  --fold-color-border-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 8%,
+    var(--fold-ref-grape-500) 8%,
     transparent
   );
 
   /* Glass — translucent frosted overlay (panels, floating menus) */
-  --sh3-color-glass: color-mix(
+  --fold-color-glass: color-mix(
     in srgb,
-    var(--sh3-ref-bubble-0) 68%,
+    var(--fold-ref-bubble-0) 68%,
     transparent
   );
-  --sh3-color-glass-border: color-mix(
+  --fold-color-glass-border: color-mix(
     in srgb,
-    var(--sh3-ref-grape-500) 16%,
+    var(--fold-ref-grape-500) 16%,
     transparent
   );
 
   /* Scrim — a darkening veil behind the mobile nav drawer. */
-  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 50%, transparent);
+  --fold-color-scrim: color-mix(
+    in srgb,
+    var(--fold-ref-black) 50%,
+    transparent
+  );
 }
 
 /* ── Extra theme: NAVI ────────────────────────────────────────
@@ -475,129 +503,143 @@
    `*-on-chrome` roles the day mixed chrome stops being a demo.  */
 [data-theme="navi"] {
   /* Surfaces */
-  --sh3-color-bg-page: var(--sh3-ref-ivory-50);
-  --sh3-color-bg-header: var(--sh3-ref-navy-750);
-  --sh3-color-bg-rail-primary: var(--sh3-ref-navy-900);
-  --sh3-color-bg-rail-secondary: var(--sh3-ref-navy-850);
-  --sh3-color-bg-rail-tertiary: color-mix(
+  --fold-color-bg-page: var(--fold-ref-ivory-50);
+  --fold-color-bg-header: var(--fold-ref-navy-750);
+  --fold-color-bg-rail-primary: var(--fold-ref-navy-900);
+  --fold-color-bg-rail-secondary: var(--fold-ref-navy-850);
+  --fold-color-bg-rail-tertiary: color-mix(
     in srgb,
-    var(--sh3-ref-black) 2%,
+    var(--fold-ref-black) 2%,
     transparent
   );
 
   /* Primary / accent — brand mutes on light, hover darkens further */
-  --sh3-color-primary: var(--sh3-ref-navy-500);
-  --sh3-color-primary-strong: var(--sh3-ref-navy-600);
-  --sh3-color-on-primary: var(--sh3-ref-white);
-  --sh3-color-primary-text: var(--sh3-ref-navy-600);
-  --sh3-color-primary-surface: color-mix(
+  --fold-color-primary: var(--fold-ref-navy-500);
+  --fold-color-primary-strong: var(--fold-ref-navy-600);
+  --fold-color-on-primary: var(--fold-ref-white);
+  --fold-color-primary-text: var(--fold-ref-navy-600);
+  --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--sh3-ref-navy-500) 8%,
+    var(--fold-ref-navy-500) 8%,
     transparent
   );
-  --sh3-color-primary-border: color-mix(
+  --fold-color-primary-border: color-mix(
     in srgb,
-    var(--sh3-ref-navy-500) 24%,
+    var(--fold-ref-navy-500) 24%,
     transparent
   );
 
   /* Info (purple) */
-  --sh3-color-info: var(--sh3-ref-purple-600);
-  --sh3-color-info-text: var(--sh3-ref-purple-500);
-  --sh3-color-info-surface: color-mix(
+  --fold-color-info: var(--fold-ref-purple-600);
+  --fold-color-info-text: var(--fold-ref-purple-500);
+  --fold-color-info-surface: color-mix(
     in srgb,
-    var(--sh3-ref-purple-600) 8%,
+    var(--fold-ref-purple-600) 8%,
     transparent
   );
-  --sh3-color-info-border: color-mix(
+  --fold-color-info-border: color-mix(
     in srgb,
-    var(--sh3-ref-purple-600) 22%,
+    var(--fold-ref-purple-600) 22%,
     transparent
   );
 
   /* Warning (amber) */
-  --sh3-color-warning: var(--sh3-ref-amber-600);
-  --sh3-color-warning-text: var(--sh3-ref-amber-550);
-  --sh3-color-warning-surface: color-mix(
+  --fold-color-warning: var(--fold-ref-amber-600);
+  --fold-color-warning-text: var(--fold-ref-amber-550);
+  --fold-color-warning-surface: color-mix(
     in srgb,
-    var(--sh3-ref-amber-600) 8%,
+    var(--fold-ref-amber-600) 8%,
     transparent
   );
-  --sh3-color-warning-border: color-mix(
+  --fold-color-warning-border: color-mix(
     in srgb,
-    var(--sh3-ref-amber-600) 22%,
+    var(--fold-ref-amber-600) 22%,
     transparent
   );
 
   /* Alert (red) */
-  --sh3-color-alert: var(--sh3-ref-red-600);
-  --sh3-color-alert-text: var(--sh3-ref-red-450);
-  --sh3-color-alert-surface: color-mix(
+  --fold-color-alert: var(--fold-ref-red-600);
+  --fold-color-alert-text: var(--fold-ref-red-450);
+  --fold-color-alert-surface: color-mix(
     in srgb,
-    var(--sh3-ref-red-600) 8%,
+    var(--fold-ref-red-600) 8%,
     transparent
   );
-  --sh3-color-alert-border: color-mix(
+  --fold-color-alert-border: color-mix(
     in srgb,
-    var(--sh3-ref-red-600) 22%,
+    var(--fold-ref-red-600) 22%,
     transparent
   );
 
   /* Success (green) — base holds across themes; tint + surfaces soften on light */
-  --sh3-color-success: var(--sh3-ref-green-500);
-  --sh3-color-success-text: var(--sh3-ref-green-550);
-  --sh3-color-success-surface: color-mix(
+  --fold-color-success: var(--fold-ref-green-500);
+  --fold-color-success-text: var(--fold-ref-green-550);
+  --fold-color-success-surface: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 10%,
+    var(--fold-ref-green-500) 10%,
     transparent
   );
-  --sh3-color-success-border: color-mix(
+  --fold-color-success-border: color-mix(
     in srgb,
-    var(--sh3-ref-green-500) 25%,
+    var(--fold-ref-green-500) 25%,
     transparent
   );
 
   /* Text */
-  --sh3-color-text: var(--sh3-ref-slate-900);
-  --sh3-color-text-secondary: var(--sh3-ref-slate-600);
-  --sh3-color-text-muted: var(--sh3-ref-slate-550);
-  --sh3-color-text-faded: var(--sh3-ref-slate-350);
+  --fold-color-text: var(--fold-ref-slate-900);
+  --fold-color-text-secondary: var(--fold-ref-slate-600);
+  --fold-color-text-muted: var(--fold-ref-slate-550);
+  --fold-color-text-faded: var(--fold-ref-slate-350);
 
   /* Card — a solid raised content surface (white on light) */
-  --sh3-color-surface-card: var(--sh3-ref-white);
+  --fold-color-surface-card: var(--fold-ref-white);
   /* Sunken — light theme flattens the depth cue to white, matching the ref. */
-  --sh3-color-surface-sunken: var(--sh3-ref-white);
+  --fold-color-surface-sunken: var(--fold-ref-white);
 
   /* Neutral surfaces + border — alpha overlays (black on light) */
-  --sh3-color-surface-subtle: color-mix(
+  --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-black) 2%,
+    var(--fold-ref-black) 2%,
     transparent
   );
-  --sh3-color-surface-raised: color-mix(
+  --fold-color-surface-raised: color-mix(
     in srgb,
-    var(--sh3-ref-black) 4%,
+    var(--fold-ref-black) 4%,
     transparent
   );
-  --sh3-color-surface-hover: var(--sh3-ref-cloud-150); /* solid raised hover */
-  --sh3-color-border: color-mix(in srgb, var(--sh3-ref-black) 8%, transparent);
+  --fold-color-surface-hover: var(
+    --fold-ref-cloud-150
+  ); /* solid raised hover */
+  --fold-color-border: color-mix(
+    in srgb,
+    var(--fold-ref-black) 8%,
+    transparent
+  );
   /* Fainter hairline — row dividers, subtle panel edges (below `border`). */
-  --sh3-color-border-subtle: color-mix(
+  --fold-color-border-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-black) 4%,
+    var(--fold-ref-black) 4%,
     transparent
   );
 
   /* Glass — translucent frosted overlay (panels, floating menus) */
-  --sh3-color-glass: color-mix(in srgb, var(--sh3-ref-white) 65%, transparent);
-  --sh3-color-glass-border: color-mix(
+  --fold-color-glass: color-mix(
     in srgb,
-    var(--sh3-ref-black) 12%,
+    var(--fold-ref-white) 65%,
+    transparent
+  );
+  --fold-color-glass-border: color-mix(
+    in srgb,
+    var(--fold-ref-black) 12%,
     transparent
   );
 
   /* Scrim — a darkening veil behind the mobile nav drawer. */
-  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 45%, transparent);
+  --fold-color-scrim: color-mix(
+    in srgb,
+    var(--fold-ref-black) 45%,
+    transparent
+  );
 }
 
 /* navi is mixed — light page, dark chrome — so the chrome surfaces need their
@@ -609,50 +651,54 @@
      navy is a lighter, bluer ground than ink, so the borrowed values landed
      dim — `faded` on the expanded rail was barely legible. Four distinct
      steps, no new primitive. */
-  --sh3-color-text: var(--sh3-ref-slate-50);
-  --sh3-color-text-secondary: var(--sh3-ref-slate-350);
-  --sh3-color-text-muted: var(--sh3-ref-slate-400);
-  --sh3-color-text-faded: var(--sh3-ref-slate-500);
-  --sh3-color-border: color-mix(in srgb, var(--sh3-ref-white) 8%, transparent);
-  --sh3-color-border-subtle: color-mix(
+  --fold-color-text: var(--fold-ref-slate-50);
+  --fold-color-text-secondary: var(--fold-ref-slate-350);
+  --fold-color-text-muted: var(--fold-ref-slate-400);
+  --fold-color-text-faded: var(--fold-ref-slate-500);
+  --fold-color-border: color-mix(
     in srgb,
-    var(--sh3-ref-white) 4%,
+    var(--fold-ref-white) 8%,
+    transparent
+  );
+  --fold-color-border-subtle: color-mix(
+    in srgb,
+    var(--fold-ref-white) 4%,
     transparent
   );
   /* … and navy surfaces, so a hovered or raised row belongs to the rail
      instead of looking like a grey patch pasted onto it. */
-  --sh3-color-surface-card: var(--sh3-ref-navy-800);
-  --sh3-color-surface-sunken: var(--sh3-ref-navy-950);
-  --sh3-color-surface-hover: var(--sh3-ref-navy-800);
-  --sh3-color-surface-subtle: color-mix(
+  --fold-color-surface-card: var(--fold-ref-navy-800);
+  --fold-color-surface-sunken: var(--fold-ref-navy-950);
+  --fold-color-surface-hover: var(--fold-ref-navy-800);
+  --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--sh3-ref-white) 3%,
+    var(--fold-ref-white) 3%,
     transparent
   );
-  --sh3-color-surface-raised: color-mix(
+  --fold-color-surface-raised: color-mix(
     in srgb,
-    var(--sh3-ref-white) 5%,
+    var(--fold-ref-white) 5%,
     transparent
   );
-  --sh3-color-bg-rail-tertiary: color-mix(
+  --fold-color-bg-rail-tertiary: color-mix(
     in srgb,
-    var(--sh3-ref-white) 3%,
+    var(--fold-ref-white) 3%,
     transparent
   );
   /* The whole brand flips, solid included: a menu item tints its active icon
      with `primary` itself, and the page's navy-on-white lands dark-on-dark
      against a navy rail. On the chrome the brand lives in its light tints. */
-  --sh3-color-primary: var(--sh3-ref-navy-400);
-  --sh3-color-primary-strong: var(--sh3-ref-navy-300);
-  --sh3-color-primary-text: var(--sh3-ref-navy-300);
-  --sh3-color-primary-surface: color-mix(
+  --fold-color-primary: var(--fold-ref-navy-400);
+  --fold-color-primary-strong: var(--fold-ref-navy-300);
+  --fold-color-primary-text: var(--fold-ref-navy-300);
+  --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--sh3-ref-navy-400) 22%,
+    var(--fold-ref-navy-400) 22%,
     transparent
   );
-  --sh3-color-primary-border: color-mix(
+  --fold-color-primary-border: color-mix(
     in srgb,
-    var(--sh3-ref-navy-400) 40%,
+    var(--fold-ref-navy-400) 40%,
     transparent
   );
 }

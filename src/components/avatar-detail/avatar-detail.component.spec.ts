@@ -1,13 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3AvatarDetailComponent } from "./avatar-detail.component";
+import { FoldAvatarDetailComponent } from "./avatar-detail.component";
 
 function mount(inputs: {
   primary: string;
   secondary?: string;
   avatarName?: string;
 }) {
-  const fixture = TestBed.createComponent(Sh3AvatarDetailComponent);
+  const fixture = TestBed.createComponent(FoldAvatarDetailComponent);
   fixture.componentRef.setInput("primary", inputs.primary);
   if (inputs.secondary !== undefined) {
     fixture.componentRef.setInput("secondary", inputs.secondary);
@@ -23,13 +23,13 @@ function mount(inputs: {
   };
 }
 
-describe("Sh3AvatarDetailComponent", () => {
+describe("FoldAvatarDetailComponent", () => {
   it("renders the primary line and an embedded avatar", () => {
     const { host } = mount({ primary: "Alex Rivers" });
     expect(host.querySelector(".primary")?.textContent?.trim()).toBe(
       "Alex Rivers",
     );
-    expect(host.querySelector("sh3-avatar")).not.toBeNull();
+    expect(host.querySelector("fold-avatar")).not.toBeNull();
   });
 
   it("shows the secondary line only when non-empty", () => {

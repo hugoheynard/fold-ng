@@ -1,7 +1,7 @@
 import {
-  sh3ColorProperty,
-  type Sh3RadiusToken,
-  type Sh3SemanticColorToken,
+  foldColorProperty,
+  type FoldRadiusToken,
+  type FoldSemanticColorToken,
 } from "../src/index";
 
 /**
@@ -24,15 +24,15 @@ export interface PageTokenGroup {
 
 /** A semantic colour token → a page token (typed against the catalog). */
 export function colorToken(
-  token: Sh3SemanticColorToken,
+  token: FoldSemanticColorToken,
   desc: string,
 ): PageToken {
-  return { prop: sh3ColorProperty(token), desc, kind: "color" };
+  return { prop: foldColorProperty(token), desc, kind: "color" };
 }
 
 /** A radius token → a page token (typed against the catalog). */
-export function radiusToken(token: Sh3RadiusToken, desc: string): PageToken {
-  return { prop: `--sh3-radius-${token}`, desc, kind: "radius" };
+export function radiusToken(token: FoldRadiusToken, desc: string): PageToken {
+  return { prop: `--fold-radius-${token}`, desc, kind: "radius" };
 }
 
 /** Set (or, for a blank value, clear) one override — returns a new map. */

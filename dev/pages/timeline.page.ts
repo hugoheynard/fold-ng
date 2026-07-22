@@ -1,29 +1,29 @@
 import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import {
-  Sh3BadgeComponent,
-  Sh3CardComponent,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
-  Sh3SliderComponent,
-  Sh3TimelineComponent,
-  type Sh3TimelineDatePlacement,
-  type Sh3TimelineNode,
+  FoldBadgeComponent,
+  FoldCardComponent,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
+  FoldSliderComponent,
+  FoldTimelineComponent,
+  type FoldTimelineDatePlacement,
+  type FoldTimelineNode,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
 
-/** `/timeline` — the `sh3-timeline` gallery page (both orientations + playground). */
+/** `/timeline` — the `fold-timeline` gallery page (both orientations + playground). */
 @Component({
   selector: "gal-timeline-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3PageSectionComponent,
-    Sh3CardComponent,
-    Sh3TimelineComponent,
-    Sh3BadgeComponent,
-    Sh3SliderComponent,
+    FoldPageLayoutComponent,
+    FoldPageSectionComponent,
+    FoldCardComponent,
+    FoldTimelineComponent,
+    FoldBadgeComponent,
+    FoldSliderComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./timeline.page.html",
@@ -31,7 +31,7 @@ import { DevPlaygroundComponent } from "../playground.component";
 export default class TimelinePage {
   /* ── static demos ── */
   protected readonly tlClicked = signal<string | null>(null);
-  protected readonly tlNodes: readonly Sh3TimelineNode[] = [
+  protected readonly tlNodes: readonly FoldTimelineNode[] = [
     {
       key: "start",
       id: null,
@@ -56,7 +56,7 @@ export default class TimelinePage {
   ];
 
   /** Same primitive, horizontal: a progress stepper driven by `done` + `progress`. */
-  protected readonly tlSteps: readonly Sh3TimelineNode[] = [
+  protected readonly tlSteps: readonly FoldTimelineNode[] = [
     { key: "created", id: null, label: "Created", done: true, icon: "check" },
     {
       key: "company",
@@ -70,7 +70,7 @@ export default class TimelinePage {
   ];
 
   /** Custom-content demo: a `state` per node drives a projected #node template. */
-  protected readonly tlCustom: readonly Sh3TimelineNode[] = [
+  protected readonly tlCustom: readonly FoldTimelineNode[] = [
     { key: "created", id: null, label: "Créé", done: true, icon: "check" },
     {
       key: "company",
@@ -100,9 +100,9 @@ export default class TimelinePage {
     "below",
     "inline",
     "hidden",
-  ] as const satisfies readonly Sh3TimelineDatePlacement[];
+  ] as const satisfies readonly FoldTimelineDatePlacement[];
   protected readonly tlpDatePlacement =
-    signal<Sh3TimelineDatePlacement>("below");
+    signal<FoldTimelineDatePlacement>("below");
   protected readonly tlpClickable = signal(false);
   protected readonly tlpVariant = signal<"plain" | "hollow">("plain");
   protected readonly tlpClicked = signal<string | null>(null);
@@ -113,7 +113,7 @@ export default class TimelinePage {
     { label: "Active", date: "1 Feb" },
   ] as const;
 
-  protected readonly tlpNodes = computed<readonly Sh3TimelineNode[]>(() => {
+  protected readonly tlpNodes = computed<readonly FoldTimelineNode[]>(() => {
     if (this.tlpOrientation() === "vertical") {
       return this.tlNodes;
     }
@@ -138,7 +138,7 @@ export default class TimelinePage {
 
   protected readonly timelinePlaygroundCode = computed(() => {
     const horizontal = this.tlpOrientation() === "horizontal";
-    const lines = ["<sh3-timeline"];
+    const lines = ["<fold-timeline"];
     if (horizontal) {
       lines.push('  orientation="horizontal"');
       lines.push('  ariaLabel="Signature progress"');

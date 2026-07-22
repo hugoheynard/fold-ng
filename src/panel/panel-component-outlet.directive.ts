@@ -5,17 +5,17 @@ import {
   inject,
   input,
 } from "@angular/core";
-import type { Sh3ComponentPanelDescriptor } from "./panel.types";
+import type { FoldComponentPanelDescriptor } from "./panel.types";
 
 /**
  * Mounts an imperatively-opened panel component inside the host: creates it with
- * the descriptor's injector (which provides its `Sh3PanelRef`) and pushes the typed
+ * the descriptor's injector (which provides its `FoldPanelRef`) and pushes the typed
  * `data` in via `setInput`. The component owns its own header/body/footer.
  */
-@Directive({ selector: "[sh3PanelComponentOutlet]" })
-export class Sh3PanelComponentOutletDirective {
-  readonly descriptor = input.required<Sh3ComponentPanelDescriptor>({
-    alias: "sh3PanelComponentOutlet",
+@Directive({ selector: "[foldPanelComponentOutlet]" })
+export class FoldPanelComponentOutletDirective {
+  readonly descriptor = input.required<FoldComponentPanelDescriptor>({
+    alias: "foldPanelComponentOutlet",
   });
 
   private readonly viewContainer = inject(ViewContainerRef);

@@ -15,7 +15,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
 }
 
 .rs-track-wrap {
@@ -30,14 +30,14 @@
   right: 0;
   height: 4px;
   transform: translateY(-50%);
-  background: var(--sh3-color-border-subtle);
+  background: var(--fold-color-border-subtle);
   border-radius: 2px;
 }
 
 .rs-fill {
   position: absolute;
   height: 100%;
-  background: var(--sh3-color-primary);
+  background: var(--fold-color-primary);
   border-radius: 2px;
 }
 
@@ -61,7 +61,7 @@
 .rs-values {
   font-size: 10px;
   font-weight: 500;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }

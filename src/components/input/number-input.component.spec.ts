@@ -1,16 +1,16 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { Sh3NumberInputComponent } from "./number-input.component";
+import { FoldNumberInputComponent } from "./number-input.component";
 import type {
-  Sh3NumberSpinner,
-  Sh3NumberControls,
+  FoldNumberSpinner,
+  FoldNumberControls,
 } from "./number-input.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3NumberInputComponent],
-  template: `<sh3-number-input
+  imports: [FoldNumberInputComponent],
+  template: `<fold-number-input
     [label]="label()"
     [min]="min()"
     [max]="max()"
@@ -30,8 +30,8 @@ class HostComponent {
   readonly min = signal<number | undefined>(undefined);
   readonly max = signal<number | undefined>(undefined);
   readonly step = signal<number | undefined>(undefined);
-  readonly spinner = signal<Sh3NumberSpinner>("plusminus");
-  readonly controls = signal<Sh3NumberControls>("inside");
+  readonly spinner = signal<FoldNumberSpinner>("plusminus");
+  readonly controls = signal<FoldNumberControls>("inside");
   readonly showStep = signal(false);
   readonly snapToStep = signal(false);
   readonly decimals = signal<number | undefined>(undefined);
@@ -44,7 +44,7 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const host = fixture.nativeElement.querySelector(
-    "sh3-number-input",
+    "fold-number-input",
   ) as HTMLElement;
   const input = host.querySelector("input") as HTMLInputElement;
   const buttons = (): HTMLButtonElement[] =>
@@ -56,7 +56,7 @@ function render() {
   return { fixture, host, input, buttons, inc, dec };
 }
 
-describe("Sh3NumberInputComponent", () => {
+describe("FoldNumberInputComponent", () => {
   it("renders a native number input", () => {
     const { input } = render();
     expect(input.getAttribute("type")).toBe("number");

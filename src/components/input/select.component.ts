@@ -7,46 +7,46 @@ import {
   model,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
-import { Sh3IdService } from "../../a11y/id.service";
-import { Sh3IconComponent } from "../icon/icon.component";
-import { Sh3InputBaseComponent } from "./input-base.component";
+import { FoldIdService } from "../../a11y/id.service";
+import { FoldIconComponent } from "../icon/icon.component";
+import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
 /**
- * `<sh3-select>` — the dropdown sibling of {@link Sh3InputComponent} and
- * `sh3-number-input`. A thin wrapper around a **native `<select>`** (like
- * `sh3-slider` wraps the native range), so it honours the project's Signal-Forms
+ * `<fold-select>` — the dropdown sibling of {@link FoldInputComponent} and
+ * `fold-number-input`. A thin wrapper around a **native `<select>`** (like
+ * `fold-slider` wraps the native range), so it honours the project's Signal-Forms
  * convention (native `[value]` / `(change)`) rather than a bespoke ARIA listbox.
  *
  * Options are **projected** as real `<option>` elements, matching how the app
  * already writes them, so migrating a raw `<select>` is a mechanical wrap:
  *
  * ```html
- * <sh3-select label="Devise" [(value)]="currency" placeholder="Choisir…">
+ * <fold-select label="Devise" [(value)]="currency" placeholder="Choisir…">
  *   @for (c of currencies; track c) {
  *     <option [value]="c">{{ c }}</option>
  *   }
- * </sh3-select>
+ * </fold-select>
  * ```
  *
- * Shares the exact box chrome (tokens, sizes, `panel` variant) as `sh3-input`
+ * Shares the exact box chrome (tokens, sizes, `panel` variant) as `fold-input`
  * via `input-shell.scss`, and the label / required / hint / error chrome via
- * {@link Sh3InputBaseComponent}. The value is the native string; parse to a
+ * {@link FoldInputBaseComponent}. The value is the native string; parse to a
  * number/id in the consumer (as with a raw `<select>`).
  *
- * @selector `sh3-select`
+ * @selector `fold-select`
  */
 @Component({
-  selector: "sh3-select",
+  selector: "fold-select",
   standalone: true,
-  imports: [Sh3InputBaseComponent, Sh3IconComponent],
+  imports: [FoldInputBaseComponent, FoldIconComponent],
   templateUrl: "./select.component.html",
   styleUrl: "./select.component.scss",
   host: {
     "[class]": 'size() + " " + variant()',
   },
 })
-export class Sh3SelectComponent implements FormValueControl<string> {
+export class FoldSelectComponent implements FormValueControl<string> {
   /** The selected value (the native option string). A `model()` so `FormField`
    *  and `[(value)]` both stay in sync. */
   readonly value = model<string>("");
@@ -57,9 +57,9 @@ export class Sh3SelectComponent implements FormValueControl<string> {
   /** Validation errors — bound by `FormField`. */
   readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
-  /** Size preset — see {@link Sh3InputComponent.size}. @default 'md' */
+  /** Size preset — see {@link FoldInputComponent.size}. @default 'md' */
   readonly size = input<"sm" | "md" | "lg">("md");
-  /** Visual variant — see {@link Sh3InputComponent.variant}. @default 'default' */
+  /** Visual variant — see {@link FoldInputComponent.variant}. @default 'default' */
   readonly variant = input<"default" | "panel">("default");
 
   /** Optional label displayed above the control. */
@@ -75,8 +75,8 @@ export class Sh3SelectComponent implements FormValueControl<string> {
   /** Optional placeholder — a leading, disabled option shown while empty. */
   readonly placeholder = input<string>();
 
-  /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
-  readonly inputId = inject(Sh3IdService).next("sh3-select");
+  /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
+  readonly inputId = inject(FoldIdService).next("fold-select");
 
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {

@@ -1,13 +1,13 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3ContextCardComponent } from "./context-card.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldContextCardComponent } from "./context-card.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 @Component({
   standalone: true,
-  imports: [Sh3ContextCardComponent],
-  template: `<sh3-context-card
+  imports: [FoldContextCardComponent],
+  template: `<fold-context-card
     [icon]="icon()"
     [title]="title()"
     [subtitle]="subtitle()"
@@ -16,10 +16,10 @@ import type { Sh3IconName } from "../icon/icon.registry";
     @if (withFooter()) {
       <button footer class="foot-act">Voir</button>
     }
-  </sh3-context-card>`,
+  </fold-context-card>`,
 })
 class HostComponent {
-  readonly icon = signal<Sh3IconName | undefined>(undefined);
+  readonly icon = signal<FoldIconName | undefined>(undefined);
   readonly title = signal("Contexte");
   readonly subtitle = signal<string | undefined>(undefined);
   readonly withFooter = signal(false);
@@ -32,11 +32,11 @@ function render() {
   return { fixture, host };
 }
 
-describe("Sh3ContextCardComponent", () => {
-  it("renders the title via sh3-element-title (heading) and projects the body", () => {
+describe("FoldContextCardComponent", () => {
+  it("renders the title via fold-element-title (heading) and projects the body", () => {
     const { host } = render();
     const title = host.querySelector(
-      "sh3-element-title[variant='title'] .et-label",
+      "fold-element-title[variant='title'] .et-label",
     );
     expect(title?.textContent?.trim()).toBe("Contexte");
     expect(title?.getAttribute("role")).toBe("heading");
@@ -51,7 +51,7 @@ describe("Sh3ContextCardComponent", () => {
     fixture.componentInstance.icon.set("company");
     fixture.componentInstance.subtitle.set("Activité de l'espace");
     fixture.detectChanges();
-    expect(host.querySelector(".et-icon sh3-icon")).not.toBeNull();
+    expect(host.querySelector(".et-icon fold-icon")).not.toBeNull();
     expect(host.querySelector(".et-sub")?.textContent?.trim()).toBe(
       "Activité de l'espace",
     );
@@ -66,8 +66,8 @@ describe("Sh3ContextCardComponent", () => {
     expect(host.querySelector(".cc-foot .foot-act")).not.toBeNull();
   });
 
-  it("composes sh3-card for its surface", () => {
+  it("composes fold-card for its surface", () => {
     const { host } = render();
-    expect(host.querySelector("sh3-card")).not.toBeNull();
+    expect(host.querySelector("fold-card")).not.toBeNull();
   });
 });

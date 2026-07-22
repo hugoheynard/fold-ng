@@ -7,26 +7,26 @@ import {
   viewChild,
 } from "@angular/core";
 import {
-  Sh3AsideLayoutComponent,
-  Sh3CardComponent,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
-  Sh3SliderComponent,
+  FoldAsideLayoutComponent,
+  FoldCardComponent,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
+  FoldSliderComponent,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
 import { KindBadgeComponent } from "../kind-badge.component";
 
-/** `/aside-layout` — the `sh3-aside-layout` gallery page. */
+/** `/aside-layout` — the `fold-aside-layout` gallery page. */
 @Component({
   selector: "gal-aside-layout-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3AsideLayoutComponent,
-    Sh3CardComponent,
-    Sh3PageSectionComponent,
-    Sh3SliderComponent,
+    FoldPageLayoutComponent,
+    FoldAsideLayoutComponent,
+    FoldCardComponent,
+    FoldPageSectionComponent,
+    FoldSliderComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./aside-layout.page.html",
@@ -77,18 +77,18 @@ export default class AsideLayoutPage {
     const offset = this.aslOffset();
     const open =
       offset === 24
-        ? "<sh3-aside-layout>"
-        : `<sh3-aside-layout [topOffset]="${offset}">`;
+        ? "<fold-aside-layout>"
+        : `<fold-aside-layout [topOffset]="${offset}">`;
     return [
       open,
       ...(left ? ["  <app-timeline asideLeft />"] : []),
       "  <!-- untagged elements → centre column -->",
       "  <app-header />",
-      '  <sh3-page-section title="…">…</sh3-page-section>',
+      '  <fold-page-section title="…">…</fold-page-section>',
       "  <!-- tag each rail element -->",
       "  <app-history asideRight />",
       "  <app-actions asideRight />",
-      "</sh3-aside-layout>",
+      "</fold-aside-layout>",
     ].join("\n");
   });
 }

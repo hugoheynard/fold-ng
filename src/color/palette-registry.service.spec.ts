@@ -1,30 +1,30 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { SH3_AUTO_PALETTES } from "./palettes";
+import { FOLD_AUTO_PALETTES } from "./palettes";
 import {
-  Sh3PaletteRegistry,
-  provideSh3Palette,
+  FoldPaletteRegistry,
+  provideFoldPalette,
 } from "./palette-registry.service";
 
-function registry(...providers: unknown[]): Sh3PaletteRegistry {
+function registry(...providers: unknown[]): FoldPaletteRegistry {
   TestBed.configureTestingModule({ providers: providers as never });
-  return TestBed.inject(Sh3PaletteRegistry);
+  return TestBed.inject(FoldPaletteRegistry);
 }
 
-describe("Sh3PaletteRegistry", () => {
+describe("FoldPaletteRegistry", () => {
   it("defaults to vivid and colours a seed deterministically", () => {
     const reg = registry();
-    expect(reg.current()).toEqual([...SH3_AUTO_PALETTES.vivid]);
+    expect(reg.current()).toEqual([...FOLD_AUTO_PALETTES.vivid]);
     // 'a' → hash 97 → 97 % 10 = 7 → vivid[7].
-    expect(reg.colorFor("a")).toBe(SH3_AUTO_PALETTES.vivid[7]);
+    expect(reg.colorFor("a")).toBe(FOLD_AUTO_PALETTES.vivid[7]);
     expect(reg.colorFor("Hugo")).toBe(reg.colorFor("Hugo"));
   });
 
   it("use() switches the active palette app-wide", () => {
     const reg = registry();
     reg.use("pastel");
-    expect(reg.current()).toEqual([...SH3_AUTO_PALETTES.pastel]);
-    expect(reg.colorFor("a")).toBe(SH3_AUTO_PALETTES.pastel[7]);
+    expect(reg.current()).toEqual([...FOLD_AUTO_PALETTES.pastel]);
+    expect(reg.colorFor("a")).toBe(FOLD_AUTO_PALETTES.pastel[7]);
   });
 
   it("accepts a consumer's own colour list", () => {
@@ -36,8 +36,8 @@ describe("Sh3PaletteRegistry", () => {
     expect(reg.colorFor("a")).toBe("#ffffff");
   });
 
-  it("provideSh3Palette sets the bootstrap default", () => {
-    const reg = registry(provideSh3Palette("pastel"));
-    expect(reg.current()).toEqual([...SH3_AUTO_PALETTES.pastel]);
+  it("provideFoldPalette sets the bootstrap default", () => {
+    const reg = registry(provideFoldPalette("pastel"));
+    expect(reg.current()).toEqual([...FOLD_AUTO_PALETTES.pastel]);
   });
 });

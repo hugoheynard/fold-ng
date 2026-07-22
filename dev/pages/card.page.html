@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="card">
+<fold-page-layout fluid title="card">
   <p description>
     The canonical raised content surface — a solid tint, a hairline border and a
     consistent radius, so cards never drift on colour or corner. Optional
@@ -10,9 +10,9 @@
   <div class="gal-cell">
     <span class="gal-tag">surface · radius · padding</span>
     <div class="gal-row gal-row--wide">
-      <sh3-card>card (default)</sh3-card>
-      <sh3-card surface="sunken">sunken</sh3-card>
-      <sh3-card radius="sm" padding="sm">radius sm · padding sm</sh3-card>
+      <fold-card>card (default)</fold-card>
+      <fold-card surface="sunken">sunken</fold-card>
+      <fold-card radius="sm" padding="sm">radius sm · padding sm</fold-card>
     </div>
   </div>
 
@@ -107,7 +107,7 @@
       </div>
     </div>
 
-    <sh3-card
+    <fold-card
       [surface]="cpSurface()"
       [radius]="cpRadius()"
       [padding]="cpPadding()"
@@ -127,10 +127,10 @@
         cardFooter
         style="display: flex; gap: 8px; justify-content: flex-end"
       >
-        <sh3-button size="sm" variant="ghost">Cancel</sh3-button>
-        <sh3-button size="sm">Save</sh3-button>
+        <fold-button size="sm" variant="ghost">Cancel</fold-button>
+        <fold-button size="sm">Save</fold-button>
       </div>
       }
-    </sh3-card>
+    </fold-card>
   </dev-playground>
-</sh3-page-layout>
+</fold-page-layout>

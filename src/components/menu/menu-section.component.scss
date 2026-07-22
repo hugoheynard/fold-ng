@@ -7,7 +7,7 @@
   gap: 4px;
   width: 100%;
 }
-:host-context(sh3-menu.expanded) {
+:host-context(fold-menu.expanded) {
   align-items: stretch;
   /* auto (not the base 100%) so the items' intrinsic width reaches the menu's
      max-content — a percentage width collapses the rail to its min-width. */
@@ -30,7 +30,7 @@
   box-sizing: border-box;
   cursor: pointer;
 
-  sh3-menu-separator {
+  fold-menu-separator {
     flex: 1;
     min-width: 0;
   }
@@ -39,18 +39,18 @@
   flex-shrink: 0;
   margin-left: auto;
   margin-right: 10px;
-  color: var(--sh3-color-text-faded);
-  transition: transform var(--sh3-motion-fast);
+  color: var(--fold-color-text-faded);
+  transition: transform var(--fold-motion-fast);
 }
 .section-chevron.is-open {
   transform: rotate(90deg);
 }
 /* Collapsed rail (icon only): no header to click — freeze the toggle, hide the
    chevron, and keep every item visible. */
-:host-context(sh3-menu:not(.expanded)) .section-head {
+:host-context(fold-menu:not(.expanded)) .section-head {
   pointer-events: none;
 }
-:host-context(sh3-menu:not(.expanded)) .section-chevron {
+:host-context(fold-menu:not(.expanded)) .section-chevron {
   display: none;
 }
 
@@ -67,10 +67,10 @@
   max-height: 60vh;
   opacity: 1;
   transition:
-    max-height var(--sh3-motion-base),
-    opacity var(--sh3-motion-base);
+    max-height var(--fold-motion-base),
+    opacity var(--fold-motion-base);
 }
-:host-context(sh3-menu.expanded) .section-items.foldable {
+:host-context(fold-menu.expanded) .section-items.foldable {
   align-items: stretch;
   width: auto;
 }
@@ -79,7 +79,7 @@
   opacity: 0;
 }
 /* Never fold in the collapsed rail — every item stays reachable. */
-:host-context(sh3-menu:not(.expanded)) .section-items.foldable {
+:host-context(fold-menu:not(.expanded)) .section-items.foldable {
   max-height: none;
   opacity: 1;
 }

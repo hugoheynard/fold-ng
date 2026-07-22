@@ -1,25 +1,25 @@
 import { Component, computed, signal } from "@angular/core";
 import {
-  Sh3ButtonComponent,
-  Sh3CalloutComponent,
-  Sh3CardComponent,
-  Sh3PageLayoutComponent,
-  type Sh3CalloutAppearance,
-  type Sh3CalloutVariant,
+  FoldButtonComponent,
+  FoldCalloutComponent,
+  FoldCardComponent,
+  FoldPageLayoutComponent,
+  type FoldCalloutAppearance,
+  type FoldCalloutVariant,
 } from "../../src/index";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
 
-/** `/callout` — the `sh3-callout` gallery page. */
+/** `/callout` — the `fold-callout` gallery page. */
 @Component({
   selector: "gal-callout-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3CalloutComponent,
-    Sh3CardComponent,
-    Sh3ButtonComponent,
+    FoldPageLayoutComponent,
+    FoldCalloutComponent,
+    FoldCardComponent,
+    FoldButtonComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./callout.page.html",
@@ -35,8 +35,8 @@ export default class CalloutPage {
   ] as const;
   protected readonly appearances = ["inset", "flat"] as const;
 
-  protected readonly coVariant = signal<Sh3CalloutVariant>("warning");
-  protected readonly coAppearance = signal<Sh3CalloutAppearance>("inset");
+  protected readonly coVariant = signal<FoldCalloutVariant>("warning");
+  protected readonly coAppearance = signal<FoldCalloutAppearance>("inset");
   protected readonly coActions = signal(false);
   protected readonly coAnnounce = signal(false);
 
@@ -49,14 +49,14 @@ export default class CalloutPage {
       this.coAnnounce() ? "announce" : "",
     ].filter(Boolean);
     const open = attrs.length
-      ? `<sh3-callout ${attrs.join(" ")}>`
-      : "<sh3-callout>";
+      ? `<fold-callout ${attrs.join(" ")}>`
+      : "<fold-callout>";
     const body = [
       "  This contract is <strong>locked</strong> — no more edits.",
       this.coActions()
-        ? '  <sh3-button actions size="sm" variant="ghost">Request access</sh3-button>'
+        ? '  <fold-button actions size="sm" variant="ghost">Request access</fold-button>'
         : "",
     ].filter(Boolean);
-    return [open, ...body, "</sh3-callout>"].join("\n");
+    return [open, ...body, "</fold-callout>"].join("\n");
   });
 }

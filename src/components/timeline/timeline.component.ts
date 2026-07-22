@@ -8,14 +8,14 @@ import {
   type TemplateRef,
 } from "@angular/core";
 import { DatePipe, NgTemplateOutlet } from "@angular/common";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 /** Where a node's date renders relative to its label. */
-export type Sh3TimelineDatePlacement = "above" | "below" | "inline" | "hidden";
+export type FoldTimelineDatePlacement = "above" | "below" | "inline" | "hidden";
 
-/** One node of a {@link Sh3TimelineComponent}. */
-export interface Sh3TimelineNode {
+/** One node of a {@link FoldTimelineComponent}. */
+export interface FoldTimelineNode {
   /** Stable track key. Also the click payload when {@link id} is `null`. */
   readonly key: string;
   /** Click payload; `null` means no id (see {@link clickable}). */
@@ -34,7 +34,7 @@ export interface Sh3TimelineNode {
   /** Pre-formatted date text — takes precedence over {@link date} when set. */
   readonly displayDate?: string;
   /** Optional dot icon. */
-  readonly icon?: Sh3IconName;
+  readonly icon?: FoldIconName;
   /**
    * Completion state (progress steppers). When set, it drives the accent
    * ("filled") dot; when omitted, a non-clickable (`id === null`) node fills as
@@ -43,7 +43,7 @@ export interface Sh3TimelineNode {
   readonly done?: boolean;
   /**
    * Per-node dot style — **overrides** the timeline's {@link
-   * Sh3TimelineComponent.variant}. `plain` fills the accent dot solid; `hollow`
+   * FoldTimelineComponent.variant}. `plain` fills the accent dot solid; `hollow`
    * shows it as a ring (the outlined look of the vertical rail's clickable dots).
    */
   readonly variant?: "plain" | "hollow";
@@ -56,7 +56,7 @@ export interface Sh3TimelineNode {
 }
 
 /**
- * `<sh3-timeline>` — a connected rail of nodes (dot + optional date + label),
+ * `<fold-timeline>` — a connected rail of nodes (dot + optional date + label),
  * in two orientations that share one primitive:
  *
  * - `orientation="vertical"` (default) — a **navigable history**: a dot rail on
@@ -83,7 +83,7 @@ export interface Sh3TimelineNode {
  * **Surface-agnostic** — it renders content only (a labelled `<nav>` of nodes),
  * no card of its own, so the consumer places it inside whatever surface fits.
  * Presentational + generic: the consumer maps its domain data to
- * {@link Sh3TimelineNode}s and owns the click meaning.
+ * {@link FoldTimelineNode}s and owns the click meaning.
  *
  * **Custom node content** — project an `<ng-template #node let-n>` to replace a
  * node's label with arbitrary content (a badge, a status line, an action). The
@@ -91,14 +91,14 @@ export interface Sh3TimelineNode {
  * the template only styles the label region. This is the escape hatch for
  * heterogeneous nodes without exploding the node interface into props.
  *
- * @selector `sh3-timeline`
+ * @selector `fold-timeline`
  *
  * @example
  * ```html
- * <sh3-card surface="sunken">
- *   <sh3-timeline ariaLabel="History" [nodes]="nodes()" (nodeClick)="scrollTo($event)" />
- * </sh3-card>
- * <sh3-timeline
+ * <fold-card surface="sunken">
+ *   <fold-timeline ariaLabel="History" [nodes]="nodes()" (nodeClick)="scrollTo($event)" />
+ * </fold-card>
+ * <fold-timeline
  *   orientation="horizontal"
  *   ariaLabel="Signature progress"
  *   [progress]="pct()"
@@ -107,15 +107,15 @@ export interface Sh3TimelineNode {
  * ```
  */
 @Component({
-  selector: "sh3-timeline",
+  selector: "fold-timeline",
   standalone: true,
-  imports: [DatePipe, NgTemplateOutlet, Sh3IconComponent],
+  imports: [DatePipe, NgTemplateOutlet, FoldIconComponent],
   templateUrl: "./timeline.component.html",
   styleUrl: "./timeline.component.scss",
 })
-export class Sh3TimelineComponent {
+export class FoldTimelineComponent {
   /** The ordered nodes to render. */
-  readonly nodes = input.required<readonly Sh3TimelineNode[]>();
+  readonly nodes = input.required<readonly FoldTimelineNode[]>();
   /** Rail direction — vertical history rail vs horizontal progress stepper. */
   readonly orientation = input<"vertical" | "horizontal">("vertical");
   /**
@@ -137,17 +137,17 @@ export class Sh3TimelineComponent {
    * (stacked), `inline` (on the same row), or `hidden` (not shown). Default
    * `below`.
    */
-  readonly datePlacement = input<Sh3TimelineDatePlacement>("below");
+  readonly datePlacement = input<FoldTimelineDatePlacement>("below");
 
   /** Emits a clicked node's `id ?? key` (never fires for non-clickable nodes). */
   readonly nodeClick = output<string>();
 
   /** Optional consumer template that renders a node's label region. */
   protected readonly nodeTemplate =
-    contentChild<TemplateRef<{ $implicit: Sh3TimelineNode }>>("node");
+    contentChild<TemplateRef<{ $implicit: FoldTimelineNode }>>("node");
 
   /** Resolved interactivity: explicit `clickable`, else `id !== null`. */
-  protected isClickable(node: Sh3TimelineNode): boolean {
+  protected isClickable(node: FoldTimelineNode): boolean {
     return node.clickable ?? node.id !== null;
   }
 
@@ -185,16 +185,16 @@ export class Sh3TimelineComponent {
   });
 
   /** Accent ("filled") dot: an explicit `done`, else the inert-anchor rule. */
-  protected isFilled(node: Sh3TimelineNode): boolean {
+  protected isFilled(node: FoldTimelineNode): boolean {
     return node.done ?? node.id === null;
   }
 
   /** Resolved dot style: the node's `variant` overrides the timeline default. */
-  protected isHollow(node: Sh3TimelineNode): boolean {
+  protected isHollow(node: FoldTimelineNode): boolean {
     return (node.variant ?? this.variant()) === "hollow";
   }
 
-  protected onNode(node: Sh3TimelineNode): void {
+  protected onNode(node: FoldTimelineNode): void {
     if (this.isClickable(node)) {
       this.nodeClick.emit(node.id ?? node.key);
     }

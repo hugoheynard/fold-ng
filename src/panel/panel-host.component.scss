@@ -28,17 +28,17 @@
   font-feature-settings: "tnum" on;
 
   /* Frosted glass surface. */
-  background: var(--sh3-color-glass);
-  backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
-  -webkit-backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
-  border-left: 1px solid var(--sh3-color-glass-border);
-  box-shadow: var(--sh3-shadow-panel-right);
+  background: var(--fold-color-glass);
+  backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
+  border-left: 1px solid var(--fold-color-glass-border);
+  box-shadow: var(--fold-shadow-panel-right);
   animation: panel-slide-in-right 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .panel--left {
   border-left: none;
-  border-right: 1px solid var(--sh3-color-glass-border);
-  box-shadow: var(--sh3-shadow-panel-left);
+  border-right: 1px solid var(--fold-color-glass-border);
+  box-shadow: var(--fold-shadow-panel-left);
   animation-name: panel-slide-in-left;
 }
 @media (max-width: 768px) {
@@ -52,7 +52,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 16px 16px 12px;
-  border-bottom: 1px solid var(--sh3-color-glass-border);
+  border-bottom: 1px solid var(--fold-color-glass-border);
 }
 .panel-title-block {
   flex: 1 1 auto;
@@ -63,9 +63,9 @@
 }
 .panel-title {
   margin: 0;
-  font-size: var(--sh3-text-lg);
+  font-size: var(--fold-text-lg);
   font-weight: 600;
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
   letter-spacing: -0.005em;
   line-height: 1.2;
   overflow: hidden;
@@ -73,8 +73,8 @@
 }
 .panel-subtitle {
   margin: 0;
-  font-size: var(--sh3-text-xs);
-  color: var(--sh3-color-text-faded);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-faded);
   font-variant-numeric: tabular-nums;
 }
 .panel-close {
@@ -85,16 +85,16 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border-radius: var(--sh3-radius-xs);
-  color: var(--sh3-color-text-secondary);
+  border-radius: var(--fold-radius-xs);
+  color: var(--fold-color-text-secondary);
   cursor: pointer;
   transition:
     background-color 100ms ease,
     color 100ms ease;
 }
 .panel-close:hover {
-  background: var(--sh3-color-surface-hover);
-  color: var(--sh3-color-text);
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text);
 }
 .panel-body {
   flex: 1 1 auto;

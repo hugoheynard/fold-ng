@@ -15,12 +15,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
 }
 .secondary {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: var(--sh3-text-sm);
-  color: var(--sh3-color-text-faded);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-faded);
 }

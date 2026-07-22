@@ -1,8 +1,8 @@
 import { Component, computed, input } from "@angular/core";
 
 /**
- * `<sh3-status-badge>` — a coloured badge indicating a status. Unlike the
- * generic {@link Sh3BadgeComponent}, this maps a **status key** to a colour, so
+ * `<fold-status-badge>` — a coloured badge indicating a status. Unlike the
+ * generic {@link FoldBadgeComponent}, this maps a **status key** to a colour, so
  * call sites pass a domain status rather than choosing a variant.
  *
  * **Supported statuses**
@@ -13,19 +13,19 @@ import { Component, computed, input } from "@angular/core";
  * - any other value (e.g. `terminated`) — neutral grey
  *
  * ```html
- * <sh3-status-badge status="active" />
- * <sh3-status-badge status="pending" label="En attente" />
+ * <fold-status-badge status="active" />
+ * <fold-status-badge status="pending" label="En attente" />
  * ```
  *
- * @selector `sh3-status-badge`
+ * @selector `fold-status-badge`
  */
 @Component({
-  selector: "sh3-status-badge",
+  selector: "fold-status-badge",
   standalone: true,
   templateUrl: "./status-badge.component.html",
   styleUrl: "./status-badge.component.scss",
 })
-export class Sh3StatusBadgeComponent {
+export class FoldStatusBadgeComponent {
   /** The status key that determines the colour. */
   readonly status = input.required<string>();
   /** Display text — defaults to the raw `status` value. */

@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════
-//  sh3-button-icon — shape/size/tone via data-* attributes.
-//  Token-only: the `--bi-*` locals resolve to `--sh3-*` tokens.
+//  fold-button-icon — shape/size/tone via data-* attributes.
+//  Token-only: the `--bi-*` locals resolve to `--fold-*` tokens.
 // ═══════════════════════════════════════════════════════
 
 :host {
@@ -9,19 +9,19 @@
   // ── size presets — drive the hit-area square ────────
   &[data-size="xs"] {
     --bi-size: 22px;
-    --bi-radius: var(--sh3-radius-xs);
+    --bi-radius: var(--fold-radius-xs);
   }
   &[data-size="sm"] {
     --bi-size: 28px;
-    --bi-radius: var(--sh3-radius-sm);
+    --bi-radius: var(--fold-radius-sm);
   }
   &[data-size="md"] {
     --bi-size: 32px;
-    --bi-radius: var(--sh3-radius-md);
+    --bi-radius: var(--fold-radius-md);
   }
   &[data-size="lg"] {
     --bi-size: 38px;
-    --bi-radius: var(--sh3-radius-md);
+    --bi-radius: var(--fold-radius-md);
   }
 
   // ── shape — round overrides any radius ──────────────
@@ -31,28 +31,32 @@
 
   // ── tone — colour + background ──────────────────────
   &[data-tone="ghost"] {
-    --bi-color: var(--sh3-color-text-muted);
-    --bi-color-hover: var(--sh3-color-text);
+    --bi-color: var(--fold-color-text-muted);
+    --bi-color-hover: var(--fold-color-text);
     --bi-bg: transparent;
-    --bi-bg-hover: var(--sh3-color-primary-surface);
-    --bi-bg-active: var(--sh3-color-primary-surface);
-    --bi-color-active: var(--sh3-color-primary);
+    --bi-bg-hover: var(--fold-color-primary-surface);
+    --bi-bg-active: var(--fold-color-primary-surface);
+    --bi-color-active: var(--fold-color-primary);
   }
   &[data-tone="accent"] {
-    --bi-color: var(--sh3-color-on-primary);
-    --bi-color-hover: var(--sh3-color-on-primary);
-    --bi-bg: var(--sh3-color-primary);
-    --bi-bg-hover: var(--sh3-color-primary-strong);
-    --bi-bg-active: var(--sh3-color-primary-strong);
-    --bi-color-active: var(--sh3-color-on-primary);
+    --bi-color: var(--fold-color-on-primary);
+    --bi-color-hover: var(--fold-color-on-primary);
+    --bi-bg: var(--fold-color-primary);
+    --bi-bg-hover: var(--fold-color-primary-strong);
+    --bi-bg-active: var(--fold-color-primary-strong);
+    --bi-color-active: var(--fold-color-on-primary);
   }
   &[data-tone="critical"] {
-    --bi-color: var(--sh3-color-alert);
-    --bi-color-hover: var(--sh3-color-alert);
+    --bi-color: var(--fold-color-alert);
+    --bi-color-hover: var(--fold-color-alert);
     --bi-bg: transparent;
-    --bi-bg-hover: color-mix(in srgb, var(--sh3-color-alert) 12%, transparent);
-    --bi-bg-active: color-mix(in srgb, var(--sh3-color-alert) 18%, transparent);
-    --bi-color-active: var(--sh3-color-alert);
+    --bi-bg-hover: color-mix(in srgb, var(--fold-color-alert) 12%, transparent);
+    --bi-bg-active: color-mix(
+      in srgb,
+      var(--fold-color-alert) 18%,
+      transparent
+    );
+    --bi-color-active: var(--fold-color-alert);
   }
 }
 
@@ -69,9 +73,9 @@ button {
   cursor: pointer;
   flex-shrink: 0;
   transition:
-    background var(--sh3-motion-fast),
-    color var(--sh3-motion-fast),
-    transform var(--sh3-motion-fast);
+    background var(--fold-motion-fast),
+    color var(--fold-motion-fast),
+    transform var(--fold-motion-fast);
 
   &:hover:not(:disabled) {
     background: var(--bi-bg-hover);
@@ -83,7 +87,7 @@ button {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--sh3-color-primary);
+    outline: 2px solid var(--fold-color-primary);
     outline-offset: 1px;
   }
 

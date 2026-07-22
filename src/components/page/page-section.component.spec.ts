@@ -1,15 +1,15 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3PageSectionComponent } from "./page-section.component";
+import { FoldPageSectionComponent } from "./page-section.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3PageSectionComponent],
-  template: `<sh3-page-section [title]="title()" [description]="description()">
+  imports: [FoldPageSectionComponent],
+  template: `<fold-page-section [title]="title()" [description]="description()">
     <button sectionActions class="act">Add</button>
     <div class="body-item">Rows</div>
-  </sh3-page-section>`,
+  </fold-page-section>`,
 })
 class HostComponent {
   readonly title = signal<string | undefined>("Moyens de paiement");
@@ -18,8 +18,8 @@ class HostComponent {
 
 @Component({
   standalone: true,
-  imports: [Sh3PageSectionComponent],
-  template: `<sh3-page-section
+  imports: [FoldPageSectionComponent],
+  template: `<fold-page-section
     [surface]="surface()"
     [divider]="divider()"
     [stack]="stack()"
@@ -40,15 +40,15 @@ function render() {
   return { fixture, root: fixture.nativeElement as HTMLElement };
 }
 
-describe("Sh3PageSectionComponent", () => {
+describe("FoldPageSectionComponent", () => {
   it("renders the title and projects content + actions", () => {
     const { root } = render();
     expect(
-      root.querySelector("sh3-element-title .et-label")?.textContent?.trim(),
+      root.querySelector("fold-element-title .et-label")?.textContent?.trim(),
     ).toBe("Moyens de paiement");
     expect(root.querySelector(".body-item")).not.toBeNull();
     expect(
-      root.querySelector("sh3-element-title .et-action .act"),
+      root.querySelector("fold-element-title .et-action .act"),
     ).not.toBeNull();
   });
 
@@ -74,7 +74,7 @@ describe("Sh3PageSectionComponent", () => {
     const fixture = TestBed.createComponent(AppearanceHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
-      "sh3-page-section",
+      "fold-page-section",
     ) as HTMLElement;
     expect(section.classList.contains("s-card")).toBe(false);
     expect(section.classList.contains("s-sunken")).toBe(false);
@@ -85,7 +85,7 @@ describe("Sh3PageSectionComponent", () => {
     const fixture = TestBed.createComponent(AppearanceHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
-      "sh3-page-section",
+      "fold-page-section",
     ) as HTMLElement;
 
     fixture.componentInstance.surface.set("card");
@@ -104,7 +104,7 @@ describe("Sh3PageSectionComponent", () => {
     const fixture = TestBed.createComponent(AppearanceHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
-      "sh3-page-section",
+      "fold-page-section",
     ) as HTMLElement;
     expect(section.classList.contains("stack")).toBe(false);
 
@@ -117,7 +117,7 @@ describe("Sh3PageSectionComponent", () => {
     const fixture = TestBed.createComponent(AppearanceHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
-      "sh3-page-section",
+      "fold-page-section",
     ) as HTMLElement;
     expect(section.classList.contains("is-bleed")).toBe(false);
 

@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="menu">
+<fold-page-layout fluid title="menu">
   <gal-kind-badge titleBadge kind="component" />
   <gal-kind-badge titleBadge kind="directive" />
   <!-- 3 columns, full height: preview (left) · settings (centre) ·
@@ -18,7 +18,7 @@
         </button>
       </div>
       <div class="menu-preview">
-        <sh3-menu
+        <fold-menu
           #menuPreview
           [collapsible]="menuCollapsible()"
           [expanded]="menuExpanded()"
@@ -31,14 +31,14 @@
           <div header class="rail-brand">S3</div>
           } @for (s of menuSectionList(); track s.id; let si = $index) { @if
           (menuSections()) {
-          <sh3-menu-section
+          <fold-menu-section
             [label]="s.name"
             [color]="s.color"
             [collapsible]="menuSectionCollapsible()"
           >
             @for (icon of iconsFor(s.icons); track $index) {
             <button
-              sh3-menu-item
+              fold-menu-item
               [icon]="icon"
               [label]="labelFor(icon)"
               [active]="menuActive() === s.id + '-' + $index"
@@ -47,10 +47,10 @@
               (click)="menuActive.set(s.id + '-' + $index)"
             ></button>
             }
-          </sh3-menu-section>
+          </fold-menu-section>
           } @else { @for (icon of iconsFor(s.icons); track $index) {
           <button
-            sh3-menu-item
+            fold-menu-item
             [icon]="icon"
             [label]="labelFor(icon)"
             [active]="menuActive() === s.id + '-' + $index"
@@ -61,12 +61,12 @@
           } } } @if (menuFooter()) {
           <button
             footer
-            sh3-menu-item
+            fold-menu-item
             icon="settings"
             label="Settings"
           ></button>
           }
-        </sh3-menu>
+        </fold-menu>
 
         <!-- "code" overlay — HTML usage (top) | CSS variables (bottom).
            Stacked, since the preview column is narrow and tall. -->
@@ -76,7 +76,7 @@
             <div class="code-overlay-top">
               <span class="code-lang">html</span>
               <button type="button" class="code-copy" (click)="copyMenuCode()">
-                <sh3-icon
+                <fold-icon
                   [name]="menuCopied() ? 'check-circle' : 'copy'"
                   size="sm"
                 />
@@ -93,7 +93,7 @@
                 class="code-copy"
                 (click)="copyMenuTokensCss()"
               >
-                <sh3-icon
+                <fold-icon
                   [name]="menuCssCopied() ? 'check-circle' : 'copy'"
                   size="sm"
                 />
@@ -108,7 +108,7 @@
     </div>
 
     <div class="menu-col menu-col--settings">
-      <sh3-context-card
+      <fold-context-card
         icon="menu"
         title="Menu Settings"
         subtitle="drives the preview — apply to the Library nav"
@@ -348,11 +348,11 @@
           </div>
           }
         </div>
-      </sh3-context-card>
+      </fold-context-card>
     </div>
 
     <div class="menu-col menu-col--tokens">
-      <sh3-context-card
+      <fold-context-card
         icon="grid"
         title="Tokens"
         subtitle="live sandbox — edit a value to override the preview; semantics preferred"
@@ -404,7 +404,7 @@
         >
           Reset overrides
         </button>
-      </sh3-context-card>
+      </fold-context-card>
     </div>
   </div>
-</sh3-page-layout>
+</fold-page-layout>

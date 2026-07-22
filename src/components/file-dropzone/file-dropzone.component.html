@@ -13,7 +13,7 @@
   (dragleave)="onDragLeave()"
   (drop)="onDrop($event)"
 >
-  <sh3-icon name="upload" [size]="22" />
+  <fold-icon name="upload" [size]="22" />
   @if (busy()) {
     <span class="label">{{ busyLabel() }}</span>
   } @else {

@@ -1,5 +1,5 @@
-// Shared box styling for the native-input controls (sh3-input, sh3-number-input,
-// sh3-select). One source of truth for the box, sizes, alignment and variants —
+// Shared box styling for the native-input controls (fold-input, fold-number-input,
+// fold-select). One source of truth for the box, sizes, alignment and variants —
 // so a redesign lands in all at once. The field layout (label, hint) lives in
 // input-base.component.scss; this mixin styles only the control element itself.
 // Included at the root of each component's SCSS via
@@ -12,24 +12,24 @@
     box-sizing: border-box;
     width: 100%;
     font-family: inherit;
-    color: var(--sh3-color-text);
-    background: var(--sh3-color-surface-card);
-    border: 1px solid var(--sh3-color-border-subtle);
+    color: var(--fold-color-text);
+    background: var(--fold-color-surface-card);
+    border: 1px solid var(--fold-color-border-subtle);
     transition:
-      border-color var(--sh3-motion-fast),
-      box-shadow var(--sh3-motion-fast);
+      border-color var(--fold-motion-fast),
+      box-shadow var(--fold-motion-fast);
 
     &::placeholder {
-      color: var(--sh3-color-text-faded);
+      color: var(--fold-color-text-faded);
     }
 
     &:hover:not(:disabled):not(:read-only):not(:focus) {
-      border-color: var(--sh3-color-border);
+      border-color: var(--fold-color-border);
     }
 
     &:focus {
-      border-color: var(--sh3-color-primary);
-      box-shadow: 0 0 0 2px var(--sh3-color-primary-border);
+      border-color: var(--fold-color-primary);
+      box-shadow: 0 0 0 2px var(--fold-color-primary-border);
     }
 
     &:disabled {
@@ -42,7 +42,7 @@
       cursor: default;
     }
 
-    // Fully remove the native number spinner — sh3-number-input draws its own.
+    // Fully remove the native number spinner — fold-number-input draws its own.
     // (Harmless for text inputs — no match.)
     &[type="number"] {
       appearance: textfield;
@@ -60,25 +60,25 @@
   :host(.sm) input,
   :host(.sm) select {
     height: 1.75rem;
-    font-size: var(--sh3-text-sm);
+    font-size: var(--fold-text-sm);
     padding: 0.25rem 0.5rem;
-    border-radius: var(--sh3-radius-xs);
+    border-radius: var(--fold-radius-xs);
   }
 
   :host(.md) input,
   :host(.md) select {
     height: 2.25rem;
-    font-size: var(--sh3-text-md);
+    font-size: var(--fold-text-md);
     padding: 0.4rem 0.65rem;
-    border-radius: var(--sh3-radius-sm);
+    border-radius: var(--fold-radius-sm);
   }
 
   :host(.lg) input,
   :host(.lg) select {
     height: 2.75rem;
-    font-size: var(--sh3-text-lg);
+    font-size: var(--fold-text-lg);
     padding: 0.5rem 0.75rem;
-    border-radius: var(--sh3-radius-sm);
+    border-radius: var(--fold-radius-sm);
   }
 
   // ─── Alignment ──────────────────────────────────────
@@ -94,8 +94,8 @@
   :host(.panel) select {
     height: auto;
     padding: 7px 10px;
-    border-radius: var(--sh3-radius-sm);
-    background: var(--sh3-color-surface-raised);
+    border-radius: var(--fold-radius-sm);
+    background: var(--fold-color-surface-raised);
 
     &:focus {
       box-shadow: none;

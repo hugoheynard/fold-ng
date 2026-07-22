@@ -1,9 +1,9 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { Sh3FileDropzoneComponent } from "./file-dropzone.component";
+import { FoldFileDropzoneComponent } from "./file-dropzone.component";
 
 function render() {
-  const fixture = TestBed.createComponent(Sh3FileDropzoneComponent);
+  const fixture = TestBed.createComponent(FoldFileDropzoneComponent);
   fixture.detectChanges();
   const cmp = fixture.componentInstance;
   const host = fixture.nativeElement as HTMLElement;
@@ -19,7 +19,7 @@ function render() {
   return { fixture, cmp, host, zone, input, picked, dropEvent };
 }
 
-describe("Sh3FileDropzoneComponent", () => {
+describe("FoldFileDropzoneComponent", () => {
   it("renders a button-role dropzone with a hidden file input", () => {
     const { zone, input } = render();
     expect(zone.getAttribute("role")).toBe("button");

@@ -1,20 +1,20 @@
-<sh3-page-layout fluid title="themes">
+<fold-page-layout fluid title="themes">
   <gal-kind-badge titleBadge kind="foundation" />
   <p description>
     Five themes, and not one of them touches a component. A theme re-points the
-    <em>semantic roles</em> (<code>--sh3-color-*</code>) at different
-    <em>primitives</em> (<code>--sh3-ref-*</code>) — the only place a hex is
+    <em>semantic roles</em> (<code>--fold-color-*</code>) at different
+    <em>primitives</em> (<code>--fold-ref-*</code>) — the only place a hex is
     allowed to live. Components name roles, never colours, so they follow
     wherever a theme goes.
   </p>
 
-  <sh3-page-section
+  <fold-page-section
     title="The themes"
     icon="grid"
     description="Open one to see the roles it actually resolves to — every swatch below is live, rendered inside that theme rather than listed from a table."
   >
     @for (t of themes; track t.name) {
-    <sh3-card class="th-card" padding="none" separators>
+    <fold-card class="th-card" padding="none" separators>
       <div cardHeader class="th-head">
         <div class="th-id">
           <span class="th-name">{{ t.name }}</span>
@@ -23,14 +23,14 @@
             }}</code
           >
         </div>
-        <sh3-button
+        <fold-button
           size="sm"
           variant="ghost"
           [icon]="open() === t.name ? 'chevron-up' : 'chevron-down'"
           (clicked)="toggle(t.name)"
         >
           {{ open() === t.name ? "Hide" : "Palette" }}
-        </sh3-button>
+        </fold-button>
       </div>
 
       <div class="th-body">
@@ -41,7 +41,7 @@
         </p>
 
         @if (t.note) {
-        <sh3-callout variant="info">{{ t.note }}</sh3-callout>
+        <fold-callout variant="info">{{ t.note }}</fold-callout>
         } @if (open() === t.name) {
         <!-- The attribute is what makes this live: every var() inside
                  resolves against this theme, exactly as a real page would. -->
@@ -54,7 +54,7 @@
               <span class="th-chip">
                 <span
                   class="th-swatch"
-                  [style.background]="'var(--sh3-color-' + role + ')'"
+                  [style.background]="'var(--fold-color-' + role + ')'"
                 ></span>
                 <code>{{ role }}</code>
               </span>
@@ -65,11 +65,11 @@
         </div>
         }
       </div>
-    </sh3-card>
+    </fold-card>
     }
-  </sh3-page-section>
+  </fold-page-section>
 
-  <sh3-page-section
+  <fold-page-section
     title="How to design a theme"
     icon="edit"
     description="Eight steps, in order. Every example below is a decision taken — or a bug hit — while building bubbly and navi."
@@ -92,17 +92,17 @@
       }
     </ol>
 
-    <sh3-card class="th-smells" separators raisedBands>
+    <fold-card class="th-smells" separators raisedBands>
       <strong cardHeader>Then look at it, and distrust these</strong>
       <ul class="th-smell-list">
         @for (smell of smells; track smell) {
         <li>{{ smell }}</li>
         }
       </ul>
-    </sh3-card>
-  </sh3-page-section>
+    </fold-card>
+  </fold-page-section>
 
-  <sh3-page-section
+  <fold-page-section
     title="Overriding"
     icon="code"
     description="Four scopes, same mechanism — a custom property declared on an ancestor."
@@ -110,28 +110,28 @@
     <pre class="code-pre th-code"><code>{{ overrideCode }}</code></pre>
 
     <div class="th-rules">
-      <sh3-callout variant="warning">
+      <fold-callout variant="warning">
         A theme block must declare the <strong>whole</strong> catalogue. A
         missing role silently falls back to the base theme's value — a light
         surface with dark-theme text, one token at a time. The contract test
         fails on any gap, in every theme.
-      </sh3-callout>
-      <sh3-callout variant="neutral">
-        Re-point, never re-hex. <code>--sh3-color-*</code> may only reference a
-        <code>--sh3-ref-*</code> primitive (or a <code>color-mix()</code> of
+      </fold-callout>
+      <fold-callout variant="neutral">
+        Re-point, never re-hex. <code>--fold-color-*</code> may only reference a
+        <code>--fold-ref-*</code> primitive (or a <code>color-mix()</code> of
         one). A literal in the semantic layer is a colour no other theme can
         follow — also enforced.
-      </sh3-callout>
-      <sh3-callout variant="neutral">
+      </fold-callout>
+      <fold-callout variant="neutral">
         Radius is the only scale a theme may re-declare: corner softness is a
         brand axis, and the one scale that changes without moving a box. Type,
         space, motion and elevation stay theme-invariant — retheming must never
         re-flow a page.
-      </sh3-callout>
+      </fold-callout>
     </div>
-  </sh3-page-section>
+  </fold-page-section>
 
-  <sh3-page-section
+  <fold-page-section
     title="Consuming"
     icon="play"
     description="What an app writes — and what it must never write."
@@ -146,11 +146,11 @@
         <pre class="code-pre"><code>{{ consumeCss }}</code></pre>
       </div>
     </div>
-    <sh3-callout variant="alert">
-      Never read a <code>--sh3-ref-*</code> primitive from a component: it is
+    <fold-callout variant="alert">
+      Never read a <code>--fold-ref-*</code> primitive from a component: it is
       theme-invariant by design, so a component that names one keeps umbra's
       teal in every theme. That is the whole failure the two tiers exist to
       prevent.
-    </sh3-callout>
-  </sh3-page-section>
-</sh3-page-layout>
+    </fold-callout>
+  </fold-page-section>
+</fold-page-layout>

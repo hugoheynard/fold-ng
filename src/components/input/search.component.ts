@@ -1,29 +1,29 @@
 import { Component, DestroyRef, inject, input, output } from "@angular/core";
-import { Sh3InputComponent } from "./input.component";
+import { FoldInputComponent } from "./input.component";
 
 /**
- * `<sh3-search>` — an {@link Sh3InputComponent} that **debounces its emit**: it
+ * `<fold-search>` — an {@link FoldInputComponent} that **debounces its emit**: it
  * fires `searchChange` only once typing pauses for `delayMs`, so a fast typer
  * triggers one query instead of one per keystroke. The delay is adjustable; the
  * emitted term is trimmed and de-duplicated (no emit when the settled value is
  * unchanged). A thin wrapper over the text input — the search *behaviour*, not a
  * new control.
  *
- * @selector `sh3-search`
+ * @selector `fold-search`
  *
  * @example
  * ```html
- * <sh3-search
+ * <fold-search
  *   placeholder="Search name, email, job…"
  *   (searchChange)="store.setSearch($event)" />
  * ```
  */
 @Component({
-  selector: "sh3-search",
+  selector: "fold-search",
   standalone: true,
-  imports: [Sh3InputComponent],
+  imports: [FoldInputComponent],
   template: `
-    <sh3-input
+    <fold-input
       type="text"
       [placeholder]="placeholder()"
       [size]="size()"
@@ -37,10 +37,10 @@ import { Sh3InputComponent } from "./input.component";
     }
   `,
 })
-export class Sh3SearchComponent {
+export class FoldSearchComponent {
   readonly placeholder = input("");
   readonly size = input<"sm" | "md" | "lg">("md");
-  /** Visual variant, forwarded to the inner `sh3-input` (`panel` for side-panel
+  /** Visual variant, forwarded to the inner `fold-input` (`panel` for side-panel
    *  forms; `default` elsewhere). */
   readonly variant = input<"default" | "panel">("default");
   /** Quiet period after the last keystroke before emitting, in ms. */

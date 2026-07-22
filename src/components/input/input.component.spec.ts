@@ -2,12 +2,12 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { form, required, FormField } from "@angular/forms/signals";
 import { describe, it, expect } from "vitest";
-import { Sh3InputComponent } from "./input.component";
+import { FoldInputComponent } from "./input.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3InputComponent],
-  template: `<sh3-input
+  imports: [FoldInputComponent],
+  template: `<fold-input
     [label]="label()"
     [type]="type()"
     [size]="size()"
@@ -32,12 +32,12 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const host = fixture.nativeElement.querySelector("sh3-input") as HTMLElement;
+  const host = fixture.nativeElement.querySelector("fold-input") as HTMLElement;
   const input = host.querySelector("input") as HTMLInputElement;
   return { fixture, host, input };
 }
 
-describe("Sh3InputComponent", () => {
+describe("FoldInputComponent", () => {
   it("renders a native input and no label until one is set", () => {
     const { fixture, host, input } = render();
     expect(input).not.toBeNull();
@@ -101,8 +101,8 @@ describe("Sh3InputComponent", () => {
 
 @Component({
   standalone: true,
-  imports: [Sh3InputComponent, FormField],
-  template: `<sh3-input [formField]="nameForm" />`,
+  imports: [FoldInputComponent, FormField],
+  template: `<fold-input [formField]="nameForm" />`,
 })
 class FormHostComponent {
   readonly name = signal("");
@@ -111,12 +111,12 @@ class FormHostComponent {
   });
 }
 
-describe("Sh3InputComponent + Signal Forms", () => {
+describe("FoldInputComponent + Signal Forms", () => {
   function renderForm() {
     const fixture = TestBed.createComponent(FormHostComponent);
     fixture.detectChanges();
     const host = fixture.nativeElement.querySelector(
-      "sh3-input",
+      "fold-input",
     ) as HTMLElement;
     return { fixture, host, input: host.querySelector("input") as HTMLElement };
   }

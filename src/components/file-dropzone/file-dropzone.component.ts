@@ -1,23 +1,23 @@
 import type { ElementRef } from "@angular/core";
 import { Component, input, output, signal, viewChild } from "@angular/core";
-import { Sh3FieldIdDirective } from "../../a11y/field-id.directive";
-import { Sh3IconComponent } from "../icon/icon.component";
+import { FoldFieldIdDirective } from "../../a11y/field-id.directive";
+import { FoldIconComponent } from "../icon/icon.component";
 
 /**
- * `<sh3-file-dropzone>` — a file-picker dropzone: drag-over visuals, keyboard
+ * `<fold-file-dropzone>` — a file-picker dropzone: drag-over visuals, keyboard
  * activation, the hidden `<input type="file">` plumbing, and it emits the picked
  * `File[]`. Presentational — it never talks to the network; the consumer decides
  * what to do with the files (upload now, buffer locally, …).
  *
  * Belongs to the **form** family, not the text-input family: it's a whole
  * drop-target affordance, not a labelled box, so it doesn't compose
- * `sh3-input-base`.
+ * `fold-input-base`.
  *
- * @selector `sh3-file-dropzone`
+ * @selector `fold-file-dropzone`
  *
  * @example
  * ```html
- * <sh3-file-dropzone
+ * <fold-file-dropzone
  *   accept=".pdf,.png"
  *   [hint]="'Max 5 Mo'"
  *   (filesPicked)="onFiles($event)"
@@ -25,13 +25,13 @@ import { Sh3IconComponent } from "../icon/icon.component";
  * ```
  */
 @Component({
-  selector: "sh3-file-dropzone",
+  selector: "fold-file-dropzone",
   standalone: true,
-  imports: [Sh3FieldIdDirective, Sh3IconComponent],
+  imports: [FoldFieldIdDirective, FoldIconComponent],
   templateUrl: "./file-dropzone.component.html",
   styleUrl: "./file-dropzone.component.scss",
 })
-export class Sh3FileDropzoneComponent {
+export class FoldFileDropzoneComponent {
   /** Comma-separated MIME or extension filter passed to the input. */
   readonly accept = input<string>("");
   /** Multi-file pick. Defaults to true — the consumer can cap on its end. */

@@ -1,7 +1,7 @@
 import { booleanAttribute, Component, input } from "@angular/core";
 
 /**
- * `<sh3-card>` — the canonical raised content surface: a solid
+ * `<fold-card>` — the canonical raised content surface: a solid
  * `surface-card` background, a hairline border and a consistent radius. Use it
  * anywhere the app would otherwise hand-roll a `background + border +
  * border-radius` block, so cards never drift on colour or corner.
@@ -11,7 +11,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
  *   pairs with a fainter `border-subtle` hairline).
  * - `radius` — `lg` (14px, default) · `md` · `sm`.
  * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`. Sets the *body*
- *   padding; override with a custom value via `--sh3-card-padding`.
+ *   padding; override with a custom value via `--fold-card-padding`.
  * - `interactive` — adds a hover lift (for clickable cards).
  * - `separators` — draw a hairline between a projected header/footer and the body.
  * - `raisedBands` — tint the header/footer bands a step above the surface
@@ -28,23 +28,23 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * toggling a header/footer never shifts the body.
  *
  * ```html
- * <sh3-card>Static content</sh3-card>
- * <sh3-card surface="sunken" padding="lg">Deep container</sh3-card>
- * <sh3-card separators>
+ * <fold-card>Static content</fold-card>
+ * <fold-card surface="sunken" padding="lg">Deep container</fold-card>
+ * <fold-card separators>
  *   <h3 cardHeader>Title</h3>
  *   Body content
  *   <div cardFooter>Actions</div>
- * </sh3-card>
+ * </fold-card>
  * ```
  *
  * Sizing / escape hatches (CSS custom properties):
- * `--sh3-card-padding` overrides the body padding; `--sh3-card-overflow`
+ * `--fold-card-padding` overrides the body padding; `--fold-card-overflow`
  * (default `clip`) lets content escape the rounded corners.
  *
- * @selector `sh3-card`
+ * @selector `fold-card`
  */
 @Component({
-  selector: "sh3-card",
+  selector: "fold-card",
   standalone: true,
   host: {
     "[class.s-sunken]": "surface() === 'sunken'",
@@ -60,13 +60,13 @@ import { booleanAttribute, Component, input } from "@angular/core";
   templateUrl: "./card.component.html",
   styleUrl: "./card.component.scss",
 })
-export class Sh3CardComponent {
+export class FoldCardComponent {
   /** Surface tint — `card` (raised, default) or `sunken` (deeper container). */
   readonly surface = input<"card" | "sunken">("card");
   /** Corner radius — `lg` (default), `md`, or `sm`. */
   readonly radius = input<"sm" | "md" | "lg">("lg");
   /** Body padding — `md` (default), `none`, `sm`, or `lg`; a custom value can be
-   *  set with the `--sh3-card-padding` CSS variable. */
+   *  set with the `--fold-card-padding` CSS variable. */
   readonly padding = input<"none" | "sm" | "md" | "lg">("md");
   /** Add a hover lift for clickable cards. */
   readonly interactive = input(false);

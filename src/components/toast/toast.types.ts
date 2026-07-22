@@ -1,10 +1,10 @@
 /** The tone of a toast — drives its accent color + icon. */
-export type Sh3ToastVariant = "success" | "info" | "warning" | "error";
+export type FoldToastVariant = "success" | "info" | "warning" | "error";
 
 /** A single transient notification (a queued toast). */
-export type Sh3Toast = {
+export type FoldToast = {
   id: string;
   message: string;
-  variant: Sh3ToastVariant;
+  variant: FoldToastVariant;
   durationMs: number;
 };

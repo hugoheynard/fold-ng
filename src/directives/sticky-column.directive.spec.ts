@@ -2,21 +2,21 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import {
-  Sh3StickyColumnDirective,
-  type Sh3StickyColumnAnchor,
+  FoldStickyColumnDirective,
+  type FoldStickyColumnAnchor,
 } from "./sticky-column.directive";
 
 @Component({
   standalone: true,
-  imports: [Sh3StickyColumnDirective],
+  imports: [FoldStickyColumnDirective],
   template: `<aside
-    sh3StickyColumn
+    foldStickyColumn
     [sticky]="anchor()"
     [stickyOffset]="offset()"
   ></aside>`,
 })
 class HostComponent {
-  readonly anchor = signal<Sh3StickyColumnAnchor>("top");
+  readonly anchor = signal<FoldStickyColumnAnchor>("top");
   readonly offset = signal<number | string | undefined>(undefined);
 }
 
@@ -27,19 +27,19 @@ function render() {
   return { fixture, aside };
 }
 
-describe("Sh3StickyColumnDirective", () => {
+describe("FoldStickyColumnDirective", () => {
   it("lays the host out as a sticky flex column via inline styles", () => {
     const { aside } = render();
     expect(aside.style.display).toBe("flex");
     expect(aside.style.flexDirection).toBe("column");
     // tunable via CSS vars (default fallbacks kept in the value)
-    expect(aside.style.position).toContain("--sh3-sticky-column-position");
-    expect(aside.style.gap).toContain("--sh3-sticky-column-gap");
+    expect(aside.style.position).toContain("--fold-sticky-column-position");
+    expect(aside.style.gap).toContain("--fold-sticky-column-gap");
   });
 
   it("defaults to a top anchor at the header-clearance offset", () => {
     const { aside } = render();
-    expect(aside.style.top).toContain("--sh3-sticky-column-offset");
+    expect(aside.style.top).toContain("--fold-sticky-column-offset");
     expect(aside.style.bottom).toBe("auto");
     expect(aside.style.transform).toBe("none");
     expect(aside.style.alignSelf).toBe("start");
@@ -50,7 +50,7 @@ describe("Sh3StickyColumnDirective", () => {
     fixture.componentInstance.anchor.set("bottom");
     fixture.detectChanges();
     expect(aside.style.top).toBe("auto");
-    expect(aside.style.bottom).toContain("--sh3-sticky-column-offset");
+    expect(aside.style.bottom).toContain("--fold-sticky-column-offset");
     expect(aside.style.transform).toBe("none");
     // in-flow position must match the anchor so a short column starts pinned
     expect(aside.style.alignSelf).toBe("end");

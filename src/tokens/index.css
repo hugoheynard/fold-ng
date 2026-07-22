@@ -3,7 +3,7 @@
    ------------------------------------------------------------
    The single file an app imports to get the whole token set:
 
-     @import '@sh3pherd/ui/tokens.css';
+     @import 'fold-ng/tokens.css';
 
    Order matters: primitives first (they define the raw palette),
    then the semantic layer that points at them.

@@ -1,12 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3PageLayoutComponent } from "./page-layout.component";
+import { FoldPageLayoutComponent } from "./page-layout.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3PageLayoutComponent],
-  template: `<sh3-page-layout
+  imports: [FoldPageLayoutComponent],
+  template: `<fold-page-layout
     [title]="title()"
     [icon]="icon()"
     [wide]="wide()"
@@ -16,7 +16,7 @@ import { Sh3PageLayoutComponent } from "./page-layout.component";
     <button pageActions class="act">Export</button>
     <span titleBadge class="kind">Directive</span>
     <div class="body-item">Body</div>
-  </sh3-page-layout>`,
+  </fold-page-layout>`,
 })
 class HostComponent {
   readonly title = signal<string | undefined>("Facturation");
@@ -31,7 +31,7 @@ function render() {
   return { fixture, root: fixture.nativeElement as HTMLElement };
 }
 
-describe("Sh3PageLayoutComponent", () => {
+describe("FoldPageLayoutComponent", () => {
   it("renders the title, and projects the description with its markup intact", () => {
     const { root } = render();
     expect(
@@ -77,7 +77,7 @@ describe("Sh3PageLayoutComponent", () => {
 
   it("drops the width cap with [fluid] (is-fluid)", () => {
     const { fixture, root } = render();
-    const host = root.querySelector("sh3-page-layout");
+    const host = root.querySelector("fold-page-layout");
     expect(host?.classList.contains("is-fluid")).toBe(false);
     fixture.componentInstance.fluid.set(true);
     fixture.detectChanges();
@@ -86,7 +86,7 @@ describe("Sh3PageLayoutComponent", () => {
 
   it("adds the wide modifier when [wide] is set", () => {
     const { fixture, root } = render();
-    const host = root.querySelector("sh3-page-layout");
+    const host = root.querySelector("fold-page-layout");
     expect(host?.classList.contains("is-wide")).toBe(false);
     fixture.componentInstance.wide.set(true);
     fixture.detectChanges();

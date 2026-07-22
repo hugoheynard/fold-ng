@@ -1,8 +1,8 @@
 import { Component, input } from "@angular/core";
 
 /**
- * Semantic colour variants for {@link Sh3BadgeComponent}, mapped to design
- * tokens. Shared so other components (e.g. `sh3-menu-item`'s badge) can tint a
+ * Semantic colour variants for {@link FoldBadgeComponent}, mapped to design
+ * tokens. Shared so other components (e.g. `fold-menu-item`'s badge) can tint a
  * badge from the same vocabulary.
  * - `accent` — teal, general purpose
  * - `info` — purple, informative / categorical
@@ -10,7 +10,7 @@ import { Component, input } from "@angular/core";
  * - `alert` — red, critical / error
  * - `success` — green, positive / complete
  */
-export type Sh3BadgeVariant =
+export type FoldBadgeVariant =
   | "neutral"
   | "accent"
   | "info"
@@ -21,27 +21,27 @@ export type Sh3BadgeVariant =
 /**
  * Badge / tag for labels, statuses, and categories.
  *
- * @selector `sh3-badge`
+ * @selector `fold-badge`
  *
  * @example
  * ```html
- * <sh3-badge content="In repertoire" />
- * <sh3-badge content="Jazz" radius="square" variant="info" />
- * <sh3-badge content="Pending" variant="warning" />
+ * <fold-badge content="In repertoire" />
+ * <fold-badge content="Jazz" radius="square" variant="info" />
+ * <fold-badge content="Pending" variant="warning" />
  * ```
  */
 @Component({
-  selector: "sh3-badge",
+  selector: "fold-badge",
   standalone: true,
   templateUrl: "./badge.component.html",
   // Inline so the component is fully self-contained — no external asset to
-  // resolve or ship. Colours/sizes come entirely from @sh3pherd/ui tokens.
+  // resolve or ship. Colours/sizes come entirely from fold-ng tokens.
   styleUrl: "./badge.component.scss",
   host: {
     "[class]": 'variant() + " " + radius()',
   },
 })
-export class Sh3BadgeComponent {
+export class FoldBadgeComponent {
   /** Text displayed inside the badge. */
   readonly content = input.required<string>();
 
@@ -61,5 +61,5 @@ export class Sh3BadgeComponent {
    * - `alert` — red, critical / error
    * - `success` — green, positive / complete
    */
-  readonly variant = input<Sh3BadgeVariant>("accent");
+  readonly variant = input<FoldBadgeVariant>("accent");
 }

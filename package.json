@@ -1,5 +1,5 @@
 {
-  "name": "@sh3pherd/ui",
+  "name": "fold-ng",
   "version": "0.0.0",
   "description": "SH3PHERD design system — design tokens and Angular UI components. Dark-first, light theme via [data-theme=\"light\"].",
   "author": "Hugo Heynard",

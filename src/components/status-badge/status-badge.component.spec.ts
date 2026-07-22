@@ -1,9 +1,9 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3StatusBadgeComponent } from "./status-badge.component";
+import { FoldStatusBadgeComponent } from "./status-badge.component";
 
 function mount(status: string, label?: string) {
-  const fixture = TestBed.createComponent(Sh3StatusBadgeComponent);
+  const fixture = TestBed.createComponent(FoldStatusBadgeComponent);
   fixture.componentRef.setInput("status", status);
   if (label !== undefined) {
     fixture.componentRef.setInput("label", label);
@@ -13,7 +13,7 @@ function mount(status: string, label?: string) {
   return badge;
 }
 
-describe("Sh3StatusBadgeComponent", () => {
+describe("FoldStatusBadgeComponent", () => {
   it("shows the label when set, else the raw status", () => {
     expect(mount("active").textContent?.trim()).toBe("active");
     expect(mount("active", "Actif").textContent?.trim()).toBe("Actif");

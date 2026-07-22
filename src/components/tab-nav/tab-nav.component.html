@@ -15,11 +15,11 @@
       (click)="tabChange.emit(tab.key)"
     >
       @if (tab.icon; as ic) {
-        <sh3-icon class="tab-nav-icon" [name]="ic" size="sm" />
+        <fold-icon class="tab-nav-icon" [name]="ic" size="sm" />
       }
       <span class="tab-nav-label">{{ tab.label }}</span>
       @if (tab.badge !== undefined && tab.badge !== null) {
-        <sh3-badge
+        <fold-badge
           class="tab-nav-badge"
           [content]="tab.badge + ''"
           [variant]="activeKey() === tab.key ? 'accent' : 'neutral'"

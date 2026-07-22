@@ -7,17 +7,17 @@ import {
   viewChild,
 } from "@angular/core";
 import {
-  Sh3ContextCardComponent,
-  Sh3IconComponent,
-  Sh3MenuComponent,
-  Sh3MenuItemComponent,
-  Sh3MenuSectionComponent,
-  Sh3PageLayoutComponent,
-  type Sh3IconName,
-  type Sh3MenuItemBadgeTone,
-  type Sh3MenuLevel,
-  type Sh3MenuTint,
-  type Sh3MenuTogglePlacement,
+  FoldContextCardComponent,
+  FoldIconComponent,
+  FoldMenuComponent,
+  FoldMenuItemComponent,
+  FoldMenuSectionComponent,
+  FoldPageLayoutComponent,
+  type FoldIconName,
+  type FoldMenuItemBadgeTone,
+  type FoldMenuLevel,
+  type FoldMenuTint,
+  type FoldMenuTogglePlacement,
 } from "../../src/index";
 import {
   applyOverrides,
@@ -37,23 +37,23 @@ interface MenuSection {
   icons: number;
 }
 
-/** `/menu` — the `sh3-menu` live builder + token sandbox gallery page. */
+/** `/menu` — the `fold-menu` live builder + token sandbox gallery page. */
 @Component({
   selector: "gal-menu-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3ContextCardComponent,
-    Sh3MenuComponent,
-    Sh3MenuItemComponent,
-    Sh3MenuSectionComponent,
-    Sh3IconComponent,
+    FoldPageLayoutComponent,
+    FoldContextCardComponent,
+    FoldMenuComponent,
+    FoldMenuItemComponent,
+    FoldMenuSectionComponent,
+    FoldIconComponent,
   ],
   templateUrl: "./menu.page.html",
 })
 export default class MenuPage {
-  /* ── sh3-menu preview — a live, editable menu built from a list of sections ── */
+  /* ── fold-menu preview — a live, editable menu built from a list of sections ── */
   protected readonly menuActive = signal<string>("");
   protected readonly menuExpanded = signal(false);
   protected readonly menuCollapsible = signal(true);
@@ -65,8 +65,8 @@ export default class MenuPage {
   protected readonly menuFooter = signal(true);
   /** Demo badge on the preview's first item: none, a `"new"` tag, or a count. */
   protected readonly menuBadge = signal<"none" | "tag" | "count">("none");
-  protected readonly menuBadgeTone = signal<Sh3MenuItemBadgeTone>("follow");
-  protected readonly menuBadgeTones: readonly Sh3MenuItemBadgeTone[] = [
+  protected readonly menuBadgeTone = signal<FoldMenuItemBadgeTone>("follow");
+  protected readonly menuBadgeTones: readonly FoldMenuItemBadgeTone[] = [
     "follow",
     "accent",
     "info",
@@ -105,22 +105,22 @@ export default class MenuPage {
     return `${bind}${tone === "follow" ? "" : ` badgeTone="${tone}"`}`;
   }
   /** How items tint on hover / when active. */
-  protected readonly menuTint = signal<Sh3MenuTint>("follow");
-  protected readonly menuTints: readonly Sh3MenuTint[] = [
+  protected readonly menuTint = signal<FoldMenuTint>("follow");
+  protected readonly menuTints: readonly FoldMenuTint[] = [
     "follow",
     "neutral",
     "primary",
   ];
   /** Rail depth → background tint. */
-  protected readonly menuLevel = signal<Sh3MenuLevel>("primary");
-  protected readonly menuLevels: readonly Sh3MenuLevel[] = [
+  protected readonly menuLevel = signal<FoldMenuLevel>("primary");
+  protected readonly menuLevels: readonly FoldMenuLevel[] = [
     "primary",
     "secondary",
     "tertiary",
   ];
   /** Collapse-arrow placement: `auto` follows the slots, the rest pin a band. */
-  protected readonly menuArrow = signal<Sh3MenuTogglePlacement>("auto");
-  protected readonly menuArrows: readonly Sh3MenuTogglePlacement[] = [
+  protected readonly menuArrow = signal<FoldMenuTogglePlacement>("auto");
+  protected readonly menuArrows: readonly FoldMenuTogglePlacement[] = [
     "auto",
     "header",
     "footer",
@@ -147,7 +147,7 @@ export default class MenuPage {
   private sectionSeq = 3;
 
   /** Icons cycled through to populate a section's simulated items. */
-  private readonly iconPool: readonly Sh3IconName[] = [
+  private readonly iconPool: readonly FoldIconName[] = [
     "home",
     "contracts",
     "music",
@@ -156,13 +156,13 @@ export default class MenuPage {
     "edit",
   ];
 
-  protected iconsFor(count: number): Sh3IconName[] {
+  protected iconsFor(count: number): FoldIconName[] {
     return Array.from(
       { length: count },
       (_, i) => this.iconPool[i % this.iconPool.length],
     );
   }
-  protected labelFor(icon: Sh3IconName): string {
+  protected labelFor(icon: FoldIconName): string {
     return icon.charAt(0).toUpperCase() + icon.slice(1);
   }
 
@@ -196,7 +196,7 @@ export default class MenuPage {
     );
   }
 
-  /** The `<sh3-menu>` markup reflecting the current sections — live. */
+  /** The `<fold-menu>` markup reflecting the current sections — live. */
   protected readonly menuCode = computed(() => {
     const attrs = [
       this.menuCollapsible() ? 'collapsible [(expanded)]="expanded"' : "",
@@ -206,7 +206,9 @@ export default class MenuPage {
         ? `togglePlacement="${this.menuArrow()}"`
         : "",
     ].filter(Boolean);
-    const open = attrs.length ? `<sh3-menu ${attrs.join(" ")}>` : "<sh3-menu>";
+    const open = attrs.length
+      ? `<fold-menu ${attrs.join(" ")}>`
+      : "<fold-menu>";
     const lines = [open];
     if (this.menuHeader()) {
       lines.push('  <div header class="brand">S3</div>');
@@ -219,26 +221,26 @@ export default class MenuPage {
       if (wrap) {
         const collapsible = this.menuSectionCollapsible() ? " collapsible" : "";
         lines.push(
-          `  <sh3-menu-section label="${s.name}" color="${s.color}"${collapsible}>`,
+          `  <fold-menu-section label="${s.name}" color="${s.color}"${collapsible}>`,
         );
       }
       const icons = this.iconsFor(s.icons);
       for (let ii = 0; ii < icons.length; ii++) {
         const badge = this.badgeAttrs(this.previewBadge(si, ii));
         lines.push(
-          `${pad}<button sh3-menu-item icon="${icons[ii]}" label="${this.labelFor(icons[ii])}"${badge}></button>`,
+          `${pad}<button fold-menu-item icon="${icons[ii]}" label="${this.labelFor(icons[ii])}"${badge}></button>`,
         );
       }
       if (wrap) {
-        lines.push("  </sh3-menu-section>");
+        lines.push("  </fold-menu-section>");
       }
     }
     if (this.menuFooter()) {
       lines.push(
-        '  <button footer sh3-menu-item icon="settings" label="Settings"></button>',
+        '  <button footer fold-menu-item icon="settings" label="Settings"></button>',
       );
     }
-    lines.push("</sh3-menu>");
+    lines.push("</fold-menu>");
     return lines.join("\n");
   });
   protected readonly menuCopied = signal(false);
@@ -289,7 +291,7 @@ export default class MenuPage {
 
   /** CSS override block for the menu overlay's right pane — your overrides. */
   protected readonly menuTokensCss = computed(() =>
-    overrideCss("sh3-menu", this.menuOverrides()),
+    overrideCss("fold-menu", this.menuOverrides()),
   );
   protected readonly menuCssCopied = signal(false);
   protected copyMenuTokensCss(): void {

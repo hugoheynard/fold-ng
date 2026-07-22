@@ -2,15 +2,15 @@ import { Component, computed, inject, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
 import {
-  Sh3BadgeComponent,
-  Sh3IconComponent,
-  Sh3PageLayoutComponent,
-  Sh3PanelHostService,
-  Sh3TabLayoutComponent,
-  Sh3TabNavComponent,
-  type Sh3BadgeVariant,
-  type Sh3IconName,
-  type Sh3TabNavItem,
+  FoldBadgeComponent,
+  FoldIconComponent,
+  FoldPageLayoutComponent,
+  FoldPanelHostService,
+  FoldTabLayoutComponent,
+  FoldTabNavComponent,
+  type FoldBadgeVariant,
+  type FoldIconName,
+  type FoldTabNavItem,
 } from "../../src/index";
 import { TabPanelComponent } from "../tab-panel.component";
 
@@ -19,23 +19,23 @@ type TabDirection = "horizontal" | "vertical";
 type TabSize = "reduce" | "compact" | "comfortable";
 type TabBackground = "transparent" | "surface";
 
-/** `/tab-nav` — the `sh3-tab-nav` gallery page. */
+/** `/tab-nav` — the `fold-tab-nav` gallery page. */
 @Component({
   selector: "gal-tab-nav-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3TabLayoutComponent,
-    Sh3TabNavComponent,
-    Sh3IconComponent,
-    Sh3BadgeComponent,
+    FoldPageLayoutComponent,
+    FoldTabLayoutComponent,
+    FoldTabNavComponent,
+    FoldIconComponent,
+    FoldBadgeComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./tab-nav.page.html",
 })
 export default class TabNavPage {
-  private readonly panelHost = inject(Sh3PanelHostService);
+  private readonly panelHost = inject(FoldPanelHostService);
 
   /* ── Playground ─────────────────────────────────────────────────────────── */
   protected readonly tabCounts = [2, 3, 5] as const;
@@ -52,7 +52,7 @@ export default class TabNavPage {
   private readonly TAB_POOL: readonly {
     key: string;
     label: string;
-    icon: Sh3IconName;
+    icon: FoldIconName;
     badge?: number;
   }[] = [
     { key: "overview", label: "Overview", icon: "grid" },
@@ -62,7 +62,7 @@ export default class TabNavPage {
     { key: "billing", label: "Billing", icon: "contracts", badge: 2 },
   ];
 
-  protected readonly tnTabs = computed<Sh3TabNavItem[]>(() =>
+  protected readonly tnTabs = computed<FoldTabNavItem[]>(() =>
     this.TAB_POOL.slice(0, this.tnCount()).map((t) => ({
       key: t.key,
       label: t.label,
@@ -97,15 +97,15 @@ export default class TabNavPage {
       attrs.push(`background="${this.tnBackground()}"`);
     }
     attrs.push('(tabChange)="active.set($event)"');
-    const nav = ["<sh3-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"];
+    const nav = ["<fold-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"];
     if (!side) {
       return nav.join("\n");
     }
     return [
-      '<sh3-tab-layout placement="side" #tl="sh3TabLayout">',
+      '<fold-tab-layout placement="side" #tl="foldTabLayout">',
       ...nav.map((l) => `  ${l}`),
       "  <app-tab-content />",
-      "</sh3-tab-layout>",
+      "</fold-tab-layout>",
     ].join("\n");
   });
 
@@ -121,7 +121,7 @@ export default class TabNavPage {
     name: string;
     role: string;
     status: string;
-    tone: Sh3BadgeVariant;
+    tone: FoldBadgeVariant;
   }[] = [
     {
       initials: "MM",

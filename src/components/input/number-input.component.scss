@@ -1,5 +1,5 @@
-// sh3-number-input renders the same box as sh3-input (see input-shell.scss)
-// inside sh3-input-base (label/hint layout), plus its own spinner buttons.
+// fold-number-input renders the same box as fold-input (see input-shell.scss)
+// inside fold-input-base (label/hint layout), plus its own spinner buttons.
 // Two axes: `spinner` picks the glyph, `controls` picks the placement.
 @use "./input-shell" as shell;
 
@@ -41,7 +41,7 @@
   width: 1.5rem;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--sh3-color-border-subtle);
+  border-left: 1px solid var(--fold-color-border-subtle);
 }
 .ni-stack-btn {
   flex: 1;
@@ -52,25 +52,25 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
   cursor: pointer;
   transition:
-    color var(--sh3-motion-fast),
-    background var(--sh3-motion-fast);
+    color var(--fold-motion-fast),
+    background var(--fold-motion-fast);
 
   &:hover:not(:disabled) {
-    color: var(--sh3-color-text);
-    background: var(--sh3-color-surface-hover);
+    color: var(--fold-color-text);
+    background: var(--fold-color-surface-hover);
   }
   &:disabled {
     opacity: 0.3;
     cursor: not-allowed;
   }
   &:first-child {
-    border-top-right-radius: var(--sh3-radius-sm);
+    border-top-right-radius: var(--fold-radius-sm);
   }
   &:last-child {
-    border-bottom-right-radius: var(--sh3-radius-sm);
+    border-bottom-right-radius: var(--fold-radius-sm);
   }
 }
 
@@ -80,18 +80,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--sh3-color-border-subtle);
-  border-radius: var(--sh3-radius-sm);
-  background: var(--sh3-color-surface-card);
-  color: var(--sh3-color-text);
+  border: 1px solid var(--fold-color-border-subtle);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
   cursor: pointer;
   transition:
-    border-color var(--sh3-motion-fast),
-    background var(--sh3-motion-fast);
+    border-color var(--fold-motion-fast),
+    background var(--fold-motion-fast);
 
   &:hover:not(:disabled) {
-    border-color: var(--sh3-color-border);
-    background: var(--sh3-color-surface-hover);
+    border-color: var(--fold-color-border);
+    background: var(--fold-color-surface-hover);
   }
   &:disabled {
     opacity: 0.4;
@@ -114,8 +114,8 @@
   top: 50%;
   right: 0.6rem;
   transform: translateY(-50%);
-  font-size: var(--sh3-text-xs);
-  color: var(--sh3-color-text-faded);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-faded);
   pointer-events: none;
 }
 // clearance so the value never sits under the suffix / stack

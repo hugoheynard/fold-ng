@@ -1,26 +1,26 @@
 import { Component, inject, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { Sh3PanelHostComponent } from "../panel-host.component";
-import { Sh3PanelHostService } from "../panel-host.service";
-import { Sh3PanelRef } from "../panel-ref";
-import { Sh3PanelToggle } from "../panel-toggle";
-import type { Sh3PanelContent } from "../panel.types";
+import { FoldPanelHostComponent } from "../panel-host.component";
+import { FoldPanelHostService } from "../panel-host.service";
+import { FoldPanelRef } from "../panel-ref";
+import { FoldPanelToggle } from "../panel-toggle";
+import type { FoldPanelContent } from "../panel.types";
 
 @Component({ selector: "test-toggle-panel", template: `{{ data().n }}` })
-class TogglePanelComponent implements Sh3PanelContent<{ n: number }> {
+class TogglePanelComponent implements FoldPanelContent<{ n: number }> {
   readonly data = input.required<{ n: number }>();
-  readonly ref = inject(Sh3PanelRef);
+  readonly ref = inject(FoldPanelRef);
 }
 
 @Component({
-  imports: [Sh3PanelHostComponent],
-  template: `<sh3-panel-host />`,
+  imports: [FoldPanelHostComponent],
+  template: `<fold-panel-host />`,
 })
 class HostComponent {}
 
-describe("Sh3PanelToggle", () => {
-  let host: Sh3PanelHostService;
+describe("FoldPanelToggle", () => {
+  let host: FoldPanelHostService;
 
   function render() {
     const fixture = TestBed.createComponent(HostComponent);
@@ -30,13 +30,13 @@ describe("Sh3PanelToggle", () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
-    host = TestBed.inject(Sh3PanelHostService);
+    TestBed.configureTestingModule({ providers: [FoldPanelHostService] });
+    host = TestBed.inject(FoldPanelHostService);
   });
 
   it("opens on first toggle and closes on the second", async () => {
     const { fixture, root } = render();
-    const toggle = new Sh3PanelToggle(host, TogglePanelComponent);
+    const toggle = new FoldPanelToggle(host, TogglePanelComponent);
 
     toggle.toggle({ n: 1 });
     fixture.detectChanges();
@@ -52,7 +52,7 @@ describe("Sh3PanelToggle", () => {
 
   it("re-syncs isOpen when the panel closes from the inside (Escape)", async () => {
     const { fixture } = render();
-    const toggle = new Sh3PanelToggle(host, TogglePanelComponent);
+    const toggle = new FoldPanelToggle(host, TogglePanelComponent);
 
     toggle.toggle({ n: 2 });
     fixture.detectChanges();

@@ -6,7 +6,7 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   user-select: none;
-  border-radius: var(--sh3-radius-round);
+  border-radius: var(--fold-radius-round);
 }
 .avatar.size-sm {
   width: 20px;
@@ -25,18 +25,18 @@
 }
 /* Guests — dashed outline instead of a solid fill. */
 .avatar.variant-ghost {
-  background: var(--sh3-color-surface-raised);
-  color: var(--sh3-color-text-secondary);
-  border: 1px dashed var(--sh3-color-border);
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text-secondary);
+  border: 1px dashed var(--fold-color-border);
 }
 /* Orgs — square with a small radius. */
 .avatar.shape-square {
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
 }
 .avatar.has-image {
   overflow: hidden;
-  background: var(--sh3-color-surface-raised);
-  border: 1px solid var(--sh3-color-border);
+  background: var(--fold-color-surface-raised);
+  border: 1px solid var(--fold-color-border);
 }
 .avatar-img {
   width: 100%;
@@ -60,17 +60,17 @@
   outline-style: dotted;
 }
 .avatar[data-ring="accent"] {
-  --avatar-ring: var(--sh3-color-primary);
+  --avatar-ring: var(--fold-color-primary);
 }
 .avatar[data-ring="info"] {
-  --avatar-ring: var(--sh3-color-info);
+  --avatar-ring: var(--fold-color-info);
 }
 .avatar[data-ring="warning"] {
-  --avatar-ring: var(--sh3-color-warning);
+  --avatar-ring: var(--fold-color-warning);
 }
 .avatar[data-ring="alert"] {
-  --avatar-ring: var(--sh3-color-alert);
+  --avatar-ring: var(--fold-color-alert);
 }
 .avatar[data-ring="success"] {
-  --avatar-ring: var(--sh3-color-success);
+  --avatar-ring: var(--fold-color-success);
 }

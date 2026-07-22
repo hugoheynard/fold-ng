@@ -12,7 +12,7 @@
   width: 16px;
   height: 3px;
   border-radius: 2px;
-  background: var(--sh3-color-border);
+  background: var(--fold-color-border);
   opacity: 0.85;
 }
 .sep-label {
@@ -20,23 +20,23 @@
 }
 
 /* Expanded: a section header — colour dot + uppercase label. */
-:host-context(sh3-menu.expanded) {
+:host-context(fold-menu.expanded) {
   justify-content: flex-start;
   gap: 7px;
   height: auto;
   padding: 12px 12px 4px;
 }
-:host-context(sh3-menu.expanded) .sep-mark {
+:host-context(fold-menu.expanded) .sep-mark {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   opacity: 1;
 }
-:host-context(sh3-menu.expanded) .sep-label {
+:host-context(fold-menu.expanded) .sep-label {
   display: inline;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
 }

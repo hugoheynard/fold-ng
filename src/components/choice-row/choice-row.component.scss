@@ -15,19 +15,19 @@
   justify-content: center;
   gap: 7px;
   cursor: pointer;
-  border: 1px solid var(--sh3-color-border);
-  color: var(--sh3-color-text-muted);
+  border: 1px solid var(--fold-color-border);
+  color: var(--fold-color-text-muted);
   transition:
     color 0.1s ease,
     background 0.1s ease,
     border-color 0.1s ease;
 }
 .choice-count {
-  color: var(--sh3-color-text-faded);
+  color: var(--fold-color-text-faded);
   font-variant-numeric: tabular-nums;
 }
 .choice.is-active .choice-count {
-  color: var(--sh3-color-primary-text);
+  color: var(--fold-color-primary-text);
 }
 
 /* Segmented — equal-width rounded rectangles. */
@@ -36,35 +36,35 @@
   padding: 5px 0;
   text-align: center;
   text-transform: capitalize;
-  background: var(--sh3-color-surface-subtle);
-  border-radius: var(--sh3-radius-sm);
-  font-size: var(--sh3-text-xs);
+  background: var(--fold-color-surface-subtle);
+  border-radius: var(--fold-radius-sm);
+  font-size: var(--fold-text-xs);
   font-weight: 600;
 }
 .choice-row.segmented .choice:hover:not(.is-active) {
-  background: var(--sh3-color-surface-raised);
+  background: var(--fold-color-surface-raised);
 }
 .choice-row.segmented .choice.is-active {
-  background: var(--sh3-color-primary-surface);
-  border-color: var(--sh3-color-primary-border);
-  color: var(--sh3-color-primary);
+  background: var(--fold-color-primary-surface);
+  border-color: var(--fold-color-primary-border);
+  color: var(--fold-color-primary);
 }
 
 /* Chips — auto-width pills that wrap. */
 .choice-row.chips .choice {
   padding: 4px 12px;
   background: transparent;
-  border-radius: var(--sh3-radius-pill);
-  color: var(--sh3-color-text-secondary);
-  font-size: var(--sh3-text-sm);
+  border-radius: var(--fold-radius-pill);
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-sm);
 }
 .choice-row.chips .choice:hover:not(.is-active) {
-  color: var(--sh3-color-text);
-  border-color: var(--sh3-color-primary-border);
+  color: var(--fold-color-text);
+  border-color: var(--fold-color-primary-border);
 }
 .choice-row.chips .choice.is-active {
-  background: var(--sh3-color-primary-surface);
-  border-color: var(--sh3-color-primary-border);
-  color: var(--sh3-color-primary-text);
+  background: var(--fold-color-primary-surface);
+  border-color: var(--fold-color-primary-border);
+  color: var(--fold-color-primary-text);
   font-weight: 600;
 }

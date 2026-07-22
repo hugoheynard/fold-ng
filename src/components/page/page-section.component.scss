@@ -4,24 +4,24 @@
   gap: 16px;
 }
 /* `bleed` — span the page layout edge-to-edge. Cancels *exactly* the gutter
-   sh3-page-layout pads with (the same --sh3-page-gutter token), so the section
+   fold-page-layout pads with (the same --fold-page-gutter token), so the section
    reaches the layout's padding edge and no further: flush at every breakpoint,
-   never an overflow. Only meaningful inside sh3-page-layout (the fallback keeps
+   never an overflow. Only meaningful inside fold-page-layout (the fallback keeps
    a stray use from exploding). */
 :host(.is-bleed) {
-  margin-inline: calc(-1 * var(--sh3-page-gutter, 32px));
+  margin-inline: calc(-1 * var(--fold-page-gutter, 32px));
 }
 /* A bleed band at an *edge* of the page also swallows the page's block padding
    so it sits flush to the very top/bottom — a hero as the first band, a footer
    band as the last. Same token as the padding, so it stays exact. A band in the
    middle keeps the vertical rhythm; only the edges flush. */
 :host(.is-bleed):first-child {
-  margin-top: calc(-1 * var(--sh3-page-pad-top, 28px));
+  margin-top: calc(-1 * var(--fold-page-pad-top, 28px));
 }
 :host(.is-bleed):last-child {
-  margin-bottom: calc(-1 * var(--sh3-page-pad-bottom, 40px));
+  margin-bottom: calc(-1 * var(--fold-page-pad-bottom, 40px));
 }
-/* Column: the title row (sh3-element-title owns title + action) then the
+/* Column: the title row (fold-element-title owns title + action) then the
        optional description below it. */
 .section-head {
   display: flex;
@@ -31,10 +31,10 @@
 }
 .section-desc {
   margin: 0;
-  font-size: var(--sh3-text-sm);
+  font-size: var(--fold-text-sm);
   line-height: 1.5;
   max-width: 62ch;
-  color: var(--sh3-color-text-secondary);
+  color: var(--fold-color-text-secondary);
 }
 .section-body {
   min-width: 0;
@@ -51,15 +51,15 @@
 :host(.s-card),
 :host(.s-sunken) {
   padding: 20px;
-  border: 1px solid var(--sh3-color-border);
-  border-radius: var(--sh3-radius-lg);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
 }
 :host(.s-card) {
-  background: var(--sh3-color-surface-card);
+  background: var(--fold-color-surface-card);
 }
 :host(.s-sunken) {
-  background: var(--sh3-color-surface-sunken);
-  border-color: var(--sh3-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
+  border-color: var(--fold-color-border-subtle);
 }
 
 /* ── Divider: title becomes a bordered header bar, body padded below.
@@ -71,7 +71,7 @@
 }
 :host(.divider) .section-head {
   padding: 14px 20px;
-  border-bottom: 1px solid var(--sh3-color-border-subtle);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
 }
 :host(.divider) .section-body {
   padding: 8px 20px 14px;

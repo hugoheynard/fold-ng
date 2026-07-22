@@ -1,15 +1,15 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, afterEach } from "vitest";
-import { Sh3NavLauncherComponent } from "./nav-launcher.component";
-import { Sh3NavTileComponent } from "./nav-tile.component";
+import { FoldNavLauncherComponent } from "./nav-launcher.component";
+import { FoldNavTileComponent } from "./nav-tile.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3NavLauncherComponent, Sh3NavTileComponent],
-  template: `<sh3-nav-launcher [(open)]="open">
-    <a sh3-nav-tile icon="home" label="Home" data-t="tile"></a>
-  </sh3-nav-launcher>`,
+  imports: [FoldNavLauncherComponent, FoldNavTileComponent],
+  template: `<fold-nav-launcher [(open)]="open">
+    <a fold-nav-tile icon="home" label="Home" data-t="tile"></a>
+  </fold-nav-launcher>`,
 })
 class HostComponent {
   readonly open = signal(false);
@@ -24,12 +24,12 @@ function render() {
 
 @Component({
   standalone: true,
-  imports: [Sh3NavLauncherComponent, Sh3NavTileComponent],
-  template: `<sh3-nav-launcher [open]="true" [columns]="cols()">
+  imports: [FoldNavLauncherComponent, FoldNavTileComponent],
+  template: `<fold-nav-launcher [open]="true" [columns]="cols()">
     @for (t of tiles(); track t) {
-      <a sh3-nav-tile icon="home" [label]="t"></a>
+      <a fold-nav-tile icon="home" [label]="t"></a>
     }
-  </sh3-nav-launcher>`,
+  </fold-nav-launcher>`,
 })
 class ColsHostComponent {
   readonly cols = signal<number | "auto">("auto");
@@ -44,7 +44,7 @@ function renderCols() {
   return { fixture, cols };
 }
 
-describe("Sh3NavLauncherComponent", () => {
+describe("FoldNavLauncherComponent", () => {
   afterEach(() => {
     // The scroll-lock writes body.style.overflow — leave the DOM clean.
     document.body.style.overflow = "";

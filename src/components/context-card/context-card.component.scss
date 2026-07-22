@@ -1,10 +1,10 @@
 :host {
   display: block;
 }
-/* Header — the whole icon + title + subtitle block is sh3-element-title. */
+/* Header — the whole icon + title + subtitle block is fold-element-title. */
 .cc-head {
   padding: 16px;
-  border-bottom: 1px solid var(--sh3-color-border-subtle);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
 }
 /* Body — the projected content. */
 .cc-body {
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   padding: 14px 16px;
-  border-top: 1px solid var(--sh3-color-border-subtle);
+  border-top: 1px solid var(--fold-color-border-subtle);
 }
 .cc-foot:empty {
   display: none;

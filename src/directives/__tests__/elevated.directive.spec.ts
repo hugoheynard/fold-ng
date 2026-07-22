@@ -1,12 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3ElevatedDirective } from "../elevated.directive";
+import { FoldElevatedDirective } from "../elevated.directive";
 
 @Component({
   standalone: true,
-  imports: [Sh3ElevatedDirective],
-  template: `<div [sh3Elevated]="on()" data-t="host"></div>`,
+  imports: [FoldElevatedDirective],
+  template: `<div [foldElevated]="on()" data-t="host"></div>`,
 })
 class HostComponent {
   readonly on = signal(true);
@@ -21,7 +21,7 @@ function setup() {
   return { fixture, el };
 }
 
-describe("Sh3ElevatedDirective", () => {
+describe("FoldElevatedDirective", () => {
   it("stamps data-elevated when raised, drops it when not", () => {
     const { fixture, el } = setup();
     expect(el.getAttribute("data-elevated")).toBe("");
@@ -34,8 +34,8 @@ describe("Sh3ElevatedDirective", () => {
   it("defaults to raised for a bare attribute", () => {
     @Component({
       standalone: true,
-      imports: [Sh3ElevatedDirective],
-      template: `<div sh3Elevated data-t="bare"></div>`,
+      imports: [FoldElevatedDirective],
+      template: `<div foldElevated data-t="bare"></div>`,
     })
     class BareHost {}
 

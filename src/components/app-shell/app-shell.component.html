@@ -4,13 +4,13 @@
 
 <div
   class="rail-primary"
-  sh3Surface="chrome"
-  [sh3FocusTrap]="drawerOpen()"
+  foldSurface="chrome"
+  [foldFocusTrap]="drawerOpen()"
   tabindex="-1"
 >
   <ng-content select="[railPrimary]" />
 </div>
-<div class="rail-secondary" sh3Surface="chrome">
+<div class="rail-secondary" foldSurface="chrome">
   <ng-content select="[railSecondary]" />
 </div>
 
@@ -21,7 +21,7 @@
 @if (drawerOpen()) {
   <div class="mobile-scrim" (click)="closeMobileNav()" aria-hidden="true"></div>
 }
-<header class="header" sh3Surface="chrome">
+<header class="header" foldSurface="chrome">
   <ng-content select="[header]" />
 </header>
 
@@ -32,13 +32,13 @@
   <footer
     class="footer"
     [class.footer-inflow]="footerBehavior() === 'scroll'"
-    sh3Surface="chrome"
+    foldSurface="chrome"
   >
     <ng-content select="[footer]" />
   </footer>
 </ng-template>
 
-<main class="content" sh3Surface="page" [id]="contentId" tabindex="-1">
+<main class="content" foldSurface="page" [id]="contentId" tabindex="-1">
   <ng-content />
   @if (footerBehavior() === "scroll") {
     <ng-container [ngTemplateOutlet]="footerTpl" />

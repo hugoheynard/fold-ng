@@ -1,9 +1,9 @@
 import { Component, inject, model } from "@angular/core";
-import { Sh3IdService } from "../../a11y/id.service";
-import { Sh3IconComponent } from "../icon/icon.component";
+import { FoldIdService } from "../../a11y/id.service";
+import { FoldIconComponent } from "../icon/icon.component";
 
 /**
- * `<sh3-disclosure>` — one summary that toggles one collapsible panel. The
+ * `<fold-disclosure>` — one summary that toggles one collapsible panel. The
  * single primitive; an accordion is a *set* of these (one open at a time is the
  * consumer's job — bind each `open` and clear the others), so the library ships
  * the piece, not the policy.
@@ -20,38 +20,38 @@ import { Sh3IconComponent } from "../icon/icon.component";
  *
  * Two-way `open` (`[(open)]`) reflects and controls the state; a one-way
  * `[open]="true"` starts it expanded; `toggle()` on the host (`exportAs:
- * "sh3Disclosure"`) flips it from a template.
+ * "foldDisclosure"`) flips it from a template.
  *
  * Colour is CSS custom properties so a plain disclosure and a loud call-to-open
- * are the same component: `--sh3-disclosure-summary-bg` (transparent) and
- * `--sh3-disclosure-summary-color` (text) tint the summary bar — set them to a
+ * are the same component: `--fold-disclosure-summary-bg` (transparent) and
+ * `--fold-disclosure-summary-color` (text) tint the summary bar — set them to a
  * primary fill for a CTA.
  *
- * @selector `sh3-disclosure`
+ * @selector `fold-disclosure`
  *
  * @example
  * ```html
- * <sh3-disclosure>
+ * <fold-disclosure>
  *   <span summary>How it works</span>
  *   <p>The panel, revealed on click.</p>
- * </sh3-disclosure>
+ * </fold-disclosure>
  * ```
  */
 @Component({
-  selector: "sh3-disclosure",
+  selector: "fold-disclosure",
   standalone: true,
-  imports: [Sh3IconComponent],
-  exportAs: "sh3Disclosure",
+  imports: [FoldIconComponent],
+  exportAs: "foldDisclosure",
   host: { "[class.is-open]": "open()" },
   templateUrl: "./disclosure.component.html",
   styleUrl: "./disclosure.component.scss",
 })
-export class Sh3DisclosureComponent {
+export class FoldDisclosureComponent {
   /** Whether the panel is expanded. Two-way: `[(open)]`. */
   readonly open = model(false);
 
   /** Panel id, so the summary button can point `aria-controls` at it. */
-  protected readonly panelId = inject(Sh3IdService).next("sh3-disclosure");
+  protected readonly panelId = inject(FoldIdService).next("fold-disclosure");
 
   toggle(): void {
     this.open.update((v) => !v);

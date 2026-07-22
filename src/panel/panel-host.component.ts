@@ -8,15 +8,15 @@ import {
 } from "@angular/core";
 import { FocusTrapDirective } from "../a11y/focus-trap.directive";
 import { ScrollLockService } from "../a11y/scroll-lock.service";
-import { Sh3PanelComponentOutletDirective } from "./panel-component-outlet.directive";
-import { Sh3PanelHostService } from "./panel-host.service";
-import type { Sh3PanelDescriptor } from "./panel.types";
+import { FoldPanelComponentOutletDirective } from "./panel-component-outlet.directive";
+import { FoldPanelHostService } from "./panel-host.service";
+import type { FoldPanelDescriptor } from "./panel.types";
 
 /**
- * `<sh3-panel-host>` — the single, layout-owned chrome for every side panel.
+ * `<fold-panel-host>` — the single, layout-owned chrome for every side panel.
  *
  * Rendered **once** in the content region (typically inside the app shell). It
- * reads the {@link Sh3PanelHostService} panels and wraps each in a **glass**
+ * reads the {@link FoldPanelHostService} panels and wraps each in a **glass**
  * slide-in `<aside>` (no dark scrim — the surface itself is frosted),
  * `z-index: 50` stacking, focus-trap and body scroll-lock.
  *
@@ -26,21 +26,21 @@ import type { Sh3PanelDescriptor } from "./panel.types";
  * - **component** — an imperatively-opened component that owns its whole
  *   header/body/footer; the host supplies only the shell.
  *
- * @selector `sh3-panel-host`
+ * @selector `fold-panel-host`
  */
 @Component({
-  selector: "sh3-panel-host",
+  selector: "fold-panel-host",
   standalone: true,
   imports: [
     NgTemplateOutlet,
     FocusTrapDirective,
-    Sh3PanelComponentOutletDirective,
+    FoldPanelComponentOutletDirective,
   ],
   templateUrl: "./panel-host.component.html",
   styleUrl: "./panel-host.component.scss",
 })
-export class Sh3PanelHostComponent {
-  private readonly host = inject(Sh3PanelHostService);
+export class FoldPanelHostComponent {
+  private readonly host = inject(FoldPanelHostService);
   private readonly scrollLock = inject(ScrollLockService);
 
   readonly panels = this.host.panels;
@@ -69,7 +69,7 @@ export class Sh3PanelHostComponent {
   }
 
   /** The accessible label — a template panel's title, else the component owns it. */
-  ariaLabel(panel: Sh3PanelDescriptor): string | null {
+  ariaLabel(panel: FoldPanelDescriptor): string | null {
     return panel.kind === "template" ? panel.title() : null;
   }
 
@@ -82,7 +82,7 @@ export class Sh3PanelHostComponent {
     }
   }
 
-  onBackdrop(event: MouseEvent, panel: Sh3PanelDescriptor): void {
+  onBackdrop(event: MouseEvent, panel: FoldPanelDescriptor): void {
     if (event.target === event.currentTarget) {
       panel.onClose();
     }

@@ -1,9 +1,9 @@
 import { booleanAttribute, Component, input, signal } from "@angular/core";
 import {
-  Sh3ButtonComponent,
-  Sh3CardComponent,
-  Sh3ElementTitleComponent,
-  Sh3PageSectionComponent,
+  FoldButtonComponent,
+  FoldCardComponent,
+  FoldElementTitleComponent,
+  FoldPageSectionComponent,
 } from "../src/index";
 
 /**
@@ -16,23 +16,23 @@ import {
  * ```html
  * <dev-playground [code]="myCode()">
  *   <div params>…control widgets…</div>
- *   <sh3-number-input … />
+ *   <fold-number-input … />
  * </dev-playground>
  * ```
  *
  * The three panels lay out on a responsive grid (settings | preview | code →
  * preview on top with settings + code below → stacked). The component owns its
- * `sh3-page-section title="Playground"` wrapper, so a page just drops in
+ * `fold-page-section title="Playground"` wrapper, so a page just drops in
  * `<dev-playground>` without repeating the section on every page.
  */
 @Component({
   selector: "dev-playground",
   standalone: true,
   imports: [
-    Sh3ButtonComponent,
-    Sh3ElementTitleComponent,
-    Sh3CardComponent,
-    Sh3PageSectionComponent,
+    FoldButtonComponent,
+    FoldElementTitleComponent,
+    FoldCardComponent,
+    FoldPageSectionComponent,
   ],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",

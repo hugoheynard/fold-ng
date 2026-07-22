@@ -1,9 +1,9 @@
 import { booleanAttribute, Component, computed, input } from "@angular/core";
 
 /**
- * `<sh3-aside-layout>` — a centered, self-scrolling content column flanked by
+ * `<fold-aside-layout>` — a centered, self-scrolling content column flanked by
  * up to two sticky side rails. The detail-page archetype: a stack of
- * `sh3-page-section`s in the middle, sticky asides beside it, collapsing to a
+ * `fold-page-section`s in the middle, sticky asides beside it, collapsing to a
  * single column on narrow viewports.
  *
  * Content goes in three slots; the grid adapts to whichever rails are filled
@@ -23,60 +23,60 @@ import { booleanAttribute, Component, computed, input } from "@angular/core";
  * container (its ancestor), so a page keeps whatever scroll it already owns —
  * the layout just drops the grid + `position: sticky` + responsive boilerplate
  * every detail page was hand-rolling. It inlines the same sticky flow as
- * `sh3StickyColumn` (top anchor) because it owns its columns, and pairs with a
- * `sh3-page-section` stack in the centre.
+ * `foldStickyColumn` (top anchor) because it owns its columns, and pairs with a
+ * `fold-page-section` stack in the centre.
  *
  * Inputs are kept minimal: optional a11y labels ({@link asideLeftLabel} /
  * {@link asideRightLabel}) — set one and that rail becomes a labelled
  * `complementary` landmark, leave it unset and the rail is a plain container
  * (no anonymous landmark noise) — plus {@link topOffset}, a convenience over the
  * sticky-offset var. Everything else is CSS custom properties on the host. Each
- * of the three tracks is a var: `--sh3-aside-layout-rail-width`
- * (220px) · `--sh3-aside-layout-center-width` (`minmax(0, 1fr)`) ·
- * `--sh3-aside-layout-side-width` (300px). Rails default to a fixed width and
+ * of the three tracks is a var: `--fold-aside-layout-rail-width`
+ * (220px) · `--fold-aside-layout-center-width` (`minmax(0, 1fr)`) ·
+ * `--fold-aside-layout-side-width` (300px). Rails default to a fixed width and
  * the centre flexes; set all three to `minmax(0, 1fr)` for **equal columns**.
- * Also `--sh3-aside-layout-gap` (28px) · `--sh3-aside-layout-max` (1240px) ·
- * `--sh3-aside-layout-top` (24px, the sticky offset — override per rail with
- * `--sh3-aside-layout-left-top` / `--sh3-aside-layout-right-top`) ·
- * `--sh3-aside-layout-rail-max` (the cap above which a taller-than-viewport rail
+ * Also `--fold-aside-layout-gap` (28px) · `--fold-aside-layout-max` (1240px) ·
+ * `--fold-aside-layout-top` (24px, the sticky offset — override per rail with
+ * `--fold-aside-layout-left-top` / `--fold-aside-layout-right-top`) ·
+ * `--fold-aside-layout-rail-max` (the cap above which a taller-than-viewport rail
  * scrolls internally instead of being clipped by `sticky`). The page still owns
  * the scroll container the asides stick within.
  *
  * ```scss
  * // three equal columns
- * sh3-aside-layout {
- *   --sh3-aside-layout-rail-width: minmax(0, 1fr);
- *   --sh3-aside-layout-center-width: minmax(0, 1fr);
- *   --sh3-aside-layout-side-width: minmax(0, 1fr);
+ * fold-aside-layout {
+ *   --fold-aside-layout-rail-width: minmax(0, 1fr);
+ *   --fold-aside-layout-center-width: minmax(0, 1fr);
+ *   --fold-aside-layout-side-width: minmax(0, 1fr);
  * }
  * ```
  *
- * @selector `sh3-aside-layout`
+ * @selector `fold-aside-layout`
  *
  * @example
  * ```html
- * <sh3-aside-layout>
+ * <fold-aside-layout>
  *   <app-timeline asideLeft />
  *
  *   <app-header />
- *   <sh3-page-section title="…">…</sh3-page-section>
+ *   <fold-page-section title="…">…</fold-page-section>
  *
  *   <app-history asideRight />
  *   <app-actions asideRight />
- * </sh3-aside-layout>
+ * </fold-aside-layout>
  * ```
  */
 @Component({
-  selector: "sh3-aside-layout",
+  selector: "fold-aside-layout",
   standalone: true,
   templateUrl: "./aside-layout.component.html",
   styleUrl: "./aside-layout.component.scss",
   host: {
-    "[style.--sh3-aside-layout-top]": "topOffsetCss()",
+    "[style.--fold-aside-layout-top]": "topOffsetCss()",
     "[class.stack-left-first]": "stackLeftFirst()",
   },
 })
-export class Sh3AsideLayoutComponent {
+export class FoldAsideLayoutComponent {
   /**
    * When the layout collapses to one column, place the left rail **above** the
    * centre instead of below it. Use it when the rail is navigation (a tab-nav),
@@ -95,8 +95,8 @@ export class Sh3AsideLayoutComponent {
 
   /**
    * The rails' sticky offset — a number (px) or any CSS length. A convenience
-   * over the `--sh3-aside-layout-top` var (which it sets); leave it unset to keep
-   * the 24px default or a per-rail `--sh3-aside-layout-left-top` /
+   * over the `--fold-aside-layout-top` var (which it sets); leave it unset to keep
+   * the 24px default or a per-rail `--fold-aside-layout-left-top` /
    * `-right-top` override.
    *
    * It's the gap the rail keeps from the top **once it sticks** (i.e. after you
@@ -105,7 +105,7 @@ export class Sh3AsideLayoutComponent {
    * *below* the grid's top padding has no visible effect until you scroll (a
    * value like `0`–`20` looks inert on a page padded by 28px). Raise the offset
    * past the padding to push the resting rail down; to pull it up, shrink
-   * `--sh3-aside-layout-pad` instead.
+   * `--fold-aside-layout-pad` instead.
    */
   readonly topOffset = input<number | string>();
 

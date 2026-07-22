@@ -2,14 +2,14 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import {
-  Sh3TimelineComponent,
-  type Sh3TimelineNode,
+  FoldTimelineComponent,
+  type FoldTimelineNode,
 } from "./timeline.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3TimelineComponent],
-  template: `<sh3-timeline
+  imports: [FoldTimelineComponent],
+  template: `<fold-timeline
     [ariaLabel]="ariaLabel()"
     [nodeTitle]="nodeTitle()"
     [orientation]="orientation()"
@@ -31,7 +31,7 @@ class HostComponent {
   readonly datePlacement = signal<"above" | "below" | "inline" | "hidden">(
     "below",
   );
-  readonly nodes = signal<readonly Sh3TimelineNode[]>([
+  readonly nodes = signal<readonly FoldTimelineNode[]>([
     { key: "start", id: null, label: "Start", icon: "contracts" },
     { key: "a1", id: "add_1", label: "Avenant 1", date: null, icon: "edit" },
   ]);
@@ -40,15 +40,15 @@ class HostComponent {
 
 @Component({
   standalone: true,
-  imports: [Sh3TimelineComponent],
-  template: `<sh3-timeline [nodes]="nodes()">
+  imports: [FoldTimelineComponent],
+  template: `<fold-timeline [nodes]="nodes()">
     <ng-template #node let-n>
       <span class="custom">C:{{ n.label }}:{{ n.state }}</span>
     </ng-template>
-  </sh3-timeline>`,
+  </fold-timeline>`,
 })
 class TemplateHostComponent {
-  readonly nodes = signal<readonly Sh3TimelineNode[]>([
+  readonly nodes = signal<readonly FoldTimelineNode[]>([
     { key: "b", id: "b", label: "B", state: "pending" },
   ]);
 }
@@ -57,7 +57,7 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const host = fixture.nativeElement.querySelector(
-    "sh3-timeline",
+    "fold-timeline",
   ) as HTMLElement;
   /** Every node element (buttons + presentational divs). */
   const nodeEls = (): HTMLElement[] =>
@@ -68,7 +68,7 @@ function render() {
   return { fixture, host, nodeEls, buttons };
 }
 
-describe("Sh3TimelineComponent", () => {
+describe("FoldTimelineComponent", () => {
   it("renders one node per entry; only clickable ones are <button>", () => {
     const { nodeEls, buttons } = render();
     expect(nodeEls()).toHaveLength(2);
@@ -115,7 +115,7 @@ describe("Sh3TimelineComponent", () => {
     const { fixture, host } = render();
     const nav = host.querySelector("nav.tlv");
     expect(nav).not.toBeNull();
-    expect(host.querySelector("sh3-card")).toBeNull(); // no baked-in surface
+    expect(host.querySelector("fold-card")).toBeNull(); // no baked-in surface
     expect(nav?.getAttribute("aria-label")).toBeNull();
 
     fixture.componentInstance.ariaLabel.set("Chronologie");

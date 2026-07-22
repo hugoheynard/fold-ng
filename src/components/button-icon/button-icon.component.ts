@@ -1,17 +1,17 @@
 import { Component, computed, input, model, output } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconSize } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconSize } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 import type {
-  Sh3ButtonIconShape,
-  Sh3ButtonIconSize,
-  Sh3ButtonIconTone,
+  FoldButtonIconShape,
+  FoldButtonIconSize,
+  FoldButtonIconTone,
 } from "./button-icon.types";
 
 /**
- * `<sh3-button-icon>` — the icon-only button: any clickable affordance whose
+ * `<fold-button-icon>` — the icon-only button: any clickable affordance whose
  * label is the icon itself (toolbars, transport bars, inline row actions,
- * carets, …). For a button with text, use `sh3-button`.
+ * carets, …). For a button with text, use `fold-button`.
  *
  * `shape` / `size` / `tone` surface as `data-*` attributes so the token-only
  * SCSS targets them. It can be a momentary button (emit {@link clicked}) or a
@@ -20,18 +20,18 @@ import type {
  * recommended, since there is no visible label.
  *
  * ```html
- * <sh3-button-icon icon="edit" tooltip="Edit" (clicked)="edit()" />
- * <sh3-button-icon icon="play" shape="round" tone="accent" size="lg" (clicked)="play()" />
- * <sh3-button-icon icon="eye" tooltip="Toggle mask" [(active)]="masked" />
- * <sh3-button-icon icon="bin" tone="critical" tooltip="Delete" (clicked)="delete()" />
+ * <fold-button-icon icon="edit" tooltip="Edit" (clicked)="edit()" />
+ * <fold-button-icon icon="play" shape="round" tone="accent" size="lg" (clicked)="play()" />
+ * <fold-button-icon icon="eye" tooltip="Toggle mask" [(active)]="masked" />
+ * <fold-button-icon icon="bin" tone="critical" tooltip="Delete" (clicked)="delete()" />
  * ```
  *
- * @selector `sh3-button-icon`
+ * @selector `fold-button-icon`
  */
 @Component({
-  selector: "sh3-button-icon",
+  selector: "fold-button-icon",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   templateUrl: "./button-icon.component.html",
   styleUrl: "./button-icon.component.scss",
   host: {
@@ -41,18 +41,18 @@ import type {
     "[attr.data-active]": 'active() ? "" : null',
   },
 })
-export class Sh3ButtonIconComponent {
+export class FoldButtonIconComponent {
   /** Icon to render (typed against the registry). */
-  readonly icon = input.required<Sh3IconName>();
+  readonly icon = input.required<FoldIconName>();
 
   /** Surface shape — `square` (default) or `round` (transport, big actions). */
-  readonly shape = input<Sh3ButtonIconShape>("square");
+  readonly shape = input<FoldButtonIconShape>("square");
 
   /** Hit-area preset — `xs` 22px · `sm` 28px · `md` 32px (default) · `lg` 38px. */
-  readonly size = input<Sh3ButtonIconSize>("md");
+  readonly size = input<FoldButtonIconSize>("md");
 
   /** Visual tone — `ghost` (default) · `accent` (filled) · `critical` (alert). */
-  readonly tone = input<Sh3ButtonIconTone>("ghost");
+  readonly tone = input<FoldButtonIconTone>("ghost");
 
   /** Two-way toggle state — renders pressed/filled and sets `aria-pressed`. */
   readonly active = model<boolean>(false);
@@ -70,7 +70,7 @@ export class Sh3ButtonIconComponent {
   readonly clicked = output<MouseEvent>();
 
   /** Resolves the icon size from the button size preset. */
-  readonly iconSize = computed<Sh3IconSize>(() => {
+  readonly iconSize = computed<FoldIconSize>(() => {
     switch (this.size()) {
       case "xs":
         return "xs"; // 12px

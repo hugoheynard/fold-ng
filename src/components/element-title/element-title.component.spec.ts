@@ -1,13 +1,13 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3ElementTitleComponent } from "./element-title.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldElementTitleComponent } from "./element-title.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 @Component({
   standalone: true,
-  imports: [Sh3ElementTitleComponent],
-  template: `<sh3-element-title
+  imports: [FoldElementTitleComponent],
+  template: `<fold-element-title
     [variant]="variant()"
     [level]="level()"
     [icon]="icon()"
@@ -18,12 +18,12 @@ import type { Sh3IconName } from "../icon/icon.registry";
     @if (withAction()) {
       <button titleAction class="act">edit</button>
     }
-  </sh3-element-title>`,
+  </fold-element-title>`,
 })
 class HostComponent {
   readonly variant = signal<"eyebrow" | "bar" | "title">("eyebrow");
   readonly level = signal(2);
-  readonly icon = signal<Sh3IconName | undefined>(undefined);
+  readonly icon = signal<FoldIconName | undefined>(undefined);
   readonly iconTone = signal<"neutral" | "primary" | "faded">("neutral");
   readonly title = signal("Contexte");
   readonly subtitle = signal<string | undefined>(undefined);
@@ -34,12 +34,12 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const el = fixture.nativeElement.querySelector(
-    "sh3-element-title",
+    "fold-element-title",
   ) as HTMLElement;
   return { fixture, el };
 }
 
-describe("Sh3ElementTitleComponent", () => {
+describe("FoldElementTitleComponent", () => {
   it("renders the title input as the heading label", () => {
     const { el } = render();
     const label = el.querySelector(".et-label");
@@ -78,7 +78,7 @@ describe("Sh3ElementTitleComponent", () => {
     fixture.componentInstance.icon.set("company");
     fixture.componentInstance.subtitle.set("Activité de l'espace");
     fixture.detectChanges();
-    expect(el.querySelector(".et-icon sh3-icon")).not.toBeNull();
+    expect(el.querySelector(".et-icon fold-icon")).not.toBeNull();
     expect(el.querySelector(".et-sub")?.textContent?.trim()).toBe(
       "Activité de l'espace",
     );

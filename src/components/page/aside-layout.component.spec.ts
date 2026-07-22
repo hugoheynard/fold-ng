@@ -3,12 +3,12 @@ import { join } from "node:path";
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3AsideLayoutComponent } from "./aside-layout.component";
+import { FoldAsideLayoutComponent } from "./aside-layout.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3AsideLayoutComponent],
-  template: `<sh3-aside-layout
+  imports: [FoldAsideLayoutComponent],
+  template: `<fold-aside-layout
     [asideRightLabel]="rightLabel()"
     [topOffset]="offset()"
   >
@@ -17,7 +17,7 @@ import { Sh3AsideLayoutComponent } from "./aside-layout.component";
     }
     <div>C</div>
     <div asideRight>R</div>
-  </sh3-aside-layout>`,
+  </fold-aside-layout>`,
 })
 class HostComponent {
   readonly left = signal(true);
@@ -31,14 +31,14 @@ function render() {
   const host = fixture.nativeElement as HTMLElement;
   return {
     fixture,
-    layout: host.querySelector("sh3-aside-layout") as HTMLElement,
+    layout: host.querySelector("fold-aside-layout") as HTMLElement,
     center: host.querySelector(".al-center") as HTMLElement,
     railLeft: host.querySelector(".al-aside-left") as HTMLElement,
     railRight: host.querySelector(".al-aside-right") as HTMLElement,
   };
 }
 
-describe("Sh3AsideLayoutComponent", () => {
+describe("FoldAsideLayoutComponent", () => {
   it("routes each slot into its own owned wrapper", () => {
     const { center, railLeft, railRight } = render();
     // default (untagged) content lands in the centre column
@@ -81,15 +81,17 @@ describe("Sh3AsideLayoutComponent", () => {
   it("drives the sticky-offset var from the topOffset input", () => {
     const { fixture, layout } = render();
     // unset → the var is left to the CSS default / per-rail overrides
-    expect(layout.style.getPropertyValue("--sh3-aside-layout-top")).toBe("");
+    expect(layout.style.getPropertyValue("--fold-aside-layout-top")).toBe("");
 
     fixture.componentInstance.offset.set(0);
     fixture.detectChanges();
-    expect(layout.style.getPropertyValue("--sh3-aside-layout-top")).toBe("0px");
+    expect(layout.style.getPropertyValue("--fold-aside-layout-top")).toBe(
+      "0px",
+    );
 
     fixture.componentInstance.offset.set("2rem");
     fixture.detectChanges();
-    expect(layout.style.getPropertyValue("--sh3-aside-layout-top")).toBe(
+    expect(layout.style.getPropertyValue("--fold-aside-layout-top")).toBe(
       "2rem",
     );
   });

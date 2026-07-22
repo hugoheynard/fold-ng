@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════
-//  sh3-button — variant + size selected via host classes.
+//  fold-button — variant + size selected via host classes.
 //  Token-only: hover tints come from `color-mix(… var …)`.
 // ═══════════════════════════════════════════════════════
 
@@ -29,10 +29,10 @@ button {
   font-family: inherit;
   font-weight: 600;
   transition:
-    background var(--sh3-motion-fast),
-    border-color var(--sh3-motion-fast),
-    color var(--sh3-motion-fast),
-    transform var(--sh3-motion-fast);
+    background var(--fold-motion-fast),
+    border-color var(--fold-motion-fast),
+    color var(--fold-motion-fast),
+    transform var(--fold-motion-fast);
 
   &:disabled {
     opacity: 0.4;
@@ -45,28 +45,28 @@ button {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--sh3-color-primary);
+    outline: 2px solid var(--fold-color-primary);
     outline-offset: 2px;
   }
 }
 
 // ─── Sizes ─────────────────────────────────────────────
 :host(.sm) button {
-  font-size: var(--sh3-text-sm);
+  font-size: var(--fold-text-sm);
   padding: 0.3rem 0.7rem;
-  border-radius: var(--sh3-radius-xs);
+  border-radius: var(--fold-radius-xs);
 }
 
 :host(.md) button {
-  font-size: var(--sh3-text-md);
+  font-size: var(--fold-text-md);
   padding: 0.45rem 1rem;
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
 }
 
 :host(.lg) button {
-  font-size: var(--sh3-text-md);
+  font-size: var(--fold-text-md);
   padding: 0.6rem 1.3rem;
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
 }
 
 // ─── Shape ─────────────────────────────────────────────
@@ -75,7 +75,7 @@ button {
 // `em`-based so it scales with the button's font-size. Vertical padding stays
 // from the size rule.
 :host(.pill) button {
-  border-radius: var(--sh3-radius-pill);
+  border-radius: var(--fold-radius-pill);
   padding-inline: 1.25em;
 }
 
@@ -83,60 +83,68 @@ button {
 
 // Primary — accent teal tint
 :host(.primary) button {
-  color: var(--sh3-color-primary-text);
-  background: var(--sh3-color-primary-surface);
-  border: 1px solid var(--sh3-color-primary-border);
+  color: var(--fold-color-primary-text);
+  background: var(--fold-color-primary-surface);
+  border: 1px solid var(--fold-color-primary-border);
 
   &:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--sh3-color-primary) 24%, transparent);
-    border-color: color-mix(in srgb, var(--sh3-color-primary) 55%, transparent);
+    background: color-mix(in srgb, var(--fold-color-primary) 24%, transparent);
+    border-color: color-mix(
+      in srgb,
+      var(--fold-color-primary) 55%,
+      transparent
+    );
   }
 }
 
 // Recommended — amber / warning
 :host(.recommended) button {
-  color: var(--sh3-color-warning-text);
-  background: var(--sh3-color-warning-surface);
-  border: 1px solid var(--sh3-color-warning-border);
+  color: var(--fold-color-warning-text);
+  background: var(--fold-color-warning-surface);
+  border: 1px solid var(--fold-color-warning-border);
 
   &:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--sh3-color-warning) 22%, transparent);
-    border-color: color-mix(in srgb, var(--sh3-color-warning) 50%, transparent);
+    background: color-mix(in srgb, var(--fold-color-warning) 22%, transparent);
+    border-color: color-mix(
+      in srgb,
+      var(--fold-color-warning) 50%,
+      transparent
+    );
   }
 }
 
 // Critical — red / alert
 :host(.critical) button {
-  color: var(--sh3-color-alert-text);
-  background: var(--sh3-color-alert-surface);
-  border: 1px solid var(--sh3-color-alert-border);
+  color: var(--fold-color-alert-text);
+  background: var(--fold-color-alert-surface);
+  border: 1px solid var(--fold-color-alert-border);
 
   &:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--sh3-color-alert) 22%, transparent);
-    border-color: color-mix(in srgb, var(--sh3-color-alert) 55%, transparent);
+    background: color-mix(in srgb, var(--fold-color-alert) 22%, transparent);
+    border-color: color-mix(in srgb, var(--fold-color-alert) 55%, transparent);
   }
 }
 
 // Ghost — neutral, minimal
 :host(.ghost) button {
-  color: var(--sh3-color-text-secondary);
+  color: var(--fold-color-text-secondary);
   background: transparent;
-  border: 1px solid var(--sh3-color-border);
+  border: 1px solid var(--fold-color-border);
 
   &:hover:not(:disabled) {
-    color: var(--sh3-color-text);
-    background: var(--sh3-color-surface-hover);
-    border-color: var(--sh3-color-border);
+    color: var(--fold-color-text);
+    background: var(--fold-color-surface-hover);
+    border-color: var(--fold-color-border);
   }
 }
 
 // Solid — filled accent background
 :host(.solid) button {
-  color: var(--sh3-color-on-primary);
-  background: var(--sh3-color-primary);
+  color: var(--fold-color-on-primary);
+  background: var(--fold-color-primary);
   border: 1px solid transparent;
 
   &:hover:not(:disabled) {
-    background: var(--sh3-color-primary-strong);
+    background: var(--fold-color-primary-strong);
   }
 }

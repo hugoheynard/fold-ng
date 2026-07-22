@@ -1,7 +1,7 @@
-<sh3-page-layout fluid title="avatar">
+<fold-page-layout fluid title="avatar">
   <gal-kind-badge titleBadge kind="component" />
-  <sh3-tab-layout placement="side" class="avatar-tabs" #tl="sh3TabLayout">
-    <sh3-tab-nav
+  <fold-tab-layout placement="side" class="avatar-tabs" #tl="foldTabLayout">
+    <fold-tab-nav
       tabNav
       [tabs]="avatarTabs"
       [activeKey]="avatarTab()"
@@ -12,8 +12,8 @@
       (tabChange)="avatarTab.set($event)"
     />
     @switch (avatarTab()) { @case ("avatar") {
-    <sh3-page-section
-      title="sh3-avatar"
+    <fold-page-section
+      title="fold-avatar"
       description="A user or entity avatar: initials on a deterministic colour from the shared palette (same seed → same colour, everywhere), or an image via imageUrl. ghost dashes the border for guests; square switches to a rounded tile for orgs."
     >
       <div class="demo-inspect">
@@ -29,7 +29,7 @@
                 [class.is-picked]="avatarPicked() === d"
                 (click)="avatarPicked.set(d)"
               >
-                <sh3-avatar
+                <fold-avatar
                   [name]="d.name"
                   [size]="d.size ?? 'md'"
                   [variant]="d.variant ?? 'solid'"
@@ -62,7 +62,7 @@
             </div>
             <div class="gal-row">
               @for (n of avatarNames; track n) {
-              <sh3-avatar [name]="n" size="lg" />
+              <fold-avatar [name]="n" size="lg" />
               }
             </div>
           </div>
@@ -70,7 +70,7 @@
 
         <div class="demo-code">
           <div class="code-note">
-            <sh3-icon name="warning" size="sm" />
+            <fold-icon name="warning" size="sm" />
             <span
               >Exemples illustratifs — clique un avatar pour charger son markup,
               puis adapte-le à tes données.</span
@@ -85,7 +85,7 @@
                 class="code-copy"
                 (click)="copyDemoCode(avatarPickedCode())"
               >
-                <sh3-icon
+                <fold-icon
                   [name]="demoCopied() ? 'check-circle' : 'copy'"
                   size="sm"
                 />
@@ -103,10 +103,10 @@
           </div>
         </div>
       </div>
-    </sh3-page-section>
+    </fold-page-section>
     } @case ("detail") {
-    <sh3-page-section
-      title="sh3-avatar-detail — identity cell"
+    <fold-page-section
+      title="fold-avatar-detail — identity cell"
       description="The canonical identity cell: an avatar beside one or two lines of text (name + email, entity + subtitle). A single line centres against the avatar; two lines stack. The initials and colour derive from the primary line unless avatarName overrides it."
     >
       <div class="demo-inspect">
@@ -122,7 +122,7 @@
                 [class.is-picked]="detailPicked() === d"
                 (click)="detailPicked.set(d)"
               >
-                <sh3-avatar-detail
+                <fold-avatar-detail
                   [primary]="d.primary"
                   [secondary]="d.secondary ?? ''"
                   [size]="d.size ?? 'md'"
@@ -139,7 +139,7 @@
 
         <div class="demo-code">
           <div class="code-note">
-            <sh3-icon name="warning" size="sm" />
+            <fold-icon name="warning" size="sm" />
             <span
               >Exemples illustratifs — clique une cellule pour charger son
               markup, puis adapte-le à tes données.</span
@@ -154,7 +154,7 @@
                 class="code-copy"
                 (click)="copyDemoCode(detailPickedCode())"
               >
-                <sh3-icon
+                <fold-icon
                   [name]="demoCopied() ? 'check-circle' : 'copy'"
                   size="sm"
                 />
@@ -172,19 +172,19 @@
           </div>
         </div>
       </div>
-    </sh3-page-section>
+    </fold-page-section>
     } @case ("list") {
-    <sh3-page-section
-      title="sh3-avatar-list"
+    <fold-page-section
+      title="fold-avatar-list"
       description="A row of slightly-overlapping avatars — the org-chart 'who sits on this node' cluster. Past limit, the remainder collapses into a trailing +N chip. top chooses which end stacks on top."
     >
       <dev-playground [code]="alCode()" stage>
         <div class="np-field" params>
-          <sh3-slider label="faces" [min]="1" [max]="7" [(value)]="alCount" />
+          <fold-slider label="faces" [min]="1" [max]="7" [(value)]="alCount" />
         </div>
 
         <div class="np-field" params>
-          <sh3-slider
+          <fold-slider
             label="limit (0 = all)"
             [min]="0"
             [max]="7"
@@ -244,7 +244,7 @@
           </div>
         </div>
 
-        <sh3-avatar-list
+        <fold-avatar-list
           [avatars]="alFaces()"
           [limit]="alLimit()"
           [top]="alTop()"
@@ -252,7 +252,7 @@
           [square]="alSquare()"
         />
       </dev-playground>
-    </sh3-page-section>
+    </fold-page-section>
     } }
-  </sh3-tab-layout>
-</sh3-page-layout>
+  </fold-tab-layout>
+</fold-page-layout>

@@ -2,10 +2,10 @@ import { Directive, TemplateRef, inject, input } from "@angular/core";
 
 /**
  * Marks an `<ng-template>` as the cell renderer for a column key inside
- * `<sh3-data-table>`:
+ * `<fold-data-table>`:
  *
  * ```html
- * <ng-template sh3Cell="status" let-row let-i="index"> … </ng-template>
+ * <ng-template foldCell="status" let-row let-i="index"> … </ng-template>
  * ```
  *
  * The template context is `{ $implicit: row, index }`. Rows are typed via the
@@ -13,9 +13,9 @@ import { Directive, TemplateRef, inject, input } from "@angular/core";
  * generic content-projected template can't carry the row type without heavy
  * machinery), so annotate through the parent component's typed helper methods.
  */
-@Directive({ selector: "ng-template[sh3Cell]", standalone: true })
-export class Sh3DataTableCellDirective {
+@Directive({ selector: "ng-template[foldCell]", standalone: true })
+export class FoldDataTableCellDirective {
   /** The column `key` this template renders. */
-  readonly sh3Cell = input.required<string>();
+  readonly foldCell = input.required<string>();
   readonly template = inject(TemplateRef);
 }

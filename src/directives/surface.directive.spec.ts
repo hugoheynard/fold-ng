@@ -1,15 +1,18 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3SurfaceDirective, type Sh3SurfaceName } from "./surface.directive";
+import {
+  FoldSurfaceDirective,
+  type FoldSurfaceName,
+} from "./surface.directive";
 
 @Component({
   standalone: true,
-  imports: [Sh3SurfaceDirective],
-  template: `<div [sh3Surface]="surface()">region</div>`,
+  imports: [FoldSurfaceDirective],
+  template: `<div [foldSurface]="surface()">region</div>`,
 })
 class HostComponent {
-  readonly surface = signal<Sh3SurfaceName>("chrome");
+  readonly surface = signal<FoldSurfaceName>("chrome");
 }
 
 function render() {
@@ -21,7 +24,7 @@ function render() {
   return { fixture, el };
 }
 
-describe("Sh3SurfaceDirective", () => {
+describe("FoldSurfaceDirective", () => {
   it("stamps data-surface with the value a theme addresses", () => {
     const { el } = render();
     expect(el.getAttribute("data-surface")).toBe("chrome");
@@ -37,8 +40,8 @@ describe("Sh3SurfaceDirective", () => {
   it("defaults to page when applied bare", () => {
     @Component({
       standalone: true,
-      imports: [Sh3SurfaceDirective],
-      template: `<div sh3Surface>region</div>`,
+      imports: [FoldSurfaceDirective],
+      template: `<div foldSurface>region</div>`,
     })
     class BareHost {}
 

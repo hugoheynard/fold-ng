@@ -3,21 +3,21 @@
   align-items: center;
   /* Ring drawn around each face so the overlap reads cleanly — matches the
      surface behind the list. Override when it sits on a non-card background. */
-  --sh3-avatar-list-ring: var(--sh3-color-surface-card);
+  --fold-avatar-list-ring: var(--fold-color-surface-card);
 }
 
 .al-item {
   position: relative;
   display: inline-flex;
-  border-radius: var(--sh3-radius-round);
+  border-radius: var(--fold-radius-round);
   /* An opaque backing disc + a ring in the surface colour: the ring separates
      overlapping faces, and the disc means a muted/transparent face reads against
      the surface — not against the neighbour it overlaps. */
-  background: var(--sh3-avatar-list-ring);
-  box-shadow: 0 0 0 2px var(--sh3-avatar-list-ring);
+  background: var(--fold-avatar-list-ring);
+  box-shadow: 0 0 0 2px var(--fold-avatar-list-ring);
 }
 :host(.is-square) .al-item {
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
 }
 
 /* Overlap between faces only — a gentle amount so they breathe. */
@@ -42,15 +42,15 @@
   justify-content: center;
   flex-shrink: 0;
   margin-left: 6px;
-  border-radius: var(--sh3-radius-round);
-  background: var(--sh3-color-primary-surface);
-  color: var(--sh3-color-primary-text);
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
   font-weight: 700;
   letter-spacing: 0.02em;
   user-select: none;
 }
 :host(.is-square) .al-more {
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
 }
 :host(.size-sm) .al-more {
   width: 20px;

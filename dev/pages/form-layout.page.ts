@@ -1,15 +1,15 @@
 import { Component, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import {
-  Sh3TabLayoutComponent,
-  Sh3ChoiceRowComponent,
-  Sh3IconComponent,
-  Sh3InputComponent,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
-  Sh3TabNavComponent,
-  type Sh3ChoiceOption,
-  type Sh3TabNavItem,
+  FoldTabLayoutComponent,
+  FoldChoiceRowComponent,
+  FoldIconComponent,
+  FoldInputComponent,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
+  FoldTabNavComponent,
+  type FoldChoiceOption,
+  type FoldTabNavItem,
 } from "../../src/index";
 
 /** `/form-layout` — a settings-style form driven by a vertical tab-nav. */
@@ -18,18 +18,18 @@ import {
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3TabLayoutComponent,
-    Sh3PageSectionComponent,
-    Sh3TabNavComponent,
-    Sh3InputComponent,
-    Sh3ChoiceRowComponent,
-    Sh3IconComponent,
+    FoldPageLayoutComponent,
+    FoldTabLayoutComponent,
+    FoldPageSectionComponent,
+    FoldTabNavComponent,
+    FoldInputComponent,
+    FoldChoiceRowComponent,
+    FoldIconComponent,
   ],
   templateUrl: "./form-layout.page.html",
 })
 export default class FormLayoutPage {
-  protected readonly formTabs: Sh3TabNavItem[] = [
+  protected readonly formTabs: FoldTabNavItem[] = [
     { key: "profile", label: "Profile" },
     { key: "account", label: "Account" },
     { key: "notifications", label: "Notifications", badge: 2 },
@@ -46,16 +46,16 @@ export default class FormLayoutPage {
   protected readonly fDigest = signal("daily");
   protected readonly fPush = signal("on");
 
-  protected readonly roleOptions: Sh3ChoiceOption[] = [
+  protected readonly roleOptions: FoldChoiceOption[] = [
     { key: "manager", label: "Manager" },
     { key: "member", label: "Member" },
     { key: "guest", label: "Guest" },
   ];
-  protected readonly onOff: Sh3ChoiceOption[] = [
+  protected readonly onOff: FoldChoiceOption[] = [
     { key: "off", label: "Off" },
     { key: "on", label: "On" },
   ];
-  protected readonly digestOptions: Sh3ChoiceOption[] = [
+  protected readonly digestOptions: FoldChoiceOption[] = [
     { key: "off", label: "Off" },
     { key: "daily", label: "Daily" },
     { key: "weekly", label: "Weekly" },

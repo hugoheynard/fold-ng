@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3FieldIdDirective } from "./field-id.directive";
+import { FoldFieldIdDirective } from "./field-id.directive";
 
 @Component({
   standalone: true,
-  imports: [Sh3FieldIdDirective],
+  imports: [FoldFieldIdDirective],
   template: `
     <input class="bare" />
     <select class="bare"></select>
@@ -26,11 +26,11 @@ function render() {
   return { fixture, el };
 }
 
-describe("Sh3FieldIdDirective", () => {
+describe("FoldFieldIdDirective", () => {
   it("assigns an id to bare input / select / textarea", () => {
     const { el } = render();
     for (const bare of Array.from(el.querySelectorAll(".bare"))) {
-      expect(bare.id).toMatch(/^sh3-field-\d+$/);
+      expect(bare.id).toMatch(/^fold-field-\d+$/);
     }
   });
 

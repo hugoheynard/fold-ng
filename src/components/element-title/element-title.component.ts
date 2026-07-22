@@ -1,9 +1,9 @@
 import { Component, computed, input } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 /**
- * `<sh3-element-title>` — the label that heads a section, card or panel. Fully
+ * `<fold-element-title>` — the label that heads a section, card or panel. Fully
  * input-driven (title / subtitle / icon), so a header is never hand-rolled and
  * the common case is a self-closing tag.
  *
@@ -17,21 +17,21 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * A trailing action (edit/add button, lock badge) projects into `[titleAction]`,
  * right-aligned. The title — not the action — is the heading for assistive tech.
  *
- * @selector `sh3-element-title`
+ * @selector `fold-element-title`
  *
  * @example
  * ```html
- * <sh3-element-title title="Documents" variant="bar" />
- * <sh3-element-title variant="title" icon="company" title="Contexte" subtitle="Activité de l'espace" />
- * <sh3-element-title title="Poste">
+ * <fold-element-title title="Documents" variant="bar" />
+ * <fold-element-title variant="title" icon="company" title="Contexte" subtitle="Activité de l'espace" />
+ * <fold-element-title title="Poste">
  *   <button titleAction (click)="edit()">✎</button>
- * </sh3-element-title>
+ * </fold-element-title>
  * ```
  */
 @Component({
-  selector: "sh3-element-title",
+  selector: "fold-element-title",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   host: {
     "[class.v-bar]": "variant() === 'bar'",
     "[class.v-title]": "variant() === 'title'",
@@ -41,9 +41,9 @@ import type { Sh3IconName } from "../icon/icon.registry";
   templateUrl: "./element-title.component.html",
   styleUrl: "./element-title.component.scss",
 })
-export class Sh3ElementTitleComponent {
+export class FoldElementTitleComponent {
   /** Leading icon glyph (raised tile in the `title` variant). */
-  readonly icon = input<Sh3IconName>();
+  readonly icon = input<FoldIconName>();
   /** Icon tile tone (title variant) — `neutral` (raised), `primary` (filled brand), `faded` (dim). */
   readonly iconTone = input<"neutral" | "primary" | "faded">("neutral");
   /** The heading text. */

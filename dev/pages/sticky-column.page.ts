@@ -2,29 +2,29 @@ import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
 import {
-  Sh3PageLayoutComponent,
-  Sh3SliderComponent,
-  Sh3StickyColumnDirective,
-  type Sh3StickyColumnAnchor,
+  FoldPageLayoutComponent,
+  FoldSliderComponent,
+  FoldStickyColumnDirective,
+  type FoldStickyColumnAnchor,
 } from "../../src/index";
 
-/** `/sticky-column` — the `[sh3StickyColumn]` directive gallery page. */
+/** `/sticky-column` — the `[foldStickyColumn]` directive gallery page. */
 @Component({
   selector: "gal-sticky-column-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3SliderComponent,
-    Sh3StickyColumnDirective,
+    FoldPageLayoutComponent,
+    FoldSliderComponent,
+    FoldStickyColumnDirective,
     DevPlaygroundComponent,
   ],
   templateUrl: "./sticky-column.page.html",
 })
 export default class StickyColumnPage {
   protected readonly stickyDemoRows = [1, 2, 3, 4, 5, 6, 7, 8];
-  protected readonly stickyDemoAnchor = signal<Sh3StickyColumnAnchor>("top");
-  protected readonly stickyDemoAnchors: readonly Sh3StickyColumnAnchor[] = [
+  protected readonly stickyDemoAnchor = signal<FoldStickyColumnAnchor>("top");
+  protected readonly stickyDemoAnchors: readonly FoldStickyColumnAnchor[] = [
     "top",
     "center",
     "bottom",
@@ -38,15 +38,15 @@ export default class StickyColumnPage {
     const offsetAttr = offset === 0 ? "" : ` [stickyOffset]="${offset}"`;
     return [
       "<!-- layout only; keeps the <aside> semantics -->",
-      `<aside sh3StickyColumn${anchorAttr}${offsetAttr}>`,
+      `<aside foldStickyColumn${anchorAttr}${offsetAttr}>`,
       "  <app-history />",
       "  <app-termination />",
       "</aside>",
       "",
       "/* the page un-sticks at its own stacking breakpoint */",
       "@media (max-width: 1040px) {",
-      "  aside[sh3StickyColumn] {",
-      "    --sh3-sticky-column-position: static;",
+      "  aside[foldStickyColumn] {",
+      "    --fold-sticky-column-position: static;",
       "  }",
       "}",
     ].join("\n");

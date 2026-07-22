@@ -1,9 +1,9 @@
 @for (toast of toastService.toasts(); track toast.id) {
-  <sh3-toast
+  <fold-toast
     [variant]="toast.variant"
     [duration]="toast.durationMs"
     animate.leave="toast-leaving"
     (dismiss)="toastService.dismiss(toast.id)"
-    >{{ toast.message }}</sh3-toast
+    >{{ toast.message }}</fold-toast
   >
 }

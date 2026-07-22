@@ -1,15 +1,15 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3DisclosureComponent } from "./disclosure.component";
+import { FoldDisclosureComponent } from "./disclosure.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3DisclosureComponent],
-  template: `<sh3-disclosure [(open)]="open">
+  imports: [FoldDisclosureComponent],
+  template: `<fold-disclosure [(open)]="open">
     <span summary>How it works</span>
     <p class="body">The revealed panel.</p>
-  </sh3-disclosure>`,
+  </fold-disclosure>`,
 })
 class HostComponent {
   readonly open = signal(false);
@@ -21,13 +21,13 @@ function render() {
   const root = fixture.nativeElement as HTMLElement;
   return {
     fixture,
-    host: root.querySelector("sh3-disclosure") as HTMLElement,
+    host: root.querySelector("fold-disclosure") as HTMLElement,
     summary: root.querySelector(".disc-summary") as HTMLButtonElement,
     panel: root.querySelector(".disc-panel") as HTMLElement,
   };
 }
 
-describe("Sh3DisclosureComponent", () => {
+describe("FoldDisclosureComponent", () => {
   it("projects the summary and the panel content", () => {
     const { host } = render();
     expect(host.querySelector(".disc-label")?.textContent).toBe("How it works");

@@ -2,7 +2,7 @@
   <div class="ph__titles">
     <div class="ph__titleRow">
       @if (icon(); as ic) {
-        <sh3-icon class="ph__icon" [name]="ic" [size]="iconSize()" />
+        <fold-icon class="ph__icon" [name]="ic" [size]="iconSize()" />
       }
       <h2 class="ph__title">{{ title() }}</h2>
     </div>
@@ -19,7 +19,7 @@
       aria-label="Fermer"
       (click)="onClose()"
     >
-      <sh3-icon name="close" size="sm" />
+      <fold-icon name="close" size="sm" />
     </button>
   </div>
 </header>

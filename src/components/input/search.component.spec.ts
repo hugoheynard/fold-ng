@@ -1,13 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { Sh3SearchComponent } from "./search.component";
+import { FoldSearchComponent } from "./search.component";
 
 function setup(delayMs?: number): {
   type: (v: string) => void;
   emitted: string[];
 } {
-  TestBed.configureTestingModule({ imports: [Sh3SearchComponent] });
-  const fixture = TestBed.createComponent(Sh3SearchComponent);
+  TestBed.configureTestingModule({ imports: [FoldSearchComponent] });
+  const fixture = TestBed.createComponent(FoldSearchComponent);
   if (delayMs !== undefined) {
     fixture.componentRef.setInput("delayMs", delayMs);
   }
@@ -27,7 +27,7 @@ function setup(delayMs?: number): {
   return { type, emitted };
 }
 
-describe("Sh3SearchComponent", () => {
+describe("FoldSearchComponent", () => {
   it("emits once typing pauses for the delay", () => {
     vi.useFakeTimers();
     try {

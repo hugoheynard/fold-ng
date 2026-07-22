@@ -1,10 +1,10 @@
 /**
  * Handle to an imperatively-opened panel. The opener gets it back from
- * `Sh3PanelHostService.open()`; the panel component gets the same instance via
- * `inject(Sh3PanelRef)`. Either side calls `close(result)` — the panel is
+ * `FoldPanelHostService.open()`; the panel component gets the same instance via
+ * `inject(FoldPanelRef)`. Either side calls `close(result)` — the panel is
  * dismissed and `closed` resolves with the (typed) result.
  */
-export class Sh3PanelRef<TResult = unknown> {
+export class FoldPanelRef<TResult = unknown> {
   /** Resolves with the close result (or `undefined` if closed without one). */
   readonly closed: Promise<TResult | undefined>;
 

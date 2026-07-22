@@ -15,7 +15,7 @@ import { observeElementWidth } from "../../dom/observe-element-width";
 const HYSTERESIS = 32;
 
 /**
- * `<sh3-tab-layout>` — pairs a tab bar with the content it drives, and owns the
+ * `<fold-tab-layout>` — pairs a tab bar with the content it drives, and owns the
  * one thing every tabbed page hand-rolls: where the nav sits.
  *
  * - `placement="top"` (default) — the nav above the content.
@@ -24,7 +24,7 @@ const HYSTERESIS = 32;
  *   precedes the content it drives, never below it).
  *
  * Content projection — the nav stays yours (tabs, active key, events):
- * - `[tabNav]` → the tab bar (an `sh3-tab-nav`, or anything else).
+ * - `[tabNav]` → the tab bar (an `fold-tab-nav`, or anything else).
  * - default slot → the content for the active tab.
  *
  * A side rail needs a *vertical* bar, a folded one a *horizontal* bar. Rather
@@ -32,8 +32,8 @@ const HYSTERESIS = 32;
  * nav follows the layout in one binding:
  *
  * ```html
- * <sh3-tab-layout placement="side" #tl="sh3TabLayout">
- *   <sh3-tab-nav
+ * <fold-tab-layout placement="side" #tl="foldTabLayout">
+ *   <fold-tab-nav
  *     tabNav
  *     [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
  *     [tabs]="tabs"
@@ -41,23 +41,23 @@ const HYSTERESIS = 32;
  *     (tabChange)="tab.set($event)"
  *   />
  *   <app-tab-content />
- * </sh3-tab-layout>
+ * </fold-tab-layout>
  * ```
  *
- * Sizing is CSS custom properties: `--sh3-tab-layout-gap` (16px) and
- * `--sh3-tab-layout-nav-width` (200px, the side rail track).
+ * Sizing is CSS custom properties: `--fold-tab-layout-gap` (16px) and
+ * `--fold-tab-layout-nav-width` (200px, the side rail track).
  *
- * @selector `sh3-tab-layout`
+ * @selector `fold-tab-layout`
  */
 @Component({
-  selector: "sh3-tab-layout",
+  selector: "fold-tab-layout",
   standalone: true,
-  exportAs: "sh3TabLayout",
+  exportAs: "foldTabLayout",
   host: { "[class.is-row]": "!stacked()" },
   templateUrl: "./tab-layout.component.html",
   styleUrl: "./tab-layout.component.scss",
 })
-export class Sh3TabLayoutComponent {
+export class FoldTabLayoutComponent {
   /** Where the nav sits: above the content, or as a rail beside it. */
   readonly placement = input<"top" | "side">("top");
   /** Width (px) at or below which a `side` nav folds back on top. */

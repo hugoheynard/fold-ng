@@ -1,12 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3SliderComponent } from "./slider.component";
+import { FoldSliderComponent } from "./slider.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3SliderComponent],
-  template: `<sh3-slider
+  imports: [FoldSliderComponent],
+  template: `<fold-slider
     [label]="label()"
     [min]="min()"
     [max]="max()"
@@ -29,12 +29,14 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const host = fixture.nativeElement.querySelector("sh3-slider") as HTMLElement;
+  const host = fixture.nativeElement.querySelector(
+    "fold-slider",
+  ) as HTMLElement;
   const input = host.querySelector("input") as HTMLInputElement;
   return { fixture, host, input };
 }
 
-describe("Sh3SliderComponent", () => {
+describe("FoldSliderComponent", () => {
   it("renders a native range input", () => {
     const { input } = render();
     expect(input.getAttribute("type")).toBe("range");

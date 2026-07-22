@@ -2,14 +2,14 @@ import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import {
-  Sh3ChoiceRowComponent,
-  type Sh3ChoiceOption,
+  FoldChoiceRowComponent,
+  type FoldChoiceOption,
 } from "./choice-row.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3ChoiceRowComponent],
-  template: `<sh3-choice-row
+  imports: [FoldChoiceRowComponent],
+  template: `<fold-choice-row
     [options]="options"
     [activeKey]="activeKey"
     [layout]="layout"
@@ -18,7 +18,7 @@ import {
   />`,
 })
 class HostComponent {
-  options: readonly Sh3ChoiceOption[] = [
+  options: readonly FoldChoiceOption[] = [
     { key: "a", label: "Alpha" },
     { key: "b", label: "Beta" },
   ];
@@ -41,7 +41,7 @@ function setup(patch: Partial<HostComponent> = {}) {
   };
 }
 
-describe("Sh3ChoiceRowComponent", () => {
+describe("FoldChoiceRowComponent", () => {
   it("renders one button per option with its label", () => {
     const { buttons } = setup();
     expect(buttons.map((b) => b.textContent?.trim())).toEqual([

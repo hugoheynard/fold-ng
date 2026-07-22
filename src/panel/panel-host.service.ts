@@ -1,30 +1,30 @@
 import { Injector, Service, type Type, inject, signal } from "@angular/core";
-import { Sh3PanelRef } from "./panel-ref";
+import { FoldPanelRef } from "./panel-ref";
 import type {
-  Sh3ComponentPanelDescriptor,
-  Sh3PanelConfig,
-  Sh3PanelContent,
-  Sh3PanelDescriptor,
-  Sh3PanelHandle,
-  Sh3TemplatePanelDescriptor,
+  FoldComponentPanelDescriptor,
+  FoldPanelConfig,
+  FoldPanelContent,
+  FoldPanelDescriptor,
+  FoldPanelHandle,
+  FoldTemplatePanelDescriptor,
 } from "./panel.types";
 
 /**
  * Single source of truth for the layout-owned side-panel region.
  *
  * Two ways to hand a panel to the one host, both rendered through the same
- * `Sh3PanelHostComponent` (backdrop, z-index, animation, scroll-lock, focus-trap):
+ * `FoldPanelHostComponent` (backdrop, z-index, animation, scroll-lock, focus-trap):
  *
  * - **`open()` — the canonical, imperative API.** Open a component with a typed
- *   `data` input; get a {@link Sh3PanelRef} back for the result. No opaque token.
+ *   `data` input; get a {@link FoldPanelRef} back for the result. No opaque token.
  * - **`present()` — declarative sugar** used by a `<side-panel>` wrapper to
  *   teleport a projected template. Kept for page-coupled form drawers.
  */
 @Service()
-export class Sh3PanelHostService {
+export class FoldPanelHostService {
   private readonly rootInjector = inject(Injector);
   private nextId = 1;
-  private readonly _panels = signal<readonly Sh3PanelDescriptor[]>([]);
+  private readonly _panels = signal<readonly FoldPanelDescriptor[]>([]);
 
   /** The active panels, oldest first. Read by the layout host. */
   readonly panels = this._panels.asReadonly();
@@ -32,28 +32,28 @@ export class Sh3PanelHostService {
   // Data-carrying panel: `config.data` is type-checked against the component's
   // `data` input.
   open<TData, TResult = unknown>(
-    component: Type<Sh3PanelContent<TData>>,
-    config: Sh3PanelConfig<TData> & { data: TData },
-  ): Sh3PanelRef<TResult>;
+    component: Type<FoldPanelContent<TData>>,
+    config: FoldPanelConfig<TData> & { data: TData },
+  ): FoldPanelRef<TResult>;
   // Data-less panel (its data, if any, comes via `config.providers`).
   open<TResult = unknown>(
     component: Type<unknown>,
-    config?: Omit<Sh3PanelConfig<never>, "data">,
-  ): Sh3PanelRef<TResult>;
+    config?: Omit<FoldPanelConfig<never>, "data">,
+  ): FoldPanelRef<TResult>;
   open<TResult = unknown>(
     component: Type<unknown>,
-    config: Sh3PanelConfig<unknown> = {},
-  ): Sh3PanelRef<TResult> {
+    config: FoldPanelConfig<unknown> = {},
+  ): FoldPanelRef<TResult> {
     const id = this.takeId();
-    const ref = new Sh3PanelRef<TResult>(() => this.dismiss(id));
+    const ref = new FoldPanelRef<TResult>(() => this.dismiss(id));
     const injector = Injector.create({
       parent: this.rootInjector,
       providers: [
-        { provide: Sh3PanelRef, useValue: ref },
+        { provide: FoldPanelRef, useValue: ref },
         ...(config.providers ?? []),
       ],
     });
-    const descriptor: Sh3ComponentPanelDescriptor = {
+    const descriptor: FoldComponentPanelDescriptor = {
       kind: "component",
       id,
       component,
@@ -72,12 +72,12 @@ export class Sh3PanelHostService {
 
   /**
    * Register a declarative (projected-template) panel; returns a handle. These
-   * are self-managed by their `<sh3-side-panel>`'s `[open]` binding, so they are
+   * are self-managed by their `<fold-side-panel>`'s `[open]` binding, so they are
    * not subject to the imperative single-panel replacement.
    */
   present(
-    descriptor: Omit<Sh3TemplatePanelDescriptor, "id" | "kind">,
-  ): Sh3PanelHandle {
+    descriptor: Omit<FoldTemplatePanelDescriptor, "id" | "kind">,
+  ): FoldPanelHandle {
     const id = this.takeId();
     this.add({ ...descriptor, kind: "template", id });
     return { id, dismiss: () => this.dismiss(id) };
@@ -85,7 +85,7 @@ export class Sh3PanelHostService {
 
   /**
    * Close every open panel through its own `onClose` — so each opener's
-   * `Sh3PanelRef`/toggle settles — before a new single panel takes over. Iterates
+   * `FoldPanelRef`/toggle settles — before a new single panel takes over. Iterates
    * a snapshot, so the `onClose`-driven removals don't disturb the loop.
    */
   private closeExisting(): void {
@@ -110,7 +110,7 @@ export class Sh3PanelHostService {
     return id;
   }
 
-  private add(descriptor: Sh3PanelDescriptor): void {
+  private add(descriptor: FoldPanelDescriptor): void {
     this._panels.update((list) => [...list, descriptor]);
   }
 }

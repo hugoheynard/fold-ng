@@ -12,7 +12,7 @@
       aria-modal="true"
       [attr.aria-label]="ariaLabel(panel)"
       tabindex="-1"
-      [sh3FocusTrap]="true"
+      [foldFocusTrap]="true"
       (click)="$event.stopPropagation()"
     >
       @if (panel.kind === "template") {
@@ -47,7 +47,7 @@
           <ng-container [ngTemplateOutlet]="panel.templateRef" />
         </div>
       } @else {
-        <ng-container [sh3PanelComponentOutlet]="panel" />
+        <ng-container [foldPanelComponentOutlet]="panel" />
       }
     </aside>
   </div>

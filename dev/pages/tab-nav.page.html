@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="tab-nav">
+<fold-page-layout fluid title="tab-nav">
   <p description>
     A tab bar of buttons — it renders the navigation only, the parent renders
     the content for the active key. Horizontal for a page-level bar, vertical
@@ -128,11 +128,11 @@
         <span class="tn-page-sub">Acme Records</span>
       </div>
 
-      <sh3-tab-layout
+      <fold-tab-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
-        #tl="sh3TabLayout"
+        #tl="foldTabLayout"
       >
-        <sh3-tab-nav
+        <fold-tab-nav
           tabNav
           [tabs]="tnTabs()"
           [activeKey]="tnActiveKey()"
@@ -162,7 +162,7 @@
                 <span class="tn-row-title">{{ m.name }}</span>
                 <span class="tn-row-sub">{{ m.role }}</span>
               </span>
-              <sh3-badge [content]="m.status" [variant]="m.tone" />
+              <fold-badge [content]="m.status" [variant]="m.tone" />
             </div>
             }
           </div>
@@ -199,15 +199,15 @@
           </div>
           } }
         </div>
-      </sh3-tab-layout>
+      </fold-tab-layout>
     </div>
   </dev-playground>
 
   <div class="gal-cell">
-    <span class="gal-tag">in a side panel (sh3-panel)</span>
+    <span class="gal-tag">in a side panel (fold-panel)</span>
     <button type="button" class="gal-theme" (click)="openTabPanel()">
-      <sh3-icon name="contracts" size="sm" />
+      <fold-icon name="contracts" size="sm" />
       Open panel with tabs
     </button>
   </div>
-</sh3-page-layout>
+</fold-page-layout>

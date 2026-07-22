@@ -11,21 +11,21 @@
   border: 0;
   background: none;
   font-family: inherit;
-  font-size: var(--sh3-text-xs);
+  font-size: var(--fold-text-xs);
   font-weight: 600;
-  color: var(--sh3-color-primary);
+  color: var(--fold-color-primary);
   text-decoration: none;
   cursor: pointer;
-  transition: color var(--sh3-motion-fast);
+  transition: color var(--fold-motion-fast);
 }
 :host(.tone-muted) .lnk {
-  color: var(--sh3-color-text-secondary);
+  color: var(--fold-color-text-secondary);
 }
 .lnk:hover .lnk-label {
   text-decoration: underline;
 }
 .lnk:disabled {
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
   cursor: not-allowed;
 }
 .lnk:disabled .lnk-label {

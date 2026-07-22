@@ -7,15 +7,15 @@ import {
   viewChild,
 } from "@angular/core";
 import {
-  Sh3AppShellComponent,
-  Sh3ElevatedDirective,
-  Sh3IconComponent,
-  Sh3MenuComponent,
-  Sh3MenuItemComponent,
-  Sh3PageLayoutComponent,
-  Sh3PanelHostComponent,
-  Sh3PanelHostService,
-  Sh3SliderComponent,
+  FoldAppShellComponent,
+  FoldElevatedDirective,
+  FoldIconComponent,
+  FoldMenuComponent,
+  FoldMenuItemComponent,
+  FoldPageLayoutComponent,
+  FoldPanelHostComponent,
+  FoldPanelHostService,
+  FoldSliderComponent,
 } from "../../src/index";
 import { PanelScopeDirective } from "../panel-scope.directive";
 import { TabPanelComponent } from "../tab-panel.component";
@@ -24,20 +24,20 @@ import { DevPlaygroundComponent } from "../playground.component";
 
 type ShellMode = "desktop" | "tablet" | "mobile";
 
-/** `/app-shell` — the `sh3-app-shell` gallery page (live preview playground). */
+/** `/app-shell` — the `fold-app-shell` gallery page (live preview playground). */
 @Component({
   selector: "gal-app-shell-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3AppShellComponent,
-    Sh3MenuComponent,
-    Sh3MenuItemComponent,
-    Sh3ElevatedDirective,
-    Sh3IconComponent,
-    Sh3SliderComponent,
-    Sh3PanelHostComponent,
+    FoldPageLayoutComponent,
+    FoldAppShellComponent,
+    FoldMenuComponent,
+    FoldMenuItemComponent,
+    FoldElevatedDirective,
+    FoldIconComponent,
+    FoldSliderComponent,
+    FoldPanelHostComponent,
     PanelScopeDirective,
     DevPlaygroundComponent,
   ],
@@ -47,7 +47,7 @@ export default class AppShellPage {
   protected readonly theme = signal<"dark" | "light">("dark");
 
   /* ── Live shell parameters (driven by the Settings panel) ── */
-  /** Raise the primary rail into a floating card (per-region `sh3Elevated`). */
+  /** Raise the primary rail into a floating card (per-region `foldElevated`). */
   protected readonly railElevated = signal(false);
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellFooterLayout = signal<"inset" | "full">("full");
@@ -106,10 +106,10 @@ export default class AppShellPage {
     this.shellFooterBehavior.set(value);
   }
 
-  /** The `<sh3-app-shell>` markup reflecting the current settings — live. */
+  /** The `<fold-app-shell>` markup reflecting the current settings — live. */
   protected readonly shellCode = computed(() =>
     [
-      "<sh3-app-shell",
+      "<fold-app-shell",
       `  headerLayout="${this.shellHeaderLayout()}"`,
       ...(this.shellFooter()
         ? [
@@ -120,15 +120,15 @@ export default class AppShellPage {
       `  [railWidth]="${this.shellRailWidth()}"`,
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
-      `  <sh3-menu railPrimary${this.railElevated() ? " sh3Elevated" : ""}>…</sh3-menu>`,
-      "  <sh3-menu railSecondary>…</sh3-menu>",
+      `  <fold-menu railPrimary${this.railElevated() ? " foldElevated" : ""}>…</fold-menu>`,
+      "  <fold-menu railSecondary>…</fold-menu>",
       "  <header header>…</header>",
       "  <!-- untagged content → the main area -->",
       "  <main>…</main>",
       ...(this.shellFooter()
         ? ["  <app-player footer>…</app-player>"]
         : ["  <!-- no footer → the footer row collapses -->"]),
-      "</sh3-app-shell>",
+      "</fold-app-shell>",
     ].join("\n"),
   );
 
@@ -138,7 +138,7 @@ export default class AppShellPage {
 
   /** Open a panel in the preview's own host (a scoped service instance), so it
    *  slides in inside the preview shell rather than the gallery. */
-  protected openPreviewPanel(host: Sh3PanelHostService): void {
+  protected openPreviewPanel(host: FoldPanelHostService): void {
     host.open(TabPanelComponent, { side: "right", width: 260 });
   }
 

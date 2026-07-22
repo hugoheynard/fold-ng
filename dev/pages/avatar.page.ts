@@ -1,21 +1,21 @@
 import { Component, computed, inject, signal } from "@angular/core";
 import {
-  Sh3AvatarComponent,
-  Sh3AvatarDetailComponent,
-  Sh3AvatarListComponent,
-  type Sh3AvatarListItem,
-  type Sh3AvatarVariant,
-  type Sh3AvatarRing,
-  type Sh3AvatarRingStyle,
-  Sh3IconComponent,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
-  Sh3SliderComponent,
-  Sh3TabLayoutComponent,
-  Sh3TabNavComponent,
-  type Sh3TabNavItem,
-  Sh3PaletteRegistry,
-  type Sh3AutoPaletteName,
+  FoldAvatarComponent,
+  FoldAvatarDetailComponent,
+  FoldAvatarListComponent,
+  type FoldAvatarListItem,
+  type FoldAvatarVariant,
+  type FoldAvatarRing,
+  type FoldAvatarRingStyle,
+  FoldIconComponent,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
+  FoldSliderComponent,
+  FoldTabLayoutComponent,
+  FoldTabNavComponent,
+  type FoldTabNavItem,
+  FoldPaletteRegistry,
+  type FoldAutoPaletteName,
 } from "../../src/index";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
@@ -25,19 +25,19 @@ import { DevPlaygroundComponent } from "../playground.component";
 interface AvatarDemo {
   readonly name: string;
   readonly size?: "sm" | "md" | "lg";
-  readonly variant?: Sh3AvatarVariant;
+  readonly variant?: FoldAvatarVariant;
   readonly square?: boolean;
   readonly image?: boolean;
   readonly muted?: boolean;
-  readonly ring?: Sh3AvatarRing;
-  readonly ringStyle?: Sh3AvatarRingStyle;
+  readonly ring?: FoldAvatarRing;
+  readonly ringStyle?: FoldAvatarRingStyle;
 }
 /** A clickable avatar-detail demo (same idea, identity-cell props). */
 interface DetailDemo {
   readonly primary: string;
   readonly secondary?: string;
   readonly size?: "sm" | "md" | "lg";
-  readonly variant?: Sh3AvatarVariant;
+  readonly variant?: FoldAvatarVariant;
   readonly square?: boolean;
   readonly image?: boolean;
 }
@@ -47,27 +47,27 @@ interface DemoGroup<T> {
   readonly items: readonly T[];
 }
 
-/** `/avatar` — the `sh3-avatar` / avatar-detail / avatar-list gallery page. */
+/** `/avatar` — the `fold-avatar` / avatar-detail / avatar-list gallery page. */
 @Component({
   selector: "gal-avatar-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3PageSectionComponent,
-    Sh3TabLayoutComponent,
-    Sh3TabNavComponent,
-    Sh3AvatarComponent,
-    Sh3AvatarDetailComponent,
-    Sh3AvatarListComponent,
-    Sh3SliderComponent,
-    Sh3IconComponent,
+    FoldPageLayoutComponent,
+    FoldPageSectionComponent,
+    FoldTabLayoutComponent,
+    FoldTabNavComponent,
+    FoldAvatarComponent,
+    FoldAvatarDetailComponent,
+    FoldAvatarListComponent,
+    FoldSliderComponent,
+    FoldIconComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./avatar.page.html",
 })
 export default class AvatarPage {
-  protected readonly avatarTabs: Sh3TabNavItem[] = [
+  protected readonly avatarTabs: FoldTabNavItem[] = [
     { key: "avatar", label: "Avatar" },
     { key: "detail", label: "Detail" },
     { key: "list", label: "List" },
@@ -84,7 +84,7 @@ export default class AvatarPage {
   ] as const;
   /** A team roster for the avatar-list — a few carry per-face state so the
    *  showcase demonstrates absence + scheduled status in context. */
-  protected readonly team: readonly Sh3AvatarListItem[] = [
+  protected readonly team: readonly FoldAvatarListItem[] = [
     { name: "Clément Aubry" },
     { name: "Inès Bernard", variant: "ghost" }, // a guest among members
     { name: "Marc Machine", muted: true }, // absent today
@@ -99,14 +99,14 @@ export default class AvatarPage {
 
   /** The palette registry is a root singleton — switching it recolours every
    *  avatar in the app at once (a given seed keeps one colour, app-wide). */
-  private readonly palette = inject(Sh3PaletteRegistry);
-  protected readonly palettes: readonly Sh3AutoPaletteName[] = [
+  private readonly palette = inject(FoldPaletteRegistry);
+  protected readonly palettes: readonly FoldAutoPaletteName[] = [
     "vivid",
     "extended",
     "pastel",
   ];
-  protected readonly activePalette = signal<Sh3AutoPaletteName>("vivid");
-  protected setPalette(name: Sh3AutoPaletteName): void {
+  protected readonly activePalette = signal<FoldAutoPaletteName>("vivid");
+  protected setPalette(name: FoldAutoPaletteName): void {
     this.palette.use(name);
     this.activePalette.set(name);
   }
@@ -126,14 +126,14 @@ export default class AvatarPage {
       items: [
         { name: "Inès Bernard" },
         { name: "Inès Bernard", variant: "ghost" },
-        { name: "Sh3pherd", square: true },
+        { name: "Foldpherd", square: true },
       ],
     },
     {
       label: "imageUrl — replaces initials",
       items: [
         { name: "Léa Petit", image: true },
-        { name: "Sh3pherd", square: true, image: true },
+        { name: "Foldpherd", square: true, image: true },
       ],
     },
     {
@@ -174,7 +174,7 @@ export default class AvatarPage {
       label: "ghost (guest) · square (org) · image",
       items: [
         { primary: "Marc Machine", secondary: "Invité", variant: "ghost" },
-        { primary: "Sh3pherd", secondary: "Organisation", square: true },
+        { primary: "Foldpherd", secondary: "Organisation", square: true },
         { primary: "Léa Petit", secondary: "Design", image: true },
       ],
     },
@@ -213,7 +213,7 @@ export default class AvatarPage {
     this.team.slice(0, this.alCount()),
   );
 
-  /** The `<sh3-avatar-list>` markup reflecting the settings — live. */
+  /** The `<fold-avatar-list>` markup reflecting the settings — live. */
   protected readonly alCode = computed(() => {
     const attrs = [
       '[avatars]="team"',
@@ -222,11 +222,11 @@ export default class AvatarPage {
       this.alSize() === "md" ? "" : `size="${this.alSize()}"`,
       this.alSquare() ? "square" : "",
     ].filter(Boolean);
-    return `<sh3-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
+    return `<fold-avatar-list\n  ${attrs.join("\n  ")}\n/>`;
   });
 }
 
-/** The `<sh3-avatar>` markup for a demo — only the non-default props. */
+/** The `<fold-avatar>` markup for a demo — only the non-default props. */
 function avatarDemoCode(d: AvatarDemo): string {
   const attrs = [
     `name="${d.name}"`,
@@ -238,10 +238,10 @@ function avatarDemoCode(d: AvatarDemo): string {
     d.ring && d.ring !== "none" ? `ring="${d.ring}"` : "",
     d.ringStyle && d.ringStyle !== "solid" ? `ringStyle="${d.ringStyle}"` : "",
   ].filter(Boolean);
-  return `<sh3-avatar ${attrs.join(" ")} />`;
+  return `<fold-avatar ${attrs.join(" ")} />`;
 }
 
-/** The `<sh3-avatar-detail>` markup for a demo — only the non-default props. */
+/** The `<fold-avatar-detail>` markup for a demo — only the non-default props. */
 function detailDemoCode(d: DetailDemo): string {
   const attrs = [
     `primary="${d.primary}"`,
@@ -251,5 +251,5 @@ function detailDemoCode(d: DetailDemo): string {
     d.square ? "square" : "",
     d.image ? `[imageUrl]="logoUrl"` : "",
   ].filter(Boolean);
-  return `<sh3-avatar-detail ${attrs.join(" ")} />`;
+  return `<fold-avatar-detail ${attrs.join(" ")} />`;
 }

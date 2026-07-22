@@ -6,19 +6,19 @@ import {
   input,
   model,
 } from "@angular/core";
-import { Sh3MenuSeparatorComponent } from "./menu-separator.component";
-import { Sh3IconComponent } from "../icon/icon.component";
-import { Sh3MenuItemComponent } from "./menu-item.component";
+import { FoldMenuSeparatorComponent } from "./menu-separator.component";
+import { FoldIconComponent } from "../icon/icon.component";
+import { FoldMenuItemComponent } from "./menu-item.component";
 
 /** Distinct ids for the header → items `aria-controls` link. */
 let sectionUid = 0;
 
 /**
- * `<sh3-menu-section>` — a labelled group inside `<sh3-menu>`. It renders a
- * `<sh3-menu-separator>` (same `label` / `color` inputs) then projects the
- * section's `sh3-menu-item`s beneath it.
+ * `<fold-menu-section>` — a labelled group inside `<fold-menu>`. It renders a
+ * `<fold-menu-separator>` (same `label` / `color` inputs) then projects the
+ * section's `fold-menu-item`s beneath it.
  *
- * The `color` is published as the `--sh3-menu-section-color` custom property on
+ * The `color` is published as the `--fold-menu-section-color` custom property on
  * the host, so it cascades to the projected items: they pick the section's tint
  * up on hover (see `menu-item.component.scss`). Omit `color` for a neutral
  * section.
@@ -30,25 +30,25 @@ let sectionUid = 0;
  * never hidden. Folding only applies in the expanded rail — collapsed (icon
  * only) there is no header to click, so every item stays visible.
  *
- * @selector `sh3-menu-section`
+ * @selector `fold-menu-section`
  *
  * @example
  * ```html
- * <sh3-menu-section label="Workspace" color="#7c5bbf" collapsible>
- *   <button sh3-menu-item icon="home" label="Home"></button>
- *   <button sh3-menu-item icon="music" label="Music"></button>
- * </sh3-menu-section>
+ * <fold-menu-section label="Workspace" color="#7c5bbf" collapsible>
+ *   <button fold-menu-item icon="home" label="Home"></button>
+ *   <button fold-menu-item icon="music" label="Music"></button>
+ * </fold-menu-section>
  * ```
  */
 @Component({
-  selector: "sh3-menu-section",
+  selector: "fold-menu-section",
   standalone: true,
-  imports: [Sh3MenuSeparatorComponent, Sh3IconComponent],
+  imports: [FoldMenuSeparatorComponent, FoldIconComponent],
   templateUrl: "./menu-section.component.html",
   styleUrl: "./menu-section.component.scss",
-  host: { "[style.--sh3-menu-section-color]": "color() ?? null" },
+  host: { "[style.--fold-menu-section-color]": "color() ?? null" },
 })
-export class Sh3MenuSectionComponent {
+export class FoldMenuSectionComponent {
   /** Section label — shown only when the menu is expanded. */
   readonly label = input<string>();
   /** Accent colour tinting the separator and the items' hover state. */
@@ -59,7 +59,7 @@ export class Sh3MenuSectionComponent {
   readonly collapsed = model(false);
 
   /** Projected items — read to keep the active one's section always open. */
-  private readonly items = contentChildren(Sh3MenuItemComponent, {
+  private readonly items = contentChildren(FoldMenuItemComponent, {
     descendants: true,
   });
   private readonly hasActiveItem = computed(() =>
@@ -72,7 +72,7 @@ export class Sh3MenuSectionComponent {
   );
 
   /** Stable id linking the toggle's `aria-controls` to the items region. */
-  protected readonly bodyId = `sh3-menu-section-${(sectionUid += 1)}`;
+  protected readonly bodyId = `fold-menu-section-${(sectionUid += 1)}`;
 
   protected toggle(): void {
     this.collapsed.update((v) => !v);

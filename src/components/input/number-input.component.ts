@@ -10,25 +10,25 @@ import {
   model,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
-import { Sh3IdService } from "../../a11y/id.service";
-import { Sh3RepeatPressDirective } from "../../directives/repeat-press.directive";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
-import { Sh3InputBaseComponent } from "./input-base.component";
+import { FoldIdService } from "../../a11y/id.service";
+import { FoldRepeatPressDirective } from "../../directives/repeat-press.directive";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
+import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 import {
   isStepAligned,
   settleNumber,
-  type Sh3NumberConstraints,
+  type FoldNumberConstraints,
 } from "./number-settle";
 
 /** The increment/decrement glyph: chevrons, `− / +`, or no buttons. */
-export type Sh3NumberSpinner = "none" | "arrows" | "plusminus";
+export type FoldNumberSpinner = "none" | "arrows" | "plusminus";
 /** Where the spinner buttons sit: stacked inside the box, or flanking it. */
-export type Sh3NumberControls = "inside" | "outside";
+export type FoldNumberControls = "inside" | "outside";
 
 /**
- * `<sh3-number-input>` — the numeric sibling of {@link Sh3InputComponent}. Split
+ * `<fold-number-input>` — the numeric sibling of {@link FoldInputComponent}. Split
  * out on purpose: a number field's value is a `number`, not a string, so keeping
  * it separate lets each control carry its true type (`FormValueControl<number |
  * null>` here, `FormValueControl<string>` for text) instead of the leaky
@@ -38,26 +38,26 @@ export type Sh3NumberControls = "inside" | "outside";
  *
  * Empty is a first-class value: clearing the field sets `null` (not `0`, not
  * `NaN`), so an optional number reads correctly. Shares the exact visual shell as
- * `sh3-input` (same tokens, sizes, variants) via `input-shell.scss`.
+ * `fold-input` (same tokens, sizes, variants) via `input-shell.scss`.
  *
- * @selector `sh3-number-input`
+ * @selector `fold-number-input`
  *
  * @example
  * ```html
  * <!-- Signal-forms field (form.bpm: number) -->
- * <sh3-number-input placeholder="BPM" [min]="0" [formField]="form.bpm" />
+ * <fold-number-input placeholder="BPM" [min]="0" [formField]="form.bpm" />
  *
  * <!-- Standalone two-way -->
- * <sh3-number-input align="center" [step]="0.5" [(value)]="gain" />
+ * <fold-number-input align="center" [step]="0.5" [(value)]="gain" />
  * ```
  */
 @Component({
-  selector: "sh3-number-input",
+  selector: "fold-number-input",
   standalone: true,
   imports: [
-    Sh3InputBaseComponent,
-    Sh3IconComponent,
-    Sh3RepeatPressDirective,
+    FoldInputBaseComponent,
+    FoldIconComponent,
+    FoldRepeatPressDirective,
     NgTemplateOutlet,
   ],
   templateUrl: "./number-input.component.html",
@@ -66,7 +66,7 @@ export type Sh3NumberControls = "inside" | "outside";
     "[class]": 'size() + " " + align() + " " + variant()',
   },
 })
-export class Sh3NumberInputComponent implements FormValueControl<
+export class FoldNumberInputComponent implements FormValueControl<
   number | null
 > {
   /** The bound value — `null` when the field is empty. A `model()` so signal
@@ -80,11 +80,11 @@ export class Sh3NumberInputComponent implements FormValueControl<
   /** Validation errors — bound by `FormField` from the field. */
   readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
-  /** Size preset — see {@link Sh3InputComponent.size}. @default 'md' */
+  /** Size preset — see {@link FoldInputComponent.size}. @default 'md' */
   readonly size = input<"sm" | "md" | "lg">("md");
   /** Text alignment inside the box. @default 'start' */
   readonly align = input<"start" | "center">("start");
-  /** Visual variant — see {@link Sh3InputComponent.variant}. @default 'default' */
+  /** Visual variant — see {@link FoldInputComponent.variant}. @default 'default' */
   readonly variant = input<"default" | "panel">("default");
 
   /** Optional label displayed above the input. */
@@ -110,9 +110,9 @@ export class Sh3NumberInputComponent implements FormValueControl<
   readonly step = input<number | undefined>(undefined);
 
   /** The step glyph — `plusminus` (`−`/`+`, default), `arrows` (chevrons), `none`. */
-  readonly spinner = input<Sh3NumberSpinner>("plusminus");
+  readonly spinner = input<FoldNumberSpinner>("plusminus");
   /** Where the buttons sit — `inside` the box (default) or `outside`, flanking it. */
-  readonly controls = input<Sh3NumberControls>("inside");
+  readonly controls = input<FoldNumberControls>("inside");
 
   /** Show the {@link step} as a small suffix, so the increment is visible. */
   readonly showStep = input(false, { transform: booleanAttribute });
@@ -135,8 +135,8 @@ export class Sh3NumberInputComponent implements FormValueControl<
   /** Shorthand for `decimals = 0` — integers only. Takes precedence over {@link decimals}. */
   readonly integer = input(false, { transform: booleanAttribute });
 
-  /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
-  readonly inputId = inject(Sh3IdService).next("sh3-number-input");
+  /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
+  readonly inputId = inject(FoldIdService).next("fold-number-input");
 
   /** The effective step (defaults to 1 when unset). */
   protected readonly effectiveStep = computed(() => this.step() ?? 1);
@@ -147,7 +147,7 @@ export class Sh3NumberInputComponent implements FormValueControl<
   );
 
   /** The active numeric constraints — shared by settling and the alignment check. */
-  private readonly constraints = computed<Sh3NumberConstraints>(() => ({
+  private readonly constraints = computed<FoldNumberConstraints>(() => ({
     step: this.effectiveStep(),
     min: this.min(),
     max: this.max(),
@@ -238,7 +238,7 @@ export class Sh3NumberInputComponent implements FormValueControl<
   }
 
   /** Keyboard-only click (Enter/Space have `detail === 0`); pointer presses are
-   *  driven by {@link Sh3RepeatPressDirective} so they don't double-step. */
+   *  driven by {@link FoldRepeatPressDirective} so they don't double-step. */
   protected onButtonClick(direction: 1 | -1, event: MouseEvent): void {
     if (event.detail === 0) {
       this.stepBy(direction);
@@ -261,7 +261,7 @@ export class Sh3NumberInputComponent implements FormValueControl<
   }
 
   /** The glyph for a step button in the given direction (arrows vs `− / +`). */
-  protected iconFor(direction: 1 | -1): Sh3IconName {
+  protected iconFor(direction: 1 | -1): FoldIconName {
     if (this.spinner() === "arrows") {
       return direction === 1 ? "chevron-up" : "chevron-down";
     }
@@ -290,7 +290,7 @@ export class Sh3NumberInputComponent implements FormValueControl<
   private warnStepMisaligned(): void {
     if (isDevMode()) {
       console.warn(
-        `[sh3-number-input] max ${String(this.max())} is off the step grid ` +
+        `[fold-number-input] max ${String(this.max())} is off the step grid ` +
           `(${this.min() ?? 0} + k·${this.effectiveStep()}); with snapToStep it ` +
           `is only reachable via the clamp, not by stepping.`,
       );

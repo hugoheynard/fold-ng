@@ -2,43 +2,43 @@ import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { form, required, FormField } from "@angular/forms/signals";
 import {
-  Sh3TabLayoutComponent,
-  Sh3InputComponent,
-  Sh3NumberInputComponent,
-  type Sh3NumberSpinner,
-  type Sh3NumberControls,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
-  Sh3SearchComponent,
-  Sh3SelectComponent,
-  Sh3SliderComponent,
-  Sh3TabNavComponent,
-  type Sh3TabNavItem,
+  FoldTabLayoutComponent,
+  FoldInputComponent,
+  FoldNumberInputComponent,
+  type FoldNumberSpinner,
+  type FoldNumberControls,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
+  FoldSearchComponent,
+  FoldSelectComponent,
+  FoldSliderComponent,
+  FoldTabNavComponent,
+  type FoldTabNavItem,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
 
-/** `/form` — the `sh3-input` gallery page (text · number · select · search). */
+/** `/form` — the `fold-input` gallery page (text · number · select · search). */
 @Component({
   selector: "gal-form-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3PageSectionComponent,
-    Sh3TabLayoutComponent,
-    Sh3TabNavComponent,
-    Sh3InputComponent,
-    Sh3NumberInputComponent,
-    Sh3SelectComponent,
-    Sh3SearchComponent,
-    Sh3SliderComponent,
+    FoldPageLayoutComponent,
+    FoldPageSectionComponent,
+    FoldTabLayoutComponent,
+    FoldTabNavComponent,
+    FoldInputComponent,
+    FoldNumberInputComponent,
+    FoldSelectComponent,
+    FoldSearchComponent,
+    FoldSliderComponent,
     FormField,
     DevPlaygroundComponent,
   ],
   templateUrl: "./form.page.html",
 })
 export default class FormPage {
-  protected readonly inputTabs: Sh3TabNavItem[] = [
+  protected readonly inputTabs: FoldTabNavItem[] = [
     { key: "text", label: "Text" },
     { key: "number", label: "Number" },
     { key: "select", label: "Select" },
@@ -51,7 +51,7 @@ export default class FormPage {
   protected readonly selSize = signal("");
   protected readonly currencies = ["EUR", "USD", "GBP", "JPY"];
 
-  /* Fields — plain signals bound to sh3-input via [(value)] (text) or native
+  /* Fields — plain signals bound to fold-input via [(value)] (text) or native
      controls (select / textarea, the sanctioned path for those). Showcases the
      layout: vertical nav + page-section + choice-row. */
   protected readonly demoText = signal("Two-way [(value)]");
@@ -60,8 +60,8 @@ export default class FormPage {
   protected readonly demoStepper = signal<number | null>(2);
 
   /* ── Number-input playground — params drive a live preview + code ─────── */
-  protected readonly npSpinner = signal<Sh3NumberSpinner>("plusminus");
-  protected readonly npControls = signal<Sh3NumberControls>("inside");
+  protected readonly npSpinner = signal<FoldNumberSpinner>("plusminus");
+  protected readonly npControls = signal<FoldNumberControls>("inside");
   protected readonly npSize = signal<"sm" | "md" | "lg">("md");
   protected readonly npStep = signal(1);
   protected readonly npMin = signal(0);
@@ -72,7 +72,7 @@ export default class FormPage {
   protected readonly npValue = signal<number | null>(4);
 
   protected readonly numberPlaygroundCode = computed(() => {
-    const lines = ["<sh3-number-input", '  label="Quantity"'];
+    const lines = ["<fold-number-input", '  label="Quantity"'];
     if (this.npSize() !== "md") {
       lines.push(`  size="${this.npSize()}"`);
     }

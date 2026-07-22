@@ -1,4 +1,4 @@
-# @sh3pherd/ui — writing the gallery
+# fold-ng — writing the gallery
 
 Rules for `dev/` — the gallery app that documents this package. `dev-rules.md`
 is the contract for the **components**; this is the contract for the **pages
@@ -16,26 +16,26 @@ playground answers them by letting you drive the thing.
 
 ## 1 · Page skeleton
 
-1.1 **A page _is_ its `sh3-page-layout`.** The routed component's host element
+1.1 **A page _is_ its `fold-page-layout`.** The routed component's host element
 carries no class, no padding and no scroll — `display: contents` dissolves it so
 the layout is the real child of the shell's content cell. Never reintroduce a
 per-page wrapper class.
 
-1.2 **Nobody declares page margins.** The gutter belongs to `sh3-app-shell`
+1.2 **Nobody declares page margins.** The gutter belongs to `fold-app-shell`
 (`contentPadding`, set once on the gallery shell). A page that needs to paint
 edge-to-edge says so on the shell, not with negative margins.
 
-1.3 **The layout owns the scroll.** `sh3-page-layout` fills the height it is
+1.3 **The layout owns the scroll.** `fold-page-layout` fills the height it is
 given and scrolls inside it. A page never scrolls the document.
 
 1.4 **Every page opens the same way** — title, kind badge, description:
 
 ```html
-<sh3-page-layout fluid title="card">
+<fold-page-layout fluid title="card">
   <gal-kind-badge titleBadge kind="component" />
   <p description>…what it is, in one breath — <code>inputs</code> welcome…</p>
   …
-</sh3-page-layout>
+</fold-page-layout>
 ```
 
 `kind` is `component` or `directive`. `fluid` for pages whose demos need the
@@ -45,18 +45,18 @@ The description is a **slot**, so it takes `<code>`, links and a second
 sentence — the layout supplies the typography. Never re-style it on the page;
 if it needs its own layout, project nothing and put a block in the body.
 
-1.5 **A page with sub-pages uses `sh3-tab-layout`**, not a bare bar in a spacer
+1.5 **A page with sub-pages uses `fold-tab-layout`**, not a bare bar in a spacer
 div. Bind the projected nav to the layout so it folds with it:
 
 ```html
-<sh3-tab-layout placement="side" #tl="sh3TabLayout">
-  <sh3-tab-nav
+<fold-tab-layout placement="side" #tl="foldTabLayout">
+  <fold-tab-nav
     tabNav
     [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
     …
   />
   @switch (tab()) { … }
-</sh3-tab-layout>
+</fold-tab-layout>
 ```
 
 1.6 **Registering a page** is two edits: an entry in `GALLERY_NAV`
@@ -89,7 +89,7 @@ beside a preview. Those existed; they are gone; do not bring them back.
     </div>
   </div>
 
-  <sh3-card [surface]="cpSurface()">…</sh3-card>
+  <fold-card [surface]="cpSurface()">…</fold-card>
   <!-- default slot = preview -->
 </dev-playground>
 ```
@@ -97,13 +97,13 @@ beside a preview. Those existed; they are gone; do not bring them back.
 2.2 **Slots.** `[params]` = one control per `.np-field`; default = the live
 component; `[preview-actions]` = controls that belong to the _preview frame_
 itself (a viewport switch), centred in its header. The playground owns its
-`sh3-page-section title="Playground"` — a page never repeats it.
+`fold-page-section title="Playground"` — a page never repeats it.
 
 2.3 **`stage`** when the demo is itself a surface (a card on a card reads as
 mush): it drops the preview onto the page background, inset and padded.
 
 2.4 **Control idioms.** Segmented choice → `.gal-tag` label + `.ss-seg` of
-`<button [class.is-on]>`. Number → `sh3-slider` with `[(value)]`. Boolean → a
+`<button [class.is-on]>`. Number → `fold-slider` with `[(value)]`. Boolean → a
 two-button segment or an on/off pair; never a bare checkbox.
 
 2.5 **The code panel shows what you would actually paste** — a `computed()`
@@ -152,7 +152,7 @@ real gate is:
 
 ```bash
 npx tsc --noEmit -p tsconfig.app.json    # the gallery's own tsc
-pnpm --filter @sh3pherd/ui test          # component specs
+pnpm --filter fold-ng test          # component specs
 ```
 
 5.2 **A CSS-only fix is not verified by tests.** jsdom applies no stylesheet, so
@@ -178,7 +178,7 @@ element pass `{ read: ElementRef }`, or the DOM writes go nowhere — silently.
 6.3 **ResizeObserver + scrollbars oscillate.** A layout that folds on its own
 width can free ~15px by folding and flip forever. Any width threshold that
 changes layout needs a dead band wider than a scrollbar (see
-`sh3-tab-layout`, 32px).
+`fold-tab-layout`, 32px).
 
 6.4 **Codemods across pages need a typecheck, not a build.** Regex edits over
 `dev/pages/*` have twice produced valid-looking, broken output (an import

@@ -1,7 +1,7 @@
 import { Component, booleanAttribute, input } from "@angular/core";
 
 /**
- * `<sh3-hero>` — a prominent header card. Same base as {@link Sh3CardComponent}
+ * `<fold-hero>` — a prominent header card. Same base as {@link FoldCardComponent}
  * (surface + border + radius + padding); lay the content out inside however you
  * like and project it via `<ng-content>`.
  *
@@ -21,14 +21,14 @@ import { Component, booleanAttribute, input } from "@angular/core";
  * **`accentBar`** — orthogonal: a primary accent bar down the left edge.
  *
  * ```html
- * <sh3-hero surface="sunken" accent="subtle" accentBar>…</sh3-hero>
- * <sh3-hero accent="gradient">…</sh3-hero>
+ * <fold-hero surface="sunken" accent="subtle" accentBar>…</fold-hero>
+ * <fold-hero accent="gradient">…</fold-hero>
  * ```
  *
- * @selector `sh3-hero`
+ * @selector `fold-hero`
  */
 @Component({
-  selector: "sh3-hero",
+  selector: "fold-hero",
   standalone: true,
   host: {
     "[class.s-sunken]": "surface() === 'sunken'",
@@ -42,7 +42,7 @@ import { Component, booleanAttribute, input } from "@angular/core";
   templateUrl: "./hero.component.html",
   styleUrl: "./hero.component.scss",
 })
-export class Sh3HeroComponent {
+export class FoldHeroComponent {
   /** Base fill — `card` (default) · `sunken` (deep tint) · `primary` (solid fill). */
   readonly surface = input<"card" | "sunken" | "primary">("card");
   /** Decorative overlay — `none` (default) · `subtle` (diagonal + glow) · `gradient` (primary wash + glow). */

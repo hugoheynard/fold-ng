@@ -1,7 +1,7 @@
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
 export type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
 
-/** A shell region the gallery can raise into a floating card (via `sh3Elevated`).
+/** A shell region the gallery can raise into a floating card (via `foldElevated`).
  *  Rails only here — a design choice; the header could float too (the cell pads,
  *  so a fixed-height row fits), but a floated header just reads tight. */
 export type ShellRegion = "railPrimary" | "railSecondary";
@@ -24,7 +24,7 @@ export const GALLERY_THEMES: readonly GalleryTheme[] = [
 export interface GalleryThemeConfig {
   /** `[data-theme]` attribute value — `null` for umbra (the `:root` base). */
   readonly dataTheme: string | null;
-  /** Which shell regions float (via `sh3Elevated`) — bubbly lifts its chrome
+  /** Which shell regions float (via `foldElevated`) — bubbly lifts its chrome
    *  into cards, the rest stay flat. Per-region, not a global switch. */
   readonly elevated: readonly ShellRegion[];
   /** Mobile-nav system — `none` hands off to the tile launcher, else the drawer. */

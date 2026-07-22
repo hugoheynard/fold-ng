@@ -9,9 +9,9 @@ import {
   model,
 } from "@angular/core";
 import { FocusTrapDirective } from "../../a11y/focus-trap.directive";
-import { Sh3IdService } from "../../a11y/id.service";
+import { FoldIdService } from "../../a11y/id.service";
 import { observeElementWidth } from "../../dom/observe-element-width";
-import { Sh3SurfaceDirective } from "../../directives/surface.directive";
+import { FoldSurfaceDirective } from "../../directives/surface.directive";
 
 /** Width (px) at or below which the rails collapse and the primary rail becomes
  *  a mobile drawer. Kept in lockstep with the `@media`/`@container` breakpoint
@@ -19,7 +19,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
 const MOBILE_BREAKPOINT = 768;
 
 /**
- * `<sh3-app-shell>` — the responsive application skeleton.
+ * `<fold-app-shell>` — the responsive application skeleton.
  *
  * A pure structural grid with four content slots: it owns the layout and the
  * responsive collapse, the app owns what fills the slots (nav, header, routed
@@ -30,7 +30,7 @@ const MOBILE_BREAKPOINT = 768;
  * - **Typed inputs** (`railWidth`, `headerHeight`, `headerHeightMobile`) for the
  *   common case — plain px numbers, discoverable and type-checked in the
  *   template.
- * - **CSS variables** for the theming case — set `--sh3-shell-*` on any ancestor
+ * - **CSS variables** for the theming case — set `--fold-shell-*` on any ancestor
  *   to compose tokens (`var(--w-appMenu)`) or drive it from a media query. An
  *   unset input inherits the variable, so the two never fight.
  *
@@ -53,24 +53,24 @@ const MOBILE_BREAKPOINT = 768;
  *   it in over a scrim (`Escape` / scrim / widening close it). Render the
  *   projected rail expanded in the drawer, since the collapsed icon rail is the
  *   desktop chrome.
- * - `"none"` — no built-in mobile nav; compose an `sh3-nav-launcher` (a
+ * - `"none"` — no built-in mobile nav; compose an `fold-nav-launcher` (a
  *   full-screen tile grid) bound to the same `mobileNavOpen`.
  *
  * ## Slots
  * | Attribute        | Region                                    |
  * |------------------|-------------------------------------------|
- * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--sh3-shell-rail-width`). At ≤768px it becomes the mobile drawer (see `mobileNavOpen`). |
+ * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--fold-shell-rail-width`). At ≤768px it becomes the mobile drawer (see `mobileNavOpen`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
- * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. **Full-bleed**: the shell adds no gutter, so a page can paint edge-to-edge (a full-width banner, a hero, a bleeding panel). Want the themed page gutter? Wrap the page in `sh3-page-layout` — padding is *its* job, not the shell's. |
+ * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. **Full-bleed**: the shell adds no gutter, so a page can paint edge-to-edge (a full-width banner, a hero, a bleeding panel). Want the themed page gutter? Wrap the page in `fold-page-layout` — padding is *its* job, not the shell's. |
  * | `footer`         | Bottom bar — a player / status strip (`footerBehavior="pinned"`, always in sight) or a legal / support footer (`footerBehavior="scroll"`, revealed at the end of the content). Rendered as `<footer>` (the document's `contentinfo` landmark). **Content-sized and self-collapsing**: an empty slot takes no space (unlike the fixed-height header). Content column, or full-width — see `footerLayout`. |
  *
  * ## Sizing knobs
  * | Input                | CSS variable                       | Default | Meaning                    |
  * |----------------------|------------------------------------|---------|----------------------------|
- * | `railWidth`          | `--sh3-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
- * | `headerHeight`       | `--sh3-shell-header-height`        | `56px`  | Header row height.         |
- * | `headerHeightMobile` | `--sh3-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
+ * | `railWidth`          | `--fold-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
+ * | `headerHeight`       | `--fold-shell-header-height`        | `56px`  | Header row height.         |
+ * | `headerHeightMobile` | `--fold-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
  *
  * ## Layout knobs
  * | Input          | Values                | Default   | Meaning                                    |
@@ -78,50 +78,50 @@ const MOBILE_BREAKPOINT = 768;
  * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
  * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
  * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset), and the shell owns the content scroll, so project *flow* content, not a page that manages its own full-height scroll. |
- * | `contentScroll`| `"clip" \| "auto"`    | `"clip"`  | `clip` = the shell clips the content region; the page inside owns its scroll (`sh3-page-layout`). `auto` = the content region scrolls itself, for plain content. Ignored under `footerBehavior="scroll"`. |
+ * | `contentScroll`| `"clip" \| "auto"`    | `"clip"`  | `clip` = the shell clips the content region; the page inside owns its scroll (`fold-page-layout`). `auto` = the content region scrolls itself, for plain content. Ignored under `footerBehavior="scroll"`. |
  *
  * ## Elevation (the floating look)
  * The shell owns **structure**, not skin — it drives no `floating` flag. To lift
- * a region into a rounded, shadowed card, put `sh3Elevated` on the element that
- * paints that region's background (a projected `sh3-menu`, an `app-header`, a
+ * a region into a rounded, shadowed card, put `foldElevated` on the element that
+ * paints that region's background (a projected `fold-menu`, an `app-header`, a
  * content wrapper). It composes **per region** — float the rail while the main
  * stays flat, or float them all for an inset dashboard. The shell's only part is
  * the moat: a cell whose content is elevated **pads itself** (`:has`), revealing
  * the page-gutter around the card — padding, so a `height: 100%` region fits
- * with no overflow. `--sh3-surface-inset` tunes the gutter. See
- * {@link Sh3ElevatedDirective}.
+ * with no overflow. `--fold-surface-inset` tunes the gutter. See
+ * {@link FoldElevatedDirective}.
  *
  * ## Accessibility
  * The shell renders a **skip-link** as its first Tab stop — jumping keyboard
  * users past the rails straight to the `<main>` content (`skipLinkLabel` sets
  * its text). The `<main>` is focusable (`tabindex="-1"`) so the jump lands.
  *
- * @selector `sh3-app-shell`
+ * @selector `fold-app-shell`
  *
  * @example
  * ```html
- * <sh3-app-shell
+ * <fold-app-shell
  *   [railWidth]="72"
  *   headerLayout="full"
  *   [(mobileNavOpen)]="navOpen"
  * >
- *   <app-menu railPrimary sh3Elevated /><!-- a floating rail; drop it for flat -->
+ *   <app-menu railPrimary foldElevated /><!-- a floating rail; drop it for flat -->
  *   <app-workspace-rail railSecondary />
  *   <app-header header /><!-- its hamburger toggles navOpen at ≤768px -->
  *   <router-outlet />
  *   <!-- panels / overlays / banners also go in the default slot -->
  *   <app-player footer /><!-- optional; omit it and the footer row collapses -->
- * </sh3-app-shell>
+ * </fold-app-shell>
  * ```
  */
 @Component({
-  selector: "sh3-app-shell",
+  selector: "fold-app-shell",
   standalone: true,
-  imports: [Sh3SurfaceDirective, NgTemplateOutlet, FocusTrapDirective],
+  imports: [FoldSurfaceDirective, NgTemplateOutlet, FocusTrapDirective],
   host: {
-    "[style.--sh3-shell-rail-width]": "railWidthVar()",
-    "[style.--sh3-shell-header-height]": "headerHeightVar()",
-    "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
+    "[style.--fold-shell-rail-width]": "railWidthVar()",
+    "[style.--fold-shell-header-height]": "headerHeightVar()",
+    "[style.--fold-shell-header-height-mobile]": "headerHeightMobileVar()",
     "[class.header-full]": 'headerLayout() === "full"',
     "[class.footer-full]": 'footerLayout() === "full"',
     "[class.footer-scroll]": 'footerBehavior() === "scroll"',
@@ -132,13 +132,13 @@ const MOBILE_BREAKPOINT = 768;
   templateUrl: "./app-shell.component.html",
   styleUrl: "./app-shell.component.scss",
 })
-export class Sh3AppShellComponent {
+export class FoldAppShellComponent {
   /** Base width the primary rail reads in px (the column is intrinsic — the rail
-   *  component sizes itself). Omit to inherit `--sh3-shell-rail-width` (64). */
+   *  component sizes itself). Omit to inherit `--fold-shell-rail-width` (64). */
   readonly railWidth = input<number>();
-  /** Header row height in px. Omit to inherit `--sh3-shell-header-height` (56). */
+  /** Header row height in px. Omit to inherit `--fold-shell-header-height` (56). */
   readonly headerHeight = input<number>();
-  /** Header height at ≤768px in px. Omit to inherit `--sh3-shell-header-height-mobile` (52). */
+  /** Header height at ≤768px in px. Omit to inherit `--fold-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
@@ -150,7 +150,7 @@ export class Sh3AppShellComponent {
   /**
    * Who owns the content region's scroll:
    * - `"clip"` (default) — the shell clips it; the page inside owns its scroll
-   *   (an `sh3-page-layout` is its own scroll box). A full-bleed page paints to
+   *   (an `fold-page-layout` is its own scroll box). A full-bleed page paints to
    *   the edges and never double-scrolls.
    * - `"auto"` — the shell's content region scrolls itself. For plain content
    *   that isn't wrapped in a self-scrolling page. Ignored under
@@ -163,14 +163,15 @@ export class Sh3AppShellComponent {
   readonly skipLinkLabel = input("Skip to content");
 
   /** SSR-safe id linking the skip-link to the `<main>` it targets. */
-  protected readonly contentId = inject(Sh3IdService).next("sh3-shell-content");
+  protected readonly contentId =
+    inject(FoldIdService).next("fold-shell-content");
 
   /**
    * How the primary rail's navigation is reached on mobile:
    * - `"drawer"` (default) — the built-in off-canvas drawer slides the projected
    *   `[railPrimary]` in over a scrim (driven by `mobileNavOpen`).
    * - `"none"` — the shell renders **no** mobile nav; the rails just drop out.
-   *   Compose your own, typically an {@link Sh3NavLauncherComponent} bound to the
+   *   Compose your own, typically an {@link FoldNavLauncherComponent} bound to the
    *   same `mobileNavOpen`, when a curated full-screen tile grid fits better than
    *   sliding the desktop rail in.
    */

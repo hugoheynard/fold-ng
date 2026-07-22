@@ -1,5 +1,5 @@
 import { Component, computed, input } from "@angular/core";
-import { Sh3BadgeComponent } from "../src/index";
+import { FoldBadgeComponent } from "../src/index";
 
 /** What a gallery page documents — a component, a directive, or a foundation
  *  (tokens, themes: no selector, but the ground everything else stands on). */
@@ -18,15 +18,15 @@ const VARIANT: Record<GalKind, "info" | "warning" | "neutral"> = {
 
 /**
  * `<gal-kind-badge>` — a small badge tagging a gallery page by what it documents:
- * a `component` (element selector, e.g. `sh3-card`) or a `directive` (attribute
- * selector, e.g. `[sh3StickyColumn]`). Drop it in the page-layout `[titleBadge]`
+ * a `component` (element selector, e.g. `fold-card`) or a `directive` (attribute
+ * selector, e.g. `[foldStickyColumn]`). Drop it in the page-layout `[titleBadge]`
  * slot; a page that ships both (e.g. menu) can carry one of each.
  */
 @Component({
   selector: "gal-kind-badge",
   standalone: true,
-  imports: [Sh3BadgeComponent],
-  template: `<sh3-badge
+  imports: [FoldBadgeComponent],
+  template: `<fold-badge
     radius="square"
     [variant]="variant()"
     [content]="label()"

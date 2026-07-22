@@ -1,16 +1,16 @@
 import { booleanAttribute, Component, input } from "@angular/core";
 
 /**
- * `<sh3-label>` — the label element for a form control: the text plus an optional
+ * `<fold-label>` — the label element for a form control: the text plus an optional
  * required marker. Package-internal; the input controls render it through
- * {@link Sh3InputBaseComponent}, so consumers never place it themselves. Kept
+ * {@link FoldInputBaseComponent}, so consumers never place it themselves. Kept
  * separate so the label + asterisk styling lives in one place (reusable later by
  * checkbox / radio groups).
  *
- * @selector `sh3-label`
+ * @selector `fold-label`
  */
 @Component({
-  selector: "sh3-label",
+  selector: "fold-label",
   standalone: true,
   template: `<label [attr.for]="for()"
     >{{ text() }}
@@ -22,7 +22,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
   </label>`,
   styleUrl: "./label.component.scss",
 })
-export class Sh3LabelComponent {
+export class FoldLabelComponent {
   /** The label text. */
   readonly text = input.required<string>();
   /** The id of the control this labels (`<label for>`). */

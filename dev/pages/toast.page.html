@@ -1,12 +1,12 @@
-<sh3-page-layout fluid title="toast">
+<fold-page-layout fluid title="toast">
   <p description>
     A transient frosted-glass snackbar: a variant status glyph, the message
-    (projected), and an optional dismiss button. sh3-toast-container stacks them
-    bottom-right; Sh3ToastService owns the queue.
+    (projected), and an optional dismiss button. fold-toast-container stacks
+    them bottom-right; FoldToastService owns the queue.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <sh3-tab-layout placement="side" #tl="sh3TabLayout">
-    <sh3-tab-nav
+  <fold-tab-layout placement="side" #tl="foldTabLayout">
+    <fold-tab-nav
       tabNav
       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
@@ -16,7 +16,7 @@
     />
     <div class="gal-stack">
       @switch (toastTab()) { @case ("variants") {
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Variants"
@@ -24,14 +24,14 @@
       >
         <div class="toast-demo-col">
           @for (v of toastVariants; track v) {
-          <sh3-toast [variant]="v" [dismissible]="false"
-            >{{ toastMessages[v] }}</sh3-toast
+          <fold-toast [variant]="v" [dismissible]="false"
+            >{{ toastMessages[v] }}</fold-toast
           >
           }
         </div>
-      </sh3-page-section>
+      </fold-page-section>
       } @case ("behavior") {
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Dismiss"
@@ -39,8 +39,8 @@
       >
         <div class="toast-demo-col">
           @if (demoToastOpen()) {
-          <sh3-toast variant="info" (dismiss)="demoToastOpen.set(false)"
-            >Press ✕ — the dismiss output fires</sh3-toast
+          <fold-toast variant="info" (dismiss)="demoToastOpen.set(false)"
+            >Press ✕ — the dismiss output fires</fold-toast
           >
           } @else {
           <button
@@ -48,20 +48,20 @@
             class="gal-theme"
             (click)="demoToastOpen.set(true)"
           >
-            <sh3-icon name="reload" size="sm" /> Reset
+            <fold-icon name="reload" size="sm" /> Reset
           </button>
           }
         </div>
-      </sh3-page-section>
+      </fold-page-section>
 
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Duration"
         description="The toast owns its auto-dismiss timer via a duration (ms) input; 0 = sticky. Fire through the service (bottom-right) with the chosen duration."
       >
         <div class="gal-narrow">
-          <sh3-choice-row
+          <fold-choice-row
             [options]="toastDurationOptions"
             [activeKey]="toastDuration()"
             (selected)="toastDuration.set($event)"
@@ -70,25 +70,25 @@
         <div class="gal-row">
           @for (v of toastVariants; track v) {
           <button type="button" class="gal-theme" (click)="fireToast(v)">
-            <sh3-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
+            <fold-icon [name]="toastIcons[v]" size="sm" /> {{ v }}
           </button>
           }
         </div>
-      </sh3-page-section>
+      </fold-page-section>
       } @case ("usage") {
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Fire a toast"
-        description="Inject Sh3ToastService and call show(). The duration argument is optional — omit it to use the policy."
+        description="Inject FoldToastService and call show(). The duration argument is optional — omit it to use the policy."
       >
         <div class="code-block">
           <div class="code-top"><span class="code-lang">typescript</span></div>
           <pre class="code-pre"><code>{{ toastFireCode }}</code></pre>
         </div>
-      </sh3-page-section>
+      </fold-page-section>
 
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Duration policy"
@@ -100,20 +100,20 @@
           </div>
           <pre class="code-pre"><code>{{ toastConfigCode }}</code></pre>
         </div>
-      </sh3-page-section>
+      </fold-page-section>
 
-      <sh3-page-section
+      <fold-page-section
         surface="card"
         stack
         title="Standalone component"
-        description="A bare sh3-toast is self-sufficient — no service needed. It auto-dismisses after duration and emits (dismiss) on its close button."
+        description="A bare fold-toast is self-sufficient — no service needed. It auto-dismisses after duration and emits (dismiss) on its close button."
       >
         <div class="code-block">
           <div class="code-top"><span class="code-lang">html</span></div>
           <pre class="code-pre"><code>{{ toastStandaloneCode }}</code></pre>
         </div>
-      </sh3-page-section>
+      </fold-page-section>
       } }
     </div>
-  </sh3-tab-layout>
-</sh3-page-layout>
+  </fold-tab-layout>
+</fold-page-layout>

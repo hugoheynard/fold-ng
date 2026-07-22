@@ -2,12 +2,12 @@ import { Component, signal } from "@angular/core";
 import type { ValidationError } from "@angular/forms/signals";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3SelectComponent } from "./select.component";
+import { FoldSelectComponent } from "./select.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3SelectComponent],
-  template: `<sh3-select
+  imports: [FoldSelectComponent],
+  template: `<fold-select
     [label]="label()"
     [required]="required()"
     [hint]="hint()"
@@ -19,7 +19,7 @@ import { Sh3SelectComponent } from "./select.component";
   >
     <option value="eur">EUR</option>
     <option value="usd">USD</option>
-  </sh3-select>`,
+  </fold-select>`,
 })
 class HostComponent {
   readonly label = signal<string | undefined>(undefined);
@@ -37,12 +37,14 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const host = fixture.nativeElement.querySelector("sh3-select") as HTMLElement;
+  const host = fixture.nativeElement.querySelector(
+    "fold-select",
+  ) as HTMLElement;
   const select = host.querySelector("select") as HTMLSelectElement;
   return { fixture, host, select };
 }
 
-describe("Sh3SelectComponent", () => {
+describe("FoldSelectComponent", () => {
   it("wraps a native select and projects the options", () => {
     const { select } = render();
     expect(select).not.toBeNull();

@@ -5,42 +5,42 @@ import {
   input,
   output,
 } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconSize } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconSize } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 import type {
-  Sh3ButtonShape,
-  Sh3ButtonSize,
-  Sh3ButtonVariant,
+  FoldButtonShape,
+  FoldButtonSize,
+  FoldButtonVariant,
 } from "./button.types";
 
 /** Leading/trailing icon size, derived from the button `size`. */
-const ICON_SIZE: Record<Sh3ButtonSize, Sh3IconSize> = {
+const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
   sm: 14,
   md: 16,
   lg: 18,
 };
 
 /**
- * `<sh3-button>` — the design-system entry point for every actionable button.
+ * `<fold-button>` — the design-system entry point for every actionable button.
  *
  * The label is projected (text, icons, or both). The `variant` + `size` are
  * applied as host classes (`:host(.primary.sm)`) so the surface stays
  * token-only. Click is surfaced through {@link clicked} with the native event.
  *
  * ```html
- * <sh3-button (clicked)="save()">Save</sh3-button>
- * <sh3-button variant="ghost" size="sm" (clicked)="cancel()">Cancel</sh3-button>
- * <sh3-button variant="critical" (clicked)="delete()">Delete</sh3-button>
- * <sh3-button [disabled]="!form.valid" type="submit">Submit</sh3-button>
+ * <fold-button (clicked)="save()">Save</fold-button>
+ * <fold-button variant="ghost" size="sm" (clicked)="cancel()">Cancel</fold-button>
+ * <fold-button variant="critical" (clicked)="delete()">Delete</fold-button>
+ * <fold-button [disabled]="!form.valid" type="submit">Submit</fold-button>
  * ```
  *
- * @selector `sh3-button`
+ * @selector `fold-button`
  */
 @Component({
-  selector: "sh3-button",
+  selector: "fold-button",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   templateUrl: "./button.component.html",
   styleUrl: "./button.component.scss",
   host: {
@@ -48,7 +48,7 @@ const ICON_SIZE: Record<Sh3ButtonSize, Sh3IconSize> = {
     "[class.block]": "block()",
   },
 })
-export class Sh3ButtonComponent {
+export class FoldButtonComponent {
   /**
    * Visual emphasis.
    * - `primary` — accent teal tint, default actions
@@ -57,13 +57,13 @@ export class Sh3ButtonComponent {
    * - `ghost` — neutral/transparent, secondary or cancel actions
    * - `solid` — filled accent, high-emphasis CTAs
    */
-  readonly variant = input<Sh3ButtonVariant>("primary");
+  readonly variant = input<FoldButtonVariant>("primary");
 
   /** Size preset controlling font-size, padding, and radius. */
-  readonly size = input<Sh3ButtonSize>("md");
+  readonly size = input<FoldButtonSize>("md");
 
   /** Corner shape — `rounded` (default) or `pill` (fully rounded). */
-  readonly shape = input<Sh3ButtonShape>("rounded");
+  readonly shape = input<FoldButtonShape>("rounded");
 
   /** Stretch to fill the container's width (block-level) instead of hugging its label. */
   readonly block = input(false, { transform: booleanAttribute });
@@ -73,12 +73,12 @@ export class Sh3ButtonComponent {
    * is derived from {@link size}, so it stays consistent. For anything else
    * (trailing content, custom markup) project it instead.
    */
-  readonly icon = input<Sh3IconName>();
+  readonly icon = input<FoldIconName>();
   /** Trailing icon (after the label). */
-  readonly iconTrailing = input<Sh3IconName>();
+  readonly iconTrailing = input<FoldIconName>();
 
   /** Icon size for {@link icon} / {@link iconTrailing}, from the button size. */
-  readonly iconSize = computed<Sh3IconSize>(() => ICON_SIZE[this.size()]);
+  readonly iconSize = computed<FoldIconSize>(() => ICON_SIZE[this.size()]);
 
   /** Native `type` attribute of the inner `<button>`. */
   readonly type = input<"button" | "submit">("button");

@@ -21,56 +21,56 @@
      two separate tokens. (The app historically overloaded a single
      `--radius-lg` as the pill, which left no token for a card's
      ~14px corner. Fixed here.) */
-  --sh3-radius-xs: 3px;
-  --sh3-radius-sm: 6px;
-  --sh3-radius-md: 10px;
-  --sh3-radius-lg: 14px;
-  --sh3-radius-pill: 9999px;
-  --sh3-radius-round: 50%;
+  --fold-radius-xs: 3px;
+  --fold-radius-sm: 6px;
+  --fold-radius-md: 10px;
+  --fold-radius-lg: 14px;
+  --fold-radius-pill: 9999px;
+  --fold-radius-round: 50%;
 
   /* Type scale — absolute px, matching claudeDesign-ref exactly (the app root
      is 14px, so rem would render ~12% small; px is root-independent). */
-  --sh3-text-xs: 11px;
-  --sh3-text-sm: 12px;
-  --sh3-text-md: 14px;
-  --sh3-text-lg: 16px;
-  --sh3-text-xl: 20px;
+  --fold-text-xs: 11px;
+  --fold-text-sm: 12px;
+  --fold-text-md: 14px;
+  --fold-text-lg: 16px;
+  --fold-text-xl: 20px;
 
   /* Space scale — the shared spacing rhythm (gap / padding / margin). Promoted
      once a 2nd+ component needed it (icon, paginator, panel-header, data-table);
      the app's `--gap-*` bridge onto these 1:1. */
-  --sh3-space-xs: 4px;
-  --sh3-space-sm: 8px;
-  --sh3-space-md: 12px;
-  --sh3-space-lg: 16px;
-  --sh3-space-xl: 20px;
+  --fold-space-xs: 4px;
+  --fold-space-sm: 8px;
+  --fold-space-md: 12px;
+  --fold-space-lg: 16px;
+  --fold-space-xl: 20px;
 
   /* Motion scale — transition shorthands (duration + easing bundled, matching
      the app so `--t-*` bridge onto these 1:1). One knob per interaction speed. */
-  --sh3-motion-fast: 0.1s ease;
-  --sh3-motion-base: 0.18s ease;
-  --sh3-motion-slow: 0.28s ease;
+  --fold-motion-fast: 0.1s ease;
+  --fold-motion-base: 0.18s ease;
+  --fold-motion-slow: 0.28s ease;
 
-  /* Backdrop-blur radii (for frosted `--sh3-color-glass` surfaces). */
-  --sh3-blur-glass: 20px;
+  /* Backdrop-blur radii (for frosted `--fold-color-glass` surfaces). */
+  --fold-blur-glass: 20px;
 
   /* Elevation scale — the shared depth language. Components name a level, never
      spell their own shadow. Theme-invariant: the ink is the black primitive via
      color-mix (no raw rgba), which reads acceptably on dark and light.
      `panel-*` are the directional side-panel shadows (+ inset glass highlight). */
-  --sh3-shadow-sm: 0 1px 2px
-    color-mix(in srgb, var(--sh3-ref-black) 20%, transparent);
-  --sh3-shadow-md: 0 10px 30px -12px
-    color-mix(in srgb, var(--sh3-ref-black) 50%, transparent);
-  --sh3-shadow-lg:
-    0 12px 32px color-mix(in srgb, var(--sh3-ref-black) 50%, transparent),
-    0 4px 12px color-mix(in srgb, var(--sh3-ref-black) 35%, transparent);
-  --sh3-shadow-panel-right:
-    -12px 0 40px color-mix(in srgb, var(--sh3-ref-black) 45%, transparent),
-    inset 1px 0 0 color-mix(in srgb, var(--sh3-ref-white) 4%, transparent);
-  --sh3-shadow-panel-left:
-    12px 0 40px color-mix(in srgb, var(--sh3-ref-black) 45%, transparent),
-    inset -1px 0 0 color-mix(in srgb, var(--sh3-ref-white) 4%, transparent);
+  --fold-shadow-sm: 0 1px 2px
+    color-mix(in srgb, var(--fold-ref-black) 20%, transparent);
+  --fold-shadow-md: 0 10px 30px -12px
+    color-mix(in srgb, var(--fold-ref-black) 50%, transparent);
+  --fold-shadow-lg:
+    0 12px 32px color-mix(in srgb, var(--fold-ref-black) 50%, transparent),
+    0 4px 12px color-mix(in srgb, var(--fold-ref-black) 35%, transparent);
+  --fold-shadow-panel-right:
+    -12px 0 40px color-mix(in srgb, var(--fold-ref-black) 45%, transparent),
+    inset 1px 0 0 color-mix(in srgb, var(--fold-ref-white) 4%, transparent);
+  --fold-shadow-panel-left:
+    12px 0 40px color-mix(in srgb, var(--fold-ref-black) 45%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--fold-ref-white) 4%, transparent);
 }
 
 /* ── Theme shape override: NAVI ───────────────────────────────
@@ -78,10 +78,10 @@
    `round` are shapes, not scale steps — flattening them would turn
    avatars into squares and capsules into slabs — so they stay. */
 [data-theme="navi"] {
-  --sh3-radius-xs: 1px;
-  --sh3-radius-sm: 2px;
-  --sh3-radius-md: 3px;
-  --sh3-radius-lg: 4px;
+  --fold-radius-xs: 1px;
+  --fold-radius-sm: 2px;
+  --fold-radius-md: 3px;
+  --fold-radius-lg: 4px;
 }
 
 /* ── Theme shape override: BUBBLY ─────────────────────────────
@@ -89,8 +89,8 @@
    reads soft and pill-like. `pill` and `round` stay — they are
    shapes, not scale steps. */
 [data-theme="bubbly"] {
-  --sh3-radius-xs: 6px;
-  --sh3-radius-sm: 12px;
-  --sh3-radius-md: 16px;
-  --sh3-radius-lg: 24px;
+  --fold-radius-xs: 6px;
+  --fold-radius-sm: 12px;
+  --fold-radius-md: 16px;
+  --fold-radius-lg: 24px;
 }

@@ -2,22 +2,22 @@ import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { afterEach, describe, it, expect, vi } from "vitest";
-import { Sh3ToastComponent } from "./toast.component";
-import type { Sh3ToastVariant } from "./toast.types";
+import { FoldToastComponent } from "./toast.component";
+import type { FoldToastVariant } from "./toast.types";
 
 @Component({
   standalone: true,
-  imports: [Sh3ToastComponent],
-  template: `<sh3-toast
+  imports: [FoldToastComponent],
+  template: `<fold-toast
     [variant]="variant"
     [dismissible]="dismissible"
     [duration]="duration"
     (dismiss)="dismissed = dismissed + 1"
-    >Hello</sh3-toast
+    >Hello</fold-toast
   >`,
 })
 class HostComponent {
-  variant: Sh3ToastVariant = "info";
+  variant: FoldToastVariant = "info";
   dismissible = true;
   duration = 0;
   dismissed = 0;
@@ -29,11 +29,13 @@ function render(setup?: (h: HostComponent) => void) {
     setup(fixture.componentInstance);
   }
   fixture.detectChanges();
-  const toast = fixture.nativeElement.querySelector("sh3-toast") as HTMLElement;
+  const toast = fixture.nativeElement.querySelector(
+    "fold-toast",
+  ) as HTMLElement;
   return { fixture, host: fixture.componentInstance, toast };
 }
 
-describe("Sh3ToastComponent", () => {
+describe("FoldToastComponent", () => {
   it("projects its message", () => {
     const { toast } = render();
     expect(toast.querySelector(".toast-message")?.textContent?.trim()).toBe(
@@ -55,7 +57,7 @@ describe("Sh3ToastComponent", () => {
   });
 
   it("maps each variant to its status icon", () => {
-    const cases: [Sh3ToastVariant, string][] = [
+    const cases: [FoldToastVariant, string][] = [
       ["success", "check-circle"],
       ["info", "info"],
       ["warning", "warning"],
@@ -65,8 +67,8 @@ describe("Sh3ToastComponent", () => {
       const fixture = TestBed.createComponent(HostComponent);
       fixture.componentInstance.variant = variant;
       fixture.detectChanges();
-      const toast = fixture.debugElement.query(By.directive(Sh3ToastComponent))
-        .componentInstance as Sh3ToastComponent;
+      const toast = fixture.debugElement.query(By.directive(FoldToastComponent))
+        .componentInstance as FoldToastComponent;
       expect(toast.icon()).toBe(icon);
     }
   });

@@ -1,12 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3CardComponent } from "./card.component";
+import { FoldCardComponent } from "./card.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3CardComponent],
-  template: `<sh3-card
+  imports: [FoldCardComponent],
+  template: `<fold-card
     [surface]="surface()"
     [radius]="radius()"
     [padding]="padding()"
@@ -21,7 +21,7 @@ import { Sh3CardComponent } from "./card.component";
     @if (withFooter()) {
       <span cardFooter class="foot">Footer</span>
     }
-  </sh3-card>`,
+  </fold-card>`,
 })
 class HostComponent {
   readonly surface = signal<"card" | "sunken">("card");
@@ -37,11 +37,11 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const card = fixture.nativeElement.querySelector("sh3-card") as HTMLElement;
+  const card = fixture.nativeElement.querySelector("fold-card") as HTMLElement;
   return { fixture, card };
 }
 
-describe("Sh3CardComponent", () => {
+describe("FoldCardComponent", () => {
   it("renders the three region elements (header / body / footer)", () => {
     const { card } = render();
     expect(card.querySelector("header.card-header")).not.toBeNull();

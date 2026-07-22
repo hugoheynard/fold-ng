@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3BadgeComponent } from "./badge.component";
+import { FoldBadgeComponent } from "./badge.component";
 
 /**
  * A host binds the inputs in its template, so the required `content` always has
@@ -10,8 +10,8 @@ import { Sh3BadgeComponent } from "./badge.component";
  */
 @Component({
   standalone: true,
-  imports: [Sh3BadgeComponent],
-  template: `<sh3-badge
+  imports: [FoldBadgeComponent],
+  template: `<fold-badge
     [content]="content"
     [variant]="variant"
     [radius]="radius"
@@ -29,10 +29,10 @@ function render(
   const fixture = TestBed.createComponent(HostComponent);
   Object.assign(fixture.componentInstance, patch);
   fixture.detectChanges();
-  return fixture.nativeElement.querySelector("sh3-badge") as HTMLElement;
+  return fixture.nativeElement.querySelector("fold-badge") as HTMLElement;
 }
 
-describe("Sh3BadgeComponent", () => {
+describe("FoldBadgeComponent", () => {
   it("renders the content text", () => {
     expect(render().textContent?.trim()).toBe("In repertoire");
   });

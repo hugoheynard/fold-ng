@@ -1,7 +1,7 @@
 :host {
   /* One snackbar — the container owns positioning; this owns the surface.
      The accent (stripe + icon) is a single custom prop the variants override. */
-  --sh3-toast-accent: var(--sh3-color-primary-text);
+  --fold-toast-accent: var(--fold-color-primary-text);
 
   pointer-events: auto;
   display: flex;
@@ -9,37 +9,37 @@
   gap: 10px;
   max-width: 380px;
   padding: 10px 10px 10px 14px;
-  border-radius: var(--sh3-radius-md);
-  font-size: var(--sh3-text-sm);
+  border-radius: var(--fold-radius-md);
+  font-size: var(--fold-text-sm);
   font-weight: 500;
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
 
   /* Shared frosted-glass surface. */
-  background: var(--sh3-color-glass);
-  backdrop-filter: blur(var(--sh3-blur-glass));
-  -webkit-backdrop-filter: blur(var(--sh3-blur-glass));
-  border: 1px solid var(--sh3-color-glass-border);
-  border-left: 3px solid var(--sh3-toast-accent);
-  box-shadow: var(--sh3-shadow-lg);
-  animation: sh3-toast-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--fold-color-glass);
+  backdrop-filter: blur(var(--fold-blur-glass));
+  -webkit-backdrop-filter: blur(var(--fold-blur-glass));
+  border: 1px solid var(--fold-color-glass-border);
+  border-left: 3px solid var(--fold-toast-accent);
+  box-shadow: var(--fold-shadow-lg);
+  animation: fold-toast-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :host([data-variant="success"]) {
-  --sh3-toast-accent: var(--sh3-color-success-text);
+  --fold-toast-accent: var(--fold-color-success-text);
 }
 :host([data-variant="error"]) {
-  --sh3-toast-accent: var(--sh3-color-alert-text);
+  --fold-toast-accent: var(--fold-color-alert-text);
 }
 :host([data-variant="warning"]) {
-  --sh3-toast-accent: var(--sh3-color-warning-text);
+  --fold-toast-accent: var(--fold-color-warning-text);
 }
 :host([data-variant="info"]) {
-  --sh3-toast-accent: var(--sh3-color-primary-text);
+  --fold-toast-accent: var(--fold-color-primary-text);
 }
 
 .toast-icon {
   flex-shrink: 0;
-  color: var(--sh3-toast-accent);
+  color: var(--fold-toast-accent);
 }
 
 .toast-message {
@@ -58,23 +58,23 @@
   padding: 0;
   border: none;
   background: none;
-  border-radius: var(--sh3-radius-sm);
-  color: var(--sh3-color-text-muted);
+  border-radius: var(--fold-radius-sm);
+  color: var(--fold-color-text-muted);
   cursor: pointer;
   transition:
-    background var(--sh3-motion-fast),
-    color var(--sh3-motion-fast);
+    background var(--fold-motion-fast),
+    color var(--fold-motion-fast);
 }
 .toast-close:hover {
-  background: var(--sh3-color-surface-hover);
-  color: var(--sh3-color-text);
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text);
 }
 .toast-close:focus-visible {
-  outline: 2px solid var(--sh3-toast-accent);
+  outline: 2px solid var(--fold-toast-accent);
   outline-offset: 1px;
 }
 
-@keyframes sh3-toast-in {
+@keyframes fold-toast-in {
   from {
     opacity: 0;
     transform: translateY(12px) scale(0.95);
@@ -92,10 +92,10 @@
 :host(.toast-leaving) {
   pointer-events: none;
   overflow: hidden;
-  animation: sh3-toast-out 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: fold-toast-out 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
-@keyframes sh3-toast-out {
+@keyframes fold-toast-out {
   0% {
     opacity: 1;
     transform: translateX(0);

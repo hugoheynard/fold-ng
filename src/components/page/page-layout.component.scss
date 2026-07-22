@@ -6,15 +6,16 @@
   max-width: 780px;
   /* The themed page gutter lives here, not on the shell: the app-shell content
      region is full-bleed so a page can paint edge-to-edge, and any page that
-     wants the standard margins wraps its content in sh3-page-layout.
-     The *horizontal* gutter is a single token (--sh3-page-gutter) on purpose:
-     a `sh3-page-section[bleed]` cancels it with `calc(-1 * …)` to span the page
+     wants the standard margins wraps its content in fold-page-layout.
+     The *horizontal* gutter is a single token (--fold-page-gutter) on purpose:
+     a `fold-page-section[bleed]` cancels it with `calc(-1 * …)` to span the page
      edge-to-edge, so the two stay in lockstep at every breakpoint. Vertical
-     breathing room is fixed. Set --sh3-page-gutter: 0 for a bleeding page. */
+     breathing room is fixed. Set --fold-page-gutter: 0 for a bleeding page. */
   /* Block padding is tokenised too, so a bleed band at the top/bottom edge can
-     cancel it exactly (--sh3-page-pad-top / -bottom) and sit flush to the edge. */
-  padding-block: var(--sh3-page-pad-top, 28px) var(--sh3-page-pad-bottom, 40px);
-  padding-inline: var(--sh3-page-gutter, 32px);
+     cancel it exactly (--fold-page-pad-top / -bottom) and sit flush to the edge. */
+  padding-block: var(--fold-page-pad-top, 28px)
+    var(--fold-page-pad-bottom, 40px);
+  padding-inline: var(--fold-page-gutter, 32px);
   /* The page is its own scroll box: it fills the height its frame gives it and
      scrolls inside, so the frame's chrome (rails, header, gutter) stays put.
      Inert until something constrains the height — a page in a taller container
@@ -49,15 +50,15 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: var(--sh3-text-xl);
+  font-size: var(--fold-text-xl);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  color: var(--sh3-color-text);
+  color: var(--fold-color-text);
 }
 .page-icon {
   flex: none;
-  color: var(--sh3-color-primary-text);
+  color: var(--fold-color-primary-text);
 }
 /* A pill (status / kind) sitting inline after the title text. */
 .page-title-badge {
@@ -74,13 +75,13 @@
 
    It spans the column by default — the page's own max-width (780/940/none) is
    the one that decides how wide a page reads, and a second cap here only ever
-   fought it. Set --sh3-page-desc-measure (e.g. 60ch) on a fluid page where the
+   fought it. Set --fold-page-desc-measure (e.g. 60ch) on a fluid page where the
    line would otherwise get long. */
 .page-desc {
-  font-size: var(--sh3-text-sm);
+  font-size: var(--fold-text-sm);
   line-height: 1.5;
-  max-width: var(--sh3-page-desc-measure, none);
-  color: var(--sh3-color-text-muted);
+  max-width: var(--fold-page-desc-measure, none);
+  color: var(--fold-color-text-muted);
 }
 .page-desc:empty {
   display: none;

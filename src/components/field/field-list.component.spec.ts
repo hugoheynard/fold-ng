@@ -1,16 +1,16 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3FieldListComponent } from "./field-list.component";
-import { Sh3FieldComponent } from "./field.component";
+import { FoldFieldListComponent } from "./field-list.component";
+import { FoldFieldComponent } from "./field.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3FieldListComponent, Sh3FieldComponent],
-  template: `<sh3-field-list>
-    <sh3-field label="Contract type">CDI</sh3-field>
-    <sh3-field label="Job title">Sound engineer</sh3-field>
-  </sh3-field-list>`,
+  imports: [FoldFieldListComponent, FoldFieldComponent],
+  template: `<fold-field-list>
+    <fold-field label="Contract type">CDI</fold-field>
+    <fold-field label="Job title">Sound engineer</fold-field>
+  </fold-field-list>`,
 })
 class HostComponent {}
 
@@ -18,12 +18,12 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const el = fixture.nativeElement.querySelector(
-    "sh3-field-list",
+    "fold-field-list",
   ) as HTMLElement;
   return { fixture, el };
 }
 
-describe("Sh3FieldListComponent", () => {
+describe("FoldFieldListComponent", () => {
   it("renders a <dl> as the semantic container", () => {
     const { el } = render();
     expect(el.querySelector("dl.fl")).not.toBeNull();

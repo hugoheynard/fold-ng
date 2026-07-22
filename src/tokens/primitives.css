@@ -7,85 +7,85 @@
    layer (semantic.css) that decides which primitive a role
    points to per theme.
 
-   Never reference a --sh3-ref-* token from a component.
+   Never reference a --fold-ref-* token from a component.
    Components consume the semantic layer only.
    ============================================================ */
 
 :root {
   /* ── Ink — the dark chrome family (deep blue-black) ───────────
      Ordered by depth: 950 is the darkest, 850 the lightest.      */
-  --sh3-ref-ink-950: #0a0e14; /* header bar               */
-  --sh3-ref-ink-925: #090d13; /* rail 1 · app menu        */
-  --sh3-ref-ink-900: #0c1018; /* rail 2 · workspace menu  */
-  --sh3-ref-ink-850: #11161e; /* page background          */
-  --sh3-ref-ink-800: #1f2733; /* raised card surface      */
-  --sh3-ref-ink-700: #28323f; /* raised hover surface     */
+  --fold-ref-ink-950: #0a0e14; /* header bar               */
+  --fold-ref-ink-925: #090d13; /* rail 1 · app menu        */
+  --fold-ref-ink-900: #0c1018; /* rail 2 · workspace menu  */
+  --fold-ref-ink-850: #11161e; /* page background          */
+  --fold-ref-ink-800: #1f2733; /* raised card surface      */
+  --fold-ref-ink-700: #28323f; /* raised hover surface     */
 
   /* ── Cloud — the light chrome family ──────────────────────────
      Ordered by depth too: 50 is the lightest, 200 the darkest.   */
-  --sh3-ref-white: #ffffff; /* header bar                  */
-  --sh3-ref-cloud-50: #f9fafb; /* rail 2 · workspace menu   */
-  --sh3-ref-cloud-100: #f4f5f7; /* page background          */
-  --sh3-ref-cloud-150: #f0f1f3; /* rail 1 · app menu        */
+  --fold-ref-white: #ffffff; /* header bar                  */
+  --fold-ref-cloud-50: #f9fafb; /* rail 2 · workspace menu   */
+  --fold-ref-cloud-100: #f4f5f7; /* page background          */
+  --fold-ref-cloud-150: #f0f1f3; /* rail 1 · app menu        */
 
   /* ── Teal — the brand / primary family ────────────────────── */
-  --sh3-ref-teal-400: #2dd4d4; /* lightest — hover on dark    */
-  --sh3-ref-teal-500: #06a4a4; /* brand base (dark theme)     */
-  --sh3-ref-teal-550: #069090; /* muted — brand on light      */
-  --sh3-ref-teal-600: #057a7a; /* darkest — hover on light    */
+  --fold-ref-teal-400: #2dd4d4; /* lightest — hover on dark    */
+  --fold-ref-teal-500: #06a4a4; /* brand base (dark theme)     */
+  --fold-ref-teal-550: #069090; /* muted — brand on light      */
+  --fold-ref-teal-600: #057a7a; /* darkest — hover on light    */
 
   /* ── Amber — the warning family ───────────────────────────── */
-  --sh3-ref-amber-300: #e8b84a; /* light tint (dark theme)     */
-  --sh3-ref-amber-500: #d4a017; /* base (dark theme)           */
-  --sh3-ref-amber-550: #d4940e; /* light tint (light theme)    */
-  --sh3-ref-amber-600: #b8860b; /* base (light theme)          */
+  --fold-ref-amber-300: #e8b84a; /* light tint (dark theme)     */
+  --fold-ref-amber-500: #d4a017; /* base (dark theme)           */
+  --fold-ref-amber-550: #d4940e; /* light tint (light theme)    */
+  --fold-ref-amber-600: #b8860b; /* base (light theme)          */
 
   /* ── Red — the alert family ───────────────────────────────── */
-  --sh3-ref-red-400: #e06450; /* light tint (dark theme)       */
-  --sh3-ref-red-450: #d4493a; /* light tint (light theme)      */
-  --sh3-ref-red-500: #c44230; /* base (dark theme)             */
-  --sh3-ref-red-600: #b33a2a; /* base (light theme)            */
+  --fold-ref-red-400: #e06450; /* light tint (dark theme)       */
+  --fold-ref-red-450: #d4493a; /* light tint (light theme)      */
+  --fold-ref-red-500: #c44230; /* base (dark theme)             */
+  --fold-ref-red-600: #b33a2a; /* base (light theme)            */
 
   /* ── Purple — the info family ─────────────────────────────── */
-  --sh3-ref-purple-300: #b794f4; /* light tint (dark theme)    */
-  --sh3-ref-purple-400: #9f7aea; /* surface/border base (dark) */
-  --sh3-ref-purple-500: #7c5bbf; /* base (dark) · text (light) */
-  --sh3-ref-purple-600: #6c4ab6; /* base (light theme)         */
+  --fold-ref-purple-300: #b794f4; /* light tint (dark theme)    */
+  --fold-ref-purple-400: #9f7aea; /* surface/border base (dark) */
+  --fold-ref-purple-500: #7c5bbf; /* base (dark) · text (light) */
+  --fold-ref-purple-600: #6c4ab6; /* base (light theme)         */
 
   /* ── Green — the success family ───────────────────────────── */
-  --sh3-ref-green-300: #4bd6a0; /* light tint (dark theme)      */
-  --sh3-ref-green-500: #1a9e6a; /* base (both themes)           */
-  --sh3-ref-green-550: #38a169; /* light tint (light theme)     */
+  --fold-ref-green-300: #4bd6a0; /* light tint (dark theme)      */
+  --fold-ref-green-500: #1a9e6a; /* base (both themes)           */
+  --fold-ref-green-550: #38a169; /* light tint (light theme)     */
 
   /* ── Slate — the neutral text family ──────────────────────── */
-  --sh3-ref-slate-50: #eef1ff; /* primary text (dark theme)   */
-  --sh3-ref-slate-350: #9ca3af; /* faded text (light theme)    */
-  --sh3-ref-slate-400: #8892b0; /* secondary text (dark)       */
-  --sh3-ref-slate-500: #5e6a86; /* muted text (dark)           */
-  --sh3-ref-slate-550: #6b7280; /* muted text (light)          */
-  --sh3-ref-slate-600: #5f6b7a; /* secondary text (light)      */
-  --sh3-ref-slate-700: #4a5470; /* faded text (dark theme)     */
-  --sh3-ref-slate-900: #1a1d23; /* primary text (light theme)  */
+  --fold-ref-slate-50: #eef1ff; /* primary text (dark theme)   */
+  --fold-ref-slate-350: #9ca3af; /* faded text (light theme)    */
+  --fold-ref-slate-400: #8892b0; /* secondary text (dark)       */
+  --fold-ref-slate-500: #5e6a86; /* muted text (dark)           */
+  --fold-ref-slate-550: #6b7280; /* muted text (light)          */
+  --fold-ref-slate-600: #5f6b7a; /* secondary text (light)      */
+  --fold-ref-slate-700: #4a5470; /* faded text (dark theme)     */
+  --fold-ref-slate-900: #1a1d23; /* primary text (light theme)  */
 
   /* ── Azure — a cyan, BUBBLY's info family ──────────────────────
      Moved bubbly's info off its violet brand's hue, the way a status
      that collides with the brand always must.                        */
-  --sh3-ref-azure-500: #0ea5e9; /* base — bubbly info          */
+  --fold-ref-azure-500: #0ea5e9; /* base — bubbly info          */
 
   /* ── Navy — the NAVI theme family ─────────────────────────────
      One corporate midnight-blue family serving both jobs: the brand
      on the light page (500/600) and the dark chrome behind it
      (800→950), so rails, header and primary are visibly related.
      300/400 are the tints readable ON the dark chrome.             */
-  --sh3-ref-navy-300: #9db8ea; /* text tint on dark chrome     */
-  --sh3-ref-navy-400: #5a7fd0; /* hover tint on dark chrome    */
-  --sh3-ref-navy-500: #24448f; /* brand base (light page)      */
-  --sh3-ref-navy-600: #1b3573; /* hover / readable brand text  */
-  --sh3-ref-navy-750: #1a3157; /* header — set apart from the rails */
-  --sh3-ref-navy-800: #16294f; /* raised surface on the chrome */
-  --sh3-ref-navy-850: #13233f; /* rail 2 · workspace menu      */
-  --sh3-ref-navy-900: #101d3a; /* rail 1 · app menu (deepest)  */
-  --sh3-ref-navy-950: #0b152b; /* sunken surface on the chrome */
+  --fold-ref-navy-300: #9db8ea; /* text tint on dark chrome     */
+  --fold-ref-navy-400: #5a7fd0; /* hover tint on dark chrome    */
+  --fold-ref-navy-500: #24448f; /* brand base (light page)      */
+  --fold-ref-navy-600: #1b3573; /* hover / readable brand text  */
+  --fold-ref-navy-750: #1a3157; /* header — set apart from the rails */
+  --fold-ref-navy-800: #16294f; /* raised surface on the chrome */
+  --fold-ref-navy-850: #13233f; /* rail 2 · workspace menu      */
+  --fold-ref-navy-900: #101d3a; /* rail 1 · app menu (deepest)  */
+  --fold-ref-navy-950: #0b152b; /* sunken surface on the chrome */
 
   /* ── Ivory — the NAVI page ────────────────────────────────────
      White, off by two points of blue. The opposition is the point: a
@@ -93,21 +93,21 @@
      cool is what makes navy read as navy — and it works at a very low
      dose. Any warmer and the page starts looking like cream, a whole
      warm theme rather than a warm page.                              */
-  --sh3-ref-ivory-50: #fdfcfb; /* page background (navi)        */
+  --fold-ref-ivory-50: #fdfcfb; /* page background (navi)        */
 
   /* ── Bubble / Grape — the BUBBLY theme families ────────────────
      Festive light: soft lavender-white chrome and a joyful violet
      brand, rounded off. Text reuses slate, info reuses azure (cyan)
      so it never blurs into the violet brand.                       */
-  --sh3-ref-bubble-0: #ffffff; /* header · card · text on solid */
-  --sh3-ref-bubble-50: #faf7ff; /* rail 2 · workspace menu      */
-  --sh3-ref-bubble-100: #f4eefe; /* page background             */
-  --sh3-ref-bubble-150: #ebe1fd; /* rail 1 · app menu           */
+  --fold-ref-bubble-0: #ffffff; /* header · card · text on solid */
+  --fold-ref-bubble-50: #faf7ff; /* rail 2 · workspace menu      */
+  --fold-ref-bubble-100: #f4eefe; /* page background             */
+  --fold-ref-bubble-150: #ebe1fd; /* rail 1 · app menu           */
 
-  --sh3-ref-grape-500: #a855f7; /* brand base                  */
-  --sh3-ref-grape-600: #9333ea; /* hover / strong              */
-  --sh3-ref-grape-700: #7e22ce; /* readable brand text         */
+  --fold-ref-grape-500: #a855f7; /* brand base                  */
+  --fold-ref-grape-600: #9333ea; /* hover / strong              */
+  --fold-ref-grape-700: #7e22ce; /* readable brand text         */
 
   /* ── Pure black — pairs with white for neutral alpha overlays */
-  --sh3-ref-black: #000000;
+  --fold-ref-black: #000000;
 }

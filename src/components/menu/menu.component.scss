@@ -5,7 +5,7 @@
   /* The menu owns its width; the shell's `auto` rail column follows it. Reads
      the shell's base rail width (its `railWidth`), falling back to 64 when used
      standalone. Expanded overrides this with its content width below. */
-  width: var(--sh3-shell-rail-width, 64px);
+  width: var(--fold-shell-rail-width, 64px);
   height: 100%;
   /* border-box so the vertical padding stays inside the rail height instead of
      overflowing the bottom (which the shell cell clips → footer looks flush). */
@@ -14,25 +14,25 @@
   gap: 4px;
   /* Background follows the rail's depth (`level`): a primary rail and a
      secondary (workspace) rail read as distinct layers. */
-  background: var(--sh3-color-bg-rail-primary);
-  border-right: 1px solid var(--sh3-color-border);
+  background: var(--fold-color-bg-rail-primary);
+  border-right: 1px solid var(--fold-color-border);
   overflow: visible; /* tooltips escape the rail */
   user-select: none;
-  transition: width var(--sh3-motion-base);
+  transition: width var(--fold-motion-base);
 }
 
 :host([data-level="secondary"]) {
-  background: var(--sh3-color-bg-rail-secondary);
+  background: var(--fold-color-bg-rail-secondary);
 }
 :host([data-level="tertiary"]) {
-  background: var(--sh3-color-bg-rail-tertiary);
+  background: var(--fold-color-bg-rail-tertiary);
 }
 
-/* When raised into a card (the consumer puts `sh3Elevated` on the rail), the
+/* When raised into a card (the consumer puts `foldElevated` on the rail), the
    menu reads its **own** `data-elevated` — no reaching into the shell's classes.
    Radius + shadow come from the token layer's `[data-elevated]` rule; the menu
    only drops its divider border, since the card's shadow separates it now. */
-/* Raised into a card (the consumer puts `sh3Elevated` on the rail): the menu
+/* Raised into a card (the consumer puts `foldElevated` on the rail): the menu
    reads its own `data-elevated` and only drops its divider border — radius +
    shadow come from the token layer, and the page-gutter comes from the shell
    cell's padding (so a height:100% rail fits with no overflow). */
@@ -65,11 +65,11 @@
 }
 .menu-head {
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--sh3-color-border-subtle);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
 }
 .menu-foot {
   padding-top: 8px;
-  border-top: 1px solid var(--sh3-color-border-subtle);
+  border-top: 1px solid var(--fold-color-border-subtle);
 }
 /* Expanded: head/foot items align left like the body (not centered). Horizontal
    padding via left/right only, so each band keeps its separator padding-top /
@@ -117,17 +117,17 @@
   display: grid;
   place-items: center;
   border: none;
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
   background: none;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
   cursor: pointer;
   transition:
-    background var(--sh3-motion-fast),
-    color var(--sh3-motion-fast);
+    background var(--fold-motion-fast),
+    color var(--fold-motion-fast);
 }
 .menu-toggle:hover {
-  background: var(--sh3-color-surface-hover);
-  color: var(--sh3-color-text-secondary);
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text-secondary);
 }
 :host(.expanded) .menu-toggle {
   align-self: flex-end;

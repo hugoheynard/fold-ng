@@ -1,13 +1,13 @@
 import type { ComponentFixture } from "@angular/core/testing";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { Sh3ButtonIconComponent } from "./button-icon.component";
+import { FoldButtonIconComponent } from "./button-icon.component";
 
 function create(props: Record<string, unknown>): {
-  fixture: ComponentFixture<Sh3ButtonIconComponent>;
-  component: Sh3ButtonIconComponent;
+  fixture: ComponentFixture<FoldButtonIconComponent>;
+  component: FoldButtonIconComponent;
 } {
-  const fixture = TestBed.createComponent(Sh3ButtonIconComponent);
+  const fixture = TestBed.createComponent(FoldButtonIconComponent);
   const ref = fixture.componentRef;
   for (const [k, v] of Object.entries(props)) {
     ref.setInput(k, v);
@@ -16,11 +16,11 @@ function create(props: Record<string, unknown>): {
   return { fixture, component: fixture.componentInstance };
 }
 
-describe("Sh3ButtonIconComponent", () => {
+describe("FoldButtonIconComponent", () => {
   it("renders a button with the requested icon", () => {
     const { fixture } = create({ icon: "edit" });
     expect(fixture.nativeElement.querySelector("button")).toBeTruthy();
-    expect(fixture.nativeElement.querySelector("sh3-icon")).toBeTruthy();
+    expect(fixture.nativeElement.querySelector("fold-icon")).toBeTruthy();
   });
 
   it("exposes shape/size/tone via data attributes for SCSS targeting", () => {

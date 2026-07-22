@@ -6,32 +6,32 @@ import {
   input,
   model,
 } from "@angular/core";
-import { Sh3IdService } from "../../a11y/id.service";
+import { FoldIdService } from "../../a11y/id.service";
 import { readInputValue } from "../input/input-value";
 
 /**
- * `<sh3-slider>` — a single-value range slider with the design-system track,
+ * `<fold-slider>` — a single-value range slider with the design-system track,
  * fill and thumb (a styled native `<input type="range">`). Two-way bound via
  * `[(value)]`.
  *
  * The fill is driven by a `--sl-pct` custom property computed from the value, so
- * there is no overlay markup. For a min↔max pair, use {@link Sh3RangeSliderComponent}.
+ * there is no overlay markup. For a min↔max pair, use {@link FoldRangeSliderComponent}.
  *
- * @selector `sh3-slider`
+ * @selector `fold-slider`
  *
  * @example
  * ```html
- * <sh3-slider label="railWidth" [min]="48" [max]="120" [(value)]="width" />
- * <sh3-slider label="min" [max]="10" [valueText]="min() || 'off'" [(value)]="min" />
+ * <fold-slider label="railWidth" [min]="48" [max]="120" [(value)]="width" />
+ * <fold-slider label="min" [max]="10" [valueText]="min() || 'off'" [(value)]="min" />
  * ```
  */
 @Component({
-  selector: "sh3-slider",
+  selector: "fold-slider",
   standalone: true,
   templateUrl: "./slider.component.html",
   styleUrl: "./slider.component.scss",
 })
-export class Sh3SliderComponent {
+export class FoldSliderComponent {
   /** The bound value. A `model()` so `[(value)]` keeps it in sync. */
   readonly value = model<number>(0);
   /** Minimum value. @default 0 */
@@ -49,8 +49,8 @@ export class Sh3SliderComponent {
   /** Disable interaction. */
   readonly disabled = input(false, { transform: booleanAttribute });
 
-  /** Unique, SSR-safe id for label association (see {@link Sh3IdService}). */
-  readonly inputId = inject(Sh3IdService).next("sh3-slider");
+  /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
+  readonly inputId = inject(FoldIdService).next("fold-slider");
 
   /** Fill percentage (0–100) of the track, from the value within [min, max]. */
   protected readonly percent = computed<number>(() => {

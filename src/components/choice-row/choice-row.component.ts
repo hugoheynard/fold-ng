@@ -1,6 +1,6 @@
 import { Component, input, output } from "@angular/core";
 
-export type Sh3ChoiceOption = {
+export type FoldChoiceOption = {
   key: string;
   label: string;
   /** Optional trailing count badge (e.g. how many rows match this filter). */
@@ -8,7 +8,7 @@ export type Sh3ChoiceOption = {
 };
 
 /**
- * `<sh3-choice-row>` — a horizontal single-select control.
+ * `<fold-choice-row>` — a horizontal single-select control.
  *
  * One row, one active option, emits the chosen `key`; the parent owns the
  * state and feeds it back via `activeKey`. Two layouts:
@@ -18,17 +18,17 @@ export type Sh3ChoiceOption = {
  * - `chips` — auto-width rounded chips that wrap. The right shape for a
  *   status/category filter above a table or list.
  *
- * @selector `sh3-choice-row`
+ * @selector `fold-choice-row`
  *
  * @example
  * ```html
- * <sh3-choice-row
+ * <fold-choice-row
  *   [options]="[{ key: 'manager', label: 'Manager' }, { key: 'member', label: 'Member' }]"
  *   [activeKey]="role()"
  *   (selected)="role.set($event)"
  * />
  *
- * <sh3-choice-row
+ * <fold-choice-row
  *   layout="chips"
  *   [options]="statuses"
  *   [activeKey]="status()"
@@ -38,17 +38,17 @@ export type Sh3ChoiceOption = {
  * ```
  */
 @Component({
-  selector: "sh3-choice-row",
+  selector: "fold-choice-row",
   standalone: true,
   templateUrl: "./choice-row.component.html",
-  // Inline + token-driven. Colours theme via @sh3pherd/ui; the layout constants
+  // Inline + token-driven. Colours theme via fold-ng; the layout constants
   // (gaps, motion) are literals for now — a spacing/motion scale lands when a
   // second component needs one.
   styleUrl: "./choice-row.component.scss",
 })
-export class Sh3ChoiceRowComponent {
+export class FoldChoiceRowComponent {
   /** The selectable options, in display order. */
-  readonly options = input.required<readonly Sh3ChoiceOption[]>();
+  readonly options = input.required<readonly FoldChoiceOption[]>();
 
   /** The `key` of the currently selected option. */
   readonly activeKey = input.required<string>();

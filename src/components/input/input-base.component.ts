@@ -1,11 +1,11 @@
 import { booleanAttribute, Component, input } from "@angular/core";
-import { Sh3LabelComponent } from "./label.component";
+import { FoldLabelComponent } from "./label.component";
 
 /**
- * `<sh3-input-base>` — the shared field chrome around a form control: an optional
+ * `<fold-input-base>` — the shared field chrome around a form control: an optional
  * label (with required marker) above, the projected control, and an optional hint
- * below. Package-internal — each control ({@link Sh3InputComponent},
- * `sh3-number-input`, `sh3-select`) composes it in its own template and projects
+ * below. Package-internal — each control ({@link FoldInputComponent},
+ * `fold-number-input`, `fold-select`) composes it in its own template and projects
  * its native element in, so the label / required / hint (and, later, error)
  * markup lives in exactly one place instead of being duplicated per control.
  *
@@ -13,16 +13,16 @@ import { Sh3LabelComponent } from "./label.component";
  * with it — no cross-encapsulation wiring, because the label and the control sit
  * in the same component template.
  *
- * @selector `sh3-input-base`
+ * @selector `fold-input-base`
  */
 @Component({
-  selector: "sh3-input-base",
+  selector: "fold-input-base",
   standalone: true,
-  imports: [Sh3LabelComponent],
+  imports: [FoldLabelComponent],
   templateUrl: "./input-base.component.html",
   styleUrl: "./input-base.component.scss",
 })
-export class Sh3InputBaseComponent {
+export class FoldInputBaseComponent {
   /** Label text; omit for no label. */
   readonly label = input<string>();
   /** Id of the projected control, for the `<label for>` association. */

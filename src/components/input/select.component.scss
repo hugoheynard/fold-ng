@@ -4,7 +4,7 @@
   display: block;
 }
 
-// Box, sizes, `panel` variant, focus/disabled — shared with sh3-input.
+// Box, sizes, `panel` variant, focus/disabled — shared with fold-input.
 @include input-shell.field-input-shell;
 
 .sel-wrap {
@@ -29,5 +29,5 @@
   right: 0.6rem;
   transform: translateY(-50%);
   pointer-events: none;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
 }

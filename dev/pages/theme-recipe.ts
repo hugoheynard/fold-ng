@@ -26,10 +26,10 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     example:
       "bubbly's brand move, in full: teal→grape across every primary role, not one at a time.",
     code: `/* the whole brand move, not one role at a time */
---sh3-color-primary:        var(--sh3-ref-grape-500);
---sh3-color-primary-strong: var(--sh3-ref-grape-600);
---sh3-color-primary-text:   var(--sh3-ref-grape-700);
---sh3-color-primary-surface: color-mix(in srgb, var(--sh3-ref-grape-500) 12%, transparent);`,
+--fold-color-primary:        var(--fold-ref-grape-500);
+--fold-color-primary-strong: var(--fold-ref-grape-600);
+--fold-color-primary-text:   var(--fold-ref-grape-700);
+--fold-color-primary-surface: color-mix(in srgb, var(--fold-ref-grape-500) 12%, transparent);`,
   },
   {
     title: "Keep the chrome descent short",
@@ -43,9 +43,9 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     example:
       "navi's active menu icon tints with `primary` directly. The page's navy-500 on a near-black rail was dark on dark; the chrome flips primary/strong/text to 400/300. It targets [data-surface=\"chrome\"] — the contract the shell opts into — not the shell's class names.",
     code: `[data-theme="navi"] [data-surface="chrome"] {
-  --sh3-color-primary: var(--sh3-ref-navy-400);
-  --sh3-color-primary-strong: var(--sh3-ref-navy-300);
-  --sh3-color-primary-text: var(--sh3-ref-navy-300);
+  --fold-color-primary: var(--fold-ref-navy-400);
+  --fold-color-primary-strong: var(--fold-ref-navy-300);
+  --fold-color-primary-text: var(--fold-ref-navy-300);
 }`,
   },
   {
@@ -66,10 +66,10 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     example:
       "navi squares its corners (1–4px) to read institutional. pill and round stay: they are shapes, not steps — flattening them turns avatars into squares.",
     code: `[data-theme="navi"] {
-  --sh3-radius-xs: 1px;
-  --sh3-radius-sm: 2px;
-  --sh3-radius-md: 3px;
-  --sh3-radius-lg: 4px;
+  --fold-radius-xs: 1px;
+  --fold-radius-sm: 2px;
+  --fold-radius-md: 3px;
+  --fold-radius-lg: 4px;
 }`,
   },
   {
@@ -77,7 +77,7 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     body: "Three failures are caught for you: a theme missing any catalogue role, a semantic value carrying a literal hex, and a primitive declared but never used. Run the suite before judging the result by eye.",
     example:
       "The dead-primitive check is the useful one in practice — it caught navy-975 the moment navi's rails moved up and left it with no consumer.",
-    code: "pnpm --filter @sh3pherd/ui test",
+    code: "pnpm --filter fold-ng test",
   },
 ];
 

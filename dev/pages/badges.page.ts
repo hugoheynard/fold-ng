@@ -1,41 +1,41 @@
 import { Component } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import {
-  Sh3BadgeComponent,
-  Sh3IconComponent,
-  Sh3PageLayoutComponent,
-  Sh3StatusBadgeComponent,
+  FoldBadgeComponent,
+  FoldIconComponent,
+  FoldPageLayoutComponent,
+  FoldStatusBadgeComponent,
 } from "../../src/index";
 
-/** `/badges` — the `sh3-badge` · `sh3-status-badge` · `sh3-icon` gallery page. */
+/** `/badges` — the `fold-badge` · `fold-status-badge` · `fold-icon` gallery page. */
 @Component({
   selector: "gal-badges-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3BadgeComponent,
-    Sh3StatusBadgeComponent,
-    Sh3IconComponent,
+    FoldPageLayoutComponent,
+    FoldBadgeComponent,
+    FoldStatusBadgeComponent,
+    FoldIconComponent,
   ],
-  template: `<sh3-page-layout fluid title="badge · status · icon">
+  template: `<fold-page-layout fluid title="badge · status · icon">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row">
       @for (v of badgeVariants; track v) {
-        <sh3-badge [content]="v" [variant]="v" />
+        <fold-badge [content]="v" [variant]="v" />
       }
     </div>
     <div class="gal-row">
-      <sh3-status-badge status="active" label="Actif" />
-      <sh3-status-badge status="draft" label="Brouillon" />
-      <sh3-status-badge status="expired" label="Expiré" />
+      <fold-status-badge status="active" label="Actif" />
+      <fold-status-badge status="draft" label="Brouillon" />
+      <fold-status-badge status="expired" label="Expiré" />
     </div>
     <div class="gal-row">
       @for (n of iconNames; track n) {
-        <sh3-icon [name]="n" />
+        <fold-icon [name]="n" />
       }
     </div>
-  </sh3-page-layout>`,
+  </fold-page-layout>`,
 })
 export default class BadgesPage {
   protected readonly badgeVariants = [

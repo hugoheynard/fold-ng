@@ -1,26 +1,26 @@
 import { Component } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import {
-  Sh3ContextCardComponent,
-  Sh3LinkComponent,
-  Sh3PageLayoutComponent,
+  FoldContextCardComponent,
+  FoldLinkComponent,
+  FoldPageLayoutComponent,
 } from "../../src/index";
 
-/** `/context-card` — the `sh3-context-card` gallery page. */
+/** `/context-card` — the `fold-context-card` gallery page. */
 @Component({
   selector: "gal-context-card-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3ContextCardComponent,
-    Sh3LinkComponent,
+    FoldPageLayoutComponent,
+    FoldContextCardComponent,
+    FoldLinkComponent,
   ],
-  template: `<sh3-page-layout fluid title="context-card">
+  template: `<fold-page-layout fluid title="context-card">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row gal-row--wide">
       @for (tone of iconTones; track tone) {
-        <sh3-context-card
+        <fold-context-card
           icon="company"
           [iconTone]="tone"
           title="Contexte"
@@ -34,11 +34,11 @@ import {
             <span class="gal-k">Propriétaire</span
             ><span class="gal-v">Clément Aubry</span>
           </div>
-          <sh3-link footer icon="company">Voir l'organigramme</sh3-link>
-        </sh3-context-card>
+          <fold-link footer icon="company">Voir l'organigramme</fold-link>
+        </fold-context-card>
       }
     </div>
-  </sh3-page-layout>`,
+  </fold-page-layout>`,
 })
 export default class ContextCardPage {
   protected readonly iconTones = ["primary", "neutral", "faded"] as const;

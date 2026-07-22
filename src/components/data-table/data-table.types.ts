@@ -1,24 +1,24 @@
-/** Public types for {@link Sh3DataTableComponent} — a controlled, presentational
+/** Public types for {@link FoldDataTableComponent} — a controlled, presentational
  *  roster table (sticky header, sortable columns, per-row tone accents, mobile
  *  cards). The parent owns paging/sorting/filtering; the table only renders. */
 
 /** Per-row semantic accent — a left bar + subtle tint. */
-export type Sh3TableTone = "warning" | "alert" | "success" | null;
+export type FoldTableTone = "warning" | "alert" | "success" | null;
 
-export type Sh3TableSortDir = "asc" | "desc";
+export type FoldTableSortDir = "asc" | "desc";
 
 /** The active sort, or `null` when unsorted. `key` matches a column key. */
-export interface Sh3TableSort {
+export interface FoldTableSort {
   readonly key: string;
-  readonly dir: Sh3TableSortDir;
+  readonly dir: FoldTableSortDir;
 }
 
 /**
  * A column definition. Cell CONTENT is supplied by a projected
- * `<ng-template sh3Cell="<key>" let-row>` — this object only carries the
+ * `<ng-template foldCell="<key>" let-row>` — this object only carries the
  * header + layout metadata.
  */
-export interface Sh3TableColumn {
+export interface FoldTableColumn {
   /** Stable key — matches the cell template and (when sortable) the sort field. */
   readonly key: string;
   readonly label: string;
@@ -33,7 +33,7 @@ export interface Sh3TableColumn {
 }
 
 /** Empty-state copy shown when `rows` is empty. */
-export interface Sh3TableEmpty {
+export interface FoldTableEmpty {
   readonly title: string;
   readonly subtitle?: string;
 }

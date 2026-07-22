@@ -1,20 +1,20 @@
 import { Component, computed, inject, signal } from "@angular/core";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import {
-  Sh3AppShellComponent,
-  Sh3ElevatedDirective,
-  Sh3IconComponent,
-  Sh3MenuComponent,
-  Sh3MenuItemComponent,
-  Sh3MenuSectionComponent,
-  Sh3NavLauncherComponent,
-  Sh3NavTileComponent,
-  Sh3PanelHostComponent,
-  Sh3PanelHostService,
-  Sh3ToastContainerComponent,
+  FoldAppShellComponent,
+  FoldElevatedDirective,
+  FoldIconComponent,
+  FoldMenuComponent,
+  FoldMenuItemComponent,
+  FoldMenuSectionComponent,
+  FoldNavLauncherComponent,
+  FoldNavTileComponent,
+  FoldPanelHostComponent,
+  FoldPanelHostService,
+  FoldToastContainerComponent,
 } from "../../src/index";
 import { InspectPanelComponent } from "../inspect-panel.component";
-import { closestSh3, inspect } from "../inspect";
+import { closestFold, inspect } from "../inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
 import {
   GALLERY_THEME_CONFIG,
@@ -24,7 +24,7 @@ import {
 import pkg from "../../package.json";
 
 /**
- * The gallery shell — the fixed `sh3-app-shell` chrome (a stable static primary
+ * The gallery shell — the fixed `fold-app-shell` chrome (a stable static primary
  * rail, the Library nav as `routerLink`s, the header + theme toggle) with a
  * `<router-outlet>` for the routed component page. Cross-cutting dev tooling
  * (the docked token editor, double-click-to-inspect) lives here, above the
@@ -37,16 +37,16 @@ import pkg from "../../package.json";
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    Sh3AppShellComponent,
-    Sh3MenuComponent,
-    Sh3MenuItemComponent,
-    Sh3MenuSectionComponent,
-    Sh3NavLauncherComponent,
-    Sh3NavTileComponent,
-    Sh3ElevatedDirective,
-    Sh3IconComponent,
-    Sh3PanelHostComponent,
-    Sh3ToastContainerComponent,
+    FoldAppShellComponent,
+    FoldMenuComponent,
+    FoldMenuItemComponent,
+    FoldMenuSectionComponent,
+    FoldNavLauncherComponent,
+    FoldNavTileComponent,
+    FoldElevatedDirective,
+    FoldIconComponent,
+    FoldPanelHostComponent,
+    FoldToastContainerComponent,
   ],
   host: {
     class: "gal-root",
@@ -55,7 +55,7 @@ import pkg from "../../package.json";
   templateUrl: "./gallery-shell.component.html",
 })
 export class GalleryShellComponent {
-  private readonly panelHost = inject(Sh3PanelHostService);
+  private readonly panelHost = inject(FoldPanelHostService);
 
   /** Every theme the token layer ships, in switcher order. */
   protected readonly themes = GALLERY_THEMES;
@@ -87,7 +87,7 @@ export class GalleryShellComponent {
     if (!(event.target instanceof Element)) {
       return;
     }
-    const el = closestSh3(event.target);
+    const el = closestFold(event.target);
     const info = el ? inspect(el.tagName.toLowerCase()) : null;
     if (el && info) {
       this.panelHost.open(InspectPanelComponent, {

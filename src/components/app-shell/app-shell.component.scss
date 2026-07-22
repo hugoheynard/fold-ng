@@ -9,10 +9,10 @@
      inside 100% × 100% instead of pushing the grid past the frame. */
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--sh3-color-bg-page);
+  background: var(--fold-color-bg-page);
   /* Both rails are intrinsic — each projected rail component sizes itself and
      the `auto` track follows it (a self-collapsing rail shrinks to 0). The
-     primary reads `--sh3-shell-rail-width` for its base width via the rail
+     primary reads `--fold-shell-rail-width` for its base width via the rail
      component; the secondary is driven by the workspace rail the same way. */
   grid-template-columns:
     auto
@@ -21,7 +21,7 @@
   /* Two rows by default — a fixed-height header and a 1fr content region. A
      projected footer adds a third row (below); with no footer there is no row
      at all (see the `:has([footer])` gate), so an empty slot never leaves a gap. */
-  grid-template-rows: var(--sh3-shell-header-height, 56px) 1fr;
+  grid-template-rows: var(--fold-shell-header-height, 56px) 1fr;
   grid-template-areas:
     "rail-primary rail-secondary header"
     "rail-primary rail-secondary content";
@@ -35,13 +35,13 @@
   top: 0;
   left: 0;
   z-index: 60;
-  margin: var(--sh3-space-sm, 8px);
+  margin: var(--fold-space-sm, 8px);
   padding: 8px 14px;
-  border: 1px solid var(--sh3-color-border);
-  border-radius: var(--sh3-radius-md);
-  background: var(--sh3-color-surface-card);
-  color: var(--sh3-color-text);
-  font-size: var(--sh3-text-sm);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-sm);
   font-weight: 600;
   text-decoration: none;
   transform: translateY(-150%);
@@ -73,7 +73,7 @@
    player-bar look); the four header×footer combinations each name their own
    areas, and the more-specific selector wins when both are full. */
 :host(:not(.footer-scroll):has([footer])) {
-  grid-template-rows: var(--sh3-shell-header-height, 56px) 1fr auto;
+  grid-template-rows: var(--fold-shell-header-height, 56px) 1fr auto;
   grid-template-areas:
     "rail-primary rail-secondary header"
     "rail-primary rail-secondary content"
@@ -98,7 +98,7 @@
     "footer       footer         footer";
 }
 
-/* Each region is a named surface (`sh3Surface` in the template); the token
+/* Each region is a named surface (`foldSurface` in the template); the token
    layer resolves each surface's own text and lets a mixed theme re-colour the
    chrome ones. The shell no longer owns that rule — see `[data-surface]`. */
 .rail-primary {
@@ -126,7 +126,7 @@
   grid-area: content;
   position: relative;
   /* Full-bleed — the shell adds no gutter, so a page can paint edge-to-edge.
-     The themed page gutter is `sh3-page-layout`'s job, not the shell's. */
+     The themed page gutter is `fold-page-layout`'s job, not the shell's. */
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -154,18 +154,18 @@
 }
 
 /* Elevation is not the shell's skin to own — a region floats when the consumer
-   puts `sh3Elevated` on the element that paints it (see Sh3ElevatedDirective).
+   puts `foldElevated` on the element that paints it (see FoldElevatedDirective).
    The shell's only involvement is the *gutter*: a cell whose content is elevated
    pads itself, revealing the page-colour moat around the card. Padding (not a
    child margin) so a `height: 100%` region — a rail, the content — fits inside
    automatically; a margin would sit outside the height and overflow the cell.
-   `:has()` keeps a flat region flush. `--sh3-surface-inset` tunes the gutter. */
+   `:has()` keeps a flat region flush. `--fold-surface-inset` tunes the gutter. */
 .rail-primary:has([data-elevated]),
 .rail-secondary:has([data-elevated]),
 .header:has([data-elevated]),
 .footer:has([data-elevated]),
 .content:has([data-elevated]) {
-  padding: var(--sh3-surface-inset, var(--sh3-space-md));
+  padding: var(--fold-surface-inset, var(--fold-space-md));
 }
 
 /* The narrow layout — a single header + content (+ footer) column. Shared by
@@ -179,7 +179,7 @@
   :host,
   :host(.header-full) {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr;
+    grid-template-rows: var(--fold-shell-header-height-mobile, 52px) 1fr;
     grid-template-areas:
       "header"
       "content";
@@ -189,7 +189,7 @@
   :host(.footer-full:not(.footer-scroll):has([footer])),
   :host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr auto;
+    grid-template-rows: var(--fold-shell-header-height-mobile, 52px) 1fr auto;
     grid-template-areas:
       "header"
       "content"
@@ -211,7 +211,7 @@
   :host(.mobile-drawer) .rail-primary {
     display: block;
     position: absolute;
-    top: var(--sh3-shell-header-height-mobile, 52px);
+    top: var(--fold-shell-header-height-mobile, 52px);
     bottom: 0;
     left: 0;
     z-index: 41;
@@ -232,12 +232,12 @@
      dismiss click. Only in the DOM while the drawer is open (see template). */
   .mobile-scrim {
     position: absolute;
-    inset: var(--sh3-shell-header-height-mobile, 52px) 0 0 0;
+    inset: var(--fold-shell-header-height-mobile, 52px) 0 0 0;
     z-index: 40;
     border: 0;
     padding: 0;
-    background: var(--sh3-color-scrim);
-    animation: sh3-shell-scrim-in 240ms ease;
+    background: var(--fold-color-scrim);
+    animation: fold-shell-scrim-in 240ms ease;
   }
   /* Freeze the content scroll behind an open drawer. */
   :host(.mobile-nav-open) .content {
@@ -263,7 +263,7 @@
   @include narrow-collapse;
 }
 
-@keyframes sh3-shell-scrim-in {
+@keyframes fold-shell-scrim-in {
   from {
     opacity: 0;
   }

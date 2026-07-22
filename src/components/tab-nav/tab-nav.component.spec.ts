@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3TabNavComponent, type Sh3TabNavItem } from "./tab-nav.component";
+import { FoldTabNavComponent, type FoldTabNavItem } from "./tab-nav.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3TabNavComponent],
-  template: `<sh3-tab-nav
+  imports: [FoldTabNavComponent],
+  template: `<fold-tab-nav
     [tabs]="tabs"
     [activeKey]="activeKey"
     [activeStyle]="activeStyle"
@@ -17,7 +17,7 @@ import { Sh3TabNavComponent, type Sh3TabNavItem } from "./tab-nav.component";
   />`,
 })
 class HostComponent {
-  tabs: Sh3TabNavItem[] = [
+  tabs: FoldTabNavItem[] = [
     { key: "a", label: "Alpha", badge: 3 },
     { key: "b", label: "Beta", icon: "settings" },
   ];
@@ -41,7 +41,7 @@ function setup(patch: Partial<HostComponent> = {}) {
   };
 }
 
-describe("Sh3TabNavComponent", () => {
+describe("FoldTabNavComponent", () => {
   it("renders one tab per item with its label", () => {
     const { buttons } = setup();
     const labels = buttons.map((b) =>
@@ -69,8 +69,8 @@ describe("Sh3TabNavComponent", () => {
     ).toBe("3");
     expect(buttons[0].querySelector(".tab-nav-icon")).toBeNull();
     expect(buttons[1].querySelector(".tab-nav-badge")).toBeNull();
-    // The icon is an sh3-icon (registry-named), not a hand-rolled <svg><path>.
-    const icon = buttons[1].querySelector("sh3-icon.tab-nav-icon");
+    // The icon is an fold-icon (registry-named), not a hand-rolled <svg><path>.
+    const icon = buttons[1].querySelector("fold-icon.tab-nav-icon");
     expect(icon).not.toBeNull();
     expect(icon?.querySelector("svg")).not.toBeNull();
   });

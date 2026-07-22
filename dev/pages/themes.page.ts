@@ -1,10 +1,10 @@
 import { Component, signal } from "@angular/core";
 import {
-  Sh3ButtonComponent,
-  Sh3CalloutComponent,
-  Sh3CardComponent,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
+  FoldButtonComponent,
+  FoldCalloutComponent,
+  FoldCardComponent,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
 } from "../../src/index";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { THEME_SMELLS, THEME_STEPS } from "./theme-recipe";
@@ -34,11 +34,11 @@ interface RoleGroup {
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3PageSectionComponent,
-    Sh3CardComponent,
-    Sh3CalloutComponent,
-    Sh3ButtonComponent,
+    FoldPageLayoutComponent,
+    FoldPageSectionComponent,
+    FoldCardComponent,
+    FoldCalloutComponent,
+    FoldButtonComponent,
   ],
   templateUrl: "./themes.page.html",
 })
@@ -71,7 +71,7 @@ export default class ThemesPage {
       summary:
         "Dark chrome, light page — the back-office frame. One navy family serves both the brand on the page and the rails behind it, and the corners square off: radius is themeable, because corner softness is a brand axis that moves no box.",
       palette: "navy (chrome + brand) · ivory (page) · slate (text)",
-      note: 'Mixing chrome and page needs text/surface/brand to differ per region, which one set of roles cannot express — so navi re-declares them on [data-surface="chrome"], a contract the shell (and any element) opts into via the sh3Surface directive. Variables only, no reaching into a component.',
+      note: 'Mixing chrome and page needs text/surface/brand to differ per region, which one set of roles cannot express — so navi re-declares them on [data-surface="chrome"], a contract the shell (and any element) opts into via the foldSurface directive. Variables only, no reaching into a component.',
     },
   ];
 
@@ -114,14 +114,14 @@ export default class ThemesPage {
 
   protected readonly overrideCode = `/* 1 · One role, everywhere. Any ancestor will do — :root themes the app. */
 :root {
-  --sh3-color-primary: var(--sh3-ref-teal-400);
+  --fold-color-primary: var(--fold-ref-teal-400);
 }
 
 /* 2 · A whole theme: re-point the roles, never edit a hex. Every theme block
       must declare the FULL catalogue — the contract test fails on a gap. */
 [data-theme="brandx"] {
-  --sh3-color-bg-page: var(--sh3-ref-cloud-100);
-  --sh3-color-primary: var(--sh3-ref-teal-550);
+  --fold-color-bg-page: var(--fold-ref-cloud-100);
+  --fold-color-primary: var(--fold-ref-teal-550);
   /* …the other 38 roles… */
 }
 
@@ -131,7 +131,7 @@ export default class ThemesPage {
 
 /* 4 · Shape. Radius is the one scale a theme may re-declare. */
 [data-theme="brandx"] {
-  --sh3-radius-md: 3px;
+  --fold-radius-md: 3px;
 }`;
 
   protected readonly consumeCode = `<!-- The app picks a theme; umbra needs no attribute. -->
@@ -141,8 +141,8 @@ export default class ThemesPage {
 <div class="panel">…</div>`;
 
   protected readonly consumeCss = `.panel {
-  background: var(--sh3-color-surface-card);
-  border: 1px solid var(--sh3-color-border);
-  color: var(--sh3-color-text);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border);
+  color: var(--fold-color-text);
 }`;
 }

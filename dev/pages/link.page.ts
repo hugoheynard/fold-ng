@@ -1,24 +1,24 @@
 import { Component } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
-import { Sh3LinkComponent, Sh3PageLayoutComponent } from "../../src/index";
+import { FoldLinkComponent, FoldPageLayoutComponent } from "../../src/index";
 
-/** `/link` — the `sh3-link` gallery page. */
+/** `/link` — the `fold-link` gallery page. */
 @Component({
   selector: "gal-link-page",
   standalone: true,
-  imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3LinkComponent],
-  template: `<sh3-page-layout fluid title="link">
+  imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldLinkComponent],
+  template: `<fold-page-layout fluid title="link">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row">
-      <sh3-link icon="company" trailingIcon="chevron-right"
-        >accent + icons</sh3-link
+      <fold-link icon="company" trailingIcon="chevron-right"
+        >accent + icons</fold-link
       >
-      <sh3-link tone="muted">muted</sh3-link>
-      <sh3-link href="https://sh3pherd.dev" tone="muted"
-        >anchor (href)</sh3-link
+      <fold-link tone="muted">muted</fold-link>
+      <fold-link href="https://sh3pherd.dev" tone="muted"
+        >anchor (href)</fold-link
       >
-      <sh3-link [disabled]="true">disabled</sh3-link>
+      <fold-link [disabled]="true">disabled</fold-link>
     </div>
-  </sh3-page-layout>`,
+  </fold-page-layout>`,
 })
 export default class LinkPage {}

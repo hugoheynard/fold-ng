@@ -1,14 +1,14 @@
 import { Component, computed, input, output } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
+import { FoldIconComponent } from "../icon/icon.component";
 
 /**
  * Item representing one slot in the page navigation bar.
  * Either a concrete page number (1-indexed) or an ellipsis gap.
  */
-export type Sh3PageItem = { kind: "page"; page: number } | { kind: "gap" };
+export type FoldPageItem = { kind: "page"; page: number } | { kind: "gap" };
 
 /**
- * `sh3-paginator` — presentational, fully controlled.
+ * `fold-paginator` — presentational, fully controlled.
  *
  * Designed for **server-side pagination** (offset/limit): the parent owns
  * `currentPage`, `pageSize` and `totalItems`, fires the HTTP call on
@@ -18,7 +18,7 @@ export type Sh3PageItem = { kind: "page"; page: number } | { kind: "gap" };
  *
  * @example
  * ```html
- * <sh3-paginator
+ * <fold-paginator
  *   [currentPage]="page()"
  *   [pageSize]="size()"
  *   [totalItems]="total()"
@@ -27,13 +27,13 @@ export type Sh3PageItem = { kind: "page"; page: number } | { kind: "gap" };
  * ```
  */
 @Component({
-  selector: "sh3-paginator",
+  selector: "fold-paginator",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   templateUrl: "./paginator.component.html",
   styleUrl: "./paginator.component.scss",
 })
-export class Sh3PaginatorComponent {
+export class FoldPaginatorComponent {
   /** 1-indexed current page. */
   readonly currentPage = input.required<number>();
 
@@ -101,7 +101,7 @@ export class Sh3PaginatorComponent {
    * pages on each side of the current page; insert a single `gap` between
    * any two non-contiguous blocks.
    */
-  readonly pageItems = computed<Sh3PageItem[]>(() => {
+  readonly pageItems = computed<FoldPageItem[]>(() => {
     const total = this.totalPages();
     const current = this.currentPage();
     const sibs = Math.max(0, this.siblingCount());
@@ -121,7 +121,7 @@ export class Sh3PaginatorComponent {
     const showLeftGap = leftSibling > 2;
     const showRightGap = rightSibling < total - 1;
 
-    const items: Sh3PageItem[] = [{ kind: "page", page: 1 }];
+    const items: FoldPageItem[] = [{ kind: "page", page: 1 }];
 
     if (showLeftGap) {
       items.push({ kind: "gap" });

@@ -1,9 +1,9 @@
 import { booleanAttribute, Component, computed, input } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
-/** Severity of a {@link Sh3CalloutComponent} — colour + default icon. */
-export type Sh3CalloutVariant =
+/** Severity of a {@link FoldCalloutComponent} — colour + default icon. */
+export type FoldCalloutVariant =
   | "neutral"
   | "accent"
   | "info"
@@ -12,10 +12,10 @@ export type Sh3CalloutVariant =
   | "alert";
 
 /** How the callout meets its container. */
-export type Sh3CalloutAppearance = "inset" | "flat";
+export type FoldCalloutAppearance = "inset" | "flat";
 
 /** Default glyph per variant — overridable with the `icon` input. */
-const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
+const DEFAULT_ICON: Record<FoldCalloutVariant, FoldIconName> = {
   neutral: "info",
   accent: "lightning",
   info: "info",
@@ -25,7 +25,7 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
 };
 
 /**
- * `<sh3-callout>` — a tinted message row: a status colour, an icon, a short
+ * `<fold-callout>` — a tinted message row: a status colour, an icon, a short
  * message, and optional actions on the trailing edge.
  *
  * Two appearances, and the difference is where it sits rather than how loud it
@@ -33,13 +33,13 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
  * - `inset` (default) — a bordered, rounded row **in** the flow, like a card.
  * - `flat` — a full-bleed band: no radius, no side borders, hairlines top and
  *   bottom only, so it reads as a strip **of** its container (drop one into a
- *   `<sh3-card padding="none">` and it spans the card edge to edge).
+ *   `<fold-card padding="none">` and it spans the card edge to edge).
  *
  * The message is projected, so it can carry `<strong>`, links or a second
  * sentence. Colour comes from the status token families, so every theme is
  * handled without the callout knowing any of them. `accent` is the odd one:
  * it states no severity, it tints with the brand — for a callout that promotes
- * rather than warns (a new capability, a tip). Same name as `sh3-badge`'s
+ * rather than warns (a new capability, a tip). Same name as `fold-badge`'s
  * brand tint, on purpose.
  *
  * ## Inputs
@@ -47,7 +47,7 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
  * |--------------|------------------------------------------------------|-------------|
  * | `variant`    | `neutral \| accent \| info \| success \| warning \| alert` | `neutral` |
  * | `appearance` | `inset \| flat`                                       | `inset`     |
- * | `icon`       | `Sh3IconName` — overrides the variant's glyph         | —           |
+ * | `icon`       | `FoldIconName` — overrides the variant's glyph         | —           |
  * | `announce`   | `boolean` — see below                                 | `false`     |
  *
  * `announce` is for a callout that **appears in response to something** (a
@@ -64,30 +64,30 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
  *   out of its reach.
  *
  * The resolved {@link role} and {@link ariaLive} are exposed (`exportAs:
- * "sh3Callout"`) because `announce` changes nothing on screen — reading them
+ * "foldCallout"`) because `announce` changes nothing on screen — reading them
  * back is the only way to see it work.
  *
- * @selector `sh3-callout`
+ * @selector `fold-callout`
  *
  * @example
  * ```html
- * <sh3-callout variant="warning">
+ * <fold-callout variant="warning">
  *   This contract is <strong>locked</strong> — no more edits.
- * </sh3-callout>
+ * </fold-callout>
  *
- * <sh3-card padding="none">
- *   <sh3-callout variant="alert" appearance="flat" announce>
+ * <fold-card padding="none">
+ *   <fold-callout variant="alert" appearance="flat" announce>
  *     Quota exceeded.
- *     <sh3-button actions size="sm" variant="ghost">Upgrade</sh3-button>
- *   </sh3-callout>
- * </sh3-card>
+ *     <fold-button actions size="sm" variant="ghost">Upgrade</fold-button>
+ *   </fold-callout>
+ * </fold-card>
  * ```
  */
 @Component({
-  selector: "sh3-callout",
+  selector: "fold-callout",
   standalone: true,
-  exportAs: "sh3Callout",
-  imports: [Sh3IconComponent],
+  exportAs: "foldCallout",
+  imports: [FoldIconComponent],
   host: {
     "[attr.role]": "role()",
     "[attr.aria-live]": "ariaLive()",
@@ -102,15 +102,15 @@ const DEFAULT_ICON: Record<Sh3CalloutVariant, Sh3IconName> = {
   templateUrl: "./callout.component.html",
   styleUrl: "./callout.component.scss",
 })
-export class Sh3CalloutComponent {
-  readonly variant = input<Sh3CalloutVariant>("neutral");
-  readonly appearance = input<Sh3CalloutAppearance>("inset");
+export class FoldCalloutComponent {
+  readonly variant = input<FoldCalloutVariant>("neutral");
+  readonly appearance = input<FoldCalloutAppearance>("inset");
   /** Override the variant's default glyph. */
-  readonly icon = input<Sh3IconName>();
+  readonly icon = input<FoldIconName>();
   /** Announce this callout when it appears — see the class doc. */
   readonly announce = input(false, { transform: booleanAttribute });
 
-  protected readonly iconName = computed<Sh3IconName>(
+  protected readonly iconName = computed<FoldIconName>(
     () => this.icon() ?? DEFAULT_ICON[this.variant()],
   );
 

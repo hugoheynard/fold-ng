@@ -1,12 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3LabelComponent } from "./label.component";
+import { FoldLabelComponent } from "./label.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3LabelComponent],
-  template: `<sh3-label
+  imports: [FoldLabelComponent],
+  template: `<fold-label
     [text]="text()"
     [for]="for()"
     [required]="required()"
@@ -25,11 +25,11 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const el = fixture.nativeElement.querySelector("sh3-label") as HTMLElement;
+  const el = fixture.nativeElement.querySelector("fold-label") as HTMLElement;
   return { fixture, el };
 }
 
-describe("Sh3LabelComponent", () => {
+describe("FoldLabelComponent", () => {
   it("renders the text in a <label>", () => {
     const { el } = render();
     expect(el.querySelector("label")?.textContent?.trim()).toBe("Job title");

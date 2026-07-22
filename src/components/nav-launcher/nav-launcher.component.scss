@@ -8,10 +8,10 @@
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: var(--sh3-color-scrim);
-  backdrop-filter: blur(var(--sh3-blur-glass));
-  -webkit-backdrop-filter: blur(var(--sh3-blur-glass));
-  animation: sh3-nl-fade 200ms ease;
+  background: var(--fold-color-scrim);
+  backdrop-filter: blur(var(--fold-blur-glass));
+  -webkit-backdrop-filter: blur(var(--fold-blur-glass));
+  animation: fold-nl-fade 200ms ease;
 }
 
 /* The centred dialog holding the close button + the tile grid. */
@@ -36,17 +36,17 @@
   width: 40px;
   height: 40px;
   border: 0;
-  border-radius: var(--sh3-radius-md);
-  background: var(--sh3-color-surface-raised);
-  color: var(--sh3-color-text-secondary);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text-secondary);
   cursor: pointer;
   transition:
     background 140ms ease,
     color 140ms ease;
 }
 .nl-close:hover {
-  background: var(--sh3-color-surface-hover);
-  color: var(--sh3-color-text);
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text);
 }
 
 /* The grid lays the projected tiles out; each tile styles + stages itself. The
@@ -66,7 +66,7 @@
   }
 }
 
-@keyframes sh3-nl-fade {
+@keyframes fold-nl-fade {
   from {
     opacity: 0;
   }

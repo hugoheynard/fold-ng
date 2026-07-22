@@ -1,16 +1,16 @@
 import type { Provider } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
-import { provideSh3Toasts } from "./toast.config";
-import { Sh3ToastService } from "./toast.service";
+import { provideFoldToasts } from "./toast.config";
+import { FoldToastService } from "./toast.service";
 
-function service(providers: Provider[] = []): Sh3ToastService {
+function service(providers: Provider[] = []): FoldToastService {
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({ providers });
-  return TestBed.inject(Sh3ToastService);
+  return TestBed.inject(FoldToastService);
 }
 
-describe("Sh3ToastService", () => {
+describe("FoldToastService", () => {
   it("queues a toast with the given message + variant", () => {
     const svc = service();
     svc.show("Saved", "success");
@@ -46,7 +46,7 @@ describe("Sh3ToastService", () => {
 
   it("resolves durationByVariant, then defaultDurationMs, then baked", () => {
     const svc = service([
-      provideSh3Toasts({
+      provideFoldToasts({
         defaultDurationMs: 1000,
         durationByVariant: { error: 500 },
       }),
@@ -58,7 +58,7 @@ describe("Sh3ToastService", () => {
 
   it("keeps a configured 0 as sticky (not overridden by the default)", () => {
     const svc = service([
-      provideSh3Toasts({
+      provideFoldToasts({
         defaultDurationMs: 5000,
         durationByVariant: { error: 0 },
       }),

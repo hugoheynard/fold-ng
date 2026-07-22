@@ -1,5 +1,5 @@
-/** Visual emphasis of a `sh3-button`. */
-export type Sh3ButtonVariant =
+/** Visual emphasis of a `fold-button`. */
+export type FoldButtonVariant =
   | "primary"
   | "recommended"
   | "critical"
@@ -7,7 +7,7 @@ export type Sh3ButtonVariant =
   | "solid";
 
 /** Size preset — controls font-size, padding, and radius. */
-export type Sh3ButtonSize = "sm" | "md" | "lg";
+export type FoldButtonSize = "sm" | "md" | "lg";
 
 /** Corner shape — `rounded` (the size's radius) or `pill` (fully rounded). */
-export type Sh3ButtonShape = "rounded" | "pill";
+export type FoldButtonShape = "rounded" | "pill";

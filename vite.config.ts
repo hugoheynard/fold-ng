@@ -2,7 +2,7 @@ import angular from "@analogjs/vite-plugin-angular";
 import { defineConfig } from "vite";
 
 /**
- * Dev server for the component gallery — `pnpm --filter @sh3pherd/ui dev`.
+ * Dev server for the component gallery — `pnpm --filter fold-ng dev`.
  *
  * The neutral workbench: it boots the design system in isolation (its own
  * tokens, zero app dependency) so graphical work happens on the components

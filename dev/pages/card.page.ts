@@ -2,24 +2,24 @@ import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
 import {
-  Sh3ButtonComponent,
-  Sh3CardComponent,
-  Sh3PageLayoutComponent,
+  FoldButtonComponent,
+  FoldCardComponent,
+  FoldPageLayoutComponent,
 } from "../../src/index";
 
 type CardSurface = "card" | "sunken";
 type CardRadius = "sm" | "md" | "lg";
 type CardPadding = "none" | "sm" | "md" | "lg";
 
-/** `/card` — the `sh3-card` gallery page. */
+/** `/card` — the `fold-card` gallery page. */
 @Component({
   selector: "gal-card-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3CardComponent,
-    Sh3ButtonComponent,
+    FoldPageLayoutComponent,
+    FoldCardComponent,
+    FoldButtonComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./card.page.html",
@@ -58,13 +58,15 @@ export default class CardPage {
     if (this.cpRaised()) {
       attrs.push("raisedBands");
     }
-    const open = attrs.length ? `<sh3-card ${attrs.join(" ")}>` : "<sh3-card>";
+    const open = attrs.length
+      ? `<fold-card ${attrs.join(" ")}>`
+      : "<fold-card>";
     return [
       open,
       ...(this.cpHeader() ? ["  <strong cardHeader>Card title</strong>"] : []),
       "  Body content",
       ...(this.cpFooter() ? ["  <div cardFooter>…actions…</div>"] : []),
-      "</sh3-card>",
+      "</fold-card>",
     ].join("\n");
   });
 }

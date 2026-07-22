@@ -19,7 +19,7 @@
        with the app background. Uses the tertiary rail role: a tab sidebar is,
        semantically, the third navigation rail (app menu · workspace · section). */
 .bg-surface {
-  background: var(--sh3-color-bg-rail-tertiary);
+  background: var(--fold-color-bg-rail-tertiary);
   padding: 4px 8px 0;
 }
 .bg-surface.dir-vertical {
@@ -34,7 +34,7 @@
   padding: 6px 8px;
   background: none;
   border: none;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
   font-size: 10px;
   font-weight: 600;
   cursor: pointer;
@@ -46,7 +46,7 @@
   white-space: nowrap;
 }
 .tab-nav-item:hover {
-  color: var(--sh3-color-text-secondary);
+  color: var(--fold-color-text-secondary);
 }
 
 /* Comfortable — a prominent, page-level bar (vs the compact default). */
@@ -54,35 +54,35 @@
   flex: 0 1 auto;
   gap: 10px;
   padding: 11px 16px;
-  font-size: var(--sh3-text-sm);
+  font-size: var(--fold-text-sm);
 }
 
 /* Underline */
 .style-underline {
-  border-bottom: 1px solid var(--sh3-color-border);
+  border-bottom: 1px solid var(--fold-color-border);
 }
 .style-underline .tab-nav-item {
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
 .style-underline .tab-nav-item.is-active {
-  color: var(--sh3-color-text);
-  border-bottom-color: var(--sh3-color-primary);
+  color: var(--fold-color-text);
+  border-bottom-color: var(--fold-color-primary);
 }
 
 /* Fill */
 .style-fill .tab-nav-item {
-  border-radius: var(--sh3-radius-sm);
+  border-radius: var(--fold-radius-sm);
   border: 1px solid transparent;
 }
 .style-fill .tab-nav-item.is-active {
-  background: var(--sh3-color-primary-surface);
-  color: var(--sh3-color-primary-text);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
   font-weight: 600;
 }
 .style-fill .tab-nav-item:hover:not(.is-active) {
-  background: var(--sh3-color-surface-hover);
-  color: var(--sh3-color-text);
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text);
 }
 
 /* Vertical */
@@ -95,13 +95,13 @@
   text-align: left;
   padding: 9px 12px;
   gap: 10px;
-  border-radius: var(--sh3-radius-sm);
-  font-size: var(--sh3-text-sm);
+  border-radius: var(--fold-radius-sm);
+  font-size: var(--fold-text-sm);
   font-weight: 500;
 }
 .dir-vertical.style-underline {
   border-bottom: none;
-  border-right: 1px solid var(--sh3-color-border);
+  border-right: 1px solid var(--fold-color-border);
 }
 .dir-vertical.style-underline .tab-nav-item {
   border-bottom: none;
@@ -110,11 +110,11 @@
   margin-right: -1px;
 }
 .dir-vertical.style-underline .tab-nav-item.is-active {
-  border-left-color: var(--sh3-color-primary);
+  border-left-color: var(--fold-color-primary);
 }
 .dir-vertical.style-fill .tab-nav-item.is-active {
-  background: var(--sh3-color-primary-surface);
-  color: var(--sh3-color-primary-text);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
   font-weight: 600;
 }
 
@@ -154,7 +154,7 @@
     text-align: center;
     padding: 8px;
     gap: 0;
-    font-size: var(--sh3-text-xs);
+    font-size: var(--fold-text-xs);
     font-weight: 600;
   }
   .dir-vertical .tab-nav-item .tab-nav-label {
@@ -176,7 +176,7 @@
   }
   .dir-vertical.style-underline {
     border-right: none;
-    border-bottom: 1px solid var(--sh3-color-border);
+    border-bottom: 1px solid var(--fold-color-border);
   }
   .dir-vertical.style-underline .tab-nav-item {
     border-left: none;
@@ -185,7 +185,7 @@
     margin-bottom: -1px;
   }
   .dir-vertical.style-underline .tab-nav-item.is-active {
-    border-bottom-color: var(--sh3-color-primary);
+    border-bottom-color: var(--fold-color-primary);
   }
   .dir-vertical.style-fill {
     border-right: none;
@@ -196,7 +196,7 @@
   flex-shrink: 0;
 }
 
-/* Count pill — an sh3-badge: `neutral` when idle, `accent` on the active tab
+/* Count pill — an fold-badge: `neutral` when idle, `accent` on the active tab
    (the component owns the chrome; only the count alignment is set here). */
 .tab-nav-badge {
   flex-shrink: 0;

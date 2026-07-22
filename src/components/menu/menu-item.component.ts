@@ -1,31 +1,31 @@
 import { Component, booleanAttribute, computed, input } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 import {
-  Sh3BadgeComponent,
-  type Sh3BadgeVariant,
+  FoldBadgeComponent,
+  type FoldBadgeVariant,
 } from "../badge/badge.component";
 
 /**
  * Badge tone for a menu item. `follow` (the default) tints the badge with the
  * item's own accent — i.e. the section colour, or whatever the menu's `tint`
  * resolves to — so it matches the item's hover/active look. The rest are the
- * shared {@link Sh3BadgeVariant} semantic colours.
+ * shared {@link FoldBadgeVariant} semantic colours.
  */
-export type Sh3MenuItemBadgeTone = "follow" | Sh3BadgeVariant;
+export type FoldMenuItemBadgeTone = "follow" | FoldBadgeVariant;
 
 /** Solid accent colour per semantic tone (drives the dot + follow-pill). */
-const TONE_ACCENT: Record<Sh3BadgeVariant, string> = {
-  neutral: "var(--sh3-color-text-muted)",
-  accent: "var(--sh3-color-primary)",
-  info: "var(--sh3-color-info)",
-  warning: "var(--sh3-color-warning)",
-  alert: "var(--sh3-color-alert)",
-  success: "var(--sh3-color-success)",
+const TONE_ACCENT: Record<FoldBadgeVariant, string> = {
+  neutral: "var(--fold-color-text-muted)",
+  accent: "var(--fold-color-primary)",
+  info: "var(--fold-color-info)",
+  warning: "var(--fold-color-warning)",
+  alert: "var(--fold-color-alert)",
+  success: "var(--fold-color-success)",
 };
 
 /**
- * `[sh3-menu-item]` — an icon rail item. It is an **attribute** component, put
+ * `[fold-menu-item]` — an icon rail item. It is an **attribute** component, put
  * on the caller's own `<a>`/`<button>` so routing stays theirs (`routerLink` +
  * `routerLinkActive`). It renders the icon + a hover tooltip (`label`); `active`
  * lights the accent indicator (bind it from `routerLinkActive`'s `isActive`).
@@ -36,24 +36,24 @@ const TONE_ACCENT: Record<Sh3BadgeVariant, string> = {
  * input (not projected content) because only this component knows its rail
  * mode, and that mode dictates where the badge belongs. {@link badgeTone}
  * colours both modes from a single accent — `follow` (default) matches the
- * item's own tint, the semantic tones reuse the `sh3-badge` palette.
+ * item's own tint, the semantic tones reuse the `fold-badge` palette.
  *
- * @selector `a[sh3-menu-item]`, `button[sh3-menu-item]`
+ * @selector `a[fold-menu-item]`, `button[fold-menu-item]`
  *
  * @example
  * ```html
- * <a sh3-menu-item [icon]="'home'" [label]="'Home'"
+ * <a fold-menu-item [icon]="'home'" [label]="'Home'"
  *    routerLink="/home" routerLinkActive #r="routerLinkActive"
  *    [active]="r.isActive"></a>
  *
- * <a sh3-menu-item icon="bell" label="Alerts" [badge]="3"></a>
- * <a sh3-menu-item icon="star" label="Directive" badge="new" badgeTone="info"></a>
+ * <a fold-menu-item icon="bell" label="Alerts" [badge]="3"></a>
+ * <a fold-menu-item icon="star" label="Directive" badge="new" badgeTone="info"></a>
  * ```
  */
 @Component({
-  selector: "a[sh3-menu-item], button[sh3-menu-item]",
+  selector: "a[fold-menu-item], button[fold-menu-item]",
   standalone: true,
-  imports: [Sh3IconComponent, Sh3BadgeComponent],
+  imports: [FoldIconComponent, FoldBadgeComponent],
   templateUrl: "./menu-item.component.html",
   styleUrl: "./menu-item.component.scss",
   host: {
@@ -62,8 +62,8 @@ const TONE_ACCENT: Record<Sh3BadgeVariant, string> = {
     "[style.--mi-badge-accent]": "badgeAccent()",
   },
 })
-export class Sh3MenuItemComponent {
-  readonly icon = input.required<Sh3IconName>();
+export class FoldMenuItemComponent {
+  readonly icon = input.required<FoldIconName>();
   /** The label shown in the hover tooltip (also the accessible name). */
   readonly label = input.required<string>();
   /** Lights the active indicator — bind from `routerLinkActive`. */
@@ -74,7 +74,7 @@ export class Sh3MenuItemComponent {
    */
   readonly badge = input<string | number>();
   /** Badge colour — `follow` (default) tracks the item's tint, or a semantic tone. */
-  readonly badgeTone = input<Sh3MenuItemBadgeTone>("follow");
+  readonly badgeTone = input<FoldMenuItemBadgeTone>("follow");
 
   /** Whether the badge is a numeric count (drives the collapsed bubble). */
   protected readonly isCount = computed(() => typeof this.badge() === "number");
@@ -85,7 +85,7 @@ export class Sh3MenuItemComponent {
     return b !== undefined && b !== "" && b !== 0;
   });
 
-  /** Whether the tone tracks the item's accent (vs a semantic `sh3-badge`). */
+  /** Whether the tone tracks the item's accent (vs a semantic `fold-badge`). */
   protected readonly isFollowTone = computed(
     () => this.badgeTone() === "follow",
   );
@@ -96,13 +96,13 @@ export class Sh3MenuItemComponent {
     return tone === "follow" ? "var(--mi-accent)" : TONE_ACCENT[tone];
   });
 
-  /** Semantic variant for the expanded `sh3-badge` (unused when following). */
-  protected readonly badgeVariant = computed<Sh3BadgeVariant>(() => {
+  /** Semantic variant for the expanded `fold-badge` (unused when following). */
+  protected readonly badgeVariant = computed<FoldBadgeVariant>(() => {
     const tone = this.badgeTone();
     return tone === "follow" ? "accent" : tone;
   });
 
-  /** Badge text for the expanded pill (`sh3-badge` needs a string). */
+  /** Badge text for the expanded pill (`fold-badge` needs a string). */
   protected readonly badgeText = computed(() => {
     const b = this.badge();
     return b === undefined ? "" : String(b);

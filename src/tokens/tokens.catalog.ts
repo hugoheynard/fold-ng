@@ -8,10 +8,10 @@
  * token here and to the CSS in the same change, or the test fails. That is how
  * the theme stays complete and drift-free.
  *
- * They also power typed `sh3*Var` helpers so call sites get autocomplete and a
+ * They also power typed `fold*Var` helpers so call sites get autocomplete and a
  * compile error on a misspelt token.
  */
-export const SH3_SEMANTIC_COLOR_TOKENS = [
+export const FOLD_SEMANTIC_COLOR_TOKENS = [
   /* ── Surfaces ─────────────────────────────────────────────── */
   /** Page background — the surface behind everything. */
   "bg-page",
@@ -21,7 +21,7 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "bg-rail-primary",
   /** Rail 2 — the workspace menu. */
   "bg-rail-secondary",
-  /** Rail 3 — tertiary nav (e.g. a `sh3-tab-nav` section sidebar). */
+  /** Rail 3 — tertiary nav (e.g. a `fold-tab-nav` section sidebar). */
   "bg-rail-tertiary",
 
   /* ── Primary / accent ─────────────────────────────────────── */
@@ -99,10 +99,11 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "scrim",
 ] as const;
 
-export type Sh3SemanticColorToken = (typeof SH3_SEMANTIC_COLOR_TOKENS)[number];
+export type FoldSemanticColorToken =
+  (typeof FOLD_SEMANTIC_COLOR_TOKENS)[number];
 
 /** Border-radius scale. `lg` is a real large radius; `pill` is the capsule. */
-export const SH3_RADIUS_TOKENS = [
+export const FOLD_RADIUS_TOKENS = [
   "xs",
   "sm",
   "md",
@@ -111,27 +112,27 @@ export const SH3_RADIUS_TOKENS = [
   "round",
 ] as const;
 
-export type Sh3RadiusToken = (typeof SH3_RADIUS_TOKENS)[number];
+export type FoldRadiusToken = (typeof FOLD_RADIUS_TOKENS)[number];
 
 /** Type (font-size) scale. */
-export const SH3_TEXT_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
+export const FOLD_TEXT_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
-export type Sh3TextToken = (typeof SH3_TEXT_TOKENS)[number];
+export type FoldTextToken = (typeof FOLD_TEXT_TOKENS)[number];
 
 /** Space (gap / padding / margin) scale. */
-export const SH3_SPACE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
+export const FOLD_SPACE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
-export type Sh3SpaceToken = (typeof SH3_SPACE_TOKENS)[number];
+export type FoldSpaceToken = (typeof FOLD_SPACE_TOKENS)[number];
 
 /** Motion scale — `transition` shorthands (duration + easing). */
-export const SH3_MOTION_TOKENS = ["fast", "base", "slow"] as const;
+export const FOLD_MOTION_TOKENS = ["fast", "base", "slow"] as const;
 
-export type Sh3MotionToken = (typeof SH3_MOTION_TOKENS)[number];
+export type FoldMotionToken = (typeof FOLD_MOTION_TOKENS)[number];
 
-/** Backdrop-blur radii (`--sh3-blur-*`). */
-export const SH3_BLUR_TOKENS = ["glass"] as const;
+/** Backdrop-blur radii (`--fold-blur-*`). */
+export const FOLD_BLUR_TOKENS = ["glass"] as const;
 
-export type Sh3BlurToken = (typeof SH3_BLUR_TOKENS)[number];
+export type FoldBlurToken = (typeof FOLD_BLUR_TOKENS)[number];
 
 /**
  * Elevation scale — full `box-shadow` values. The shared depth language: a
@@ -139,7 +140,7 @@ export type Sh3BlurToken = (typeof SH3_BLUR_TOKENS)[number];
  * (black ink via `color-mix`, which reads acceptably on both themes), so they
  * live with the scales. `panel-*` are the directional side-panel shadows.
  */
-export const SH3_SHADOW_TOKENS = [
+export const FOLD_SHADOW_TOKENS = [
   "sm",
   "md",
   "lg",
@@ -147,44 +148,44 @@ export const SH3_SHADOW_TOKENS = [
   "panel-left",
 ] as const;
 
-export type Sh3ShadowToken = (typeof SH3_SHADOW_TOKENS)[number];
+export type FoldShadowToken = (typeof FOLD_SHADOW_TOKENS)[number];
 
 /** The full custom-property name for a semantic colour token. */
-export function sh3ColorProperty(token: Sh3SemanticColorToken): string {
-  return `--sh3-color-${token}`;
+export function foldColorProperty(token: FoldSemanticColorToken): string {
+  return `--fold-color-${token}`;
 }
 
-/** A ready-to-use `var(--sh3-color-…)` reference for a semantic colour token. */
-export function sh3ColorVar(token: Sh3SemanticColorToken): string {
-  return `var(${sh3ColorProperty(token)})`;
+/** A ready-to-use `var(--fold-color-…)` reference for a semantic colour token. */
+export function foldColorVar(token: FoldSemanticColorToken): string {
+  return `var(${foldColorProperty(token)})`;
 }
 
-/** A ready-to-use `var(--sh3-radius-…)` reference. */
-export function sh3RadiusVar(token: Sh3RadiusToken): string {
-  return `var(--sh3-radius-${token})`;
+/** A ready-to-use `var(--fold-radius-…)` reference. */
+export function foldRadiusVar(token: FoldRadiusToken): string {
+  return `var(--fold-radius-${token})`;
 }
 
-/** A ready-to-use `var(--sh3-text-…)` reference. */
-export function sh3TextVar(token: Sh3TextToken): string {
-  return `var(--sh3-text-${token})`;
+/** A ready-to-use `var(--fold-text-…)` reference. */
+export function foldTextVar(token: FoldTextToken): string {
+  return `var(--fold-text-${token})`;
 }
 
-/** A ready-to-use `var(--sh3-space-…)` reference. */
-export function sh3SpaceVar(token: Sh3SpaceToken): string {
-  return `var(--sh3-space-${token})`;
+/** A ready-to-use `var(--fold-space-…)` reference. */
+export function foldSpaceVar(token: FoldSpaceToken): string {
+  return `var(--fold-space-${token})`;
 }
 
-/** A ready-to-use `var(--sh3-motion-…)` reference. */
-export function sh3MotionVar(token: Sh3MotionToken): string {
-  return `var(--sh3-motion-${token})`;
+/** A ready-to-use `var(--fold-motion-…)` reference. */
+export function foldMotionVar(token: FoldMotionToken): string {
+  return `var(--fold-motion-${token})`;
 }
 
-/** A ready-to-use `var(--sh3-blur-…)` reference. */
-export function sh3BlurVar(token: Sh3BlurToken): string {
-  return `var(--sh3-blur-${token})`;
+/** A ready-to-use `var(--fold-blur-…)` reference. */
+export function foldBlurVar(token: FoldBlurToken): string {
+  return `var(--fold-blur-${token})`;
 }
 
-/** A ready-to-use `var(--sh3-shadow-…)` reference. */
-export function sh3ShadowVar(token: Sh3ShadowToken): string {
-  return `var(--sh3-shadow-${token})`;
+/** A ready-to-use `var(--fold-shadow-…)` reference. */
+export function foldShadowVar(token: FoldShadowToken): string {
+  return `var(--fold-shadow-${token})`;
 }

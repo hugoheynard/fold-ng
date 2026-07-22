@@ -7,7 +7,7 @@ import { FocusTrapDirective } from "../focus-trap.directive";
   imports: [FocusTrapDirective],
   template: `
     <button id="outside" type="button">outside</button>
-    <div [sh3FocusTrap]="trapped()" tabindex="-1">
+    <div [foldFocusTrap]="trapped()" tabindex="-1">
       <button id="first" type="button">first</button>
       <button id="mid" type="button">mid</button>
       <button id="last" type="button">last</button>

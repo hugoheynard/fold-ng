@@ -1,22 +1,22 @@
 import { Component, type TemplateRef, ViewChild, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { Sh3PanelHostService } from "../panel-host.service";
-import type { Sh3TemplatePanelDescriptor } from "../panel.types";
+import { FoldPanelHostService } from "../panel-host.service";
+import type { FoldTemplatePanelDescriptor } from "../panel.types";
 
 @Component({ template: `<ng-template #t>x</ng-template>` })
 class TplHostComponent {
   @ViewChild("t", { static: true }) tpl!: TemplateRef<unknown>;
 }
 
-describe("Sh3PanelHostService", () => {
-  let service: Sh3PanelHostService;
+describe("FoldPanelHostService", () => {
+  let service: FoldPanelHostService;
   let tpl: TemplateRef<unknown>;
 
   function descriptor(
     title = "Panel",
     onClose: () => void = () => undefined,
-  ): Omit<Sh3TemplatePanelDescriptor, "id" | "kind"> {
+  ): Omit<FoldTemplatePanelDescriptor, "id" | "kind"> {
     return {
       templateRef: tpl,
       side: "right",
@@ -28,8 +28,8 @@ describe("Sh3PanelHostService", () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
-    service = TestBed.inject(Sh3PanelHostService);
+    TestBed.configureTestingModule({ providers: [FoldPanelHostService] });
+    service = TestBed.inject(FoldPanelHostService);
     const fixture = TestBed.createComponent(TplHostComponent);
     fixture.detectChanges();
     tpl = fixture.componentInstance.tpl;

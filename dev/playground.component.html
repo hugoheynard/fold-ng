@@ -1,7 +1,7 @@
-<sh3-page-section title="Playground" icon="play">
+<fold-page-section title="Playground" icon="play">
   <div class="pg-row">
-    <sh3-card class="pg-panel pg-params" padding="none" separators raisedBands>
-      <sh3-element-title
+    <fold-card class="pg-panel pg-params" padding="none" separators raisedBands>
+      <fold-element-title
         cardHeader
         variant="title"
         icon="sliders"
@@ -10,13 +10,18 @@
       <div class="pg-body pg-params-body">
         <ng-content select="[params]" />
       </div>
-    </sh3-card>
+    </fold-card>
 
-    <sh3-card class="pg-panel pg-preview" padding="none" separators raisedBands>
-      <sh3-element-title cardHeader variant="title" icon="eye" title="Preview">
+    <fold-card
+      class="pg-panel pg-preview"
+      padding="none"
+      separators
+      raisedBands
+    >
+      <fold-element-title cardHeader variant="title" icon="eye" title="Preview">
         <!-- mobile only: the code panel collapses; this reveals it as a glass
              overlay over the preview -->
-        <sh3-button
+        <fold-button
           titleAction
           class="pg-code-toggle"
           size="sm"
@@ -25,8 +30,8 @@
           (clicked)="toggleCode()"
         >
           Code
-        </sh3-button>
-      </sh3-element-title>
+        </fold-button>
+      </fold-element-title>
       <div cardHeader class="pg-head-actions">
         <ng-content select="[preview-actions]" />
       </div>
@@ -37,51 +42,53 @@
             <div class="pg-code-overlay-top">
               <span class="pg-lang">{{ lang() }}</span>
               <div class="pg-code-overlay-actions">
-                <sh3-button
+                <fold-button
                   size="sm"
                   variant="ghost"
                   [icon]="copied() ? 'check-circle' : 'copy'"
                   (clicked)="copy()"
                 >
                   {{ copied() ? "Copied" : "Copy" }}
-                </sh3-button>
-                <sh3-button
+                </fold-button>
+                <fold-button
                   size="sm"
                   variant="ghost"
                   icon="close"
                   (clicked)="toggleCode()"
                 >
                   Close
-                </sh3-button>
+                </fold-button>
               </div>
             </div>
-            <pre class="pg-pre pg-code-overlay-pre"><code>{{ code() }}</code></pre>
+            <pre
+              class="pg-pre pg-code-overlay-pre"
+            ><code>{{ code() }}</code></pre>
           </div>
         }
       </div>
-    </sh3-card>
+    </fold-card>
 
-    <sh3-card
+    <fold-card
       class="pg-panel pg-code"
       surface="sunken"
       padding="none"
       separators
       raisedBands
     >
-      <sh3-element-title cardHeader variant="title" icon="code" title="Code">
+      <fold-element-title cardHeader variant="title" icon="code" title="Code">
         <div titleAction class="pg-code-actions">
           <span class="pg-lang">{{ lang() }}</span>
-          <sh3-button
+          <fold-button
             size="sm"
             variant="ghost"
             [icon]="copied() ? 'check-circle' : 'copy'"
             (clicked)="copy()"
           >
             {{ copied() ? "Copied" : "Copy" }}
-          </sh3-button>
+          </fold-button>
         </div>
-      </sh3-element-title>
+      </fold-element-title>
       <pre class="pg-body pg-pre"><code>{{ code() }}</code></pre>
-    </sh3-card>
+    </fold-card>
   </div>
-</sh3-page-section>
+</fold-page-section>

@@ -1,10 +1,10 @@
 <div
-  class="sh3dt-wrap"
-  [class.sh3dt--zebra]="zebra()"
-  [class.sh3dt--hover]="hover()"
-  [class.sh3dt--cards]="mobileCards()"
+  class="folddt-wrap"
+  [class.folddt--zebra]="zebra()"
+  [class.folddt--hover]="hover()"
+  [class.folddt--cards]="mobileCards()"
 >
-  <table class="sh3dt">
+  <table class="folddt">
     <thead>
       <tr>
         @for (col of columns(); track col.key) {
@@ -16,18 +16,18 @@
             @if (col.sortable) {
               <button
                 type="button"
-                class="sh3dt-th-sort"
+                class="folddt-th-sort"
                 [class.right]="col.align === 'right'"
                 (click)="sortChange.emit(col.key)"
               >
                 <span>{{ col.label }}</span>
-                <span class="sh3dt-arrow" [class.on]="isSorted(col.key)">{{
+                <span class="folddt-arrow" [class.on]="isSorted(col.key)">{{
                   sortArrow(col.key)
                 }}</span>
               </button>
             } @else {
               <span
-                class="sh3dt-th-plain"
+                class="folddt-th-plain"
                 [class.right]="col.align === 'right'"
                 >{{ col.label }}</span
               >
@@ -40,7 +40,7 @@
       @for (row of rows(); track keyOf(row, $index); let i = $index) {
         @let tone = toneOf(row);
         <tr
-          class="sh3dt-row"
+          class="folddt-row"
           [class.tone-warning]="tone === 'warning'"
           [class.tone-alert]="tone === 'alert'"
           [class.tone-success]="tone === 'success'"
@@ -51,7 +51,7 @@
         >
           @for (col of columns(); track col.key) {
             <td
-              class="sh3dt-cell"
+              class="folddt-cell"
               [class.is-primary]="col.key === primaryKey()"
               [class.right]="col.align === 'right'"
               [ngClass]="col.cellClass || ''"
@@ -71,10 +71,10 @@
   </table>
 
   @if (rows().length === 0 && empty(); as e) {
-    <div class="sh3dt-empty">
-      <div class="sh3dt-empty-t">{{ e.title }}</div>
+    <div class="folddt-empty">
+      <div class="folddt-empty-t">{{ e.title }}</div>
       @if (e.subtitle) {
-        <div class="sh3dt-empty-s">{{ e.subtitle }}</div>
+        <div class="folddt-empty-s">{{ e.subtitle }}</div>
       }
     </div>
   }

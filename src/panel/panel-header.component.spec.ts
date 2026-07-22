@@ -1,15 +1,15 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { Sh3PanelHeaderComponent } from "./panel-header.component";
-import { Sh3PanelRef } from "./panel-ref";
-import type { Sh3IconName } from "../components/icon/icon.registry";
+import { FoldPanelHeaderComponent } from "./panel-header.component";
+import { FoldPanelRef } from "./panel-ref";
+import type { FoldIconName } from "../components/icon/icon.registry";
 
 @Component({
   standalone: true,
-  imports: [Sh3PanelHeaderComponent],
+  imports: [FoldPanelHeaderComponent],
   template: `
-    <sh3-panel-header
+    <fold-panel-header
       [title]="title"
       [subtitle]="subtitle"
       [variant]="variant"
@@ -22,14 +22,14 @@ import type { Sh3IconName } from "../components/icon/icon.registry";
       @if (withDesc) {
         <span class="desc-probe">Description</span>
       }
-    </sh3-panel-header>
+    </fold-panel-header>
   `,
 })
 class HostComponent {
   title = "Titre";
   subtitle = "";
   variant: "title" | "eyebrow" = "title";
-  icon: Sh3IconName | undefined = undefined;
+  icon: FoldIconName | undefined = undefined;
   withActions = false;
   withDesc = false;
   closedCount = 0;
@@ -37,12 +37,12 @@ class HostComponent {
 
 function setup(
   patch: Partial<HostComponent> = {},
-  panelRef?: Sh3PanelRef,
+  panelRef?: FoldPanelRef,
 ): { cmp: HostComponent; host: HTMLElement } {
   TestBed.resetTestingModule(); // allow multiple setups within one test
   TestBed.configureTestingModule({
     imports: [HostComponent],
-    providers: panelRef ? [{ provide: Sh3PanelRef, useValue: panelRef }] : [],
+    providers: panelRef ? [{ provide: FoldPanelRef, useValue: panelRef }] : [],
   });
   const fixture = TestBed.createComponent(HostComponent);
   Object.assign(fixture.componentInstance, patch);
@@ -53,7 +53,7 @@ function setup(
   };
 }
 
-describe("Sh3PanelHeaderComponent", () => {
+describe("FoldPanelHeaderComponent", () => {
   it("renders the title; hides the subtitle until set", () => {
     const { host } = setup();
     expect(host.querySelector(".ph__title")?.textContent?.trim()).toBe("Titre");
@@ -101,9 +101,9 @@ describe("Sh3PanelHeaderComponent", () => {
     );
   });
 
-  it("self-closes via the injected Sh3PanelRef and emits (closed) first", () => {
+  it("self-closes via the injected FoldPanelRef and emits (closed) first", () => {
     const dismiss = vi.fn();
-    const { cmp, host } = setup({}, new Sh3PanelRef(dismiss));
+    const { cmp, host } = setup({}, new FoldPanelRef(dismiss));
     host.querySelector<HTMLButtonElement>(".ph__close")!.click();
     expect(cmp.closedCount).toBe(1);
     expect(dismiss).toHaveBeenCalledTimes(1);

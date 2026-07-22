@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="tab-layout">
+<fold-page-layout fluid title="tab-layout">
   <p description>
     Pairs a tab bar with the content it drives, and owns the one thing every
     tabbed page hand-rolls: where the nav sits. placement=top puts it above the
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <sh3-slider
+    <fold-slider
       params
       label="foldAt"
       [min]="320"
@@ -40,7 +40,7 @@
       [(value)]="tlFoldAt"
     />
 
-    <sh3-slider
+    <fold-slider
       params
       label="preview width"
       [min]="320"
@@ -56,12 +56,12 @@
     </p>
 
     <div [style.width.px]="tlWidth()" [style.maxWidth]="'100%'">
-      <sh3-tab-layout
+      <fold-tab-layout
         [placement]="tlPlacement()"
         [foldAt]="tlFoldAt()"
-        #tl="sh3TabLayout"
+        #tl="foldTabLayout"
       >
-        <sh3-tab-nav
+        <fold-tab-nav
           tabNav
           activeStyle="fill"
           [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
@@ -74,7 +74,7 @@
           <div class="tl-demo-block"></div>
           <div class="tl-demo-block"></div>
         </div>
-      </sh3-tab-layout>
+      </fold-tab-layout>
     </div>
   </dev-playground>
-</sh3-page-layout>
+</fold-page-layout>

@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="app-shell" icon="grid">
+<fold-page-layout fluid title="app-shell" icon="grid">
   <p description>
     The application frame: a primary icon rail, an optional secondary rail, a
     header band, the content area and a self-collapsing footer, wired as one
@@ -7,14 +7,14 @@
     desktop, tablet and mobile. Header + footer layout (inset or full), footer
     behaviour (pinned player-bar or scroll-to-reveal legal footer), rail width
     and header height are inputs; everything else is a design token you can
-    override. Regions float per-surface with <code>sh3Elevated</code> — the
+    override. Regions float per-surface with <code>foldElevated</code> — the
     shell owns structure, not skin.
   </p>
   <gal-kind-badge titleBadge kind="component" />
 
   <dev-playground [code]="shellCode()">
     <div class="np-field" params>
-      <span class="gal-tag">rail sh3Elevated</span>
+      <span class="gal-tag">rail foldElevated</span>
       <div class="ss-seg">
         <button
           type="button"
@@ -100,7 +100,7 @@
       </div>
     </div>
 
-    <sh3-slider
+    <fold-slider
       params
       label="railWidth"
       [min]="48"
@@ -108,7 +108,7 @@
       [valueText]="shellRailWidth() + 'px'"
       [(value)]="shellRailWidth"
     />
-    <sh3-slider
+    <fold-slider
       params
       label="headerHeight"
       [min]="44"
@@ -139,7 +139,7 @@
         panelScope
         #sph="panelScope"
       >
-        <sh3-app-shell
+        <fold-app-shell
           [headerLayout]="shellHeaderLayout()"
           [footerLayout]="shellFooterLayout()"
           [footerBehavior]="shellFooterBehavior()"
@@ -147,16 +147,16 @@
           [headerHeight]="shellHeaderHeight()"
           [(mobileNavOpen)]="previewNavOpen"
         >
-          <sh3-menu
+          <fold-menu
             railPrimary
             tint="primary"
             [expanded]="previewNavOpen()"
-            [sh3Elevated]="railElevated()"
+            [foldElevated]="railElevated()"
           >
             <div header class="rail-brand">S3</div>
             @for (i of railNav; track i.id) {
             <button
-              sh3-menu-item
+              fold-menu-item
               [icon]="i.icon"
               [label]="i.label"
               [active]="previewNav() === i.id"
@@ -165,22 +165,22 @@
             }
             <button
               footer
-              sh3-menu-item
+              fold-menu-item
               icon="settings"
               label="Settings"
             ></button>
-          </sh3-menu>
-          <sh3-menu railSecondary level="secondary" [expanded]="true">
+          </fold-menu>
+          <fold-menu railSecondary level="secondary" [expanded]="true">
             <div header class="lib-head">Workspace</div>
             <button
-              sh3-menu-item
+              fold-menu-item
               icon="grid"
               label="Overview"
               [active]="true"
             ></button>
-            <button sh3-menu-item icon="contracts" label="Contracts"></button>
-            <button sh3-menu-item icon="music" label="Library"></button>
-          </sh3-menu>
+            <button fold-menu-item icon="contracts" label="Contracts"></button>
+            <button fold-menu-item icon="music" label="Library"></button>
+          </fold-menu>
           <div header class="sp-header">
             @if (shellMode() === "mobile") {
             <button
@@ -190,7 +190,7 @@
               [attr.aria-expanded]="previewNavOpen()"
               aria-label="Toggle navigation"
             >
-              <sh3-icon
+              <fold-icon
                 [name]="previewNavOpen() ? 'close' : 'menu'"
                 size="sm"
               />
@@ -199,11 +199,11 @@
             <span>Header</span>
             <div class="sp-actions">
               <button type="button" (click)="openPreviewPanel(sph.service)">
-                <sh3-icon name="contracts" size="sm" />
+                <fold-icon name="contracts" size="sm" />
                 Open panel
               </button>
               <button type="button" (click)="toggleTheme()">
-                <sh3-icon
+                <fold-icon
                   [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"
                   size="sm"
                 />
@@ -219,16 +219,16 @@
 
           @if (shellFooter()) {
           <div footer class="sp-footer">
-            <sh3-icon name="play" size="sm" />
+            <fold-icon name="play" size="sm" />
             <span class="sp-footer-track">Now playing — Track 03</span>
             <span class="sp-footer-time">1:24 / 3:57</span>
           </div>
           }
 
           <!-- the preview's own panel host — panels open inside the preview -->
-          <sh3-panel-host />
-        </sh3-app-shell>
+          <fold-panel-host />
+        </fold-app-shell>
       </div>
     </div>
   </dev-playground>
-</sh3-page-layout>
+</fold-page-layout>

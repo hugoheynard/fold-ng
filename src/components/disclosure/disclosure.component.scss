@@ -1,8 +1,8 @@
 :host {
   display: block;
-  border: 1px solid var(--sh3-color-border);
-  border-radius: var(--sh3-radius-md);
-  background: var(--sh3-color-surface-card);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
   /* Clip so the summary bar's fill and the panel follow the rounded corners. */
   overflow: clip;
 }
@@ -15,15 +15,15 @@
   gap: 12px;
   padding: 14px 16px;
   border: none;
-  background: var(--sh3-disclosure-summary-bg, transparent);
-  color: var(--sh3-disclosure-summary-color, var(--sh3-color-text));
+  background: var(--fold-disclosure-summary-bg, transparent);
+  color: var(--fold-disclosure-summary-color, var(--fold-color-text));
   font: inherit;
   font-weight: 700;
   text-align: left;
   cursor: pointer;
 }
 .disc-summary:focus-visible {
-  outline: 2px solid var(--sh3-color-primary);
+  outline: 2px solid var(--fold-color-primary);
   outline-offset: -2px;
 }
 .disc-label {
@@ -54,7 +54,7 @@
 }
 .disc-panel-content {
   padding: 16px;
-  border-top: 1px solid var(--sh3-color-border-subtle);
+  border-top: 1px solid var(--fold-color-border-subtle);
 }
 
 /* Honour a user's reduced-motion preference — snap instead of slide. */

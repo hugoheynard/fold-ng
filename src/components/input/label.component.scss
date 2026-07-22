@@ -3,18 +3,18 @@
 }
 
 label {
-  font-size: var(--sh3-text-xs);
+  font-size: var(--fold-text-xs);
   font-weight: 600;
-  color: var(--sh3-color-text-secondary);
+  color: var(--fold-color-text-secondary);
 }
 
 .req {
-  color: var(--sh3-color-alert-text);
+  color: var(--fold-color-alert-text);
   margin-left: 2px;
 }
 
 .opt {
   margin-left: 4px;
   font-weight: 500;
-  color: var(--sh3-color-text-faded);
+  color: var(--fold-color-text-faded);
 }

@@ -2,15 +2,15 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import {
-  Sh3CalloutComponent,
-  type Sh3CalloutAppearance,
-  type Sh3CalloutVariant,
+  FoldCalloutComponent,
+  type FoldCalloutAppearance,
+  type FoldCalloutVariant,
 } from "./callout.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3CalloutComponent],
-  template: `<sh3-callout
+  imports: [FoldCalloutComponent],
+  template: `<fold-callout
     [variant]="variant()"
     [appearance]="appearance()"
     [icon]="icon()"
@@ -18,11 +18,11 @@ import {
   >
     This contract is <strong>locked</strong>.
     <button actions class="act">Renew</button>
-  </sh3-callout>`,
+  </fold-callout>`,
 })
 class HostComponent {
-  readonly variant = signal<Sh3CalloutVariant>("neutral");
-  readonly appearance = signal<Sh3CalloutAppearance>("inset");
+  readonly variant = signal<FoldCalloutVariant>("neutral");
+  readonly appearance = signal<FoldCalloutAppearance>("inset");
   readonly icon = signal<"clock" | undefined>(undefined);
   readonly announce = signal(false);
 }
@@ -31,12 +31,12 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const callout = (fixture.nativeElement as HTMLElement).querySelector(
-    "sh3-callout",
+    "fold-callout",
   ) as HTMLElement;
   return { fixture, callout };
 }
 
-describe("Sh3CalloutComponent", () => {
+describe("FoldCalloutComponent", () => {
   it("projects the message with its markup, and actions into their slot", () => {
     const { callout } = render();
     expect(callout.querySelector(".callout-body strong")?.textContent).toBe(
@@ -79,7 +79,7 @@ describe("Sh3CalloutComponent", () => {
   it("carries a default glyph per variant, overridable", () => {
     const { fixture, callout } = render();
     const glyph = () =>
-      callout.querySelector("sh3-icon.callout-icon svg path, sh3-icon svg");
+      callout.querySelector("fold-icon.callout-icon svg path, fold-icon svg");
     expect(glyph()).not.toBeNull();
 
     // Each variant resolves to *a* glyph — the mapping itself is the contract.

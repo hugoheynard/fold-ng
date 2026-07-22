@@ -7,48 +7,48 @@
   box-sizing: border-box;
   display: grid;
   place-items: center;
-  border-radius: var(--sh3-radius-sm);
-  color: var(--sh3-color-text-muted);
+  border-radius: var(--fold-radius-sm);
+  color: var(--fold-color-text-muted);
   background: transparent;
   border: none;
   cursor: pointer;
   text-decoration: none;
   transition:
-    background var(--sh3-motion-fast),
-    color var(--sh3-motion-fast);
+    background var(--fold-motion-fast),
+    color var(--fold-motion-fast);
 
-  /* The tint the item hovers/activates with. `follow` (the sh3-menu default)
+  /* The tint the item hovers/activates with. `follow` (the fold-menu default)
      takes the enclosing section's colour, or neutral when there's no section
      (the footer). The menu's `tint` input overrides it for all its items. The
      hover/active surfaces + text derive from it, so a tint only sets --mi-accent
      (except neutral, which maps to the flat tab-nav-hover look). */
-  --mi-accent: var(--sh3-menu-section-color, var(--sh3-color-text-secondary));
+  --mi-accent: var(--fold-menu-section-color, var(--fold-color-text-secondary));
   --mi-hover-bg: color-mix(
     in srgb,
     var(--mi-accent) 16%,
-    var(--sh3-color-surface-hover)
+    var(--fold-color-surface-hover)
   );
   --mi-hover-fg: var(--mi-accent);
   --mi-active-bg: color-mix(in srgb, var(--mi-accent) 15%, transparent);
   --mi-active-fg: color-mix(
     in srgb,
     var(--mi-accent) 80%,
-    var(--sh3-color-text)
+    var(--fold-color-text)
   );
   --mi-active-icon: var(--mi-accent);
 }
-:host-context(sh3-menu[data-tint="neutral"]) {
+:host-context(fold-menu[data-tint="neutral"]) {
   /* Flat surface-hover background. Hover text stays faded (like primary's hover
      shows the accent, not bright text); the selection brightens to full text. */
-  --mi-accent: var(--sh3-color-text-secondary);
-  --mi-hover-bg: var(--sh3-color-surface-hover);
-  --mi-hover-fg: var(--sh3-color-text-secondary);
-  --mi-active-bg: var(--sh3-color-surface-hover);
-  --mi-active-fg: var(--sh3-color-text);
-  --mi-active-icon: var(--sh3-color-text);
+  --mi-accent: var(--fold-color-text-secondary);
+  --mi-hover-bg: var(--fold-color-surface-hover);
+  --mi-hover-fg: var(--fold-color-text-secondary);
+  --mi-active-bg: var(--fold-color-surface-hover);
+  --mi-active-fg: var(--fold-color-text);
+  --mi-active-icon: var(--fold-color-text);
 }
-:host-context(sh3-menu[data-tint="primary"]) {
-  --mi-accent: var(--sh3-color-primary);
+:host-context(fold-menu[data-tint="primary"]) {
+  --mi-accent: var(--fold-color-primary);
 }
 
 :host(:hover) {
@@ -56,7 +56,7 @@
   color: var(--mi-hover-fg);
 }
 :host(:focus-visible) {
-  outline: 2px solid var(--sh3-color-primary);
+  outline: 2px solid var(--fold-color-primary);
   outline-offset: 2px;
 }
 
@@ -85,7 +85,7 @@
 
 .mi-icon {
   color: inherit;
-  transition: color var(--sh3-motion-fast);
+  transition: color var(--fold-motion-fast);
 }
 
 /* ── Badge ──────────────────────────────────────────────────────────
@@ -100,7 +100,7 @@
   right: 5px;
   width: 8px;
   height: 8px;
-  border-radius: var(--sh3-radius-round);
+  border-radius: var(--fold-radius-round);
   background: var(--mi-badge-accent, var(--mi-accent));
   pointer-events: none;
 }
@@ -113,37 +113,37 @@
   padding: 0 4px;
   display: grid;
   place-items: center;
-  border-radius: var(--sh3-radius-pill);
+  border-radius: var(--fold-radius-pill);
   font-size: 10px;
   font-weight: 600;
   line-height: 1;
-  color: var(--sh3-color-on-primary);
+  color: var(--fold-color-on-primary);
 }
 
 .mi-badge {
   display: none;
 }
 
-/* `follow` pill: mirror sh3-badge's shape/type, tinted from the item's accent
+/* `follow` pill: mirror fold-badge's shape/type, tinted from the item's accent
    with the same soft surface/border/text mix the item uses for its hovers. */
 .mi-badge-follow {
   padding: 1px 7px;
-  border-radius: var(--sh3-radius-pill);
-  font-size: var(--sh3-text-xs);
+  border-radius: var(--fold-radius-pill);
+  font-size: var(--fold-text-xs);
   font-weight: 500;
   line-height: 1.5;
   white-space: nowrap;
   background: color-mix(in srgb, var(--mi-badge-accent) 16%, transparent);
   border: 1px solid color-mix(in srgb, var(--mi-badge-accent) 35%, transparent);
-  color: color-mix(in srgb, var(--mi-badge-accent) 85%, var(--sh3-color-text));
+  color: color-mix(in srgb, var(--mi-badge-accent) 85%, var(--fold-color-text));
 }
 
 /* Expanded row: drop the corner indicator, show the pill flush to the trailing
    edge (the label keeps its natural width; `auto` margin fills the gap). */
-:host-context(sh3-menu.expanded) .mi-dot {
+:host-context(fold-menu.expanded) .mi-dot {
   display: none;
 }
-:host-context(sh3-menu.expanded) .mi-badge {
+:host-context(fold-menu.expanded) .mi-badge {
   display: inline-flex;
   margin-left: auto;
 }
@@ -155,16 +155,16 @@
   top: 50%;
   transform: translateY(-50%);
   padding: 4px 8px;
-  border-radius: var(--sh3-radius-sm);
-  background: var(--sh3-color-glass);
-  border: 1px solid var(--sh3-color-glass-border);
-  color: var(--sh3-color-text);
-  font-size: var(--sh3-text-xs);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-glass);
+  border: 1px solid var(--fold-color-glass-border);
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-xs);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  box-shadow: var(--sh3-shadow-md);
-  transition: opacity var(--sh3-motion-fast);
+  box-shadow: var(--fold-shadow-md);
+  transition: opacity var(--fold-motion-fast);
   z-index: 100;
 }
 :host(:hover) .mi-tip {
@@ -177,7 +177,7 @@
    stretch) instead of `width: 100%` so the item's intrinsic label width feeds
    the menu's max-content — a percentage contributes 0 and would collapse the
    rail to its min-width, overflowing the nowrap labels. */
-:host-context(sh3-menu.expanded) {
+:host-context(fold-menu.expanded) {
   width: auto;
   height: 36px;
   display: flex;
@@ -185,7 +185,7 @@
   gap: 12px;
   padding: 0 12px;
 }
-:host-context(sh3-menu.expanded) .mi-tip {
+:host-context(fold-menu.expanded) .mi-tip {
   position: static;
   transform: none;
   padding: 0;
@@ -193,7 +193,7 @@
   background: none;
   box-shadow: none;
   color: inherit;
-  font-size: var(--sh3-text-sm);
+  font-size: var(--fold-text-sm);
   opacity: 1;
   pointer-events: auto;
 }

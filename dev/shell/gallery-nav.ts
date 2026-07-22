@@ -1,4 +1,4 @@
-import type { Sh3IconName } from "../../src/index";
+import type { FoldIconName } from "../../src/index";
 
 /** One entry in the gallery's Library nav — also the source of its route. */
 export interface GalleryNavItem {
@@ -7,14 +7,14 @@ export interface GalleryNavItem {
   /** Rail + page-header label. */
   readonly label: string;
   /** Optional rail/page icon (rail falls back to `grid`). */
-  readonly icon?: Sh3IconName;
+  readonly icon?: FoldIconName;
   /** Optional rail badge — a tag (`"new"`) or a count. */
   readonly badge?: string | number;
   /** Badge colour — defaults to `follow` (tracks the item's tint). */
   readonly badgeTone?: "follow" | "info" | "accent" | "warning" | "alert";
 }
 
-/** A colour-coded block of the Library nav — one `sh3-menu-section`. */
+/** A colour-coded block of the Library nav — one `fold-menu-section`. */
 export interface GalleryNavGroup {
   readonly label: string;
   /** Section accent — tints the separator + item hover. */

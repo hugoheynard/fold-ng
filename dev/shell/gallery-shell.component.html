@@ -1,4 +1,4 @@
-<sh3-app-shell
+<fold-app-shell
   footerLayout="inset"
   footerBehavior="scroll"
   [mobileNav]="cfg().mobileNav"
@@ -7,17 +7,17 @@
 >
   <!-- ── rail primary: the Fold app rail. Expands into labels when it becomes
        the mobile drawer; closes the drawer on navigation. ──────────── -->
-  <sh3-menu
+  <fold-menu
     railPrimary
     tint="primary"
     [expanded]="mobileNavOpen()"
-    [sh3Elevated]="cfg().elevated.includes('railPrimary')"
+    [foldElevated]="cfg().elevated.includes('railPrimary')"
   >
     <a header class="rail-brand" routerLink="/" aria-label="Fold — home">
-      <sh3-icon name="fold" [size]="24" />
+      <fold-icon name="fold" [size]="24" />
     </a>
     <a
-      sh3-menu-item
+      fold-menu-item
       icon="home"
       label="Home"
       routerLink="/"
@@ -28,32 +28,36 @@
       (click)="mobileNavOpen.set(false)"
     ></a>
     <a
-      sh3-menu-item
+      fold-menu-item
       icon="library"
       label="Library"
       [routerLink]="'/' + firstComponent"
       [active]="!homeRla.isActive"
       (click)="mobileNavOpen.set(false)"
     ></a>
-    <button footer sh3-menu-item icon="settings" label="Settings"></button>
-  </sh3-menu>
+    <button footer fold-menu-item icon="settings" label="Settings"></button>
+  </fold-menu>
 
   <!-- ── rail secondary: the "Library" nav — each item is a route ──── -->
-  <sh3-menu
+  <fold-menu
     railSecondary
     level="secondary"
     [expanded]="true"
-    [sh3Elevated]="cfg().elevated.includes('railSecondary')"
+    [foldElevated]="cfg().elevated.includes('railSecondary')"
   >
     <div header class="lib-head">
-      <sh3-icon name="library" size="sm" />
+      <fold-icon name="library" size="sm" />
       <span>Library</span>
     </div>
     @for (group of navGroups; track group.label) {
-      <sh3-menu-section [label]="group.label" [color]="group.color" collapsible>
+      <fold-menu-section
+        [label]="group.label"
+        [color]="group.color"
+        collapsible
+      >
         @for (item of group.items; track item.id) {
           <a
-            sh3-menu-item
+            fold-menu-item
             [icon]="item.icon ?? 'grid'"
             [label]="item.label"
             [routerLink]="'/' + item.id"
@@ -64,9 +68,9 @@
             [badgeTone]="item.badgeTone ?? 'follow'"
           ></a>
         }
-      </sh3-menu-section>
+      </fold-menu-section>
     }
-  </sh3-menu>
+  </fold-menu>
 
   <!-- ── header ────────────────────────────────────────────────── -->
   <div header class="gal-header">
@@ -78,15 +82,15 @@
       [attr.aria-expanded]="mobileNavOpen()"
       aria-label="Toggle navigation"
     >
-      <sh3-icon [name]="mobileNavOpen() ? 'close' : 'menu'" size="md" />
+      <fold-icon [name]="mobileNavOpen() ? 'close' : 'menu'" size="md" />
     </button>
     <a class="gal-title" routerLink="/">
-      <sh3-icon name="fold" size="md" />
+      <fold-icon name="fold" size="md" />
       <span>Fold</span>
       <span class="gal-title-sub">design system</span>
     </a>
     <div class="gal-themes">
-      <sh3-icon name="palette" size="sm" />
+      <fold-icon name="palette" size="sm" />
       @for (t of themes; track t) {
         <button
           type="button"
@@ -103,14 +107,14 @@
   <!-- ── content: the routed page owns its own scroll ─────────── -->
   <router-outlet />
 
-  <!-- ── footer: dogfooding sh3-app-shell's footer slot (scroll mode). A <div>,
+  <!-- ── footer: dogfooding fold-app-shell's footer slot (scroll mode). A <div>,
        not a <footer> — the shell already wraps the slot in the <footer>
        contentinfo landmark. ── -->
   <div footer class="gal-footer">
     <div class="gal-footer-main">
       <div class="gal-footer-brand-col">
         <a class="gal-footer-brand" routerLink="/" aria-label="Fold — home">
-          <sh3-icon name="fold" size="md" />
+          <fold-icon name="fold" size="md" />
           <span>Fold</span>
         </a>
         <p class="gal-footer-tagline">
@@ -143,7 +147,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <sh3-icon name="github" size="sm" />
+          <fold-icon name="github" size="sm" />
           <span>Star on GitHub</span>
         </a>
         <a
@@ -152,11 +156,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <sh3-icon name="heart" size="sm" />
+          <fold-icon name="heart" size="sm" />
           <span>Sponsor</span>
         </a>
         <a class="gal-footer-link" href="mailto:hheynard@gmail.com">
-          <sh3-icon name="mail" size="sm" />
+          <fold-icon name="mail" size="sm" />
           <span>Contact</span>
         </a>
       </nav>
@@ -173,20 +177,20 @@
         >MIT License</a
       >
       <span class="gal-footer-built"
-        >This footer is <code>sh3-app-shell</code>'s footer slot, in
+        >This footer is <code>fold-app-shell</code>'s footer slot, in
         <code>scroll</code> mode.</span
       >
     </div>
   </div>
-</sh3-app-shell>
+</fold-app-shell>
 
 <!-- Tile mode (navi + umbra): the shell renders no drawer, so the header
      hamburger opens this full-screen launcher instead — a curated grid of
-     top-level destinations, dogfooding sh3-nav-launcher. -->
+     top-level destinations, dogfooding fold-nav-launcher. -->
 @if (cfg().usesLauncher) {
-  <sh3-nav-launcher [(open)]="mobileNavOpen" label="Go to">
+  <fold-nav-launcher [(open)]="mobileNavOpen" label="Go to">
     <a
-      sh3-nav-tile
+      fold-nav-tile
       icon="home"
       label="Home"
       [variant]="cfg().tileVariant"
@@ -194,7 +198,7 @@
       (click)="mobileNavOpen.set(false)"
     ></a>
     <a
-      sh3-nav-tile
+      fold-nav-tile
       icon="library"
       label="Library"
       [variant]="cfg().tileVariant"
@@ -202,7 +206,7 @@
       (click)="mobileNavOpen.set(false)"
     ></a>
     <a
-      sh3-nav-tile
+      fold-nav-tile
       icon="palette"
       label="Themes"
       [variant]="cfg().tileVariant"
@@ -210,15 +214,15 @@
       (click)="mobileNavOpen.set(false)"
     ></a>
     <a
-      sh3-nav-tile
+      fold-nav-tile
       icon="grid"
       label="Icons"
       [variant]="cfg().tileVariant"
       routerLink="/icons"
       (click)="mobileNavOpen.set(false)"
     ></a>
-  </sh3-nav-launcher>
+  </fold-nav-launcher>
 }
 
-<sh3-panel-host />
-<sh3-toast-container />
+<fold-panel-host />
+<fold-toast-container />

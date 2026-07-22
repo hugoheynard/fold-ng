@@ -1,26 +1,26 @@
 import { Component, signal } from "@angular/core";
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3DataTableComponent } from "./data-table.component";
-import { Sh3DataTableCellDirective } from "./data-table-cell.directive";
+import { FoldDataTableComponent } from "./data-table.component";
+import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import type {
-  Sh3TableColumn,
-  Sh3TableSort,
-  Sh3TableTone,
+  FoldTableColumn,
+  FoldTableSort,
+  FoldTableTone,
 } from "./data-table.types";
 
-type Row = { id: string; name: string; tone: Sh3TableTone };
+type Row = { id: string; name: string; tone: FoldTableTone };
 
-const COLUMNS: Sh3TableColumn[] = [
+const COLUMNS: FoldTableColumn[] = [
   { key: "name", label: "Nom", sortable: true },
   { key: "plain", label: "Détail" },
 ];
 
 @Component({
   standalone: true,
-  imports: [Sh3DataTableComponent, Sh3DataTableCellDirective],
+  imports: [FoldDataTableComponent, FoldDataTableCellDirective],
   template: `
-    <sh3-data-table
+    <fold-data-table
       [columns]="columns"
       [rows]="rows()"
       [rowKey]="rowKey"
@@ -31,11 +31,11 @@ const COLUMNS: Sh3TableColumn[] = [
       (sortChange)="lastSort = $event"
       (rowClick)="clicked = $event"
     >
-      <ng-template sh3Cell="name" let-row>
+      <ng-template foldCell="name" let-row>
         <span class="name-cell">{{ row.name }}</span>
       </ng-template>
-      <ng-template sh3Cell="plain" let-row>detail-{{ row.id }}</ng-template>
-    </sh3-data-table>
+      <ng-template foldCell="plain" let-row>detail-{{ row.id }}</ng-template>
+    </fold-data-table>
   `,
 })
 class HostComponent {
@@ -44,9 +44,9 @@ class HostComponent {
     { id: "a", name: "Alice", tone: null },
     { id: "b", name: "Bob", tone: "alert" },
   ]);
-  readonly sort = signal<Sh3TableSort | null>({ key: "name", dir: "asc" });
+  readonly sort = signal<FoldTableSort | null>({ key: "name", dir: "asc" });
   readonly rowKey = (row: Row): string => row.id;
-  readonly rowTone = (row: Row): Sh3TableTone => row.tone;
+  readonly rowTone = (row: Row): FoldTableTone => row.tone;
   lastSort: string | null = null;
   clicked: Row | null = null;
 }
@@ -65,7 +65,7 @@ function setup(): {
   };
 }
 
-describe("Sh3DataTableComponent", () => {
+describe("FoldDataTableComponent", () => {
   it("renders one row per item using the projected cell templates", () => {
     const { el } = setup();
     const rows = el.querySelectorAll("tbody tr");
@@ -79,7 +79,7 @@ describe("Sh3DataTableComponent", () => {
     const firstCell = el.querySelector("tbody tr td");
     expect(firstCell?.classList.contains("is-primary")).toBe(true);
     expect(el.querySelector('th[aria-sort="ascending"]')).not.toBeNull();
-    expect(el.querySelector(".sh3dt-arrow.on")?.textContent).toBe("↑");
+    expect(el.querySelector(".folddt-arrow.on")?.textContent).toBe("↑");
   });
 
   it("applies the per-row tone class", () => {
@@ -91,7 +91,7 @@ describe("Sh3DataTableComponent", () => {
 
   it("emits sortChange with the column key when a sortable header is clicked", () => {
     const { host, el } = setup();
-    el.querySelector<HTMLButtonElement>(".sh3dt-th-sort")?.click();
+    el.querySelector<HTMLButtonElement>(".folddt-th-sort")?.click();
     expect(host.lastSort).toBe("name");
   });
 
@@ -105,7 +105,7 @@ describe("Sh3DataTableComponent", () => {
     const { fixture, host, el } = setup();
     host.rows.set([]);
     fixture.detectChanges();
-    expect(el.querySelector(".sh3dt-empty-t")?.textContent).toBe("Rien");
-    expect(el.querySelector(".sh3dt-empty-s")?.textContent).toBe("Vide");
+    expect(el.querySelector(".folddt-empty-t")?.textContent).toBe("Rien");
+    expect(el.querySelector(".folddt-empty-s")?.textContent).toBe("Vide");
   });
 });

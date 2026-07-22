@@ -1,10 +1,10 @@
 import { Component, inject, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
-import { Sh3PanelHostComponent } from "../panel-host.component";
-import { Sh3PanelHostService } from "../panel-host.service";
-import { Sh3PanelRef } from "../panel-ref";
-import type { Sh3PanelContent } from "../panel.types";
+import { FoldPanelHostComponent } from "../panel-host.component";
+import { FoldPanelHostService } from "../panel-host.service";
+import { FoldPanelRef } from "../panel-ref";
+import type { FoldPanelContent } from "../panel.types";
 
 type DemoData = {
   readonly label: string;
@@ -19,19 +19,19 @@ type DemoData = {
     </button>
   `,
 })
-class DemoPanelComponent implements Sh3PanelContent<DemoData> {
+class DemoPanelComponent implements FoldPanelContent<DemoData> {
   readonly data = input.required<DemoData>();
-  readonly ref = inject<Sh3PanelRef<string>>(Sh3PanelRef);
+  readonly ref = inject<FoldPanelRef<string>>(FoldPanelRef);
 }
 
 @Component({
-  imports: [Sh3PanelHostComponent],
-  template: `<sh3-panel-host />`,
+  imports: [FoldPanelHostComponent],
+  template: `<fold-panel-host />`,
 })
 class HostComponent {}
 
 describe("Panel open() — imperative component path", () => {
-  let host: Sh3PanelHostService;
+  let host: FoldPanelHostService;
 
   function render() {
     const fixture = TestBed.createComponent(HostComponent);
@@ -41,8 +41,8 @@ describe("Panel open() — imperative component path", () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [Sh3PanelHostService] });
-    host = TestBed.inject(Sh3PanelHostService);
+    TestBed.configureTestingModule({ providers: [FoldPanelHostService] });
+    host = TestBed.inject(FoldPanelHostService);
   });
 
   it("mounts the component and sets its typed data input", () => {
@@ -59,7 +59,7 @@ describe("Panel open() — imperative component path", () => {
     expect(root.querySelector(".panel-header")).toBeNull();
   });
 
-  it("the component can close itself via injected Sh3PanelRef, returning a result", async () => {
+  it("the component can close itself via injected FoldPanelRef, returning a result", async () => {
     const { fixture, root } = render();
     const ref = host.open<DemoData, string>(DemoPanelComponent, {
       data: { label: "x" },

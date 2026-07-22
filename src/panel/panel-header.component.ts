@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output } from "@angular/core";
-import { Sh3IconComponent } from "../components/icon/icon.component";
-import type { Sh3IconName } from "../components/icon/icon.registry";
-import { Sh3PanelRef } from "./panel-ref";
+import { FoldIconComponent } from "../components/icon/icon.component";
+import type { FoldIconName } from "../components/icon/icon.registry";
+import { FoldPanelRef } from "./panel-ref";
 
 /**
  * Standard header for an **imperative** panel component (`panels.open()`), which
@@ -16,14 +16,14 @@ import { Sh3PanelRef } from "./panel-ref";
  *   panels (a page-like entity with cross-navigation): `icon` + short label,
  *   with header actions sitting inline before the close.
  *
- * **Icon.** Optional leading `icon` (an {@link Sh3IconComponent} name), shown in
+ * **Icon.** Optional leading `icon` (an {@link FoldIconComponent} name), shown in
  * both variants — muted in `eyebrow`.
  *
  * **Actions slot.** Project buttons into `[actions]` to sit left of the close
  * button (e.g. a cross-page-nav, an "open full page" button). The default,
  * unselected slot still feeds the description line (backwards compatible).
  *
- * **Self-closing.** The header injects its panel's {@link Sh3PanelRef} (optional,
+ * **Self-closing.** The header injects its panel's {@link FoldPanelRef} (optional,
  * so it stays a pure presentational component in tests/storybook) and dismisses
  * the panel itself on close — no `(closed)="ref.close()"` wiring needed. The
  * `(closed)` output still fires *before* the dismiss, for side-effects
@@ -37,31 +37,31 @@ import { Sh3PanelRef } from "./panel-ref";
  * Usage:
  * ```html
  * <!-- editor panel: title only → vertically centred, self-closes -->
- * <sh3-panel-header title="Titre" />
+ * <fold-panel-header title="Titre" />
  *
  * <!-- editor panel: subtitle + a parent-filled description -->
- * <sh3-panel-header title="Titre" subtitle="Sous-titre">
+ * <fold-panel-header title="Titre" subtitle="Sous-titre">
  *   <span>Texte d'aide fourni par le parent…</span>
- * </sh3-panel-header>
+ * </fold-panel-header>
  *
  * <!-- viewer panel: eyebrow label + icon + projected actions -->
- * <sh3-panel-header variant="eyebrow" icon="playlist-add" title="Playlist">
+ * <fold-panel-header variant="eyebrow" icon="playlist-add" title="Playlist">
  *   <app-cross-page-nav actions … />
- * </sh3-panel-header>
+ * </fold-panel-header>
  * ```
  */
 @Component({
-  selector: "sh3-panel-header",
+  selector: "fold-panel-header",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   templateUrl: "./panel-header.component.html",
   styleUrl: "./panel-header.component.scss",
 })
-export class Sh3PanelHeaderComponent {
+export class FoldPanelHeaderComponent {
   readonly title = input.required<string>();
   readonly subtitle = input<string>("");
-  /** Optional leading icon (an {@link Sh3IconComponent} name). */
-  readonly icon = input<Sh3IconName | undefined>(undefined);
+  /** Optional leading icon (an {@link FoldIconComponent} name). */
+  readonly icon = input<FoldIconName | undefined>(undefined);
   /** `title` (large descriptive) or `eyebrow` (compact uppercased label). */
   readonly variant = input<"title" | "eyebrow">("title");
   /**
@@ -78,7 +78,7 @@ export class Sh3PanelHeaderComponent {
    * The panel this header lives in. Optional: outside a panel (tests,
    * storybook) it resolves to `null` and the header simply emits `(closed)`.
    */
-  private readonly panelRef = inject(Sh3PanelRef, { optional: true });
+  private readonly panelRef = inject(FoldPanelRef, { optional: true });
 
   protected onClose(): void {
     this.closed.emit();

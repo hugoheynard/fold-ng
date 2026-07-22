@@ -1,19 +1,19 @@
 import { Component, computed, signal } from "@angular/core";
 import {
-  Sh3DisclosureComponent,
-  Sh3PageLayoutComponent,
+  FoldDisclosureComponent,
+  FoldPageLayoutComponent,
 } from "../../src/index";
 import { KindBadgeComponent } from "../kind-badge.component";
 import { DevPlaygroundComponent } from "../playground.component";
 
-/** `/disclosure` — the `sh3-disclosure` gallery page. */
+/** `/disclosure` — the `fold-disclosure` gallery page. */
 @Component({
   selector: "gal-disclosure-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3DisclosureComponent,
+    FoldPageLayoutComponent,
+    FoldDisclosureComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./disclosure.page.html",
@@ -27,13 +27,13 @@ export default class DisclosurePage {
     const primary = this.dcTone() === "primary";
     const openAttr = this.dcOpen() ? ' [open]="true"' : "";
     const style = primary
-      ? '\n  style="\n    --sh3-disclosure-summary-bg: var(--sh3-color-primary);\n    --sh3-disclosure-summary-color: var(--sh3-color-on-primary);\n  "'
+      ? '\n  style="\n    --fold-disclosure-summary-bg: var(--fold-color-primary);\n    --fold-disclosure-summary-color: var(--fold-color-on-primary);\n  "'
       : "";
     return [
-      `<sh3-disclosure${openAttr}${style}>`,
+      `<fold-disclosure${openAttr}${style}>`,
       "  <span summary>How it works</span>",
       "  <p>The panel, revealed on click.</p>",
-      "</sh3-disclosure>",
+      "</fold-disclosure>",
     ].join("\n");
   });
 }

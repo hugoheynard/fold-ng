@@ -6,9 +6,9 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--sh3-color-surface-card);
-  border: 1px solid var(--sh3-color-border);
-  border-radius: var(--sh3-radius-lg);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
   padding: 20px;
 }
 :host(.p-sm) {
@@ -20,13 +20,13 @@
 
 /* ── Base surface ── */
 :host(.s-sunken) {
-  background: var(--sh3-color-surface-sunken);
-  border-color: var(--sh3-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
+  border-color: var(--fold-color-border-subtle);
 }
 :host(.s-primary) {
-  background: var(--sh3-color-primary);
-  border-color: var(--sh3-color-primary);
-  color: var(--sh3-color-on-primary);
+  background: var(--fold-color-primary);
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
 }
 
 /* ── Accent overlays (transparent, painted over the base surface) ── */
@@ -43,29 +43,29 @@
   background:
     radial-gradient(
       120% 140% at 100% 0%,
-      color-mix(in srgb, var(--sh3-color-primary) 10%, transparent),
+      color-mix(in srgb, var(--fold-color-primary) 10%, transparent),
       transparent 45%
     ),
     linear-gradient(
       160deg,
       transparent 30%,
-      color-mix(in srgb, var(--sh3-color-surface-sunken) 50%, transparent)
+      color-mix(in srgb, var(--fold-color-surface-sunken) 50%, transparent)
     );
 }
 /* Gradient — primary-tinted wash + primary border + a stronger corner glow. */
 :host(.a-gradient) {
-  border-color: var(--sh3-color-primary-border);
+  border-color: var(--fold-color-primary-border);
 }
 :host(.a-gradient)::after {
   background:
     radial-gradient(
       260px circle at 90% -10%,
-      color-mix(in srgb, var(--sh3-color-primary) 22%, transparent),
+      color-mix(in srgb, var(--fold-color-primary) 22%, transparent),
       transparent 68%
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--sh3-color-primary) 8%, transparent),
+      color-mix(in srgb, var(--fold-color-primary) 8%, transparent),
       transparent 60%
     );
 }
@@ -79,7 +79,7 @@
   bottom: 0;
   width: 3px;
   background: linear-gradient(
-    var(--sh3-color-primary),
-    color-mix(in srgb, var(--sh3-color-primary) 30%, transparent)
+    var(--fold-color-primary),
+    color-mix(in srgb, var(--fold-color-primary) 30%, transparent)
   );
 }

@@ -1,33 +1,33 @@
 import { Component, signal } from "@angular/core";
 import {
-  Sh3ButtonComponent,
-  Sh3CalloutComponent,
-  Sh3NavLauncherComponent,
-  Sh3NavTileComponent,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
+  FoldButtonComponent,
+  FoldCalloutComponent,
+  FoldNavLauncherComponent,
+  FoldNavTileComponent,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
 } from "../../src/index";
-import type { Sh3IconName } from "../../src/index";
+import type { FoldIconName } from "../../src/index";
 import { KindBadgeComponent } from "../kind-badge.component";
 
 interface LauncherDest {
   readonly id: string;
-  readonly icon: Sh3IconName;
+  readonly icon: FoldIconName;
   readonly label: string;
 }
 
-/** `/nav-launcher` — the `sh3-nav-launcher` gallery page (live full-screen demo). */
+/** `/nav-launcher` — the `fold-nav-launcher` gallery page (live full-screen demo). */
 @Component({
   selector: "gal-nav-launcher-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
-    Sh3PageLayoutComponent,
-    Sh3PageSectionComponent,
-    Sh3ButtonComponent,
-    Sh3CalloutComponent,
-    Sh3NavLauncherComponent,
-    Sh3NavTileComponent,
+    FoldPageLayoutComponent,
+    FoldPageSectionComponent,
+    FoldButtonComponent,
+    FoldCalloutComponent,
+    FoldNavLauncherComponent,
+    FoldNavTileComponent,
   ],
   templateUrl: "./nav-launcher.page.html",
 })
@@ -55,15 +55,15 @@ export default class NavLauncherPage {
   }
 
   protected readonly usageCode = `<!-- The shell renders no built-in drawer; the launcher owns the mobile nav. -->
-<sh3-app-shell mobileNav="none" [(mobileNavOpen)]="navOpen">…</sh3-app-shell>
+<fold-app-shell mobileNav="none" [(mobileNavOpen)]="navOpen">…</fold-app-shell>
 
 <!-- columns="auto" (default) scales tiles to the count; variant="filled" is the
      solid brand tile (navy + white glyph under navi). -->
-<sh3-nav-launcher [(open)]="navOpen" label="Go to">
-  <a sh3-nav-tile variant="filled" icon="home" label="Home" routerLink="/"
+<fold-nav-launcher [(open)]="navOpen" label="Go to">
+  <a fold-nav-tile variant="filled" icon="home" label="Home" routerLink="/"
      (click)="navOpen.set(false)"></a>
-  <a sh3-nav-tile variant="filled" icon="music" label="Music" routerLink="/music"
+  <a fold-nav-tile variant="filled" icon="music" label="Music" routerLink="/music"
      (click)="navOpen.set(false)"></a>
   …
-</sh3-nav-launcher>`;
+</fold-nav-launcher>`;
 }

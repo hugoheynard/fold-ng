@@ -1,4 +1,4 @@
-<sh3-icon [name]="icon()" [size]="18" class="mi-icon" />
+<fold-icon [name]="icon()" [size]="18" class="mi-icon" />
 
 <!-- Collapsed rail: a corner dot, or a count bubble for a number. -->
 @if (hasBadge()) {
@@ -10,12 +10,12 @@
 <span class="mi-tip">{{ label() }}</span>
 
 <!-- Expanded rail: the badge pill, pushed to the row's trailing edge. `follow`
-     tints from the item's own accent; the semantic tones reuse sh3-badge. -->
+     tints from the item's own accent; the semantic tones reuse fold-badge. -->
 @if (hasBadge()) {
   @if (isFollowTone()) {
     <span class="mi-badge mi-badge-follow">{{ badgeText() }}</span>
   } @else {
-    <sh3-badge
+    <fold-badge
       class="mi-badge"
       [content]="badgeText()"
       [variant]="badgeVariant()"

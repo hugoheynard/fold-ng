@@ -1,4 +1,4 @@
-<sh3-page-layout fluid title="sticky-column">
+<fold-page-layout fluid title="sticky-column">
   <gal-kind-badge titleBadge kind="directive" />
   <p description>
     Layout directive — turns its host into a sticky side column (a vertical flex
@@ -6,8 +6,8 @@
     <code>&lt;aside&gt;</code> to keep the semantics. No template, no wrapper.
     The anchor (<code>sticky="top | center | bottom"</code>) and offset
     (<code>[stickyOffset]</code>) are inputs; the gap and the responsive
-    un-stick stay CSS vars — <code>--sh3-sticky-column-gap</code> and
-    <code>--sh3-sticky-column-position</code>.
+    un-stick stay CSS vars — <code>--fold-sticky-column-gap</code> and
+    <code>--fold-sticky-column-position</code>.
   </p>
 
   <dev-playground [code]="stickyColumnCode()" lang="html · scss">
@@ -25,7 +25,7 @@
         }
       </div>
     </div>
-    <sh3-slider
+    <fold-slider
       params
       label="offset"
       [min]="0"
@@ -43,15 +43,15 @@
           }
         </div>
         <aside
-          sh3StickyColumn
+          foldStickyColumn
           [sticky]="stickyDemoAnchor()"
           [stickyOffset]="stickyDemoOffset()"
           class="sticky-demo-side"
-          style="--sh3-sticky-column-gap: 8px"
+          style="--fold-sticky-column-gap: 8px"
         >
           <div class="sticky-demo-card">📌 sticks {{ stickyDemoAnchor() }}</div>
         </aside>
       </div>
     </div>
   </dev-playground>
-</sh3-page-layout>
+</fold-page-layout>

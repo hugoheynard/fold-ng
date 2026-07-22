@@ -11,18 +11,18 @@ import { Injectable } from "@angular/core";
  * reset per request does not, and can't collide across requests or grow
  * unbounded.
  *
- * Used by the labelled controls that own their id ({@link Sh3InputComponent},
- * `sh3-select`) and by {@link Sh3FieldIdDirective} for loose native controls.
+ * Used by the labelled controls that own their id ({@link FoldInputComponent},
+ * `fold-select`) and by {@link FoldFieldIdDirective} for loose native controls.
  */
 @Injectable({ providedIn: "root" })
-export class Sh3IdService {
+export class FoldIdService {
   private counter = 0;
 
   /**
-   * The next unique id, e.g. `sh3-input-3`.
+   * The next unique id, e.g. `fold-input-3`.
    * @param prefix a short, human-readable namespace for the id.
    */
-  next(prefix = "sh3"): string {
+  next(prefix = "fold"): string {
     this.counter += 1;
     return `${prefix}-${this.counter}`;
   }

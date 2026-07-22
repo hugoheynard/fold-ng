@@ -5,7 +5,7 @@ import {
   input,
   signal,
 } from "@angular/core";
-import { Sh3PanelHeaderComponent } from "../src/index";
+import { FoldPanelHeaderComponent } from "../src/index";
 import type { InspectTarget } from "./inspect";
 
 /** A token name paired with the value declared in the token layer (the base). */
@@ -16,14 +16,14 @@ interface TokenRow {
 
 /**
  * The inspector panel: for a double-clicked component it lists the tokens its
- * styles reference and the `sh3-*` children it composes. Editing a token writes
+ * styles reference and the `fold-*` children it composes. Editing a token writes
  * it as an **inline style on that element only** — so the override is scoped to
  * this instance and its children, never the rest of the page. Dev-only.
  */
 @Component({
   selector: "app-inspect-panel",
   standalone: true,
-  imports: [Sh3PanelHeaderComponent],
+  imports: [FoldPanelHeaderComponent],
   templateUrl: "./inspect-panel.component.html",
   styleUrl: "./inspect-panel.component.css",
 })
@@ -72,8 +72,8 @@ export class InspectPanelComponent {
     this.overrides.set({});
   }
 
-  /** Colour tokens (`--sh3-color-*` / `--sh3-ref-*`) get a swatch preview. */
+  /** Colour tokens (`--fold-color-*` / `--fold-ref-*`) get a swatch preview. */
   protected isColorToken(name: string): boolean {
-    return name.startsWith("--sh3-color-") || name.startsWith("--sh3-ref-");
+    return name.startsWith("--fold-color-") || name.startsWith("--fold-ref-");
   }
 }

@@ -1,4 +1,4 @@
-<sh3-input-base
+<fold-input-base
   [label]="label()"
   [for]="inputId"
   [required]="required()"
@@ -21,12 +21,12 @@
       [class]="cls"
       [disabled]="off"
       [attr.aria-label]="dir === 1 ? 'Increment' : 'Decrement'"
-      sh3RepeatPress
-      [sh3RepeatPressDisabled]="off"
-      (sh3RepeatPress)="stepBy(dir)"
+      foldRepeatPress
+      [foldRepeatPressDisabled]="off"
+      (foldRepeatPress)="stepBy(dir)"
       (click)="onButtonClick(dir, $event)"
     >
-      <sh3-icon [name]="iconFor(dir)" [size]="size" />
+      <fold-icon [name]="iconFor(dir)" [size]="size" />
     </button>
   </ng-template>
 
@@ -116,4 +116,4 @@
       />
     }
   </div>
-</sh3-input-base>
+</fold-input-base>

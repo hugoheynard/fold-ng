@@ -1,17 +1,17 @@
 import { Component, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
-  Sh3AsideLayoutComponent,
-  Sh3AvatarDetailComponent,
-  Sh3BadgeComponent,
-  Sh3ButtonComponent,
-  Sh3CalloutComponent,
-  Sh3CardComponent,
-  Sh3DisclosureComponent,
-  Sh3IconComponent,
-  type Sh3IconName,
-  Sh3PageLayoutComponent,
-  Sh3PageSectionComponent,
+  FoldAsideLayoutComponent,
+  FoldAvatarDetailComponent,
+  FoldBadgeComponent,
+  FoldButtonComponent,
+  FoldCalloutComponent,
+  FoldCardComponent,
+  FoldDisclosureComponent,
+  FoldIconComponent,
+  type FoldIconName,
+  FoldPageLayoutComponent,
+  FoldPageSectionComponent,
 } from "../../src/index";
 import pkg from "../../package.json";
 
@@ -23,7 +23,7 @@ interface Stat {
 
 /** A capability card. */
 interface Feature {
-  readonly icon: Sh3IconName;
+  readonly icon: FoldIconName;
   readonly title: string;
   readonly body: string;
 }
@@ -34,16 +34,16 @@ interface Feature {
   standalone: true,
   imports: [
     RouterLink,
-    Sh3AsideLayoutComponent,
-    Sh3AvatarDetailComponent,
-    Sh3DisclosureComponent,
-    Sh3IconComponent,
-    Sh3ButtonComponent,
-    Sh3BadgeComponent,
-    Sh3CardComponent,
-    Sh3CalloutComponent,
-    Sh3PageLayoutComponent,
-    Sh3PageSectionComponent,
+    FoldAsideLayoutComponent,
+    FoldAvatarDetailComponent,
+    FoldDisclosureComponent,
+    FoldIconComponent,
+    FoldButtonComponent,
+    FoldBadgeComponent,
+    FoldCardComponent,
+    FoldCalloutComponent,
+    FoldPageLayoutComponent,
+    FoldPageSectionComponent,
   ],
   templateUrl: "./home.page.html",
 })

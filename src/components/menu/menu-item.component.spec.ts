@@ -1,13 +1,13 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3MenuItemComponent } from "./menu-item.component";
+import { FoldMenuItemComponent } from "./menu-item.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3MenuItemComponent],
+  imports: [FoldMenuItemComponent],
   template: `<a
-    sh3-menu-item
+    fold-menu-item
     [icon]="'home'"
     [label]="label()"
     [active]="active()"
@@ -29,10 +29,10 @@ function render() {
   return { fixture, item };
 }
 
-describe("Sh3MenuItemComponent", () => {
+describe("FoldMenuItemComponent", () => {
   it("renders the icon and the tooltip label", () => {
     const { item } = render();
-    expect(item.querySelector("sh3-icon")).not.toBeNull();
+    expect(item.querySelector("fold-icon")).not.toBeNull();
     expect(item.querySelector(".mi-tip")?.textContent).toBe("Home");
   });
 
@@ -75,28 +75,28 @@ describe("Sh3MenuItemComponent", () => {
     expect(item.querySelector(".mi-dot")?.textContent?.trim()).toBe("99+");
   });
 
-  it("uses a follow pill (not sh3-badge) by default", () => {
+  it("uses a follow pill (not fold-badge) by default", () => {
     const { fixture, item } = render();
     fixture.componentInstance.badge.set("new");
     fixture.detectChanges();
     expect(item.querySelector(".mi-badge-follow")).not.toBeNull();
-    expect(item.querySelector("sh3-badge")).toBeNull();
+    expect(item.querySelector("fold-badge")).toBeNull();
     expect(item.style.getPropertyValue("--mi-badge-accent")).toBe(
       "var(--mi-accent)",
     );
   });
 
-  it("uses sh3-badge + the tone's accent for a semantic tone", () => {
+  it("uses fold-badge + the tone's accent for a semantic tone", () => {
     const { fixture, item } = render();
     fixture.componentInstance.badge.set("new");
     fixture.componentInstance.tone.set("alert");
     fixture.detectChanges();
     expect(item.querySelector(".mi-badge-follow")).toBeNull();
-    const pill = item.querySelector("sh3-badge");
+    const pill = item.querySelector("fold-badge");
     expect(pill).not.toBeNull();
     expect(pill?.classList.contains("alert")).toBe(true);
     expect(item.style.getPropertyValue("--mi-badge-accent")).toBe(
-      "var(--sh3-color-alert)",
+      "var(--fold-color-alert)",
     );
   });
 

@@ -3,7 +3,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: var(--sh3-tab-layout-gap, 16px);
+  gap: var(--fold-tab-layout-gap, 16px);
   min-width: 0;
 }
 /* No align-items: the rail stretches to the row's height on purpose. A tab bar
@@ -24,7 +24,7 @@
 }
 /* Only the rail gets a track — stacked, the nav spans the full width. */
 :host(.is-row) .tl-nav {
-  flex: 0 0 var(--sh3-tab-layout-nav-width, 200px);
+  flex: 0 0 var(--fold-tab-layout-nav-width, 200px);
 }
 
 .tl-body {

@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
-import { Sh3PaginatorComponent } from "./paginator.component";
+import { FoldPaginatorComponent } from "./paginator.component";
 
 function create(props: {
   currentPage: number;
@@ -9,7 +9,7 @@ function create(props: {
   siblingCount?: number;
   disabled?: boolean;
 }) {
-  const fixture = TestBed.createComponent(Sh3PaginatorComponent);
+  const fixture = TestBed.createComponent(FoldPaginatorComponent);
   const ref = fixture.componentRef;
   ref.setInput("currentPage", props.currentPage);
   ref.setInput("pageSize", props.pageSize);
@@ -24,10 +24,10 @@ function create(props: {
   return { fixture, component: fixture.componentInstance };
 }
 
-const pageList = (c: Sh3PaginatorComponent) =>
+const pageList = (c: FoldPaginatorComponent) =>
   c.pageItems().map((i) => (i.kind === "page" ? i.page : "…"));
 
-describe("Sh3PaginatorComponent", () => {
+describe("FoldPaginatorComponent", () => {
   it("computes totalPages, clamping to 1 when empty", () => {
     expect(
       create({
@@ -160,7 +160,7 @@ describe("Sh3PaginatorComponent", () => {
       totalItems: 100,
     });
     const host = fixture.nativeElement as HTMLElement;
-    expect(host.querySelectorAll("sh3-icon").length).toBe(2);
+    expect(host.querySelectorAll("fold-icon").length).toBe(2);
     expect(host.querySelector(".page-btn.is-active")?.textContent?.trim()).toBe(
       "1",
     );

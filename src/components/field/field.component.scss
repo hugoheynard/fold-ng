@@ -7,10 +7,10 @@
 
 .fl-key {
   margin: 0;
-  font-size: var(--sh3-text-xs);
+  font-size: var(--fold-text-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
 }
 
 .fl-val {
@@ -19,12 +19,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--sh3-space-xs);
-  font-size: var(--sh3-text-md);
-  color: var(--sh3-color-text);
+  gap: var(--fold-space-xs);
+  font-size: var(--fold-text-md);
+  color: var(--fold-color-text);
 }
 
 .fl-empty {
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
   font-style: italic;
 }

@@ -1,16 +1,16 @@
 import { Component, signal } from "@angular/core";
 import { KindBadgeComponent } from "../kind-badge.component";
 import {
-  SH3_BUILTIN_ICONS,
-  Sh3IconComponent,
-  Sh3PageLayoutComponent,
+  FOLD_BUILTIN_ICONS,
+  FoldIconComponent,
+  FoldPageLayoutComponent,
 } from "../../src/index";
 
-/** `/icons` — the `sh3-icon` gallery page (sizes, colours, the full set). */
+/** `/icons` — the `fold-icon` gallery page (sizes, colours, the full set). */
 @Component({
   selector: "gal-icons-page",
   standalone: true,
-  imports: [KindBadgeComponent, Sh3PageLayoutComponent, Sh3IconComponent],
+  imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldIconComponent],
   templateUrl: "./icons.page.html",
 })
 export default class IconsPage {
@@ -25,7 +25,7 @@ export default class IconsPage {
     "success",
   ] as const;
   protected readonly allIconNames: readonly string[] =
-    Object.keys(SH3_BUILTIN_ICONS).sort();
+    Object.keys(FOLD_BUILTIN_ICONS).sort();
   protected readonly copiedIcon = signal("");
 
   protected copyIconName(name: string): void {

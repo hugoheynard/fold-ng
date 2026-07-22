@@ -1,6 +1,6 @@
-<sh3-page-layout fluid title="timeline">
+<fold-page-layout fluid title="timeline">
   <p description>
-    sh3-timeline — one surface-agnostic dot-rail primitive, two orientations.
+    fold-timeline — one surface-agnostic dot-rail primitive, two orientations.
     Vertical: a navigable chronology (nodes emit their id, a null-id node is an
     inert accented anchor). Horizontal: a progress stepper (a `progress` fill
     line, each node's `done` drives its accent). It renders content only (a
@@ -10,26 +10,26 @@
   <div class="gal-row gal-row--wide">
     <div class="gal-cell" style="max-width: 320px">
       <span class="gal-tag">vertical · navigable · click a node</span>
-      <sh3-card surface="sunken" style="--sh3-card-padding: 18px">
-        <sh3-timeline
+      <fold-card surface="sunken" style="--fold-card-padding: 18px">
+        <fold-timeline
           ariaLabel="Contract history"
           nodeTitle="Go to item"
           [nodes]="tlNodes"
           (nodeClick)="tlClicked.set($event)"
         />
-      </sh3-card>
+      </fold-card>
       <p class="doc-p">Last clicked id: “{{ tlClicked() ?? "—" }}”</p>
     </div>
     <div class="gal-cell" style="max-width: 440px">
       <span class="gal-tag">horizontal · progress stepper</span>
-      <sh3-card surface="sunken" style="--sh3-card-padding: 22px 18px">
-        <sh3-timeline
+      <fold-card surface="sunken" style="--fold-card-padding: 22px 18px">
+        <fold-timeline
           orientation="horizontal"
           ariaLabel="Signature progress"
           [progress]="33"
           [nodes]="tlSteps"
         />
-      </sh3-card>
+      </fold-card>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
       </div>
     </div>
     @if (tlpOrientation() === "horizontal") {
-    <sh3-slider
+    <fold-slider
       params
       label="completed"
       [min]="0"
@@ -136,8 +136,8 @@
       </div>
     </div>
 
-    <sh3-card surface="sunken" style="--sh3-card-padding: 22px 18px">
-      <sh3-timeline
+    <fold-card surface="sunken" style="--fold-card-padding: 22px 18px">
+      <fold-timeline
         [orientation]="tlpOrientation()"
         [ariaLabel]="
             tlpOrientation() === 'horizontal'
@@ -151,20 +151,20 @@
         [nodes]="tlpNodes()"
         (nodeClick)="tlpClicked.set($event)"
       />
-    </sh3-card>
+    </fold-card>
   </dev-playground>
 
   <div class="gal-cell" style="max-width: 520px">
     <span class="gal-tag">custom #node template — a badge from node.state</span>
-    <sh3-card surface="sunken" style="--sh3-card-padding: 22px 18px">
-      <sh3-timeline orientation="horizontal" [nodes]="tlCustom">
+    <fold-card surface="sunken" style="--fold-card-padding: 22px 18px">
+      <fold-timeline orientation="horizontal" [nodes]="tlCustom">
         <ng-template #node let-n>
           <span class="nlabel">{{ n.label }}</span>
           @if (n.state === "pending") {
-          <sh3-badge variant="warning" [content]="'en attente'" />
+          <fold-badge variant="warning" [content]="'en attente'" />
           }
         </ng-template>
-      </sh3-timeline>
-    </sh3-card>
+      </fold-timeline>
+    </fold-card>
   </div>
-</sh3-page-layout>
+</fold-page-layout>

@@ -1,12 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { Sh3InputBaseComponent } from "./input-base.component";
+import { FoldInputBaseComponent } from "./input-base.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3InputBaseComponent],
-  template: `<sh3-input-base
+  imports: [FoldInputBaseComponent],
+  template: `<fold-input-base
     [label]="label()"
     [for]="for()"
     [required]="required()"
@@ -14,7 +14,7 @@ import { Sh3InputBaseComponent } from "./input-base.component";
     [error]="error()"
   >
     <input class="projected" />
-  </sh3-input-base>`,
+  </fold-input-base>`,
 })
 class HostComponent {
   readonly label = signal<string | undefined>(undefined);
@@ -28,12 +28,12 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const el = fixture.nativeElement.querySelector(
-    "sh3-input-base",
+    "fold-input-base",
   ) as HTMLElement;
   return { fixture, el };
 }
 
-describe("Sh3InputBaseComponent", () => {
+describe("FoldInputBaseComponent", () => {
   it("projects the control", () => {
     const { el } = render();
     expect(el.querySelector("input.projected")).not.toBeNull();
@@ -41,12 +41,12 @@ describe("Sh3InputBaseComponent", () => {
 
   it("renders a label only when one is set, wired to the control id", () => {
     const { fixture, el } = render();
-    expect(el.querySelector("sh3-label")).toBeNull();
+    expect(el.querySelector("fold-label")).toBeNull();
 
     fixture.componentInstance.label.set("Amount");
     fixture.componentInstance.for.set("num-1");
     fixture.detectChanges();
-    const label = el.querySelector("sh3-label label");
+    const label = el.querySelector("fold-label label");
     expect(label?.textContent?.trim()).toBe("Amount");
     expect(label?.getAttribute("for")).toBe("num-1");
   });
@@ -64,7 +64,7 @@ describe("Sh3InputBaseComponent", () => {
     fixture.componentInstance.label.set("Amount");
     fixture.componentInstance.required.set(true);
     fixture.detectChanges();
-    expect(el.querySelector("sh3-label .req")).not.toBeNull();
+    expect(el.querySelector("fold-label .req")).not.toBeNull();
   });
 
   it("shows the error instead of the hint, with an alert role", () => {

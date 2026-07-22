@@ -1,10 +1,10 @@
 import { booleanAttribute, Component, input, output } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 /**
- * `<sh3-link>` — an inline text link / link-button: accent-coloured, underline
+ * `<fold-link>` — an inline text link / link-button: accent-coloured, underline
  * on hover, with optional leading + trailing icons (a nav chevron, an external
  * glyph). Renders an `<a>` when given `href`, otherwise a `<button>` that emits
  * `(clicked)` — so the same look serves both navigation and in-app actions.
@@ -13,29 +13,29 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * - `icon` / `trailingIcon` — optional glyphs around the label.
  * - `disabled` — button mode only.
  *
- * @selector `sh3-link`
+ * @selector `fold-link`
  *
  * @example
  * ```html
- * <sh3-link icon="company" trailingIcon="chevron-right" (clicked)="openOrg()">
+ * <fold-link icon="company" trailingIcon="chevron-right" (clicked)="openOrg()">
  *   Voir l'organigramme
- * </sh3-link>
- * <sh3-link href="https://sh3pherd.dev/docs" tone="muted">Documentation</sh3-link>
+ * </fold-link>
+ * <fold-link href="https://sh3pherd.dev/docs" tone="muted">Documentation</fold-link>
  * ```
  */
 @Component({
-  selector: "sh3-link",
+  selector: "fold-link",
   standalone: true,
-  imports: [NgTemplateOutlet, Sh3IconComponent],
+  imports: [NgTemplateOutlet, FoldIconComponent],
   host: { "[class.tone-muted]": "tone() === 'muted'" },
   templateUrl: "./link.component.html",
   styleUrl: "./link.component.scss",
 })
-export class Sh3LinkComponent {
+export class FoldLinkComponent {
   /** Leading icon glyph. */
-  readonly icon = input<Sh3IconName>();
+  readonly icon = input<FoldIconName>();
   /** Trailing icon glyph (e.g. a nav chevron). */
-  readonly trailingIcon = input<Sh3IconName>();
+  readonly trailingIcon = input<FoldIconName>();
   /** Colour role — `accent` (default) or `muted`. */
   readonly tone = input<"accent" | "muted">("accent");
   /** When set, the link renders as an `<a href>` instead of a button. */

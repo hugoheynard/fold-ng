@@ -1,25 +1,25 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { Sh3AppShellComponent } from "./app-shell.component";
+import { FoldAppShellComponent } from "./app-shell.component";
 
 @Component({
   standalone: true,
-  imports: [Sh3AppShellComponent],
-  template: `<sh3-app-shell>
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell>
     <nav railPrimary data-t="rp">rail one</nav>
     <nav railSecondary data-t="rs">rail two</nav>
     <div header data-t="hd">header</div>
     <div data-t="content">page</div>
     <div footer data-t="ft">player</div>
-  </sh3-app-shell>`,
+  </fold-app-shell>`,
 })
 class HostComponent {}
 
 @Component({
   standalone: true,
-  imports: [Sh3AppShellComponent],
-  template: `<sh3-app-shell [railWidth]="rail()" [headerHeight]="header()" />`,
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell [railWidth]="rail()" [headerHeight]="header()" />`,
 })
 class SizedHostComponent {
   readonly rail = signal<number | undefined>(72);
@@ -28,8 +28,8 @@ class SizedHostComponent {
 
 @Component({
   standalone: true,
-  imports: [Sh3AppShellComponent],
-  template: `<sh3-app-shell
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell
     [headerLayout]="layout()"
     [footerLayout]="footer()"
   />`,
@@ -41,11 +41,11 @@ class LayoutHostComponent {
 
 @Component({
   standalone: true,
-  imports: [Sh3AppShellComponent],
-  template: `<sh3-app-shell [footerBehavior]="behavior()">
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell [footerBehavior]="behavior()">
     <div data-t="content">page</div>
     <div footer data-t="ft">player</div>
-  </sh3-app-shell>`,
+  </fold-app-shell>`,
 })
 class FooterBehaviorHostComponent {
   readonly behavior = signal<"pinned" | "scroll">("pinned");
@@ -57,7 +57,7 @@ function setup() {
   return fixture.nativeElement as HTMLElement;
 }
 
-describe("Sh3AppShellComponent", () => {
+describe("FoldAppShellComponent", () => {
   it("renders the five structural cells", () => {
     const host = setup();
     for (const cell of [
@@ -85,25 +85,27 @@ describe("Sh3AppShellComponent", () => {
     const fixture = TestBed.createComponent(SizedHostComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
 
     // Set input → the var is written on the host, overriding the stylesheet.
-    expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("72px");
+    expect(shell.style.getPropertyValue("--fold-shell-rail-width")).toBe(
+      "72px",
+    );
     // Unset input → no inline var, so the stylesheet default keeps winning.
-    expect(shell.style.getPropertyValue("--sh3-shell-header-height")).toBe("");
+    expect(shell.style.getPropertyValue("--fold-shell-header-height")).toBe("");
   });
 
   it("drops the CSS variable again when the input is cleared", () => {
     const fixture = TestBed.createComponent(SizedHostComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
 
     fixture.componentInstance.rail.set(undefined);
     fixture.detectChanges();
-    expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("");
+    expect(shell.style.getPropertyValue("--fold-shell-rail-width")).toBe("");
   });
 
   it("names its regions semantically — <header>, <main> and <footer>", () => {
@@ -121,9 +123,9 @@ describe("Sh3AppShellComponent", () => {
     const host = setup();
     const content = host.querySelector(".content") as HTMLElement;
     // No inline padding var, and the stylesheet no longer pads .content: a page
-    // can paint edge-to-edge (padding is sh3-page-layout's job).
-    const shell = host.querySelector("sh3-app-shell") as HTMLElement;
-    expect(shell.style.getPropertyValue("--sh3-shell-content-padding")).toBe(
+    // can paint edge-to-edge (padding is fold-page-layout's job).
+    const shell = host.querySelector("fold-app-shell") as HTMLElement;
+    expect(shell.style.getPropertyValue("--fold-shell-content-padding")).toBe(
       "",
     );
     expect(content).not.toBeNull();
@@ -131,7 +133,7 @@ describe("Sh3AppShellComponent", () => {
 
   it("is inset by default (no layout classes)", () => {
     const host = setup();
-    const shell = host.querySelector("sh3-app-shell") ?? host;
+    const shell = host.querySelector("fold-app-shell") ?? host;
     expect(shell.classList.contains("header-full")).toBe(false);
     expect(shell.classList.contains("footer-full")).toBe(false);
   });
@@ -140,7 +142,7 @@ describe("Sh3AppShellComponent", () => {
     const fixture = TestBed.createComponent(LayoutHostComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
 
     fixture.componentInstance.layout.set("full");
@@ -156,7 +158,7 @@ describe("Sh3AppShellComponent", () => {
     const fixture = TestBed.createComponent(LayoutHostComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
 
     fixture.componentInstance.footer.set("full");
@@ -172,7 +174,7 @@ describe("Sh3AppShellComponent", () => {
     const fixture = TestBed.createComponent(FooterBehaviorHostComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
 
     expect(shell.classList.contains("footer-scroll")).toBe(false);
@@ -186,7 +188,7 @@ describe("Sh3AppShellComponent", () => {
     fixture.componentInstance.behavior.set("scroll");
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
 
     expect(shell.classList.contains("footer-scroll")).toBe(true);
@@ -217,7 +219,7 @@ describe("Sh3AppShellComponent", () => {
   });
 
   it('scrolls the content region itself when contentScroll="auto"', () => {
-    const fixture = TestBed.createComponent(Sh3AppShellComponent);
+    const fixture = TestBed.createComponent(FoldAppShellComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement as HTMLElement;
     expect(shell.classList.contains("content-auto")).toBe(false);
@@ -252,18 +254,18 @@ function stubResizeObserver(): void {
 
 @Component({
   standalone: true,
-  imports: [Sh3AppShellComponent],
-  template: `<sh3-app-shell [mobileNav]="mode()" [(mobileNavOpen)]="open">
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell [mobileNav]="mode()" [(mobileNavOpen)]="open">
     <nav railPrimary><button data-t="rail-btn">Home</button></nav>
     <div data-t="content">page</div>
-  </sh3-app-shell>`,
+  </fold-app-shell>`,
 })
 class DrawerHostComponent {
   readonly open = signal(false);
   readonly mode = signal<"drawer" | "none">("drawer");
 }
 
-describe("Sh3AppShellComponent · mobile drawer", () => {
+describe("FoldAppShellComponent · mobile drawer", () => {
   beforeEach(() => stubResizeObserver());
   afterEach(() => {
     globalThis.ResizeObserver = realResizeObserver;
@@ -274,7 +276,7 @@ describe("Sh3AppShellComponent · mobile drawer", () => {
     const fixture = TestBed.createComponent(DrawerHostComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
+      "fold-app-shell",
     ) as HTMLElement;
     return { fixture, shell };
   }

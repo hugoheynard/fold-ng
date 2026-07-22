@@ -57,7 +57,7 @@
   grid-area: code;
 }
 
-/* surface + border + radius + the header/body bands come from sh3-card; clip so
+/* surface + border + radius + the header/body bands come from fold-card; clip so
    the header separator and code block sit inside the rounded corners */
 .pg-panel {
   overflow: hidden;
@@ -110,8 +110,8 @@
   max-height: min(60vh, 520px);
   margin: 14px;
   padding: 20px;
-  border-radius: var(--sh3-radius-md);
-  background: var(--sh3-color-bg-page);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-bg-page);
   align-items: center;
   justify-content: center;
   overflow: auto;
@@ -132,10 +132,10 @@
   display: none;
   flex-direction: column;
   min-height: 0;
-  border-radius: var(--sh3-radius-md);
-  background: var(--sh3-color-glass);
-  backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
-  -webkit-backdrop-filter: blur(var(--sh3-blur-glass)) saturate(1.5);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-glass);
+  backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
 }
 .pg-code-overlay-top {
   display: flex;
@@ -143,7 +143,7 @@
   justify-content: space-between;
   gap: 8px;
   padding: 8px 8px 8px 14px;
-  border-bottom: 1px solid var(--sh3-color-glass-border);
+  border-bottom: 1px solid var(--fold-color-glass-border);
 }
 .pg-code-overlay-actions {
   display: inline-flex;
@@ -168,7 +168,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--sh3-color-text-muted);
+  color: var(--fold-color-text-muted);
 }
 .pg-pre {
   margin: 0;
@@ -176,5 +176,5 @@
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: 12px;
   line-height: 1.6;
-  color: var(--sh3-color-text-secondary);
+  color: var(--fold-color-text-secondary);
 }

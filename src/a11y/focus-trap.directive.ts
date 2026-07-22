@@ -38,12 +38,12 @@ const FOCUSABLE_SELECTOR = [
  * The host must be focusable as a fallback (`tabindex="-1"`).
  */
 @Directive({
-  selector: "[sh3FocusTrap]",
+  selector: "[foldFocusTrap]",
   host: { "(keydown)": "onKeydown($event)" },
 })
 export class FocusTrapDirective {
-  /** Bind `[sh3FocusTrap]="open()"` — the trap is live only while true. */
-  readonly enabled = input(true, { alias: "sh3FocusTrap" });
+  /** Bind `[foldFocusTrap]="open()"` — the trap is live only while true. */
+  readonly enabled = input(true, { alias: "foldFocusTrap" });
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly document = inject(DOCUMENT);

@@ -11,17 +11,17 @@ import {
 } from "@angular/core";
 import { FocusTrapDirective } from "../../a11y/focus-trap.directive";
 import { ScrollLockService } from "../../a11y/scroll-lock.service";
-import { Sh3IconComponent } from "../icon/icon.component";
-import { Sh3NavTileComponent } from "./nav-tile.component";
+import { FoldIconComponent } from "../icon/icon.component";
+import { FoldNavTileComponent } from "./nav-tile.component";
 
 /**
- * `<sh3-nav-launcher>` — a full-screen mobile navigation launcher: a centred
- * grid of large {@link Sh3NavTileComponent} tiles over a blurred scrim. The
- * "app-grid" alternative to a slide-in {@link Sh3AppShellComponent} drawer — a
+ * `<fold-nav-launcher>` — a full-screen mobile navigation launcher: a centred
+ * grid of large {@link FoldNavTileComponent} tiles over a blurred scrim. The
+ * "app-grid" alternative to a slide-in {@link FoldAppShellComponent} drawer — a
  * curated set of top-level destinations, deliberately distinct from the desktop
  * rail (you pick which handful of places matter on a phone).
  *
- * Project `sh3-nav-tile`s (or any controls) into the default slot. It owns the
+ * Project `fold-nav-tile`s (or any controls) into the default slot. It owns the
  * whole overlay contract itself: a blurred scrim, dismissal on `Escape` / scrim
  * / the close button, a focus-trap, and a body scroll-lock while open.
  *
@@ -29,26 +29,26 @@ import { Sh3NavTileComponent } from "./nav-tile.component";
  * to `mobileNav="none"` so it renders no drawer) and a header hamburger:
  *
  * ```html
- * <sh3-app-shell mobileNav="none" [(mobileNavOpen)]="navOpen">…</sh3-app-shell>
+ * <fold-app-shell mobileNav="none" [(mobileNavOpen)]="navOpen">…</fold-app-shell>
  *
- * <sh3-nav-launcher [(open)]="navOpen" label="Go to">
- *   <a sh3-nav-tile icon="home" label="Home" routerLink="/"
+ * <fold-nav-launcher [(open)]="navOpen" label="Go to">
+ *   <a fold-nav-tile icon="home" label="Home" routerLink="/"
  *      (click)="navOpen.set(false)"></a>
- *   <a sh3-nav-tile icon="music" label="Music" routerLink="/music"
+ *   <a fold-nav-tile icon="music" label="Music" routerLink="/music"
  *      (click)="navOpen.set(false)"></a>
- * </sh3-nav-launcher>
+ * </fold-nav-launcher>
  * ```
  *
- * @selector `sh3-nav-launcher`
+ * @selector `fold-nav-launcher`
  */
 @Component({
-  selector: "sh3-nav-launcher",
+  selector: "fold-nav-launcher",
   standalone: true,
-  imports: [FocusTrapDirective, Sh3IconComponent],
+  imports: [FocusTrapDirective, FoldIconComponent],
   templateUrl: "./nav-launcher.component.html",
   styleUrl: "./nav-launcher.component.scss",
 })
-export class Sh3NavLauncherComponent {
+export class FoldNavLauncherComponent {
   /** Two-way open state — bind to the shell's `mobileNavOpen`. */
   readonly open = model(false);
   /** Accessible name for the launcher dialog. */
@@ -61,7 +61,7 @@ export class Sh3NavLauncherComponent {
   readonly columns = input<number | "auto">("auto");
 
   /** The projected tiles — their count drives `auto` column sizing. */
-  private readonly tiles = contentChildren(Sh3NavTileComponent);
+  private readonly tiles = contentChildren(FoldNavTileComponent);
 
   /** The resolved column count (always a number for the grid var). */
   protected readonly resolvedCols = computed(() => {

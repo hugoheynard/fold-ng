@@ -1,12 +1,12 @@
 import { booleanAttribute, Component, input } from "@angular/core";
-import { Sh3IconComponent } from "../icon/icon.component";
-import type { Sh3IconName } from "../icon/icon.registry";
+import { FoldIconComponent } from "../icon/icon.component";
+import type { FoldIconName } from "../icon/icon.registry";
 
 /**
- * `[sh3-nav-tile]` — one square tile in a {@link Sh3NavLauncherComponent} grid:
+ * `[fold-nav-tile]` — one square tile in a {@link FoldNavLauncherComponent} grid:
  * a large icon over a label, a generous touch target. An **attribute** component
  * on the caller's own `<a>`/`<button>`, so routing + activation stay theirs
- * (`routerLink`, `(click)`) — mirroring {@link Sh3MenuItemComponent}.
+ * (`routerLink`, `(click)`) — mirroring {@link FoldMenuItemComponent}.
  *
  * It stages its **own** entrance — a cascade keyed to its position in the grid
  * (`:host(:nth-child)`) — so a launcher's tiles animate in without the launcher
@@ -18,30 +18,30 @@ import type { Sh3IconName } from "../icon/icon.registry";
  *   The flat, "app-icon" look — a navy tile with a white glyph under `navi`, a
  *   teal one under umbra — since it names the brand roles, not a colour.
  *
- * @selector `a[sh3-nav-tile]`, `button[sh3-nav-tile]`
+ * @selector `a[fold-nav-tile]`, `button[fold-nav-tile]`
  *
  * @example
  * ```html
- * <a sh3-nav-tile icon="home" label="Home" routerLink="/"></a>
- * <button sh3-nav-tile icon="music" label="Music" variant="filled"></button>
+ * <a fold-nav-tile icon="home" label="Home" routerLink="/"></a>
+ * <button fold-nav-tile icon="music" label="Music" variant="filled"></button>
  * ```
  */
 @Component({
-  selector: "a[sh3-nav-tile], button[sh3-nav-tile]",
+  selector: "a[fold-nav-tile], button[fold-nav-tile]",
   standalone: true,
-  imports: [Sh3IconComponent],
+  imports: [FoldIconComponent],
   templateUrl: "./nav-tile.component.html",
   styleUrl: "./nav-tile.component.scss",
   host: {
-    class: "sh3-nav-tile",
+    class: "fold-nav-tile",
     "[class.is-filled]": "variant() === 'filled'",
     "[class.is-active]": "active()",
     "[attr.aria-current]": "active() ? 'page' : null",
   },
 })
-export class Sh3NavTileComponent {
+export class FoldNavTileComponent {
   /** The tile's icon (large, centred). */
-  readonly icon = input.required<Sh3IconName>();
+  readonly icon = input.required<FoldIconName>();
   /** The label under the icon (also the accessible name of the control). */
   readonly label = input.required<string>();
   /** `"surface"` (default, subtle raised) or `"filled"` (solid brand fill). */

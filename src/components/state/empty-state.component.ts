@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
 
 /**
- * `<sh3-empty-state>` — centered empty state with an optional icon, a title, an
+ * `<fold-empty-state>` — centered empty state with an optional icon, a title, an
  * optional subtitle and an optional action.
  *
  * Content projection carries the icon and the action:
@@ -11,31 +11,31 @@ import { Component, input } from "@angular/core";
  * `tone="alert"` turns it into an error state (red title + icon); the default
  * `neutral` tone is the plain empty state.
  *
- * @selector `sh3-empty-state`
+ * @selector `fold-empty-state`
  *
  * @example
  * ```html
- * <sh3-empty-state
+ * <fold-empty-state
  *   title="No company yet"
  *   subtitle="Create your company space to manage artists, teams and contracts."
  * >
  *   <svg empty-icon width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
  *     <path d="M19,3H5C3.346…" />
  *   </svg>
- *   <sh3-button variant="primary" (clicked)="create()">+ Create</sh3-button>
- * </sh3-empty-state>
+ *   <fold-button variant="primary" (clicked)="create()">+ Create</fold-button>
+ * </fold-empty-state>
  *
- * <sh3-empty-state tone="alert" title="Failed to load" />
+ * <fold-empty-state tone="alert" title="Failed to load" />
  * ```
  */
 @Component({
-  selector: "sh3-empty-state",
+  selector: "fold-empty-state",
   standalone: true,
   host: { "[class.alert]": "tone() === 'alert'" },
   templateUrl: "./empty-state.component.html",
   styleUrl: "./empty-state.component.scss",
 })
-export class Sh3EmptyStateComponent {
+export class FoldEmptyStateComponent {
   /** The bold primary line. */
   readonly title = input.required<string>();
   /** Optional muted secondary line. */
