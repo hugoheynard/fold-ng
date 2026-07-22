@@ -26,6 +26,9 @@ export interface GalleryThemeConfig {
   /** Whether to mount the tile launcher — i.e. `mobileNav === "none"`, named so
    *  the template reads a boolean rather than re-deriving the comparison. */
   readonly usesLauncher: boolean;
+  /** The launcher tiles' look — navi goes `filled` (navy tiles, white glyphs,
+   *  the logo spirit); umbra keeps the subtler `surface`, so both show live. */
+  readonly tileVariant: "surface" | "filled";
 }
 
 /** The per-theme chrome config — the one place a theme's gallery knobs are set. */
@@ -35,23 +38,27 @@ export const GALLERY_THEME_CONFIG: Record<GalleryTheme, GalleryThemeConfig> = {
     appearance: "flat",
     mobileNav: "none",
     usesLauncher: true,
+    tileVariant: "surface",
   },
   lumen: {
     dataTheme: "lumen",
     appearance: "flat",
     mobileNav: "drawer",
     usesLauncher: false,
+    tileVariant: "surface",
   },
   navi: {
     dataTheme: "navi",
     appearance: "flat",
     mobileNav: "none",
     usesLauncher: true,
+    tileVariant: "filled",
   },
   bubbly: {
     dataTheme: "bubbly",
     appearance: "floating",
     mobileNav: "drawer",
     usesLauncher: false,
+    tileVariant: "surface",
   },
 };

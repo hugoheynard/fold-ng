@@ -57,10 +57,12 @@ export default class NavLauncherPage {
   protected readonly usageCode = `<!-- The shell renders no built-in drawer; the launcher owns the mobile nav. -->
 <sh3-app-shell mobileNav="none" [(mobileNavOpen)]="navOpen">…</sh3-app-shell>
 
+<!-- columns="auto" (default) scales tiles to the count; variant="filled" is the
+     solid brand tile (navy + white glyph under navi). -->
 <sh3-nav-launcher [(open)]="navOpen" label="Go to">
-  <a sh3-nav-tile icon="home" label="Home" routerLink="/"
+  <a sh3-nav-tile variant="filled" icon="home" label="Home" routerLink="/"
      (click)="navOpen.set(false)"></a>
-  <a sh3-nav-tile icon="music" label="Music" routerLink="/music"
+  <a sh3-nav-tile variant="filled" icon="music" label="Music" routerLink="/music"
      (click)="navOpen.set(false)"></a>
   …
 </sh3-nav-launcher>`;

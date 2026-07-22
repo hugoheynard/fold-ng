@@ -180,6 +180,7 @@
       sh3-nav-tile
       icon="home"
       label="Home"
+      [variant]="cfg().tileVariant"
       routerLink="/"
       (click)="mobileNavOpen.set(false)"
     ></a>
@@ -187,6 +188,7 @@
       sh3-nav-tile
       icon="library"
       label="Library"
+      [variant]="cfg().tileVariant"
       [routerLink]="'/' + firstComponent"
       (click)="mobileNavOpen.set(false)"
     ></a>
@@ -194,6 +196,7 @@
       sh3-nav-tile
       icon="palette"
       label="Themes"
+      [variant]="cfg().tileVariant"
       routerLink="/themes"
       (click)="mobileNavOpen.set(false)"
     ></a>
@@ -201,6 +204,7 @@
       sh3-nav-tile
       icon="grid"
       label="Icons"
+      [variant]="cfg().tileVariant"
       routerLink="/icons"
       (click)="mobileNavOpen.set(false)"
     ></a>

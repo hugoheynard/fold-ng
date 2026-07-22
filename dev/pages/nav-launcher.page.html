@@ -44,6 +44,7 @@
   @for (d of dests; track d.id) {
   <button
     sh3-nav-tile
+    variant="filled"
     [icon]="d.icon"
     [label]="d.label"
     [active]="active() === d.id"
