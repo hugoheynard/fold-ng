@@ -1,8 +1,8 @@
 <sh3-app-shell
   footerLayout="inset"
   footerBehavior="scroll"
-  [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
-  [mobileNav]="usesTileLauncher() ? 'none' : 'drawer'"
+  [appearance]="cfg().appearance"
+  [mobileNav]="cfg().mobileNav"
   [(mobileNavOpen)]="mobileNavOpen"
   (dblclick)="onInspect($event)"
 >
@@ -174,7 +174,7 @@
 <!-- Tile mode (navi + umbra): the shell renders no drawer, so the header
      hamburger opens this full-screen launcher instead — a curated grid of
      top-level destinations, dogfooding sh3-nav-launcher. -->
-@if (usesTileLauncher()) {
+@if (cfg().usesLauncher) {
   <sh3-nav-launcher [(open)]="mobileNavOpen" label="Go to">
     <a
       sh3-nav-tile

@@ -15,10 +15,12 @@ import {
 import { InspectPanelComponent } from "../inspect-panel.component";
 import { closestSh3, inspect } from "../inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
+import {
+  GALLERY_THEME_CONFIG,
+  GALLERY_THEMES,
+  type GalleryTheme,
+} from "./gallery-theme";
 import pkg from "../../package.json";
-
-/** The themes the token layer ships — see `src/tokens/semantic.css`. */
-type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
 
 /**
  * The gallery shell — the fixed `sh3-app-shell` chrome (a stable static primary
@@ -46,29 +48,26 @@ type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
   ],
   host: {
     class: "gal-root",
-    "[attr.data-theme]": "theme() === 'umbra' ? null : theme()",
+    "[attr.data-theme]": "cfg().dataTheme",
   },
   templateUrl: "./gallery-shell.component.html",
 })
 export class GalleryShellComponent {
   private readonly panelHost = inject(Sh3PanelHostService);
 
-  /** Every theme the token layer ships. `umbra` is the base (`:root`), so it
-   *  sets no attribute; the rest are `[data-theme]` overrides. */
-  protected readonly themes = ["umbra", "lumen", "navi", "bubbly"] as const;
+  /** Every theme the token layer ships, in switcher order. */
+  protected readonly themes = GALLERY_THEMES;
   protected readonly theme = signal<GalleryTheme>("umbra");
   protected readonly navGroups = GALLERY_NAV;
+
+  /** The active theme's chrome config — the single source the template reads
+   *  every theme-varying binding from (appearance, mobileNav, data-theme…), so
+   *  the switch lives here, not as a ternary per binding. */
+  protected readonly cfg = computed(() => GALLERY_THEME_CONFIG[this.theme()]);
 
   /** The mobile nav open state, two-way bound to the shell (and, in tile mode,
    *  to the launcher). The header hamburger (mobile-only) toggles it. */
   protected readonly mobileNavOpen = signal(false);
-
-  /** Which mobile-nav system this theme dogfoods: `navi` + `umbra` use the
-   *  full-screen tile launcher (`sh3-nav-launcher`), the lighter themes use the
-   *  app-shell's off-canvas drawer — so the gallery shows both live. */
-  protected readonly usesTileLauncher = computed(
-    () => this.theme() === "navi" || this.theme() === "umbra",
-  );
 
   /** Where the primary rail's "Library" jumps in — the first library entry. */
   protected readonly firstComponent = GALLERY_NAV_ITEMS[0].id;
