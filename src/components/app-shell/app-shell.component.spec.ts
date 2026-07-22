@@ -32,13 +32,11 @@ class SizedHostComponent {
   template: `<sh3-app-shell
     [headerLayout]="layout()"
     [footerLayout]="footer()"
-    [appearance]="appearance()"
   />`,
 })
 class LayoutHostComponent {
   readonly layout = signal<"inset" | "full">("inset");
   readonly footer = signal<"inset" | "full">("inset");
-  readonly appearance = signal<"flat" | "floating">("flat");
 }
 
 @Component({
@@ -131,12 +129,11 @@ describe("Sh3AppShellComponent", () => {
     expect(content).not.toBeNull();
   });
 
-  it("is flat + inset by default (no layout classes)", () => {
+  it("is inset by default (no layout classes)", () => {
     const host = setup();
     const shell = host.querySelector("sh3-app-shell") ?? host;
     expect(shell.classList.contains("header-full")).toBe(false);
     expect(shell.classList.contains("footer-full")).toBe(false);
-    expect(shell.classList.contains("floating")).toBe(false);
   });
 
   it('toggles the header-full class from headerLayout="full"', () => {
@@ -202,22 +199,6 @@ describe("Sh3AppShellComponent", () => {
     fixture.detectChanges();
     expect(shell.querySelector(".content .footer-inflow")).toBeNull();
     expect(shell.querySelector(".footer [data-t='ft']")).not.toBeNull();
-  });
-
-  it('toggles the floating class from appearance="floating"', () => {
-    const fixture = TestBed.createComponent(LayoutHostComponent);
-    fixture.detectChanges();
-    const shell = fixture.nativeElement.querySelector(
-      "sh3-app-shell",
-    ) as HTMLElement;
-
-    fixture.componentInstance.appearance.set("floating");
-    fixture.detectChanges();
-    expect(shell.classList.contains("floating")).toBe(true);
-
-    fixture.componentInstance.appearance.set("flat");
-    fixture.detectChanges();
-    expect(shell.classList.contains("floating")).toBe(false);
   });
 
   it("renders a skip-link, first, targeting the focusable <main>", () => {

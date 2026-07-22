@@ -28,11 +28,11 @@
   background: var(--sh3-color-bg-rail-tertiary);
 }
 
-/* In a floating shell the rail cell stops clipping (so hover tooltips escape),
-   so the menu rounds its own background to match the card and drops the divider
-   border (the card's shadow separates it instead). */
-:host-context(sh3-app-shell.floating) {
-  border-radius: var(--sh3-radius-lg);
+/* When raised into a card (the consumer puts `sh3Elevated` on the rail), the
+   menu reads its **own** `data-elevated` — no reaching into the shell's classes.
+   Radius + shadow come from the token layer's `[data-elevated]` rule; the menu
+   only drops its divider border, since the card's shadow separates it now. */
+:host([data-elevated]) {
   border-right: none;
 }
 

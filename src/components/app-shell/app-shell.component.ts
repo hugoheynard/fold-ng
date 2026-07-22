@@ -78,12 +78,17 @@ const MOBILE_BREAKPOINT = 768;
  * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
  * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
  * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset), and the shell owns the content scroll, so project *flow* content, not a page that manages its own full-height scroll. |
- * | `appearance`   | `"flat" \| "floating"`| `"flat"`  | `flat` = regions are edge-to-edge blocks; `floating` = each region is a rounded, elevated card on a page-colour gutter (inset-dashboard look). |
  * | `contentScroll`| `"clip" \| "auto"`    | `"clip"`  | `clip` = the shell clips the content region; the page inside owns its scroll (`sh3-page-layout`). `auto` = the content region scrolls itself, for plain content. Ignored under `footerBehavior="scroll"`. |
  *
- * In `floating` mode the content cell becomes a rounded card; because it already
- * clips its overflow, a floating panel anchored inside it inherits that radius
- * for free — no extra wiring.
+ * ## Elevation (the floating look)
+ * The shell owns **structure**, not skin — it drives no `floating` flag. To lift
+ * a region into an inset, rounded, shadowed card, put `sh3Elevated` on the
+ * element that paints that region's background (a projected `sh3-menu`, an
+ * `app-header`, a content wrapper). It composes **per region** — float the rail
+ * while the main stays flat, or float them all for an inset dashboard. The shell
+ * only supplies the moat: it sets `--sh3-surface-inset` in its scope, so a
+ * slotted elevated region floats with a page-gutter (a card elsewhere stays
+ * flush). See {@link Sh3ElevatedDirective}.
  *
  * ## Accessibility
  * The shell renders a **skip-link** as its first Tab stop — jumping keyboard
@@ -97,10 +102,9 @@ const MOBILE_BREAKPOINT = 768;
  * <sh3-app-shell
  *   [railWidth]="72"
  *   headerLayout="full"
- *   appearance="floating"
  *   [(mobileNavOpen)]="navOpen"
  * >
- *   <app-menu railPrimary />
+ *   <app-menu railPrimary sh3Elevated /><!-- a floating rail; drop it for flat -->
  *   <app-workspace-rail railSecondary />
  *   <app-header header /><!-- its hamburger toggles navOpen at ≤768px -->
  *   <router-outlet />
@@ -120,7 +124,6 @@ const MOBILE_BREAKPOINT = 768;
     "[class.header-full]": 'headerLayout() === "full"',
     "[class.footer-full]": 'footerLayout() === "full"',
     "[class.footer-scroll]": 'footerBehavior() === "scroll"',
-    "[class.floating]": 'appearance() === "floating"',
     "[class.mobile-drawer]": 'mobileNav() === "drawer"',
     "[class.mobile-nav-open]": "drawerOpen()",
     "[class.content-auto]": 'contentScroll() === "auto"',
@@ -143,9 +146,6 @@ export class Sh3AppShellComponent {
   readonly footerLayout = input<"inset" | "full">("inset");
   /** `"pinned"` (default) keeps the footer always in sight as a fixed row (a player / status bar); `"scroll"` lets it flow at the end of the content, revealed when you scroll to the bottom (a legal / support footer). `scroll` is inset-only and makes the shell own the content scroll — project flow content, not a page that manages its own full-height scroll. */
   readonly footerBehavior = input<"pinned" | "scroll">("pinned");
-  /** `"floating"` renders each region as a rounded, elevated card on a page-colour gutter; `"flat"` (default) is edge-to-edge blocks. */
-  readonly appearance = input<"flat" | "floating">("flat");
-
   /**
    * Who owns the content region's scroll:
    * - `"clip"` (default) — the shell clips it; the page inside owns its scroll

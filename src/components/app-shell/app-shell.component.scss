@@ -153,32 +153,14 @@
   margin-top: auto;
 }
 
-/* appearance="floating" — inset-dashboard look: a page-colour gutter around
-       every region, each region a rounded, elevated card. The content cell keeps
-       its overflow clip, so a panel anchored inside inherits the radius. */
-:host(.floating) {
-  padding: var(--sh3-space-md);
-  gap: var(--sh3-space-md);
-}
-:host(.floating) .rail-primary,
-:host(.floating) .rail-secondary,
-:host(.floating) .header,
-:host(.floating) .footer,
-:host(.floating) .content {
-  border-radius: var(--sh3-radius-lg);
-  box-shadow: var(--sh3-shadow-md);
-}
-:host(.floating) .header,
-:host(.floating) .footer,
-:host(.floating) .content {
-  overflow: hidden;
-}
-/* Rails keep overflow visible so a collapsed rail's hover tooltips escape the
-   card (they'd be clipped otherwise). The projected rail rounds its own
-   background to match the card — see sh3-menu's floating branch. */
-:host(.floating) .rail-primary,
-:host(.floating) .rail-secondary {
-  overflow: visible;
+/* Elevation is not the shell's skin to own — a region floats when the consumer
+   puts `sh3Elevated` on the element that paints it (see Sh3ElevatedDirective).
+   The shell's only involvement is the *moat*: it declares `--sh3-surface-inset`
+   in its scope, so a slotted elevated region insets to reveal the page-colour
+   gutter around it. A `[data-elevated]` element elsewhere (a card in a page)
+   reads the token's `0` default and stays flush. */
+:host {
+  --sh3-surface-inset: var(--sh3-space-md);
 }
 
 /* The narrow layout — a single header + content (+ footer) column. Shared by
