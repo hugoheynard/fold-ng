@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
+  Sh3AsideLayoutComponent,
   Sh3BadgeComponent,
   Sh3ButtonComponent,
   Sh3CalloutComponent,
@@ -28,6 +29,7 @@ interface Feature {
   standalone: true,
   imports: [
     RouterLink,
+    Sh3AsideLayoutComponent,
     Sh3IconComponent,
     Sh3ButtonComponent,
     Sh3BadgeComponent,

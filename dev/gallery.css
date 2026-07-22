@@ -1524,16 +1524,96 @@ sh3-app-shell > .content > *:not(router-outlet) {
 
 /* ══ Home / landing (Fold) ═══════════════════════════════════════
    The routed host is display:contents (see the content-cell rule), so `.home`
-   is the scroll box, exactly as sh3-page-layout is on every other page. */
+   is the scroll box the sh3-aside-layout sticks its rails within — exactly the
+   scroll container every other page gets from sh3-page-layout. */
 .home {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+/* The two rails flank the centre; the shell already owns the side gutter, so
+   the layout adds only top/bottom. Rails start below the header band. */
+.home-layout {
+  --sh3-aside-layout-rail-width: 200px;
+  --sh3-aside-layout-side-width: 280px;
+  --sh3-aside-layout-pad: 8px 0 56px;
+  --sh3-aside-layout-pad-sm: 8px 0 40px;
+  --sh3-aside-layout-top: 16px;
+  --sh3-aside-layout-stack: 32px;
+}
+
+/* ── left rail: the numbers ───────────────────────────────────── */
+.home-figures {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  padding-bottom: 24px;
+  gap: 6px;
+}
+.home-figures .gal-tag {
+  margin-bottom: 6px;
+}
+.home-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-card);
+}
+.home-figure-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--sh3-color-primary-text);
+  font-variant-numeric: tabular-nums;
+}
+.home-figure-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sh3-color-text-muted);
+}
+
+/* ── right rail: support ──────────────────────────────────────── */
+.home-support-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 16px;
+}
+.home-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-md);
+  background: var(--sh3-color-surface-sunken);
+  color: var(--sh3-color-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+.home-link:hover {
+  border-color: var(--sh3-color-primary-border);
+  color: var(--sh3-color-primary-text);
+}
+.home-link sh3-icon {
+  color: var(--sh3-color-text-muted);
+}
+.home-link:hover sh3-icon {
+  color: var(--sh3-color-primary-text);
 }
 
 /* ── hero ─────────────────────────────────────────────────────── */
@@ -1543,7 +1623,7 @@ sh3-app-shell > .content > *:not(router-outlet) {
   align-items: center;
   text-align: center;
   gap: 18px;
-  padding: 40px 20px 8px;
+  padding: 24px 20px 8px;
 }
 .home-mark {
   display: grid;
@@ -1581,50 +1661,10 @@ sh3-app-shell > .content > *:not(router-outlet) {
   margin-top: 6px;
 }
 
-/* stat row — a hairline-framed band under the CTA */
-.home-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  width: 100%;
-  max-width: 720px;
-  margin-top: 28px;
-  border: 1px solid var(--sh3-color-border);
-  border-radius: var(--sh3-radius-lg);
-  background: var(--sh3-color-border);
-  overflow: clip;
-}
-.home-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 18px 12px;
-  background: var(--sh3-color-surface-card);
-}
-.home-stat-value {
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--sh3-color-primary-text);
-  font-variant-numeric: tabular-nums;
-}
-.home-stat-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--sh3-color-text-muted);
-}
-@media (max-width: 620px) {
-  .home-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 /* ── features ─────────────────────────────────────────────────── */
 .home-features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
 }
 .home-feature-head {

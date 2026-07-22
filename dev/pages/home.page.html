@@ -1,61 +1,95 @@
 <div class="home">
-  <!-- ── hero ─────────────────────────────────────────────────── -->
-  <header class="home-hero">
-    <div class="home-mark">
-      <sh3-icon name="fold" [size]="52" title="Fold" />
-    </div>
-    <sh3-badge
-      class="home-eyebrow"
-      content="Angular 22 · signals-first"
-      variant="accent"
-      radius="pill"
-    />
-    <h1 class="home-title">Fold</h1>
-    <p class="home-lede">
-      A design system that re-themes by re-pointing tokens — never by touching a
-      component. Dark by default, five themes, and a contract that fails the
-      build before the design can rot.
-    </p>
-    <div class="home-cta">
-      <sh3-button routerLink="/app-shell" variant="primary" size="lg">
-        Browse the library
-      </sh3-button>
-      <sh3-button routerLink="/themes" variant="ghost" size="lg">
-        See the themes
-      </sh3-button>
-    </div>
-
-    <div class="home-stats">
+  <sh3-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
+    <!-- ── left rail: the numbers ─────────────────────────────── -->
+    <div asideLeft class="home-figures">
+      <span class="gal-tag">by the numbers</span>
       @for (s of stats; track s.label) {
-      <div class="home-stat">
-        <span class="home-stat-value">{{ s.value }}</span>
-        <span class="home-stat-label">{{ s.label }}</span>
+      <div class="home-figure">
+        <span class="home-figure-value">{{ s.value }}</span>
+        <span class="home-figure-label">{{ s.label }}</span>
       </div>
       }
     </div>
-  </header>
 
-  <!-- ── features ─────────────────────────────────────────────── -->
-  <section class="home-features">
-    @for (f of features; track f.title) {
-    <sh3-card class="home-feature" separators raisedBands>
-      <div cardHeader class="home-feature-head">
-        <span class="home-feature-icon"
-          ><sh3-icon [name]="f.icon" size="md"
-        /></span>
-        <strong>{{ f.title }}</strong>
+    <!-- ── centre: hero + features + close ────────────────────── -->
+    <header class="home-hero">
+      <div class="home-mark">
+        <sh3-icon name="fold" [size]="52" title="Fold" />
       </div>
-      <p class="gal-body">{{ f.body }}</p>
-    </sh3-card>
-    }
-  </section>
+      <sh3-badge
+        class="home-eyebrow"
+        content="Angular 22 · signals-first"
+        variant="accent"
+        radius="pill"
+      />
+      <h1 class="home-title">Fold</h1>
+      <p class="home-lede">
+        A design system that re-themes by re-pointing tokens — never by touching
+        a component. Dark by default, five themes, and a contract that fails the
+        build before the design can rot.
+      </p>
+      <div class="home-cta">
+        <sh3-button routerLink="/app-shell" variant="primary" size="lg">
+          Browse the library
+        </sh3-button>
+        <sh3-button routerLink="/themes" variant="ghost" size="lg">
+          See the themes
+        </sh3-button>
+      </div>
+    </header>
 
-  <!-- ── close ────────────────────────────────────────────────── -->
-  <sh3-callout class="home-close" variant="accent">
-    Everything on this page — the cards, the buttons, this callout, the rail
-    beside it — is Fold rendering itself.
-    <sh3-button actions routerLink="/card" size="sm" variant="ghost">
-      Open a component
-    </sh3-button>
-  </sh3-callout>
+    <section class="home-features">
+      @for (f of features; track f.title) {
+      <sh3-card class="home-feature" separators raisedBands>
+        <div cardHeader class="home-feature-head">
+          <span class="home-feature-icon">
+            <sh3-icon [name]="f.icon" size="md" />
+          </span>
+          <strong>{{ f.title }}</strong>
+        </div>
+        <p class="gal-body">{{ f.body }}</p>
+      </sh3-card>
+      }
+    </section>
+
+    <sh3-callout class="home-close" variant="accent">
+      Everything on this page — the cards, the buttons, this callout, the rails
+      beside it — is Fold rendering itself.
+      <sh3-button actions routerLink="/card" size="sm" variant="ghost">
+        Open a component
+      </sh3-button>
+    </sh3-callout>
+
+    <!-- ── right rail: support ────────────────────────────────── -->
+    <sh3-card asideRight class="home-support" separators raisedBands>
+      <strong cardHeader>Support Fold</strong>
+      <div class="home-support-body">
+        <p class="gal-body">
+          Fold is <strong>donationware</strong> — free to use, built in the
+          open. If it saves you an afternoon, star it, sponsor it, or just say
+          hi.
+        </p>
+        <div class="home-links">
+          <a
+            class="home-link"
+            href="https://github.com/hugoheynard"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <sh3-icon name="github" size="sm" />
+            <span>GitHub</span>
+          </a>
+          <a
+            class="home-link"
+            href="https://www.linkedin.com/in/hugoheynard"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <sh3-icon name="linkedin" size="sm" />
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    </sh3-card>
+  </sh3-aside-layout>
 </div>
