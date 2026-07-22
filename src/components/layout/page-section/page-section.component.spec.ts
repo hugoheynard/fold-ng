@@ -20,16 +20,12 @@ class HostComponent {
   standalone: true,
   imports: [FoldPageSectionComponent],
   template: `<fold-page-section
-    [surface]="surface()"
-    [divider]="divider()"
     [stack]="stack()"
     [bleed]="bleed()"
     title="X"
   />`,
 })
-class AppearanceHostComponent {
-  readonly surface = signal<"transparent" | "card" | "sunken">("transparent");
-  readonly divider = signal(false);
+class ModifierHostComponent {
   readonly stack = signal(false);
   readonly bleed = signal(false);
 }
@@ -65,43 +61,34 @@ describe("FoldPageSectionComponent", () => {
     expect(root.querySelector(".body-item")).not.toBeNull();
   });
 
-  it("wraps the body in .section-body", () => {
+  it("wraps the body in .section-body inside the <section>", () => {
     const { root } = render();
-    expect(root.querySelector(".section-body .body-item")).not.toBeNull();
+    expect(
+      root.querySelector("section.ps-root .section-body .body-item"),
+    ).not.toBeNull();
   });
 
-  it("is transparent by default — no surface/divider host classes", () => {
-    const fixture = TestBed.createComponent(AppearanceHostComponent);
-    fixture.detectChanges();
-    const section = fixture.nativeElement.querySelector(
-      "fold-page-section",
-    ) as HTMLElement;
-    expect(section.classList.contains("s-card")).toBe(false);
-    expect(section.classList.contains("s-sunken")).toBe(false);
-    expect(section.classList.contains("divider")).toBe(false);
+  it("renders a semantic <section> named by its heading (aria-labelledby → id)", () => {
+    const { root } = render();
+    const section = root.querySelector("section.ps-root") as HTMLElement;
+    expect(section).not.toBeNull();
+    const labelledBy = section.getAttribute("aria-labelledby");
+    expect(labelledBy).toBeTruthy();
+    // the heading carries exactly that id — so the region is named by its title
+    const heading = root.querySelector(".et-label") as HTMLElement;
+    expect(heading.getAttribute("id")).toBe(labelledBy);
   });
 
-  it("maps surface + divider inputs to host classes", () => {
-    const fixture = TestBed.createComponent(AppearanceHostComponent);
+  it("drops aria-labelledby when untitled — no anonymously-named region", () => {
+    const { fixture, root } = render();
+    fixture.componentInstance.title.set(undefined);
     fixture.detectChanges();
-    const section = fixture.nativeElement.querySelector(
-      "fold-page-section",
-    ) as HTMLElement;
-
-    fixture.componentInstance.surface.set("card");
-    fixture.detectChanges();
-    expect(section.classList.contains("s-card")).toBe(true);
-
-    fixture.componentInstance.surface.set("sunken");
-    fixture.componentInstance.divider.set(true);
-    fixture.detectChanges();
-    expect(section.classList.contains("s-sunken")).toBe(true);
-    expect(section.classList.contains("s-card")).toBe(false);
-    expect(section.classList.contains("divider")).toBe(true);
+    const section = root.querySelector("section.ps-root") as HTMLElement;
+    expect(section.getAttribute("aria-labelledby")).toBeNull();
   });
 
   it("toggles the stack host class", () => {
-    const fixture = TestBed.createComponent(AppearanceHostComponent);
+    const fixture = TestBed.createComponent(ModifierHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
       "fold-page-section",
@@ -114,7 +101,7 @@ describe("FoldPageSectionComponent", () => {
   });
 
   it("toggles the is-bleed host class from the bleed input", () => {
-    const fixture = TestBed.createComponent(AppearanceHostComponent);
+    const fixture = TestBed.createComponent(ModifierHostComponent);
     fixture.detectChanges();
     const section = fixture.nativeElement.querySelector(
       "fold-page-section",

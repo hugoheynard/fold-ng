@@ -1,7 +1,7 @@
+/* The host is the bleed anchor + the page-body flex child; the semantic
+   <section> inside carries the layout (and the a11y region). */
 :host {
-  display: flex;
-  flex-direction: column;
-  gap: var(--fold-space-lg);
+  display: block;
 }
 /* `bleed` — span the page layout edge-to-edge. Cancels *exactly* the gutter
    fold-page-layout pads with (the same --fold-page-gutter token), so the section
@@ -21,12 +21,19 @@
 :host(.is-bleed):last-child {
   margin-bottom: calc(-1 * var(--fold-page-pad-bottom, 40px));
 }
+
+/* The <section>: the head (title + description) then the body, stacked. */
+.ps-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-lg);
+}
 /* Column: the title row (fold-element-title owns title + action) then the
-       optional description below it. */
+   optional description below it. */
 .section-head {
   display: flex;
   flex-direction: column;
-  gap: var(--fold-space-sm); /* was 6px → 8px */
+  gap: var(--fold-space-sm);
   min-width: 0;
 }
 .section-desc {
@@ -44,47 +51,4 @@
   display: flex;
   flex-direction: column;
   gap: var(--fold-space-lg);
-}
-
-/* ── Surface: a card (raised) or sunken box wrapping the section. The radius
-       is what makes it read as a card — a transparent section has none. ── */
-:host(.s-card),
-:host(.s-sunken) {
-  padding: var(--fold-space-xl);
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-lg);
-}
-:host(.s-card) {
-  background: var(--fold-color-surface-card);
-}
-:host(.s-sunken) {
-  background: var(--fold-color-surface-sunken);
-  border-color: var(--fold-color-border-subtle);
-}
-
-/* ── Divider: title becomes a bordered header bar, body padded below.
-       Comes after the surface rules (equal specificity) so it wins. ── */
-:host(.divider) {
-  gap: 0;
-  padding: 0;
-  overflow: hidden;
-}
-:host(.divider) .section-head {
-  /* was 14px 20px → 12px 20px */
-  padding: var(--fold-space-md) var(--fold-space-xl);
-  border-bottom: 1px solid var(--fold-color-border-subtle);
-}
-:host(.divider) .section-body {
-  /* was 8px 20px 14px → 8px 20px 12px */
-  padding: var(--fold-space-sm) var(--fold-space-xl) var(--fold-space-md);
-}
-@media (max-width: 700px) {
-  :host(.divider) .section-head {
-    /* was 12px 15px → 12px 16px */
-    padding: var(--fold-space-md) var(--fold-space-lg);
-  }
-  :host(.divider) .section-body {
-    /* was 6px 15px 12px → 4px 16px 12px */
-    padding: var(--fold-space-xs) var(--fold-space-lg) var(--fold-space-md);
-  }
 }

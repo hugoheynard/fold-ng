@@ -1,17 +1,20 @@
-@if (title() || description()) {
-  <div class="section-head">
-    @if (title(); as t) {
-      <fold-element-title
-        [variant]="divider() ? 'bar' : 'eyebrow'"
-        [title]="t"
-        [icon]="icon()"
-      >
-        <ng-content select="[sectionActions]" titleAction />
-      </fold-element-title>
-    }
-    @if (description()) {
-      <p class="section-desc">{{ description() }}</p>
-    }
-  </div>
-}
-<div class="section-body"><ng-content /></div>
+<section class="ps-root" [attr.aria-labelledby]="title() ? headingId : null">
+  @if (title() || description()) {
+    <div class="section-head">
+      @if (title(); as t) {
+        <fold-element-title
+          [title]="t"
+          [icon]="icon()"
+          [headingId]="headingId"
+          [level]="headingLevel()"
+        >
+          <ng-content select="[sectionActions]" titleAction />
+        </fold-element-title>
+      }
+      @if (description()) {
+        <p class="section-desc">{{ description() }}</p>
+      }
+    </div>
+  }
+  <div class="section-body"><ng-content /></div>
+</section>

@@ -10,7 +10,6 @@ import {
   FoldAsideLayoutComponent,
   FoldCardComponent,
   FoldPageLayoutComponent,
-  FoldPageSectionComponent,
   FoldSliderComponent,
 } from "../../src/index";
 import { DevPlaygroundComponent } from "../playground.component";
@@ -25,7 +24,6 @@ import { KindBadgeComponent } from "../kind-badge.component";
     FoldPageLayoutComponent,
     FoldAsideLayoutComponent,
     FoldCardComponent,
-    FoldPageSectionComponent,
     FoldSliderComponent,
     DevPlaygroundComponent,
   ],

@@ -82,26 +82,32 @@
         <button type="button" class="pl-btn" pageActions>Export</button>
         }
 
-        <fold-page-section surface="card" title="Payment methods">
-          <p class="gal-body">
-            The default method is charged on renewal. Add a backup so a declined
-            card never interrupts service.
-          </p>
+        <fold-page-section title="Payment methods">
+          <fold-card>
+            <p class="gal-body">
+              The default method is charged on renewal. Add a backup so a
+              declined card never interrupts service.
+            </p>
+          </fold-card>
         </fold-page-section>
 
-        <fold-page-section bleed surface="sunken" divider title="Bleed band">
-          <p class="gal-body">
-            Spans the layout edge-to-edge — it cancels
-            <code>--fold-page-gutter</code> exactly (the same token the page
-            pads with), so it stays flush as you drag the slider.
-          </p>
+        <fold-page-section bleed>
+          <fold-card surface="sunken" radius="sm">
+            <p class="gal-body">
+              Bleed band — spans the layout edge-to-edge. It cancels
+              <code>--fold-page-gutter</code> exactly (the same token the page
+              pads with), so it stays flush as you drag the slider.
+            </p>
+          </fold-card>
         </fold-page-section>
 
-        <fold-page-section surface="card" title="Invoices">
-          <p class="gal-body">
-            Back in the gutter. The body keeps its steady vertical rhythm at any
-            width.
-          </p>
+        <fold-page-section title="Invoices">
+          <fold-card>
+            <p class="gal-body">
+              Back in the gutter. The body keeps its steady vertical rhythm at
+              any width.
+            </p>
+          </fold-card>
         </fold-page-section>
       </fold-page-layout>
     </div>
