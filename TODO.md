@@ -328,6 +328,25 @@ not forgotten.
 - **`PanelHostComponent :host { display: contents }`** landed as layout hygiene
   (the overlay host claims no layout box); whether it also settles the open-panel
   glitch is unverified — revisit once the glitch is diagnosed.
+- **`sh3-app-shell` drawer mechanics could become a `Sh3Drawer*` primitive.** The
+  shell owns the mobile-drawer behaviour inline — the `mobileNavOpen` model, the
+  `drawerOpen` gate, the `Escape` handler, the widen-reset effect, and the
+  focus-trap gating. It's cohesive today and there is only **one** drawer, so it
+  stays in the component (the width-observer was the shared half and is already
+  extracted to `observeElementWidth`). **Trigger to extract** a `Sh3DrawerController`
+  (or `[sh3Drawer]` directive) owning open-state + `Escape` + focus-trap + scrim:
+  a **2nd** off-canvas drawer elsewhere (e.g. a filters/detail drawer). Generalise
+  on the 2nd real use, not by anticipation.
+- **`sh3-app-shell`: the secondary rail is unreachable on mobile.** Below the
+  breakpoint only the **primary** rail returns (as the drawer); an app that uses
+  `railSecondary` for a workspace switcher / sub-nav loses it on a phone. Options
+  when a bi-rail app needs it: stack both rails in the drawer, or a segmented
+  toggle inside the drawer. Deferred until a bi-rail consumer needs mobile access.
+- **`sh3-app-shell`: rails aren't named landmarks.** `.rail-primary` /
+  `.rail-secondary` are bare `<div>`s, so a screen reader gets no `navigation`
+  landmark for them (the header/main/footer are semantic). Add
+  `railPrimaryLabel` / `railSecondaryLabel` inputs → `role="navigation"` +
+  `aria-label` on the wrappers. Cheap; pairs with the skip-link already shipped.
 - [x] **Re-export shims — paid back.** The `app/shared/{panel,toast,avatar,
 avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
       consumers now import `@sh3pherd/ui` directly (duplicate imports merged). Only
