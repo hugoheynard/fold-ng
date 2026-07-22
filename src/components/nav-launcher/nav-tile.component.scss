@@ -1,0 +1,74 @@
+:host {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  aspect-ratio: 1;
+  padding: 12px;
+  border-radius: var(--sh3-radius-lg);
+  background: var(--sh3-color-surface-raised);
+  border: 1px solid var(--sh3-color-border);
+  color: var(--sh3-color-text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  /* Entrance — staged by grid position (see the @for below), so tiles cascade
+     in without the launcher wiring an index. `forwards` holds the end state. */
+  opacity: 0;
+  animation: sh3-nav-tile-in 260ms ease forwards;
+  transition:
+    transform 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+:host(:hover) {
+  transform: translateY(-2px);
+  background: var(--sh3-color-surface-hover);
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-text);
+}
+:host(:active) {
+  transform: scale(0.97);
+}
+:host(.is-active) {
+  border-color: var(--sh3-color-primary);
+  color: var(--sh3-color-primary-text);
+}
+.nt-icon {
+  flex: none;
+}
+.nt-label {
+  font-size: var(--sh3-text-xs);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Stagger the entrance by position among its siblings — the tile knows its own
+   place in the grid, so no index has to cross the projection boundary. Cap at a
+   reasonable tile count; beyond it they all share the last delay. */
+@for $i from 1 through 12 {
+  :host(:nth-child(#{$i})) {
+    animation-delay: #{($i - 1) * 35}ms;
+  }
+}
+
+@keyframes sh3-nav-tile-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    animation: none;
+    opacity: 1;
+  }
+}

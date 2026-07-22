@@ -1,0 +1,23 @@
+@if (open()) {
+  <div class="nl-scrim" (click)="close()" aria-hidden="true"></div>
+  <div
+    class="nl-dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="label()"
+    [sh3FocusTrap]="open()"
+    tabindex="-1"
+  >
+    <button
+      type="button"
+      class="nl-close"
+      (click)="close()"
+      aria-label="Close navigation"
+    >
+      <sh3-icon name="close" size="md" />
+    </button>
+    <div class="nl-grid">
+      <ng-content />
+    </div>
+  </div>
+}

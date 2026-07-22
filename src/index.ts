@@ -51,6 +51,8 @@ export {
 } from "./components/menu/menu-item.component";
 export { Sh3MenuSeparatorComponent } from "./components/menu/menu-separator.component";
 export { Sh3MenuSectionComponent } from "./components/menu/menu-section.component";
+export { Sh3NavLauncherComponent } from "./components/nav-launcher/nav-launcher.component";
+export { Sh3NavTileComponent } from "./components/nav-launcher/nav-tile.component";
 export { Sh3HeroComponent } from "./components/hero/hero.component";
 export { Sh3DataTableComponent } from "./components/data-table/data-table.component";
 export { Sh3DataTableCellDirective } from "./components/data-table/data-table-cell.directive";
