@@ -18,8 +18,8 @@ Legend: 🟢 ship-ready · 🟡 minor work · 🔴 blocker.
 Scope audited: **30 components + the panel subsystem + 3 directives**, 80 public
 exports, **402 test blocks across 62 spec files**, **114 built-in icons**. No
 `any` / `as unknown` / `@ts-ignore` / `eslint-disable` / raw-colour violations in
-component _source_ (the token contract holds) — the one strict-TS breach is in a
-spec (see P0-6). Method: six parallel per-cluster audits, each reading every
+component _source_ (the token contract holds); the lone spec-side `as unknown`
+breach (P0-7) is now fixed too. Method: six parallel per-cluster audits, each reading every
 `.ts`/`.html`/`.scss`/`.spec.ts` + the matching gallery page.
 
 ---
@@ -37,7 +37,7 @@ and the gallery nav — **layout first**.
 | `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap)    |
 | `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card |
 | `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)    |
-| `fold-tab-layout`   | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row                |
+| `fold-tab-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)     |
 | `fold-hero`         | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                |
 
 **Navigation** — `src/components/navigation/`
@@ -106,9 +106,10 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                  |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo               |
 
-**Ship-ready today (13):** app-shell, page-layout, page-section, aside-layout,
-avatar-list, callout, element-title, field, field-list, nav-launcher, timeline,
-toast, surface. Everything else has scoped, mostly mechanical work below.
+**Ship-ready today (14):** app-shell, page-layout, page-section, aside-layout,
+tab-layout, avatar-list, callout, element-title, field, field-list,
+nav-launcher, timeline, toast, surface. Everything else has scoped, mostly
+mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -161,11 +162,12 @@ Buttons carry only an `is-active` class — no `role="tab"`/`tablist`, no
 `aria-selected`/`aria-current` (`tab-nav.component`). A "tab bar" that doesn't
 announce as tabs. Add the roles + `aria-selected`, and assert them.
 
-**P0-7 · Strict-TS breach in a spec.**
-`tab-layout.component.spec.ts:16,24` uses `as unknown as ResizeObserver` /
-`as unknown as typeof ResizeObserver` — a direct rule-2.1 violation ("no
-`as unknown`", package kept at 1 cast total). Type the fake via
-`implements ResizeObserver` + a typed callback so no assertion is needed.
+**P0-7 · Strict-TS breach in a spec. ✅ Fixed.**
+`tab-layout.component.spec.ts` used `as unknown as ResizeObserver` /
+`as unknown as typeof ResizeObserver`. Resolved: the fake is now
+`implements ResizeObserver`, so both the callback's `observer` arg and the
+`globalThis` assignment type-check with no assertion. Zero `as unknown` in the
+package.
 
 ---
 
@@ -180,7 +182,7 @@ to both. (`page-layout.wide`/`fluid` no longer apply — both inputs were remove
 the page fills its container, width is a content concern.)
 
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
-**no README row**: `fold-callout`, `fold-tab-layout`,
+**no README row**: `fold-callout`,
 `fold-disclosure`, `fold-select`, `fold-slider`, `fold-range-slider`,
 `fold-file-dropzone`, `fold-repeat-press`. (`fold-page-section` now has its own
 row.) Add each row.
@@ -308,9 +310,10 @@ duplication in one cut; spacing is tokenised; README row + gallery page added.
 Elevation is moot here (no box); a card that should _float_ is a `fold-card` +
 `foldElevated` concern, deferred to a real 2nd use.
 
-**`fold-tab-layout`** 🟢🟡🟢 — Tiny API hiding a hysteresis'd `ResizeObserver`
-fold; `exportAs` + `stacked()` is excellent ergonomics. Actions: (1) **P0-7**
-(remove the two `as unknown as` casts); (2) README row (C-2).
+**`fold-tab-layout`** 🟢🟢🟢 — Ship-ready. Tiny API hiding a hysteresis'd
+`ResizeObserver` fold; `exportAs` + `stacked()` is excellent ergonomics. Closed:
+P0-7 (the two `as unknown as` casts → `implements ResizeObserver`) + README row.
+SCSS is already fully tokenised (gap / nav-width CSS-var contract).
 
 ### Identity & data display
 

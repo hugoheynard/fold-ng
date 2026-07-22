@@ -8,20 +8,19 @@ let emitWidth: ((width: number) => void) | undefined;
 const realResizeObserver = globalThis.ResizeObserver;
 
 function stubResizeObserver(): void {
-  class FakeResizeObserver {
+  // `implements ResizeObserver` makes the fake structurally a real one, so both
+  // the callback's `observer` arg and the `globalThis` assignment type-check
+  // without an `as unknown as` breach.
+  class FakeResizeObserver implements ResizeObserver {
     constructor(callback: ResizeObserverCallback) {
       emitWidth = (width) =>
-        callback(
-          [{ contentRect: { width } } as ResizeObserverEntry],
-          this as unknown as ResizeObserver,
-        );
+        callback([{ contentRect: { width } } as ResizeObserverEntry], this);
     }
     observe(): void {}
     disconnect(): void {}
     unobserve(): void {}
   }
-  globalThis.ResizeObserver =
-    FakeResizeObserver as unknown as typeof ResizeObserver;
+  globalThis.ResizeObserver = FakeResizeObserver;
 }
 
 afterEach(() => {
