@@ -1578,11 +1578,22 @@ sh3-app-shell > .content > *:not(router-outlet) {
 }
 
 /* ── right rail: support ──────────────────────────────────────── */
-.home-support-body {
+.home-support-body,
+.home-author-body {
   display: flex;
   flex-direction: column;
   gap: 14px;
   padding: 14px 16px;
+}
+/* The email link can be long; let it shrink and ellipsize rather than push the
+   rail wider. */
+.home-author .home-link {
+  min-width: 0;
+}
+.home-author .home-link span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .home-links {
   display: flex;
