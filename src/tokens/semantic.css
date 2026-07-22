@@ -178,6 +178,19 @@
   color: var(--sh3-color-text);
 }
 
+/* ── Elevated surfaces ────────────────────────────────────────
+   A `[data-elevated]` (stamped by the `[sh3Elevated]` directive) is a raised
+   card: radius + shadow, riding on the element's own background so its colour
+   stays its own. The *inset* margin is a context decision — default `0` (a card
+   sits flush with its neighbours), and an ancestor like `sh3-app-shell` sets
+   `--sh3-surface-inset` in its scope so a floating region gets a page-gutter.
+   Radius/shadow are tokenised too, so a scope can dial elevation without a prop. */
+[data-elevated] {
+  margin: var(--sh3-surface-inset, 0);
+  border-radius: var(--sh3-surface-radius, var(--sh3-radius-lg));
+  box-shadow: var(--sh3-surface-shadow, var(--sh3-shadow-md));
+}
+
 /* ── Override theme: LUMEN (light) ────────────────────────── */
 [data-theme="lumen"] {
   /* Surfaces */
