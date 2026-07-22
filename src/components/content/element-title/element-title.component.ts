@@ -54,6 +54,9 @@ export class FoldElementTitleComponent {
   readonly variant = input<"eyebrow" | "bar" | "title">("eyebrow");
   /** Heading outline depth exposed to assistive tech (`aria-level`). */
   readonly level = input(2);
+  /** Optional `id` on the heading span, so a container can name a region with
+   *  `aria-labelledby` (e.g. a `fold-page-section`'s `<section>`). */
+  readonly headingId = input<string>();
 
   protected readonly iconSize = computed(() =>
     this.variant() === "title" ? "md" : "sm",

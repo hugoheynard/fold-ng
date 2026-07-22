@@ -3,9 +3,13 @@
 }
 <span class="et-main">
   <span class="et-row">
-    <span class="et-label" role="heading" [attr.aria-level]="level()">{{
-      title()
-    }}</span>
+    <span
+      class="et-label"
+      role="heading"
+      [attr.id]="headingId()"
+      [attr.aria-level]="level()"
+      >{{ title() }}</span
+    >
     <span class="et-action"><ng-content select="[titleAction]" /></span>
   </span>
   @if (subtitle(); as s) {
