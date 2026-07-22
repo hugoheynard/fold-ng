@@ -26,55 +26,56 @@ spec (see P0-6). Method: six parallel per-cluster audits, each reading every
 
 ## 1 · Scoreboard
 
-| Component | DX | Tests | Docs | Verdict |
-| --- | :-: | :-: | :-: | --- |
-| `sh3-app-shell` | 🟢 | 🟢 | 🟢 | **Ship-ready** |
-| `sh3-avatar` | 🟢 | 🟢 | 🟢 | Add luminance-ink test + `@example` tag |
-| `sh3-avatar-detail` | 🟢 | 🔴 | 🟡 | Test forwarded inputs; `@example` |
-| `sh3-avatar-list` | 🟢 | 🟢 | 🟢 | **Ship-ready** |
-| `sh3-badge` | 🟢 | 🟡 | 🟢 | Test `neutral`/`success` variants |
-| `sh3-button` | 🟡 | 🟢 | 🟡 | `booleanAttribute` on `disabled`; `@example` tag |
-| `sh3-button-icon` | 🔴 | 🟡 | 🟡 | **Momentary buttons emit `aria-pressed` (bug)** |
-| `sh3-callout` | 🟢 | 🟢 | 🟢 | Reference component — add missing README row |
-| `sh3-card` | 🟡 | 🟢 | 🟢 | `booleanAttribute` on `interactive` |
-| `sh3-choice-row` | 🟢 | 🟢 | 🟡 | Gallery page; arrow-key a11y |
-| `sh3-context-card` | 🟢 | 🟡 | 🟡 | `iconTone` pass-through test |
-| `sh3-data-table` | 🟢 | 🟢 | 🔴 | **No gallery page; no `@selector`/`@example`** |
-| `sh3-disclosure` | 🟢 | 🟡 | 🔴 | **No README row** |
-| `sh3-element-title` | 🟢 | 🟢 | 🟢 | **Ship-ready** |
-| `sh3-empty-state` | 🟢 | 🟢 | 🟡 | No gallery page |
-| `sh3-field` / `sh3-field-list` | 🟢 | 🟢 | 🟢 | **Ship-ready** |
-| `sh3-file-dropzone` | 🟡 | 🟢 | 🟡 | **French default copy (portability)**; README row |
-| `sh3-hero` | 🟢 | 🟡 | 🟢 | Optional: assert `on-primary` text flip |
-| `sh3-icon` | 🟢 | 🟢 | 🟡 | `@selector`; stale count; `warn` in `computed()` |
-| `sh3-input` | 🟢 | 🟢 | 🟢 | Wire or drop dead `autofocus` input |
-| `sh3-link` | 🟡 | 🟢 | 🟢 | `target`/`rel` for external links |
-| `sh3-loading` | 🟡 | 🟢 | 🟡 | **README claims a spinner that doesn't exist** |
-| `sh3-menu` (+ item/section/sep) | 🟢 | 🟡 | 🟢 | Test `resolvedPlacement`; aria strings as inputs |
-| `sh3-number-input` | 🟢 | 🟢 | 🟢 | Extract — **299/300 lines**, one line from the gate |
-| `sh3-page-layout` | 🟡 | 🟢 | 🟢 | `booleanAttribute` on `wide` |
-| `sh3-page-section` | 🟡 | 🟢 | 🟡 | Own README row; document `divider`↔`surface` |
-| `sh3-paginator` | 🟢 | 🟢 | 🟡 | **French aria/labels (portability); no gallery** |
-| `sh3-panel-host` / `-header` | 🟢 | 🟢 | 🔴 | **French "Fermer"; trap doesn't `inert` bg** |
-| `sh3-range-slider` | 🟡 | 🟢 | 🟡 | **Hardcoded aria suffixes; no README/gallery** |
-| `sh3-search` | 🟡 | 🟢 | 🟡 | No accessible name; no clear/value |
-| `sh3-select` | 🟢 | 🟢 | 🟡 | README row; `[formField]` example |
-| `sh3-slider` | 🟡 | 🟢 | 🟡 | Not a `FormValueControl`; README row |
-| `sh3-aside-layout` | 🟢 | 🟡 | 🟡 | README row; `stackLeftFirst` test |
-| `sh3-status-badge` | 🟡 | 🟡 | 🟡 | Bakes a domain vocabulary; `@example` |
-| `sh3-tab-layout` | 🟢 | 🟡 | 🟢 | **`as unknown as` in spec**; README row |
-| `sh3-tab-nav` | 🟢 | 🟡 | 🟢 | **No `role="tab"`/`aria-selected`** |
-| `sh3-timeline` | 🟢 | 🟢 | 🟢 | **Ship-ready** |
-| `sh3-toast` (+ container/service) | 🟢 | 🟢 | 🟢 | Optional: `Dismiss` as input; SSR crypto guard |
-| `[sh3Surface]` | 🟢 | 🟢 | 🟢 | **Ship-ready** |
-| `[sh3StickyColumn]` | 🟢 | 🟢 | 🟡 | Add `@selector` |
-| `[sh3RepeatPress]` | 🟢 | 🟢 | 🟡 | Add `@selector`; README row / demo |
+| Component                         | DX  | Tests | Docs | Verdict                                             |
+| --------------------------------- | :-: | :---: | :--: | --------------------------------------------------- |
+| `sh3-app-shell`                   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `sh3-avatar`                      | 🟢  |  🟢   |  🟢  | Add luminance-ink test + `@example` tag             |
+| `sh3-avatar-detail`               | 🟢  |  🔴   |  🟡  | Test forwarded inputs; `@example`                   |
+| `sh3-avatar-list`                 | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `sh3-badge`                       | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                   |
+| `sh3-button`                      | 🟡  |  🟢   |  🟡  | `booleanAttribute` on `disabled`; `@example` tag    |
+| `sh3-button-icon`                 | 🔴  |  🟡   |  🟡  | **Momentary buttons emit `aria-pressed` (bug)**     |
+| `sh3-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row        |
+| `sh3-card`                        | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `interactive`                 |
+| `sh3-choice-row`                  | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                        |
+| `sh3-context-card`                | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                        |
+| `sh3-data-table`                  | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**      |
+| `sh3-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                   |
+| `sh3-element-title`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `sh3-empty-state`                 | 🟢  |  🟢   |  🟡  | No gallery page                                     |
+| `sh3-field` / `sh3-field-list`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `sh3-file-dropzone`               | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row   |
+| `sh3-hero`                        | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip             |
+| `sh3-icon`                        | 🟢  |  🟢   |  🟡  | `@selector`; stale count; `warn` in `computed()`    |
+| `sh3-input`                       | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                 |
+| `sh3-link`                        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                   |
+| `sh3-loading`                     | 🟡  |  🟢   |  🟡  | **README claims a spinner that doesn't exist**      |
+| `sh3-menu` (+ item/section/sep)   | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs    |
+| `sh3-nav-launcher` (+ nav-tile)   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `sh3-number-input`                | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate |
+| `sh3-page-layout`                 | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `wide`                        |
+| `sh3-page-section`                | 🟡  |  🟢   |  🟡  | Own README row; document `divider`↔`surface`        |
+| `sh3-paginator`                   | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**    |
+| `sh3-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**        |
+| `sh3-range-slider`                | 🟡  |  🟢   |  🟡  | **Hardcoded aria suffixes; no README/gallery**      |
+| `sh3-search`                      | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                  |
+| `sh3-select`                      | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                   |
+| `sh3-slider`                      | 🟡  |  🟢   |  🟡  | Not a `FormValueControl`; README row                |
+| `sh3-aside-layout`                | 🟢  |  🟡   |  🟡  | README row; `stackLeftFirst` test                   |
+| `sh3-status-badge`                | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`               |
+| `sh3-tab-layout`                  | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row             |
+| `sh3-tab-nav`                     | 🟢  |  🟡   |  🟢  | **No `role="tab"`/`aria-selected`**                 |
+| `sh3-timeline`                    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `sh3-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard      |
+| `[sh3Surface]`                    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `[sh3StickyColumn]`               | 🟢  |  🟢   |  🟡  | Add `@selector`                                     |
+| `[sh3RepeatPress]`                | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo                  |
 
-**Ship-ready today (9):** app-shell, avatar-list, callout, element-title, field,
-field-list, timeline, toast, surface. Everything else has scoped, mostly
-mechanical work below.
+**Ship-ready today (10):** app-shell, avatar-list, callout, element-title, field,
+field-list, nav-launcher, timeline, toast, surface. Everything else has scoped,
+mostly mechanical work below.
 
-> **TODO · `sh3-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · mobile drops both rails with no drawer/hamburger to bring nav back · no skip-to-content link (`<main>` has no `id` target) · decisions to record: no persistent right rail (assume `sh3-aside-layout` + panels?), tertiary-rail token vs 2-slot shell, optional `contentScroll: clip|auto`.
+> **TODO · `sh3-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--sh3-color-scrim` token) or `none` + a standalone `sh3-nav-launcher` (full-screen tile grid) · no skip-to-content link (`<main>` has no `id` target) · rails aren't named landmarks (`.rail-*` are bare `<div>`s, not `<nav>`) · decisions to record: no persistent right rail (assume `sh3-aside-layout` + panels?), tertiary-rail token vs 2-slot shell, optional `contentScroll: clip|auto`.
 
 ---
 
@@ -150,6 +151,7 @@ their siblings have, so a bare attribute or `="false"` mis-coerces:
 Add each row.
 
 **C-3 · Stale / wrong README facts.**
+
 - Icon count says "102 today" / "~100" (`README.md:168,196`) — actual is **114**.
   The gallery already derives it live; the README does not.
 - `sh3-loading` row claims "spinner + message" — there is **no spinner**
@@ -321,8 +323,9 @@ Action: **it is 299/300 lines** — extract before adding anything (C-7/C-8).
 **`sh3-search`** 🟡🟢🟡 — Clean debounce wrapper (trims, dedupes, SSR-safe
 teardown). Actions: (1) forward `label`/`aria-label` (English default) — a search
 box currently has no accessible name unless the caller wraps it; (2) `type="search"`
-+ optional two-way `value` so a "clear" button can reset it; (3) destroy-teardown
-test (no stray emit after destroy).
+
+- optional two-way `value` so a "clear" button can reset it; (3) destroy-teardown
+  test (no stray emit after destroy).
 
 **`sh3-select`** 🟢🟢🟡 — Native `<select>` + projected options; both bindings.
 Actions: (1) README row (C-2); (2) add a `[formField]` snippet to the `@example`;
