@@ -11,6 +11,7 @@ import {
   Sh3IconComponent,
   type Sh3IconName,
 } from "../../src/index";
+import pkg from "../../package.json";
 
 /** A headline number on the landing hero. */
 interface Stat {
@@ -43,6 +44,9 @@ interface Feature {
   templateUrl: "./home.page.html",
 })
 export default class HomePage {
+  /** The package version, straight from package.json — never drifts. */
+  protected readonly version = pkg.version;
+
   /** The "Start now" disclosure — reveals the terminal install. */
   protected readonly startNowOpen = signal(false);
 

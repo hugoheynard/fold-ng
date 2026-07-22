@@ -1,6 +1,11 @@
 <div class="home">
   <!-- ── hero: a full-width band, down to the two CTAs ──────────── -->
   <header class="home-hero">
+    <!-- A giant gradient version number, blurred, behind the text — it is the
+         hero's gradient, shaped. Decorative, so hidden from the a11y tree. -->
+    <span class="home-version-bg" aria-hidden="true">{{ version }}</span>
+    <span class="home-version">v{{ version }}</span>
+
     <div class="home-mark">
       <sh3-icon name="fold" [size]="52" title="Fold" />
     </div>
