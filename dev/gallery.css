@@ -552,29 +552,41 @@ sh3-app-shell {
   color: var(--sh3-color-primary-text);
 }
 
-/* ── Footer: dogfoods sh3-app-shell's footer slot (MIT · © · support) ── */
+/* ── Footer: dogfoods sh3-app-shell's footer slot in scroll mode — a full
+   site footer that flows at the end of the content and is revealed on the way
+   down. Bleeds to the content edges (negates the shell's content gutter). ── */
 .gal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  padding: 10px 20px;
+  margin: 40px -32px -40px;
+  padding: 32px 32px 24px;
   background: var(--sh3-color-bg-header);
   border-top: 1px solid var(--sh3-color-border);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--sh3-color-text-muted);
 }
-.gal-footer-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+.gal-footer-main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--sh3-color-border-subtle);
+}
+@media (max-width: 760px) {
+  .gal-footer-main {
+    grid-template-columns: 1fr;
+  }
+}
+.gal-footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 360px;
 }
 .gal-footer-brand {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--sh3-color-text);
@@ -583,24 +595,36 @@ sh3-app-shell {
 .gal-footer-brand sh3-icon {
   color: var(--sh3-color-primary-text);
 }
+.gal-footer-tagline {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--sh3-color-text-muted);
+}
 .gal-footer-ver {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  color: var(--sh3-color-text-secondary);
 }
-.gal-footer-dot {
-  color: var(--sh3-color-border);
-}
-.gal-footer-links {
-  display: inline-flex;
-  align-items: center;
+.gal-footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
-  flex-wrap: wrap;
+}
+.gal-footer-head {
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sh3-color-text-secondary);
 }
 .gal-footer-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 10px;
+  padding: 4px 8px;
+  margin-left: -8px;
   border-radius: var(--sh3-radius-sm);
   color: var(--sh3-color-text-secondary);
   text-decoration: none;
@@ -610,8 +634,45 @@ sh3-app-shell {
   background: var(--sh3-color-surface-hover);
   color: var(--sh3-color-primary-text);
 }
+.gal-footer-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding-top: 20px;
+}
+.gal-footer-link--inline {
+  padding: 0;
+  margin: 0;
+}
+.gal-footer-link--inline:hover {
+  background: none;
+  text-decoration: underline;
+}
+.gal-footer-dot {
+  color: var(--sh3-color-border);
+}
 .gal-footer-copy {
   font-variant-numeric: tabular-nums;
+}
+.gal-footer-built {
+  margin-left: auto;
+  color: var(--sh3-color-text-muted);
+}
+.gal-footer-built code {
+  font-family: var(--sh3-font-mono, monospace);
+  font-size: 12px;
+  color: var(--sh3-color-text-secondary);
+}
+
+/* In scroll mode the shell's content cell owns the scroll, so the routed page
+   must flow at its natural height instead of being its own scroll box —
+   otherwise the page scrolls internally and the footer never comes into view.
+   The page's full-height demos (app-shell preview, menu columns) use fixed /
+   min heights, so they are unaffected. */
+sh3-app-shell.footer-scroll .content sh3-page-layout {
+  flex: 0 0 auto;
+  overflow: visible;
 }
 
 /* ── Content: scrollable gallery + docked token editor ──────── */

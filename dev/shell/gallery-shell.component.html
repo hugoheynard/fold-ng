@@ -1,6 +1,7 @@
 <sh3-app-shell
   contentPadding="28px 32px 40px"
-  footerLayout="full"
+  footerLayout="inset"
+  footerBehavior="scroll"
   [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
   (dblclick)="onInspect($event)"
 >
@@ -79,50 +80,78 @@
   <!-- ── content: the routed page owns its own scroll ─────────── -->
   <router-outlet />
 
-  <!-- ── footer: dogfooding sh3-app-shell's footer slot ────────── -->
+  <!-- ── footer: dogfooding sh3-app-shell's footer slot (scroll mode) ── -->
   <footer footer class="gal-footer">
-    <div class="gal-footer-meta">
-      <a class="gal-footer-brand" routerLink="/" aria-label="Fold — home">
-        <sh3-icon name="fold" size="sm" />
-        <span>Fold</span>
-      </a>
-      <span class="gal-footer-ver">v{{ version }}</span>
+    <div class="gal-footer-main">
+      <div class="gal-footer-brand-col">
+        <a class="gal-footer-brand" routerLink="/" aria-label="Fold — home">
+          <sh3-icon name="fold" size="md" />
+          <span>Fold</span>
+        </a>
+        <p class="gal-footer-tagline">
+          A signals-first Angular design system, themeable to the bone —
+          dark by default, four themes, a contract that fails the build before
+          the design can rot.
+        </p>
+        <span class="gal-footer-ver">v{{ version }}</span>
+      </div>
+
+      <nav class="gal-footer-col" aria-label="Explore">
+        <span class="gal-footer-head">Explore</span>
+        <a class="gal-footer-link" routerLink="/app-shell">Components</a>
+        <a class="gal-footer-link" routerLink="/themes">Themes</a>
+        <a class="gal-footer-link" routerLink="/icons">Icons</a>
+        <a
+          class="gal-footer-link"
+          href="https://github.com/hugoheynard/fold"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source</a
+        >
+      </nav>
+
+      <nav class="gal-footer-col" aria-label="Support and contact">
+        <span class="gal-footer-head">Support</span>
+        <a
+          class="gal-footer-link"
+          href="https://github.com/hugoheynard/fold"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <sh3-icon name="github" size="sm" />
+          <span>Star on GitHub</span>
+        </a>
+        <a
+          class="gal-footer-link"
+          href="https://www.paypal.com/paypalme/hugoheynard"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <sh3-icon name="heart" size="sm" />
+          <span>Sponsor</span>
+        </a>
+        <a class="gal-footer-link" href="mailto:hheynard@gmail.com">
+          <sh3-icon name="mail" size="sm" />
+          <span>Contact</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="gal-footer-bar">
+      <span class="gal-footer-copy">© {{ year }} Hugo Heynard</span>
       <span class="gal-footer-dot" aria-hidden="true">·</span>
       <a
-        class="gal-footer-link"
+        class="gal-footer-link gal-footer-link--inline"
         href="https://github.com/hugoheynard/fold/blob/main/LICENSE"
         target="_blank"
         rel="noopener noreferrer"
         >MIT License</a
       >
-      <span class="gal-footer-dot" aria-hidden="true">·</span>
-      <span class="gal-footer-copy">© {{ year }} Hugo Heynard</span>
+      <span class="gal-footer-built"
+        >This footer is <code>sh3-app-shell</code>'s footer slot, in
+        <code>scroll</code> mode.</span
+      >
     </div>
-
-    <nav class="gal-footer-links" aria-label="Support and contact">
-      <a
-        class="gal-footer-link"
-        href="https://github.com/hugoheynard/fold"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <sh3-icon name="github" size="sm" />
-        <span>Star on GitHub</span>
-      </a>
-      <a
-        class="gal-footer-link"
-        href="https://www.paypal.com/paypalme/hugoheynard"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <sh3-icon name="heart" size="sm" />
-        <span>Support</span>
-      </a>
-      <a class="gal-footer-link" href="mailto:hheynard@gmail.com">
-        <sh3-icon name="mail" size="sm" />
-        <span>Contact</span>
-      </a>
-    </nav>
   </footer>
 </sh3-app-shell>
 
