@@ -361,13 +361,6 @@ not forgotten.
   text role}), `sh3Elevated` could be fully self-contained (no "bring your own
   background" footgun on a bare wrapper). Sizeable — it touches how all chrome
   paints. **Trigger:** a 2nd surface-without-its-own-bg need.
-- **`sh3Elevated` inset leaks one level into a flat region.** The shell sets
-  `--sh3-surface-inset` on `:host`, so it inherits to descendants. A nested
-  `[data-elevated]` card inside a _flat_ content region would pick up the moat
-  margin (one level — an elevated element doesn't currently reset the token for
-  its children). Harmless today (nothing nests `sh3Elevated` yet); opt out with
-  `--sh3-surface-inset: 0`. If it bites, have `[data-elevated]` reset the token
-  for its subtree (needs a two-var capture to avoid the self-reference).
 - [x] **Re-export shims — paid back.** The `app/shared/{panel,toast,avatar,
 avatar-detail}/*` shims that re-exported `@sh3pherd/ui` are deleted; all ~115
       consumers now import `@sh3pherd/ui` directly (duplicate imports merged). Only

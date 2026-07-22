@@ -32,6 +32,10 @@
    menu reads its **own** `data-elevated` — no reaching into the shell's classes.
    Radius + shadow come from the token layer's `[data-elevated]` rule; the menu
    only drops its divider border, since the card's shadow separates it now. */
+/* Raised into a card (the consumer puts `sh3Elevated` on the rail): the menu
+   reads its own `data-elevated` and only drops its divider border — radius +
+   shadow come from the token layer, and the page-gutter comes from the shell
+   cell's padding (so a height:100% rail fits with no overflow). */
 :host([data-elevated]) {
   border-right: none;
 }

@@ -155,12 +155,17 @@
 
 /* Elevation is not the shell's skin to own — a region floats when the consumer
    puts `sh3Elevated` on the element that paints it (see Sh3ElevatedDirective).
-   The shell's only involvement is the *moat*: it declares `--sh3-surface-inset`
-   in its scope, so a slotted elevated region insets to reveal the page-colour
-   gutter around it. A `[data-elevated]` element elsewhere (a card in a page)
-   reads the token's `0` default and stays flush. */
-:host {
-  --sh3-surface-inset: var(--sh3-space-md);
+   The shell's only involvement is the *gutter*: a cell whose content is elevated
+   pads itself, revealing the page-colour moat around the card. Padding (not a
+   child margin) so a `height: 100%` region — a rail, the content — fits inside
+   automatically; a margin would sit outside the height and overflow the cell.
+   `:has()` keeps a flat region flush. `--sh3-surface-inset` tunes the gutter. */
+.rail-primary:has([data-elevated]),
+.rail-secondary:has([data-elevated]),
+.header:has([data-elevated]),
+.footer:has([data-elevated]),
+.content:has([data-elevated]) {
+  padding: var(--sh3-surface-inset, var(--sh3-space-md));
 }
 
 /* The narrow layout — a single header + content (+ footer) column. Shared by

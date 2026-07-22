@@ -82,13 +82,14 @@ const MOBILE_BREAKPOINT = 768;
  *
  * ## Elevation (the floating look)
  * The shell owns **structure**, not skin — it drives no `floating` flag. To lift
- * a region into an inset, rounded, shadowed card, put `sh3Elevated` on the
- * element that paints that region's background (a projected `sh3-menu`, an
- * `app-header`, a content wrapper). It composes **per region** — float the rail
- * while the main stays flat, or float them all for an inset dashboard. The shell
- * only supplies the moat: it sets `--sh3-surface-inset` in its scope, so a
- * slotted elevated region floats with a page-gutter (a card elsewhere stays
- * flush). See {@link Sh3ElevatedDirective}.
+ * a region into a rounded, shadowed card, put `sh3Elevated` on the element that
+ * paints that region's background (a projected `sh3-menu`, an `app-header`, a
+ * content wrapper). It composes **per region** — float the rail while the main
+ * stays flat, or float them all for an inset dashboard. The shell's only part is
+ * the moat: a cell whose content is elevated **pads itself** (`:has`), revealing
+ * the page-gutter around the card — padding, so a `height: 100%` region fits
+ * with no overflow. `--sh3-surface-inset` tunes the gutter. See
+ * {@link Sh3ElevatedDirective}.
  *
  * ## Accessibility
  * The shell renders a **skip-link** as its first Tab stop — jumping keyboard

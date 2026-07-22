@@ -2,8 +2,8 @@
 export type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
 
 /** A shell region the gallery can raise into a floating card (via `sh3Elevated`).
- *  Rails only here — they're full-height and inset cleanly; a fixed-height header
- *  row would fight a vertical margin. */
+ *  Rails only here — a design choice; the header could float too (the cell pads,
+ *  so a fixed-height row fits), but a floated header just reads tight. */
 export type ShellRegion = "railPrimary" | "railSecondary";
 
 /** Every theme, in switcher order. `umbra` is the base (`:root`, no attribute). */
@@ -62,8 +62,7 @@ export const GALLERY_THEME_CONFIG: Record<GalleryTheme, GalleryThemeConfig> = {
   },
   bubbly: {
     dataTheme: "bubbly",
-    // Rails float (full-height, they inset cleanly); the fixed-height header
-    // row stays flat — a vertical margin there would fight its row height.
+    // Rails float; the header stays flat (a design call, not a constraint).
     elevated: ["railPrimary", "railSecondary"],
     mobileNav: "drawer",
     usesLauncher: false,
