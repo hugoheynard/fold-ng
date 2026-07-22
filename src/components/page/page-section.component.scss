@@ -3,6 +3,14 @@
   flex-direction: column;
   gap: 16px;
 }
+/* `bleed` — span the page layout edge-to-edge. Cancels *exactly* the gutter
+   sh3-page-layout pads with (the same --sh3-page-gutter token), so the section
+   reaches the layout's padding edge and no further: flush at every breakpoint,
+   never an overflow. Only meaningful inside sh3-page-layout (the fallback keeps
+   a stray use from exploding). */
+:host(.is-bleed) {
+  margin-inline: calc(-1 * var(--sh3-page-gutter, 32px));
+}
 /* Column: the title row (sh3-element-title owns title + action) then the
        optional description below it. */
 .section-head {

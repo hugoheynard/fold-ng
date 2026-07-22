@@ -20,6 +20,11 @@ import type { Sh3IconName } from "../icon/icon.registry";
  *   as a bordered header **bar** with the body padded below it, instead of the
  *   title sitting inline above the body.
  * - `stack` — lay the body out as an evenly-spaced vertical stack (form fields).
+ * - `bleed` — break the section out of the page gutter to span the layout
+ *   edge-to-edge (a full-width band amid padded sections). It cancels exactly
+ *   `--sh3-page-gutter` — the same token {@link Sh3PageLayoutComponent} pads
+ *   with — so it stays flush at every breakpoint and never overflows. Only
+ *   meaningful inside an `sh3-page-layout`.
  *
  * ```html
  * <sh3-page-section title="Moyens de paiement" description="Le moyen par défaut…">
@@ -45,6 +50,7 @@ import type { Sh3IconName } from "../icon/icon.registry";
     "[class.s-sunken]": "surface() === 'sunken'",
     "[class.divider]": "divider()",
     "[class.stack]": "stack()",
+    "[class.is-bleed]": "bleed()",
   },
   templateUrl: "./page-section.component.html",
   styleUrl: "./page-section.component.scss",
@@ -62,4 +68,8 @@ export class Sh3PageSectionComponent {
   readonly divider = input(false, { transform: booleanAttribute });
   /** Lay the body out as an evenly-spaced vertical stack of form fields. */
   readonly stack = input(false, { transform: booleanAttribute });
+  /** Break out of the page gutter to span the layout edge-to-edge — cancels
+   *  `--sh3-page-gutter` exactly, so it stays flush at every breakpoint. Only
+   *  meaningful inside an `sh3-page-layout`. */
+  readonly bleed = input(false, { transform: booleanAttribute });
 }

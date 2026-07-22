@@ -38,6 +38,21 @@ import {
         <div class="gal-field">Field C</div>
       </sh3-page-section>
     </div>
+
+    <span class="gal-tag">bleed — a full-width band amid padded sections</span>
+    <sh3-page-section title="Padded section">
+      <p class="gal-body">Sits in the page gutter, like everything else.</p>
+    </sh3-page-section>
+    <sh3-page-section bleed surface="sunken" divider title="Bleed band">
+      <p class="gal-body">
+        Spans the layout edge-to-edge — it cancels
+        <code>--sh3-page-gutter</code> exactly (the same token the page pads
+        with), so it stays flush at every width and never overflows.
+      </p>
+    </sh3-page-section>
+    <sh3-page-section title="Padded section">
+      <p class="gal-body">Back in the gutter.</p>
+    </sh3-page-section>
   </sh3-page-layout>`,
 })
 export default class PageSectionPage {}

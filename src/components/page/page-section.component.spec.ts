@@ -23,6 +23,7 @@ class HostComponent {
     [surface]="surface()"
     [divider]="divider()"
     [stack]="stack()"
+    [bleed]="bleed()"
     title="X"
   />`,
 })
@@ -30,6 +31,7 @@ class AppearanceHostComponent {
   readonly surface = signal<"transparent" | "card" | "sunken">("transparent");
   readonly divider = signal(false);
   readonly stack = signal(false);
+  readonly bleed = signal(false);
 }
 
 function render() {
@@ -109,5 +111,18 @@ describe("Sh3PageSectionComponent", () => {
     fixture.componentInstance.stack.set(true);
     fixture.detectChanges();
     expect(section.classList.contains("stack")).toBe(true);
+  });
+
+  it("toggles the is-bleed host class from the bleed input", () => {
+    const fixture = TestBed.createComponent(AppearanceHostComponent);
+    fixture.detectChanges();
+    const section = fixture.nativeElement.querySelector(
+      "sh3-page-section",
+    ) as HTMLElement;
+    expect(section.classList.contains("is-bleed")).toBe(false);
+
+    fixture.componentInstance.bleed.set(true);
+    fixture.detectChanges();
+    expect(section.classList.contains("is-bleed")).toBe(true);
   });
 });

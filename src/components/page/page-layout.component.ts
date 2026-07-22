@@ -11,8 +11,12 @@ import type { Sh3IconName } from "../icon/icon.registry";
  * **It owns the page gutter.** The `sh3-app-shell` content region is full-bleed
  * (so a page can paint edge-to-edge); this component supplies the themed margins
  * via its own padding. Wrap a page's content in `sh3-page-layout` to get them,
- * or leave the shell content bare for a full-width surface. Retune the gutter
- * with `--sh3-page-layout-padding` (e.g. `0` for a bleeding dashboard).
+ * or leave the shell content bare for a full-width surface. The *horizontal*
+ * gutter is a single token, `--sh3-page-gutter` (default `32px`) — retune it per
+ * page/theme, or set it to `0` for a bleeding dashboard. A
+ * {@link Sh3PageSectionComponent} with `bleed` cancels exactly that token to
+ * span the page edge-to-edge (a full-width band amid padded content), so the two
+ * never desync — including on a responsive gutter.
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).

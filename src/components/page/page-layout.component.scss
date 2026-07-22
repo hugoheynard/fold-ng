@@ -6,9 +6,13 @@
   max-width: 780px;
   /* The themed page gutter lives here, not on the shell: the app-shell content
      region is full-bleed so a page can paint edge-to-edge, and any page that
-     wants the standard margins wraps its content in sh3-page-layout. Override
-     with --sh3-page-layout-padding (e.g. a full-bleed dashboard sets it to 0). */
-  padding: var(--sh3-page-layout-padding, 28px 32px 40px);
+     wants the standard margins wraps its content in sh3-page-layout.
+     The *horizontal* gutter is a single token (--sh3-page-gutter) on purpose:
+     a `sh3-page-section[bleed]` cancels it with `calc(-1 * …)` to span the page
+     edge-to-edge, so the two stay in lockstep at every breakpoint. Vertical
+     breathing room is fixed. Set --sh3-page-gutter: 0 for a bleeding page. */
+  padding-block: 28px 40px;
+  padding-inline: var(--sh3-page-gutter, 32px);
   /* The page is its own scroll box: it fills the height its frame gives it and
      scrolls inside, so the frame's chrome (rails, header, gutter) stays put.
      Inert until something constrains the height — a page in a taller container
