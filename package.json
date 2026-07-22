@@ -1,13 +1,38 @@
 {
   "name": "fold-ng",
-  "version": "0.0.0",
-  "description": "SH3PHERD design system — design tokens and Angular UI components. Dark-first, light theme via [data-theme=\"light\"].",
+  "version": "0.0.1",
+  "description": "A dark-first Angular 22 design system — signals-first, standalone, zoneless and SSR-ready. Design tokens + accessible components, themeable to the bone.",
+  "keywords": [
+    "angular",
+    "angular-22",
+    "design-system",
+    "component-library",
+    "design-tokens",
+    "signals",
+    "zoneless",
+    "ssr",
+    "dark-theme",
+    "accessible"
+  ],
   "author": "Hugo Heynard",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "homepage": "https://github.com/hugoheynard/fold#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugoheynard/fold.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hugoheynard/fold/issues"
+  },
   "type": "module",
-  "private": true,
+  "private": false,
   "sideEffects": [
     "**/*.css"
+  ],
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "exports": {
     "./tokens.css": "./src/tokens/index.css",
