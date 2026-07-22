@@ -18,6 +18,8 @@ import type { FoldIconName } from "../../foundations/icon/icon.registry";
  * `0` for a bleeding dashboard. A {@link FoldPageSectionComponent} with `bleed`
  * cancels exactly that token to span the page edge-to-edge (a full-width band
  * amid padded content), so the two never desync — including on a responsive gutter.
+ * The *vertical* rhythm between stacked elements is its own token,
+ * `--fold-page-gap` (default `32px`), retunable the same way.
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).

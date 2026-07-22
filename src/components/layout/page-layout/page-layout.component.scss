@@ -1,7 +1,10 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  /* The page's vertical rhythm — the one gap between stacked elements (header ↔
+     body, and section ↔ section in .page-body). One token so a page/theme retunes
+     the whole rhythm in one place, alongside --fold-page-gutter / -pad-*. */
+  gap: var(--fold-page-gap, 32px);
   box-sizing: border-box;
   /* The page fills whatever width it is given — it does NOT cap the column.
      Narrowing a block to a readable measure is the content's job (a max-width
@@ -12,7 +15,8 @@
      The *horizontal* gutter is a single token (--fold-page-gutter) on purpose:
      a `fold-page-section[bleed]` cancels it with `calc(-1 * …)` to span the page
      edge-to-edge, so the two stay in lockstep at every breakpoint. Vertical
-     breathing room is fixed. Set --fold-page-gutter: 0 for a bleeding page. */
+     breathing room is its own token (--fold-page-gap, above). Set
+     --fold-page-gutter: 0 for a bleeding page. */
   /* Block padding is tokenised too, so a bleed band at the top/bottom edge can
      cancel it exactly (--fold-page-pad-top / -bottom) and sit flush to the edge. */
   padding-block: var(--fold-page-pad-top, 28px)
@@ -96,5 +100,6 @@
 .page-body {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  /* Same rhythm token as the host gap — the stack between sections. */
+  gap: var(--fold-page-gap, 32px);
 }
