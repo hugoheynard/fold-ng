@@ -89,6 +89,7 @@ export type {
   Sh3CalloutVariant,
   Sh3CalloutAppearance,
 } from "./components/callout/callout.component";
+export { Sh3DisclosureComponent } from "./components/disclosure/disclosure.component";
 export { Sh3StatusBadgeComponent } from "./components/status-badge/status-badge.component";
 export { Sh3TimelineComponent } from "./components/timeline/timeline.component";
 export type {

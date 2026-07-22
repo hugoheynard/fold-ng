@@ -1,0 +1,20 @@
+<button
+  type="button"
+  class="disc-summary"
+  [attr.aria-expanded]="open()"
+  [attr.aria-controls]="panelId"
+  (click)="toggle()"
+>
+  <span class="disc-label"><ng-content select="[summary]" /></span>
+  <sh3-icon class="disc-chevron" name="chevron-down" size="sm" />
+</button>
+<div
+  class="disc-panel"
+  [id]="panelId"
+  role="region"
+  [attr.aria-hidden]="!open()"
+>
+  <div class="disc-panel-clip">
+    <div class="disc-panel-content"><ng-content /></div>
+  </div>
+</div>

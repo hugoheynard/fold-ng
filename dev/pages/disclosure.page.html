@@ -1,0 +1,93 @@
+<sh3-page-layout fluid title="disclosure">
+  <gal-kind-badge titleBadge kind="component" />
+  <p description>
+    One summary that toggles one collapsible panel — the single primitive. An
+    <em>accordion</em> is a set of these with one open at a time, which is the
+    consumer's policy to enforce, not the component's. It drives the panel with
+    a <code>grid-template-rows</code> animation (not native
+    <code>&lt;details&gt;</code>, which can't animate), and wires the disclosure
+    ARIA by hand. Colour the summary through
+    <code>--sh3-disclosure-summary-bg</code> for a call-to-open.
+  </p>
+
+  <div class="gal-cell">
+    <span class="gal-tag">plain · a group reads as an accordion</span>
+    <div class="gal-stack">
+      <sh3-disclosure>
+        <span summary>What is a design token?</span>
+        <p class="gal-body" style="margin: 0">
+          A named role (page background, primary) that points at a raw value, so
+          a theme re-points the role without a component knowing any colour.
+        </p>
+      </sh3-disclosure>
+      <sh3-disclosure [open]="true">
+        <span summary>Why signals-first?</span>
+        <p class="gal-body" style="margin: 0">
+          Inputs and state are signals, forms are Signal Forms — nothing
+          subscribes, nothing leaks, and the app is zoneless.
+        </p>
+      </sh3-disclosure>
+      <sh3-disclosure>
+        <span summary>Is it accessible?</span>
+        <p class="gal-body" style="margin: 0">
+          The summary is a real button with aria-expanded, pointing at the panel
+          region via aria-controls; reduced-motion snaps instead of sliding.
+        </p>
+      </sh3-disclosure>
+    </div>
+  </div>
+
+  <dev-playground [code]="disclosureCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">summary tone</span>
+      <div class="ss-seg">
+        @for (t of tones; track t) {
+        <button
+          type="button"
+          [class.is-on]="dcTone() === t"
+          (click)="dcTone.set(t)"
+        >
+          {{ t }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">initial state</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!dcOpen()"
+          (click)="dcOpen.set(false)"
+        >
+          closed
+        </button>
+        <button
+          type="button"
+          [class.is-on]="dcOpen()"
+          (click)="dcOpen.set(true)"
+        >
+          open
+        </button>
+      </div>
+    </div>
+
+    <sh3-disclosure
+      [open]="dcOpen()"
+      style="width: 100%; max-width: 460px"
+      [style.--sh3-disclosure-summary-bg]="
+        dcTone() === 'primary' ? 'var(--sh3-color-primary)' : null
+      "
+      [style.--sh3-disclosure-summary-color]="
+        dcTone() === 'primary' ? 'var(--sh3-color-on-primary)' : null
+      "
+    >
+      <span summary>How it works</span>
+      <p class="gal-body" style="margin: 0">
+        The panel, revealed on click — its height animates from the natural
+        content size, and the chevron turns.
+      </p>
+    </sh3-disclosure>
+  </dev-playground>
+</sh3-page-layout>
