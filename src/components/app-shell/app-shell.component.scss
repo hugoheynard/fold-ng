@@ -15,11 +15,55 @@
     auto
     auto
     minmax(0, 1fr);
+  /* Two rows by default — a fixed-height header and a 1fr content region. A
+     projected footer adds a third row (below); with no footer there is no row
+     at all, so floating mode never gutters around an empty one. */
   grid-template-rows: var(--sh3-shell-header-height, 56px) 1fr;
   grid-template-areas:
     "rail-primary rail-secondary header"
     "rail-primary rail-secondary content";
 }
+
+/* headerLayout="full" — header spans every column, above the rails, instead of
+   sitting over the content column with the rails climbing its side. */
+:host(.header-full) {
+  grid-template-areas:
+    "header       header         header"
+    "rail-primary rail-secondary content";
+}
+
+/* A projected footer adds a third, content-sized (`auto`) row that collapses to
+   nothing when the slot is empty. Gated on `:has([footer])` so an absent footer
+   leaves *no row* — otherwise floating mode would gutter around a 0-height track
+   and leave a phantom bottom gap. `footerLayout="full"` spans it across every
+   column (the usual player-bar look); the four header×footer combinations each
+   name their own areas, and the more-specific selector wins when both are full. */
+:host(:has([footer])) {
+  grid-template-rows: var(--sh3-shell-header-height, 56px) 1fr auto;
+  grid-template-areas:
+    "rail-primary rail-secondary header"
+    "rail-primary rail-secondary content"
+    "rail-primary rail-secondary footer";
+}
+:host(.header-full:has([footer])) {
+  grid-template-areas:
+    "header       header         header"
+    "rail-primary rail-secondary content"
+    "rail-primary rail-secondary footer";
+}
+:host(.footer-full:has([footer])) {
+  grid-template-areas:
+    "rail-primary rail-secondary header"
+    "rail-primary rail-secondary content"
+    "footer       footer         footer";
+}
+:host(.header-full.footer-full:has([footer])) {
+  grid-template-areas:
+    "header       header         header"
+    "rail-primary rail-secondary content"
+    "footer       footer         footer";
+}
+
 /* Each region is a named surface (`sh3Surface` in the template); the token
    layer resolves each surface's own text and lets a mixed theme re-colour the
    chrome ones. The shell no longer owns that rule — see `[data-surface]`. */
@@ -34,6 +78,13 @@
 .header {
   grid-area: header;
   min-width: 0;
+}
+/* The footer is content-sized — a player/status bar sizes itself. `contentinfo`
+   landmark via the `<footer>` element. */
+.footer {
+  grid-area: footer;
+  min-width: 0;
+  min-height: 0;
 }
 /* The content cell is the positioning anchor for floating panels: they
        cover the page but stay below the rails/header (nav context preserved). */
@@ -51,14 +102,6 @@
   overflow: hidden;
 }
 
-/* headerLayout="full" — header spans every column, above the rails, instead
-       of sitting over the content column with the rails climbing its side. */
-:host(.header-full) {
-  grid-template-areas:
-    "header       header         header"
-    "rail-primary rail-secondary content";
-}
-
 /* appearance="floating" — inset-dashboard look: a page-colour gutter around
        every region, each region a rounded, elevated card. The content cell keeps
        its overflow clip, so a panel anchored inside inherits the radius. */
@@ -69,11 +112,13 @@
 :host(.floating) .rail-primary,
 :host(.floating) .rail-secondary,
 :host(.floating) .header,
+:host(.floating) .footer,
 :host(.floating) .content {
   border-radius: var(--sh3-radius-lg);
   box-shadow: var(--sh3-shadow-md);
 }
 :host(.floating) .header,
+:host(.floating) .footer,
 :host(.floating) .content {
   overflow: hidden;
 }
@@ -85,9 +130,10 @@
   overflow: visible;
 }
 
-/* Rails drop out on narrow viewports → single header + content column.
-       Both base and header-full collapse to the same stack (equal specificity to
-       :host(.header-full), so source order lets the mobile rule win). */
+/* Rails drop out on narrow viewports → a single header + content (+ footer)
+   column. Every layout class collapses to the same stack; the with-footer
+   selectors mirror the base ones at matching specificity so they win in source
+   order over their wider-viewport counterparts. */
 @media (max-width: 768px) {
   :host,
   :host(.header-full) {
@@ -96,6 +142,17 @@
     grid-template-areas:
       "header"
       "content";
+  }
+  :host(:has([footer])),
+  :host(.header-full:has([footer])),
+  :host(.footer-full:has([footer])),
+  :host(.header-full.footer-full:has([footer])) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr auto;
+    grid-template-areas:
+      "header"
+      "content"
+      "footer";
   }
   .rail-primary,
   .rail-secondary {
@@ -121,6 +178,17 @@
     grid-template-areas:
       "header"
       "content";
+  }
+  :host(:has([footer])),
+  :host(.header-full:has([footer])),
+  :host(.footer-full:has([footer])),
+  :host(.header-full.footer-full:has([footer])) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--sh3-shell-header-height-mobile, 52px) 1fr auto;
+    grid-template-areas:
+      "header"
+      "content"
+      "footer";
   }
   .rail-primary,
   .rail-secondary {

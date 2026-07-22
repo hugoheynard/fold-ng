@@ -19,15 +19,18 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  *
  * ```
  * ┌────────┬──────────────┬─────────────────────┐
- * │  rail  │ rail          │ header              │  ← header row
+ * │  rail  │ rail          │ header              │  ← header row (fixed height)
  * │ primary│ secondary     ├─────────────────────┤
- * │ (auto, │ (auto width,  │ content             │  ← content row
+ * │ (auto, │ (auto width,  │ content             │  ← content row (1fr)
  * │  self- │  self-        │ (position: relative │
  * │  sized)│  collapsing)  │  anchor for panels) │
+ * │        │               ├─────────────────────┤
+ * │        │               │ footer              │  ← footer row (auto — 0 when empty)
  * └────────┴──────────────┴─────────────────────┘
  * ```
  *
- * At ≤768px the rails drop out and it becomes a single header + content column.
+ * At ≤768px the rails drop out and it becomes a single header + content +
+ * footer column.
  *
  * ## Slots
  * | Attribute        | Region                                    |
@@ -36,6 +39,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. |
+ * | `footer`         | Bottom bar — a persistent player / status / action strip. Rendered as `<footer>` (the document's `contentinfo` landmark). **Content-sized and self-collapsing**: an empty slot takes no space (unlike the fixed-height header). Content column, or full-width — see `footerLayout`. |
  *
  * ## Sizing knobs
  * | Input                | CSS variable                       | Default | Meaning                    |
@@ -49,6 +53,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  * | Input          | Values                | Default   | Meaning                                    |
  * |----------------|-----------------------|-----------|--------------------------------------------|
  * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
+ * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). |
  * | `appearance`   | `"flat" \| "floating"`| `"flat"`  | `flat` = regions are edge-to-edge blocks; `floating` = each region is a rounded, elevated card on a page-colour gutter (inset-dashboard look). |
  *
  * In `floating` mode the content cell becomes a rounded card; because it already
@@ -65,6 +70,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
  *   <app-header header />
  *   <router-outlet />
  *   <!-- panels / overlays / banners also go in the default slot -->
+ *   <app-player footer /><!-- optional; omit it and the footer row collapses -->
  * </sh3-app-shell>
  * ```
  */
@@ -78,6 +84,7 @@ import { Sh3SurfaceDirective } from "../../directives/surface.directive";
     "[style.--sh3-shell-header-height]": "headerHeightVar()",
     "[style.--sh3-shell-header-height-mobile]": "headerHeightMobileVar()",
     "[class.header-full]": 'headerLayout() === "full"',
+    "[class.footer-full]": 'footerLayout() === "full"',
     "[class.floating]": 'appearance() === "floating"',
   },
   templateUrl: "./app-shell.component.html",
@@ -104,6 +111,8 @@ export class Sh3AppShellComponent {
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");
+  /** `"full"` spans the footer across every column, below the rails (the usual player-bar look); `"inset"` (default) keeps it under the content column. The footer row is content-sized and collapses to `0` when the slot is empty. */
+  readonly footerLayout = input<"inset" | "full">("inset");
   /** `"floating"` renders each region as a rounded, elevated card on a page-colour gutter; `"flat"` (default) is edge-to-edge blocks. */
   readonly appearance = input<"flat" | "floating">("flat");
 

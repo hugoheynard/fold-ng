@@ -11,6 +11,7 @@ import { Sh3AppShellComponent } from "./app-shell.component";
     <nav railSecondary data-t="rs">rail two</nav>
     <div header data-t="hd">header</div>
     <div data-t="content">page</div>
+    <div footer data-t="ft">player</div>
   </sh3-app-shell>`,
 })
 class HostComponent {}
@@ -39,11 +40,13 @@ class PaddedHostComponent {
   imports: [Sh3AppShellComponent],
   template: `<sh3-app-shell
     [headerLayout]="layout()"
+    [footerLayout]="footer()"
     [appearance]="appearance()"
   />`,
 })
 class LayoutHostComponent {
   readonly layout = signal<"inset" | "full">("inset");
+  readonly footer = signal<"inset" | "full">("inset");
   readonly appearance = signal<"flat" | "floating">("flat");
 }
 
@@ -54,13 +57,14 @@ function setup() {
 }
 
 describe("Sh3AppShellComponent", () => {
-  it("renders the four structural cells", () => {
+  it("renders the five structural cells", () => {
     const host = setup();
     for (const cell of [
       "rail-primary",
       "rail-secondary",
       "header",
       "content",
+      "footer",
     ]) {
       expect(host.querySelector(`.${cell}`)).not.toBeNull();
     }
@@ -71,6 +75,7 @@ describe("Sh3AppShellComponent", () => {
     expect(host.querySelector(".rail-primary [data-t='rp']")).not.toBeNull();
     expect(host.querySelector(".rail-secondary [data-t='rs']")).not.toBeNull();
     expect(host.querySelector(".header [data-t='hd']")).not.toBeNull();
+    expect(host.querySelector(".footer [data-t='ft']")).not.toBeNull();
     // Unattributed content falls through to the default (content) slot.
     expect(host.querySelector(".content [data-t='content']")).not.toBeNull();
   });
@@ -100,10 +105,12 @@ describe("Sh3AppShellComponent", () => {
     expect(shell.style.getPropertyValue("--sh3-shell-rail-width")).toBe("");
   });
 
-  it("names its regions semantically — <header> and <main>", () => {
+  it("names its regions semantically — <header>, <main> and <footer>", () => {
     const host = setup();
     expect(host.querySelector("header.header")).not.toBeNull();
     expect(host.querySelector("main.content")).not.toBeNull();
+    // The footer is the document's contentinfo landmark.
+    expect(host.querySelector("footer.footer")).not.toBeNull();
     // One <main> per document: the frame owns it, so nothing projected into it
     // may declare another (nor a nested <header>, which HTML forbids).
     expect(host.querySelectorAll("main").length).toBe(1);
@@ -142,6 +149,7 @@ describe("Sh3AppShellComponent", () => {
     const host = setup();
     const shell = host.querySelector("sh3-app-shell") ?? host;
     expect(shell.classList.contains("header-full")).toBe(false);
+    expect(shell.classList.contains("footer-full")).toBe(false);
     expect(shell.classList.contains("floating")).toBe(false);
   });
 
@@ -159,6 +167,22 @@ describe("Sh3AppShellComponent", () => {
     fixture.componentInstance.layout.set("inset");
     fixture.detectChanges();
     expect(shell.classList.contains("header-full")).toBe(false);
+  });
+
+  it('toggles the footer-full class from footerLayout="full"', () => {
+    const fixture = TestBed.createComponent(LayoutHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "sh3-app-shell",
+    ) as HTMLElement;
+
+    fixture.componentInstance.footer.set("full");
+    fixture.detectChanges();
+    expect(shell.classList.contains("footer-full")).toBe(true);
+
+    fixture.componentInstance.footer.set("inset");
+    fixture.detectChanges();
+    expect(shell.classList.contains("footer-full")).toBe(false);
   });
 
   it('toggles the floating class from appearance="floating"', () => {
