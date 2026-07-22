@@ -31,14 +31,14 @@ and the gallery nav — **layout first**.
 
 **Layout** — `src/components/layout/`
 
-| Component           | DX  | Tests | Docs | Verdict                                             |
-| ------------------- | :-: | :---: | :--: | --------------------------------------------------- |
-| `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
-| `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap) |
-| `fold-page-section` | 🟡  |  🟢   |  🟡  | Own README row; document `divider`↔`surface`        |
-| `fold-aside-layout` | 🟢  |  🟡   |  🟡  | README row; `stackLeftFirst` test                   |
-| `fold-tab-layout`   | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row             |
-| `fold-hero`         | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip             |
+| Component           | DX  | Tests | Docs | Verdict                                                |
+| ------------------- | :-: | :---: | :--: | ------------------------------------------------------ |
+| `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                         |
+| `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap)    |
+| `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card |
+| `fold-aside-layout` | 🟢  |  🟡   |  🟡  | README row; `stackLeftFirst` test                      |
+| `fold-tab-layout`   | 🟢  |  🟡   |  🟢  | **`as unknown as` in spec**; README row                |
+| `fold-hero`         | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                |
 
 **Navigation** — `src/components/navigation/`
 
@@ -106,9 +106,9 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                  |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo               |
 
-**Ship-ready today (10):** app-shell, avatar-list, callout, element-title, field,
-field-list, nav-launcher, timeline, toast, surface. Everything else has scoped,
-mostly mechanical work below.
+**Ship-ready today (12):** app-shell, page-layout, page-section, avatar-list,
+callout, element-title, field, field-list, nav-launcher, timeline, toast,
+surface. Everything else has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -182,8 +182,8 @@ the page fills its container, width is a content concern.)
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
 **no README row**: `fold-callout`, `fold-aside-layout`, `fold-tab-layout`,
 `fold-disclosure`, `fold-select`, `fold-slider`, `fold-range-slider`,
-`fold-file-dropzone`, `fold-repeat-press`; `fold-page-section` is only implied.
-Add each row.
+`fold-file-dropzone`, `fold-repeat-press`. (`fold-page-section` now has its own
+row.) Add each row.
 
 **C-3 · Stale / wrong README facts.**
 
@@ -225,7 +225,7 @@ it relieves `number-input.component.ts` from the 299/300-line ceiling (C-8).
 breaks the gate. Extract per C-7 before touching it again.
 
 **C-9 · Token debt (aspirational, not yet enforced).** card / context-card / hero
-/ element-title / page-section / tab-nav SCSS still hard-code px spacing and
+/ element-title / tab-nav SCSS still hard-code px spacing and
 `0.18s ease` motion, and `tab-nav` has a raw `font-size: 10px` where a
 `--fold-text-*` token exists. Colour is fully tokenised (the contract passes);
 retokenise spacing/motion on touch (rules 1.5, ledger #7).
@@ -298,9 +298,14 @@ gutter + header + rhythm and otherwise fills its container; narrowing to a
 readable measure is the content's job (a max-width container), never the page
 scaffold's. The home page is the flagship real-world usage.
 
-**`fold-page-section`** 🟡🟢🟡 — The `[sectionActions]`→`titleAction` re-projection
-is elegant. Actions: (1) own README row naming the surface/divider/stack knobs;
-(2) document the `divider`-needs-`surface` coupling on the `divider` input JSDoc.
+**`fold-page-section`** 🟢🟢🟢 — Ship-ready. Reworked into what it actually is: a
+**semantic `<section>`** (named by its heading via `aria-labelledby`, SSR-safe id,
+`headingLevel` for outline depth), not a box. `surface`/`divider` were **removed** —
+boxing is `fold-card`'s job and the two compose (a section can hold a card). This
+retired the `divider`-without-`surface` trap and the surface/`fold-card`
+duplication in one cut; spacing is tokenised; README row + gallery page added.
+Elevation is moot here (no box); a card that should _float_ is a `fold-card` +
+`foldElevated` concern, deferred to a real 2nd use.
 
 **`fold-tab-layout`** 🟢🟡🟢 — Tiny API hiding a hysteresis'd `ResizeObserver`
 fold; `exportAs` + `stacked()` is excellent ergonomics. Actions: (1) **P0-7**
