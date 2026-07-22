@@ -1,4 +1,8 @@
-<sh3-app-shell contentPadding="28px 32px 40px" (dblclick)="onInspect($event)">
+<sh3-app-shell
+  contentPadding="28px 32px 40px"
+  [appearance]="theme() === 'bubbly' ? 'floating' : 'flat'"
+  (dblclick)="onInspect($event)"
+>
   <!-- ── rail primary: the Fold app rail ───────────────────────────── -->
   <sh3-menu railPrimary tint="primary">
     <a header class="rail-brand" routerLink="/" aria-label="Fold — home">
