@@ -14,6 +14,11 @@ depth items trigger-gated (generalise on the 2nd real use, never by
 anticipation). Order = a11y first (it contradicts what the component claims),
 then coverage, then the trigger-gated depth.
 
+_This is app-shell's slice of the lib-wide **Road to 9.5** (bottom of this file):
+its a11y items feed §3, its snapshots feed §2. Raising the shell to 9.5 lifts the
+average, but the average also needs the P0 blockers (RELEASE-READINESS §2) and the
+lib-wide levers there cleared._
+
 **Do — the a11y promise (the component advertises accessibility):**
 
 - [ ] **Rails as named landmarks.** `.rail-primary` / `.rail-secondary` are bare
@@ -527,6 +532,13 @@ The rating breakdown — Technique 9 · Modernité design 8.5 · Good practices 
 DX 8.5 · Tests 7.5. Foundations are ~9; what's missing is **finish + proof**.
 Ordered by impact on the score.
 
+**Two feeders into this average, tracked apart:** the **P0 ship blockers**
+(RELEASE-READINESS §2 — button-icon `aria-pressed`, the French a11y strings,
+focus-trap `inert`, tab-nav roles, the spec `as unknown`) each drag a component
+below its cluster and must clear first; and **Roadmap 1.0.1** (top of this file)
+is the shell's own 8.5→9.5 slice, whose a11y + snapshot items are the same levers
+as §2/§3 here. This section is the **lib-wide** remainder.
+
 **1 · i18n — the one real portability leak (Good practices 8.5→9, DX 8.5→9).**
 The blocker to the "reusable across projects" promise (rule 5.1).
 
@@ -538,10 +550,17 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 
 **2 · Tests — happy-path only today (Tests 7.5→9).**
 
+- [x] **Dead-binding gate** — `lint:ui-templates` runs Angular `strictTemplates`
+      (ngtsc) over the lib + gallery, wired into CI, with a bite fixture. Catches
+      removed-input / missing-property template errors `tsc`/Vite miss. First
+      template-level proof (see `documentation/sh3-lint.md`).
 - [ ] a11y automation: axe-core assertion in the panel/overlay specs (role,
       `aria-modal`, focus order, Escape) — not just "it renders".
 - [ ] Visual-regression baseline (Playwright/Vitest-browser snapshots) for each
       component × dark/light — the theme flip is claimed but never pixel-verified.
+      **Includes the app-shell mode-combos** itemised in Roadmap 1.0.1 (drawer
+      open/closed, elevated rail, footer scroll/pinned, mobile collapse) — the
+      crop bug shipped for lack of exactly this.
 - [ ] Coverage floor in CI; fill the thinly-tested components (tab-nav, app-shell).
 
 **3 · a11y depth (Modernité 8.5→9, and unblocks a real 6.2 gap).**
@@ -567,7 +586,8 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 - [ ] Storybook (or a docs playground) so components are browsable, not just
       README rows.
 - [ ] Real semver + a CHANGELOG; graduate from `0.0.0`. Wire the package into the
-      repo quality gates (ESLint/CI/pre-push — cross-ref Phase 0).
+      repo quality gates (ESLint/CI/pre-push — cross-ref Phase 0). _Started:
+      `lint:ui-templates` is the first CI gate that guards the package._
 
 Land 1–4 and it's a clean **9**; 5 is what earns the last half-point — a design
 system is only proven by a second user and a versioned release.
