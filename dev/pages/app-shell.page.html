@@ -1,12 +1,13 @@
 <sh3-page-layout fluid title="app-shell" icon="grid">
   <p description>
     The application frame: a primary icon rail, an optional secondary rail, a
-    header band and the content area, wired as one responsive scaffold. It folds
-    on its own width via container queries — the secondary rail collapses first,
-    then the primary — so the same markup serves desktop, tablet and mobile.
-    Appearance (flat or floating), header layout (inset or full), rail width and
-    header height are inputs; everything else is a design token you can
-    override.
+    header band, the content area and a self-collapsing footer, wired as one
+    responsive scaffold. It folds on its own width via container queries — the
+    secondary rail collapses first, then the primary — so the same markup serves
+    desktop, tablet and mobile. Appearance (flat or floating), header + footer
+    layout (inset or full), footer behaviour (pinned player-bar or scroll-to-
+    reveal legal footer), rail width and header height are inputs; everything
+    else is a design token you can override.
   </p>
   <gal-kind-badge titleBadge kind="component" />
 
@@ -78,6 +79,26 @@
       </div>
     </div>
 
+    <div class="np-field" params>
+      <span class="gal-tag">footerBehavior</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="shellFooterBehavior() === 'pinned'"
+          (click)="shellFooter.set(true); setFooterBehavior('pinned')"
+        >
+          pinned
+        </button>
+        <button
+          type="button"
+          [class.is-on]="shellFooterBehavior() === 'scroll'"
+          (click)="shellFooter.set(true); setFooterBehavior('scroll')"
+        >
+          scroll
+        </button>
+      </div>
+    </div>
+
     <sh3-slider
       params
       label="railWidth"
@@ -121,6 +142,7 @@
           [appearance]="shellAppearance()"
           [headerLayout]="shellHeaderLayout()"
           [footerLayout]="shellFooterLayout()"
+          [footerBehavior]="shellFooterBehavior()"
           [railWidth]="shellRailWidth()"
           [headerHeight]="shellHeaderHeight()"
         >
@@ -170,8 +192,9 @@
             </div>
           </div>
           <div class="sp-content">
+            @for (b of previewBlocks; track b) {
             <div class="sp-block"></div>
-            <div class="sp-block"></div>
+            }
           </div>
 
           @if (shellFooter()) {

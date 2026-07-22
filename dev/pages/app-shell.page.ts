@@ -48,6 +48,9 @@ export default class AppShellPage {
   protected readonly shellAppearance = signal<"flat" | "floating">("flat");
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellFooterLayout = signal<"inset" | "full">("full");
+  protected readonly shellFooterBehavior = signal<"pinned" | "scroll">(
+    "pinned",
+  );
   /** Toggles the projected footer so its self-collapse is visible live. */
   protected readonly shellFooter = signal(true);
   protected readonly shellRailWidth = signal(64);
@@ -99,6 +102,9 @@ export default class AppShellPage {
   protected setFooterLayout(value: "inset" | "full"): void {
     this.shellFooterLayout.set(value);
   }
+  protected setFooterBehavior(value: "pinned" | "scroll"): void {
+    this.shellFooterBehavior.set(value);
+  }
 
   /** The `<sh3-app-shell>` markup reflecting the current settings — live. */
   protected readonly shellCode = computed(() =>
@@ -107,7 +113,10 @@ export default class AppShellPage {
       `  appearance="${this.shellAppearance()}"`,
       `  headerLayout="${this.shellHeaderLayout()}"`,
       ...(this.shellFooter()
-        ? [`  footerLayout="${this.shellFooterLayout()}"`]
+        ? [
+            `  footerLayout="${this.shellFooterLayout()}"`,
+            `  footerBehavior="${this.shellFooterBehavior()}"`,
+          ]
         : []),
       `  [railWidth]="${this.shellRailWidth()}"`,
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
@@ -142,4 +151,8 @@ export default class AppShellPage {
   ] as const;
   /** The app-shell preview's own primary-rail selection. */
   protected readonly previewNav = signal<string>("home");
+
+  /** Filler blocks so the preview content overflows — lets `footerBehavior`
+   *  "scroll" reveal the footer at the bottom of the scroll. */
+  protected readonly previewBlocks = Array.from({ length: 8 }, (_, i) => i);
 }
