@@ -1623,6 +1623,22 @@ sh3-app-shell > .content > *:not(router-outlet) {
   gap: 14px;
   padding: 14px 16px;
 }
+/* Support menu — a disclosure that reads as a button, opening onto three links. */
+.home-support-menu {
+  --sh3-disclosure-summary-bg: var(--sh3-color-primary-surface);
+  --sh3-disclosure-summary-color: var(--sh3-color-primary-text);
+  border-color: var(--sh3-color-primary-border);
+}
+.home-support-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.home-support-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 /* The email link can be long; let it shrink and ellipsize rather than push the
    rail wider. */
 .home-author .home-link {

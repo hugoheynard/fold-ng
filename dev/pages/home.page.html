@@ -107,6 +107,42 @@
           open. If it saves you an afternoon, star it, sponsor it, or just say
           hi.
         </p>
+
+        <sh3-disclosure class="home-support-menu" [(open)]="supportOpen">
+          <span summary class="home-support-summary">
+            <sh3-icon name="heart" size="sm" />
+            <span>Support</span>
+          </span>
+          <div class="home-support-options">
+            <a
+              class="home-link"
+              href="https://www.paypal.com/paypalme/hugoheynard"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <sh3-icon name="paypal" size="sm" />
+              <span>Make a donation</span>
+            </a>
+            <a
+              class="home-link"
+              href="https://github.com/hugoheynard/fold"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <sh3-icon name="star" size="sm" />
+              <span>Give it a star</span>
+            </a>
+            <a
+              class="home-link"
+              [href]="shareUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <sh3-icon name="x" size="sm" />
+              <span>Share on X</span>
+            </a>
+          </div>
+        </sh3-disclosure>
       </div>
     </sh3-card>
 

@@ -50,6 +50,17 @@ export default class HomePage {
   /** The "Start now" disclosure — reveals the terminal install. */
   protected readonly startNowOpen = signal(false);
 
+  /** The "Support" disclosure — donate / star / share. */
+  protected readonly supportOpen = signal(false);
+  /** A pre-filled X (Twitter) share intent for Fold. */
+  protected readonly shareUrl =
+    "https://x.com/intent/post?text=" +
+    encodeURIComponent(
+      "Fold — a signals-first Angular design system, themeable to the bone.",
+    ) +
+    "&url=" +
+    encodeURIComponent("https://github.com/hugoheynard/fold");
+
   protected readonly stats: readonly Stat[] = [
     { value: "26", label: "components" },
     { value: "4", label: "themes" },
