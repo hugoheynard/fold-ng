@@ -66,11 +66,11 @@ export default class ThemesPage {
       palette: "void (chrome) · iris (brand) · mist (text) · azure (info)",
     },
     {
-      attr: "sepia",
-      name: "sepia",
+      attr: "bubbly",
+      name: "bubbly",
       summary:
-        "The light block on warm paper: cream surfaces, a terracotta brand, browned neutrals. The status families stay put — only what should change, changes.",
-      palette: "paper (chrome) · clay (brand) · umber (text)",
+        "Festive light: soft lavender chrome, a joyful violet brand, corners rounded right up. White cards float on the lavender page. Info moves to cyan so it never blurs into the violet brand.",
+      palette: "bubble (chrome) · grape (brand) · slate (text) · azure (info)",
     },
     {
       attr: "navi",

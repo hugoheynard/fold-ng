@@ -108,26 +108,22 @@
      White, off by two points of blue. The opposition is the point: a
      cool page beside a cool rail is merely consistent, where warm-on-
      cool is what makes navy read as navy — and it works at a very low
-     dose. Any warmer and the page starts looking like paper, which is
-     sepia's job (a warm theme throughout, not a warm page).          */
+     dose. Any warmer and the page starts looking like cream, a whole
+     warm theme rather than a warm page.                              */
   --sh3-ref-ivory-50: #fdfcfb; /* page background (navi)        */
 
-  /* ── Paper / Clay / Umber — the SEPIA theme families ───────────
-     Warm light: cream paper instead of cool cloud, a terracotta
-     brand, and browned neutrals for text.                          */
-  --sh3-ref-paper-0: #fffdf7; /* header bar · text on a solid  */
-  --sh3-ref-paper-50: #fdfaf2; /* rail 2 · workspace menu      */
-  --sh3-ref-paper-100: #f7f1e4; /* page background             */
-  --sh3-ref-paper-150: #f2eadb; /* rail 1 · app menu           */
+  /* ── Bubble / Grape — the BUBBLY theme families ────────────────
+     Festive light: soft lavender-white chrome and a joyful violet
+     brand, rounded off. Text reuses slate, info reuses azure (cyan)
+     so it never blurs into the violet brand.                       */
+  --sh3-ref-bubble-0: #ffffff; /* header · card · text on solid */
+  --sh3-ref-bubble-50: #faf7ff; /* rail 2 · workspace menu      */
+  --sh3-ref-bubble-100: #f4eefe; /* page background             */
+  --sh3-ref-bubble-150: #ebe1fd; /* rail 1 · app menu           */
 
-  --sh3-ref-clay-500: #b3603c; /* text tint (sepia)           */
-  --sh3-ref-clay-550: #a3542f; /* brand base (sepia)          */
-  --sh3-ref-clay-600: #8f4726; /* hover                       */
-
-  --sh3-ref-umber-350: #a1907c; /* faded text (sepia)         */
-  --sh3-ref-umber-550: #7a6a58; /* muted text                 */
-  --sh3-ref-umber-600: #6b5c4a; /* secondary text             */
-  --sh3-ref-umber-900: #2b2318; /* primary text               */
+  --sh3-ref-grape-500: #a855f7; /* brand base                  */
+  --sh3-ref-grape-600: #9333ea; /* hover / strong              */
+  --sh3-ref-grape-700: #7e22ce; /* readable brand text         */
 
   /* ── Pure black — pairs with white for neutral alpha overlays */
   --sh3-ref-black: #000000;

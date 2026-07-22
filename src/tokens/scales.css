@@ -83,3 +83,14 @@
   --sh3-radius-md: 3px;
   --sh3-radius-lg: 4px;
 }
+
+/* ── Theme shape override: BUBBLY ─────────────────────────────
+   The opposite of navi: corners rounded right up, so every surface
+   reads soft and pill-like. `pill` and `round` stay — they are
+   shapes, not scale steps. */
+[data-theme="bubbly"] {
+  --sh3-radius-xs: 6px;
+  --sh3-radius-sm: 12px;
+  --sh3-radius-md: 16px;
+  --sh3-radius-lg: 24px;
+}

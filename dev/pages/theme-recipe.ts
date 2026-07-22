@@ -10,7 +10,7 @@ export interface ThemeStep {
 
 /**
  * The authoring guide, as data. Every example is a decision taken (or a bug
- * hit) while building midnight, sepia and navi — a rule with a scar is worth
+ * hit) while building midnight, bubbly and navi — a rule with a scar is worth
  * ten rules without one.
  */
 export const THEME_STEPS: readonly ThemeStep[] = [
@@ -18,7 +18,7 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     title: "Start from the closest base, not from zero",
     body: 'A theme is a diff. Copy the block whose light/dark polarity you already want — :root (umbra) or [data-theme="light"] — and change what must differ. Writing 40 roles from scratch guarantees you forget three.',
     example:
-      "midnight is umbra with four families swapped; sepia is light with three. Neither invented a role.",
+      "midnight is umbra with four families swapped; bubbly is light with two (bubble, grape) and two reused (slate, azure). Neither invented a role.",
   },
   {
     title: "Re-point families, not roles",
