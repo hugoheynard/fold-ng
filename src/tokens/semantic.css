@@ -163,6 +163,9 @@
     var(--sh3-ref-white) 13%,
     transparent
   );
+
+  /* Scrim — a darkening veil behind the mobile nav drawer. */
+  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 55%, transparent);
 }
 
 /* ── Named surfaces ───────────────────────────────────────────
@@ -298,6 +301,9 @@
     var(--sh3-ref-black) 12%,
     transparent
   );
+
+  /* Scrim — a darkening veil behind the mobile nav drawer. */
+  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 45%, transparent);
 }
 
 /* ── Extra theme: BUBBLY ───────────────────────────────────────
@@ -435,6 +441,9 @@
     var(--sh3-ref-grape-500) 16%,
     transparent
   );
+
+  /* Scrim — a darkening veil behind the mobile nav drawer. */
+  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 50%, transparent);
 }
 
 /* ── Extra theme: NAVI ────────────────────────────────────────
@@ -574,6 +583,9 @@
     var(--sh3-ref-black) 12%,
     transparent
   );
+
+  /* Scrim — a darkening veil behind the mobile nav drawer. */
+  --sh3-color-scrim: color-mix(in srgb, var(--sh3-ref-black) 45%, transparent);
 }
 
 /* navi is mixed — light page, dark chrome — so the chrome surfaces need their

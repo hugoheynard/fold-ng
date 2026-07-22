@@ -93,6 +93,10 @@ export const SH3_SEMANTIC_COLOR_TOKENS = [
   "glass",
   /** Hairline border on a glass surface. */
   "glass-border",
+
+  /* ── Scrim ────────────────────────────────────────────────── */
+  /** Darkening veil behind a modal layer (the mobile nav drawer). */
+  "scrim",
 ] as const;
 
 export type Sh3SemanticColorToken = (typeof SH3_SEMANTIC_COLOR_TOKENS)[number];
