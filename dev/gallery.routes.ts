@@ -15,6 +15,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   "sticky-column": () => import("./pages/sticky-column.page"),
   "aside-layout": () => import("./pages/aside-layout.page"),
   "tab-layout": () => import("./pages/tab-layout.page"),
+  "page-layout": () => import("./pages/page-layout.page"),
   "tab-nav": () => import("./pages/tab-nav.page"),
   "page-section": () => import("./pages/page-section.page"),
   card: () => import("./pages/card.page"),

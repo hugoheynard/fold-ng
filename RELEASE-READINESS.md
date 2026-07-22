@@ -53,7 +53,7 @@ spec (see P0-6). Method: six parallel per-cluster audits, each reading every
 | `fold-menu` (+ item/section/sep)   | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs    |
 | `fold-nav-launcher` (+ nav-tile)   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
 | `fold-number-input`                | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate |
-| `fold-page-layout`                 | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `wide`                        |
+| `fold-page-layout`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page + `wide` fixed)        |
 | `fold-page-section`                | 🟡  |  🟢   |  🟡  | Own README row; document `divider`↔`surface`        |
 | `fold-paginator`                   | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**    |
 | `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**        |
@@ -138,11 +138,10 @@ announce as tabs. Add the roles + `aria-selected`, and assert them.
 
 Grouped so each can land as one atomic commit across the affected components.
 
-**C-1 · `booleanAttribute` parity.** Three boolean inputs lack the transform
-their siblings have, so a bare attribute or `="false"` mis-coerces:
-`card.interactive` (`card.component.ts:72`), `page-layout.wide`
-(`page-layout.component.ts:49`), `button.disabled`. Add
-`{ transform: booleanAttribute }` to all three.
+**C-1 · `booleanAttribute` parity.** Boolean inputs lacking the transform their
+siblings have, so a bare attribute or `="false"` mis-coerces. ✅ `page-layout.wide`
+done. Remaining: `card.interactive` (`card.component.ts:72`), `button.disabled` —
+add `{ transform: booleanAttribute }` to both.
 
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
 **no README row**: `fold-callout`, `fold-aside-layout`, `fold-tab-layout`,
@@ -166,7 +165,7 @@ exists, the tag doesn't): `button`, `button-icon`, `status-badge`, `avatar`,
 (`page-layout`/`page-section`/`tab-layout` — verify). Mechanical.
 
 **C-5 · Gallery coverage holes.** Shipped components with **zero gallery
-presence** (fall back to the stub page — not in the 26 nav entries):
+presence** (fall back to the stub page — not among the Library nav entries):
 `fold-data-table`, `fold-paginator`, `fold-empty-state` + `fold-loading` (a `state`
 page), and `[foldRepeatPress]`. `fold-choice-row` renders only incidentally inside
 other pages (its `chips` layout + `count` badge are never shown), and
@@ -256,7 +255,10 @@ decorative `eyebrow`/`bar` variants should really carry `role="heading"`
 gated by label). Actions: (1) README row (C-2); (2) `stackLeftFirst` class-toggle
 spec (currently zero coverage on that input).
 
-**`fold-page-layout`** 🟡🟢🟢 — Action: `booleanAttribute` on `wide` (C-1).
+**`fold-page-layout`** 🟢🟢🟢 — Ship-ready. Now has its own gallery page
+(`/page-layout`: width modes, header slots, the live `--fold-page-gutter` token,
+a bleed band), and `wide` gained `booleanAttribute` (C-1). The home page is the
+flagship real-world usage.
 
 **`fold-page-section`** 🟡🟢🟡 — The `[sectionActions]`→`titleAction` re-projection
 is elegant. Actions: (1) own README row naming the surface/divider/stack knobs;

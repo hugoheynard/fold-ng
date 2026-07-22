@@ -1282,6 +1282,67 @@ fold-app-shell > .content > *:not(router-outlet) {
 .asl-real {
   --fold-aside-layout-max: none;
 }
+
+/* ── page-layout gallery: same real-width-then-zoom window as aside-layout, so
+      the 780 / 940 caps and a fluid fill all read honestly however small it is
+      drawn. The rendered page fills the window height and scrolls inside it. ── */
+.pl-window {
+  height: 380px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-bg-page);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.pl-window-inner {
+  /* width + auto-fit zoom are bound inline. */
+}
+/* A visible edge so the width cap (centred 780/940 vs a fluid fill) is legible
+   against the page backdrop. */
+.pl-real {
+  min-height: 380px;
+  background: var(--fold-color-surface-card);
+  border-inline: 1px solid var(--fold-color-border-subtle);
+}
+.pl-real.is-fluid {
+  border-inline: none;
+}
+/* Header-slot toggles — a row of on/off chips. */
+.pl-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pl-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-pill, 999px);
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+.pl-chip.is-on {
+  border-color: var(--fold-color-primary);
+  background: var(--fold-color-primary-soft, var(--fold-color-surface-sunken));
+  color: var(--fold-color-text);
+}
+/* A neutral demo button for the pageActions slot. */
+.pl-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font-size: 13px;
+  cursor: pointer;
+}
+.pl-close {
+  margin-top: 8px;
+}
 /* Equal columns: all three tracks share the space. */
 .asl-real.is-equal {
   --fold-aside-layout-rail-width: minmax(0, 1fr);

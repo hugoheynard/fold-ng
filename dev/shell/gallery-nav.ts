@@ -33,6 +33,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     color: "#06a4a4",
     items: [
       { id: "app-shell", label: "app-shell", icon: "grid" },
+      {
+        id: "page-layout",
+        label: "page-layout",
+        badge: "new",
+        badgeTone: "info",
+      },
       { id: "page-section", label: "page-section" },
       { id: "hero", label: "hero" },
       {
