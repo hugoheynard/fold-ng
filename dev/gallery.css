@@ -1918,6 +1918,12 @@ sh3-app-shell > .content > *:not(router-outlet) {
   line-height: 1.6;
   color: var(--sh3-color-text-secondary);
 }
+/* The three pillars — Angular 22 · responsive · accessible — lift out of the
+   muted lede in full-strength text. */
+.home-lede strong {
+  font-weight: 700;
+  color: var(--sh3-color-text);
+}
 .home-cta {
   display: flex;
   flex-wrap: wrap;
