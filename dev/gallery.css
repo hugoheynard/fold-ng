@@ -15,15 +15,17 @@ sh3-app-shell {
 
 /* ── Primary rail: the sh3-menu brand tile in its header slot ── */
 .rail-brand {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--sh3-radius-md);
   display: grid;
   place-items: center;
   background: var(--sh3-color-primary);
   color: var(--sh3-color-on-primary);
-  font-weight: 800;
-  font-size: 14px;
+  transition: transform 0.12s ease;
+}
+.rail-brand:hover {
+  transform: translateY(-1px);
 }
 
 /* ── sh3-app-shell page: a real shell scaled to fit, folding on its own width ── */
@@ -226,11 +228,17 @@ sh3-app-shell {
 
 /* ── Secondary rail: the "Library" nav header ─────────────────── */
 .lib-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 2px 4px 6px;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--sh3-color-text);
+}
+.lib-head sh3-icon {
+  color: var(--sh3-color-primary-text);
 }
 
 /* avatar family page — the tab-nav that switches the three components. */
@@ -475,8 +483,24 @@ sh3-app-shell {
   border-bottom: 1px solid var(--sh3-color-border);
 }
 .gal-title {
-  font-size: 15px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 17px;
   font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--sh3-color-text);
+  text-decoration: none;
+}
+.gal-title sh3-icon {
+  align-self: center;
+  color: var(--sh3-color-primary-text);
+}
+.gal-title-sub {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--sh3-color-text-muted);
 }
 /* Theme switcher — one button per theme the token layer ships. */
 .gal-themes {
@@ -1496,4 +1520,126 @@ sh3-app-shell > .content > *:not(router-outlet) {
   font-size: 13px;
   line-height: 1.5;
   color: var(--sh3-color-text-secondary);
+}
+
+/* ══ Home / landing (Fold) ═══════════════════════════════════════
+   The routed host is display:contents (see the content-cell rule), so `.home`
+   is the scroll box, exactly as sh3-page-layout is on every other page. */
+.home {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-bottom: 24px;
+}
+
+/* ── hero ─────────────────────────────────────────────────────── */
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  padding: 40px 20px 8px;
+}
+.home-mark {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--sh3-radius-lg);
+  background: var(--sh3-color-primary-surface);
+  border: 1px solid var(--sh3-color-primary-border);
+  color: var(--sh3-color-primary-text);
+}
+.home-eyebrow {
+  margin-top: 2px;
+}
+.home-title {
+  margin: 0;
+  font-size: clamp(44px, 8vw, 72px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--sh3-color-text);
+}
+.home-lede {
+  margin: 0;
+  max-width: 56ch;
+  font-size: var(--sh3-text-lg);
+  line-height: 1.6;
+  color: var(--sh3-color-text-secondary);
+}
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* stat row — a hairline-framed band under the CTA */
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  width: 100%;
+  max-width: 720px;
+  margin-top: 28px;
+  border: 1px solid var(--sh3-color-border);
+  border-radius: var(--sh3-radius-lg);
+  background: var(--sh3-color-border);
+  overflow: clip;
+}
+.home-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 12px;
+  background: var(--sh3-color-surface-card);
+}
+.home-stat-value {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--sh3-color-primary-text);
+  font-variant-numeric: tabular-nums;
+}
+.home-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sh3-color-text-muted);
+}
+@media (max-width: 620px) {
+  .home-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── features ─────────────────────────────────────────────────── */
+.home-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.home-feature-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+.home-feature-icon {
+  display: inline-flex;
+  padding: 6px;
+  border-radius: var(--sh3-radius-sm);
+  background: var(--sh3-color-primary-surface);
+  color: var(--sh3-color-primary-text);
+}
+.home-close {
+  margin-top: 4px;
 }

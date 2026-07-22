@@ -1,22 +1,35 @@
 <sh3-app-shell contentPadding="28px 32px 40px" (dblclick)="onInspect($event)">
-  <!-- ── rail primary: a stable static nav ─────────────────────────── -->
+  <!-- ── rail primary: the Fold app rail ───────────────────────────── -->
   <sh3-menu railPrimary tint="primary">
-    <div header class="rail-brand">S3</div>
-    @for (i of railNav; track i.id) {
-      <button
-        sh3-menu-item
-        [icon]="i.icon"
-        [label]="i.label"
-        [active]="railActive() === i.id"
-        (click)="railActive.set(i.id)"
-      ></button>
-    }
+    <a header class="rail-brand" routerLink="/" aria-label="Fold — home">
+      <sh3-icon name="fold" [size]="24" />
+    </a>
+    <a
+      sh3-menu-item
+      icon="home"
+      label="Home"
+      routerLink="/"
+      routerLinkActive
+      #homeRla="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [active]="homeRla.isActive"
+    ></a>
+    <a
+      sh3-menu-item
+      icon="library"
+      label="Library"
+      [routerLink]="'/' + firstComponent"
+      [active]="!homeRla.isActive"
+    ></a>
     <button footer sh3-menu-item icon="settings" label="Settings"></button>
   </sh3-menu>
 
   <!-- ── rail secondary: the "Library" nav — each item is a route ──── -->
   <sh3-menu railSecondary level="secondary" [expanded]="true">
-    <div header class="lib-head">Library</div>
+    <div header class="lib-head">
+      <sh3-icon name="library" size="sm" />
+      <span>Library</span>
+    </div>
     @for (group of navGroups; track group.label) {
       <sh3-menu-section [label]="group.label" [color]="group.color" collapsible>
         @for (item of group.items; track item.id) {
@@ -38,7 +51,11 @@
 
   <!-- ── header ────────────────────────────────────────────────── -->
   <div header class="gal-header">
-    <span class="gal-title">&#64;sh3pherd/ui — gallery</span>
+    <a class="gal-title" routerLink="/">
+      <sh3-icon name="fold" size="md" />
+      <span>Fold</span>
+      <span class="gal-title-sub">design system</span>
+    </a>
     <div class="gal-themes">
       <sh3-icon name="settings" size="sm" />
       @for (t of themes; track t) {

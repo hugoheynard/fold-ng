@@ -4,7 +4,12 @@
     <div class="home-mark">
       <sh3-icon name="fold" [size]="52" title="Fold" />
     </div>
-    <sh3-badge class="home-eyebrow" content="Angular 22 · signals-first" variant="accent" radius="pill" />
+    <sh3-badge
+      class="home-eyebrow"
+      content="Angular 22 · signals-first"
+      variant="accent"
+      radius="pill"
+    />
     <h1 class="home-title">Fold</h1>
     <p class="home-lede">
       A design system that re-themes by re-pointing tokens — never by touching a
@@ -22,10 +27,10 @@
 
     <div class="home-stats">
       @for (s of stats; track s.label) {
-        <div class="home-stat">
-          <span class="home-stat-value">{{ s.value }}</span>
-          <span class="home-stat-label">{{ s.label }}</span>
-        </div>
+      <div class="home-stat">
+        <span class="home-stat-value">{{ s.value }}</span>
+        <span class="home-stat-label">{{ s.label }}</span>
+      </div>
       }
     </div>
   </header>
@@ -33,13 +38,15 @@
   <!-- ── features ─────────────────────────────────────────────── -->
   <section class="home-features">
     @for (f of features; track f.title) {
-      <sh3-card class="home-feature" separators raisedBands>
-        <div cardHeader class="home-feature-head">
-          <span class="home-feature-icon"><sh3-icon [name]="f.icon" size="md" /></span>
-          <strong>{{ f.title }}</strong>
-        </div>
-        <p class="gal-body">{{ f.body }}</p>
-      </sh3-card>
+    <sh3-card class="home-feature" separators raisedBands>
+      <div cardHeader class="home-feature-head">
+        <span class="home-feature-icon"
+          ><sh3-icon [name]="f.icon" size="md"
+        /></span>
+        <strong>{{ f.title }}</strong>
+      </div>
+      <p class="gal-body">{{ f.body }}</p>
+    </sh3-card>
     }
   </section>
 

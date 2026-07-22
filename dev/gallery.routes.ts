@@ -10,6 +10,7 @@ import { StubPage } from "./pages/stub.page";
  * time. To port a page: add its `id → () => import(...)` entry.
  */
 const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
+  home: () => import("./pages/home.page"),
   hero: () => import("./pages/hero.page"),
   "sticky-column": () => import("./pages/sticky-column.page"),
   "aside-layout": () => import("./pages/aside-layout.page"),
@@ -50,6 +51,10 @@ export const GALLERY_ROUTES: Routes = [
       ? { path: item.id, data, loadComponent: load }
       : { path: item.id, data, component: StubPage };
   }),
-  { path: "", pathMatch: "full" as const, redirectTo: GALLERY_NAV_ITEMS[0].id },
-  { path: "**", redirectTo: GALLERY_NAV_ITEMS[0].id },
+  {
+    path: "",
+    pathMatch: "full" as const,
+    loadComponent: () => import("./pages/home.page"),
+  },
+  { path: "**", redirectTo: "" },
 ];

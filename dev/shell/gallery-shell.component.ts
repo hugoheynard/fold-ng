@@ -12,7 +12,7 @@ import {
 } from "../../src/index";
 import { InspectPanelComponent } from "../inspect-panel.component";
 import { closestSh3, inspect } from "../inspect";
-import { GALLERY_NAV } from "./gallery-nav";
+import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
 
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
 type GalleryTheme = "umbra" | "light" | "midnight" | "sepia" | "navi";
@@ -60,13 +60,8 @@ export class GalleryShellComponent {
   protected readonly theme = signal<GalleryTheme>("umbra");
   protected readonly navGroups = GALLERY_NAV;
 
-  /** railPrimary: a stable static nav, decoupled from any page. */
-  protected readonly railNav = [
-    { id: "home", icon: "home", label: "Home" },
-    { id: "contracts", icon: "contracts", label: "Contracts" },
-    { id: "music", icon: "music", label: "Music" },
-  ] as const;
-  protected readonly railActive = signal<string>("home");
+  /** Where the primary rail's "Library" jumps in — the first library entry. */
+  protected readonly firstComponent = GALLERY_NAV_ITEMS[0].id;
 
   protected setTheme(theme: GalleryTheme): void {
     this.theme.set(theme);
