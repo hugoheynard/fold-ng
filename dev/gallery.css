@@ -149,6 +149,23 @@ sh3-app-shell {
   border: 1px solid var(--sh3-color-border-subtle);
   background: var(--sh3-color-surface-card);
 }
+/* A mini player bar in the shell's footer slot — shows the region live. */
+.sp-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 10px 16px;
+  background: var(--sh3-color-bg-header);
+  border-top: 1px solid var(--sh3-color-border);
+  font-size: 12px;
+  font-weight: 600;
+}
+.sp-footer-time {
+  margin-left: auto;
+  color: var(--sh3-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
 
 /* ── sh3-menu page: 3 columns, full height — preview · settings · tokens ── */
 .menu-page {

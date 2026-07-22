@@ -47,6 +47,9 @@ export default class AppShellPage {
   /* ── Live shell parameters (driven by the Settings panel) ── */
   protected readonly shellAppearance = signal<"flat" | "floating">("flat");
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
+  protected readonly shellFooterLayout = signal<"inset" | "full">("full");
+  /** Toggles the projected footer so its self-collapse is visible live. */
+  protected readonly shellFooter = signal(true);
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
 
@@ -93,6 +96,9 @@ export default class AppShellPage {
   protected setHeaderLayout(value: "inset" | "full"): void {
     this.shellHeaderLayout.set(value);
   }
+  protected setFooterLayout(value: "inset" | "full"): void {
+    this.shellFooterLayout.set(value);
+  }
 
   /** The `<sh3-app-shell>` markup reflecting the current settings — live. */
   protected readonly shellCode = computed(() =>
@@ -100,6 +106,9 @@ export default class AppShellPage {
       "<sh3-app-shell",
       `  appearance="${this.shellAppearance()}"`,
       `  headerLayout="${this.shellHeaderLayout()}"`,
+      ...(this.shellFooter()
+        ? [`  footerLayout="${this.shellFooterLayout()}"`]
+        : []),
       `  [railWidth]="${this.shellRailWidth()}"`,
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
@@ -108,6 +117,9 @@ export default class AppShellPage {
       "  <header header>…</header>",
       "  <!-- untagged content → the main area -->",
       "  <main>…</main>",
+      ...(this.shellFooter()
+        ? ["  <app-player footer>…</app-player>"]
+        : ["  <!-- no footer → the footer row collapses -->"]),
       "</sh3-app-shell>",
     ].join("\n"),
   );

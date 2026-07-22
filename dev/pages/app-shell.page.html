@@ -51,6 +51,33 @@
       </div>
     </div>
 
+    <div class="np-field" params>
+      <span class="gal-tag">footerLayout</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="shellFooter() && shellFooterLayout() === 'inset'"
+          (click)="shellFooter.set(true); setFooterLayout('inset')"
+        >
+          inset
+        </button>
+        <button
+          type="button"
+          [class.is-on]="shellFooter() && shellFooterLayout() === 'full'"
+          (click)="shellFooter.set(true); setFooterLayout('full')"
+        >
+          full
+        </button>
+        <button
+          type="button"
+          [class.is-on]="!shellFooter()"
+          (click)="shellFooter.set(false)"
+        >
+          none
+        </button>
+      </div>
+    </div>
+
     <sh3-slider
       params
       label="railWidth"
@@ -93,6 +120,7 @@
         <sh3-app-shell
           [appearance]="shellAppearance()"
           [headerLayout]="shellHeaderLayout()"
+          [footerLayout]="shellFooterLayout()"
           [railWidth]="shellRailWidth()"
           [headerHeight]="shellHeaderHeight()"
         >
@@ -145,6 +173,14 @@
             <div class="sp-block"></div>
             <div class="sp-block"></div>
           </div>
+
+          @if (shellFooter()) {
+          <div footer class="sp-footer">
+            <sh3-icon name="play" size="sm" />
+            <span class="sp-footer-track">Now playing — Track 03</span>
+            <span class="sp-footer-time">1:24 / 3:57</span>
+          </div>
+          }
 
           <!-- the preview's own panel host — panels open inside the preview -->
           <sh3-panel-host />

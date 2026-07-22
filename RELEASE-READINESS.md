@@ -74,6 +74,8 @@ spec (see P0-6). Method: six parallel per-cluster audits, each reading every
 field-list, timeline, toast, surface. Everything else has scoped, mostly
 mechanical work below.
 
+> **TODO · `sh3-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · mobile drops both rails with no drawer/hamburger to bring nav back · no skip-to-content link (`<main>` has no `id` target) · decisions to record: no persistent right rail (assume `sh3-aside-layout` + panels?), tertiary-rail token vs 2-slot shell, optional `contentScroll: clip|auto`.
+
 ---
 
 ## 2 · Ship blockers (P0)
