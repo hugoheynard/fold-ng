@@ -18,7 +18,7 @@ import {
     FoldStatusBadgeComponent,
     FoldIconComponent,
   ],
-  template: `<fold-page-layout fluid title="badge · status · icon">
+  template: `<fold-page-layout title="badge · status · icon">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row">
       @for (v of badgeVariants; track v) {

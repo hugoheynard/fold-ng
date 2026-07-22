@@ -16,7 +16,7 @@ import {
     FoldPageSectionComponent,
     FoldIconComponent,
   ],
-  template: `<fold-page-layout fluid title="page-section">
+  template: `<fold-page-layout title="page-section">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row gal-row--wide">
       <fold-page-section surface="transparent" title="Transparent">

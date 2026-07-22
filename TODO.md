@@ -386,6 +386,20 @@ body` are already `overflow: hidden`, so the body lock is a no-op). Reproduce
 Deliberate compromises taken to keep momentum — tracked so they get paid back,
 not forgotten.
 
+- **App settings pages went full-width when `fold-page-layout` dropped
+  `wide`/`fluid`.** The page scaffold no longer caps the column (width is a
+  content concern now). Four product pages leaned on the old implicit 780 cap and
+  now fill: `admin-details`, `admin-billing`, `admin-integrations`,
+  `admin-danger` (`apps/frontend-webapp/src/app/features/company/company-admin-page/`).
+  **To fix:** per page, either accept full-width or wrap the content in a
+  max-width container to keep the readable measure. Low priority — they render,
+  just wider.
+- **`fold-measure` deferred (2nd-use rule).** Narrowing a block to a readable
+  width is the content's job — for now a plain inner `div` with a `max-width`.
+  If it recurs across enough real pages to be boilerplate, extract a tiny
+  `fold-measure` (max-width + centered, one token). **Not by anticipation —
+  build it on the 2nd real use, nothing now.**
+
 - **`ScrollLockService` is effectively a no-op.** `html, body` are already
   `overflow: hidden`, so locking `body.overflow` changes nothing. Either drop it,
   or make it lock the app's real scroll container. Tied to the panel-open glitch.

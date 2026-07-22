@@ -16,7 +16,7 @@ import {
     FoldContextCardComponent,
     FoldLinkComponent,
   ],
-  template: `<fold-page-layout fluid title="context-card">
+  template: `<fold-page-layout title="context-card">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row gal-row--wide">
       @for (tone of iconTones; track tone) {

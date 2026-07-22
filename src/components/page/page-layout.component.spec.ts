@@ -6,12 +6,7 @@ import { FoldPageLayoutComponent } from "./page-layout.component";
 @Component({
   standalone: true,
   imports: [FoldPageLayoutComponent],
-  template: `<fold-page-layout
-    [title]="title()"
-    [icon]="icon()"
-    [wide]="wide()"
-    [fluid]="fluid()"
-  >
+  template: `<fold-page-layout [title]="title()" [icon]="icon()">
     <p description class="desc">Abonnement <code>pro</code></p>
     <button pageActions class="act">Export</button>
     <span titleBadge class="kind">Directive</span>
@@ -21,8 +16,6 @@ import { FoldPageLayoutComponent } from "./page-layout.component";
 class HostComponent {
   readonly title = signal<string | undefined>("Facturation");
   readonly icon = signal<"grid" | undefined>(undefined);
-  readonly wide = signal(false);
-  readonly fluid = signal(false);
 }
 
 function render() {
@@ -73,23 +66,5 @@ describe("FoldPageLayoutComponent", () => {
     fixture.componentInstance.icon.set("grid");
     fixture.detectChanges();
     expect(root.querySelector(".page-title .page-icon")).not.toBeNull();
-  });
-
-  it("drops the width cap with [fluid] (is-fluid)", () => {
-    const { fixture, root } = render();
-    const host = root.querySelector("fold-page-layout");
-    expect(host?.classList.contains("is-fluid")).toBe(false);
-    fixture.componentInstance.fluid.set(true);
-    fixture.detectChanges();
-    expect(host?.classList.contains("is-fluid")).toBe(true);
-  });
-
-  it("adds the wide modifier when [wide] is set", () => {
-    const { fixture, root } = render();
-    const host = root.querySelector("fold-page-layout");
-    expect(host?.classList.contains("is-wide")).toBe(false);
-    fixture.componentInstance.wide.set(true);
-    fixture.detectChanges();
-    expect(host?.classList.contains("is-wide")).toBe(true);
   });
 });

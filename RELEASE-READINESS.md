@@ -53,7 +53,7 @@ spec (see P0-6). Method: six parallel per-cluster audits, each reading every
 | `fold-menu` (+ item/section/sep)   | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs    |
 | `fold-nav-launcher` (+ nav-tile)   | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
 | `fold-number-input`                | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate |
-| `fold-page-layout`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page + `wide` fixed)        |
+| `fold-page-layout`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap) |
 | `fold-page-section`                | 🟡  |  🟢   |  🟡  | Own README row; document `divider`↔`surface`        |
 | `fold-paginator`                   | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**    |
 | `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**        |
@@ -139,9 +139,10 @@ announce as tabs. Add the roles + `aria-selected`, and assert them.
 Grouped so each can land as one atomic commit across the affected components.
 
 **C-1 · `booleanAttribute` parity.** Boolean inputs lacking the transform their
-siblings have, so a bare attribute or `="false"` mis-coerces. ✅ `page-layout.wide`
-done. Remaining: `card.interactive` (`card.component.ts:72`), `button.disabled` —
-add `{ transform: booleanAttribute }` to both.
+siblings have, so a bare attribute or `="false"` mis-coerces. `card.interactive`
+(`card.component.ts:72`), `button.disabled` — add `{ transform: booleanAttribute }`
+to both. (`page-layout.wide`/`fluid` no longer apply — both inputs were removed;
+the page fills its container, width is a content concern.)
 
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
 **no README row**: `fold-callout`, `fold-aside-layout`, `fold-tab-layout`,
@@ -256,9 +257,11 @@ gated by label). Actions: (1) README row (C-2); (2) `stackLeftFirst` class-toggl
 spec (currently zero coverage on that input).
 
 **`fold-page-layout`** 🟢🟢🟢 — Ship-ready. Now has its own gallery page
-(`/page-layout`: width modes, header slots, the live `--fold-page-gutter` token,
-a bleed band), and `wide` gained `booleanAttribute` (C-1). The home page is the
-flagship real-world usage.
+(`/page-layout`: header slots, the live `--fold-page-gutter` token, a bleed
+band). Scope was tightened: `wide`/`fluid` were **removed** — the page owns the
+gutter + header + rhythm and otherwise fills its container; narrowing to a
+readable measure is the content's job (a max-width container), never the page
+scaffold's. The home page is the flagship real-world usage.
 
 **`fold-page-section`** 🟡🟢🟡 — The `[sectionActions]`→`titleAction` re-projection
 is elegant. Actions: (1) own README row naming the surface/divider/stack knobs;

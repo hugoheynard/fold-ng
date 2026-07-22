@@ -7,7 +7,7 @@ import { FoldHeroComponent, FoldPageLayoutComponent } from "../../src/index";
   selector: "gal-hero-page",
   standalone: true,
   imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldHeroComponent],
-  template: `<fold-page-layout fluid title="hero">
+  template: `<fold-page-layout title="hero">
     <gal-kind-badge titleBadge kind="component" />
     @for (surface of heroSurfaces; track surface) {
       <div class="gal-row gal-row--wide">

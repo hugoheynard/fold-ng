@@ -14,7 +14,7 @@ import {
     FoldPageLayoutComponent,
     FoldButtonIconComponent,
   ],
-  template: `<fold-page-layout fluid title="button-icon">
+  template: `<fold-page-layout title="button-icon">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-stack">
       <div class="gal-cell">

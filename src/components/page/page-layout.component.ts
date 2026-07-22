@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { FoldIconComponent } from "../icon/icon.component";
 import type { FoldIconName } from "../icon/icon.registry";
 
@@ -8,15 +8,16 @@ import type { FoldIconName } from "../icon/icon.registry";
  * top-right actions slot, and a body that stacks its children with a consistent
  * rhythm. Pair it with {@link FoldPageSectionComponent} for grouped sub-sections.
  *
- * **It owns the page gutter.** The `fold-app-shell` content region is full-bleed
- * (so a page can paint edge-to-edge); this component supplies the themed margins
- * via its own padding. Wrap a page's content in `fold-page-layout` to get them,
- * or leave the shell content bare for a full-width surface. The *horizontal*
- * gutter is a single token, `--fold-page-gutter` (default `32px`) — retune it per
- * page/theme, or set it to `0` for a bleeding dashboard. A
- * {@link FoldPageSectionComponent} with `bleed` cancels exactly that token to
- * span the page edge-to-edge (a full-width band amid padded content), so the two
- * never desync — including on a responsive gutter.
+ * **It owns the page gutter, not the width.** The `fold-app-shell` content region
+ * is full-bleed (so a page can paint edge-to-edge); this component supplies the
+ * themed margins via its own padding, and otherwise **fills whatever width it is
+ * given**. It does *not* cap the column — narrowing a block to a readable measure
+ * is the content's job (wrap that block in your own max-width container), never
+ * the page scaffold's. The *horizontal* gutter is a single token,
+ * `--fold-page-gutter` (default `32px`) — retune it per page/theme, or set it to
+ * `0` for a bleeding dashboard. A {@link FoldPageSectionComponent} with `bleed`
+ * cancels exactly that token to span the page edge-to-edge (a full-width band
+ * amid padded content), so the two never desync — including on a responsive gutter.
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
@@ -43,10 +44,6 @@ import type { FoldIconName } from "../icon/icon.registry";
   selector: "fold-page-layout",
   standalone: true,
   imports: [FoldIconComponent],
-  host: {
-    "[class.is-wide]": "wide()",
-    "[class.is-fluid]": "fluid()",
-  },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
 })
@@ -55,8 +52,4 @@ export class FoldPageLayoutComponent {
   readonly title = input<string>();
   /** An optional leading icon shown beside the title. */
   readonly icon = input<FoldIconName>();
-  /** Widen the column to 940px (two-column pages). */
-  readonly wide = input(false, { transform: booleanAttribute });
-  /** Drop the max-width cap entirely — the page fills its container. */
-  readonly fluid = input(false, { transform: booleanAttribute });
 }

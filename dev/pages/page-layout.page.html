@@ -1,13 +1,14 @@
-<fold-page-layout fluid title="page-layout" icon="grid">
+<fold-page-layout title="page-layout" icon="grid">
   <gal-kind-badge titleBadge kind="component" />
   <p description>
     The vertical scaffold every page wraps its content in: an optional
     <code>icon</code> + <code>title</code> header with
     <code>[description]</code> and <code>[pageActions]</code> slots, then a body
     that stacks its children on a steady rhythm.
-    <strong>It owns the page gutter</strong> — the shell content region is
-    full-bleed, and this component supplies the themed margins via one token,
-    <code>--fold-page-gutter</code>. This very page is a
+    <strong>It owns the page gutter, not the width</strong> — it fills whatever
+    it is given, supplying the themed margins via one token,
+    <code>--fold-page-gutter</code>. Narrowing a block to a readable measure is
+    the content's job, never the page's. This very page is a
     <code>fold-page-layout</code>.
   </p>
   <fold-button pageActions routerLink="/" variant="ghost" size="sm">
@@ -15,34 +16,6 @@
   </fold-button>
 
   <dev-playground [code]="code()">
-    <!-- width mode -->
-    <div class="np-field" params>
-      <span class="gal-tag">width</span>
-      <div class="ss-seg">
-        <button
-          type="button"
-          [class.is-on]="widthMode() === 'default'"
-          (click)="widthMode.set('default')"
-        >
-          default · 780
-        </button>
-        <button
-          type="button"
-          [class.is-on]="widthMode() === 'wide'"
-          (click)="widthMode.set('wide')"
-        >
-          wide · 940
-        </button>
-        <button
-          type="button"
-          [class.is-on]="widthMode() === 'fluid'"
-          (click)="widthMode.set('fluid')"
-        >
-          fluid
-        </button>
-      </div>
-    </div>
-
     <!-- header slots -->
     <div class="np-field" params>
       <span class="gal-tag">header</span>
@@ -92,62 +65,52 @@
       [(value)]="gutter"
     />
 
-    <!-- A real fold-page-layout rendered at a real width, then scaled to fit so
-         the 780 / 940 caps and a fluid fill all read differently. A bleed band
-         sits inside it to show it cancels the gutter exactly, live as the slider
-         moves. -->
-    <div class="pl-window" #plWindow>
-      <div
-        class="pl-window-inner"
-        [style.width.px]="previewWidth"
-        [style.zoom]="scale()"
+    <!-- A real fold-page-layout, filling the preview box. The gutter slider
+         drives its themed margins live; the bleed band inside cancels exactly
+         that same token, so it stays flush as you drag. -->
+    <div class="pl-window">
+      <fold-page-layout
+        [icon]="showIcon() ? 'grid' : undefined"
+        title="Billing"
+        [style.--fold-page-gutter.px]="gutter()"
       >
-        <fold-page-layout
-          class="pl-real"
-          [wide]="isWide()"
-          [fluid]="isFluid()"
-          [icon]="showIcon() ? 'grid' : undefined"
-          title="Billing"
-          [style.--fold-page-gutter.px]="gutter()"
-        >
-          @if (showBadge()) {
-          <fold-badge titleBadge content="Pro" variant="accent" radius="pill" />
-          } @if (showDesc()) {
-          <p description>Your company subscription and payment methods.</p>
-          } @if (showActions()) {
-          <button type="button" class="pl-btn" pageActions>Export</button>
-          }
+        @if (showBadge()) {
+        <fold-badge titleBadge content="Pro" variant="accent" radius="pill" />
+        } @if (showDesc()) {
+        <p description>Your company subscription and payment methods.</p>
+        } @if (showActions()) {
+        <button type="button" class="pl-btn" pageActions>Export</button>
+        }
 
-          <fold-page-section surface="card" title="Payment methods">
-            <p class="gal-body">
-              The default method is charged on renewal. Add a backup so a
-              declined card never interrupts service.
-            </p>
-          </fold-page-section>
+        <fold-page-section surface="card" title="Payment methods">
+          <p class="gal-body">
+            The default method is charged on renewal. Add a backup so a declined
+            card never interrupts service.
+          </p>
+        </fold-page-section>
 
-          <fold-page-section bleed surface="sunken" divider title="Bleed band">
-            <p class="gal-body">
-              Spans the layout edge-to-edge — it cancels
-              <code>--fold-page-gutter</code> exactly (the same token the page
-              pads with), so it stays flush as you drag the slider.
-            </p>
-          </fold-page-section>
+        <fold-page-section bleed surface="sunken" divider title="Bleed band">
+          <p class="gal-body">
+            Spans the layout edge-to-edge — it cancels
+            <code>--fold-page-gutter</code> exactly (the same token the page
+            pads with), so it stays flush as you drag the slider.
+          </p>
+        </fold-page-section>
 
-          <fold-page-section surface="card" title="Invoices">
-            <p class="gal-body">
-              Back in the gutter. The body keeps its steady vertical rhythm
-              whatever the width.
-            </p>
-          </fold-page-section>
-        </fold-page-layout>
-      </div>
+        <fold-page-section surface="card" title="Invoices">
+          <p class="gal-body">
+            Back in the gutter. The body keeps its steady vertical rhythm at any
+            width.
+          </p>
+        </fold-page-section>
+      </fold-page-layout>
     </div>
   </dev-playground>
 
   <fold-callout class="pl-close" variant="accent">
     The best example of <code>fold-page-layout</code> in the wild is the landing
-    page — a <code>fluid</code> layout with a full-bleed hero band and an
-    <code>aside-layout</code> of cards below.
+    page — a full-bleed hero band and an <code>aside-layout</code> of cards
+    below, all filling the page.
     <fold-button actions routerLink="/" size="sm" variant="ghost">
       Open the home page
     </fold-button>

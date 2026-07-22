@@ -7,7 +7,7 @@ import { FoldLinkComponent, FoldPageLayoutComponent } from "../../src/index";
   selector: "gal-link-page",
   standalone: true,
   imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldLinkComponent],
-  template: `<fold-page-layout fluid title="link">
+  template: `<fold-page-layout title="link">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-row">
       <fold-link icon="company" trailingIcon="chevron-right"

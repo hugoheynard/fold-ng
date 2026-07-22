@@ -14,7 +14,7 @@ import {
     FoldPageLayoutComponent,
     FoldElementTitleComponent,
   ],
-  template: `<fold-page-layout fluid title="element-title">
+  template: `<fold-page-layout title="element-title">
     <gal-kind-badge titleBadge kind="component" />
     <div class="gal-stack">
       <div class="gal-cell">

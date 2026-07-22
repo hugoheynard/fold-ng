@@ -1283,32 +1283,18 @@ fold-app-shell > .content > *:not(router-outlet) {
   --fold-aside-layout-max: none;
 }
 
-/* ── page-layout gallery: same real-width-then-zoom window as aside-layout, so
-      the 780 / 940 caps and a fluid fill all read honestly however small it is
-      drawn. The rendered page fills the window height and scrolls inside it. ── */
+/* ── page-layout gallery: a bordered window painted as the page backdrop; a real
+      fold-page-layout fills it. The gutter reads as the space between the window
+      edge and the (card / sunken) sections; a bleed band cancels it and sits
+      flush to the edges — live as the slider moves. No width cap: the page fills,
+      so there is nothing to scale — the window scrolls if the content is tall. ── */
 .pl-window {
-  height: 380px;
+  max-height: 460px;
   overflow: auto;
   overscroll-behavior: contain;
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-md);
   background: var(--fold-color-bg-page);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-.pl-window-inner {
-  /* width + auto-fit zoom are bound inline. */
-}
-/* A visible edge so the width cap (centred 780/940 vs a fluid fill) is legible
-   against the page backdrop. */
-.pl-real {
-  min-height: 380px;
-  background: var(--fold-color-surface-card);
-  border-inline: 1px solid var(--fold-color-border-subtle);
-}
-.pl-real.is-fluid {
-  border-inline: none;
 }
 /* Header-slot toggles — a row of on/off chips. */
 .pl-toggles {
