@@ -125,6 +125,20 @@ inline `<svg>` in a component template.
 ⚠️ _Known debt:_ the panel close button still inlines an `<svg>`; fold into
 `<fold-icon name="close">` on touch.
 
+4.8 **Tag-qualify an attribute projection selector.** A bare
+`<ng-content select="[foo]">` matches _any_ direct child carrying a `foo`
+attribute — including a projected component whose own `input()` is named `foo`
+(inputs written as static attributes, `foo="…"`, still match projection
+selectors). That child gets swallowed into the wrong slot and the default slot
+goes empty. Qualify the selector to the element the slot actually expects:
+`select="p[description]"`, not `select="[description]"`.
+_Why this rule exists:_ `fold-page-layout`'s `[description]` slot silently ate
+every `<fold-page-section description="…">` child — the whole page body rendered
+inside the header. Fixed by tag-qualifying to `p[description]`; when you add a
+slot whose attribute name is a plausible component input (`title`, `label`,
+`icon`, `description`, `actions`…), qualify it and cover it with a projection
+test that a body child carrying that same attribute stays put.
+
 ---
 
 ## 5 · Portability (no app leaks)
@@ -222,19 +236,20 @@ map) — only the registry's public method.
 From the 2026-07 hardcore review. Status: ✅ done · ⏳ planned (`TODO.md`) · 📌
 accepted-with-rationale.
 
-| #   | Finding                                                               | Rule    | Status |
-| --- | --------------------------------------------------------------------- | ------- | ------ |
-| 1   | Contract test guarded token _definitions_, not component _usage_      | 1.3/1.7 | ✅     |
-| 2   | `avatar.onColor` fixed `#1a202c` → unreadable on dark custom palettes | 6.3     | ✅     |
-| 3   | Focus-trap matched hidden elements                                    | 6.2     | ✅     |
-| 4   | No elevation/shadow tokens → per-component `rgba` shadows             | 1.4     | ✅     |
-| 5   | TS exports half `Fold`-prefixed                                       | 3.3     | ✅     |
-| 6   | Hard-coded French aria/labels in a "reusable" package                 | 5.1     | ⏳     |
-| 7   | `--fold-space/motion` scales exist but ~unused                        | 1.5     | ⏳     |
-| 8   | Focus-trap doesn't `inert` the background                             | 6.2     | ⏳     |
-| 9   | Panel close hand-rolls an `<svg>`                                     | 4.7     | ⏳     |
-| 10  | px type scale hurts user-zoom a11y                                    | 1.6     | 📌     |
-| 11  | `fold-menu` reads the shell's `--fold-shell-rail-width` var           | 5       | 📌     |
+| #   | Finding                                                                       | Rule    | Status |
+| --- | ----------------------------------------------------------------------------- | ------- | ------ |
+| 1   | Contract test guarded token _definitions_, not component _usage_              | 1.3/1.7 | ✅     |
+| 2   | `avatar.onColor` fixed `#1a202c` → unreadable on dark custom palettes         | 6.3     | ✅     |
+| 3   | Focus-trap matched hidden elements                                            | 6.2     | ✅     |
+| 4   | No elevation/shadow tokens → per-component `rgba` shadows                     | 1.4     | ✅     |
+| 5   | TS exports half `Fold`-prefixed                                               | 3.3     | ✅     |
+| 6   | Hard-coded French aria/labels in a "reusable" package                         | 5.1     | ⏳     |
+| 7   | `--fold-space/motion` scales exist but ~unused                                | 1.5     | ⏳     |
+| 8   | Focus-trap doesn't `inert` the background                                     | 6.2     | ⏳     |
+| 9   | Panel close hand-rolls an `<svg>`                                             | 4.7     | ⏳     |
+| 10  | px type scale hurts user-zoom a11y                                            | 1.6     | 📌     |
+| 11  | `fold-menu` reads the shell's `--fold-shell-rail-width` var                   | 5       | 📌     |
+| 12  | `page-layout` `[description]` slot swallowed `fold-page-section[description]` | 4.8     | ✅     |
 
 **#11 rationale (accepted).** Making the rail sizing pure-CSS (both shell
 columns `auto`, each rail component owns its width — mirrors `workspace-rail`)
