@@ -13,7 +13,7 @@ import {
 /**
  * Lint for `@sh3pherd/ui` — the design-system package, previously unlinted.
  * Enforces the project's load-bearing bans (`any`, `as` casts, naked
- * `eslint-disable`) on the component source and the dev gallery; the
+ * `eslint-disable`) on the component source and the demo gallery; the
  * type-checked string-safety rules are scoped to `src/`. TS-only, mirroring
  * the other package configs — templates (.html) are not linted here.
  *

@@ -1,10 +1,10 @@
 # fold-ng — writing the gallery
 
-Rules for `dev/` — the gallery app that documents this package. `docs/dev-rules.md`
+Rules for `demo/` — the gallery app that documents this package. `docs/dev-rules.md`
 is the contract for the **components**; this is the contract for the **pages
 that show them off**. `README.md` is the consumer's guide.
 
-Everything in `dev/` is dev-only: it never ships, it is not exported from
+Everything in `demo/` is dev-only: it never ships, it is not exported from
 `src/index.ts`, and no component may import from it. It is still held to the
 same bar as `src/` — strict TS, tokens only, no `any`, no `eslint-disable`.
 
@@ -60,8 +60,8 @@ div. Bind the projected nav to the layout so it folds with it:
 ```
 
 1.6 **Registering a page** is two edits: an entry in `GALLERY_NAV`
-(`dev/shell/gallery-nav.ts`) and its `id → () => import(...)` in `PORTED`
-(`dev/gallery.routes.ts`). Nav order is rail order; ids are route paths. An id
+(`demo/shell/gallery-nav.ts`) and its `id → () => import(...)` in `PORTED`
+(`demo/gallery.routes.ts`). Nav order is rail order; ids are route paths. An id
 with no `PORTED` entry falls back to `StubPage` — the gallery stays navigable.
 
 ---
@@ -135,7 +135,7 @@ an org node), never `foo` / `bar`. A demo is also a design review.
 4.1 **Tokens only**, same as `src/`. A raw colour in `gallery.css` is the same
 bug as one in a component.
 
-4.2 **Shared gallery classes live in `dev/gallery.css`**, page-specific ones too
+4.2 **Shared gallery classes live in `demo/gallery.css`**, page-specific ones too
 — there are no per-page stylesheets. Before adding a class, grep: `.gal-*`,
 `.ss-*`, `.np-*`, `.tok-*` and `.code-*` already cover most needs.
 
@@ -181,5 +181,5 @@ changes layout needs a dead band wider than a scrollbar (see
 `fold-tab-layout`, 32px).
 
 6.4 **Codemods across pages need a typecheck, not a build.** Regex edits over
-`dev/pages/*` have twice produced valid-looking, broken output (an import
+`demo/pages/*` have twice produced valid-looking, broken output (an import
 skipped, a badge injected inside an attribute). Run 5.1 after any sweep.

@@ -5,7 +5,7 @@
     "rootDir": ".",
     "types": ["node"]
   },
-  "files": ["dev/main.ts"],
+  "files": ["demo/main.ts"],
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "node_modules", "dist"]
 }
