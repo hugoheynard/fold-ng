@@ -154,6 +154,24 @@ value set** — keep a deliberately different, smaller axis under a different na
 (icon buttons use `tone`, not `fold-button`'s 5-value `variant`) rather than a
 same-named input whose valid values silently differ.
 
+4.10 **A styled _interactive_ element is an attribute-selector component on the
+native tag — not a custom-tag component wrapping one.** When the thing you build
+is fundamentally a `<button>`/`<a>`/`<input>` with a look, give the component an
+**attribute selector** (`selector: "button[foldButton], a[foldButton]"`) so its
+host _is_ the real control. A custom tag (`<fold-button>` wrapping an inner
+`<button>`) can never _be_ an `<a>`, so "a link that looks like a button" becomes
+impossible and you grow a second component. Reach for a plain `@Directive` only
+when you need **no** styles — a directive has no view, so no `styleUrl`; an
+attribute-selector `@Component` keeps its encapsulated SCSS (`:host` = the
+control) and a template (`<ng-content>` + affordances). This is the Angular
+Material pattern (`matButton`). Handle the tag divergence explicitly: inject
+`ElementRef`, branch on `tagName` (native `disabled`/`type` on a button;
+`aria-disabled` + `tabindex="-1"` + `pointer-events:none` on a disabled anchor),
+and prefer native `(click)` over a custom output. _Why:_ `fold-button` shipped as
+`<fold-button>` and couldn't render a nav link; converting it to
+`button[foldButton], a[foldButton]` unlocked `<a foldButton routerLink>` with no
+second component (benchmark lever #1).
+
 ---
 
 ## 5 · Portability (no app leaks)

@@ -563,18 +563,16 @@ Judged as a **market tenor** (Radix · shadcn · MUI · Spectrum · Mantine) it'
 This section closes that delta to **10**. Ordered by impact on the gap; the top
 three are ~all of the 9.5→10 distance.
 
-- [ ] **1 · Polymorphism — render as `<a>` (the archi lever).** `fold-button` is a
-      hard `<button>`, so a link styled as a button (`<a href>`/`routerLink`) is
-      impossible — the single most-used tenor capability (Radix `asChild`, MUI
-      `component=`, and **Angular Material itself** styles `<a mat-button>`).
-      **Do it the Angular-Material way:** turn `fold-button` from a component into
-      an **attribute directive `[foldButton]`** applicable to **both** `<button>`
-      and `<a>` (the surface/variant/size logic moves to the directive; the current
-      component becomes a thin `<button foldButton>` wrapper for back-compat, or the
-      ~279 `<fold-button>` sites migrate). Anchors get no `type`/`disabled` but gain
-      `href`/`routerLink`/`target`/`rel`; guard the disabled-anchor a11y
-      (`aria-disabled` + `tabindex="-1"`, no `href` activation). **Biggest single
-      lever** — unblocks every "link that looks like a button" in the app.
+- [x] **1 · Polymorphism — render as `<a>` (the archi lever). DONE.** `fold-button`
+      was a hard `<button>`; a link styled as a button was impossible. Converted to
+      an **attribute-selector component** `button[foldButton], a[foldButton]` (the
+      Angular-Material pattern — a `@Component` whose host IS the native control, so
+      it keeps its SCSS, unlike a styleless `@Directive`). Anchors gain
+      `href`/`routerLink`/`target`; disabled anchors get `aria-disabled` +
+      `tabindex="-1"` + `pointer-events:none`; buttons keep native `disabled`/`type`.
+      Custom `clicked` output dropped for native `(click)`. ~262 sites codemodded
+      (incl. inline `.ts` templates + 6 nav → `<a foldButton>`); full app AOT + tsc + lint + tests green (0 net new failures). Icon shorthand kept (the template
+      survives). **No back-compat wrapper — all consumers migrated (pre-release).**
 - [ ] **2 · `loading`/busy state.** MUI `LoadingButton`, Ant/Chakra/Mantine
       `loading`: a spinner replaces (or precedes) the label, the button goes
       `aria-busy="true"` + inert, width stays stable (no reflow). **Blocked on a

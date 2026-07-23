@@ -50,12 +50,12 @@ and the gallery nav — **layout first**.
 
 **Actions** — `src/components/actions/`
 
-| Component          | DX  | Tests | Docs | Verdict                                                   |
-| ------------------ | :-: | :---: | :--: | --------------------------------------------------------- |
-| `fold-button`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — `disabled` coerced; `type` gains `reset` |
-| `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)        |
-| `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon      |
-| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                         |
+| Component          | DX  | Tests | Docs | Verdict                                                                                  |
+| ------------------ | :-: | :---: | :--: | ---------------------------------------------------------------------------------------- |
+| `foldButton`       | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]` (link-as-button); native `(click)` |
+| `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                       |
+| `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                     |
+| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                                                        |
 
 **Content** — `src/components/content/`
 
@@ -245,14 +245,21 @@ mentioned is already at bar.
 
 ### Actions & selection
 
-**`fold-button`** 🟢🟢🟢 — **Ship-ready.** Clean API (string unions, icon
-shorthand + derived `iconSize`). Done: `booleanAttribute` on `disabled` (bare
-`<fold-button disabled>` now works, tested); `type` gains `reset`; `@example`
-tag; JSDoc states it needs a text label (icon-only → `fold-button-icon`). The
-earlier "`[class]` overwrites a caller's static class" concern was **verified
-false** — Angular merges the host `[class]` with the consumer's static class (a
-regression test now asserts it). Deferred: a `loading`/busy affordance (needs a
-spinner primitive first — a separate project).
+**`foldButton`** 🟢🟢🟢 — **Ship-ready.** Now an **attribute-selector component**
+(`button[foldButton], a[foldButton]`) — the host is a real `<button>` or `<a>`,
+so a "link that looks like a button" gets `href`/`routerLink` for free (the
+Angular-Material pattern; benchmark lever #1, done). Disabled anchors are
+handled via `aria-disabled` + `tabindex="-1"` + `pointer-events:none`; buttons
+keep native `disabled`/`type`. Consumers use native `(click)` (the custom
+`clicked` output is gone). Clean API (string unions, icon shorthand + derived
+`iconSize`); `booleanAttribute` on `disabled` (bare `disabled` works, tested);
+`type` gains `reset`; `prefers-reduced-motion` honoured; `@example` tag. The
+`[class]` host binding merges with a consumer's static class (regression test
+asserts it). Migration: ~262 call sites codemodded (`<fold-button>` →
+`<button foldButton>` / `<a foldButton>`, `(clicked)` → `(click)`), full app AOT
+
+- tsc + lint + tests green. Deferred: a `loading`/busy affordance (needs a
+  spinner primitive first — a separate project).
 
 **`fold-button-icon`** 🟢🟢🟢 — **Ship-ready.** P0-1 fixed by splitting the toggle
 into `fold-toggle-icon`; this component is now purely momentary (no `active`, no
