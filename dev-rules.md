@@ -139,6 +139,21 @@ slot whose attribute name is a plausible component input (`title`, `label`,
 `icon`, `description`, `actions`…), qualify it and cover it with a projection
 test that a body child carrying that same attribute stays put.
 
+4.9 **Momentary ≠ toggle — model them as separate controls.** A one-shot button
+(delete, play, open) is momentary: a plain `<button>`, **never** `aria-pressed`.
+A stateful on/off (mute, mask, pin) is a toggle: it **always** carries
+`aria-pressed` (`true`/`false`, not present-when-on). These are two ARIA
+contracts, so ship two components (`fold-button-icon` momentary /
+`fold-toggle-icon` toggle) rather than one that flips an `active` model on every
+click — a mode-flag on one component leaves an inert input in the other mode and
+invites the wrong `aria-pressed`. _Why:_ `fold-button-icon` used to toggle+press
+on every click, announcing one-shot buttons as pressed toggles. When two
+components are siblings (icon vs toggle), share the surface (a `.scss` partial +
+the shape/size/tone types), and only **align input names that share the same
+value set** — keep a deliberately different, smaller axis under a different name
+(icon buttons use `tone`, not `fold-button`'s 5-value `variant`) rather than a
+same-named input whose valid values silently differ.
+
 ---
 
 ## 5 · Portability (no app leaks)

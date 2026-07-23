@@ -15,7 +15,7 @@ the concrete work to reach ship-quality.
 
 Legend: 🟢 ship-ready · 🟡 minor work · 🔴 blocker.
 
-Scope audited: **30 components + the panel subsystem + 3 directives**, 80 public
+Scope audited: **31 components + the panel subsystem + 3 directives**, 80 public
 exports, **402 test blocks across 62 spec files**, **114 built-in icons**. No
 `any` / `as unknown` / `@ts-ignore` / `eslint-disable` / raw-colour violations in
 component _source_ (the token contract holds); the lone spec-side `as unknown`
@@ -50,11 +50,12 @@ and the gallery nav — **layout first**.
 
 **Actions** — `src/components/actions/`
 
-| Component          | DX  | Tests | Docs | Verdict                                          |
-| ------------------ | :-: | :---: | :--: | ------------------------------------------------ |
-| `fold-button`      | 🟡  |  🟢   |  🟡  | `booleanAttribute` on `disabled`; `@example` tag |
-| `fold-button-icon` | 🔴  |  🟡   |  🟡  | **Momentary buttons emit `aria-pressed` (bug)**  |
-| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                |
+| Component          | DX  | Tests | Docs | Verdict                                                   |
+| ------------------ | :-: | :---: | :--: | --------------------------------------------------------- |
+| `fold-button`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — `disabled` coerced; `type` gains `reset` |
+| `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)        |
+| `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon      |
+| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                         |
 
 **Content** — `src/components/content/`
 
@@ -107,10 +108,11 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page       |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo       |
 
-**Ship-ready today (18):** app-shell, page-layout, page-section, hero-section,
+**Ship-ready today (21):** app-shell, page-layout, page-section, hero-section,
 aside-layout, tab-layout, avatar-list, callout, element-title, field,
 field-list, nav-launcher, timeline, toast, surface, icon, repeat-press,
-sticky-column. Everything else has scoped, mostly mechanical work below.
+sticky-column, button, button-icon, toggle-icon. Everything else has scoped,
+mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -123,15 +125,11 @@ that advertises "portable" and "accessible by default" cannot release with them
 open.
 
 **P0-1 · `fold-button-icon` announces momentary buttons as pressed toggles.**
-`onClick` unconditionally runs `this.active.update(v => !v)`
-(`button-icon.component.ts:90`), and the host stamps `[data-active]` +
-`aria-pressed` from `active()`. So a plain "Delete"/"Edit"/"Play" button — the
-majority use, and what the gallery shows — flips to a pressed state after one
-click and announces `aria-pressed="true"` to assistive tech even though it is not
-a toggle. Fix: model toggle-vs-action explicitly (only mutate `active` / emit
-`aria-pressed` when `active` is two-way bound, or a discriminated `mode`
-input). Add a spec asserting a momentary button never gets `aria-pressed`. The
-current spec _codifies_ the bug.
+✅ **Fixed** — split by semantics (rule 4.9): `fold-button-icon` is now purely
+momentary (no `active`, no `aria-pressed`), and a new `fold-toggle-icon` carries
+the toggle contract (`[(active)]` + always-present `aria-pressed` true/false).
+The 5 app toggle sites were migrated (`toggled`), and both specs now assert their
+mode. (Was `button-icon.component.ts:90`.)
 
 **P0-2 · `fold-paginator` hard-codes French, non-overridable a11y strings.**
 `"Éléments par page"`, `"par page"`, `"… sur …"`, `"Aucun élément"`,
@@ -177,10 +175,11 @@ package.
 Grouped so each can land as one atomic commit across the affected components.
 
 **C-1 · `booleanAttribute` parity.** Boolean inputs lacking the transform their
-siblings have, so a bare attribute or `="false"` mis-coerces. `card.interactive`
-(`card.component.ts:72`), `button.disabled` — add `{ transform: booleanAttribute }`
-to both. (`page-layout.wide`/`fluid` no longer apply — both inputs were removed;
-the page fills its container, width is a content concern.)
+siblings have, so a bare attribute or `="false"` mis-coerces. ✅ Done for the
+button family (`button`/`button-icon`/`toggle-icon` `disabled`). Remaining:
+`card.interactive` (`card.component.ts:72`) — add `{ transform: booleanAttribute }`.
+(`page-layout.wide`/`fluid` no longer apply — both inputs were removed; the page
+fills its container, width is a content concern.)
 
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
 **no README row**: `fold-callout`,
@@ -198,7 +197,7 @@ row.) Add each row.
 
 **C-4 · Missing JSDoc `@selector`/`@example` tags.** The bar (rule 4.6) is
 `@selector` + one-liner + `@example`. Missing `@example` **tag** (a fenced block
-exists, the tag doesn't): `button`, `button-icon`, `status-badge`, `avatar`,
+exists, the tag doesn't): `status-badge`, `avatar`,
 `avatar-detail`, `data-table`. Missing `@selector`: `data-table`,
 `paginator`, and the layout trio
 (`page-layout`/`page-section`/`tab-layout` — verify). Mechanical.
@@ -246,14 +245,24 @@ mentioned is already at bar.
 
 ### Actions & selection
 
-**`fold-button`** 🟡🟢🟡 — API is clean (string unions, icon shorthand + derived
-`iconSize`). Actions: (1) `booleanAttribute` on `disabled` (C-1); (2) add the
-`@example` tag; (3) host binds `[class]="variant+' '+size+' '+shape"`
-(`button.component.ts:44`), which overwrites a caller's static `class` — prefer
-`[class.x]` bindings. Nice-to-have: a `loading`/busy affordance.
+**`fold-button`** 🟢🟢🟢 — **Ship-ready.** Clean API (string unions, icon
+shorthand + derived `iconSize`). Done: `booleanAttribute` on `disabled` (bare
+`<fold-button disabled>` now works, tested); `type` gains `reset`; `@example`
+tag; JSDoc states it needs a text label (icon-only → `fold-button-icon`). The
+earlier "`[class]` overwrites a caller's static class" concern was **verified
+false** — Angular merges the host `[class]` with the consumer's static class (a
+regression test now asserts it). Deferred: a `loading`/busy affordance (needs a
+spinner primitive first — a separate project).
 
-**`fold-button-icon`** 🔴🟡🟡 — See **P0-1**. Also align naming with `fold-button`
-(`buttonType` vs `type`) and add the `@example` tag.
+**`fold-button-icon`** 🟢🟢🟢 — **Ship-ready.** P0-1 fixed by splitting the toggle
+into `fold-toggle-icon`; this component is now purely momentary (no `active`, no
+`aria-pressed`). Done: `booleanAttribute` on `disabled`, `buttonType`→`type`,
+`@example` tag, spec asserts momentary (no pressed state).
+
+**`fold-toggle-icon`** 🟢🟢🟢 — **Ship-ready.** The toggle split out of
+button-icon: shares the icon-button surface (partial + shape/size/tone types),
+adds `[(active)]` + always-present `aria-pressed` (true/false) + a pressed
+state, emits `toggled`. Spec covers both aria-pressed states + disabled.
 
 **`fold-link`** 🟡🟢🟢 — The a-vs-button split by `href` is clean. Actions:
 (1) add `target`/`rel` inputs (default `rel="noopener noreferrer"` when

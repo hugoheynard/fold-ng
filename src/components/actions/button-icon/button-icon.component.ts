@@ -26,6 +26,7 @@ import type {
  * sets both `title` and `aria-label` — strongly recommended, since there is no
  * visible label.
  *
+ * @example
  * ```html
  * <fold-button-icon icon="edit" tooltip="Edit" (clicked)="edit()" />
  * <fold-button-icon icon="play" shape="round" tone="accent" size="lg" (clicked)="play()" />

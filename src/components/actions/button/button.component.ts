@@ -28,6 +28,7 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
  * applied as host classes (`:host(.primary.sm)`) so the surface stays
  * token-only. Click is surfaced through {@link clicked} with the native event.
  *
+ * @example
  * ```html
  * <fold-button (clicked)="save()">Save</fold-button>
  * <fold-button variant="ghost" size="sm" (clicked)="cancel()">Cancel</fold-button>

@@ -1,6 +1,16 @@
+import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { FoldButtonComponent } from "./button.component";
+
+@Component({
+  standalone: true,
+  imports: [FoldButtonComponent],
+  template: `<fold-button class="consumer-class" variant="ghost"
+    >Hi</fold-button
+  >`,
+})
+class HostWithClass {}
 
 function mount() {
   const fixture = TestBed.createComponent(FoldButtonComponent);
@@ -91,5 +101,15 @@ describe("FoldButtonComponent", () => {
     fixture.componentRef.setInput("type", "submit");
     fixture.detectChanges();
     expect(button.type).toBe("submit");
+  });
+
+  it("keeps a consumer's static class alongside the variant class", () => {
+    const fixture = TestBed.createComponent(HostWithClass);
+    fixture.detectChanges();
+    const host = fixture.nativeElement.querySelector(
+      "fold-button",
+    ) as HTMLElement;
+    expect(host.classList.contains("consumer-class")).toBe(true);
+    expect(host.classList.contains("ghost")).toBe(true);
   });
 });

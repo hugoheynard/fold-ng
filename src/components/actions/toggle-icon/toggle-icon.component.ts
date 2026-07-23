@@ -27,6 +27,7 @@ import type {
  * the two differ only in semantics, so their `shape` / `size` / `tone` inputs
  * and types are identical.
  *
+ * @example
  * ```html
  * <fold-toggle-icon icon="eye" tooltip="Toggle mask" [(active)]="masked" />
  * <fold-toggle-icon icon="repeat" tooltip="Loop" [(active)]="looping" />
