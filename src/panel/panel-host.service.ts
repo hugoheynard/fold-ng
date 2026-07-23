@@ -45,7 +45,7 @@ export class FoldPanelHostService {
     config: FoldPanelConfig<unknown> = {},
   ): FoldPanelRef<TResult> {
     const id = this.takeId();
-    const ref = new FoldPanelRef<TResult>(() => this.dismiss(id));
+    const ref = new FoldPanelRef<TResult>(id, () => this.dismiss(id));
     const injector = Injector.create({
       parent: this.rootInjector,
       providers: [
@@ -61,6 +61,7 @@ export class FoldPanelHostService {
       side: config.side ?? "right",
       width: signal(config.width ?? 490),
       injector,
+      ariaLabel: config.ariaLabel,
       onClose: () => ref.close(),
     };
     if (!config.stack) {

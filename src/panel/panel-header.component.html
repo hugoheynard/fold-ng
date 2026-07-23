@@ -4,7 +4,7 @@
       @if (icon(); as ic) {
         <fold-icon class="ph__icon" [name]="ic" [size]="iconSize()" />
       }
-      <h2 class="ph__title">{{ title() }}</h2>
+      <h2 class="ph__title" [attr.id]="titleId()">{{ title() }}</h2>
     </div>
     @if (subtitle()) {
       <p class="ph__subtitle">{{ subtitle() }}</p>
@@ -16,7 +16,7 @@
     <button
       type="button"
       class="ph__close"
-      aria-label="Fermer"
+      [attr.aria-label]="closeLabel()"
       (click)="onClose()"
     >
       <fold-icon name="close" size="sm" />

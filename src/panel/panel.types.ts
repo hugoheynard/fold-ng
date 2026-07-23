@@ -43,6 +43,13 @@ export interface FoldComponentPanelDescriptor extends PanelBase {
   readonly data?: unknown;
   /** Injector that provides the panel's `FoldPanelRef` (+ any config providers). */
   readonly injector: Injector;
+  /**
+   * Explicit accessible name. Optional: a panel that renders `fold-panel-header`
+   * is named automatically (the dialog's `aria-labelledby` points at the
+   * header's title). Set this only for a component panel that has no
+   * `fold-panel-header` to label it.
+   */
+  readonly ariaLabel?: string;
 }
 
 export type FoldPanelDescriptor =
@@ -70,6 +77,16 @@ export interface FoldPanelConfig<TData> {
    * one panel at a time — opening a new panel closes the current one.
    */
   readonly stack?: boolean;
+  /**
+   * Explicit accessible name for the dialog. Only needed when the panel does
+   * **not** render `fold-panel-header` (which names the dialog automatically).
+   */
+  readonly ariaLabel?: string;
+}
+
+/** The DOM `id` of a panel's title, referenced by the dialog's `aria-labelledby`. */
+export function foldPanelTitleId(panelId: number): string {
+  return `fold-panel-title-${panelId}`;
 }
 
 /** Handle returned by `present()`; the caller dismisses via `dismiss()`. */

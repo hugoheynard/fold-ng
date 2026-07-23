@@ -13,6 +13,9 @@ class TplHostComponent {
   @ViewChild("t", { static: true }) tpl!: TemplateRef<unknown>;
 }
 
+@Component({ standalone: true, template: `<p>panel body</p>` })
+class DummyPanelComponent {}
+
 describe("FoldPanelHostComponent", () => {
   let host: FoldPanelHostService;
   let tpl: TemplateRef<unknown>;
@@ -83,5 +86,49 @@ describe("FoldPanelHostComponent", () => {
   it("renders nothing when there are no panels", () => {
     const { root } = render();
     expect(root.querySelector(".panel-dock")).toBeNull();
+  });
+
+  it("labels a template panel dialog with its title", () => {
+    present("My Panel", "right");
+    const { root } = render();
+    const aside = root.querySelector(".panel")!;
+    expect(aside.getAttribute("aria-label")).toBe("My Panel");
+    expect(aside.getAttribute("aria-labelledby")).toBeNull();
+  });
+
+  it("names a component panel via aria-labelledby → its header title id", () => {
+    host.open(DummyPanelComponent);
+    const { root } = render();
+    const aside = root.querySelector(".panel")!;
+    expect(aside.getAttribute("aria-labelledby")).toMatch(
+      /^fold-panel-title-\d+$/,
+    );
+    expect(aside.getAttribute("aria-label")).toBeNull();
+  });
+
+  it("uses an explicit aria-label when the config supplies one", () => {
+    host.open(DummyPanelComponent, { ariaLabel: "Node settings" });
+    const { root } = render();
+    const aside = root.querySelector(".panel")!;
+    expect(aside.getAttribute("aria-label")).toBe("Node settings");
+    expect(aside.getAttribute("aria-labelledby")).toBeNull();
+  });
+
+  it("inerts background siblings while open, and restores them on close", () => {
+    const { fixture } = render();
+    document.body.appendChild(fixture.nativeElement);
+    const sibling = document.createElement("div");
+    document.body.appendChild(sibling);
+
+    present("A", "right");
+    fixture.detectChanges();
+    expect(sibling.hasAttribute("inert")).toBe(true);
+
+    host.dismissAll();
+    fixture.detectChanges();
+    expect(sibling.hasAttribute("inert")).toBe(false);
+
+    fixture.nativeElement.remove();
+    sibling.remove();
   });
 });

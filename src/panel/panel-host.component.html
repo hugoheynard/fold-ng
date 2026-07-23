@@ -11,8 +11,9 @@
       role="dialog"
       aria-modal="true"
       [attr.aria-label]="ariaLabel(panel)"
+      [attr.aria-labelledby]="ariaLabelledby(panel)"
       tabindex="-1"
-      [foldFocusTrap]="true"
+      [foldFocusTrap]="isTopMost(panel)"
       (click)="$event.stopPropagation()"
     >
       @if (panel.kind === "template") {

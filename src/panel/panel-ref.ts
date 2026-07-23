@@ -11,7 +11,15 @@ export class FoldPanelRef<TResult = unknown> {
   private resolveClosed!: (result: TResult | undefined) => void;
   private settled = false;
 
-  constructor(private readonly dismiss: (result: TResult | undefined) => void) {
+  /**
+   * @param id     the panel's stable id — used to wire the dialog's accessible
+   *               name (`aria-labelledby` → the header's title `id`).
+   * @param dismiss removes the panel from the host.
+   */
+  constructor(
+    readonly id: number,
+    private readonly dismiss: (result: TResult | undefined) => void,
+  ) {
     this.closed = new Promise((resolve) => {
       this.resolveClosed = resolve;
     });

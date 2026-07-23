@@ -14,6 +14,7 @@ import type { FoldIconName } from "../components/foundations/icon/builtin-icons"
       [subtitle]="subtitle"
       [variant]="variant"
       [icon]="icon"
+      [closeLabel]="closeLabel"
       (closed)="closedCount = closedCount + 1"
     >
       @if (withActions) {
@@ -30,6 +31,7 @@ class HostComponent {
   subtitle = "";
   variant: "title" | "eyebrow" = "title";
   icon: FoldIconName | undefined = undefined;
+  closeLabel = "Close";
   withActions = false;
   withDesc = false;
   closedCount = 0;
@@ -103,10 +105,27 @@ describe("FoldPanelHeaderComponent", () => {
 
   it("self-closes via the injected FoldPanelRef and emits (closed) first", () => {
     const dismiss = vi.fn();
-    const { cmp, host } = setup({}, new FoldPanelRef(dismiss));
+    const { cmp, host } = setup({}, new FoldPanelRef(7, dismiss));
     host.querySelector<HTMLButtonElement>(".ph__close")!.click();
     expect(cmp.closedCount).toBe(1);
     expect(dismiss).toHaveBeenCalledTimes(1);
+  });
+
+  it("labels its title with the panel's id so the dialog can reference it", () => {
+    const { host } = setup({}, new FoldPanelRef(7, vi.fn()));
+    expect(host.querySelector(".ph__title")?.id).toBe("fold-panel-title-7");
+  });
+
+  it("gives the title no id outside a panel (no ref to key on)", () => {
+    const { host } = setup();
+    expect(host.querySelector(".ph__title")?.getAttribute("id")).toBeNull();
+  });
+
+  it("uses an overridable English close label", () => {
+    const { host } = setup({ closeLabel: "Fermer" });
+    expect(host.querySelector(".ph__close")?.getAttribute("aria-label")).toBe(
+      "Fermer",
+    );
   });
 
   it("emits (closed) without throwing when there is no panel", () => {

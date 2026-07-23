@@ -2,6 +2,7 @@ import { Component, computed, inject, input, output } from "@angular/core";
 import { FoldIconComponent } from "../components/foundations/icon/icon.component";
 import type { FoldIconName } from "../components/foundations/icon/builtin-icons";
 import { FoldPanelRef } from "./panel-ref";
+import { foldPanelTitleId } from "./panel.types";
 
 /**
  * Standard header for an **imperative** panel component (`panels.open()`), which
@@ -64,6 +65,8 @@ export class FoldPanelHeaderComponent {
   readonly icon = input<FoldIconName | undefined>(undefined);
   /** `title` (large descriptive) or `eyebrow` (compact uppercased label). */
   readonly variant = input<"title" | "eyebrow">("title");
+  /** Accessible label for the close button. Defaults to English. */
+  readonly closeLabel = input<string>("Close");
   /**
    * Fires just before the panel is dismissed — bind it for side-effects only
    * (the header self-closes regardless; it is not a veto hook).
@@ -79,6 +82,15 @@ export class FoldPanelHeaderComponent {
    * storybook) it resolves to `null` and the header simply emits `(closed)`.
    */
   private readonly panelRef = inject(FoldPanelRef, { optional: true });
+
+  /**
+   * The title's DOM `id`, so the dialog's `aria-labelledby` can point at it —
+   * this is what gives a component panel its accessible name. `null` outside a
+   * panel (no ref to key the id on).
+   */
+  protected readonly titleId = computed<string | null>(() =>
+    this.panelRef ? foldPanelTitleId(this.panelRef.id) : null,
+  );
 
   protected onClose(): void {
     this.closed.emit();
