@@ -22,7 +22,7 @@ import { Component, input } from "@angular/core";
  *   <svg empty-icon width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
  *     <path d="M19,3H5C3.346…" />
  *   </svg>
- *   <button foldButton variant="primary" (click)="create()">+ Create</button>
+ *   <button foldButton (click)="create()">+ Create</button>
  * </fold-empty-state>
  *
  * <fold-empty-state tone="alert" title="Failed to load" />

@@ -115,6 +115,7 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
       { id: "toast", label: "toast", icon: "toast" },
       { id: "callout", label: "callout", icon: "info", badge: "new" },
       { id: "disclosure", label: "disclosure", badge: "new" },
+      { id: "state", label: "loading · empty", badge: "new" },
     ],
   },
   {

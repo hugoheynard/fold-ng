@@ -78,14 +78,14 @@ and the gallery nav — **layout first**.
 
 **Feedback** — `src/components/feedback/`
 
-| Component                          | DX  | Tests | Docs | Verdict                                        |
-| ---------------------------------- | :-: | :---: | :--: | ---------------------------------------------- |
-| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row   |
-| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                              |
-| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard |
-| `fold-empty-state`                 | 🟢  |  🟢   |  🟡  | No gallery page                                |
-| `fold-loading`                     | 🟡  |  🟢   |  🟡  | **README claims a spinner that doesn't exist** |
-| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**   |
+| Component                          | DX  | Tests | Docs | Verdict                                                              |
+| ---------------------------------- | :-: | :---: | :--: | -------------------------------------------------------------------- |
+| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row                         |
+| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                                    |
+| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard                       |
+| `fold-empty-state`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** — gallery page (shared `/state`)                      |
+| `fold-loading`                     | 🟢  |  🟢   |  🟢  | **Ship-ready** — real `fold-spinner` + `role="status"`; gallery page |
+| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**                         |
 
 **Forms** — `src/components/forms/`
 
@@ -467,12 +467,16 @@ former amber (`@selector`, stale count, `warn` in `computed()`) is fully cleared
 _One thing to eyeball post-merge:_ SSR sprite serialisation (no icon flash before
 hydration) — designed for it and unit-tested, not yet checked in a real SSR build.
 
-**`fold-empty-state`** 🟢🟢🟡 — Clean, token-pure, `:empty`-guarded slots. Action:
-add a `state` gallery page (neutral + alert) — currently undiscoverable (C-5).
+**`fold-empty-state`** 🟢🟢🟢 — **Ship-ready.** Clean, token-pure, `:empty`-guarded
+slots; now discoverable on the shared `/state` gallery page (neutral + alert), and
+its JSDoc example moved off the removed `variant` API.
 
-**`fold-loading`** 🟡🟢🟡 — Actions: (1) reconcile the README "spinner" claim
-(C-3) — build it or fix the doc; (2) reconsider the baked `"Loading..."` default
-(C-6); (3) gallery page (C-5).
+**`fold-loading`** 🟢🟢🟢 — **Ship-ready.** The README "spinner" claim is now
+true: it renders the real `fold-spinner` (sized via a `size` input) over the
+message, in a `role="status"` / `aria-live="polite"` region so the wait is
+announced; empty `message` shows the spinner alone. Gallery page added (`/state`).
+The baked `"Loading..."` default stays — a sensible zero-config default, not a
+portability leak (any consumer overrides it).
 
 **`[foldSurface]`** 🟢🟢🟢 — **Ship-ready.** Well-designed theming seam; the
 bare-attribute → `page` empty-string transform is a nice touch, and tested.

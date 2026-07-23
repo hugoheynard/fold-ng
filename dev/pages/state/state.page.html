@@ -1,0 +1,73 @@
+<fold-page-layout title="state views">
+  <gal-kind-badge titleBadge kind="component" />
+  <p description>
+    The two placeholders a section shows while it waits on data.
+    <code>fold-loading</code> spins (over the new <code>fold-spinner</code>) as
+    a <code>role="status"</code> region; <code>fold-empty-state</code> is the
+    calm landing when there's nothing — or an error — to show.
+  </p>
+
+  <fold-page-section
+    title="fold-loading"
+    description="Spinner + message, announced politely. Stretches to fill (flex: 1)."
+  >
+    <div class="demo-row">
+      <div class="gal-cell">
+        <span class="gal-tag">default</span>
+        <fold-card surface="sunken" class="stage">
+          <fold-loading />
+        </fold-card>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">custom message</span>
+        <fold-card surface="sunken" class="stage">
+          <fold-loading message="Loading contracts…" />
+        </fold-card>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">size · lg</span>
+        <fold-card surface="sunken" class="stage">
+          <fold-loading size="lg" message="Crunching numbers…" />
+        </fold-card>
+      </div>
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="fold-empty-state"
+    description="Icon + title + subtitle + optional action; tone=alert for errors."
+  >
+    <div class="demo-row">
+      <div class="gal-cell">
+        <span class="gal-tag">empty · with an action</span>
+        <fold-card surface="sunken" class="stage">
+          <fold-empty-state
+            title="No contracts yet"
+            subtitle="Draft one to start tracking signatures and addenda."
+          >
+            <fold-icon empty-icon name="add-doc" [size]="40" />
+            <button foldButton size="sm" (click)="created.set(created() + 1)">
+              + New contract
+            </button>
+          </fold-empty-state>
+        </fold-card>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">tone=alert · error state</span>
+        <fold-card surface="sunken" class="stage">
+          <fold-empty-state
+            tone="alert"
+            title="Failed to load"
+            subtitle="Something went wrong fetching this list."
+          >
+            <fold-icon empty-icon name="x-circle" [size]="40" />
+            <button foldButton emphasis="outline" intent="neutral" size="sm">
+              Retry
+            </button>
+          </fold-empty-state>
+        </fold-card>
+      </div>
+    </div>
+    <span class="gal-tag">created {{ created() }}×</span>
+  </fold-page-section>
+</fold-page-layout>

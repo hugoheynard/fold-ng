@@ -1,3 +1,6 @@
 <div class="loading">
-  <span>{{ message() }}</span>
+  <fold-spinner [size]="size()" aria-hidden="true" />
+  @if (message()) {
+    <span>{{ message() }}</span>
+  }
 </div>

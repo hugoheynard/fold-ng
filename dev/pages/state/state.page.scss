@@ -1,0 +1,22 @@
+/* ── state page — fold-loading + fold-empty-state placeholders. Scoped under
+   gal-state-page. */
+
+gal-state-page {
+  --fold-page-gap: 48px;
+  display: block;
+}
+gal-state-page .demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-lg);
+  margin-top: var(--fold-space-md);
+}
+gal-state-page .demo-row .gal-cell {
+  flex: 1 1 260px;
+}
+/* A framed stage so a placeholder that stretches (flex: 1) has room to center. */
+gal-state-page .stage {
+  display: flex;
+  min-height: 180px;
+  margin-top: var(--fold-space-sm);
+}
