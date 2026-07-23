@@ -20,21 +20,5 @@
   <body>
     <gallery-shell></gallery-shell>
     <script type="module" src="/dev/main.ts"></script>
-    <script>
-      /* DEV-preview marker. The GitHub Pages `dev` deploy lives under a `/dev/`
-         path segment (the `main` demo and the local dev server do not), so a
-         path check alone flags the unreleased build — no build-time plumbing. */
-      if (location.pathname.split("/").includes("dev")) {
-        addEventListener("DOMContentLoaded", function () {
-          var pill = document.createElement("div");
-          pill.textContent = "DEV PREVIEW · unreleased build";
-          pill.style.cssText =
-            "position:fixed;z-index:99999;bottom:12px;right:12px;padding:6px 12px;" +
-            "font:600 12px/1 system-ui,sans-serif;letter-spacing:.04em;border-radius:999px;" +
-            "background:#e0a800;color:#1a1400;box-shadow:0 2px 8px rgba(0,0,0,.4);pointer-events:none";
-          document.body.appendChild(pill);
-        });
-      }
-    </script>
   </body>
 </html>

@@ -1,20 +1,18 @@
 name: Pages
 
-# One GitHub Pages site, two channels on the same `gh-pages` branch:
-#   main → /            the public demo (linked from npm `homepage`)
-#   dev  → /dev/        an unreleased preview (shows a DEV ribbon)
-# They coexist because each deploy targets its own subdir with keep_files.
+# Builds the component gallery and publishes it to the `gh-pages` branch, which
+# GitHub Pages serves at https://hugoheynard.github.io/fold-ng/ (the demo linked
+# from npm `homepage`). The built output goes to gh-pages — the source branches
+# (main) never carry build artifacts.
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
 
 # peaceiris pushes the built gallery to the `gh-pages` branch.
 permissions:
   contents: write
 
-# Never let a main and a dev deploy race on the gh-pages branch; queue instead
-# of cancelling so a dev push can't drop a just-started main deploy.
 concurrency:
   group: pages-deploy
   cancel-in-progress: false
@@ -34,27 +32,15 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # main → root of the site; dev → the /dev/ subpath, with its own base.
-      - name: Resolve channel
-        id: chan
-        run: |
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            echo "base=/fold-ng/"     >> "$GITHUB_OUTPUT"
-            echo "dest="              >> "$GITHUB_OUTPUT"
-          else
-            echo "base=/fold-ng/dev/" >> "$GITHUB_OUTPUT"
-            echo "dest=dev"           >> "$GITHUB_OUTPUT"
-          fi
-
+      # Project pages live under /fold-ng/, so the gallery's assets need that
+      # prefix. Hash-routing means only the asset prefix has to match.
       - name: Build gallery
         run: pnpm run dev:build
         env:
-          PAGES_BASE: ${{ steps.chan.outputs.base }}
+          PAGES_BASE: /fold-ng/
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          destination_dir: ${{ steps.chan.outputs.dest }}
-          keep_files: true # don't wipe the other channel's subtree
