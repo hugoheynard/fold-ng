@@ -21,6 +21,8 @@ import {
  * Keyboard activation is intentionally out of scope: it produces `click`, not
  * `pointerdown`, so wire a separate `(click)` handler for Enter/Space.
  *
+ * @selector `[foldRepeatPress]`
+ *
  * @example
  * ```html
  * <button

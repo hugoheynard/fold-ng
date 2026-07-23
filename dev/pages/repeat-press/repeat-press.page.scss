@@ -1,0 +1,53 @@
+/* ── repeat-press page — the press-and-hold stepper demo ─────────────────── */
+
+gal-repeat-press-page .stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fold-space-xl);
+}
+
+gal-repeat-press-page .step-btn {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--fold-radius-lg);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  cursor: pointer;
+  touch-action: none; /* pointer-hold shouldn't scroll/zoom the page */
+  user-select: none;
+  transition: var(--fold-motion-fast);
+}
+gal-repeat-press-page .step-btn:hover:not(:disabled) {
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-primary-text);
+}
+gal-repeat-press-page .step-btn:active:not(:disabled) {
+  background: var(--fold-color-primary-surface);
+  border-color: var(--fold-color-primary);
+}
+gal-repeat-press-page .step-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+gal-repeat-press-page .step-value {
+  min-width: 3ch;
+  text-align: center;
+  font-size: clamp(40px, 6vw, 56px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--fold-color-text);
+}
+
+gal-repeat-press-page .knobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--fold-space-xl);
+  margin-top: var(--fold-space-lg);
+  max-width: 560px;
+}

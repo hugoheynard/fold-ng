@@ -138,6 +138,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     items: [
       { id: "themes", label: "themes", icon: "grid", badge: "new" },
       { id: "icons", label: "icons" },
+      {
+        id: "repeat-press",
+        label: "repeat-press",
+        badge: "new",
+        badgeTone: "info",
+      },
     ],
   },
 ];

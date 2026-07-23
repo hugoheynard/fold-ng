@@ -180,9 +180,12 @@ the package root.
 | `FoldPanelHeaderComponent`                               | `fold-panel-header`  | Standard panel header (title/eyebrow, self-closing).                                                                                                                                                                                                                                                                                                                                                                                               |
 
 Directives worth knowing: **`foldSurface`** (`page`·`chrome` — the seam a mixed
-theme re-colours across) and **`foldElevated`** (raise any bg-owning element into
+theme re-colours across), **`foldElevated`** (raise any bg-owning element into
 an inset, rounded, shadowed card — the per-surface "floating" mechanism, driven
-by `--fold-surface-inset`/`-radius`/`-shadow`).
+by `--fold-surface-inset`/`-radius`/`-shadow`), and **`foldRepeatPress`**
+(press-and-hold auto-repeat for a stepper button — fires once on press then on a
+tunable cadence while held, and stops the instant `foldRepeatPressDisabled`
+goes true mid-hold).
 
 ## Form-field ids
 

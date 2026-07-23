@@ -1,0 +1,80 @@
+<fold-page-layout title="repeat-press">
+  <gal-kind-badge titleBadge kind="directive" />
+  <p description>
+    Press-and-hold auto-repeat for a bare <code>&lt;button&gt;</code>. Fires
+    <code>(foldRepeatPress)</code> once immediately on press, then keeps firing
+    on a fixed cadence while held — the stepper behaviour, without a timer in
+    every component. Stops on release, leave, cancel, destroy, or the instant
+    <code>[foldRepeatPressDisabled]</code> goes true mid-hold.
+  </p>
+
+  <fold-page-section
+    title="Try it — hold a button"
+    description="Tap steps once; press and hold to auto-repeat. Tune the cadence live."
+  >
+    <fold-card class="stepper">
+      <button
+        type="button"
+        class="step-btn"
+        aria-label="Decrement"
+        foldRepeatPress
+        [foldRepeatPressDisabled]="atMin()"
+        [foldRepeatPressDelay]="delay()"
+        [foldRepeatPressPeriod]="period()"
+        (foldRepeatPress)="step(-1)"
+      >
+        <fold-icon name="minus" size="lg" />
+      </button>
+
+      <span class="step-value">{{ count() }}</span>
+
+      <button
+        type="button"
+        class="step-btn"
+        aria-label="Increment"
+        foldRepeatPress
+        [foldRepeatPressDisabled]="atMax()"
+        [foldRepeatPressDelay]="delay()"
+        [foldRepeatPressPeriod]="period()"
+        (foldRepeatPress)="step(1)"
+      >
+        <fold-icon name="plus" size="lg" />
+      </button>
+    </fold-card>
+
+    <div class="knobs">
+      <fold-slider
+        [(value)]="delay"
+        [min]="100"
+        [max]="800"
+        [step]="50"
+        label="Delay before repeat"
+        [valueText]="delay() + ' ms'"
+      />
+      <fold-slider
+        [(value)]="period"
+        [min]="20"
+        [max]="200"
+        [step]="10"
+        label="Repeat cadence"
+        [valueText]="period() + ' ms'"
+      />
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Usage"
+    description="A directive on the button that owns the action; wire the output."
+  >
+    <fold-card surface="sunken" padding="sm">
+      <pre class="code-pre"><code>{{ usageCode() }}</code></pre>
+    </fold-card>
+
+    <fold-callout variant="info" icon="info">
+      Keyboard activation is <strong>out of scope</strong> — Enter/Space produce
+      a <code>click</code>, not a <code>pointerdown</code>, so pair the
+      directive with a plain <code>(click)</code> handler for a single keyboard
+      step.
+    </fold-callout>
+  </fold-page-section>
+</fold-page-layout>

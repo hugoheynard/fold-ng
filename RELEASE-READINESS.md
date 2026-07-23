@@ -105,12 +105,12 @@ and the gallery nav — **layout first**.
 | `fold-icon`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — shared sprite, trust guard, token sizes |
 | `[foldSurface]`      | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                          |
-| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo                       |
+| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo       |
 
-**Ship-ready today (16):** app-shell, page-layout, page-section, hero-section,
+**Ship-ready today (17):** app-shell, page-layout, page-section, hero-section,
 aside-layout, tab-layout, avatar-list, callout, element-title, field,
-field-list, nav-launcher, timeline, toast, surface, icon. Everything else has
-scoped, mostly mechanical work below.
+field-list, nav-launcher, timeline, toast, surface, icon, repeat-press.
+Everything else has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -200,7 +200,7 @@ row.) Add each row.
 `@selector` + one-liner + `@example`. Missing `@example` **tag** (a fenced block
 exists, the tag doesn't): `button`, `button-icon`, `status-badge`, `avatar`,
 `avatar-detail`, `data-table`. Missing `@selector`: `data-table`,
-`paginator`, `[foldStickyColumn]`, `[foldRepeatPress]`, and the layout trio
+`paginator`, `[foldStickyColumn]`, and the layout trio
 (`page-layout`/`page-section`/`tab-layout` — verify). Mechanical.
 
 **C-5 · Gallery coverage holes.** Shipped components with **zero gallery
@@ -455,11 +455,12 @@ bare-attribute → `page` empty-string transform is a nice touch, and tested.
 (short columns pin from scroll-0), well tested. Action: add `@selector` to the
 JSDoc (C-4). Has its own gallery page.
 
-**`[foldRepeatPress]`** 🟢🟢🟡 — Best-in-class ergonomics: `booleanAttribute`,
-aliased inputs, mid-hold auto-stop via `effect` (solves "button disables under
-the finger"), `DestroyRef` cleanup, exemplary fake-timer specs incl. teardown.
-Actions: (1) add `@selector` (C-4); (2) README row + a small hold-to-increment
-demo so it's discoverable (C-2/C-5).
+**`[foldRepeatPress]`** 🟢🟢🟢 — **Ship-ready.** Best-in-class ergonomics:
+`booleanAttribute`, aliased inputs, mid-hold auto-stop via `effect` (solves
+"button disables under the finger"), `DestroyRef` cleanup, exemplary fake-timer
+specs incl. teardown. Locked in the 2026-07 pass: `@selector` added, README
+directive note, and a `/repeat-press` gallery page (a live hold-to-step stepper
+with tunable delay/cadence).
 
 ---
 
