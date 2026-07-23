@@ -1,7 +1,7 @@
 import type { Type } from "@angular/core";
 import type { Route, Routes } from "@angular/router";
 import { GALLERY_NAV_ITEMS } from "./shell/gallery-nav";
-import { StubPage } from "./pages/stub.page";
+import { StubPage } from "./pages/_shared/stub.page";
 
 /**
  * Lazy loaders for the pages that have been ported to their own routed
@@ -10,36 +10,36 @@ import { StubPage } from "./pages/stub.page";
  * time. To port a page: add its `id → () => import(...)` entry.
  */
 const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
-  home: () => import("./pages/home.page"),
-  "hero-card": () => import("./pages/hero-card.page"),
-  "sticky-column": () => import("./pages/sticky-column.page"),
-  "aside-layout": () => import("./pages/aside-layout.page"),
-  "tab-layout": () => import("./pages/tab-layout.page"),
-  "page-layout": () => import("./pages/page-layout.page"),
-  "tab-nav": () => import("./pages/tab-nav.page"),
-  "page-section": () => import("./pages/page-section.page"),
-  "hero-section": () => import("./pages/hero-section.page"),
-  card: () => import("./pages/card.page"),
-  button: () => import("./pages/button.page"),
-  "button-icon": () => import("./pages/button-icon.page"),
-  link: () => import("./pages/link.page"),
-  "element-title": () => import("./pages/element-title.page"),
-  "context-card": () => import("./pages/context-card.page"),
-  badges: () => import("./pages/badges.page"),
-  field: () => import("./pages/field.page"),
-  timeline: () => import("./pages/timeline.page"),
-  "form-layout": () => import("./pages/form-layout.page"),
-  dropzone: () => import("./pages/dropzone.page"),
-  toast: () => import("./pages/toast.page"),
-  callout: () => import("./pages/callout.page"),
-  disclosure: () => import("./pages/disclosure.page"),
-  icons: () => import("./pages/icons.page"),
-  themes: () => import("./pages/themes.page"),
-  form: () => import("./pages/form.page"),
-  avatar: () => import("./pages/avatar.page"),
-  "app-shell": () => import("./pages/app-shell.page"),
-  menu: () => import("./pages/menu.page"),
-  "nav-launcher": () => import("./pages/nav-launcher.page"),
+  home: () => import("./pages/home/home.page"),
+  "hero-card": () => import("./pages/hero-card/hero-card.page"),
+  "sticky-column": () => import("./pages/sticky-column/sticky-column.page"),
+  "aside-layout": () => import("./pages/aside-layout/aside-layout.page"),
+  "tab-layout": () => import("./pages/tab-layout/tab-layout.page"),
+  "page-layout": () => import("./pages/page-layout/page-layout.page"),
+  "tab-nav": () => import("./pages/tab-nav/tab-nav.page"),
+  "page-section": () => import("./pages/page-section/page-section.page"),
+  "hero-section": () => import("./pages/hero-section/hero-section.page"),
+  card: () => import("./pages/card/card.page"),
+  button: () => import("./pages/button/button.page"),
+  "button-icon": () => import("./pages/button-icon/button-icon.page"),
+  link: () => import("./pages/link/link.page"),
+  "element-title": () => import("./pages/element-title/element-title.page"),
+  "context-card": () => import("./pages/context-card/context-card.page"),
+  badges: () => import("./pages/badges/badges.page"),
+  field: () => import("./pages/field/field.page"),
+  timeline: () => import("./pages/timeline/timeline.page"),
+  "form-layout": () => import("./pages/form-layout/form-layout.page"),
+  dropzone: () => import("./pages/dropzone/dropzone.page"),
+  toast: () => import("./pages/toast/toast.page"),
+  callout: () => import("./pages/callout/callout.page"),
+  disclosure: () => import("./pages/disclosure/disclosure.page"),
+  icons: () => import("./pages/icons/icons.page"),
+  themes: () => import("./pages/themes/themes.page"),
+  form: () => import("./pages/form/form.page"),
+  avatar: () => import("./pages/avatar/avatar.page"),
+  "app-shell": () => import("./pages/app-shell/app-shell.page"),
+  menu: () => import("./pages/menu/menu.page"),
+  "nav-launcher": () => import("./pages/nav-launcher/nav-launcher.page"),
 };
 
 /**
@@ -58,7 +58,7 @@ export const GALLERY_ROUTES: Routes = [
   {
     path: "",
     pathMatch: "full" as const,
-    loadComponent: () => import("./pages/home.page"),
+    loadComponent: () => import("./pages/home/home.page"),
   },
   { path: "**", redirectTo: "" },
 ];
