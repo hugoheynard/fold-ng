@@ -10,8 +10,10 @@ gal-icons-page {
   display: block;
 }
 
-/* The opening pitch reads like a statement, not a notice. */
-gal-icons-page fold-callout[variant="accent"] {
+/* The section-leading pitch reads like a statement, not a notice. */
+gal-icons-page .pitch {
+  display: block;
+  margin-bottom: var(--fold-space-lg);
   font-size: var(--fold-text-md);
   line-height: 1.6;
 }

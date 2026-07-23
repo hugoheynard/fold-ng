@@ -7,17 +7,17 @@
     token. {{ totalCount }} icons ship inlined — no HTTP, no loader config.
   </p>
 
-  <fold-callout variant="accent" icon="lightning">
-    Every icon renders through a <strong>shared SVG sprite</strong> — one
-    <code>&lt;symbol&gt;</code> per icon, a lightweight <code>&lt;use&gt;</code>
-    per instance — so a 500-row table with three icons each is 1500 tiny
-    references over 3 symbols, not 1500 copies of the markup.
-  </fold-callout>
-
   <fold-page-section
     title="Why it holds up"
     description="The decisions behind the one-liner."
   >
+    <fold-callout class="pitch" variant="accent" icon="lightning">
+      Every icon renders through a <strong>shared SVG sprite</strong> — one
+      <code>&lt;symbol&gt;</code> per icon, a lightweight
+      <code>&lt;use&gt;</code> per instance — so a 500-row table with three
+      icons each is 1500 tiny references over 3 symbols, not 1500 copies of the
+      markup.
+    </fold-callout>
     <div class="feat-grid">
       @for (f of features; track f.title) {
       <fold-card class="feat">
