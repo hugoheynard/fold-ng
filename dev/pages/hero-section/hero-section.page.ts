@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldBadgeComponent,
@@ -21,62 +21,7 @@ import {
     FoldIconComponent,
   ],
   templateUrl: "./hero-section.page.html",
-  styles: `
-    .ghs-mark {
-      display: grid;
-      place-items: center;
-      width: 84px;
-      height: 84px;
-      border-radius: var(--fold-radius-lg);
-      background: var(--fold-color-primary-surface);
-      border: 1px solid var(--fold-color-primary-border);
-      color: var(--fold-color-primary-text);
-    }
-    .ghs-title {
-      margin: 0;
-      font-size: clamp(40px, 7vw, 64px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      color: var(--fold-color-text);
-    }
-    .ghs-lede {
-      margin: 0;
-      max-width: 52ch;
-      font-size: var(--fold-text-lg);
-      line-height: 1.6;
-      color: var(--fold-color-text-secondary);
-    }
-    .ghs-lede strong {
-      font-weight: 700;
-      color: var(--fold-color-text);
-    }
-    .ghs-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-    .ghs-watermark {
-      position: absolute;
-      left: 50%;
-      top: 46%;
-      transform: translate(-50%, -50%);
-      font-size: clamp(140px, 22vw, 280px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      background: linear-gradient(
-        175deg,
-        var(--fold-color-primary),
-        transparent 82%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: blur(5px);
-      opacity: 0.28;
-    }
-  `,
+  styleUrl: "./hero-section.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class HeroSectionPage {}
