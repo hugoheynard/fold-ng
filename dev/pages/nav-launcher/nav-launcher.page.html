@@ -15,9 +15,9 @@
     description="Open it — it takes over the screen, exactly as it would on a phone. Escape, the close button, or the scrim dismisses it; a tile picks a destination and closes."
   >
     <div class="nlp-live">
-      <fold-button variant="primary" icon="menu" (clicked)="open.set(true)">
+      <button foldButton variant="primary" icon="menu" (click)="open.set(true)">
         Open the launcher
-      </fold-button>
+      </button>
       <span class="gal-body">
         Current destination: <strong>{{ active() }}</strong>
       </span>

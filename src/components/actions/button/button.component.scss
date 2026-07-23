@@ -1,22 +1,11 @@
 // ═══════════════════════════════════════════════════════
-//  fold-button — variant + size selected via host classes.
-//  Token-only: hover tints come from `color-mix(… var …)`.
+//  foldButton — applied to a native <button>/<a>, so the host
+//  IS the control. variant + size + shape select via host
+//  classes. Token-only: hover tints come from `color-mix(… var …)`.
 // ═══════════════════════════════════════════════════════
 
-// ─── Base reset ────────────────────────────────────────
+// ─── Base reset (the host is the button) ───────────────
 :host {
-  display: inline-flex;
-}
-
-// Block — stretch to the container's full width.
-:host(.block) {
-  display: flex;
-}
-:host(.block) button {
-  width: 100%;
-}
-
-button {
   all: unset;
   box-sizing: border-box;
   cursor: pointer;
@@ -33,37 +22,45 @@ button {
     border-color var(--fold-motion-fast),
     color var(--fold-motion-fast),
     transform var(--fold-motion-fast);
+}
 
-  &:disabled {
-    opacity: 0.4;
-    pointer-events: none;
-    cursor: not-allowed;
-  }
+// Block — stretch to the container's full width.
+:host(.block) {
+  display: flex;
+  width: 100%;
+}
 
-  &:active:not(:disabled) {
-    transform: scale(0.97);
-  }
+// Disabled — native `:disabled` (button) or `.is-disabled` (anchor).
+:host(:disabled),
+:host(.is-disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
-  &:focus-visible {
-    outline: 2px solid var(--fold-color-primary);
-    outline-offset: 2px;
-  }
+:host(:active):not(:disabled):not(.is-disabled) {
+  transform: scale(0.97);
+}
+
+:host(:focus-visible) {
+  outline: 2px solid var(--fold-color-primary);
+  outline-offset: 2px;
 }
 
 // ─── Sizes ─────────────────────────────────────────────
-:host(.sm) button {
+:host(.sm) {
   font-size: var(--fold-text-sm);
   padding: 0.3rem 0.7rem;
   border-radius: var(--fold-radius-xs);
 }
 
-:host(.md) button {
+:host(.md) {
   font-size: var(--fold-text-md);
   padding: 0.45rem 1rem;
   border-radius: var(--fold-radius-sm);
 }
 
-:host(.lg) button {
+:host(.lg) {
   font-size: var(--fold-text-md);
   padding: 0.6rem 1.3rem;
   border-radius: var(--fold-radius-sm);
@@ -74,7 +71,7 @@ button {
 // rounded ends eat into the label, so give it roomier horizontal padding —
 // `em`-based so it scales with the button's font-size. Vertical padding stays
 // from the size rule.
-:host(.pill) button {
+:host(.pill) {
   border-radius: var(--fold-radius-pill);
   padding-inline: 1.25em;
 }
@@ -82,12 +79,12 @@ button {
 // ─── Variants ──────────────────────────────────────────
 
 // Primary — accent teal tint
-:host(.primary) button {
+:host(.primary) {
   color: var(--fold-color-primary-text);
   background: var(--fold-color-primary-surface);
   border: 1px solid var(--fold-color-primary-border);
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.is-disabled) {
     background: color-mix(in srgb, var(--fold-color-primary) 24%, transparent);
     border-color: color-mix(
       in srgb,
@@ -98,12 +95,12 @@ button {
 }
 
 // Recommended — amber / warning
-:host(.recommended) button {
+:host(.recommended) {
   color: var(--fold-color-warning-text);
   background: var(--fold-color-warning-surface);
   border: 1px solid var(--fold-color-warning-border);
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.is-disabled) {
     background: color-mix(in srgb, var(--fold-color-warning) 22%, transparent);
     border-color: color-mix(
       in srgb,
@@ -114,24 +111,24 @@ button {
 }
 
 // Critical — red / alert
-:host(.critical) button {
+:host(.critical) {
   color: var(--fold-color-alert-text);
   background: var(--fold-color-alert-surface);
   border: 1px solid var(--fold-color-alert-border);
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.is-disabled) {
     background: color-mix(in srgb, var(--fold-color-alert) 22%, transparent);
     border-color: color-mix(in srgb, var(--fold-color-alert) 55%, transparent);
   }
 }
 
 // Ghost — neutral, minimal
-:host(.ghost) button {
+:host(.ghost) {
   color: var(--fold-color-text-secondary);
   background: transparent;
   border: 1px solid var(--fold-color-border);
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.is-disabled) {
     color: var(--fold-color-text);
     background: var(--fold-color-surface-hover);
     border-color: var(--fold-color-border);
@@ -139,12 +136,12 @@ button {
 }
 
 // Solid — filled accent background
-:host(.solid) button {
+:host(.solid) {
   color: var(--fold-color-on-primary);
   background: var(--fold-color-primary);
   border: 1px solid transparent;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.is-disabled) {
     background: var(--fold-color-primary-strong);
   }
 }
@@ -153,10 +150,10 @@ button {
 // Honour the OS setting like the rest of the library: drop the tweened
 // surface transitions and the press-scale so nothing animates.
 @media (prefers-reduced-motion: reduce) {
-  button {
+  :host {
     transition: none;
   }
-  button:active:not(:disabled) {
+  :host(:active):not(:disabled):not(.is-disabled) {
     transform: none;
   }
 }

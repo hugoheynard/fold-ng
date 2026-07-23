@@ -23,14 +23,15 @@
             }}</code
           >
         </div>
-        <fold-button
+        <button
+          foldButton
           size="sm"
           variant="ghost"
           [icon]="open() === t.name ? 'chevron-up' : 'chevron-down'"
-          (clicked)="toggle(t.name)"
+          (click)="toggle(t.name)"
         >
           {{ open() === t.name ? "Hide" : "Palette" }}
-        </fold-button>
+        </button>
       </div>
 
       <div class="th-body">

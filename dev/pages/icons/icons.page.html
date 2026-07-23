@@ -101,14 +101,15 @@
           Registering an icon updates the sprite reactively — no reload. Click
           to register <code>demo-sparkle</code>, then it renders on the right.
         </p>
-        <fold-button
+        <button
+          foldButton
           variant="primary"
           icon="plus"
           [disabled]="demoRegistered()"
-          (clicked)="registerDemoIcon()"
+          (click)="registerDemoIcon()"
         >
           {{ demoRegistered() ? "Registered ✓" : "Register demo-sparkle" }}
-        </fold-button>
+        </button>
       </div>
       <div class="live-stage">
         @if (demoRegistered()) {

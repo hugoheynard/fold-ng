@@ -1,9 +1,7 @@
-<button [type]="type()" [disabled]="disabled()" (click)="clicked.emit($event)">
-  @if (icon(); as ic) {
-    <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
-  }
-  <ng-content />
-  @if (iconTrailing(); as ic) {
-    <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
-  }
-</button>
+@if (icon(); as ic) {
+  <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
+}
+<ng-content />
+@if (iconTrailing(); as ic) {
+  <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
+}

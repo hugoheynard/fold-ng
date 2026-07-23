@@ -21,16 +21,17 @@
       <fold-element-title cardHeader variant="title" icon="eye" title="Preview">
         <!-- mobile only: the code panel collapses; this reveals it as a glass
              overlay over the preview -->
-        <fold-button
+        <button
+          foldButton
           titleAction
           class="pg-code-toggle"
           size="sm"
           variant="ghost"
           [icon]="codeOpen() ? 'close' : 'code'"
-          (clicked)="toggleCode()"
+          (click)="toggleCode()"
         >
           Code
-        </fold-button>
+        </button>
       </fold-element-title>
       <div cardHeader class="pg-head-actions">
         <ng-content select="[preview-actions]" />
@@ -42,22 +43,24 @@
             <div class="pg-code-overlay-top">
               <span class="pg-lang">{{ lang() }}</span>
               <div class="pg-code-overlay-actions">
-                <fold-button
+                <button
+                  foldButton
                   size="sm"
                   variant="ghost"
                   [icon]="copied() ? 'check-circle' : 'copy'"
-                  (clicked)="copy()"
+                  (click)="copy()"
                 >
                   {{ copied() ? "Copied" : "Copy" }}
-                </fold-button>
-                <fold-button
+                </button>
+                <button
+                  foldButton
                   size="sm"
                   variant="ghost"
                   icon="close"
-                  (clicked)="toggleCode()"
+                  (click)="toggleCode()"
                 >
                   Close
-                </fold-button>
+                </button>
               </div>
             </div>
             <pre
@@ -78,14 +81,15 @@
       <fold-element-title cardHeader variant="title" icon="code" title="Code">
         <div titleAction class="pg-code-actions">
           <span class="pg-lang">{{ lang() }}</span>
-          <fold-button
+          <button
+            foldButton
             size="sm"
             variant="ghost"
             [icon]="copied() ? 'check-circle' : 'copy'"
-            (clicked)="copy()"
+            (click)="copy()"
           >
             {{ copied() ? "Copied" : "Copy" }}
-          </fold-button>
+          </button>
         </div>
       </fold-element-title>
       <pre class="pg-body pg-pre"><code>{{ code() }}</code></pre>

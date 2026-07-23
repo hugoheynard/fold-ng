@@ -78,7 +78,7 @@ const DEFAULT_ICON: Record<FoldCalloutVariant, FoldIconName> = {
  * <fold-card padding="none">
  *   <fold-callout variant="alert" appearance="flat" announce>
  *     Quota exceeded.
- *     <fold-button actions size="sm" variant="ghost">Upgrade</fold-button>
+ *     <button foldButton actions size="sm" variant="ghost">Upgrade</button>
  *   </fold-callout>
  * </fold-card>
  * ```

@@ -1,115 +1,188 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
 import { describe, it, expect } from "vitest";
 import { FoldButtonComponent } from "./button.component";
+import type { FoldButtonVariant, FoldButtonSize } from "./button.types";
 
 @Component({
   standalone: true,
   imports: [FoldButtonComponent],
-  template: `<fold-button class="consumer-class" variant="ghost"
-    >Hi</fold-button
-  >`,
+  template: `
+    <button
+      foldButton
+      [variant]="variant()"
+      [size]="size()"
+      [shape]="shape()"
+      [block]="block()"
+      [disabled]="disabled()"
+      [type]="type()"
+      [icon]="icon()"
+      [iconTrailing]="iconTrailing()"
+    >
+      Hi
+    </button>
+  `,
 })
-class HostWithClass {}
-
-function mount() {
-  const fixture = TestBed.createComponent(FoldButtonComponent);
-  const host = fixture.nativeElement as HTMLElement;
-  fixture.detectChanges();
-  const button = host.querySelector("button") as HTMLButtonElement;
-  return { fixture, host, button };
+class ButtonHost {
+  readonly variant = signal<FoldButtonVariant>("primary");
+  readonly size = signal<FoldButtonSize>("md");
+  readonly shape = signal<"rounded" | "pill">("rounded");
+  readonly block = signal(false);
+  readonly disabled = signal<boolean | "">(false);
+  readonly type = signal<"button" | "submit" | "reset">("button");
+  readonly icon = signal<string | undefined>(undefined);
+  readonly iconTrailing = signal<string | undefined>(undefined);
 }
 
-describe("FoldButtonComponent", () => {
-  it("renders a native button, type=button by default", () => {
-    const { button } = mount();
-    expect(button).toBeTruthy();
-    expect(button.type).toBe("button");
+function mountButton() {
+  const fixture = TestBed.createComponent(ButtonHost);
+  fixture.detectChanges();
+  const el = fixture.nativeElement.querySelector(
+    "button[foldButton]",
+  ) as HTMLButtonElement;
+  const cmp = fixture.debugElement.query(By.directive(FoldButtonComponent))
+    .componentInstance as FoldButtonComponent;
+  return { fixture, host: fixture.componentInstance, el, cmp };
+}
+
+describe("foldButton", () => {
+  it("keeps the host as a native <button>, type=button by default", () => {
+    const { el } = mountButton();
+    expect(el.tagName).toBe("BUTTON");
+    expect(el.getAttribute("type")).toBe("button");
   });
 
-  it("applies the variant + size as host classes", () => {
-    const { fixture, host } = mount();
-    expect(host.classList.contains("primary")).toBe(true);
-    expect(host.classList.contains("md")).toBe(true);
+  it("applies variant + size + shape as host classes", () => {
+    const { fixture, host, el } = mountButton();
+    expect(el.classList.contains("fold-button")).toBe(true);
+    expect(el.classList.contains("primary")).toBe(true);
+    expect(el.classList.contains("md")).toBe(true);
+    expect(el.classList.contains("rounded")).toBe(true);
 
-    fixture.componentRef.setInput("variant", "ghost");
-    fixture.componentRef.setInput("size", "sm");
+    host.variant.set("ghost");
+    host.size.set("sm");
+    host.shape.set("pill");
     fixture.detectChanges();
-    expect(host.classList.contains("ghost")).toBe(true);
-    expect(host.classList.contains("sm")).toBe(true);
-    expect(host.classList.contains("primary")).toBe(false);
-  });
-
-  it("defaults to the rounded shape and switches to pill on demand", () => {
-    const { fixture, host } = mount();
-    expect(host.classList.contains("rounded")).toBe(true);
-    expect(host.classList.contains("pill")).toBe(false);
-
-    fixture.componentRef.setInput("shape", "pill");
-    fixture.detectChanges();
-    expect(host.classList.contains("pill")).toBe(true);
-    expect(host.classList.contains("rounded")).toBe(false);
+    expect(el.classList.contains("ghost")).toBe(true);
+    expect(el.classList.contains("sm")).toBe(true);
+    expect(el.classList.contains("pill")).toBe(true);
+    expect(el.classList.contains("primary")).toBe(false);
+    expect(el.classList.contains("rounded")).toBe(false);
   });
 
   it("toggles the block (full-width) class", () => {
-    const { fixture, host } = mount();
-    expect(host.classList.contains("block")).toBe(false);
-    fixture.componentRef.setInput("block", true);
+    const { fixture, host, el } = mountButton();
+    expect(el.classList.contains("block")).toBe(false);
+    host.block.set(true);
     fixture.detectChanges();
-    expect(host.classList.contains("block")).toBe(true);
+    expect(el.classList.contains("block")).toBe(true);
   });
 
-  it("renders a leading/trailing icon shorthand sized from the button", () => {
-    const { fixture, button } = mount();
-    expect(button.querySelector("fold-icon")).toBeNull();
+  it("renders a leading/trailing icon sized from the button", () => {
+    const { fixture, host, el, cmp } = mountButton();
+    expect(el.querySelector("fold-icon")).toBeNull();
 
-    fixture.componentRef.setInput("icon", "check");
-    fixture.componentRef.setInput("iconTrailing", "chevron-right");
-    fixture.componentRef.setInput("size", "lg");
+    host.icon.set("check");
+    host.iconTrailing.set("chevron-right");
+    host.size.set("lg");
     fixture.detectChanges();
-    const icons = button.querySelectorAll("fold-icon");
-    expect(icons.length).toBe(2);
-    // lg → 18px, derived (not hand-passed) so it stays consistent
-    expect(fixture.componentInstance.iconSize()).toBe(18);
+    expect(el.querySelectorAll("fold-icon").length).toBe(2);
+    // lg → 18px, derived (not hand-passed) so it stays consistent.
+    expect(cmp.iconSize()).toBe(18);
   });
 
-  it("emits clicked on press but not while disabled", () => {
-    const { fixture, button } = mount();
+  it("reflects disabled onto the native button and swallows the click", () => {
+    const { fixture, host, el } = mountButton();
     let clicks = 0;
-    fixture.componentInstance.clicked.subscribe(() => (clicks += 1));
+    el.addEventListener("click", () => (clicks += 1));
 
-    button.click();
+    el.click();
     expect(clicks).toBe(1);
 
-    fixture.componentRef.setInput("disabled", true);
+    host.disabled.set(true);
     fixture.detectChanges();
-    expect(button.disabled).toBe(true);
-    button.click();
+    expect(el.disabled).toBe(true);
+    el.click(); // native: a disabled button dispatches nothing
     expect(clicks).toBe(1);
   });
 
   it("disables via the bare attribute form (booleanAttribute)", () => {
-    const { fixture, button } = mount();
-    // A bare `disabled` attribute arrives as "" — booleanAttribute coerces it.
-    fixture.componentRef.setInput("disabled", "");
+    const { fixture, host, el } = mountButton();
+    host.disabled.set("");
     fixture.detectChanges();
-    expect(button.disabled).toBe(true);
+    expect(el.disabled).toBe(true);
   });
 
   it("forwards type=submit to the native button", () => {
-    const { fixture, button } = mount();
-    fixture.componentRef.setInput("type", "submit");
+    const { fixture, host, el } = mountButton();
+    host.type.set("submit");
     fixture.detectChanges();
-    expect(button.type).toBe("submit");
+    expect(el.getAttribute("type")).toBe("submit");
+  });
+});
+
+// ── Anchor host — the "link that looks like a button" case ──
+@Component({
+  standalone: true,
+  imports: [FoldButtonComponent],
+  template: `<a foldButton variant="ghost" href="/next" [disabled]="disabled()"
+    >Go</a
+  >`,
+})
+class AnchorHost {
+  readonly disabled = signal(false);
+}
+
+describe("foldButton on an <a>", () => {
+  function mountAnchor() {
+    const fixture = TestBed.createComponent(AnchorHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement.querySelector(
+      "a[foldButton]",
+    ) as HTMLAnchorElement;
+    return { fixture, host: fixture.componentInstance, el };
+  }
+
+  it("styles a real anchor (keeps href, no type/disabled attribute)", () => {
+    const { el } = mountAnchor();
+    expect(el.tagName).toBe("A");
+    expect(el.getAttribute("href")).toBe("/next");
+    expect(el.hasAttribute("type")).toBe(false);
+    expect(el.classList.contains("ghost")).toBe(true);
   });
 
+  it("expresses disabled through ARIA, not the missing native attribute", () => {
+    const { fixture, host, el } = mountAnchor();
+    expect(el.getAttribute("aria-disabled")).toBeNull();
+
+    host.disabled.set(true);
+    fixture.detectChanges();
+    expect(el.getAttribute("aria-disabled")).toBe("true");
+    expect(el.getAttribute("tabindex")).toBe("-1");
+    expect(el.classList.contains("is-disabled")).toBe(true);
+    expect(el.hasAttribute("disabled")).toBe(false);
+  });
+});
+
+// ── Consumer classes coexist with the variant class ──
+@Component({
+  standalone: true,
+  imports: [FoldButtonComponent],
+  template: `<button foldButton class="consumer-class" variant="ghost">
+    Hi
+  </button>`,
+})
+class HostWithClass {}
+
+describe("foldButton class merging", () => {
   it("keeps a consumer's static class alongside the variant class", () => {
     const fixture = TestBed.createComponent(HostWithClass);
     fixture.detectChanges();
-    const host = fixture.nativeElement.querySelector(
-      "fold-button",
-    ) as HTMLElement;
-    expect(host.classList.contains("consumer-class")).toBe(true);
-    expect(host.classList.contains("ghost")).toBe(true);
+    const el = fixture.nativeElement.querySelector(
+      "button[foldButton]",
+    ) as HTMLButtonElement;
+    expect(el.classList.contains("consumer-class")).toBe(true);
+    expect(el.classList.contains("ghost")).toBe(true);
   });
 });

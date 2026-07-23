@@ -8,7 +8,7 @@ import {
   type FoldButtonVariant,
 } from "../../../src/index";
 
-/** `/button` — the `fold-button` gallery page. */
+/** `/button` — the `[foldButton]` gallery page. */
 @Component({
   selector: "gal-button-page",
   standalone: true,
