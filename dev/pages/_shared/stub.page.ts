@@ -15,21 +15,7 @@ import {
   selector: "gal-stub-page",
   standalone: true,
   imports: [FoldPageLayoutComponent, FoldCardComponent],
-  template: `<fold-page-layout
-    fluid
-    [title]="title()"
-    [icon]="icon()"
-    description="Cette démo est en cours de migration vers sa propre page routée."
-  >
-    <fold-card
-      surface="sunken"
-      style="--fold-card-padding: 28px; text-align: center"
-    >
-      <p style="margin: 0; color: var(--fold-color-text-muted)">
-        Contenu à migrer depuis l'ancienne galerie.
-      </p>
-    </fold-card>
-  </fold-page-layout>`,
+  templateUrl: "./stub.page.html",
 })
 export class StubPage {
   readonly title = input<string>();

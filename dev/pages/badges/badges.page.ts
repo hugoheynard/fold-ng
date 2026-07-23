@@ -18,24 +18,7 @@ import {
     FoldStatusBadgeComponent,
     FoldIconComponent,
   ],
-  template: `<fold-page-layout title="badge · status · icon">
-    <gal-kind-badge titleBadge kind="component" />
-    <div class="gal-row">
-      @for (v of badgeVariants; track v) {
-        <fold-badge [content]="v" [variant]="v" />
-      }
-    </div>
-    <div class="gal-row">
-      <fold-status-badge status="active" label="Actif" />
-      <fold-status-badge status="draft" label="Brouillon" />
-      <fold-status-badge status="expired" label="Expiré" />
-    </div>
-    <div class="gal-row">
-      @for (n of iconNames; track n) {
-        <fold-icon [name]="n" />
-      }
-    </div>
-  </fold-page-layout>`,
+  templateUrl: "./badges.page.html",
 })
 export default class BadgesPage {
   protected readonly badgeVariants = [

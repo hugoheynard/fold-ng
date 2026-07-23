@@ -1,0 +1,39 @@
+<fold-page-layout title="hero-section">
+  <gal-kind-badge titleBadge kind="component" />
+
+  <!-- The canonical splash — a washed, centred band with a backdrop watermark. -->
+  <fold-hero-section>
+    <span heroBackdrop class="ghs-watermark">1.0</span>
+    <div class="ghs-mark">
+      <fold-icon name="fold" [size]="48" title="Fold" />
+    </div>
+    <fold-badge content="component · layout" variant="accent" radius="pill" />
+    <h1 class="ghs-title">Hero section</h1>
+    <p class="ghs-lede">
+      A full-bleed intro band — it breaks the page gutter, carries the page
+      <strong>title</strong>, and closes with a hairline.
+    </p>
+    <div class="ghs-cta">
+      <fold-button variant="primary" size="lg">Primary action</fold-button>
+      <fold-button variant="ghost" size="lg">Secondary</fold-button>
+    </div>
+  </fold-hero-section>
+
+  <div class="gal-cell">
+    <span class="gal-tag">align="start"</span>
+    <fold-hero-section align="start">
+      <h1 class="ghs-title">Left-aligned</h1>
+      <p class="ghs-lede">The column packs to the start instead of centring.</p>
+    </fold-hero-section>
+  </div>
+
+  <div class="gal-cell">
+    <span class="gal-tag">[wash]="false" — plain surface band</span>
+    <fold-hero-section [wash]="false">
+      <h1 class="ghs-title">No wash</h1>
+      <p class="ghs-lede">
+        The brand tint is off; just the surface + hairline.
+      </p>
+    </fold-hero-section>
+  </div>
+</fold-page-layout>

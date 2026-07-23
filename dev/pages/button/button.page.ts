@@ -18,65 +18,7 @@ import {
     FoldButtonComponent,
     FoldIconComponent,
   ],
-  template: `<fold-page-layout title="button">
-    <gal-kind-badge titleBadge kind="component" />
-    <div class="gal-stack">
-      <div class="gal-cell">
-        <span class="gal-tag">variants (md)</span>
-        <div class="gal-row">
-          @for (v of buttonVariants; track v) {
-            <fold-button
-              [variant]="v"
-              (clicked)="buttonClicks.set(buttonClicks() + 1)"
-              >{{ v }}</fold-button
-            >
-          }
-        </div>
-      </div>
-      <div class="gal-cell">
-        <span class="gal-tag">sizes (primary)</span>
-        <div class="gal-row" style="align-items: center">
-          @for (s of buttonSizes; track s) {
-            <fold-button [size]="s">size {{ s }}</fold-button>
-          }
-        </div>
-      </div>
-      <div class="gal-cell">
-        <span class="gal-tag">shapes (rounded default · pill)</span>
-        <div class="gal-row" style="align-items: center">
-          <fold-button size="sm">rounded</fold-button>
-          <fold-button size="sm" shape="pill">pill</fold-button>
-          <fold-button variant="primary" size="sm" shape="pill">
-            <fold-icon name="plus" [size]="13" />
-            Proposer un avenant
-          </fold-button>
-        </div>
-      </div>
-      <div class="gal-cell">
-        <span class="gal-tag">block (full-width)</span>
-        <div class="gal-narrow">
-          <fold-button variant="critical" block>
-            <fold-icon name="bin" [size]="14" />
-            Résilier le contrat
-          </fold-button>
-        </div>
-      </div>
-      <div class="gal-cell">
-        <span class="gal-tag"
-          >icon shorthand (sized from the button) · disabled</span
-        >
-        <div class="gal-row" style="align-items: center">
-          <fold-button variant="solid" icon="check">Confirm</fold-button>
-          <fold-button variant="ghost" size="sm" icon="edit">Edit</fold-button>
-          <fold-button variant="primary" iconTrailing="chevron-right"
-            >Next</fold-button
-          >
-          <fold-button [disabled]="true">Disabled</fold-button>
-          <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
-        </div>
-      </div>
-    </div>
-  </fold-page-layout>`,
+  templateUrl: "./button.page.html",
 })
 export default class ButtonPage {
   protected readonly buttonVariants: FoldButtonVariant[] = [

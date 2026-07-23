@@ -7,18 +7,6 @@ import { FoldLinkComponent, FoldPageLayoutComponent } from "../../../src/index";
   selector: "gal-link-page",
   standalone: true,
   imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldLinkComponent],
-  template: `<fold-page-layout title="link">
-    <gal-kind-badge titleBadge kind="component" />
-    <div class="gal-row">
-      <fold-link icon="company" trailingIcon="chevron-right"
-        >accent + icons</fold-link
-      >
-      <fold-link tone="muted">muted</fold-link>
-      <fold-link href="https://sh3pherd.dev" tone="muted"
-        >anchor (href)</fold-link
-      >
-      <fold-link [disabled]="true">disabled</fold-link>
-    </div>
-  </fold-page-layout>`,
+  templateUrl: "./link.page.html",
 })
 export default class LinkPage {}
