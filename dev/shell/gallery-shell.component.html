@@ -73,7 +73,11 @@
   </fold-menu>
 
   <!-- ── header ────────────────────────────────────────────────── -->
-  <div header class="gal-header">
+  <div
+    header
+    class="gal-header"
+    [foldElevated]="cfg().elevated.includes('header')"
+  >
     <!-- Mobile-only: toggles the primary rail's drawer. Hidden ≥769px. -->
     <button
       type="button"

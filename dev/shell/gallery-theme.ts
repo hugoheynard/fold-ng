@@ -2,9 +2,9 @@
 export type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
 
 /** A shell region the gallery can raise into a floating card (via `foldElevated`).
- *  Rails only here — a design choice; the header could float too (the cell pads,
- *  so a fixed-height row fits), but a floated header just reads tight. */
-export type ShellRegion = "railPrimary" | "railSecondary";
+ *  The header cell pads when its content is elevated, so a fixed-height row still
+ *  fits a floating header card. */
+export type ShellRegion = "railPrimary" | "railSecondary" | "header";
 
 /** Every theme, in switcher order. `umbra` is the base (`:root`, no attribute). */
 export const GALLERY_THEMES: readonly GalleryTheme[] = [
@@ -62,8 +62,8 @@ export const GALLERY_THEME_CONFIG: Record<GalleryTheme, GalleryThemeConfig> = {
   },
   bubbly: {
     dataTheme: "bubbly",
-    // Rails float; the header stays flat (a design call, not a constraint).
-    elevated: ["railPrimary", "railSecondary"],
+    // Bubbly lifts all its chrome into cards — both rails and the header float.
+    elevated: ["railPrimary", "railSecondary", "header"],
     mobileNav: "drawer",
     usesLauncher: false,
     tileVariant: "surface",

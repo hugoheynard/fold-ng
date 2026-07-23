@@ -154,6 +154,12 @@ fold-app-shell {
   background: var(--fold-color-bg-header);
   border-bottom: 1px solid var(--fold-color-border);
 }
+/* When the header floats (bubbly, via foldElevated) it's a rounded, shadowed
+   card — the flush bottom border no longer belongs. Radius + shadow come from
+   the token layer's [data-elevated] rule. */
+.gal-header[data-elevated] {
+  border-bottom: 0;
+}
 
 /* Mobile drawer toggle — hidden on desktop, shown when the rails collapse. */
 .gal-hamburger {
