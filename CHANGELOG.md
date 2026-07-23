@@ -10,9 +10,10 @@ _Nothing yet._
 
 ## [0.1.0] - 2026-07-23
 
-First public release line — **beta (`0.x`)**: usable and fully tested, but the
-component API may still change before `1.0.0`. Consumed as standalone Angular 22
-components plus a design-token stylesheet.
+First public release line — **production-quality, pre-1.0 (`0.x`)**: fully
+tested and dogfooded in a real application, but the component API may still be
+refined before `1.0.0`. Consumed as standalone Angular 22 components plus a
+design-token stylesheet.
 
 > **1.0.0 is held** until every component in
 > [`docs/RELEASE-READINESS.md`](./docs/RELEASE-READINESS.md) is 🟢🟢🟢. Until

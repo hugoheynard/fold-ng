@@ -5,8 +5,9 @@
 > plus WCAG-minded components, styled against CSS variables (no NgModule, no
 > zone.js, no runtime CSS-in-JS).
 
-Status: beta (0.x) — usable and fully tested, but the API is not frozen until
-1.0.0; pin the version and treat 0.x minor bumps as potentially breaking.
+Status: production-quality, pre-1.0 (0.x) — fully tested and dogfooded in a real
+application; it stays 0.x only because the API is not frozen until 1.0.0 (not
+because it is unstable). Pin the version; 0.x minor bumps may still refine the API.
 
 fold-ng is consumed as standalone Angular components imported from the package
 root (`import { FoldButtonComponent } from "fold-ng"`) plus a token stylesheet

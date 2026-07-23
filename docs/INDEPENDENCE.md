@@ -15,11 +15,14 @@
 
 ## 1 · Publier la première release — geste sortant (Hugo)
 
-> **« beta » = deux choses distinctes.** La **maturité** (pré-1.0, API mouvante)
-> se signale par le badge README + le numéro `0.x` — c'est ce que voit un humain.
-> Le **canal de pré-release** npm (`0.y.z-beta.N` sur le dist-tag `beta`) est un
-> mécanisme de test jetable pour la **prochaine** version, **pas** l'étiquette de
-> tes releases publiques. Le suffixe `-beta.N` ne va **jamais** sur `latest`.
+> **Maturité ≠ canal npm.** La **maturité** se signale par le badge README
+> (`pre-1.0`) + le numéro `0.x` — c'est ce que voit un humain. Volontairement
+> **pas** « beta » : le code est production-quality (testé, dogfoodé), il reste
+> `0.x` seulement parce que l'API n'est pas figée, pas parce qu'il serait
+> fragile. Le **canal de pré-release** npm (`0.y.z-beta.N` sur le dist-tag
+> `beta`) est un autre sujet : un mécanisme de test jetable pour la **prochaine**
+> version, **pas** l'étiquette de tes releases publiques. Le suffixe `-beta.N`
+> ne va **jamais** sur `latest`.
 
 **Contrainte de départ** : `0.0.0` (coquille « Coming soon ») squatte déjà
 `latest`, et c'est **ça** que npm indexe. La 1ʳᵉ vraie release doit donc aller
@@ -44,7 +47,7 @@ npm deprecate fold-ng@0.0.0 "placeholder to reserve the name — use latest"
 - [ ] **Semver propre — pas de train `0.0.x`.** Minor bumps `0.1.0` → `0.2.0` sur
       `latest` ; chaque version publiée est immuable.
 - [ ] **`latest` → `1.0.0` seulement quand `RELEASE-READINESS.md` est tout-vert.**
-      Avant ça, `latest` = dernier `0.x` (maturité beta assumée par le badge).
+      Avant ça, `latest` = dernier `0.x` (maturité pré-1.0 assumée par le badge).
 - [ ] **`--provenance`** : ne marche **que depuis un CI supporté** (GitHub Actions + OIDC),
       pas en local → arrive avec le workflow release (§3).
 
