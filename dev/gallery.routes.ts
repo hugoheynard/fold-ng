@@ -11,7 +11,7 @@ import { StubPage } from "./pages/stub.page";
  */
 const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   home: () => import("./pages/home.page"),
-  hero: () => import("./pages/hero.page"),
+  "hero-card": () => import("./pages/hero-card.page"),
   "sticky-column": () => import("./pages/sticky-column.page"),
   "aside-layout": () => import("./pages/aside-layout.page"),
   "tab-layout": () => import("./pages/tab-layout.page"),

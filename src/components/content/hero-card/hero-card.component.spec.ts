@@ -1,19 +1,19 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldHeroComponent } from "./hero.component";
+import { FoldHeroCardComponent } from "./hero-card.component";
 
 @Component({
   standalone: true,
-  imports: [FoldHeroComponent],
-  template: `<fold-hero
+  imports: [FoldHeroCardComponent],
+  template: `<fold-hero-card
     [surface]="surface()"
     [accent]="accent()"
     [padding]="padding()"
     [accentBar]="accentBar()"
   >
     <span class="body">Content</span>
-  </fold-hero>`,
+  </fold-hero-card>`,
 })
 class HostComponent {
   readonly surface = signal<"card" | "sunken" | "primary">("card");
@@ -25,11 +25,13 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const hero = fixture.nativeElement.querySelector("fold-hero") as HTMLElement;
+  const hero = fixture.nativeElement.querySelector(
+    "fold-hero-card",
+  ) as HTMLElement;
   return { fixture, hero };
 }
 
-describe("FoldHeroComponent", () => {
+describe("FoldHeroCardComponent", () => {
   it("projects its content", () => {
     expect(render().hero.querySelector(".body")?.textContent).toBe("Content");
   });

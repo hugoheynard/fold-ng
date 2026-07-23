@@ -40,7 +40,6 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badgeTone: "info",
       },
       { id: "page-section", label: "page-section" },
-      { id: "hero", label: "hero" },
       {
         id: "sticky-column",
         label: "sticky-column",
@@ -89,6 +88,7 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     color: "#f59e0b",
     items: [
       { id: "card", label: "card" },
+      { id: "hero-card", label: "hero-card" },
       { id: "context-card", label: "context-card" },
       { id: "element-title", label: "element-title" },
       {

@@ -53,7 +53,7 @@ export { FoldMenuSeparatorComponent } from "./components/navigation/menu/menu-se
 export { FoldMenuSectionComponent } from "./components/navigation/menu/menu-section.component";
 export { FoldNavLauncherComponent } from "./components/navigation/nav-launcher/nav-launcher.component";
 export { FoldNavTileComponent } from "./components/navigation/nav-launcher/nav-tile.component";
-export { FoldHeroComponent } from "./components/layout/hero/hero.component";
+export { FoldHeroCardComponent } from "./components/content/hero-card/hero-card.component";
 export { FoldDataTableComponent } from "./components/content/data-table/data-table.component";
 export { FoldDataTableCellDirective } from "./components/content/data-table/data-table-cell.directive";
 export {

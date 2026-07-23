@@ -1,9 +1,10 @@
 import { Component, booleanAttribute, input } from "@angular/core";
 
 /**
- * `<fold-hero>` — a prominent header card. Same base as {@link FoldCardComponent}
- * (surface + border + radius + padding); lay the content out inside however you
- * like and project it via `<ng-content>`.
+ * `<fold-hero-card>` — a prominent header **card** (bordered surface). Same base
+ * as {@link FoldCardComponent} (surface + border + radius + padding); lay the
+ * content out inside however you like and project it via `<ng-content>`. For a
+ * full-bleed, borderless page splash use `<fold-hero-section>` instead.
  *
  * Two orthogonal axes decide the look — a **base surface** and an optional
  * decorative **accent** painted on top of it (so any base can carry any accent):
@@ -21,14 +22,14 @@ import { Component, booleanAttribute, input } from "@angular/core";
  * **`accentBar`** — orthogonal: a primary accent bar down the left edge.
  *
  * ```html
- * <fold-hero surface="sunken" accent="subtle" accentBar>…</fold-hero>
- * <fold-hero accent="gradient">…</fold-hero>
+ * <fold-hero-card surface="sunken" accent="subtle" accentBar>…</fold-hero-card>
+ * <fold-hero-card accent="gradient">…</fold-hero-card>
  * ```
  *
- * @selector `fold-hero`
+ * @selector `fold-hero-card`
  */
 @Component({
-  selector: "fold-hero",
+  selector: "fold-hero-card",
   standalone: true,
   host: {
     "[class.s-sunken]": "surface() === 'sunken'",
@@ -39,10 +40,10 @@ import { Component, booleanAttribute, input } from "@angular/core";
     "[class.p-sm]": "padding() === 'sm'",
     "[class.p-md]": "padding() === 'md'",
   },
-  templateUrl: "./hero.component.html",
-  styleUrl: "./hero.component.scss",
+  templateUrl: "./hero-card.component.html",
+  styleUrl: "./hero-card.component.scss",
 })
-export class FoldHeroComponent {
+export class FoldHeroCardComponent {
   /** Base fill — `card` (default) · `sunken` (deep tint) · `primary` (solid fill). */
   readonly surface = input<"card" | "sunken" | "primary">("card");
   /** Decorative overlay — `none` (default) · `subtle` (diagonal + glow) · `gradient` (primary wash + glow). */

@@ -38,7 +38,6 @@ and the gallery nav — **layout first**.
 | `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card |
 | `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)    |
 | `fold-tab-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)     |
-| `fold-hero`         | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                |
 
 **Navigation** — `src/components/navigation/`
 
@@ -61,6 +60,7 @@ and the gallery nav — **layout first**.
 | Component                        | DX  | Tests | Docs | Verdict                                          |
 | -------------------------------- | :-: | :---: | :--: | ------------------------------------------------ |
 | `fold-card`                      | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `interactive`              |
+| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip          |
 | `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                     |
 | `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
 | `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
@@ -277,7 +277,7 @@ The gallery page is the best in the set.
 Action: add an `iconTone` pass-through spec (the one uncovered input); note the
 intentional `primary`-vs-`neutral` default divergence from element-title in JSDoc.
 
-**`fold-hero`** 🟢🟡🟢 — Ship-ready. Optional: assert the `primary` surface flips
+**`fold-hero-card`** 🟢🟡🟢 — Ship-ready. Optional: assert the `primary` surface flips
 text to `on-primary` (the one behavioural, non-class effect); test `padding="md"`.
 
 **`fold-callout`** 🟢🟢🟢 — **The reference component** (exported union types,
