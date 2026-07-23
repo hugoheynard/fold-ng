@@ -1915,34 +1915,9 @@ fold-app-shell > .content > *:not(router-outlet) {
   color: var(--fold-color-primary-text);
 }
 
-/* ── hero: a full-width band down to the two CTAs ─────────────── */
-/* A full-bleed hero band (the page-section around it carries `bleed`), so it
-   spans the layout edge-to-edge — flat, no border/radius, no longer a card. */
-.home-hero {
-  position: relative;
-  overflow: clip; /* contain the oversized version watermark */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 18px;
-  padding: 56px 24px 52px;
-  border-bottom: 1px solid var(--fold-color-border);
-  /* A wash of the brand tint over the raised surface so the band reads as the
-     hero, not just the top of the scroll. */
-  background:
-    radial-gradient(
-      120% 140% at 50% 0%,
-      var(--fold-color-primary-surface),
-      transparent 60%
-    ),
-    var(--fold-color-surface-card);
-}
-/* Every hero child rides above the watermark. */
-.home-hero > * {
-  position: relative;
-  z-index: 1;
-}
+/* ── hero: content styling for the fold-hero-section band. The band chrome
+   (bleed, wash, hairline, centred column) lives in fold-hero-section; only the
+   home-specific pieces — watermark, mark, title, lede, CTAs — stay here. ── */
 
 /* The big version, behind everything: a huge number filled with the brand
    gradient and blurred, so it reads as a soft coloured glow the shape of the
