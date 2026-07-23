@@ -5,6 +5,7 @@
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/fold-ng)](https://bundlephobia.com/package/fold-ng)
 [![types included](https://img.shields.io/npm/types/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
 [![license](https://img.shields.io/npm/l/fold-ng.svg)](./LICENSE)
+[![status: beta](https://img.shields.io/badge/status-beta-e0a800)](./CHANGELOG.md)
 
 **fold-ng** is an accessible, **dark-first Angular 22 UI component library and
 design system** — signals-first, standalone, zoneless, and SSR-ready. It ships a
@@ -12,6 +13,11 @@ two-tier **design-token** model (themeable to the bone) plus WCAG-minded
 components: buttons, forms, overlays/dialogs, navigation, data tables, toasts and
 more. No `NgModule`, no `zone.js`, no runtime CSS-in-JS — just standalone
 components styled against CSS variables.
+
+> **Status: beta (`0.x`).** Usable today — every component is tested and the
+> package builds AOT green — but the API is not frozen until `1.0.0`. **Pin your
+> version** (`fold-ng@0.1.0`) and treat `0.x` minor bumps as potentially
+> breaking. See [`CHANGELOG.md`](./CHANGELOG.md) for the road to 1.0.
 
 ## Install
 

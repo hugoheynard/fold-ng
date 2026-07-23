@@ -5,6 +5,9 @@
 > plus WCAG-minded components, styled against CSS variables (no NgModule, no
 > zone.js, no runtime CSS-in-JS).
 
+Status: beta (0.x) — usable and fully tested, but the API is not frozen until
+1.0.0; pin the version and treat 0.x minor bumps as potentially breaking.
+
 fold-ng is consumed as standalone Angular components imported from the package
 root (`import { FoldButtonComponent } from "fold-ng"`) plus a token stylesheet
 (`@import "fold-ng/tokens.css"`). Dark ("umbra") is the default theme; light

@@ -10,12 +10,14 @@ _Nothing yet._
 
 ## [0.1.0] - 2026-07-23
 
-First public release line. The library is consumed as standalone Angular 22
+First public release line — **beta (`0.x`)**: usable and fully tested, but the
+component API may still change before `1.0.0`. Consumed as standalone Angular 22
 components plus a design-token stylesheet.
 
 > **1.0.0 is held** until every component in
 > [`docs/RELEASE-READINESS.md`](./docs/RELEASE-READINESS.md) is 🟢🟢🟢. Until
-> then `latest` tracks the newest `0.x`; pre-release cuts ship on the `beta`
+> then `latest` tracks the newest `0.x` (pin your version — treat `0.x` minor
+> bumps as potentially breaking); throwaway pre-release cuts ship on the `beta`
 > dist-tag.
 
 ### Added
