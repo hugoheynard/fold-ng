@@ -165,3 +165,25 @@
     transform: none;
   }
 }
+
+// ─── Forced colors (Windows high-contrast) ─────────────
+// `all: unset` + `color-mix` can flatten to nothing here, and `solid`'s
+// transparent border stays transparent (colours aren't forced on `transparent`).
+// Pin a system-colour border so every button keeps a visible shape, keep the
+// focus ring visible, and mark disabled with `GrayText` (opacity is ignored).
+@media (forced-colors: active) {
+  :host {
+    border: 1px solid ButtonText;
+  }
+  :host(.solid) {
+    border-color: ButtonText;
+  }
+  :host(:focus-visible) {
+    outline-color: CanvasText;
+  }
+  :host(:disabled),
+  :host(.is-disabled) {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}

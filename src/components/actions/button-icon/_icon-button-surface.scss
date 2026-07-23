@@ -107,6 +107,23 @@ button {
   cursor: progress;
 }
 
+// ─── Forced colors (Windows high-contrast) ─────────────
+// Ghost/critical tones have no border and a transparent fill, so in this mode an
+// icon button would be a bare glyph. Give it a system-colour border for a clear
+// hit-area, keep the focus ring, and mark disabled with GrayText.
+@media (forced-colors: active) {
+  button {
+    border: 1px solid ButtonText;
+  }
+  button:focus-visible {
+    outline-color: CanvasText;
+  }
+  button:disabled {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}
+
 // ─── Reduced motion ────────────────────────────────────
 // Honour the OS setting like the rest of the library: drop the tweened
 // surface transitions and the press-scale so nothing animates.
