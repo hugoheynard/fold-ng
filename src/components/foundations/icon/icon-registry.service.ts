@@ -2,10 +2,12 @@ import {
   InjectionToken,
   type Provider,
   Service,
+  type WritableSignal,
   inject,
   signal,
 } from "@angular/core";
 import { FOLD_BUILTIN_ICONS } from "./builtin-icons";
+import { assertIconSet, assertSvgIcon } from "./icon-safety";
 
 /** A `name → SVG markup` map — the shape both built-in and custom icons take. */
 export type FoldIconSet = Readonly<Record<string, string>>;
@@ -24,6 +26,11 @@ export const ICON_OVERRIDES = new InjectionToken<FoldIconSet>(
  * // app.config.ts
  * providers: [provideFoldIcons({ "my-logo": "<svg …>…</svg>" })]
  * ```
+ *
+ * **Trust contract:** icon markup is rendered unsanitised (see `fold-icon`), so
+ * every value must be a static, authored `<svg>` string — never derived from
+ * user input. The registry asserts this at seed time and throws on obviously
+ * unsafe markup, but it is a backstop, not a sanitiser.
  */
 export function provideFoldIcons(icons: FoldIconSet): Provider {
   return { provide: ICON_OVERRIDES, useValue: icons };
@@ -34,21 +41,30 @@ export function provideFoldIcons(icons: FoldIconSet): Provider {
  * package's {@link FOLD_BUILTIN_ICONS}; a consumer adds its own via
  * {@link provideFoldIcons} (bootstrap) or {@link register}/{@link registerMany}
  * (runtime). `fold-icon` resolves every `name` through here.
+ *
+ * Consumer-supplied markup passes the {@link assertSvgIcon} trust guard on the
+ * way in (seed, `register`, `registerMany`); the built-in catalogue is authored
+ * in-package and trusted as-is.
  */
 @Service()
 export class FoldIconRegistry {
-  private readonly _icons = signal<FoldIconSet>({
-    ...FOLD_BUILTIN_ICONS,
-    ...(inject(ICON_OVERRIDES, { optional: true }) ?? {}),
-  });
+  private readonly _icons: WritableSignal<FoldIconSet>;
+
+  constructor() {
+    const overrides = inject(ICON_OVERRIDES, { optional: true }) ?? {};
+    assertIconSet(overrides);
+    this._icons = signal<FoldIconSet>({ ...FOLD_BUILTIN_ICONS, ...overrides });
+  }
 
   /** Register (or override) a single icon at runtime. */
   register(name: string, svg: string): void {
+    assertSvgIcon(name, svg);
     this._icons.update((icons) => ({ ...icons, [name]: svg }));
   }
 
   /** Register (or override) several icons at once. */
   registerMany(icons: FoldIconSet): void {
+    assertIconSet(icons);
     this._icons.update((current) => ({ ...current, ...icons }));
   }
 

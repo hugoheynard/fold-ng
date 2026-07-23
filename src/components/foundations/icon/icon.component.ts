@@ -20,10 +20,12 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
  * `fold-icon` — the single surface for all SVG icons.
  *
  * Icons resolve through the {@link FoldIconRegistry} (built-in set + any the
- * consumer registered), keyed by a typed {@link FoldIconName}. The raw SVG is
- * sanitised once and rendered via `[innerHTML]`; colour + size come from CSS
- * (`currentColor` + a `--icon-size` custom property), so the SVG inherits
- * `color` from the host.
+ * consumer registered), keyed by a typed {@link FoldIconName}. The SVG is
+ * rendered via `[innerHTML]` with Angular's sanitiser bypassed, so authored
+ * markup survives intact — which is why the registry only accepts static,
+ * trusted SVG (never user input; see {@link FoldIconRegistry}'s trust contract).
+ * Colour + size come from CSS (`currentColor` + a `--icon-size` custom
+ * property), so the SVG inherits `color` from the host.
  *
  * @example
  * ```html

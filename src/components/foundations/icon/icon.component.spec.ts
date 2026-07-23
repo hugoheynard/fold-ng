@@ -1,7 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
 import { FoldIconComponent } from "./icon.component";
-import { FoldIconRegistry } from "./icon-registry.service";
+import { FoldIconRegistry, provideFoldIcons } from "./icon-registry.service";
 
 function mount(name: string, extra: Record<string, unknown> = {}) {
   const fixture = TestBed.createComponent(FoldIconComponent);
@@ -60,5 +60,27 @@ describe("FoldIconRegistry (consumer extensibility)", () => {
     });
     expect(reg.resolve("brand-a")).toContain("id='a'");
     expect(reg.resolve("search")).toContain("id='s'");
+  });
+
+  it("provideFoldIcons merges consumer icons at bootstrap (over built-ins)", () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideFoldIcons({
+          "my-logo": "<svg id='logo'></svg>",
+          search: "<svg id='override'></svg>",
+        }),
+      ],
+    });
+    const reg = TestBed.inject(FoldIconRegistry);
+    expect(reg.resolve("my-logo")).toContain("id='logo'");
+    expect(reg.resolve("search")).toContain("id='override'"); // built-in overridden
+  });
+
+  it("rejects unsafe markup through the register paths (trust guard)", () => {
+    const reg = TestBed.inject(FoldIconRegistry);
+    expect(() =>
+      reg.register("xss", "<svg><script>alert(1)</script></svg>"),
+    ).toThrow();
+    expect(() => reg.registerMany({ bad: "<div>nope</div>" })).toThrow();
   });
 });
