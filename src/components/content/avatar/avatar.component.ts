@@ -41,12 +41,7 @@ function readableInk(fill: string): string {
 export type FoldAvatarVariant = "solid" | "ghost";
 /** Status-ring colour — reuses the `fold-badge` status vocabulary. */
 export type FoldAvatarRing =
-  | "none"
-  | "accent"
-  | "info"
-  | "warning"
-  | "alert"
-  | "success";
+  "none" | "accent" | "info" | "warning" | "alert" | "success";
 /** Status-ring line style — `dotted` reads as scheduled / tentative. */
 export type FoldAvatarRingStyle = "solid" | "dotted";
 

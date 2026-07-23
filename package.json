@@ -27,14 +27,13 @@
   ],
   "author": "Hugo Heynard",
   "license": "MIT",
-  "homepage": "https://github.com/hugoheynard/fold#readme",
+  "homepage": "https://github.com/hugoheynard/fold-ng#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hugoheynard/fold.git",
-    "directory": "packages/ui"
+    "url": "git+https://github.com/hugoheynard/fold-ng.git"
   },
   "bugs": {
-    "url": "https://github.com/hugoheynard/fold/issues"
+    "url": "https://github.com/hugoheynard/fold-ng/issues"
   },
   "type": "module",
   "private": false,
@@ -59,6 +58,7 @@
     }
   },
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "dev": "vite --port 5173 --strictPort --host",
     "dev:watch": "concurrently -n tsc,lint,vite -c blue,magenta,green \"pnpm run dev:watch:tsc\" \"pnpm run dev:watch:lint\" \"pnpm run dev\"",
     "dev:watch:tsc": "tsc --noEmit --watch --preserveWatchOutput -p tsconfig.app.json",
@@ -68,6 +68,7 @@
     "test:watch": "vitest",
     "docs:api": "typedoc",
     "lint": "eslint src dev",
+    "lint:templates": "echo '⏭  strictTemplates gate skipped — activates on the TS6 bump (INDEPENDENCE.md §3.5; needs @angular/compiler-cli + TS 6.0.x). Swap to: tsx scripts/check-templates.ts'",
     "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo"
   },
   "peerDependencies": {
@@ -82,19 +83,27 @@
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.6.2",
     "@analogjs/vitest-angular": "^2.6.2",
+    "@angular/build": "^22.0.7",
     "@angular/common": "^22.0.7",
     "@angular/compiler": "^22.0.7",
+    "@angular/compiler-cli": "^22.0.7",
     "@angular/core": "^22.0.7",
     "@angular/forms": "^22.0.7",
     "@angular/platform-browser": "^22.0.7",
     "@angular/router": "^22.0.7",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@eslint/js": "^9.28.0",
+    "@types/node": "^22.9.0",
+    "concurrently": "^9.1.2",
     "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.4.1",
     "globals": "^16.0.0",
     "jsdom": "^26.0.0",
+    "lint-staged": "^16.1.2",
+    "onchange": "^7.1.0",
     "prettier": "^3.5.3",
+    "tsx": "^4.19.3",
     "typedoc": "^0.28.20",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.34.0",

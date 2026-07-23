@@ -11,12 +11,7 @@ import { Component, input } from "@angular/core";
  * - `success` — green, positive / complete
  */
 export type FoldBadgeVariant =
-  | "neutral"
-  | "accent"
-  | "info"
-  | "warning"
-  | "alert"
-  | "success";
+  "neutral" | "accent" | "info" | "warning" | "alert" | "success";
 
 /**
  * Badge / tag for labels, statuses, and categories.

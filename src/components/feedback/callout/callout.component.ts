@@ -4,12 +4,7 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /** Severity of a {@link FoldCalloutComponent} — colour + default icon. */
 export type FoldCalloutVariant =
-  | "neutral"
-  | "accent"
-  | "info"
-  | "success"
-  | "warning"
-  | "alert";
+  "neutral" | "accent" | "info" | "success" | "warning" | "alert";
 
 /** How the callout meets its container. */
 export type FoldCalloutAppearance = "inset" | "flat";

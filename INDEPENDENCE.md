@@ -35,6 +35,20 @@ seul le **sens de dépendance** change.
 
 Tout ce qui suit **ne résout pas** une fois `packages/ui/` sorti — à inliner ou remplacer.
 
+> **✅ EXTRACTION EFFECTUÉE — 2026-07-23.** `packages/ui` sorti dans un dépôt
+> autonome (`git subtree split` → 482 commits d'historique, rewritten à la
+> racine ; repo `github.com/hugoheynard/fold-ng`, branche `dev`). Gates **verts
+> sur TS 5.9.3** : `eslint src dev` 0, `tsc --noEmit -p tsconfig.app.json` 0,
+> `vitest` **472/472**. **DevDeps hoistées récupérées** (absentes du
+> `package.json` de la lib, fournies par le root en monorepo) : `@types/node`,
+> `eslint-config-prettier`, `@angular/compiler-cli`, `@angular/build`,
+> `concurrently`, `onchange`, `tsx`, `lint-staged`. Hooks **activés**
+> (`prepare` → `core.hooksPath .githooks`) ; `lint:templates` = placeholder
+> inerte jusqu'à TS6. **Mur TS6 confirmé** : `vite build` (gallery AOT) et
+> `ng-packagr` traversent `NgtscProgram` qui refuse TS < 6.0 — seuls gates
+> restants, débloqués par le bump TS6 (étape suivante, §4). `vitest` passe car
+> le transform de test analog est JIT (pas de `NgtscProgram`).
+
 - [x] **Chaîne `tsconfig` par `extends` relatifs. ✅ FAIT (in-monorepo).**
       `tsconfig.json` n'`extends` plus `../../` — tous les flags de
       `tsconfig.base.flags.json` + `tsconfig.angular.json` sont **inlinés** (avec
@@ -58,15 +72,15 @@ Tout ce qui suit **ne résout pas** une fois `packages/ui/` sorti — à inliner
       monorepo** (git utilise le `.githooks` racine ; le pre-commit racine résout
       le `.lintstagedrc` racine d'abord). **Activation à l'extraction** :
       `git config core.hooksPath .githooks` via un `prepare`. (§3.4)
-- [ ] **`packageManager` / lockfile.** Le monorepo pin `pnpm@10.12.1`. Le repo lib
-      garde pnpm, son propre `pnpm-lock.yaml` (formaté prettier, cf. règle lockfile).
+- [x] **`packageManager` / lockfile. ✅ FAIT.** `pnpm-lock.yaml` propre généré
+      dans le repo isolé (formaté prettier, cf. règle lockfile).
 - [ ] **Consommateur = l'app.** Aujourd'hui `import … from 'fold-ng'` résout la
       **source** (`exports` → `./src/index.ts`) via le workspace. Post-extraction,
       l'app doit consommer le **publié** (§8).
-- [ ] **Aucune dépendance inverse.** Vérifier que `packages/ui/src` n'importe
-      **rien** du monorepo hors ses propres fichiers + peers Angular :
-      `grep -rn "from \"\\.\\./\\.\\./\\.\\." packages/ui/src` doit être vide
-      (aujourd'hui : OK, le package est autonome en code).
+- [x] **Aucune dépendance inverse. ✅ VÉRIFIÉ.** `src/` n'importe **rien** du
+      monorepo : les `../../../a11y|dom|directives` résolvent vers `src/a11y`,
+      `src/dom`, `src/directives` (sous-dossiers **du package**), pas vers le
+      monorepo. `tsc`/`vitest` verts dans le repo isolé le prouvent.
 
 ---
 

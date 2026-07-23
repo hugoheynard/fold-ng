@@ -53,8 +53,7 @@ export interface FoldComponentPanelDescriptor extends PanelBase {
 }
 
 export type FoldPanelDescriptor =
-  | FoldTemplatePanelDescriptor
-  | FoldComponentPanelDescriptor;
+  FoldTemplatePanelDescriptor | FoldComponentPanelDescriptor;
 
 /**
  * A component opened imperatively. Data-carrying panels declare a typed `data`
