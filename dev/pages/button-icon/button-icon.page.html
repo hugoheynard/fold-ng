@@ -1,5 +1,12 @@
 <fold-page-layout title="button-icon">
   <gal-kind-badge titleBadge kind="component" />
+  <p description>
+    Two icon-only siblings sharing one surface (shape · size · tone).
+    <code>fold-button-icon</code> is <strong>momentary</strong> — a one-shot
+    action, never a pressed state. <code>fold-toggle-icon</code> is the
+    <strong>toggle</strong> — a binary on/off with <code>[(active)]</code> and
+    <code>aria-pressed</code>. Pick by semantics, not looks.
+  </p>
   <div class="gal-stack">
     <div class="gal-cell">
       <span class="gal-tag">tones (md square)</span>
@@ -37,15 +44,31 @@
       </div>
     </div>
     <div class="gal-cell">
-      <span class="gal-tag">toggle ([(active)]) · disabled</span>
+      <span class="gal-tag">momentary · disabled (fold-button-icon)</span>
       <div class="gal-row" style="align-items: center">
-        <fold-button-icon
+        <fold-button-icon icon="bin" tone="critical" tooltip="Delete" />
+        <fold-button-icon icon="edit" [disabled]="true" tooltip="Disabled" />
+        <span class="gal-tag">no pressed state — one-shot actions</span>
+      </div>
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag"
+        >toggle · [(active)] + aria-pressed (fold-toggle-icon)</span
+      >
+      <div class="gal-row" style="align-items: center">
+        <fold-toggle-icon
           icon="eye"
           tooltip="Toggle mask"
           [(active)]="biMasked"
         />
         <span class="gal-tag">masked: {{ biMasked() }}</span>
-        <fold-button-icon icon="edit" [disabled]="true" tooltip="Disabled" />
+        <fold-toggle-icon
+          icon="repeat"
+          shape="round"
+          tone="accent"
+          tooltip="Loop"
+          [(active)]="biMasked"
+        />
       </div>
     </div>
   </div>

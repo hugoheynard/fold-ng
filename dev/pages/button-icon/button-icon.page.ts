@@ -3,9 +3,11 @@ import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldButtonIconComponent,
   FoldPageLayoutComponent,
+  FoldToggleIconComponent,
 } from "../../../src/index";
 
-/** `/button-icon` — the `fold-button-icon` gallery page. */
+/** `/button-icon` — the `fold-button-icon` (momentary) + `fold-toggle-icon`
+ *  (toggle) gallery page. */
 @Component({
   selector: "gal-button-icon-page",
   standalone: true,
@@ -13,6 +15,7 @@ import {
     KindBadgeComponent,
     FoldPageLayoutComponent,
     FoldButtonIconComponent,
+    FoldToggleIconComponent,
   ],
   templateUrl: "./button-icon.page.html",
 })

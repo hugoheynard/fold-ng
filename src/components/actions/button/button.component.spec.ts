@@ -78,6 +78,14 @@ describe("FoldButtonComponent", () => {
     expect(clicks).toBe(1);
   });
 
+  it("disables via the bare attribute form (booleanAttribute)", () => {
+    const { fixture, button } = mount();
+    // A bare `disabled` attribute arrives as "" — booleanAttribute coerces it.
+    fixture.componentRef.setInput("disabled", "");
+    fixture.detectChanges();
+    expect(button.disabled).toBe(true);
+  });
+
   it("forwards type=submit to the native button", () => {
     const { fixture, button } = mount();
     fixture.componentRef.setInput("type", "submit");

@@ -35,6 +35,10 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
  * <fold-button [disabled]="!form.valid" type="submit">Submit</fold-button>
  * ```
  *
+ * A `fold-button` expects a **text label** (projected) for its accessible name.
+ * For an icon-only affordance use `fold-button-icon` (which takes a `tooltip`);
+ * the leading/trailing `icon` inputs here are decorations beside a label.
+ *
  * @selector `fold-button`
  */
 @Component({
@@ -81,10 +85,10 @@ export class FoldButtonComponent {
   readonly iconSize = computed<FoldIconSize>(() => ICON_SIZE[this.size()]);
 
   /** Native `type` attribute of the inner `<button>`. */
-  readonly type = input<"button" | "submit">("button");
+  readonly type = input<"button" | "submit" | "reset">("button");
 
   /** Disable the button — dims it and blocks pointer events. */
-  readonly disabled = input(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** Emitted on click (passes the native `MouseEvent`). */
   readonly clicked = output<MouseEvent>();

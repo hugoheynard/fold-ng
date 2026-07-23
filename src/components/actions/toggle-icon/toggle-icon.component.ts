@@ -3,6 +3,7 @@ import {
   booleanAttribute,
   computed,
   input,
+  model,
   output,
 } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
@@ -12,52 +13,55 @@ import type {
   FoldButtonIconShape,
   FoldButtonIconSize,
   FoldButtonIconTone,
-} from "./button-icon.types";
+} from "../button-icon/button-icon.types";
 
 /**
- * `<fold-button-icon>` — the icon-only **momentary** button: a one-shot action
- * whose label is the icon (toolbars, transport, inline row actions, carets, …).
- * It never claims a pressed state — no `aria-pressed` — so assistive tech reads
- * it as a plain button. For a binary on/off control (mute, mask, pin), use
- * `fold-toggle-icon`. For a button with text, use `fold-button`.
+ * `<fold-toggle-icon>` — the icon-only **toggle** button: a binary on/off
+ * control whose label is the icon (mute, mask, pin, loop, show/hide). It renders
+ * a pressed surface while on and **always** carries `aria-pressed` (`true`/
+ * `false`), so assistive tech announces it as a toggle. Two-way bind the state
+ * with `[(active)]`. For a one-shot action (delete, play-once, open), use
+ * `fold-button-icon` — a momentary button that never claims a pressed state.
  *
- * `shape` / `size` / `tone` surface as `data-*` attributes so the token-only
- * SCSS targets them (the surface is shared with `fold-toggle-icon`). A `tooltip`
- * sets both `title` and `aria-label` — strongly recommended, since there is no
- * visible label.
+ * Shares the icon-button surface (shape / size / tone) with `fold-button-icon`;
+ * the two differ only in semantics, so their `shape` / `size` / `tone` inputs
+ * and types are identical.
  *
  * ```html
- * <fold-button-icon icon="edit" tooltip="Edit" (clicked)="edit()" />
- * <fold-button-icon icon="play" shape="round" tone="accent" size="lg" (clicked)="play()" />
- * <fold-button-icon icon="bin" tone="critical" tooltip="Delete" (clicked)="delete()" />
+ * <fold-toggle-icon icon="eye" tooltip="Toggle mask" [(active)]="masked" />
+ * <fold-toggle-icon icon="repeat" tooltip="Loop" [(active)]="looping" />
  * ```
  *
- * @selector `fold-button-icon`
+ * @selector `fold-toggle-icon`
  */
 @Component({
-  selector: "fold-button-icon",
+  selector: "fold-toggle-icon",
   standalone: true,
   imports: [FoldIconComponent],
-  templateUrl: "./button-icon.component.html",
-  styleUrl: "./button-icon.component.scss",
+  templateUrl: "./toggle-icon.component.html",
+  styleUrl: "./toggle-icon.component.scss",
   host: {
     "[attr.data-shape]": "shape()",
     "[attr.data-size]": "size()",
     "[attr.data-tone]": "tone()",
+    "[attr.data-active]": 'active() ? "" : null',
   },
 })
-export class FoldButtonIconComponent {
+export class FoldToggleIconComponent {
   /** Icon to render (typed against the registry). */
   readonly icon = input.required<FoldIconName>();
 
-  /** Surface shape — `square` (default) or `round` (transport, big actions). */
+  /** Surface shape — `square` (default) or `round`. */
   readonly shape = input<FoldButtonIconShape>("square");
 
   /** Hit-area preset — `xs` 22px · `sm` 28px · `md` 32px (default) · `lg` 38px. */
   readonly size = input<FoldButtonIconSize>("md");
 
-  /** Visual tone — `ghost` (default) · `accent` (filled) · `critical` (alert). */
+  /** Visual tone — `ghost` (default) · `accent` · `critical`. */
   readonly tone = input<FoldButtonIconTone>("ghost");
+
+  /** Two-way toggle state — renders pressed and drives `aria-pressed`. */
+  readonly active = model<boolean>(false);
 
   /** Disable the button — dims it and blocks pointer events. */
   readonly disabled = input(false, { transform: booleanAttribute });
@@ -68,8 +72,8 @@ export class FoldButtonIconComponent {
   /** Native `type` of the inner `<button>`. */
   readonly type = input<"button" | "submit">("button");
 
-  /** Emitted on click (passes the native `MouseEvent`). */
-  readonly clicked = output<MouseEvent>();
+  /** Emitted on toggle (passes the native `MouseEvent`), after `active` flips. */
+  readonly toggled = output<MouseEvent>();
 
   /** Resolves the icon size from the button size preset. */
   readonly iconSize = computed<FoldIconSize>(() => {
@@ -89,6 +93,7 @@ export class FoldButtonIconComponent {
     if (this.disabled()) {
       return;
     }
-    this.clicked.emit(e);
+    this.active.update((v) => !v);
+    this.toggled.emit(e);
   }
 }

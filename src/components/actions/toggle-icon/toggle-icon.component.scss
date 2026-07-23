@@ -1,0 +1,8 @@
+// fold-toggle-icon — the toggle icon button. Same surface as fold-button-icon,
+// plus the pressed state the toggle adds while `active` (data-active on host).
+@use "../button-icon/icon-button-surface";
+
+:host([data-active]) button {
+  background: var(--bi-bg-active);
+  color: var(--bi-color-active);
+}

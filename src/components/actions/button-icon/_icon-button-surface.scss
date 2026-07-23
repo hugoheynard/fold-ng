@@ -1,0 +1,101 @@
+// ═══════════════════════════════════════════════════════
+//  Shared icon-button surface — used by both fold-button-icon
+//  (momentary) and fold-toggle-icon (toggle). shape/size/tone
+//  arrive as data-* attributes; the `--bi-*` locals resolve to
+//  `--fold-*` tokens. Token-only. The pressed/active rule is NOT
+//  here — it belongs to the toggle alone.
+// ═══════════════════════════════════════════════════════
+
+:host {
+  display: inline-flex;
+
+  // ── size presets — drive the hit-area square ────────
+  &[data-size="xs"] {
+    --bi-size: 22px;
+    --bi-radius: var(--fold-radius-xs);
+  }
+  &[data-size="sm"] {
+    --bi-size: 28px;
+    --bi-radius: var(--fold-radius-sm);
+  }
+  &[data-size="md"] {
+    --bi-size: 32px;
+    --bi-radius: var(--fold-radius-md);
+  }
+  &[data-size="lg"] {
+    --bi-size: 38px;
+    --bi-radius: var(--fold-radius-md);
+  }
+
+  // ── shape — round overrides any radius ──────────────
+  &[data-shape="round"] {
+    --bi-radius: 50%;
+  }
+
+  // ── tone — colour + background ──────────────────────
+  &[data-tone="ghost"] {
+    --bi-color: var(--fold-color-text-muted);
+    --bi-color-hover: var(--fold-color-text);
+    --bi-bg: transparent;
+    --bi-bg-hover: var(--fold-color-primary-surface);
+    --bi-bg-active: var(--fold-color-primary-surface);
+    --bi-color-active: var(--fold-color-primary);
+  }
+  &[data-tone="accent"] {
+    --bi-color: var(--fold-color-on-primary);
+    --bi-color-hover: var(--fold-color-on-primary);
+    --bi-bg: var(--fold-color-primary);
+    --bi-bg-hover: var(--fold-color-primary-strong);
+    --bi-bg-active: var(--fold-color-primary-strong);
+    --bi-color-active: var(--fold-color-on-primary);
+  }
+  &[data-tone="critical"] {
+    --bi-color: var(--fold-color-alert);
+    --bi-color-hover: var(--fold-color-alert);
+    --bi-bg: transparent;
+    --bi-bg-hover: color-mix(in srgb, var(--fold-color-alert) 12%, transparent);
+    --bi-bg-active: color-mix(
+      in srgb,
+      var(--fold-color-alert) 18%,
+      transparent
+    );
+    --bi-color-active: var(--fold-color-alert);
+  }
+}
+
+button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bi-size);
+  height: var(--bi-size);
+  border-radius: var(--bi-radius);
+  background: var(--bi-bg);
+  color: var(--bi-color);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--fold-motion-fast),
+    color var(--fold-motion-fast),
+    transform var(--fold-motion-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--bi-bg-hover);
+    color: var(--bi-color-hover);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}

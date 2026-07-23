@@ -3,6 +3,7 @@
   [disabled]="disabled()"
   [attr.title]="tooltip() || null"
   [attr.aria-label]="tooltip() || null"
+  [attr.aria-pressed]="active() ? 'true' : 'false'"
   (click)="onClick($event)"
 >
   <fold-icon [name]="icon()" [size]="iconSize()" />

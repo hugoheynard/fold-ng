@@ -36,6 +36,16 @@ describe("FoldButtonIconComponent", () => {
     expect(host.getAttribute("data-tone")).toBe("accent");
   });
 
+  it("is momentary — never claims a pressed state (no aria-pressed)", () => {
+    const { fixture } = create({ icon: "bin" });
+    const btn = fixture.nativeElement.querySelector("button") as HTMLElement;
+    btn.click();
+    expect(btn.hasAttribute("aria-pressed")).toBe(false);
+    expect(
+      (fixture.nativeElement as HTMLElement).hasAttribute("data-active"),
+    ).toBe(false);
+  });
+
   it("forwards tooltip to title + aria-label", () => {
     const { fixture } = create({ icon: "bin", tooltip: "Delete row" });
     const btn = fixture.nativeElement.querySelector("button") as HTMLElement;
@@ -43,38 +53,20 @@ describe("FoldButtonIconComponent", () => {
     expect(btn.getAttribute("aria-label")).toBe("Delete row");
   });
 
-  it("toggles the active model and emits clicked", () => {
+  it("emits clicked on press", () => {
     const { fixture, component } = create({ icon: "eye" });
     const spy = vi.fn();
     component.clicked.subscribe(spy);
-    expect(component.active()).toBe(false);
-
     (fixture.nativeElement.querySelector("button") as HTMLElement).click();
-    expect(component.active()).toBe(true);
-    expect(spy).toHaveBeenCalled();
-
-    (fixture.nativeElement.querySelector("button") as HTMLElement).click();
-    expect(component.active()).toBe(false);
+    expect(spy).toHaveBeenCalledOnce();
   });
 
-  it("exposes active state via data-active + aria-pressed", () => {
-    const { fixture, component } = create({ icon: "eye", active: true });
-    const host = fixture.nativeElement as HTMLElement;
-    const btn = host.querySelector("button") as HTMLElement;
-    expect(host.hasAttribute("data-active")).toBe(true);
-    expect(btn.getAttribute("aria-pressed")).toBe("true");
-    component.active.set(false);
-    fixture.detectChanges();
-    expect(host.hasAttribute("data-active")).toBe(false);
-  });
-
-  it("does not emit clicked when disabled", () => {
-    const { fixture, component } = create({ icon: "edit", disabled: true });
+  it("does not emit when disabled (incl. the bare attribute form)", () => {
+    const { fixture, component } = create({ icon: "edit", disabled: "" });
     const spy = vi.fn();
     component.clicked.subscribe(spy);
     (fixture.nativeElement.querySelector("button") as HTMLElement).click();
     expect(spy).not.toHaveBeenCalled();
-    expect(component.active()).toBe(false);
   });
 
   it("maps button size to the icon size preset", () => {
