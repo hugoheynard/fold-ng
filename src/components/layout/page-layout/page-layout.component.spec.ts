@@ -11,6 +11,7 @@ import { FoldPageLayoutComponent } from "./page-layout.component";
     <button pageActions class="act">Export</button>
     <span titleBadge class="kind">Directive</span>
     <div class="body-item">Body</div>
+    <section description="Section intro" class="body-desc">Section</section>
   </fold-page-layout>`,
 })
 class HostComponent {
@@ -42,6 +43,15 @@ describe("FoldPageLayoutComponent", () => {
     const { root } = render();
     expect(root.querySelector(".page-body .body-item")).not.toBeNull();
     expect(root.querySelector(".page-head .page-actions .act")).not.toBeNull();
+  });
+
+  it("does not swallow a body child that carries its own [description] input", () => {
+    // The description slot is `p[description]`, tag-qualified: a body element
+    // with a `description` attribute (e.g. fold-page-section) must stay in the
+    // body, not get projected into the header.
+    const { root } = render();
+    expect(root.querySelector(".page-body .body-desc")).not.toBeNull();
+    expect(root.querySelector(".page-desc .body-desc")).toBeNull();
   });
 
   it("projects [titleBadge] inline beside the title", () => {

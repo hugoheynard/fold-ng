@@ -24,12 +24,14 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
  * - `[titleBadge]` → an inline pill beside the title (e.g. a status/kind badge).
- * - `[description]` → the intro under the title. A **slot**, not a string
+ * - `p[description]` → the intro under the title. A **slot**, not a string
  *   input: a description that needs a `<code>`, a link or a second sentence is
- *   the common case, not the exception. The layout styles what you project
- *   (muted, small, full column width) so the markup stays yours. Project
- *   nothing and the header is just the title — put your own intro block in the
- *   body. Cap the line with `--fold-page-desc-measure` on a fluid page.
+ *   the common case, not the exception. It must be a `<p description>` — the
+ *   selector is tag-qualified on purpose, so a body child that carries its own
+ *   `description` input (e.g. `<fold-page-section description="…">`) is not
+ *   swallowed into the header. The layout styles what you project (muted, small,
+ *   full column width) so the markup stays yours. Project nothing and the header
+ *   is just the title. Cap the line with `--fold-page-desc-measure` on a fluid page.
  * - `[pageActions]` → the top-right header slot (e.g. an export button).
  *
  * ```html
