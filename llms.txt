@@ -1,0 +1,41 @@
+# fold-ng
+
+> Accessible, dark-first Angular 22 UI component library and design system —
+> signals-first, standalone, zoneless, SSR-ready. A two-tier design-token model
+> plus WCAG-minded components, styled against CSS variables (no NgModule, no
+> zone.js, no runtime CSS-in-JS).
+
+fold-ng is consumed as standalone Angular components imported from the package
+root (`import { FoldButtonComponent } from "fold-ng"`) plus a token stylesheet
+(`@import "fold-ng/tokens.css"`). Dark ("umbra") is the default theme; light
+("lumen") and others are opt-in via `data-theme`. Every component ships JSDoc
+with a `@selector` and an `@example`.
+
+## Getting started
+
+- [Install & quickstart](https://github.com/hugoheynard/fold#readme): `npm install fold-ng`, import tokens, use standalone components.
+- [Design tokens](https://github.com/hugoheynard/fold#the-two-tier-model): two-tier model — primitives (`--fold-ref-*`) → semantic (`--fold-color-*`); components consume the semantic layer only.
+- [Theming](https://github.com/hugoheynard/fold#consuming-the-tokens): `data-theme="umbra|lumen|bubbly|navi"`; re-theme by re-pointing the semantic layer, never touching a component.
+
+## Components
+
+- Actions: `[foldButton]` (on a real `<button>`/`<a>`; `emphasis` × `intent` axes; `loading`), `fold-button-icon` (momentary), `fold-toggle-icon` (toggle), `fold-link`.
+- Forms: `fold-input`, `fold-number-input`, `fold-select`, `fold-search`, `fold-slider`, `fold-range-slider`, `fold-file-dropzone` (Angular Signal Forms — no `ngModel`/`ReactiveFormsModule`).
+- Overlays: `fold-panel-host` / `fold-panel-header` (modal side panels with accessible name, `inert` background barrier, focus trap, scroll-lock; imperative `open<TData,TResult>()` → typed `FoldPanelRef`).
+- Navigation: `fold-menu`, `fold-nav-launcher`, `fold-tab-nav`.
+- Layout: `fold-app-shell`, `fold-page-layout`, `fold-aside-layout`, `fold-tab-layout`, `fold-hero-section`.
+- Content: `fold-card`, `fold-hero-card`, `fold-badge`, `fold-status-badge`, `fold-avatar`, `fold-avatar-list`, `fold-timeline`, `fold-data-table`, `fold-paginator`, `fold-field`.
+- Feedback: `fold-callout`, `fold-disclosure`, `fold-toast`, `fold-loading`, `fold-empty-state`.
+- Foundations: `fold-icon` (114 built-in SVGs + registry), `fold-spinner`.
+
+## Conventions
+
+- Angular 22, standalone, signals (`input()`/`output()`/`computed()`/`effect()`), zoneless, SSR-safe.
+- Accessibility: overlays trap focus + `inert` the background + carry an accessible name; icons inherit `currentColor`; forced-colors + reduced-motion honoured.
+- Localise strings via inputs / providers (e.g. `provideFoldPanelLabels({ close })`).
+
+## Full API
+
+- [Component & selector table (README)](https://github.com/hugoheynard/fold#components)
+- [Release readiness, per component](https://github.com/hugoheynard/fold/blob/main/RELEASE-READINESS.md)
+- [Roadmap](https://github.com/hugoheynard/fold/blob/main/TODO.md)

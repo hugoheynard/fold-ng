@@ -1,25 +1,37 @@
 {
   "name": "fold-ng",
-  "version": "0.0.1",
-  "description": "A dark-first Angular 22 design system — signals-first, standalone, zoneless and SSR-ready. Design tokens + accessible components, themeable to the bone.",
+  "version": "0.1.0",
+  "description": "Accessible, dark-first Angular 22 UI component library & design system — signals-first, standalone, zoneless, SSR-ready. Design tokens + WCAG-minded components, themeable to the bone.",
   "keywords": [
     "angular",
     "angular-22",
-    "design-system",
+    "angular-components",
+    "ui-library",
+    "ui-components",
     "component-library",
+    "design-system",
     "design-tokens",
+    "css-variables",
     "signals",
     "zoneless",
+    "standalone",
     "ssr",
     "dark-theme",
-    "accessible"
+    "theme",
+    "theming",
+    "accessible",
+    "a11y",
+    "wcag",
+    "overlay",
+    "dialog"
   ],
   "author": "Hugo Heynard",
   "license": "MIT",
   "homepage": "https://github.com/hugoheynard/fold#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hugoheynard/fold.git"
+    "url": "git+https://github.com/hugoheynard/fold.git",
+    "directory": "packages/ui"
   },
   "bugs": {
     "url": "https://github.com/hugoheynard/fold/issues"
@@ -32,7 +44,9 @@
   "files": [
     "src",
     "README.md",
-    "LICENSE"
+    "CHANGELOG.md",
+    "LICENSE",
+    "llms.txt"
   ],
   "exports": {
     "./tokens.css": "./src/tokens/index.css",

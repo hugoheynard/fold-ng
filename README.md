@@ -1,12 +1,59 @@
 # fold-ng
 
-SH3PHERD's design system, extracted for reuse across projects. **Dark-first**:
-the base theme lives on `:root`, lumen (light) is an opt-in override. Built to the same
-bar as the app — strict TypeScript, tested to the contract.
+[![npm version](https://img.shields.io/npm/v/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
+[![npm downloads](https://img.shields.io/npm/dm/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
+[![minzipped size](https://img.shields.io/bundlephobia/minzip/fold-ng)](https://bundlephobia.com/package/fold-ng)
+[![types included](https://img.shields.io/npm/types/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
+[![license](https://img.shields.io/npm/l/fold-ng.svg)](./LICENSE)
 
-It ships **design tokens** + a growing set of **standalone Angular components**,
-extracted one at a time as the app proves the need. See [`TODO.md`](./TODO.md)
-for the roadmap.
+**fold-ng** is an accessible, **dark-first Angular 22 UI component library and
+design system** — signals-first, standalone, zoneless, and SSR-ready. It ships a
+two-tier **design-token** model (themeable to the bone) plus WCAG-minded
+components: buttons, forms, overlays/dialogs, navigation, data tables, toasts and
+more. No `NgModule`, no `zone.js`, no runtime CSS-in-JS — just standalone
+components styled against CSS variables.
+
+## Install
+
+```bash
+npm install fold-ng
+```
+
+Angular 22 (`@angular/core`, `@angular/common`, `@angular/forms`,
+`@angular/platform-browser`) is a peer dependency.
+
+## Quickstart
+
+Import the tokens once, then use any standalone component directly:
+
+```ts
+// styles.css
+@import "fold-ng/tokens.css";
+```
+
+```ts
+import { Component } from "@angular/core";
+import { FoldButtonComponent, FoldCardComponent } from "fold-ng";
+
+@Component({
+  standalone: true,
+  imports: [FoldButtonComponent, FoldCardComponent],
+  template: `
+    <fold-card>
+      <button foldButton emphasis="solid" (click)="save()">Save</button>
+      <a foldButton emphasis="outline" intent="neutral" routerLink="/back">
+        Cancel
+      </a>
+    </fold-card>
+  `,
+})
+export class DemoComponent {
+  save() {}
+}
+```
+
+Everything is dark by default; opt into light with `data-theme="lumen"`. See
+[`TODO.md`](./TODO.md) for the roadmap and the full component list below.
 
 ## Consuming the tokens
 
