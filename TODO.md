@@ -386,6 +386,35 @@ body` are already `overflow: hidden`, so the body lock is a no-op). Reproduce
 Deliberate compromises taken to keep momentum — tracked so they get paid back,
 not forgotten.
 
+- **`fold-icon` built-in set is not tree-shakeable.** `FoldIconRegistry` seeds
+  itself with `FOLD_BUILTIN_ICONS`, which spreads all six sets
+  (`ui`/`nav`/`music`/`status`/`people`/`brands` — 114 icons). Because the
+  registry statically references the merged catalogue, **every app that renders a
+  single `fold-icon` bundles all 114 SVG strings**, used or not. Nothing drops.
+  - **Why it's blocked:** tree-shaking is static — as long as the registry
+    references the full catalogue, the bundler must keep it. The fix is to
+    **decouple the registry from the catalogue** (seed it empty) and make
+    provisioning explicit, which is a **DX/breaking change**: `<fold-icon>` would
+    no longer "just work" with zero config — the app must `provideFoldIcons(...)`
+    what it uses.
+  - **Grain options:** (a) _per-set_ — keep `UI_ICONS`/`NAV_ICONS`/… exported,
+    app does `provideFoldIcons({ ...UI_ICONS, ...NAV_ICONS })`; only imported sets
+    bundle (coarse — importing a set pulls all its icons). (b) _per-icon_
+    (Lucide-style) — one named export per icon, `provideFoldIcons([search, bin])`;
+    only referenced icons bundle (finest, but 114 exports + the kebab→identifier
+    problem, e.g. `arrow-back`, needs a `{ name, svg }` shape or camelCase ids).
+  - **Free either way:** `FoldIconName` is a **type** (`keyof typeof
+FOLD_BUILTIN_ICONS | (string & {})`), erased at build — autocomplete for all
+    114 names survives even when the runtime bundles only the provided subset.
+  - **To fix:** seed the registry empty; keep `FOLD_BUILTIN_ICONS` as an opt-in
+    "give me everything" export; migrate the app's bootstrap to `provideFoldIcons`
+    with the ~104 icons it actually uses (audited: `grep '(name|icon)="…"'` across
+    `apps/frontend-webapp`); document the provisioning step in the README. Decide
+    grain (per-set is the pragmatic default; per-icon only if bundle size proves
+    it worth the export churn). **Not by anticipation — the app uses ~104 of 114,
+    so the saving is small today; revisit when a 2nd consumer wants a lean subset,
+    or when the catalogue grows past a few hundred.**
+
 - **App settings pages went full-width when `fold-page-layout` dropped
   `wide`/`fluid`.** The page scaffold no longer caps the column (width is a
   content concern now). Four product pages leaned on the old implicit 780 cap and
