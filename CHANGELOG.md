@@ -6,10 +6,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-## [0.1.0]
+_Nothing yet._
+
+## [0.1.0] - 2026-07-23
 
 First public release line. The library is consumed as standalone Angular 22
 components plus a design-token stylesheet.
+
+> **1.0.0 is held** until every component in
+> [`docs/RELEASE-READINESS.md`](./docs/RELEASE-READINESS.md) is 🟢🟢🟢. Until
+> then `latest` tracks the newest `0.x`; pre-release cuts ship on the `beta`
+> dist-tag.
 
 ### Added
 
@@ -28,10 +35,6 @@ components plus a design-token stylesheet.
 - **Accessibility** — overlays honour the full modal contract; icons inherit
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
-
-### Notes
-
-- 1.0.0 is held until every component in `docs/RELEASE-READINESS.md` is 🟢🟢🟢.
 
 [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0
