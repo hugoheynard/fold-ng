@@ -9,3 +9,7 @@ docs-api/
 .vite/
 *.log
 .DS_Store
+# IDE — never version machine-specific editor config in a published lib
+.idea/
+.vscode/
+*.iml
