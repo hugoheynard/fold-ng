@@ -59,7 +59,7 @@
   },
   "scripts": {
     "prepare": "git config core.hooksPath .githooks",
-    "dev": "vite --port 5173 --strictPort --host",
+    "dev": "vite --port 5174 --strictPort --host",
     "dev:watch": "concurrently -n tsc,lint,vite -c blue,magenta,green \"pnpm run dev:watch:tsc\" \"pnpm run dev:watch:lint\" \"pnpm run dev\"",
     "dev:watch:tsc": "tsc --noEmit --watch --preserveWatchOutput -p tsconfig.app.json",
     "dev:watch:lint": "onchange \"src/**/*.ts\" \"dev/**/*.ts\" --initial -- pnpm run lint",
@@ -109,6 +109,7 @@
     "onchange": "^7.1.0",
     "prettier": "^3.5.3",
     "publint": "^0.3.22",
+    "rxjs": "^7.8.0",
     "tsx": "^4.19.3",
     "typedoc": "^0.28.20",
     "typescript": "~6.0.3",
