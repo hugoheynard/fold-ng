@@ -1,0 +1,13 @@
+/* ── tab-layout page: a stand-in content panel for the active tab ── */
+.tl-demo-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tl-demo-block {
+  height: 52px;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-card);
+}

@@ -1,0 +1,7 @@
+/* Toast demos: stack the snackbars, left-aligned (they own their own width). */
+.toast-demo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}

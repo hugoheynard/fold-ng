@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldButtonComponent,
@@ -21,5 +21,7 @@ import {
     FoldButtonComponent,
   ],
   templateUrl: "./page-section.page.html",
+  styleUrl: "./page-section.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class PageSectionPage {}

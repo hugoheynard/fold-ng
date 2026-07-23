@@ -1,4 +1,4 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import { DevPlaygroundComponent } from "../../playground.component";
 import {
@@ -22,6 +22,8 @@ import {
     DevPlaygroundComponent,
   ],
   templateUrl: "./tab-layout.page.html",
+  styleUrl: "./tab-layout.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class TabLayoutPage {
   protected readonly tabs: FoldTabNavItem[] = [

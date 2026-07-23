@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, ViewEncapsulation } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
   FoldAsideLayoutComponent,
@@ -50,6 +50,8 @@ interface Feature {
     FoldElevatedDirective,
   ],
   templateUrl: "./home.page.html",
+  styleUrl: "./home.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class HomePage {
   /** The package version, straight from package.json — never drifts. */

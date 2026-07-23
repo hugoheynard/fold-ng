@@ -9,6 +9,7 @@
     -apple-system,
     sans-serif;
 }
+
 fold-app-shell {
   height: 100%;
 }
@@ -24,219 +25,21 @@ fold-app-shell {
   color: var(--fold-color-on-primary);
   transition: transform 0.12s ease;
 }
+
 .rail-brand:hover {
   transform: translateY(-1px);
 }
 
-/* ── fold-app-shell page: a real shell scaled to fit, folding on its own width ── */
-/* legacy code switch — still used by other pages' token overlays. */
-.spm-code {
-  margin-left: auto;
-  padding: 6px 14px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text-secondary);
-  font: inherit;
-  font-size: 12px;
-  cursor: pointer;
-}
 .spm-code.is-on {
   border-color: var(--fold-color-primary);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
 }
-/* The preview window: a real-width shell scaled down with CSS `zoom` (auto-fit
-   via a ResizeObserver), centered on the backdrop; scrolls if it overflows. */
-.shell-window {
-  height: 460px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-lg);
-  background: var(--fold-color-bg-page);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
 
-/* ── "code" glass overlay — HTML usage | CSS variables, over the preview ── */
-.code-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: var(--fold-color-glass);
-  backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
-  -webkit-backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
-  border-radius: var(--fold-radius-lg);
-  overflow: hidden;
-}
-.code-overlay-pane {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-}
-.code-overlay-pane + .code-overlay-pane {
-  border-left: 1px solid var(--fold-color-glass-border);
-}
-.code-overlay-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px 8px 14px;
-  border-bottom: 1px solid var(--fold-color-glass-border);
-}
 .code-overlay .code-pre {
   flex: 1;
   min-height: 0;
   overflow: auto;
-}
-.shell-preview {
-  /* The container the shell's container queries key off — the mode switch sets
-     its width so the shell folds (secondary at ≤1024, both at ≤768). A definite
-     height gives the shell room; `zoom` (bound inline) scales the whole thing. */
-  container-type: inline-size;
-  height: 640px;
-  transition: width var(--fold-motion-base);
-}
-/* The rails are real fold-menu instances — they size + round themselves. */
-.sp-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  height: 100%;
-  padding: 0 16px;
-  background: var(--fold-color-bg-header);
-  border-bottom: 1px solid var(--fold-color-border);
-  font-weight: 700;
-  font-size: 13px;
-}
-/* Preview drawer toggle — only rendered in mobile mode (see the page). Keeps the
-   "Header" label hugging it, actions pushed to the right. */
-.sp-hamburger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  margin-left: -4px;
-  border: 0;
-  border-radius: var(--fold-radius-sm);
-  background: transparent;
-  color: var(--fold-color-text-secondary);
-  cursor: pointer;
-}
-.sp-hamburger:hover {
-  background: var(--fold-color-surface-hover);
-  color: var(--fold-color-text);
-}
-.sp-header > span {
-  margin-right: auto;
-}
-.sp-actions {
-  display: flex;
-  gap: 8px;
-}
-.sp-actions button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-card);
-  color: var(--fold-color-text);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.sp-actions button:hover {
-  border-color: var(--fold-color-primary);
-  color: var(--fold-color-primary-text);
-}
-.sp-content {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-}
-.sp-block {
-  height: 64px;
-  border-radius: var(--fold-radius-md);
-  border: 1px solid var(--fold-color-border-subtle);
-  background: var(--fold-color-surface-card);
-}
-/* A mini player bar in the shell's footer slot — shows the region live. */
-.sp-footer {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 100%;
-  padding: 10px 16px;
-  background: var(--fold-color-bg-header);
-  border-top: 1px solid var(--fold-color-border);
-  font-size: 12px;
-  font-weight: 600;
-}
-.sp-footer-time {
-  margin-left: auto;
-  color: var(--fold-color-text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ── fold-menu page: 3 columns, full height — preview · settings · tokens ── */
-.menu-page {
-  display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(300px, 1fr) minmax(
-      240px,
-      320px
-    );
-  gap: 20px;
-  align-items: stretch;
-}
-.menu-col {
-  min-width: 0;
-}
-.menu-col--preview {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.menu-preview-bar {
-  display: flex;
-  justify-content: flex-end;
-}
-/* The preview fills the column height so it matches the settings/tokens cards. */
-.menu-preview {
-  position: relative;
-  flex: 1;
-  min-height: 300px;
-  display: flex;
-  align-items: stretch;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-lg);
-  background: var(--fold-color-bg-page);
-}
-/* Stacked overlay (HTML over CSS) — the menu preview column is narrow + tall. */
-.code-overlay--stack {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-}
-.code-overlay--stack .code-overlay-pane + .code-overlay-pane {
-  border-left: none;
-  border-top: 1px solid var(--fold-color-glass-border);
-}
-
-/* Stack the 3 columns when the content area gets narrow. */
-@media (max-width: 1040px) {
-  .menu-page {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* "Apply to Library" — pushes the preview's tint/level onto the Library nav. */
@@ -260,6 +63,7 @@ fold-app-shell {
     background var(--fold-motion-fast),
     color var(--fold-motion-fast);
 }
+
 .apply-btn:hover {
   background: var(--fold-color-primary);
   color: var(--fold-color-on-primary);
@@ -276,163 +80,27 @@ fold-app-shell {
   letter-spacing: -0.01em;
   color: var(--fold-color-text);
 }
+
 .lib-head fold-icon {
   color: var(--fold-color-primary-text);
 }
 
-/* avatar family page — the tab-nav that switches the three components. */
-.avatar-tabs {
-  margin-bottom: 24px;
-}
-
-/* avatar / avatar-detail tabs — demos (clickable) beside a live code panel. */
-.demo-inspect {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  align-items: flex-start;
-}
-.demo-groups {
-  flex: 1 1 360px;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-.demo-code {
-  flex: 1 1 320px;
-  min-width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-}
-/* A demo becomes a click target — reset the button chrome, highlight on pick. */
-.demo-pick {
-  padding: 4px;
-  border: 1px solid transparent;
-  border-radius: var(--fold-radius-md);
-  background: none;
-  line-height: 0;
-  cursor: pointer;
-}
-.demo-pick--wide {
-  line-height: normal;
-  text-align: left;
-}
-.demo-pick:hover {
-  border-color: var(--fold-color-border);
-}
 .demo-pick.is-picked {
   border-color: var(--fold-color-primary);
   background: var(--fold-color-primary-surface);
 }
 
-/* The explanatory note in the code panel — a soft (tinted) warning callout. */
-.code-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: var(--fold-radius-md);
-  border: 1px solid var(--fold-color-warning-border);
-  background: var(--fold-color-warning-surface);
-  color: var(--fold-color-warning-text);
-  font-size: 12px;
-  line-height: 1.5;
-}
-.code-note fold-icon {
-  flex: none;
-  margin-top: 1px;
-}
-.code-pre--empty {
-  color: var(--fold-color-text-muted);
-}
-
-/* ── Avatar page: the app-wide palette switch ─────────────────── */
-.palette-switch {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 4px;
-}
-.palette-switch button {
-  padding: 5px 12px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text-secondary);
-  font: inherit;
-  font-size: 12px;
-  text-transform: capitalize;
-  cursor: pointer;
-}
 .palette-switch button.is-on {
   border-color: var(--fold-color-primary);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
 }
 
-/* ── icons page — the fold-icon system + the full catalogue grid ────────── */
-.icon-sizes {
-  display: flex;
-  align-items: flex-end;
-  gap: 22px;
-  color: var(--fold-color-text);
-}
-.isz {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.isz span {
-  font-size: 11px;
-  color: var(--fold-color-text-muted);
-  font-variant-numeric: tabular-nums;
-}
-.icon-colors {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
-  gap: 8px;
-  width: 100%;
-}
-.icon-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 8px;
-  border-radius: var(--fold-radius-md);
-  border: 1px solid var(--fold-color-border-subtle);
-  background: var(--fold-color-surface-card);
-  color: var(--fold-color-text);
-  font: inherit;
-  cursor: pointer;
-  overflow: hidden;
-}
-.icon-cell:hover {
-  border-color: var(--fold-color-primary);
-  color: var(--fold-color-primary-text);
-}
 .icon-cell.is-copied {
   border-color: var(--fold-color-success);
   color: var(--fold-color-success-text);
 }
-.icon-cell-name {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 10px;
-  color: var(--fold-color-text-muted);
-}
+
 .icon-cell:hover .icon-cell-name,
 .icon-cell.is-copied .icon-cell-name {
   color: inherit;
@@ -444,11 +112,13 @@ fold-app-shell {
   flex-direction: column;
   gap: 6px;
 }
+
 .field label {
   font-size: 12px;
   font-weight: 600;
   color: var(--fold-color-text-secondary);
 }
+
 .field input,
 .field textarea,
 .field select {
@@ -460,54 +130,17 @@ fold-app-shell {
   font: inherit;
   font-size: 13px;
 }
+
 .field textarea {
   resize: vertical;
   min-height: 64px;
 }
+
 .field input:focus-visible,
 .field textarea:focus-visible,
 .field select:focus-visible {
   outline: none;
   border-color: var(--fold-color-primary);
-}
-.field-hint {
-  font-size: 11px;
-  color: var(--fold-color-text-muted);
-}
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-.btn-ghost,
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border-radius: var(--fold-radius-sm);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.btn-ghost {
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-card);
-  color: var(--fold-color-text);
-}
-.btn-ghost:hover {
-  border-color: var(--fold-color-primary);
-  color: var(--fold-color-primary-text);
-}
-.btn-primary {
-  border: 1px solid var(--fold-color-primary);
-  background: var(--fold-color-primary);
-  color: var(--fold-color-on-primary);
-}
-.btn-primary:hover {
-  background: var(--fold-color-primary-strong);
-  border-color: var(--fold-color-primary-strong);
 }
 
 /* ── Header ─────────────────────────────────────────────────── */
@@ -520,13 +153,6 @@ fold-app-shell {
   padding: 0 20px;
   background: var(--fold-color-bg-header);
   border-bottom: 1px solid var(--fold-color-border);
-}
-/* nav-launcher page — the live "open it" row. */
-.nlp-live {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
 }
 
 /* Mobile drawer toggle — hidden on desktop, shown when the rails collapse. */
@@ -544,15 +170,18 @@ fold-app-shell {
   color: var(--fold-color-text-secondary);
   cursor: pointer;
 }
+
 .gal-hamburger:hover {
   background: var(--fold-color-surface-hover);
   color: var(--fold-color-text);
 }
+
 @media (max-width: 768px) {
   .gal-hamburger {
     display: inline-flex;
   }
 }
+
 .gal-title {
   display: inline-flex;
   align-items: baseline;
@@ -563,16 +192,19 @@ fold-app-shell {
   color: var(--fold-color-text);
   text-decoration: none;
 }
+
 .gal-title fold-icon {
   align-self: center;
   color: var(--fold-color-primary-text);
 }
+
 .gal-title-sub {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0;
   color: var(--fold-color-text-muted);
 }
+
 /* Theme switcher — one button per theme the token layer ships. */
 .gal-themes {
   flex: none;
@@ -585,6 +217,7 @@ fold-app-shell {
   background: var(--fold-color-surface-card);
   color: var(--fold-color-text-muted);
 }
+
 .gal-theme {
   padding: 5px 10px;
   border: 1px solid transparent;
@@ -596,10 +229,12 @@ fold-app-shell {
   font-weight: 600;
   cursor: pointer;
 }
+
 .gal-theme:hover {
   background: var(--fold-color-surface-hover);
   color: var(--fold-color-text);
 }
+
 .gal-theme.is-on {
   background: var(--fold-color-primary-surface);
   border-color: var(--fold-color-primary-border);
@@ -617,6 +252,7 @@ fold-app-shell {
   font-size: 13px;
   color: var(--fold-color-text-muted);
 }
+
 .gal-footer-main {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
@@ -624,11 +260,13 @@ fold-app-shell {
   padding-bottom: 24px;
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
+
 @media (max-width: 760px) {
   .gal-footer-main {
     grid-template-columns: 1fr;
   }
 }
+
 .gal-footer-brand-col {
   display: flex;
   flex-direction: column;
@@ -636,6 +274,7 @@ fold-app-shell {
   gap: 10px;
   max-width: 360px;
 }
+
 .gal-footer-brand {
   display: inline-flex;
   align-items: center;
@@ -646,25 +285,30 @@ fold-app-shell {
   color: var(--fold-color-text);
   text-decoration: none;
 }
+
 .gal-footer-brand fold-icon {
   color: var(--fold-color-primary-text);
 }
+
 .gal-footer-tagline {
   margin: 0;
   line-height: 1.5;
   color: var(--fold-color-text-muted);
 }
+
 .gal-footer-ver {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--fold-color-text-secondary);
 }
+
 .gal-footer-col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
 }
+
 .gal-footer-head {
   margin-bottom: 4px;
   font-size: 11px;
@@ -673,6 +317,7 @@ fold-app-shell {
   text-transform: uppercase;
   color: var(--fold-color-text-secondary);
 }
+
 .gal-footer-link {
   display: inline-flex;
   align-items: center;
@@ -684,10 +329,12 @@ fold-app-shell {
   text-decoration: none;
   font-weight: 600;
 }
+
 .gal-footer-link:hover {
   background: var(--fold-color-surface-hover);
   color: var(--fold-color-primary-text);
 }
+
 .gal-footer-bar {
   display: flex;
   align-items: center;
@@ -695,24 +342,30 @@ fold-app-shell {
   gap: 6px 10px;
   padding-top: 20px;
 }
+
 .gal-footer-link--inline {
   padding: 0;
   margin: 0;
 }
+
 .gal-footer-link--inline:hover {
   background: none;
   text-decoration: underline;
 }
+
 .gal-footer-dot {
   color: var(--fold-color-border);
 }
+
 .gal-footer-copy {
   font-variant-numeric: tabular-nums;
 }
+
 .gal-footer-built {
   margin-left: auto;
   color: var(--fold-color-text-muted);
 }
+
 .gal-footer-built code {
   font-family: var(--fold-font-mono, monospace);
   font-size: 12px;
@@ -744,50 +397,36 @@ fold-app-shell > .content > *:not(router-outlet) {
   flex-direction: column;
   gap: 22px;
 }
+
 /* extra breathing room before the playground sits under the demos */
 .np-playground-cell {
   margin-top: 26px;
 }
+
 .gal-row {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   align-items: flex-start;
 }
+
 .gal-row + .gal-row {
   margin-top: 16px;
 }
+
 .gal-row--wide > * {
   flex: 1 1 240px;
   min-width: 240px;
 }
-/* Two specimens per line — for demos wide enough that a single column wastes
-   the page and a wrapping row would break the pairing. One column once a
-   column would be narrower than it is readable. */
-.gal-pair {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-@media (max-width: 760px) {
-  .gal-pair {
-    grid-template-columns: 1fr;
-  }
-}
+
 .gal-cell {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .gal-narrow {
   max-width: 220px;
-}
-/* Toast demos: stack the snackbars, left-aligned (they own their own width). */
-.toast-demo-col {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
 }
 
 /* Docs sub-page: a short prose line + a compact API reference table. */
@@ -797,6 +436,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   line-height: 1.6;
   color: var(--fold-color-text-secondary);
 }
+
 .doc-p code,
 [description] code,
 .api-table code {
@@ -804,11 +444,13 @@ fold-app-shell > .content > *:not(router-outlet) {
   font-size: 12px;
   color: var(--fold-color-text);
 }
+
 .api-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12.5px;
 }
+
 .api-table th,
 .api-table td {
   padding: 7px 10px;
@@ -816,6 +458,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   vertical-align: top;
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
+
 .api-table th {
   font-size: 10px;
   font-weight: 700;
@@ -823,9 +466,11 @@ fold-app-shell > .content > *:not(router-outlet) {
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
+
 .api-table td {
   color: var(--fold-color-text-secondary);
 }
+
 .gal-tag {
   font-size: 10px;
   font-weight: 700;
@@ -833,34 +478,11 @@ fold-app-shell > .content > *:not(router-outlet) {
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
+
 .gal-body {
   margin: 0;
   font-size: 13px;
   color: var(--fold-color-text-secondary);
-}
-.gal-kv {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-  border-top: 1px solid var(--fold-color-border-subtle);
-}
-.gal-kv:first-child {
-  border-top: none;
-}
-.gal-k {
-  font-size: 12px;
-  color: var(--fold-color-text-muted);
-}
-.gal-v {
-  font-size: 12px;
-  font-weight: 600;
-}
-.gal-field {
-  padding: 10px 12px;
-  border-radius: var(--fold-radius-sm);
-  background: var(--fold-color-surface-sunken);
-  font-size: 13px;
 }
 
 .code-block {
@@ -871,6 +493,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   background: var(--fold-color-surface-sunken);
   overflow: hidden;
 }
+
 .code-top {
   display: flex;
   align-items: center;
@@ -878,6 +501,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   padding: 8px 10px 8px 14px;
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
+
 .code-lang {
   font-size: 10px;
   font-weight: 700;
@@ -885,6 +509,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
+
 .code-copy {
   display: inline-flex;
   align-items: center;
@@ -898,10 +523,12 @@ fold-app-shell > .content > *:not(router-outlet) {
   font-size: 12px;
   cursor: pointer;
 }
+
 .code-copy:hover {
   border-color: var(--fold-color-primary);
   color: var(--fold-color-primary-text);
 }
+
 .code-pre {
   margin: 0;
   padding: 14px;
@@ -917,115 +544,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   flex: 1 1 360px;
   min-width: 300px;
 }
-.tok-group + .tok-group {
-  margin-top: 16px;
-}
-.tok-group-label {
-  display: block;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--fold-color-text-muted);
-}
-.tok-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 0;
-  border-top: 1px solid var(--fold-color-border-subtle);
-}
-.tok-group-label + .tok-row {
-  border-top: none;
-}
-.tok-swatch {
-  flex: none;
-  width: 26px;
-  height: 26px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-}
-/* Radius chip — a solid tile whose corner rounding reflects the token value. */
-.tok-swatch--radius {
-  background: var(--fold-color-surface-raised);
-}
-.tok-meta {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-.tok-name {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 11px;
-  color: var(--fold-color-text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.tok-desc {
-  font-size: 11px;
-  color: var(--fold-color-text-muted);
-}
-/* The override input — freeform CSS value (colour, length, anything). Empty =
-   no override (the token falls back to the theme). */
-.tok-input {
-  flex: none;
-  width: 84px;
-  padding: 5px 7px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 11px;
-}
-.tok-input:focus-visible {
-  outline: none;
-  border-color: var(--fold-color-primary);
-}
-.tok-input::placeholder {
-  color: var(--fold-color-text-faded);
-}
-.tok-reset {
-  margin-top: 16px;
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text-secondary);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.tok-reset:hover:not(:disabled) {
-  border-color: var(--fold-color-primary);
-  color: var(--fold-color-primary-text);
-}
-.tok-reset:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.ss-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.ss-group + .ss-group {
-  margin-top: 14px;
-}
-.ss-label {
-  font-size: 12px;
-  color: var(--fold-color-text-secondary);
-}
-.ss-label b {
-  color: var(--fold-color-text);
-  font-variant-numeric: tabular-nums;
-}
+
 /* One labelled param control in a dev-playground params slot. */
 .np-field {
   display: flex;
@@ -1037,6 +556,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   display: flex;
   gap: 4px;
 }
+
 .ss-seg button {
   flex: 1;
   padding: 6px 8px;
@@ -1048,227 +568,48 @@ fold-app-shell > .content > *:not(router-outlet) {
   font-size: 12px;
   cursor: pointer;
 }
+
 .ss-seg button.is-on {
   border-color: var(--fold-color-primary);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
 }
-/* callout page: `announce` changes nothing on screen, so the playground shows
-   the ARIA it resolves to — otherwise the switch looks broken. */
-.co-aria {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 10px 16px;
-  font-size: 12px;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  color: var(--fold-color-text-secondary);
-}
 
-/* A segment whose options ARE colours: two per line (six in a row is unreadable
-   at this width), and the selected one wears the tint it stands for, so the
-   control previews the choice instead of describing it. */
-.ss-seg--tinted {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
 .ss-seg button.is-on[data-tint="neutral"] {
   border-color: var(--fold-color-border);
   background: var(--fold-color-surface-subtle);
   color: var(--fold-color-text-secondary);
 }
+
 .ss-seg button.is-on[data-tint="info"] {
   border-color: var(--fold-color-info-border);
   background: var(--fold-color-info-surface);
   color: var(--fold-color-info-text);
 }
+
 .ss-seg button.is-on[data-tint="success"] {
   border-color: var(--fold-color-success-border);
   background: var(--fold-color-success-surface);
   color: var(--fold-color-success-text);
 }
+
 .ss-seg button.is-on[data-tint="warning"] {
   border-color: var(--fold-color-warning-border);
   background: var(--fold-color-warning-surface);
   color: var(--fold-color-warning-text);
 }
+
 .ss-seg button.is-on[data-tint="alert"] {
   border-color: var(--fold-color-alert-border);
   background: var(--fold-color-alert-surface);
   color: var(--fold-color-alert-text);
 }
+
 .ss-seg button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-.ss-group input[type="range"] {
-  width: 100%;
-  accent-color: var(--fold-color-primary);
-}
 
-/* ── Section builder (+/− sections, name, color, icon count) ──── */
-.ss-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.ss-step {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.ss-step button {
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font: inherit;
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-}
-.ss-step button:hover:not(:disabled) {
-  border-color: var(--fold-color-primary);
-  color: var(--fold-color-primary-text);
-}
-.ss-step button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-.ss-step b {
-  min-width: 14px;
-  text-align: center;
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-.sec-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-top: 1px solid var(--fold-color-border-subtle);
-}
-.sec-color {
-  flex: none;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-sm);
-  background: none;
-  cursor: pointer;
-}
-.sec-color::-webkit-color-swatch-wrapper {
-  padding: 2px;
-}
-.sec-color::-webkit-color-swatch {
-  border: none;
-  border-radius: 2px;
-}
-.sec-name {
-  flex: 1;
-  min-width: 0;
-  padding: 5px 8px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font: inherit;
-  font-size: 12px;
-}
-.sec-name:focus-visible {
-  outline: none;
-  border-color: var(--fold-color-primary);
-}
-.sec-del {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: none;
-  border-radius: var(--fold-radius-sm);
-  background: none;
-  color: var(--fold-color-text-muted);
-  font: inherit;
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
-}
-.sec-del:hover {
-  background: var(--fold-color-surface-hover);
-  color: var(--fold-color-alert-text, var(--fold-color-text));
-}
-
-/* ── [foldStickyColumn] directive demo ─────────────────────── */
-.sticky-demo {
-  height: 220px;
-  overflow-y: auto;
-  padding: 10px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-surface-sunken);
-}
-.sticky-demo-grid {
-  display: grid;
-  grid-template-columns: 1fr 150px;
-  gap: 10px;
-  align-items: start;
-}
-.sticky-demo-main {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.sticky-demo-block {
-  padding: 16px 12px;
-  border-radius: var(--fold-radius-sm);
-  background: var(--fold-color-surface-raised);
-  border: 1px solid var(--fold-color-border-subtle);
-  font-size: 12px;
-  color: var(--fold-color-text-secondary);
-}
-.sticky-demo-card {
-  padding: 12px;
-  border-radius: var(--fold-radius-sm);
-  background: var(--fold-color-primary-surface);
-  border: 1px solid var(--fold-color-primary-border);
-  color: var(--fold-color-primary-text);
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* ── fold-aside-layout demo ────────────────────────────────── */
-/* A real window auto-scaled to fit: the layout renders at its real width (desktop
-   1120 > the 1040 fold threshold → 3 cols; mobile 380 → 1 col) and is scaled down
-   with CSS `zoom` to exactly the window width (a ResizeObserver feeds the scale),
-   so it fills without horizontal scroll. `zoom` scales only the paint — layout,
-   the container-query fold and `position: sticky` all still resolve at the real
-   local width, so the fold stays honest and the rails stick as the (taller than
-   the window) centre column scrolls. */
-.asl-window {
-  height: 340px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-bg-page);
-  /* a window simulator: center the rendered "device" on the backdrop */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-.asl-window-inner {
-  /* width (desktop 1120 / mobile 380) + auto-fit zoom are bound inline. */
-}
 /* mobile: the narrow render reads as a phone/device — framed, centered, floated
    on the backdrop instead of stretched flush across the window. */
 .asl-window-inner.is-mobile {
@@ -1279,139 +620,20 @@ fold-app-shell > .content > *:not(router-outlet) {
   box-shadow: var(--fold-shadow-lg, 0 12px 34px rgba(0, 0, 0, 0.4));
   background: var(--fold-color-bg-page);
 }
-.asl-real {
-  --fold-aside-layout-max: none;
-}
 
-/* ── page-layout gallery: a bordered window painted as the page backdrop; a real
-      fold-page-layout fills it. The gutter reads as the space between the window
-      edge and the (card / sunken) sections; a bleed band cancels it and sits
-      flush to the edges — live as the slider moves. No width cap: the page fills,
-      so there is nothing to scale — the window scrolls if the content is tall. ── */
-.pl-window {
-  max-height: 460px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-bg-page);
-}
-/* Header-slot toggles — a row of on/off chips. */
-.pl-toggles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.pl-chip {
-  padding: 4px 10px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-pill, 999px);
-  background: transparent;
-  color: var(--fold-color-text-secondary);
-  font-size: 12px;
-  cursor: pointer;
-}
 .pl-chip.is-on {
   border-color: var(--fold-color-primary);
   background: var(--fold-color-primary-soft, var(--fold-color-surface-sunken));
   color: var(--fold-color-text);
 }
-/* A neutral demo button for the pageActions slot. */
-.pl-btn {
-  padding: 6px 12px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-sm);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font-size: 13px;
-  cursor: pointer;
-}
-.pl-close {
-  margin-top: 8px;
-}
+
 /* Equal columns: all three tracks share the space. */
 .asl-real.is-equal {
   --fold-aside-layout-rail-width: minmax(0, 1fr);
   --fold-aside-layout-center-width: minmax(0, 1fr);
   --fold-aside-layout-side-width: minmax(0, 1fr);
 }
-/* Demo rail contents — left rail is a short nav, right rail a taller
-   details + actions stack, so the two rails differ in size and purpose. */
-.asl-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 10px;
-}
-.asl-nav a {
-  padding: 6px 10px;
-  border-radius: var(--fold-radius-sm);
-  color: var(--fold-color-text-secondary);
-  font-size: 13px;
-  cursor: pointer;
-}
-.asl-nav a.is-on {
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font-weight: 600;
-}
-.asl-meta {
-  margin: 10px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.asl-meta div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 13px;
-}
-.asl-meta dt {
-  color: var(--fold-color-text-muted);
-}
-.asl-meta dd {
-  margin: 0;
-  color: var(--fold-color-text);
-  font-weight: 600;
-}
-.asl-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-.asl-actions--stack {
-  flex-direction: column;
-}
-.asl-btn {
-  flex: 1;
-  padding: 7px 12px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-  background: var(--fold-color-surface-raised);
-  color: var(--fold-color-text);
-  font: inherit;
-  font-size: 13px;
-  cursor: pointer;
-}
-.asl-btn.is-primary {
-  border-color: var(--fold-color-primary);
-  background: var(--fold-color-primary);
-  color: var(--fold-color-on-primary);
-}
-/* fold-field-list demos: a light surface framing (the list host is
-   display:contents, so the frame lives on this wrapper, not the component). */
-.fld-demo {
-  max-width: 420px;
-  padding: 16px 18px;
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-surface-card);
-  border: 1px solid var(--fold-color-border-subtle);
-}
-/* Custom props inherit through the display:contents host down to the <dl>. */
-.fld-narrow {
-  --fold-field-list-label-width: 72px;
-}
+
 /* fold-input showcase: a wrapped row of inputs, each capped so several fit. */
 .fld-inputs {
   display: flex;
@@ -1419,348 +641,14 @@ fold-app-shell > .content > *:not(router-outlet) {
   gap: 14px;
   align-items: flex-end;
 }
+
 .fld-inputs fold-input {
   width: 200px;
 }
 
-/* ── tab-nav page mock: a page shell (header + nav + content) whose body renders
-   a distinct layout per tab, so the nav is shown driving real content. ── */
-.tn-page {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-}
-.tn-page-head {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.tn-page-title {
-  font-size: var(--fold-text-md);
-  font-weight: 700;
-  color: var(--fold-color-text);
-}
-.tn-page-sub {
-  font-size: var(--fold-text-xs);
-  color: var(--fold-color-text-muted);
-}
-
-/* Overview — stat tiles */
-.tn-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-.tn-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 14px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-surface-card);
-}
-.tn-stat-value {
-  font-size: var(--fold-text-lg);
-  font-weight: 700;
-  color: var(--fold-color-text);
-  font-variant-numeric: tabular-nums;
-}
-.tn-stat-label {
-  font-size: var(--fold-text-xs);
-  color: var(--fold-color-text-muted);
-}
-
-/* Members — avatar rows */
-.tn-rows,
-.tn-form,
-.tn-feed,
-.tn-table {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.tn-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-surface-card);
-}
-.tn-avatar {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--fold-color-primary-surface);
-  color: var(--fold-color-primary-text);
-  font-size: 11px;
-  font-weight: 700;
-}
-.tn-row-main {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-}
-.tn-row-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--fold-color-text);
-}
-.tn-row-sub {
-  font-size: var(--fold-text-xs);
-  color: var(--fold-color-text-muted);
-}
-
-/* Settings — label / value field rows */
-.tn-field {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--fold-color-border-subtle);
-}
-.tn-field-label {
-  font-size: 13px;
-  color: var(--fold-color-text-secondary);
-}
-.tn-field-control {
-  padding: 5px 10px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-sm);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font-size: 12px;
-}
-
-/* Activity — a dotted feed */
-.tn-event {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 6px 0;
-}
-.tn-dot {
-  flex: none;
-  width: 8px;
-  height: 8px;
-  margin-top: 5px;
-  border-radius: 50%;
-  background: var(--fold-color-primary);
-}
-
-/* Billing — a compact table */
-.tn-tr {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--fold-color-border-subtle);
-}
-.tn-amount {
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--fold-color-text);
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
-/* ── tab-layout page: a stand-in content panel for the active tab ── */
-.tl-demo-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.tl-demo-block {
-  height: 52px;
-  border-radius: var(--fold-radius-md);
-  border: 1px solid var(--fold-color-border-subtle);
-  background: var(--fold-color-surface-card);
-}
-
-/* ── themes page: theme cards + live swatch grids ─────────────── */
-.th-card + .th-card {
-  margin-top: 16px;
-}
-.th-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.th-id {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  min-width: 0;
-}
-.th-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--fold-color-text);
-}
-.th-attr {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 11px;
-  color: var(--fold-color-text-muted);
-}
-.th-body {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-}
-.th-summary {
-  max-width: 80ch;
-}
-.th-palette {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: 0;
-  font-size: 12px;
-  color: var(--fold-color-text-secondary);
-}
-
-/* The swatch grid renders INSIDE the theme it documents (data-theme on the
-   wrapper), so it paints itself: page background, card surface, text ramp. */
-.th-swatches {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
-  padding: 16px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-bg-page);
-  color: var(--fold-color-text);
-}
-.th-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
-.th-chips {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.th-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 11px;
-  color: var(--fold-color-text-secondary);
-}
-.th-swatch {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  border-radius: var(--fold-radius-sm);
-  border: 1px solid var(--fold-color-border);
-}
-.th-code {
-  max-width: none;
-}
-.th-rules {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 16px;
-}
-.th-consume {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.th-consume > div {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-/* themes page · the authoring guide */
-.th-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: none;
-}
-.th-step {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-.th-step-n {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: var(--fold-radius-pill);
-  background: var(--fold-color-primary-surface);
-  border: 1px solid var(--fold-color-primary-border);
-  color: var(--fold-color-primary-text);
-  font-size: 12px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-.th-step-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  max-width: 90ch;
-}
-.th-step-title {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--fold-color-text);
-}
-/* The example carries the weight of the step, so it gets a rule rather than
-   sitting as one more grey paragraph. */
-.th-step-ex {
-  display: flex;
-  gap: 10px;
-  margin: 0;
-  padding-left: 12px;
-  border-left: 2px solid var(--fold-color-border);
-  font-size: 12.5px;
-  line-height: 1.55;
-  color: var(--fold-color-text-secondary);
-}
 .th-step-ex .gal-tag {
   flex: none;
   padding-top: 2px;
-}
-.th-smells {
-  margin-top: 26px;
-}
-.th-smell-list {
-  margin: 0;
-  padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--fold-color-text-secondary);
 }
 
 /* ══ Home / landing (Fold) ═══════════════════════════════════════
@@ -1779,35 +667,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   --home-max: 1240px;
   container-type: inline-size;
 }
-/* The two rails flank the feature cards; the shell already owns the side gutter,
-   so the layout adds only top/bottom. */
-.home-layout {
-  --fold-aside-layout-rail-width: var(--home-rail);
-  --fold-aside-layout-side-width: var(--home-side);
-  --fold-aside-layout-gap: var(--home-gap);
-  --fold-aside-layout-max: var(--home-max);
-  --fold-aside-layout-pad: 0 0 56px;
-  --fold-aside-layout-pad-sm: 0 0 40px;
-  --fold-aside-layout-top: 16px;
-  --fold-aside-layout-stack: 24px;
-}
 
-/* Start-now row: the aside-layout's grid, mirrored, so the disclosure lands in
-   column 2 — aligned with the feature cards below, rails empty above it. */
-.home-startnow-row {
-  display: grid;
-  grid-template-columns:
-    var(--home-rail)
-    minmax(0, 1fr)
-    var(--home-side);
-  gap: var(--home-gap);
-  max-width: var(--home-max);
-  margin-inline: auto;
-  width: 100%;
-}
-.home-startnow-row .home-startnow {
-  grid-column: 2;
-}
 @container (max-width: 1040px) {
   .home-startnow-row {
     grid-template-columns: minmax(0, 1fr);
@@ -1815,284 +675,4 @@ fold-app-shell > .content > *:not(router-outlet) {
   .home-startnow-row .home-startnow {
     grid-column: 1;
   }
-}
-
-/* ── left rail: the numbers, one card ─────────────────────────── */
-.home-figures-body {
-  display: flex;
-  flex-direction: column;
-}
-.home-figure {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 16px;
-}
-.home-figure + .home-figure {
-  border-top: 1px solid var(--fold-color-border-subtle);
-}
-.home-figure-value {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--fold-color-primary-text);
-  font-variant-numeric: tabular-nums;
-}
-.home-figure-label {
-  text-align: right;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--fold-color-text-muted);
-}
-
-/* ── right rail: support ──────────────────────────────────────── */
-.home-support-body,
-.home-author-body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 14px 16px;
-}
-/* Support menu — a disclosure that reads as a button, opening onto three links. */
-.home-support-menu {
-  --fold-disclosure-summary-bg: var(--fold-color-primary-surface);
-  --fold-disclosure-summary-color: var(--fold-color-primary-text);
-  border-color: var(--fold-color-primary-border);
-}
-.home-support-summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.home-support-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-/* The email link can be long; let it shrink and ellipsize rather than push the
-   rail wider. */
-.home-author .home-link {
-  min-width: 0;
-}
-.home-author .home-link span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.home-links {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.home-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-surface-sunken);
-  color: var(--fold-color-text);
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    border-color 0.12s ease,
-    color 0.12s ease;
-}
-.home-link:hover {
-  border-color: var(--fold-color-primary-border);
-  color: var(--fold-color-primary-text);
-}
-.home-link fold-icon {
-  color: var(--fold-color-text-muted);
-}
-.home-link:hover fold-icon {
-  color: var(--fold-color-primary-text);
-}
-
-/* ── hero: content styling for the fold-hero-section band. The band chrome
-   (bleed, wash, hairline, centred column) lives in fold-hero-section; only the
-   home-specific pieces — watermark, mark, title, lede, CTAs — stay here. ── */
-
-/* The big version, behind everything: a huge number filled with the brand
-   gradient and blurred, so it reads as a soft coloured glow the shape of the
-   version — the hero's gradient, made into a thing. */
-.home-version-bg {
-  position: absolute;
-  z-index: 0;
-  left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  font-size: clamp(140px, 24vw, 300px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  background: linear-gradient(
-    175deg,
-    var(--fold-color-primary),
-    transparent 82%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: blur(5px);
-  opacity: 0.28;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* The small version stamp, top-right — the header wordmark's size, in primary. */
-.home-version {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  z-index: 2;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--fold-color-primary-text);
-  font-variant-numeric: tabular-nums;
-}
-.home-mark {
-  display: grid;
-  place-items: center;
-  width: 92px;
-  height: 92px;
-  border-radius: var(--fold-radius-lg);
-  background: var(--fold-color-primary-surface);
-  border: 1px solid var(--fold-color-primary-border);
-  color: var(--fold-color-primary-text);
-}
-.home-eyebrow {
-  margin-top: 2px;
-}
-.home-title {
-  margin: 0;
-  font-size: clamp(44px, 8vw, 72px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  color: var(--fold-color-text);
-}
-.home-lede {
-  margin: 0;
-  max-width: 56ch;
-  font-size: var(--fold-text-lg);
-  line-height: 1.6;
-  color: var(--fold-color-text-secondary);
-}
-/* The three pillars — Angular 22 · responsive · accessible — lift out of the
-   muted lede in full-strength text. */
-.home-lede strong {
-  font-weight: 700;
-  color: var(--fold-color-text);
-}
-.home-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 6px;
-}
-
-/* ── start now: a primary disclosure above the layout, a terminal inside.
-   Spacing between the page's bands is the page-layout body gap now. ── */
-.home-startnow {
-  --fold-disclosure-summary-bg: var(--fold-color-primary);
-  --fold-disclosure-summary-color: var(--fold-color-on-primary);
-  border-color: var(--fold-color-primary);
-}
-.home-startnow-summary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-}
-.home-startnow-hint {
-  margin-left: auto;
-  font-size: 12px;
-  font-weight: 600;
-  opacity: 0.85;
-}
-
-/* A terminal window: a title bar with traffic-light dots, then the session. */
-.home-terminal {
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  overflow: clip;
-  background: var(--fold-color-surface-sunken);
-}
-.home-terminal-bar {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 12px;
-  border-bottom: 1px solid var(--fold-color-border-subtle);
-  background: var(--fold-color-surface-subtle);
-}
-.home-terminal-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--fold-radius-round);
-  background: var(--fold-color-border);
-}
-.home-terminal-title {
-  margin-left: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--fold-color-text-muted);
-}
-.home-terminal-body {
-  margin: 0;
-  padding: 14px 16px;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--fold-color-text);
-  overflow-x: auto;
-}
-.home-terminal-line {
-  display: block;
-  white-space: pre;
-}
-.home-terminal-prompt {
-  color: var(--fold-color-primary-text);
-  user-select: none;
-}
-.home-terminal-out {
-  display: block;
-  color: var(--fold-color-text-muted);
-}
-.home-terminal-comment {
-  color: var(--fold-color-text-muted);
-}
-
-/* ── features ─────────────────────────────────────────────────── */
-.home-features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-}
-.home-feature-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-}
-.home-feature-icon {
-  display: inline-flex;
-  padding: 6px;
-  border-radius: var(--fold-radius-sm);
-  background: var(--fold-color-primary-surface);
-  color: var(--fold-color-primary-text);
-}
-.home-close {
-  margin-top: 4px;
 }

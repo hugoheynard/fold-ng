@@ -1,0 +1,91 @@
+/* avatar family page — the tab-nav that switches the three components. */
+.avatar-tabs {
+  margin-bottom: 24px;
+}
+
+/* avatar / avatar-detail tabs — demos (clickable) beside a live code panel. */
+.demo-inspect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.demo-groups {
+  flex: 1 1 360px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.demo-code {
+  flex: 1 1 320px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+}
+
+/* A demo becomes a click target — reset the button chrome, highlight on pick. */
+.demo-pick {
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: var(--fold-radius-md);
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.demo-pick--wide {
+  line-height: normal;
+  text-align: left;
+}
+
+.demo-pick:hover {
+  border-color: var(--fold-color-border);
+}
+
+/* The explanatory note in the code panel — a soft (tinted) warning callout. */
+.code-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-warning-border);
+  background: var(--fold-color-warning-surface);
+  color: var(--fold-color-warning-text);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.code-note fold-icon {
+  flex: none;
+  margin-top: 1px;
+}
+
+.code-pre--empty {
+  color: var(--fold-color-text-muted);
+}
+
+/* ── Avatar page: the app-wide palette switch ─────────────────── */
+.palette-switch {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.palette-switch button {
+  padding: 5px 12px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  text-transform: capitalize;
+  cursor: pointer;
+}

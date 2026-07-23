@@ -1,0 +1,194 @@
+/* ── themes page: theme cards + live swatch grids ─────────────── */
+.th-card + .th-card {
+  margin-top: 16px;
+}
+
+.th-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.th-id {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.th-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fold-color-text);
+}
+
+.th-attr {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--fold-color-text-muted);
+}
+
+.th-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.th-summary {
+  max-width: 80ch;
+}
+
+.th-palette {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 12px;
+  color: var(--fold-color-text-secondary);
+}
+
+/* The swatch grid renders INSIDE the theme it documents (data-theme on the
+   wrapper), so it paints itself: page background, card surface, text ramp. */
+.th-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-bg-page);
+  color: var(--fold-color-text);
+}
+
+.th-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.th-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.th-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--fold-color-text-secondary);
+}
+
+.th-swatch {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+}
+
+.th-code {
+  max-width: none;
+}
+
+.th-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.th-consume {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.th-consume > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* themes page · the authoring guide */
+.th-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.th-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.th-step-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-primary-surface);
+  border: 1px solid var(--fold-color-primary-border);
+  color: var(--fold-color-primary-text);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.th-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  max-width: 90ch;
+}
+
+.th-step-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fold-color-text);
+}
+
+/* The example carries the weight of the step, so it gets a rule rather than
+   sitting as one more grey paragraph. */
+.th-step-ex {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--fold-color-border);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--fold-color-text-secondary);
+}
+
+.th-smells {
+  margin-top: 26px;
+}
+
+.th-smell-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fold-color-text-secondary);
+}

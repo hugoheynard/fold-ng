@@ -1,4 +1,10 @@
-import { Component, computed, inject, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  inject,
+  signal,
+  ViewEncapsulation,
+} from "@angular/core";
 import {
   FoldAvatarComponent,
   FoldAvatarDetailComponent,
@@ -65,6 +71,8 @@ interface DemoGroup<T> {
     DevPlaygroundComponent,
   ],
   templateUrl: "./avatar.page.html",
+  styleUrl: "./avatar.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class AvatarPage {
   protected readonly avatarTabs: FoldTabNavItem[] = [

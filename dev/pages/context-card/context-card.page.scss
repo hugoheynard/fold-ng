@@ -1,0 +1,21 @@
+.gal-kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
+.gal-kv:first-child {
+  border-top: none;
+}
+
+.gal-k {
+  font-size: 12px;
+  color: var(--fold-color-text-muted);
+}
+
+.gal-v {
+  font-size: 12px;
+  font-weight: 600;
+}

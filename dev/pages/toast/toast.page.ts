@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldTabLayoutComponent,
@@ -29,6 +29,8 @@ import {
     FoldIconComponent,
   ],
   templateUrl: "./toast.page.html",
+  styleUrl: "./toast.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class ToastPage {
   private readonly toastService = inject(FoldToastService);

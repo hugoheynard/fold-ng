@@ -1,0 +1,103 @@
+/* ── fold-aside-layout demo ────────────────────────────────── */
+/* A real window auto-scaled to fit: the layout renders at its real width (desktop
+   1120 > the 1040 fold threshold → 3 cols; mobile 380 → 1 col) and is scaled down
+   with CSS `zoom` to exactly the window width (a ResizeObserver feeds the scale),
+   so it fills without horizontal scroll. `zoom` scales only the paint — layout,
+   the container-query fold and `position: sticky` all still resolve at the real
+   local width, so the fold stays honest and the rails stick as the (taller than
+   the window) centre column scrolls. */
+.asl-window {
+  height: 340px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-bg-page);
+  /* a window simulator: center the rendered "device" on the backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.asl-window-inner {
+  /* width (desktop 1120 / mobile 380) + auto-fit zoom are bound inline. */
+}
+
+.asl-real {
+  --fold-aside-layout-max: none;
+}
+
+/* Demo rail contents — left rail is a short nav, right rail a taller
+   details + actions stack, so the two rails differ in size and purpose. */
+.asl-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+}
+
+.asl-nav a {
+  padding: 6px 10px;
+  border-radius: var(--fold-radius-sm);
+  color: var(--fold-color-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.asl-nav a.is-on {
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font-weight: 600;
+}
+
+.asl-meta {
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.asl-meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.asl-meta dt {
+  color: var(--fold-color-text-muted);
+}
+
+.asl-meta dd {
+  margin: 0;
+  color: var(--fold-color-text);
+  font-weight: 600;
+}
+
+.asl-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.asl-actions--stack {
+  flex-direction: column;
+}
+
+.asl-btn {
+  flex: 1;
+  padding: 7px 12px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.asl-btn.is-primary {
+  border-color: var(--fold-color-primary);
+  background: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+}

@@ -1,4 +1,10 @@
-import { Component, computed, inject, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  inject,
+  signal,
+  ViewEncapsulation,
+} from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import { DevPlaygroundComponent } from "../../playground.component";
 import {
@@ -33,6 +39,8 @@ type TabBackground = "transparent" | "surface";
     DevPlaygroundComponent,
   ],
   templateUrl: "./tab-nav.page.html",
+  styleUrl: "./tab-nav.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class TabNavPage {
   private readonly panelHost = inject(FoldPanelHostService);

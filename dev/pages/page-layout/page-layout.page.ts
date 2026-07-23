@@ -1,4 +1,4 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
   FoldBadgeComponent,
@@ -29,6 +29,8 @@ import { KindBadgeComponent } from "../../kind-badge.component";
     DevPlaygroundComponent,
   ],
   templateUrl: "./page-layout.page.html",
+  styleUrl: "./page-layout.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class PageLayoutPage {
   /** Header slots, toggled independently so the anatomy is explorable. */

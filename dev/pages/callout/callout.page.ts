@@ -1,4 +1,4 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import {
   FoldButtonComponent,
   FoldCalloutComponent,
@@ -23,6 +23,8 @@ import { DevPlaygroundComponent } from "../../playground.component";
     DevPlaygroundComponent,
   ],
   templateUrl: "./callout.page.html",
+  styleUrl: "./callout.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class CalloutPage {
   protected readonly variants = [

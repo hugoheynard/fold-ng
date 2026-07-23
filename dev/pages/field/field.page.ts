@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldBadgeComponent,
@@ -25,5 +25,7 @@ import {
     FoldLinkComponent,
   ],
   templateUrl: "./field.page.html",
+  styleUrl: "./field.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class FieldPage {}

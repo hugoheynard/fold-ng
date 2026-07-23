@@ -1,0 +1,119 @@
+/* The preview window: a real-width shell scaled down with CSS `zoom` (auto-fit
+   via a ResizeObserver), centered on the backdrop; scrolls if it overflows. */
+.shell-window {
+  height: 460px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
+  background: var(--fold-color-bg-page);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.shell-preview {
+  /* The container the shell's container queries key off — the mode switch sets
+     its width so the shell folds (secondary at ≤1024, both at ≤768). A definite
+     height gives the shell room; `zoom` (bound inline) scales the whole thing. */
+  container-type: inline-size;
+  height: 640px;
+  transition: width var(--fold-motion-base);
+}
+
+/* The rails are real fold-menu instances — they size + round themselves. */
+.sp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 100%;
+  padding: 0 16px;
+  background: var(--fold-color-bg-header);
+  border-bottom: 1px solid var(--fold-color-border);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Preview drawer toggle — only rendered in mobile mode (see the page). Keeps the
+   "Header" label hugging it, actions pushed to the right. */
+.sp-hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-left: -4px;
+  border: 0;
+  border-radius: var(--fold-radius-sm);
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  cursor: pointer;
+}
+
+.sp-hamburger:hover {
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text);
+}
+
+.sp-header > span {
+  margin-right: auto;
+}
+
+.sp-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.sp-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sp-actions button:hover {
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-primary-text);
+}
+
+.sp-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.sp-block {
+  height: 64px;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-card);
+}
+
+/* A mini player bar in the shell's footer slot — shows the region live. */
+.sp-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 10px 16px;
+  background: var(--fold-color-bg-header);
+  border-top: 1px solid var(--fold-color-border);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sp-footer-time {
+  margin-left: auto;
+  color: var(--fold-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}

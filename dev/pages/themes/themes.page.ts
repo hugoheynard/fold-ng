@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, ViewEncapsulation } from "@angular/core";
 import {
   FoldButtonComponent,
   FoldCalloutComponent,
@@ -41,6 +41,8 @@ interface RoleGroup {
     FoldButtonComponent,
   ],
   templateUrl: "./themes.page.html",
+  styleUrl: "./themes.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class ThemesPage {
   protected readonly themes: readonly ThemeEntry[] = [

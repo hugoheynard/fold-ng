@@ -1,0 +1,45 @@
+/* ── page-layout gallery: a bordered window painted as the page backdrop; a real
+      fold-page-layout fills it. The gutter reads as the space between the window
+      edge and the (card / sunken) sections; a bleed band cancels it and sits
+      flush to the edges — live as the slider moves. No width cap: the page fills,
+      so there is nothing to scale — the window scrolls if the content is tall. ── */
+.pl-window {
+  max-height: 460px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-bg-page);
+}
+
+/* Header-slot toggles — a row of on/off chips. */
+.pl-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pl-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-pill, 999px);
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* A neutral demo button for the pageActions slot. */
+.pl-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.pl-close {
+  margin-top: 8px;
+}

@@ -1,0 +1,349 @@
+/* ── fold-app-shell page: a real shell scaled to fit, folding on its own width ── */
+/* legacy code switch — still used by other pages' token overlays. */
+.spm-code {
+  margin-left: auto;
+  padding: 6px 14px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ── "code" glass overlay — HTML usage | CSS variables, over the preview ── */
+.code-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--fold-color-glass);
+  backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--fold-blur-glass)) saturate(1.5);
+  border-radius: var(--fold-radius-lg);
+  overflow: hidden;
+}
+
+.code-overlay-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.code-overlay-pane + .code-overlay-pane {
+  border-left: 1px solid var(--fold-color-glass-border);
+}
+
+.code-overlay-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px 8px 14px;
+  border-bottom: 1px solid var(--fold-color-glass-border);
+}
+
+/* ── fold-menu page: 3 columns, full height — preview · settings · tokens ── */
+.menu-page {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(300px, 1fr) minmax(
+      240px,
+      320px
+    );
+  gap: 20px;
+  align-items: stretch;
+}
+
+.menu-col {
+  min-width: 0;
+}
+
+.menu-col--preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-preview-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* The preview fills the column height so it matches the settings/tokens cards. */
+.menu-preview {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
+  background: var(--fold-color-bg-page);
+}
+
+/* Stacked overlay (HTML over CSS) — the menu preview column is narrow + tall. */
+.code-overlay--stack {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.code-overlay--stack .code-overlay-pane + .code-overlay-pane {
+  border-left: none;
+  border-top: 1px solid var(--fold-color-glass-border);
+}
+
+/* Stack the 3 columns when the content area gets narrow. */
+@media (max-width: 1040px) {
+  .menu-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tok-group + .tok-group {
+  margin-top: 16px;
+}
+
+.tok-group-label {
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--fold-color-text-muted);
+}
+
+.tok-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
+.tok-group-label + .tok-row {
+  border-top: none;
+}
+
+.tok-swatch {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+}
+
+/* Radius chip — a solid tile whose corner rounding reflects the token value. */
+.tok-swatch--radius {
+  background: var(--fold-color-surface-raised);
+}
+
+.tok-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.tok-name {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--fold-color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tok-desc {
+  font-size: 11px;
+  color: var(--fold-color-text-muted);
+}
+
+/* The override input — freeform CSS value (colour, length, anything). Empty =
+   no override (the token falls back to the theme). */
+.tok-input {
+  flex: none;
+  width: 84px;
+  padding: 5px 7px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+}
+
+.tok-input:focus-visible {
+  outline: none;
+  border-color: var(--fold-color-primary);
+}
+
+.tok-input::placeholder {
+  color: var(--fold-color-text-faded);
+}
+
+.tok-reset {
+  margin-top: 16px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tok-reset:hover:not(:disabled) {
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-primary-text);
+}
+
+.tok-reset:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ss-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ss-group + .ss-group {
+  margin-top: 14px;
+}
+
+.ss-label {
+  font-size: 12px;
+  color: var(--fold-color-text-secondary);
+}
+
+.ss-label b {
+  color: var(--fold-color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.ss-group input[type="range"] {
+  width: 100%;
+  accent-color: var(--fold-color-primary);
+}
+
+/* ── Section builder (+/− sections, name, color, icon count) ──── */
+.ss-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ss-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ss-step button {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ss-step button:hover:not(:disabled) {
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-primary-text);
+}
+
+.ss-step button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ss-step b {
+  min-width: 14px;
+  text-align: center;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sec-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
+.sec-color {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-sm);
+  background: none;
+  cursor: pointer;
+}
+
+.sec-color::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.sec-color::-webkit-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+
+.sec-name {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: 12px;
+}
+
+.sec-name:focus-visible {
+  outline: none;
+  border-color: var(--fold-color-primary);
+}
+
+.sec-del {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--fold-radius-sm);
+  background: none;
+  color: var(--fold-color-text-muted);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sec-del:hover {
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-alert-text, var(--fold-color-text));
+}

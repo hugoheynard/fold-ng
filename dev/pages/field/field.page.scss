@@ -1,0 +1,14 @@
+/* fold-field-list demos: a light surface framing (the list host is
+   display:contents, so the frame lives on this wrapper, not the component). */
+.fld-demo {
+  max-width: 420px;
+  padding: 16px 18px;
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border-subtle);
+}
+
+/* Custom props inherit through the display:contents host down to the <dl>. */
+.fld-narrow {
+  --fold-field-list-label-width: 72px;
+}

@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldTabLayoutComponent,
@@ -27,6 +27,8 @@ import {
     FoldIconComponent,
   ],
   templateUrl: "./form-layout.page.html",
+  styleUrl: "./form-layout.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class FormLayoutPage {
   protected readonly formTabs: FoldTabNavItem[] = [

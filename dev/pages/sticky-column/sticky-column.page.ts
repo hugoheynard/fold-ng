@@ -1,4 +1,4 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import { DevPlaygroundComponent } from "../../playground.component";
 import {
@@ -20,6 +20,8 @@ import {
     DevPlaygroundComponent,
   ],
   templateUrl: "./sticky-column.page.html",
+  styleUrl: "./sticky-column.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class StickyColumnPage {
   protected readonly stickyDemoRows = [1, 2, 3, 4, 5, 6, 7, 8];

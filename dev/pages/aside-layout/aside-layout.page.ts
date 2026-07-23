@@ -5,6 +5,7 @@ import {
   ElementRef,
   signal,
   viewChild,
+  ViewEncapsulation,
 } from "@angular/core";
 import {
   FoldAsideLayoutComponent,
@@ -28,6 +29,8 @@ import { KindBadgeComponent } from "../../kind-badge.component";
     DevPlaygroundComponent,
   ],
   templateUrl: "./aside-layout.page.html",
+  styleUrl: "./aside-layout.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class AsideLayoutPage {
   protected readonly aslLeft = signal(false);

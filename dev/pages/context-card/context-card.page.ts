@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldContextCardComponent,
@@ -17,6 +17,8 @@ import {
     FoldLinkComponent,
   ],
   templateUrl: "./context-card.page.html",
+  styleUrl: "./context-card.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class ContextCardPage {
   protected readonly iconTones = ["primary", "neutral", "faded"] as const;

@@ -1,0 +1,343 @@
+/* The two rails flank the feature cards; the shell already owns the side gutter,
+   so the layout adds only top/bottom. */
+.home-layout {
+  --fold-aside-layout-rail-width: var(--home-rail);
+  --fold-aside-layout-side-width: var(--home-side);
+  --fold-aside-layout-gap: var(--home-gap);
+  --fold-aside-layout-max: var(--home-max);
+  --fold-aside-layout-pad: 0 0 56px;
+  --fold-aside-layout-pad-sm: 0 0 40px;
+  --fold-aside-layout-top: 16px;
+  --fold-aside-layout-stack: 24px;
+}
+
+/* Start-now row: the aside-layout's grid, mirrored, so the disclosure lands in
+   column 2 — aligned with the feature cards below, rails empty above it. */
+.home-startnow-row {
+  display: grid;
+  grid-template-columns:
+    var(--home-rail)
+    minmax(0, 1fr)
+    var(--home-side);
+  gap: var(--home-gap);
+  max-width: var(--home-max);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.home-startnow-row .home-startnow {
+  grid-column: 2;
+}
+
+/* ── left rail: the numbers, one card ─────────────────────────── */
+.home-figures-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-figure {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.home-figure + .home-figure {
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
+.home-figure-value {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--fold-color-primary-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-figure-label {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fold-color-text-muted);
+}
+
+/* ── right rail: support ──────────────────────────────────────── */
+.home-support-body,
+.home-author-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+/* Support menu — a disclosure that reads as a button, opening onto three links. */
+.home-support-menu {
+  --fold-disclosure-summary-bg: var(--fold-color-primary-surface);
+  --fold-disclosure-summary-color: var(--fold-color-primary-text);
+  border-color: var(--fold-color-primary-border);
+}
+
+.home-support-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-support-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* The email link can be long; let it shrink and ellipsize rather than push the
+   rail wider. */
+.home-author .home-link {
+  min-width: 0;
+}
+
+.home-author .home-link span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.home-link:hover {
+  border-color: var(--fold-color-primary-border);
+  color: var(--fold-color-primary-text);
+}
+
+.home-link fold-icon {
+  color: var(--fold-color-text-muted);
+}
+
+.home-link:hover fold-icon {
+  color: var(--fold-color-primary-text);
+}
+
+/* ── hero: content styling for the fold-hero-section band. The band chrome
+   (bleed, wash, hairline, centred column) lives in fold-hero-section; only the
+   home-specific pieces — watermark, mark, title, lede, CTAs — stay here. ── */
+
+/* The big version, behind everything: a huge number filled with the brand
+   gradient and blurred, so it reads as a soft coloured glow the shape of the
+   version — the hero's gradient, made into a thing. */
+.home-version-bg {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: clamp(140px, 24vw, 300px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(
+    175deg,
+    var(--fold-color-primary),
+    transparent 82%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: blur(5px);
+  opacity: 0.28;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* The small version stamp, top-right — the header wordmark's size, in primary. */
+.home-version {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 2;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--fold-color-primary-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-mark {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--fold-radius-lg);
+  background: var(--fold-color-primary-surface);
+  border: 1px solid var(--fold-color-primary-border);
+  color: var(--fold-color-primary-text);
+}
+
+.home-eyebrow {
+  margin-top: 2px;
+}
+
+.home-title {
+  margin: 0;
+  font-size: clamp(44px, 8vw, 72px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--fold-color-text);
+}
+
+.home-lede {
+  margin: 0;
+  max-width: 56ch;
+  font-size: var(--fold-text-lg);
+  line-height: 1.6;
+  color: var(--fold-color-text-secondary);
+}
+
+/* The three pillars — Angular 22 · responsive · accessible — lift out of the
+   muted lede in full-strength text. */
+.home-lede strong {
+  font-weight: 700;
+  color: var(--fold-color-text);
+}
+
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* ── start now: a primary disclosure above the layout, a terminal inside.
+   Spacing between the page's bands is the page-layout body gap now. ── */
+.home-startnow {
+  --fold-disclosure-summary-bg: var(--fold-color-primary);
+  --fold-disclosure-summary-color: var(--fold-color-on-primary);
+  border-color: var(--fold-color-primary);
+}
+
+.home-startnow-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.home-startnow-hint {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* A terminal window: a title bar with traffic-light dots, then the session. */
+.home-terminal {
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  overflow: clip;
+  background: var(--fold-color-surface-sunken);
+}
+
+.home-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-subtle);
+}
+
+.home-terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-border);
+}
+
+.home-terminal-title {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fold-color-text-muted);
+}
+
+.home-terminal-body {
+  margin: 0;
+  padding: 14px 16px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--fold-color-text);
+  overflow-x: auto;
+}
+
+.home-terminal-line {
+  display: block;
+  white-space: pre;
+}
+
+.home-terminal-prompt {
+  color: var(--fold-color-primary-text);
+  user-select: none;
+}
+
+.home-terminal-out {
+  display: block;
+  color: var(--fold-color-text-muted);
+}
+
+.home-terminal-comment {
+  color: var(--fold-color-text-muted);
+}
+
+/* ── features ─────────────────────────────────────────────────── */
+.home-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.home-feature-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.home-feature-icon {
+  display: inline-flex;
+  padding: 6px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+}
+
+.home-close {
+  margin-top: 4px;
+}

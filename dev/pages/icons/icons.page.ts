@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FOLD_BUILTIN_ICONS,
@@ -12,6 +12,8 @@ import {
   standalone: true,
   imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldIconComponent],
   templateUrl: "./icons.page.html",
+  styleUrl: "./icons.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class IconsPage {
   protected readonly iconSizeSteps = ["xs", "sm", "md", "lg", "xl"] as const;

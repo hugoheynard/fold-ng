@@ -1,0 +1,63 @@
+/* ── icons page — the fold-icon system + the full catalogue grid ────────── */
+.icon-sizes {
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  color: var(--fold-color-text);
+}
+
+.isz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.isz span {
+  font-size: 11px;
+  color: var(--fold-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.icon-colors {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+.icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 8px;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.icon-cell:hover {
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-primary-text);
+}
+
+.icon-cell-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  color: var(--fold-color-text-muted);
+}

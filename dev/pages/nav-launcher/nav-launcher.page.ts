@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, ViewEncapsulation } from "@angular/core";
 import {
   FoldButtonComponent,
   FoldCalloutComponent,
@@ -30,6 +30,8 @@ interface LauncherDest {
     FoldNavTileComponent,
   ],
   templateUrl: "./nav-launcher.page.html",
+  styleUrl: "./nav-launcher.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class NavLauncherPage {
   /** The live launcher's open state (the button + the launcher share it). */

@@ -5,6 +5,7 @@ import {
   effect,
   signal,
   viewChild,
+  ViewEncapsulation,
 } from "@angular/core";
 import {
   FoldContextCardComponent,
@@ -51,6 +52,8 @@ interface MenuSection {
     FoldIconComponent,
   ],
   templateUrl: "./menu.page.html",
+  styleUrl: "./menu.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class MenuPage {
   /* ── fold-menu preview — a live, editable menu built from a list of sections ── */

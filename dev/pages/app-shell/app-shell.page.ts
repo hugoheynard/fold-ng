@@ -5,6 +5,7 @@ import {
   ElementRef,
   signal,
   viewChild,
+  ViewEncapsulation,
 } from "@angular/core";
 import {
   FoldAppShellComponent,
@@ -42,6 +43,8 @@ type ShellMode = "desktop" | "tablet" | "mobile";
     DevPlaygroundComponent,
   ],
   templateUrl: "./app-shell.page.html",
+  styleUrl: "./app-shell.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class AppShellPage {
   protected readonly theme = signal<"dark" | "light">("dark");
