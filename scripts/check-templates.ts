@@ -70,7 +70,11 @@ export function checkTemplates(tsconfigPath: string): readonly NgDiagnostic[] {
 }
 
 function main(): void {
-  const errors = checkTemplates(TSCONFIG);
+  // Optional tsconfig override (`tsx check-templates.ts <tsconfig>`): the
+  // fixture-bite test points this at a deliberately-broken component to prove
+  // the gate exits non-zero. No arg → the real gate over src + gallery.
+  const arg = argv[2];
+  const errors = checkTemplates(arg ? resolve(arg) : TSCONFIG);
   if (errors.length === 0) {
     console.log(
       "✓ templates: strictTemplates clean (no dead bindings) — src + gallery",

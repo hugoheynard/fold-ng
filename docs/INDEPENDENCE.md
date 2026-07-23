@@ -78,19 +78,3 @@ Aujourd'hui l'app résout la **source** workspace. Post-publish, elle consomme l
       `eslint src demo` → `tsc -p tsconfig.app.json` → `lint:templates` →
       `vitest` → `pnpm run build`. Statut requis unique **`ci`** +
       **branch protection** sur `main`.
-
-## 4 · Durcissements restants
-
-- [ ] **`.prettierrc` explicite.** Le repo tourne aujourd'hui sur les défauts prettier
-      (3.9 a déjà reformaté 4 unions au 1ᵉʳ run). Figer le style (double quotes,
-      trailing commas, largeur) évite toute reformatte-surprise à un futur bump prettier.
-- [ ] **Prouver que les 5 bans échouent la CI** (`any` / `as` / `@ts-ignore` /
-      `eslint-disable` nu / tailles) avec une violation jetable.
-- [ ] **Fixture-bite `strictTemplates`** : un test qui pointe le gate sur un binding mort
-      et prouve qu'il **mord** (`checkTemplates()` est déjà paramétrable pour ça).
-
-## 5 · Ménage
-
-- [ ] **Archiver / aligner** [`TODO-fold-ng-mirror.md`](../../documentation/todos/TODO-fold-ng-mirror.md)
-      dans le monorepo : la décision **extraction** est tranchée (ce repo est la source de
-      vérité), le plan miroir est abandonné — le marquer pour éviter toute confusion future.
