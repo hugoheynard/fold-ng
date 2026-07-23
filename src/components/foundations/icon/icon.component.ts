@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, input } from "@angular/core";
+import {
+  Component,
+  ViewEncapsulation,
+  computed,
+  effect,
+  inject,
+  input,
+} from "@angular/core";
 import { DomSanitizer, type SafeHtml } from "@angular/platform-browser";
 import { FoldIconRegistry } from "./icon-registry.service";
 import type { FoldIconName } from "./builtin-icons";
@@ -27,6 +34,11 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
  * Colour + size come from CSS (`currentColor` + a `--icon-size` custom
  * property), so the SVG inherits `color` from the host.
  *
+ * Uses {@link ViewEncapsulation.None} so its styles can reach the injected SVG
+ * (Emulated's scoping attributes never land on `[innerHTML]` nodes). Every rule
+ * is rooted at the `fold-icon` element, so the global styles stay effectively
+ * scoped and never leak — no `::ng-deep` needed.
+ *
  * @example
  * ```html
  * <fold-icon name="search" />
@@ -40,6 +52,7 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
   standalone: true,
   templateUrl: "./icon.component.html",
   styleUrl: "./icon.component.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export class FoldIconComponent {
   /** Icon name — a built-in (autocompleted) or a consumer-registered string. */
