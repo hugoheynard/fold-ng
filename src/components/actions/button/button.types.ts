@@ -1,4 +1,4 @@
-/** Visual emphasis of a `fold-button`. */
+/** The button's role — one flat scale folding emphasis and intent. */
 export type FoldButtonVariant =
   | "primary"
   | "recommended"

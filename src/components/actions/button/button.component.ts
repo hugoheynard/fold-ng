@@ -55,12 +55,14 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
 })
 export class FoldButtonComponent {
   /**
-   * Visual emphasis.
-   * - `primary` — accent teal tint, default actions
-   * - `recommended` — amber, suggested actions
-   * - `critical` — red, destructive or urgent actions
+   * The button's role — a single flat scale that folds emphasis and intent into
+   * one choice (the combinations no screen needs, e.g. filled-destructive, are
+   * intentionally not expressible; add them only when a real screen wants one):
+   * - `primary` — accent teal tint, the default action on a screen
+   * - `solid` — filled accent, the one high-emphasis CTA
    * - `ghost` — neutral/transparent, secondary or cancel actions
-   * - `solid` — filled accent, high-emphasis CTAs
+   * - `recommended` — amber, a suggested action
+   * - `critical` — red, destructive or urgent actions
    */
   readonly variant = input<FoldButtonVariant>("primary");
 
