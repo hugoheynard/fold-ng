@@ -553,6 +553,74 @@ avatar-detail}/*` shims that re-exported `fold-ng` are deleted; all ~115
         aujourd'hui) ; slot **action** (« Annuler »/« Réessayer ») ; hotkey pour
         focaliser la région toasts (F6, cf. Radix/Sonner).
 
+## Button family — Road to 10 vs the benchmark (IMMEDIATE)
+
+Judged as an **internal DS** the button family (`fold-button` · `fold-button-icon`
+· `fold-toggle-icon`) is **9.5** — token-only, signals-first, correct
+momentary/toggle `aria-pressed`, reduced-motion, `booleanAttribute`, focus-visible.
+Judged as a **market tenor** (Radix · shadcn · MUI · Spectrum · Mantine) it's
+**~7**: not bugs — **capabilities the tenors treat as baseline and we don't ship**.
+This section closes that delta to **10**. Ordered by impact on the gap; the top
+three are ~all of the 9.5→10 distance.
+
+- [ ] **1 · Polymorphism — render as `<a>` (the archi lever).** `fold-button` is a
+      hard `<button>`, so a link styled as a button (`<a href>`/`routerLink`) is
+      impossible — the single most-used tenor capability (Radix `asChild`, MUI
+      `component=`, and **Angular Material itself** styles `<a mat-button>`).
+      **Do it the Angular-Material way:** turn `fold-button` from a component into
+      an **attribute directive `[foldButton]`** applicable to **both** `<button>`
+      and `<a>` (the surface/variant/size logic moves to the directive; the current
+      component becomes a thin `<button foldButton>` wrapper for back-compat, or the
+      ~279 `<fold-button>` sites migrate). Anchors get no `type`/`disabled` but gain
+      `href`/`routerLink`/`target`/`rel`; guard the disabled-anchor a11y
+      (`aria-disabled` + `tabindex="-1"`, no `href` activation). **Biggest single
+      lever** — unblocks every "link that looks like a button" in the app.
+- [ ] **2 · `loading`/busy state.** MUI `LoadingButton`, Ant/Chakra/Mantine
+      `loading`: a spinner replaces (or precedes) the label, the button goes
+      `aria-busy="true"` + inert, width stays stable (no reflow). **Blocked on a
+      `fold-spinner` primitive** (none exists) — build the spinner first
+      (token-sized, reduced-motion aware), then add `loading` to `fold-button` and
+      both icon buttons (the icon swaps to the spinner). Baseline for every async
+      submit; a tenor never defers this.
+- [ ] **3 · Orthogonal `variant` × `intent` (the Radix model).** Today `variant` is
+      **one flat scale folding emphasis + intent** (`primary`/`solid`/`ghost` are
+      emphasis; `recommended`/`critical` are intent) — Bootstrap-tier, a rung below
+      Radix's orthogonal `variant` (solid/soft/outline/ghost) × `color`
+      (neutral/accent/warning/danger). Splitting enables the un-expressible combos
+      (filled-destructive `solid`+`critical`) a tenor assumes. **Cost: ~230 call
+      sites** (`primary`×55 · `solid`×62 · `ghost`×98 · `critical`×14 ·
+      `recommended`×2 + 8 dyn bindings) → a codemod, not hand-edits. Deliberately
+      **not** done for the internal DS (over-abstraction for combos zero screens
+      use — see `docs(ui): honest fold-button variant taxonomy`); it re-enters scope
+      **only** because the goal here is explicit benchmark-parity. Do it as: add
+      `emphasis` + `intent` inputs, keep `variant` as a deprecated computed alias
+      for one release, codemod the app, then drop `variant`.
+- [ ] **4 · `forced-colors` (Windows high-contrast).** `all: unset` + `color-mix`
+      surfaces can **vanish** under `@media (forced-colors: active)` — Carbon,
+      Spectrum, FluentUI all handle it. Add a forced-colors block to the shared
+      surfaces (system-color borders, `ButtonText`/`Highlight`, keep the focus ring
+      as `CanvasText`). Real a11y gap, cheap fix, applies to the whole family.
+- [ ] **5 · `disabled` semantics — `aria-disabled` option.** Native `disabled`
+      drops the button from the a11y tree (a screen-reader user can't reach it to
+      learn _why_ it's off). Best-in-class (React-Aria) keeps it focusable via
+      `aria-disabled` + suppressed activation. Offer it (a `disabledReason`/
+      `aria-disabled` path) where the _why_ matters (form submit gated on
+      validation). Debatable default — decide, don't drift.
+- [ ] **6 · Family breadth — the compositions a tenor ships.** `ButtonGroup`
+      (segmented attached buttons), `SplitButton` (primary action + menu caret),
+      `ToggleGroup` (single/multi segmented, built on `fold-toggle-icon`),
+      `MenuButton` (the disclosure-icon pattern already flagged on the tab-config
+      triggers — `aria-expanded`, not `aria-pressed`). Scope, not quality — but a
+      "tenor" is judged on breadth. **Generalize on the 2nd real use**, not by
+      anticipation: extract each when a 2nd concrete site wants it.
+
+Lib-wide feeders already tracked elsewhere and **also** required for a true 10:
+tree-shakeable ESM distribution (§Tech debt · `fold-icon`), axe + visual-regression
+tests (§Road to 9.5 · 2), a browsable docs/Storybook + a 2nd consumer (§Road to
+9.5 · 5). Land 1–4 here and the family is **honestly ~9.5 vs the benchmark**; 5–6
+
+- the lib-wide feeders are the last half-point to **10**.
+
 ## Hardcore-review follow-ups (2026-07) — see `dev-rules.md` ledger
 
 Done in the review pass: elevation tokens + the component-usage colour guard
