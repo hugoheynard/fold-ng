@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from "vitest";
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelRef } from "./panel-ref";
 import { provideFoldPanelLabels } from "./panel-labels";
-import type { FoldIconName } from "../components/foundations/icon/builtin-icons";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 @Component({
   standalone: true,

@@ -140,17 +140,17 @@ export type {
 } from "./components/feedback/toast/toast.types";
 
 // ── Panels (overlay system) ──────────────────────────────────
-export { FoldPanelHostComponent } from "./panel/panel-host.component";
-export { FoldPanelHeaderComponent } from "./panel/panel-header.component";
-export { FoldPanelHostService } from "./panel/panel-host.service";
-export { FoldPanelRef } from "./panel/panel-ref";
-export { FoldPanelToggle } from "./panel/panel-toggle";
-export { FoldPanelComponentOutletDirective } from "./panel/panel-component-outlet.directive";
+export { FoldPanelHostComponent } from "./components/overlays/panel/panel-host.component";
+export { FoldPanelHeaderComponent } from "./components/overlays/panel/panel-header.component";
+export { FoldPanelHostService } from "./components/overlays/panel/panel-host.service";
+export { FoldPanelRef } from "./components/overlays/panel/panel-ref";
+export { FoldPanelToggle } from "./components/overlays/panel/panel-toggle";
+export { FoldPanelComponentOutletDirective } from "./components/overlays/panel/panel-component-outlet.directive";
 export {
   provideFoldPanelLabels,
   FOLD_PANEL_CLOSE_LABEL,
-} from "./panel/panel-labels";
-export type { FoldPanelLabels } from "./panel/panel-labels";
+} from "./components/overlays/panel/panel-labels";
+export type { FoldPanelLabels } from "./components/overlays/panel/panel-labels";
 export type {
   FoldPanelSide,
   FoldPanelContent,
@@ -159,7 +159,7 @@ export type {
   FoldPanelDescriptor,
   FoldTemplatePanelDescriptor,
   FoldComponentPanelDescriptor,
-} from "./panel/panel.types";
+} from "./components/overlays/panel/panel.types";
 
 // NB: FocusTrapDirective + ScrollLockService stay package-internal — the panel
 // host is their only consumer. Promote to the public API when one appears.

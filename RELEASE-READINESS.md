@@ -78,14 +78,19 @@ and the gallery nav — **layout first**.
 
 **Feedback** — `src/components/feedback/`
 
-| Component                          | DX  | Tests | Docs | Verdict                                                                   |
-| ---------------------------------- | :-: | :---: | :--: | ------------------------------------------------------------------------- |
-| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row                              |
-| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                                         |
-| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard                            |
-| `fold-empty-state`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** — gallery page (shared `/state`)                           |
-| `fold-loading`                     | 🟢  |  🟢   |  🟢  | **Ship-ready** — real `fold-spinner` + `role="status"`; gallery page      |
-| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label |
+| Component                          | DX  | Tests | Docs | Verdict                                                              |
+| ---------------------------------- | :-: | :---: | :--: | -------------------------------------------------------------------- |
+| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row                         |
+| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                                    |
+| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard                       |
+| `fold-empty-state`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** — gallery page (shared `/state`)                      |
+| `fold-loading`                     | 🟢  |  🟢   |  🟢  | **Ship-ready** — real `fold-spinner` + `role="status"`; gallery page |
+
+**Overlays** — `src/components/overlays/`
+
+| Component                     | DX  | Tests | Docs | Verdict                                                                   |
+| ----------------------------- | :-: | :---: | :--: | ------------------------------------------------------------------------- |
+| `fold-panel-host` / `-header` | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label |
 
 **Forms** — `src/components/forms/`
 

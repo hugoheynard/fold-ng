@@ -321,7 +321,7 @@ they earn the move.
       token). Fixed a latent `var(--t-fast) ease` double-easing bug (the motion
       token already carries the easing). Its one importer (contracts-tab)
       repointed; app copy deleted. 7 specs.
-- [x] **`PanelHeader`** (`fold-panel-header`) — **landed** in `src/panel/`
+- [x] **`PanelHeader`** (`fold-panel-header`) — **landed** in `src/components/overlays/panel/`
       alongside the overlay system. Inline styles, all tokens mapped: the header
       border → `glass-border` (it's a header on a glass panel), the close-button
       hover → `surface-hover` (both exact matches), no new token. Wired to the

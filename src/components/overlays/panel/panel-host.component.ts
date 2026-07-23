@@ -7,8 +7,8 @@ import {
   effect,
   inject,
 } from "@angular/core";
-import { FocusTrapDirective } from "../a11y/focus-trap.directive";
-import { ScrollLockService } from "../a11y/scroll-lock.service";
+import { FocusTrapDirective } from "../../../a11y/focus-trap.directive";
+import { ScrollLockService } from "../../../a11y/scroll-lock.service";
 import { FoldPanelComponentOutletDirective } from "./panel-component-outlet.directive";
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelHostService } from "./panel-host.service";

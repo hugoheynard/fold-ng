@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, output } from "@angular/core";
-import { FoldIconComponent } from "../components/foundations/icon/icon.component";
-import type { FoldIconName } from "../components/foundations/icon/builtin-icons";
+import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldPanelRef } from "./panel-ref";
 import { FOLD_PANEL_CLOSE_LABEL } from "./panel-labels";
 import { foldPanelTitleId } from "./panel.types";
