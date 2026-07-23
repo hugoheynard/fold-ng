@@ -99,3 +99,15 @@ button {
     opacity: 0.4;
   }
 }
+
+// ─── Reduced motion ────────────────────────────────────
+// Honour the OS setting like the rest of the library: drop the tweened
+// surface transitions and the press-scale so nothing animates.
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
+  }
+  button:active:not(:disabled) {
+    transform: none;
+  }
+}
