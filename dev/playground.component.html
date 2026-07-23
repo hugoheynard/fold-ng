@@ -26,7 +26,8 @@
           titleAction
           class="pg-code-toggle"
           size="sm"
-          variant="ghost"
+          emphasis="outline"
+          intent="neutral"
           [icon]="codeOpen() ? 'close' : 'code'"
           (click)="toggleCode()"
         >
@@ -46,7 +47,8 @@
                 <button
                   foldButton
                   size="sm"
-                  variant="ghost"
+                  emphasis="outline"
+                  intent="neutral"
                   [icon]="copied() ? 'check-circle' : 'copy'"
                   (click)="copy()"
                 >
@@ -55,7 +57,8 @@
                 <button
                   foldButton
                   size="sm"
-                  variant="ghost"
+                  emphasis="outline"
+                  intent="neutral"
                   icon="close"
                   (click)="toggleCode()"
                 >
@@ -84,7 +87,8 @@
           <button
             foldButton
             size="sm"
-            variant="ghost"
+            emphasis="outline"
+            intent="neutral"
             [icon]="copied() ? 'check-circle' : 'copy'"
             (click)="copy()"
           >

@@ -42,7 +42,9 @@
     <span class="gal-tag">actions — trailing controls</span>
     <fold-callout variant="alert">
       Storage quota exceeded — uploads are paused.
-      <button foldButton actions size="sm" variant="ghost">Upgrade</button>
+      <button foldButton actions size="sm" emphasis="outline" intent="neutral">
+        Upgrade
+      </button>
     </fold-callout>
   </div>
 
@@ -107,7 +109,13 @@
       >
         This contract is <strong>locked</strong> — no more edits. @if
         (coActions()) {
-        <button foldButton actions size="sm" variant="ghost">
+        <button
+          foldButton
+          actions
+          size="sm"
+          emphasis="outline"
+          intent="neutral"
+        >
           Request access
         </button>
         }

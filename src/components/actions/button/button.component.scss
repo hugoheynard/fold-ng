@@ -84,73 +84,94 @@
   padding-inline: 1.25em;
 }
 
-// ─── Variants ──────────────────────────────────────────
+// ─── Intent × Emphasis ─────────────────────────────────
+// Two orthogonal axes. Each INTENT sets `--b-*` colour locals; each EMPHASIS
+// consumes them into a fill pattern. The base state of the five legacy combos
+// (soft+primary, solid+primary, outline+neutral, soft+warning, soft+danger) is
+// byte-identical to the old flat variants; hover tints are unified (~2%, below
+// perception). New combos — filled-destructive, outline-primary, … — fall out
+// of the same engine for free.
 
-// Primary — accent teal tint
+// Intent locals -----------------------------------------------------------
 :host(.primary) {
-  color: var(--fold-color-primary-text);
-  background: var(--fold-color-primary-surface);
-  border: 1px solid var(--fold-color-primary-border);
+  --b-base: var(--fold-color-primary);
+  --b-strong: var(--fold-color-primary-strong);
+  --b-on: var(--fold-color-on-primary);
+  --b-text: var(--fold-color-primary-text);
+  --b-text-strong: var(--fold-color-primary-text);
+  --b-surface: var(--fold-color-primary-surface);
+  --b-border: var(--fold-color-primary-border);
+}
+:host(.warning) {
+  --b-base: var(--fold-color-warning);
+  --b-strong: color-mix(
+    in srgb,
+    var(--fold-color-warning) 84%,
+    var(--fold-color-bg-page)
+  );
+  --b-on: var(--fold-color-on-primary);
+  --b-text: var(--fold-color-warning-text);
+  --b-text-strong: var(--fold-color-warning-text);
+  --b-surface: var(--fold-color-warning-surface);
+  --b-border: var(--fold-color-warning-border);
+}
+:host(.danger) {
+  --b-base: var(--fold-color-alert);
+  --b-strong: color-mix(
+    in srgb,
+    var(--fold-color-alert) 84%,
+    var(--fold-color-bg-page)
+  );
+  --b-on: var(--fold-color-on-primary);
+  --b-text: var(--fold-color-alert-text);
+  --b-text-strong: var(--fold-color-alert-text);
+  --b-surface: var(--fold-color-alert-surface);
+  --b-border: var(--fold-color-alert-border);
+}
+:host(.neutral) {
+  --b-base: var(--fold-color-text-muted);
+  --b-strong: var(--fold-color-surface-hover);
+  --b-on: var(--fold-color-text);
+  --b-text: var(--fold-color-text-secondary);
+  --b-text-strong: var(--fold-color-text);
+  --b-surface: var(--fold-color-surface-hover);
+  --b-border: var(--fold-color-border);
+}
+
+// Emphasis patterns -------------------------------------------------------
+// Soft — tinted surface.
+:host(.soft) {
+  color: var(--b-text);
+  background: var(--b-surface);
+  border: 1px solid var(--b-border);
 
   &:hover:not(:disabled):not(.is-disabled) {
-    background: color-mix(in srgb, var(--fold-color-primary) 24%, transparent);
-    border-color: color-mix(
-      in srgb,
-      var(--fold-color-primary) 55%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--b-base) 22%, transparent);
+    border-color: color-mix(in srgb, var(--b-base) 52%, transparent);
   }
 }
 
-// Recommended — amber / warning
-:host(.recommended) {
-  color: var(--fold-color-warning-text);
-  background: var(--fold-color-warning-surface);
-  border: 1px solid var(--fold-color-warning-border);
-
-  &:hover:not(:disabled):not(.is-disabled) {
-    background: color-mix(in srgb, var(--fold-color-warning) 22%, transparent);
-    border-color: color-mix(
-      in srgb,
-      var(--fold-color-warning) 50%,
-      transparent
-    );
-  }
-}
-
-// Critical — red / alert
-:host(.critical) {
-  color: var(--fold-color-alert-text);
-  background: var(--fold-color-alert-surface);
-  border: 1px solid var(--fold-color-alert-border);
-
-  &:hover:not(:disabled):not(.is-disabled) {
-    background: color-mix(in srgb, var(--fold-color-alert) 22%, transparent);
-    border-color: color-mix(in srgb, var(--fold-color-alert) 55%, transparent);
-  }
-}
-
-// Ghost — neutral, minimal
-:host(.ghost) {
-  color: var(--fold-color-text-secondary);
-  background: transparent;
-  border: 1px solid var(--fold-color-border);
-
-  &:hover:not(:disabled):not(.is-disabled) {
-    color: var(--fold-color-text);
-    background: var(--fold-color-surface-hover);
-    border-color: var(--fold-color-border);
-  }
-}
-
-// Solid — filled accent background
+// Solid — filled with the intent colour.
 :host(.solid) {
-  color: var(--fold-color-on-primary);
-  background: var(--fold-color-primary);
+  color: var(--b-on);
+  background: var(--b-base);
   border: 1px solid transparent;
 
   &:hover:not(:disabled):not(.is-disabled) {
-    background: var(--fold-color-primary-strong);
+    background: var(--b-strong);
+  }
+}
+
+// Outline — transparent, hairline border.
+:host(.outline) {
+  color: var(--b-text);
+  background: transparent;
+  border: 1px solid var(--b-border);
+
+  &:hover:not(:disabled):not(.is-disabled) {
+    color: var(--b-text-strong);
+    background: var(--fold-color-surface-hover);
+    border-color: var(--b-border);
   }
 }
 

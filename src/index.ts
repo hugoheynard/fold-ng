@@ -22,7 +22,8 @@ export {
 } from "./components/content/badge/badge.component";
 export { FoldButtonComponent } from "./components/actions/button/button.component";
 export type {
-  FoldButtonVariant,
+  FoldButtonEmphasis,
+  FoldButtonIntent,
   FoldButtonSize,
   FoldButtonShape,
 } from "./components/actions/button/button.types";

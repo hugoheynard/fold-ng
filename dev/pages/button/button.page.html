@@ -2,21 +2,34 @@
   <gal-kind-badge titleBadge kind="component" />
   <div class="gal-stack">
     <div class="gal-cell">
-      <span class="gal-tag">variants (md)</span>
+      <span class="gal-tag">emphasis (intent = primary)</span>
       <div class="gal-row">
-        @for (v of buttonVariants; track v) {
+        @for (e of emphases; track e) {
         <button
           foldButton
-          [variant]="v"
+          [emphasis]="e"
           (click)="buttonClicks.set(buttonClicks() + 1)"
         >
-          {{ v }}
+          {{ e }}
         </button>
         }
       </div>
     </div>
     <div class="gal-cell">
-      <span class="gal-tag">sizes (primary)</span>
+      <span class="gal-tag">intent × emphasis (the full matrix)</span>
+      <div class="gal-stack" style="gap: 8px">
+        @for (e of emphases; track e) {
+        <div class="gal-row" style="align-items: center">
+          <span class="gal-tag" style="width: 60px">{{ e }}</span>
+          @for (i of intents; track i) {
+          <button foldButton [emphasis]="e" [intent]="i">{{ i }}</button>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag">sizes (soft primary)</span>
       <div class="gal-row" style="align-items: center">
         @for (s of buttonSizes; track s) {
         <button foldButton [size]="s">size {{ s }}</button>
@@ -28,16 +41,16 @@
       <div class="gal-row" style="align-items: center">
         <button foldButton size="sm">rounded</button>
         <button foldButton size="sm" shape="pill">pill</button>
-        <button foldButton variant="primary" size="sm" shape="pill">
+        <button foldButton size="sm" shape="pill">
           <fold-icon name="plus" [size]="13" />
           Proposer un avenant
         </button>
       </div>
     </div>
     <div class="gal-cell">
-      <span class="gal-tag">block (full-width)</span>
+      <span class="gal-tag">block (full-width, solid danger)</span>
       <div class="gal-narrow">
-        <button foldButton variant="critical" block>
+        <button foldButton emphasis="solid" intent="danger" block>
           <fold-icon name="bin" [size]="14" />
           Résilier le contrat
         </button>
@@ -48,11 +61,17 @@
         >icon shorthand (sized from the button) · disabled</span
       >
       <div class="gal-row" style="align-items: center">
-        <button foldButton variant="solid" icon="check">Confirm</button>
-        <button foldButton variant="ghost" size="sm" icon="edit">Edit</button>
-        <button foldButton variant="primary" iconTrailing="chevron-right">
-          Next
+        <button foldButton emphasis="solid" icon="check">Confirm</button>
+        <button
+          foldButton
+          emphasis="outline"
+          intent="neutral"
+          size="sm"
+          icon="edit"
+        >
+          Edit
         </button>
+        <button foldButton iconTrailing="chevron-right">Next</button>
         <button foldButton [disabled]="true">Disabled</button>
         <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
       </div>
@@ -60,12 +79,13 @@
     <div class="gal-cell">
       <span class="gal-tag">loading (busy — spinner, aria-busy, blocked)</span>
       <div class="gal-row" style="align-items: center">
-        <button foldButton variant="solid" [loading]="busy()">
+        <button foldButton emphasis="solid" [loading]="busy()">
           {{ busy() ? "Saving…" : "Save" }}
         </button>
         <button
           foldButton
-          variant="ghost"
+          emphasis="outline"
+          intent="neutral"
           size="sm"
           (click)="busy.set(!busy())"
         >
@@ -76,9 +96,21 @@
     <div class="gal-cell">
       <span class="gal-tag">link as a button (&lt;a foldButton&gt;)</span>
       <div class="gal-row" style="align-items: center">
-        <a foldButton variant="primary" href="#button">Anchor CTA</a>
-        <a foldButton variant="ghost" size="sm" href="#button">Ghost link</a>
-        <a foldButton variant="ghost" [disabled]="true" href="#button"
+        <a foldButton href="#button">Anchor CTA</a>
+        <a
+          foldButton
+          emphasis="outline"
+          intent="neutral"
+          size="sm"
+          href="#button"
+          >Ghost link</a
+        >
+        <a
+          foldButton
+          emphasis="outline"
+          intent="neutral"
+          [disabled]="true"
+          href="#button"
           >Disabled link</a
         >
       </div>

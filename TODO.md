@@ -581,24 +581,41 @@ three are ~all of the 9.5→10 distance.
       `aria-busy` + blocked, and stays **lit** (not dimmed like `disabled`) — the
       MUI `LoadingButton` shape. Spinner exported + gallery page + 4 specs; button
       loading specs added. Package + app gates green.
+- [x] **3 · Orthogonal `emphasis` × `intent` (the Radix model). DONE.** Split the
+    flat 5-value `variant` into `emphasis` (solid·soft·outline) × `intent`
+    (primary·neutral·warning·danger) — filled-destructive and every other combo
+    now expressible. Zero-visual-regression: the 5 legacy combos render
+    identically at rest (a token-driven `--b-*` engine; hover tints unified
+    within ~2%). ~256 sites codemodded (incl. 5 dynamic `[variant]` ternaries →
+    paired `[emphasis]`/`[intent]`). Chose `intent` over `tone` to avoid the
+    icon-button vocabulary collision (rule 4.9). App AOT + tsc + tests green.
+
+<details><summary>original analysis</summary>
+
 - [ ] **3 · Orthogonal `variant` × `intent` (the Radix model).** Today `variant` is
-      **one flat scale folding emphasis + intent** (`primary`/`solid`/`ghost` are
-      emphasis; `recommended`/`critical` are intent) — Bootstrap-tier, a rung below
-      Radix's orthogonal `variant` (solid/soft/outline/ghost) × `color`
-      (neutral/accent/warning/danger). Splitting enables the un-expressible combos
-      (filled-destructive `solid`+`critical`) a tenor assumes. **Cost: ~230 call
-      sites** (`primary`×55 · `solid`×62 · `ghost`×98 · `critical`×14 ·
-      `recommended`×2 + 8 dyn bindings) → a codemod, not hand-edits. Deliberately
-      **not** done for the internal DS (over-abstraction for combos zero screens
-      use — see `docs(ui): honest fold-button variant taxonomy`); it re-enters scope
-      **only** because the goal here is explicit benchmark-parity. Do it as: add
-      `emphasis` + `intent` inputs, keep `variant` as a deprecated computed alias
-      for one release, codemod the app, then drop `variant`.
-- [ ] **4 · `forced-colors` (Windows high-contrast).** `all: unset` + `color-mix`
-      surfaces can **vanish** under `@media (forced-colors: active)` — Carbon,
-      Spectrum, FluentUI all handle it. Add a forced-colors block to the shared
-      surfaces (system-color borders, `ButtonText`/`Highlight`, keep the focus ring
-      as `CanvasText`). Real a11y gap, cheap fix, applies to the whole family.
+    **one flat scale folding emphasis + intent** (`primary`/`solid`/`ghost` are
+    emphasis; `recommended`/`critical` are intent) — Bootstrap-tier, a rung below
+    Radix's orthogonal `variant` (solid/soft/outline/ghost) × `color`
+    (neutral/accent/warning/danger). Splitting enables the un-expressible combos
+    (filled-destructive `solid`+`critical`) a tenor assumes. **Cost: ~230 call
+    sites** (`primary`×55 · `solid`×62 · `ghost`×98 · `critical`×14 ·
+    `recommended`×2 + 8 dyn bindings) → a codemod, not hand-edits. Deliberately
+    **not** done for the internal DS (over-abstraction for combos zero screens
+    use — see `docs(ui): honest fold-button variant taxonomy`); it re-enters scope
+    **only** because the goal here is explicit benchmark-parity. Do it as: add
+    `emphasis` + `intent` inputs, keep `variant` as a deprecated computed alias
+    for one release, codemod the app, then drop `variant`. _(Shipped without the
+    alias — pre-release, so all sites were codemodded and `variant` dropped
+    outright.)_
+
+</details>
+
+- [x] **4 · `forced-colors` (Windows high-contrast). DONE.** `all: unset` +
+      `color-mix` surfaces could **vanish** under `@media (forced-colors: active)`
+      (and `solid`'s transparent border stayed invisible). Added forced-colors
+      blocks to `fold-button` + the shared icon-button surface: `ButtonText`
+      borders so the shape survives, `CanvasText` focus ring, `GrayText` disabled.
+      Matches Carbon/Spectrum/FluentUI.
 - [ ] **5 · `disabled` semantics — `aria-disabled` option.** Native `disabled`
       drops the button from the a11y tree (a screen-reader user can't reach it to
       learn _why_ it's off). Best-in-class (React-Aria) keeps it focusable via

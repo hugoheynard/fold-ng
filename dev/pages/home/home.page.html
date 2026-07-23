@@ -25,10 +25,14 @@
       tokens, never by touching a component.
     </p>
     <div class="home-cta">
-      <a foldButton routerLink="/app-shell" variant="primary" size="lg">
-        Browse the library
-      </a>
-      <a foldButton routerLink="/themes" variant="ghost" size="lg">
+      <a foldButton routerLink="/app-shell" size="lg"> Browse the library </a>
+      <a
+        foldButton
+        routerLink="/themes"
+        emphasis="outline"
+        intent="neutral"
+        size="lg"
+      >
         See the themes
       </a>
     </div>
@@ -97,7 +101,14 @@
       <fold-callout class="home-close" variant="accent">
         Everything on this page — the cards, the buttons, this callout, the
         rails beside it — is Fold rendering itself.
-        <a foldButton actions routerLink="/card" size="sm" variant="ghost">
+        <a
+          foldButton
+          actions
+          routerLink="/card"
+          size="sm"
+          emphasis="outline"
+          intent="neutral"
+        >
           Open a component
         </a>
       </fold-callout>

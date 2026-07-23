@@ -172,6 +172,20 @@ and prefer native `(click)` over a custom output. _Why:_ `fold-button` shipped a
 `button[foldButton], a[foldButton]` unlocked `<a foldButton routerLink>` with no
 second component (benchmark lever #1).
 
+4.11 **When one enum conflates two concepts, split it into orthogonal axes.** A
+flat `variant` that mixes _emphasis_ (how loud: solid/soft/outline) with _intent_
+(what it means: primary/neutral/warning/danger) can't express the cells it
+skipped (filled-destructive) and forces the consumer to memorise which of the two
+axes each value moves. Model the two axes as **separate inputs** and generate the
+matrix: each intent sets colour-role CSS locals (`--b-*`), each emphasis consumes
+them into a fill pattern — so N×M combinations come from N+M rules, not N×M
+hand-written ones. Migrate zero-visual-regression (map the existing combos to
+identical output; the new cells are additive) and name the axes to avoid
+collisions (`intent`, not `tone`, since the icon buttons already use `tone` with
+a different value set — rule 4.9). _Why:_ `fold-button` grew a 5-value `variant`
+(primary/solid/ghost/recommended/critical) that was Bootstrap-tier; splitting it
+into `emphasis` × `intent` reached the Radix-tier model (benchmark lever #3).
+
 ---
 
 ## 5 · Portability (no app leaks)

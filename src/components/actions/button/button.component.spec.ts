@@ -3,7 +3,11 @@ import { TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { describe, it, expect } from "vitest";
 import { FoldButtonComponent } from "./button.component";
-import type { FoldButtonVariant, FoldButtonSize } from "./button.types";
+import type {
+  FoldButtonEmphasis,
+  FoldButtonIntent,
+  FoldButtonSize,
+} from "./button.types";
 
 @Component({
   standalone: true,
@@ -11,7 +15,8 @@ import type { FoldButtonVariant, FoldButtonSize } from "./button.types";
   template: `
     <button
       foldButton
-      [variant]="variant()"
+      [emphasis]="emphasis()"
+      [intent]="intent()"
       [size]="size()"
       [shape]="shape()"
       [block]="block()"
@@ -26,7 +31,8 @@ import type { FoldButtonVariant, FoldButtonSize } from "./button.types";
   `,
 })
 class ButtonHost {
-  readonly variant = signal<FoldButtonVariant>("primary");
+  readonly emphasis = signal<FoldButtonEmphasis>("soft");
+  readonly intent = signal<FoldButtonIntent>("primary");
   readonly size = signal<FoldButtonSize>("md");
   readonly shape = signal<"rounded" | "pill">("rounded");
   readonly block = signal(false);
@@ -55,20 +61,24 @@ describe("foldButton", () => {
     expect(el.getAttribute("type")).toBe("button");
   });
 
-  it("applies variant + size + shape as host classes", () => {
+  it("applies emphasis + intent + size + shape as host classes", () => {
     const { fixture, host, el } = mountButton();
     expect(el.classList.contains("fold-button")).toBe(true);
+    expect(el.classList.contains("soft")).toBe(true);
     expect(el.classList.contains("primary")).toBe(true);
     expect(el.classList.contains("md")).toBe(true);
     expect(el.classList.contains("rounded")).toBe(true);
 
-    host.variant.set("ghost");
+    host.emphasis.set("solid");
+    host.intent.set("danger");
     host.size.set("sm");
     host.shape.set("pill");
     fixture.detectChanges();
-    expect(el.classList.contains("ghost")).toBe(true);
+    expect(el.classList.contains("solid")).toBe(true);
+    expect(el.classList.contains("danger")).toBe(true);
     expect(el.classList.contains("sm")).toBe(true);
     expect(el.classList.contains("pill")).toBe(true);
+    expect(el.classList.contains("soft")).toBe(false);
     expect(el.classList.contains("primary")).toBe(false);
     expect(el.classList.contains("rounded")).toBe(false);
   });
@@ -159,7 +169,12 @@ describe("foldButton", () => {
 @Component({
   standalone: true,
   imports: [FoldButtonComponent],
-  template: `<a foldButton variant="ghost" href="/next" [disabled]="disabled()"
+  template: `<a
+    foldButton
+    emphasis="outline"
+    intent="neutral"
+    href="/next"
+    [disabled]="disabled()"
     >Go</a
   >`,
 })
@@ -182,7 +197,8 @@ describe("foldButton on an <a>", () => {
     expect(el.tagName).toBe("A");
     expect(el.getAttribute("href")).toBe("/next");
     expect(el.hasAttribute("type")).toBe(false);
-    expect(el.classList.contains("ghost")).toBe(true);
+    expect(el.classList.contains("outline")).toBe(true);
+    expect(el.classList.contains("neutral")).toBe(true);
   });
 
   it("expresses disabled through ARIA, not the missing native attribute", () => {
@@ -202,7 +218,7 @@ describe("foldButton on an <a>", () => {
 @Component({
   standalone: true,
   imports: [FoldButtonComponent],
-  template: `<button foldButton class="consumer-class" variant="ghost">
+  template: `<button foldButton class="consumer-class" emphasis="outline">
     Hi
   </button>`,
 })
@@ -216,6 +232,6 @@ describe("foldButton class merging", () => {
       "button[foldButton]",
     ) as HTMLButtonElement;
     expect(el.classList.contains("consumer-class")).toBe(true);
-    expect(el.classList.contains("ghost")).toBe(true);
+    expect(el.classList.contains("outline")).toBe(true);
   });
 });

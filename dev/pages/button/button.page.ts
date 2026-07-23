@@ -4,8 +4,9 @@ import {
   FoldButtonComponent,
   FoldIconComponent,
   FoldPageLayoutComponent,
+  type FoldButtonEmphasis,
+  type FoldButtonIntent,
   type FoldButtonSize,
-  type FoldButtonVariant,
 } from "../../../src/index";
 
 /** `/button` — the `[foldButton]` gallery page. */
@@ -21,12 +22,16 @@ import {
   templateUrl: "./button.page.html",
 })
 export default class ButtonPage {
-  protected readonly buttonVariants: FoldButtonVariant[] = [
-    "primary",
-    "recommended",
-    "critical",
-    "ghost",
+  protected readonly emphases: FoldButtonEmphasis[] = [
+    "soft",
     "solid",
+    "outline",
+  ];
+  protected readonly intents: FoldButtonIntent[] = [
+    "primary",
+    "neutral",
+    "warning",
+    "danger",
   ];
   protected readonly buttonSizes: FoldButtonSize[] = ["sm", "md", "lg"];
   protected readonly buttonClicks = signal(0);

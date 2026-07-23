@@ -12,9 +12,10 @@ import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.componen
 import type { FoldIconSize } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type {
+  FoldButtonEmphasis,
+  FoldButtonIntent,
   FoldButtonShape,
   FoldButtonSize,
-  FoldButtonVariant,
 } from "./button.types";
 
 /** Leading/trailing icon size, derived from the button `size`. */
@@ -40,10 +41,10 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
  * @example
  * ```html
  * <button foldButton (click)="save()">Save</button>
- * <button foldButton variant="ghost" size="sm" (click)="cancel()">Cancel</button>
- * <button foldButton variant="critical" (click)="delete()">Delete</button>
+ * <button foldButton emphasis="outline" intent="neutral" size="sm" (click)="cancel()">Cancel</button>
+ * <button foldButton emphasis="solid" intent="danger" (click)="delete()">Delete</button>
  * <button foldButton [disabled]="!form.valid" type="submit">Submit</button>
- * <a foldButton variant="ghost" routerLink="/contracts">Contracts</a>
+ * <a foldButton emphasis="outline" intent="neutral" routerLink="/contracts">Contracts</a>
  * ```
  *
  * A `foldButton` expects a **text label** (projected) for its accessible name.
@@ -60,7 +61,8 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
   styleUrl: "./button.component.scss",
   encapsulation: ViewEncapsulation.Emulated,
   host: {
-    "[class]": '"fold-button " + variant() + " " + size() + " " + shape()',
+    "[class]":
+      '"fold-button " + emphasis() + " " + intent() + " " + size() + " " + shape()',
     "[class.block]": "block()",
     "[class.is-disabled]": "disabled()",
     "[class.is-loading]": "loading()",
@@ -83,16 +85,17 @@ export class FoldButtonComponent {
     this.host.nativeElement.tagName.toLowerCase() === "button";
 
   /**
-   * The button's role — a single flat scale that folds emphasis and intent into
-   * one choice (the combinations no screen needs, e.g. filled-destructive, are
-   * intentionally not expressible; add them only when a real screen wants one):
-   * - `primary` — accent teal tint, the default action on a screen
-   * - `solid` — filled accent, the one high-emphasis CTA
-   * - `ghost` — neutral/transparent, secondary or cancel actions
-   * - `recommended` — amber, a suggested action
-   * - `critical` — red, destructive or urgent actions
+   * Fill level — `soft` (default, tinted surface) · `solid` (filled) · `outline`
+   * (transparent + hairline). The *how loud* axis; pair with {@link intent}.
    */
-  readonly variant = input<FoldButtonVariant>("primary");
+  readonly emphasis = input<FoldButtonEmphasis>("soft");
+
+  /**
+   * Semantic intent — `primary` (default, accent) · `neutral` · `warning` ·
+   * `danger`. The *what it means* axis. Orthogonal to {@link emphasis}, so e.g.
+   * `emphasis="solid" intent="danger"` is a filled destructive button.
+   */
+  readonly intent = input<FoldButtonIntent>("primary");
 
   /** Size preset controlling font-size, padding, and radius. */
   readonly size = input<FoldButtonSize>("md");

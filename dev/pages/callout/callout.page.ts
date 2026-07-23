@@ -56,7 +56,7 @@ export default class CalloutPage {
     const body = [
       "  This contract is <strong>locked</strong> — no more edits.",
       this.coActions()
-        ? '  <button foldButton actions size="sm" variant="ghost">Request access</button>'
+        ? '  <button foldButton actions size="sm" emphasis="outline" intent="neutral">Request access</button>'
         : "",
     ].filter(Boolean);
     return [open, ...body, "</fold-callout>"].join("\n");

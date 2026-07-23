@@ -50,12 +50,12 @@ and the gallery nav — **layout first**.
 
 **Actions** — `src/components/actions/`
 
-| Component          | DX  | Tests | Docs | Verdict                                                                                  |
-| ------------------ | :-: | :---: | :--: | ---------------------------------------------------------------------------------------- |
-| `foldButton`       | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]` (link-as-button); native `(click)` |
-| `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                       |
-| `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                     |
-| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                                                        |
+| Component          | DX  | Tests | Docs | Verdict                                                                                              |
+| ------------------ | :-: | :---: | :--: | ---------------------------------------------------------------------------------------------------- |
+| `foldButton`       | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]`; `emphasis`×`intent`; `loading`; forced-colors |
+| `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                                   |
+| `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                                 |
+| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                                                                    |
 
 **Content** — `src/components/content/`
 
@@ -261,7 +261,15 @@ asserts it). Migration: ~262 call sites codemodded (`<fold-button>` →
 tsc + lint + tests green. **`loading` shipped** (benchmark lever #2): a
 `fold-spinner` replaces the leading glyph, sets `aria-busy`, blocks activation,
 and stays lit (not dimmed) — the MUI `LoadingButton` shape; the two icon buttons
-carry the same `loading` input.
+carry the same `loading` input. **Orthogonal `emphasis` × `intent`** shipped
+(benchmark lever #3): `emphasis` (solid·soft·outline) × `intent`
+(primary·neutral·warning·danger) replaced the flat 5-value `variant` — the Radix
+model, so filled-destructive (`solid`+`danger`) and every other combo are now
+expressible. Zero-visual-regression: the 5 legacy combos render identically at
+rest (hover tints unified within ~2%); a token-driven `--b-*` engine generates
+the rest. ~256 sites codemodded (incl. 5 dynamic `[variant]` ternaries split into
+`[emphasis]`+`[intent]`); **forced-colors** support added (lever #4). App AOT +
+tsc + tests green.
 
 **`fold-button-icon`** 🟢🟢🟢 — **Ship-ready.** P0-1 fixed by splitting the toggle
 into `fold-toggle-icon`; this component is now purely momentary (no `active`, no
