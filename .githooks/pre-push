@@ -1,0 +1,14 @@
+#!/bin/sh
+# Standalone fold-ng pre-push quality gate (INDEPENDENCE.md §3.4). Blocks a push
+# that would introduce type / lint / template / test regressions. Inert in the
+# monorepo (root .githooks wins); activate in the extracted repo.
+set -eu
+echo "→ tsc --noEmit"
+pnpm exec tsc --noEmit -p tsconfig.app.json
+echo "→ eslint (src dev)"
+pnpm run lint
+echo "→ strictTemplates gate"
+pnpm run lint:templates   # provided once check-ui-templates is vendored (§3.5)
+echo "→ vitest"
+pnpm test
+echo "✓ Local quality gate passed — pushing"

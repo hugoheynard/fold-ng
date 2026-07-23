@@ -35,23 +35,27 @@ seul le **sens de dépendance** change.
 
 Tout ce qui suit **ne résout pas** une fois `packages/ui/` sorti — à inliner ou remplacer.
 
-- [ ] **Chaîne `tsconfig` par `extends` relatifs.** `tsconfig.json` →
-      `../../tsconfig.angular.json` → `../../tsconfig.base.flags.json`. Les deux
-      parents vivent à la racine du monorepo → **inliner** les flags dans le repo
-      lib (§3.1).
-- [ ] **`@sh3pherd/eslint-config` (`workspace:*`).** Ne résout pas hors monorepo.
-      Le `eslint.config.mjs` de la lib importe 3 fragments : `noUnlimitedDisable`,
-      `typeEscapeHatches`, `stringifySafety`. → **vendoriser** ces fragments dans
-      le repo lib (ou publier `@sh3pherd/eslint-config`). (§3.2)
-- [ ] **Script `clean`** = `../../dev-toolbox/scripts/clean:package.sh` → remplacer
-      par un `rimraf dist out-tsc docs-api` local.
+- [x] **Chaîne `tsconfig` par `extends` relatifs. ✅ FAIT (in-monorepo).**
+      `tsconfig.json` n'`extends` plus `../../` — tous les flags de
+      `tsconfig.base.flags.json` + `tsconfig.angular.json` sont **inlinés** (avec
+      note de synchro). Vérifié behavior-identique : `tsc` 0, strictTemplates
+      clean, 472 tests. (§3.1)
+- [x] **`@sh3pherd/eslint-config` (`workspace:*`). ✅ FAIT.** Les 3 fragments
+      (`noUnlimitedDisable`, `typeEscapeHatches`, `stringifySafety`) **vendorisés**
+      dans `eslint.rules.mjs` (local) ; `eslint.config.mjs` pointe dessus ; la
+      devDep `workspace:*` est retirée. `eslint src dev` = 0 (règles identiques). (§3.2)
+- [x] **Script `clean`. ✅ FAIT.** `../../dev-toolbox/…` → `rm -rf dist out-tsc
+    docs-api …` local.
 - [ ] **Gate `lint:ui-templates`** = `tsx dev-toolbox/scripts/check-ui-templates.ts`
       (root). C'est le contrôle **`strictTemplates`** sur lib + gallery. → **copier**
-      le script dans le repo lib (`scripts/check-templates.ts`) ou le remplacer par
-      un `ngc`/build AOT équivalent. (§3.5)
-- [ ] **Hooks** = `.githooks/pre-commit` (lint-staged) + `.githooks/pre-push`
-      (`tsc --noEmit` + `eslint`), installés via `pnpm run setup:hooks` racine. →
-      reprovisionner dans le repo lib (§3.4).
+      le script dans le repo lib (`scripts/check-templates.ts` + script npm
+      `lint:templates`) ou le remplacer par un `ngc`/build AOT équivalent. **PAS
+      ENCORE** (dépend d'un tsx/script vendorisé). (§3.5)
+- [x] **Hooks. ✅ PRÊTS (templates inertes).** `.githooks/pre-commit` (lint-staged) + `.githooks/pre-push` (`tsc` + `eslint` + `lint:templates` + `test`) +
+      `.lintstagedrc.mjs` local créés dans `packages/ui/`. **Inertes dans le
+      monorepo** (git utilise le `.githooks` racine ; le pre-commit racine résout
+      le `.lintstagedrc` racine d'abord). **Activation à l'extraction** :
+      `git config core.hooksPath .githooks` via un `prepare`. (§3.4)
 - [ ] **`packageManager` / lockfile.** Le monorepo pin `pnpm@10.12.1`. Le repo lib
       garde pnpm, son propre `pnpm-lock.yaml` (formaté prettier, cf. règle lockfile).
 - [ ] **Consommateur = l'app.** Aujourd'hui `import … from 'fold-ng'` résout la
@@ -77,7 +81,9 @@ est déjà le contrat contributeur.
 
 ## 3 · Reproduire la barre EXACTE (le cœur — zéro desserrage)
 
-### 3.1 · Flags TypeScript (inliner, ne rien perdre)
+### 3.1 · Flags TypeScript (inliner, ne rien perdre) — ✅ FAIT
+
+> `tsconfig.json` est déjà self-contained (flags inlinés, note de synchro). Le reste ci-dessous documente ce qui a été inliné.
 
 Copier `tsconfig.base.flags.json` du monorepo à l'identique. Flags load-bearing à
 **garder tous** :
@@ -97,7 +103,9 @@ Plus les **`angularCompilerOptions`** de `tsconfig.json` :
 → Nouveau `tsconfig.json` autonome : ces flags en dur (plus d'`extends ../../`),
 `moduleResolution: bundler`, `types: ["node","vitest/globals"]`.
 
-### 3.2 · ESLint (vendoriser, garder les bans)
+### 3.2 · ESLint (vendoriser, garder les bans) — ✅ FAIT
+
+> Fragments vendorisés dans `eslint.rules.mjs`, `eslint.config.mjs` re-pointé, devDep `workspace:*` retirée. `eslint src dev` = 0.
 
 Recréer `eslint.config.mjs` **flat, TS-only** (ne lint pas le `.html`), identique :
 
@@ -125,7 +133,11 @@ trailing commas, largeur par défaut) pour éviter une reformatte massive au pre
 run. Garder la **règle lockfile** : `prettier --write pnpm-lock.yaml` après tout
 `pnpm install`.
 
-### 3.4 · Hooks Git (reprovisionner)
+### 3.4 · Hooks Git (reprovisionner) — ✅ PRÊTS (inertes, à activer à l'extraction)
+
+> `packages/ui/.githooks/{pre-commit,pre-push}` + `.lintstagedrc.mjs` créés.
+> Inertes dans le monorepo (hookPath racine gagne). Activer dans le repo isolé :
+> `git config core.hooksPath .githooks` via `"prepare"` dans `package.json`.
 
 - **pre-commit** : `lint-staged` → `eslint --fix` + `prettier --write` sur les
   fichiers stagés (+ `prettier` sur `pnpm-lock.yaml`).

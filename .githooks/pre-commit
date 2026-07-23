@@ -1,0 +1,5 @@
+#!/bin/sh
+# Standalone fold-ng pre-commit (INDEPENDENCE.md §3.4). Inert in the monorepo —
+# git uses the root .githooks; activate in the extracted repo with
+#   git config core.hooksPath .githooks   (via a `prepare` script).
+pnpm exec lint-staged

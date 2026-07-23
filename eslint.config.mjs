@@ -8,7 +8,7 @@ import {
   noUnlimitedDisable,
   typeEscapeHatches,
   stringifySafety,
-} from "@sh3pherd/eslint-config";
+} from "./eslint.rules.mjs";
 
 /**
  * Lint for `@sh3pherd/ui` — the design-system package, previously unlinted.
@@ -27,6 +27,7 @@ export default tslint.config(
       "out-tsc",
       "node_modules",
       "eslint.config.mjs",
+      "eslint.rules.mjs",
       "vite.config.ts",
       "**/*.js",
     ],

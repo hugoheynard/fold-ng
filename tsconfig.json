@@ -1,8 +1,52 @@
 {
-  "extends": "../../tsconfig.angular.json",
+  // Self-contained — NO `extends "../../…"`. Inlined from the monorepo's
+  // tsconfig.base.flags.json + tsconfig.angular.json so fold-ng stands alone once
+  // extracted (INDEPENDENCE.md §3.1). Keep these flags in lockstep with the
+  // monorepo base until the package is extracted; do not silently drop one.
   "compilerOptions": {
+    // --- Strictness (types) ---
+    "strict": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+
+    // --- Robustness / readability ---
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnusedLabels": false,
+
+    // --- Interop & modules ---
+    "verbatimModuleSyntax": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    // --- Build ergonomics ---
+    "skipLibCheck": true,
+    "incremental": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "allowJs": false,
+
+    // --- Decorators (Angular) ---
+    "experimentalDecorators": true,
+
+    // --- Target / module (from tsconfig.angular.json) ---
+    "target": "ES2022",
+    "module": "ES2022",
     "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    // --- Package build ---
     "types": ["node", "vitest/globals"],
     "declaration": true,
     "declarationMap": true,
