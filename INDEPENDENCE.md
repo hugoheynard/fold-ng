@@ -44,10 +44,15 @@ Tout ce qui suit **ne résout pas** une fois `packages/ui/` sorti — à inliner
 > `eslint-config-prettier`, `@angular/compiler-cli`, `@angular/build`,
 > `concurrently`, `onchange`, `tsx`, `lint-staged`. Hooks **activés**
 > (`prepare` → `core.hooksPath .githooks`) ; `lint:templates` = placeholder
-> inerte jusqu'à TS6. **Mur TS6 confirmé** : `vite build` (gallery AOT) et
-> `ng-packagr` traversent `NgtscProgram` qui refuse TS < 6.0 — seuls gates
-> restants, débloqués par le bump TS6 (étape suivante, §4). `vitest` passe car
-> le transform de test analog est JIT (pas de `NgtscProgram`).
+> inerte jusqu'à TS6. `vitest` passe car le transform de test analog est JIT
+> (pas de `NgtscProgram`).
+>
+> **✅ BUMP TS6 EFFECTUÉ — 2026-07-23.** `typescript ~5.9.3` → `~6.0.3`
+> (`typescript-eslint` 8.65 supporte TS 6.0 sans warning). Le mur est tombé :
+> **les 5 gates verts** — `eslint` 0, `tsc` 0, **`strictTemplates` actif et
+> clean** (placeholder `echo` remplacé par le vrai `tsx scripts/check-templates.ts`,
+> src + gallery), `vitest` **472/472**, **`vite build` gallery AOT** `✓ built`
+> (`NgtscProgram` accepte TS 6.0). Reste pour publier : `ng-packagr` (§4).
 
 - [x] **Chaîne `tsconfig` par `extends` relatifs. ✅ FAIT (in-monorepo).**
       `tsconfig.json` n'`extends` plus `../../` — tous les flags de
@@ -60,13 +65,11 @@ Tout ce qui suit **ne résout pas** une fois `packages/ui/` sorti — à inliner
       devDep `workspace:*` est retirée. `eslint src dev` = 0 (règles identiques). (§3.2)
 - [x] **Script `clean`. ✅ FAIT.** `../../dev-toolbox/…` → `rm -rf dist out-tsc
   docs-api …` local.
-- [~] **Gate `lint:ui-templates`** = `tsx dev-toolbox/scripts/check-ui-templates.ts`
-  (root). **Script vendorisé** dans `packages/ui/scripts/check-templates.ts`
-  (version standalone : tsconfig local + `@angular/compiler-cli` résolu depuis
-  les node_modules du package). **Activation bloquée sur TS6** — le compilateur
-  Angular refuse TS < 6.0 (même blocage que `ng-packagr`, §4) ; en monorepo la
-  lib est TS 5.9.3, donc le gate racine `lint:ui-templates` reste l'actif. À
-  l'extraction (TS6) : ajouter `"lint:templates": "tsx scripts/check-templates.ts"` + la devDep `@angular/compiler-cli`. (§3.5)
+- [x] **Gate `lint:ui-templates`. ✅ FAIT (TS6).** Script vendorisé dans
+  `scripts/check-templates.ts` (tsconfig local + `@angular/compiler-cli` résolu
+  depuis les node_modules du package), câblé `"lint:templates": "tsx scripts/check-templates.ts"`
+  et appelé par le pre-push. **Actif depuis le bump TS6** — tourne réellement,
+  clean sur src + gallery. (§3.5)
 - [x] **Hooks. ✅ PRÊTS (templates inertes).** `.githooks/pre-commit` (lint-staged) + `.githooks/pre-push` (`tsc` + `eslint` + `lint:templates` + `test`) +
       `.lintstagedrc.mjs` local créés dans `packages/ui/`. **Inertes dans le
       monorepo** (git utilise le `.githooks` racine ; le pre-commit racine résout
@@ -192,10 +195,11 @@ devDep pour le bootstrap test, jamais chargé au runtime), `jsdom`, `vitest`,
 Aujourd'hui bloqué : `ng-packagr@22` exige **TS `>=6.0 <6.1`** ; la lib est pin
 `~5.9.3` par contrainte monorepo. **Hors monorepo, ce pin saute** :
 
-- [ ] **Bump TS 6.0.x** (aligner `typescript-eslint` sur une version qui supporte
-      TS6 — celle de l'app). Repasser **toutes** les gates : `tsc`, `vitest` (472),
-      `eslint`, `vite build` (gallery), `strictTemplates`. Le blocage ng-packagr
-      disparaît alors.
+- [x] **Bump TS 6.0.x. ✅ FAIT (2026-07-23).** `typescript ~6.0.3` ;
+      `typescript-eslint` 8.65 supporte TS6 sans warning. **Toutes les gates
+      repassées vertes** : `tsc` 0, `vitest` 472/472, `eslint` 0, `vite build`
+      gallery `✓ built`, `strictTemplates` clean. Le blocage `ng-packagr` a
+      disparu.
 - [ ] **`ng-packagr`** : `ng-package.json` = `{ "dest":"dist", "lib":{ "entryFile":"src/index.ts" } }` + `tsconfig.lib.json` (`compilationMode:"partial"`, include `src/**`, exclude
       specs + `dev`).
 - [ ] **Assets tokens CSS** : le `dist/package.json` généré **ne porte pas** les
