@@ -65,7 +65,7 @@ Aujourd'hui l'app résout la **source** workspace. Post-publish, elle consomme l
 
 ## 3 · CI GitHub Actions (rejouer toutes les gates)
 
-- [ ] Workflow push/PR : `pnpm install` (+ lockfile prettier) → `eslint src dev` →
+- [ ] Workflow push/PR : `pnpm install` (+ lockfile prettier) → `eslint src demo` →
       `tsc --noEmit -p tsconfig.app.json` → `lint:templates` → `vitest run` →
       `vite build` → `ng-packagr` (`pnpm run build`).
 - [ ] Statut requis unique **`ci`** + **branch protection** sur `main`.

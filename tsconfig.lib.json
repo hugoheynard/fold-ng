@@ -16,7 +16,7 @@
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/__tests__/**",
-    "dev/**",
+    "demo/**",
     "scripts/**"
   ]
 }
