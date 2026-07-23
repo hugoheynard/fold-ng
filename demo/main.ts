@@ -5,7 +5,7 @@ import {
   withComponentInputBinding,
   withHashLocation,
 } from "@angular/router";
-import { provideFoldIcons } from "../src/index";
+import { provideFoldIcons } from "../src/public-api";
 import { GalleryShellComponent } from "./shell/gallery-shell.component";
 import { GALLERY_ROUTES } from "./gallery.routes";
 import "../src/tokens/index.css";

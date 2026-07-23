@@ -6,8 +6,8 @@ import {
   FoldNavTileComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-} from "../../../src/index";
-import type { FoldIconName } from "../../../src/index";
+} from "../../../src/public-api";
+import type { FoldIconName } from "../../../src/public-api";
 import { KindBadgeComponent } from "../../kind-badge.component";
 
 interface LauncherDest {

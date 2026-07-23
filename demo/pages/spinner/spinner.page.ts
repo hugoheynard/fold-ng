@@ -4,7 +4,7 @@ import {
   FoldSpinnerComponent,
   FoldPageLayoutComponent,
   type FoldSpinnerSize,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/spinner` — the `fold-spinner` gallery page. */
 @Component({

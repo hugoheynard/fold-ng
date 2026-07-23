@@ -1,5 +1,5 @@
 import { Component, computed, input } from "@angular/core";
-import { FoldBadgeComponent } from "../src/index";
+import { FoldBadgeComponent } from "../src/public-api";
 
 /** What a gallery page documents — a component, a directive, or a foundation
  *  (tokens, themes: no selector, but the ground everything else stands on). */

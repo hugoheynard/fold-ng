@@ -5,7 +5,7 @@ import {
   FoldCardComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import { THEME_SMELLS, THEME_STEPS } from "./theme-recipe";
 

@@ -1,4 +1,4 @@
-import type { FoldIconName } from "../../src/index";
+import type { FoldIconName } from "../../src/public-api";
 
 /** One entry in the gallery's Library nav — also the source of its route. */
 export interface GalleryNavItem {

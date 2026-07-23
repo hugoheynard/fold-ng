@@ -9,7 +9,7 @@ import {
   FoldIconRegistry,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { UI_ICONS } from "../../../src/components/foundations/icon/icons/ui.icons";
 import { NAV_ICONS } from "../../../src/components/foundations/icon/icons/nav.icons";
 import { MUSIC_ICONS } from "../../../src/components/foundations/icon/icons/music.icons";

@@ -7,7 +7,7 @@ import {
   FoldTabLayoutComponent,
   FoldTabNavComponent,
   type FoldTabNavItem,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/tab-layout` — the `fold-tab-layout` gallery page. */
 @Component({

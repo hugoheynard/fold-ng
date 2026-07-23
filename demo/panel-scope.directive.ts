@@ -1,5 +1,5 @@
 import { Directive, inject } from "@angular/core";
-import { FoldPanelHostService } from "../src/index";
+import { FoldPanelHostService } from "../src/public-api";
 
 /**
  * Scopes an `<fold-panel-host>` (and its openers) to a subtree by providing a

@@ -6,7 +6,7 @@ import {
   FoldPageLayoutComponent,
   type FoldCalloutAppearance,
   type FoldCalloutVariant,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import { DevPlaygroundComponent } from "../../playground.component";
 

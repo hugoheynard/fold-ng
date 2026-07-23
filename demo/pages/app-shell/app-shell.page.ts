@@ -17,7 +17,7 @@ import {
   FoldPanelHostComponent,
   FoldPanelHostService,
   FoldSliderComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { PanelScopeDirective } from "../../panel-scope.directive";
 import { TabPanelComponent } from "../../tab-panel.component";
 import { KindBadgeComponent } from "../../kind-badge.component";

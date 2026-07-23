@@ -5,7 +5,7 @@ import {
   input,
   signal,
 } from "@angular/core";
-import { FoldPanelHeaderComponent } from "../src/index";
+import { FoldPanelHeaderComponent } from "../src/public-api";
 import type { InspectTarget } from "./inspect";
 
 /** A token name paired with the value declared in the token layer (the base). */

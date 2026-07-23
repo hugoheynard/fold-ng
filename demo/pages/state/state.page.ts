@@ -8,7 +8,7 @@ import {
   FoldLoadingStateComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/state` — the async placeholders: `fold-loading` + `fold-empty-state`. */
 @Component({

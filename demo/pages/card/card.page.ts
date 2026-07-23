@@ -5,7 +5,7 @@ import {
   FoldButtonComponent,
   FoldCardComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 type CardSurface = "card" | "sunken";
 type CardRadius = "sm" | "md" | "lg";

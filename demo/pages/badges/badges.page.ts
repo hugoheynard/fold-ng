@@ -5,7 +5,7 @@ import {
   FoldIconComponent,
   FoldPageLayoutComponent,
   FoldStatusBadgeComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/badges` — the `fold-badge` · `fold-status-badge` · `fold-icon` gallery page. */
 @Component({

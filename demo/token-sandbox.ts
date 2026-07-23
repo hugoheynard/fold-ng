@@ -2,7 +2,7 @@ import {
   foldColorProperty,
   type FoldRadiusToken,
   type FoldSemanticColorToken,
-} from "../src/index";
+} from "../src/public-api";
 
 /**
  * Shared helpers for the gallery's "live token sandbox" pages (app-shell, menu,

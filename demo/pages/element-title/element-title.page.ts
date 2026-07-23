@@ -3,7 +3,7 @@ import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldElementTitleComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/element-title` — the `fold-element-title` gallery page. */
 @Component({

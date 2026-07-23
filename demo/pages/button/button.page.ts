@@ -10,7 +10,7 @@ import {
   type FoldButtonEmphasis,
   type FoldButtonIntent,
   type FoldButtonSize,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 interface ButtonFeature {
   readonly icon: string;

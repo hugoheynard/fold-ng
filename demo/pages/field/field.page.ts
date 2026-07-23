@@ -8,7 +8,7 @@ import {
   FoldLinkComponent,
   FoldPageLayoutComponent,
   FoldStatusBadgeComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/field` — the `fold-field` · `fold-field-list` gallery page. */
 @Component({

@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import { KindBadgeComponent } from "../../kind-badge.component";
-import { FoldLinkComponent, FoldPageLayoutComponent } from "../../../src/index";
+import {
+  FoldLinkComponent,
+  FoldPageLayoutComponent,
+} from "../../../src/public-api";
 
 /** `/link` — the `fold-link` gallery page. */
 @Component({

@@ -3,7 +3,7 @@ import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldHeroCardComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/hero-card` — the `fold-hero-card` gallery page (surface × accent matrix). */
 @Component({

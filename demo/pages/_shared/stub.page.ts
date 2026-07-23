@@ -3,7 +3,7 @@ import {
   FoldCardComponent,
   FoldPageLayoutComponent,
   type FoldIconName,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /**
  * Placeholder page for a nav entry whose demos have not been ported to their own

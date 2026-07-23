@@ -9,7 +9,7 @@ import {
   FoldTimelineComponent,
   type FoldTimelineDatePlacement,
   type FoldTimelineNode,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../playground.component";
 
 /** `/timeline` — the `fold-timeline` gallery page (both orientations + playground). */

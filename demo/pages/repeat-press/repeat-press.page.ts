@@ -8,7 +8,7 @@ import {
   FoldPageSectionComponent,
   FoldRepeatPressDirective,
   FoldSliderComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 const MIN = 0;
 const MAX = 50;

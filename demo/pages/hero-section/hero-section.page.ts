@@ -6,7 +6,7 @@ import {
   FoldHeroSectionComponent,
   FoldIconComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/hero-section` — the `fold-hero-section` gallery page (full-bleed page splash). */
 @Component({

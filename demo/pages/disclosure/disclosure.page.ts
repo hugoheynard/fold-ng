@@ -2,7 +2,7 @@ import { Component, computed, signal } from "@angular/core";
 import {
   FoldDisclosureComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { KindBadgeComponent } from "../../kind-badge.component";
 import { DevPlaygroundComponent } from "../../playground.component";
 

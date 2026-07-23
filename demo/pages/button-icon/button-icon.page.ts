@@ -4,7 +4,7 @@ import {
   FoldButtonIconComponent,
   FoldPageLayoutComponent,
   FoldToggleIconComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/button-icon` — the `fold-button-icon` (momentary) + `fold-toggle-icon`
  *  (toggle) gallery page. */

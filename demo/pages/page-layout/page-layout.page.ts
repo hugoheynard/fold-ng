@@ -8,7 +8,7 @@ import {
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
   FoldSliderComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../playground.component";
 import { KindBadgeComponent } from "../../kind-badge.component";
 

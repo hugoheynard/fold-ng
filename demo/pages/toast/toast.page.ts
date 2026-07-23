@@ -12,7 +12,7 @@ import {
   type FoldChoiceOption,
   type FoldTabNavItem,
   type FoldToastVariant,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/toast` — the `fold-toast` gallery page (variants · behavior · usage). */
 @Component({

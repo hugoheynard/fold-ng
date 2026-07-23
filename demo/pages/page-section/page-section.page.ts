@@ -6,7 +6,7 @@ import {
   FoldElementTitleComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/page-section` — the `fold-page-section` gallery page. */
 @Component({

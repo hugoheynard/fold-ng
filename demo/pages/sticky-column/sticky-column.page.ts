@@ -6,7 +6,7 @@ import {
   FoldSliderComponent,
   FoldStickyColumnDirective,
   type FoldStickyColumnAnchor,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/sticky-column` — the `[foldStickyColumn]` directive gallery page. */
 @Component({

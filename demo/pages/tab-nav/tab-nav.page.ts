@@ -17,7 +17,7 @@ import {
   type FoldBadgeVariant,
   type FoldIconName,
   type FoldTabNavItem,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { TabPanelComponent } from "../../tab-panel.component";
 
 type TabStyle = "underline" | "fill";

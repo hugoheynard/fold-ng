@@ -12,7 +12,7 @@ import {
   FoldPanelHostComponent,
   FoldPanelHostService,
   FoldToastContainerComponent,
-} from "../../src/index";
+} from "../../src/public-api";
 import { InspectPanelComponent } from "../inspect-panel.component";
 import { closestFold, inspect } from "../inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";

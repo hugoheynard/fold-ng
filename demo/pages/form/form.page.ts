@@ -14,7 +14,7 @@ import {
   FoldSliderComponent,
   FoldTabNavComponent,
   type FoldTabNavItem,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../playground.component";
 
 /** `/form` — the `fold-input` gallery page (text · number · select · search). */

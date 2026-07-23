@@ -4,7 +4,7 @@ import {
   FoldContextCardComponent,
   FoldLinkComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/context-card` — the `fold-context-card` gallery page. */
 @Component({

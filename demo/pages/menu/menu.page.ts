@@ -19,7 +19,7 @@ import {
   type FoldMenuLevel,
   type FoldMenuTint,
   type FoldMenuTogglePlacement,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import {
   applyOverrides,
   colorToken,

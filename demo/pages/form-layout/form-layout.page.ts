@@ -10,7 +10,7 @@ import {
   FoldTabNavComponent,
   type FoldChoiceOption,
   type FoldTabNavItem,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/form-layout` — a settings-style form driven by a vertical tab-nav. */
 @Component({

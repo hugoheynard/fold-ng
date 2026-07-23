@@ -3,7 +3,7 @@ import { KindBadgeComponent } from "../../kind-badge.component";
 import {
   FoldFileDropzoneComponent,
   FoldPageLayoutComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 
 /** `/dropzone` — the `fold-file-dropzone` gallery page. */
 @Component({

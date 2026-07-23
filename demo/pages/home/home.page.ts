@@ -14,7 +14,7 @@ import {
   type FoldIconName,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-} from "../../../src/index";
+} from "../../../src/public-api";
 import pkg from "../../../package.json";
 
 /** A headline number on the landing hero. */
