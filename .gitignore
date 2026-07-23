@@ -3,3 +3,4 @@ out-tsc/
 *.tsbuildinfo
 # compiled config emitted by tooling — source is the .ts
 vitest.config.js
+docs-api/

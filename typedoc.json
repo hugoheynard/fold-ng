@@ -1,0 +1,21 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "tsconfig": "tsconfig.app.json",
+  "out": "docs-api",
+  "name": "fold-ng — API",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "githubPages": false,
+  "highlightLanguages": [
+    "typescript",
+    "javascript",
+    "html",
+    "css",
+    "scss",
+    "bash",
+    "json"
+  ]
+}

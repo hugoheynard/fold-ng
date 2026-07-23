@@ -340,10 +340,28 @@ components still inline. Template stays inline (no `templateUrl`).
 (repo `fold-ng`, package `@sh3pherd/fold`, dark theme `umbra`, MIT; one-way
 subtree mirror → public `dev`, gallery served on GitHub Pages via hash routing).
 
-- [ ] Decide the build: `ng-packagr` (needed once we ship Angular components) vs
-      source-consumed (today's monorepo pattern).
-- [ ] Package exports, `files`, versioning, changelog.
-- [ ] Flip `private: false` + registry/publish flow.
+- [x] **Package metadata + discoverability (DONE).** Broad keywords, query-first
+      description, `repository.directory`, `sideEffects`, README badges +
+      install/quickstart first, `llms.txt` (LLM index), `CHANGELOG.md`, version
+      `0.1.0`. Typedoc wired (`pnpm --filter fold-ng docs:api` → `docs-api/`,
+      gitignored) for an indexable API site to deploy alongside the gallery.
+- [ ] **Build decision — `ng-packagr` belongs in the MIRROR/CI, not dev.**
+      Probed 2026-07-23: `ng-packagr@22` / `@angular/build` **hard-require
+      TypeScript `>=6.0 <6.1`**, but `fold-ng` is pinned to `~5.9.3` (the
+      deliberate package-level TS pin — only the app moved to TS6). So the
+      compiled build cannot run in the dev package without a separate TS6 bump of
+      the whole `fold-ng` toolchain (vitest/analog/eslint) — a decision of its own.
+      **Recommendation:** keep the monorepo consuming `fold-ng` as source (today's
+      `exports` → `./src/index.ts`, which the TS6 app compiles fine); run
+      `ng-packagr` in the **public mirror's CI** (fresh TS6 toolchain) and
+      `npm publish` from `dist/`. Ready recipe for the mirror: - `ng-package.json`: `{ "dest": "dist", "lib": { "entryFile": "src/index.ts" } }` - `tsconfig.lib.json`: extends base, `angularCompilerOptions.compilationMode: "partial"`, include `src/**/*.ts`, exclude specs + `dev`. - **Token CSS caveat:** ng-packagr's generated `dist/package.json` won't
+      carry the custom `./tokens.css` exports — copy `src/tokens/*.css` as
+      assets and re-add those `exports` in the publish step. - Alternative if we'd rather ship source: bump `fold-ng` to TS 6.0.x to match
+      Angular 22 (verify vitest/analog/typescript-eslint on TS6 first).
+- [x] Package `exports`, `files`, versioning, changelog — **DONE** (files now ship
+      `CHANGELOG.md` + `llms.txt`; `exports` stay source for the monorepo).
+- [ ] Flip `private: false` + registry/publish flow. _(`private: false` already
+      set; needs the mirror repo + `npm publish --provenance`.)_
 
 ## Explore
 
