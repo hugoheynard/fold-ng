@@ -32,6 +32,22 @@ describe("FoldToggleIconComponent", () => {
     expect(host.hasAttribute("data-active")).toBe(true);
   });
 
+  it("goes busy while loading: spinner, aria-busy, toggling blocked", () => {
+    const { component, host, button } = create({
+      icon: "eye",
+      loading: true,
+    });
+    const spy = vi.fn();
+    component.toggled.subscribe(spy);
+    expect(host.querySelector("fold-spinner")).toBeTruthy();
+    expect(host.querySelector("fold-icon")).toBeNull();
+    expect(button.getAttribute("aria-busy")).toBe("true");
+    expect(button.disabled).toBe(true);
+    button.click();
+    expect(component.active()).toBe(false);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it("flips active and emits toggled on click", () => {
     const { component, button } = create({ icon: "eye" });
     const spy = vi.fn();

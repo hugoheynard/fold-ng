@@ -100,6 +100,13 @@ button {
   }
 }
 
+// Loading — the button is `:disabled` (blocked) but shows a spinner, so keep it
+// lit rather than dimmed, and hint "busy" over "unavailable".
+:host([data-loading]) button:disabled {
+  opacity: 1;
+  cursor: progress;
+}
+
 // ─── Reduced motion ────────────────────────────────────
 // Honour the OS setting like the rest of the library: drop the tweened
 // surface transitions and the press-scale so nothing animates.

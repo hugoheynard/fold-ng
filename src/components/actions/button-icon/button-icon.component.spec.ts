@@ -46,6 +46,21 @@ describe("FoldButtonIconComponent", () => {
     ).toBe(false);
   });
 
+  it("goes busy while loading: spinner replaces the icon, aria-busy, no emit", () => {
+    const { fixture, component } = create({ icon: "reload", loading: true });
+    const spy = vi.fn();
+    component.clicked.subscribe(spy);
+    const host = fixture.nativeElement as HTMLElement;
+    const btn = host.querySelector("button") as HTMLButtonElement;
+    expect(host.querySelector("fold-spinner")).toBeTruthy();
+    expect(host.querySelector("fold-icon")).toBeNull();
+    expect(btn.getAttribute("aria-busy")).toBe("true");
+    expect(btn.disabled).toBe(true);
+    expect(host.getAttribute("data-loading")).toBe("");
+    btn.click();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it("forwards tooltip to title + aria-label", () => {
     const { fixture } = create({ icon: "bin", tooltip: "Delete row" });
     const btn = fixture.nativeElement.querySelector("button") as HTMLElement;

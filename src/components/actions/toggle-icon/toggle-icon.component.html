@@ -1,10 +1,15 @@
 <button
   [type]="type()"
-  [disabled]="disabled()"
+  [disabled]="disabled() || loading()"
   [attr.title]="tooltip() || null"
   [attr.aria-label]="tooltip() || null"
   [attr.aria-pressed]="active() ? 'true' : 'false'"
+  [attr.aria-busy]="loading() ? 'true' : null"
   (click)="onClick($event)"
 >
-  <fold-icon [name]="icon()" [size]="iconSize()" />
+  @if (loading()) {
+    <fold-spinner [size]="iconSize()" aria-hidden="true" />
+  } @else {
+    <fold-icon [name]="icon()" [size]="iconSize()" />
+  }
 </button>

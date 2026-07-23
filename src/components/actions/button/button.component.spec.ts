@@ -16,6 +16,7 @@ import type { FoldButtonVariant, FoldButtonSize } from "./button.types";
       [shape]="shape()"
       [block]="block()"
       [disabled]="disabled()"
+      [loading]="loading()"
       [type]="type()"
       [icon]="icon()"
       [iconTrailing]="iconTrailing()"
@@ -30,6 +31,7 @@ class ButtonHost {
   readonly shape = signal<"rounded" | "pill">("rounded");
   readonly block = signal(false);
   readonly disabled = signal<boolean | "">(false);
+  readonly loading = signal(false);
   readonly type = signal<"button" | "submit" | "reset">("button");
   readonly icon = signal<string | undefined>(undefined);
   readonly iconTrailing = signal<string | undefined>(undefined);
@@ -105,6 +107,37 @@ describe("foldButton", () => {
     expect(el.disabled).toBe(true);
     el.click(); // native: a disabled button dispatches nothing
     expect(clicks).toBe(1);
+  });
+
+  it("goes busy while loading: spinner, aria-busy, blocked, but not dimmed", () => {
+    const { fixture, host, el } = mountButton();
+    let clicks = 0;
+    el.addEventListener("click", () => (clicks += 1));
+
+    host.loading.set(true);
+    fixture.detectChanges();
+
+    expect(el.querySelector("fold-spinner")).not.toBeNull();
+    expect(el.getAttribute("aria-busy")).toBe("true");
+    // Blocked like disabled (native attr), but the "dim" class is NOT applied.
+    expect(el.disabled).toBe(true);
+    expect(el.classList.contains("is-loading")).toBe(true);
+    expect(el.classList.contains("is-disabled")).toBe(false);
+
+    el.click();
+    expect(clicks).toBe(0);
+  });
+
+  it("shows the spinner instead of the leading icon while loading", () => {
+    const { fixture, host, el } = mountButton();
+    host.icon.set("check");
+    fixture.detectChanges();
+    expect(el.querySelector("fold-icon")).not.toBeNull();
+
+    host.loading.set(true);
+    fixture.detectChanges();
+    expect(el.querySelector("fold-spinner")).not.toBeNull();
+    expect(el.querySelector("fold-icon")).toBeNull();
   });
 
   it("disables via the bare attribute form (booleanAttribute)", () => {

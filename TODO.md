@@ -573,13 +573,14 @@ three are ~all of the 9.5→10 distance.
       Custom `clicked` output dropped for native `(click)`. ~262 sites codemodded
       (incl. inline `.ts` templates + 6 nav → `<a foldButton>`); full app AOT + tsc + lint + tests green (0 net new failures). Icon shorthand kept (the template
       survives). **No back-compat wrapper — all consumers migrated (pre-release).**
-- [ ] **2 · `loading`/busy state.** MUI `LoadingButton`, Ant/Chakra/Mantine
-      `loading`: a spinner replaces (or precedes) the label, the button goes
-      `aria-busy="true"` + inert, width stays stable (no reflow). **Blocked on a
-      `fold-spinner` primitive** (none exists) — build the spinner first
-      (token-sized, reduced-motion aware), then add `loading` to `fold-button` and
-      both icon buttons (the icon swaps to the spinner). Baseline for every async
-      submit; a tenor never defers this.
+- [x] **2 · `loading`/busy state. DONE.** Built the `fold-spinner` primitive first
+      (currentColor arc, sized off the icon scale so width stays stable,
+      reduced-motion → static ring, `label`→`role="status"` else decorative). Then
+      added `loading` (booleanAttribute) to `fold-button` + `fold-button-icon` +
+      `fold-toggle-icon`: the spinner replaces the leading glyph, the control goes
+      `aria-busy` + blocked, and stays **lit** (not dimmed like `disabled`) — the
+      MUI `LoadingButton` shape. Spinner exported + gallery page + 4 specs; button
+      loading specs added. Package + app gates green.
 - [ ] **3 · Orthogonal `variant` × `intent` (the Radix model).** Today `variant` is
       **one flat scale folding emphasis + intent** (`primary`/`solid`/`ghost` are
       emphasis; `recommended`/`critical` are intent) — Bootstrap-tier, a rung below

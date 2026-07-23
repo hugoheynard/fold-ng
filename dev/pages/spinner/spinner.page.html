@@ -1,0 +1,34 @@
+<fold-page-layout title="spinner">
+  <gal-kind-badge titleBadge kind="component" />
+  <div class="gal-stack">
+    <div class="gal-cell">
+      <span class="gal-tag">sizes (xs · sm · md · lg · xl)</span>
+      <div class="gal-row" style="align-items: center; gap: 20px">
+        @for (s of sizes; track s) {
+        <fold-spinner [size]="s" />
+        }
+      </div>
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag">inherits colour (currentColor)</span>
+      <div class="gal-row" style="align-items: center; gap: 20px">
+        <span style="color: var(--fold-color-primary)"
+          ><fold-spinner size="lg"
+        /></span>
+        <span style="color: var(--fold-color-alert)"
+          ><fold-spinner size="lg"
+        /></span>
+        <span style="color: var(--fold-color-text-muted)"
+          ><fold-spinner size="lg"
+        /></span>
+      </div>
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag">standalone with a label (role="status")</span>
+      <div class="gal-row" style="align-items: center; gap: 10px">
+        <fold-spinner label="Loading contracts" />
+        <span class="gal-tag">announces the wait to assistive tech</span>
+      </div>
+    </div>
+  </div>
+</fold-page-layout>

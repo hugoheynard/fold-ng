@@ -57,5 +57,31 @@
         <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
       </div>
     </div>
+    <div class="gal-cell">
+      <span class="gal-tag">loading (busy — spinner, aria-busy, blocked)</span>
+      <div class="gal-row" style="align-items: center">
+        <button foldButton variant="solid" [loading]="busy()">
+          {{ busy() ? "Saving…" : "Save" }}
+        </button>
+        <button
+          foldButton
+          variant="ghost"
+          size="sm"
+          (click)="busy.set(!busy())"
+        >
+          toggle busy
+        </button>
+      </div>
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag">link as a button (&lt;a foldButton&gt;)</span>
+      <div class="gal-row" style="align-items: center">
+        <a foldButton variant="primary" href="#button">Anchor CTA</a>
+        <a foldButton variant="ghost" size="sm" href="#button">Ghost link</a>
+        <a foldButton variant="ghost" [disabled]="true" href="#button"
+          >Disabled link</a
+        >
+      </div>
+    </div>
   </div>
 </fold-page-layout>

@@ -1,0 +1,57 @@
+// ═══════════════════════════════════════════════════════
+//  fold-spinner — indeterminate loading arc. currentColor,
+//  sized off --fold-spinner-size (icon scale). The spin
+//  duration is a component constant (continuous rotation is
+//  not a shared UI-transition token; those bake `ease`).
+// ═══════════════════════════════════════════════════════
+
+:host {
+  display: inline-flex;
+  width: var(--fold-spinner-size, 20px);
+  height: var(--fold-spinner-size, 20px);
+  flex-shrink: 0;
+  color: inherit; // currentColor drives the stroke
+  line-height: 0;
+}
+
+.fold-spinner-svg {
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  animation: fold-spinner-rotate 0.8s linear infinite;
+}
+
+.fold-spinner-track,
+.fold-spinner-head {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.fold-spinner-track {
+  opacity: 0.2;
+}
+
+.fold-spinner-head {
+  stroke-linecap: round;
+  // r=9 → circumference ≈ 56.5; show ~30% as the moving head.
+  stroke-dasharray: 56.5;
+  stroke-dashoffset: 40;
+}
+
+@keyframes fold-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Reduced motion — stop rotating; show a fuller static ring so it still reads
+// as a busy indicator rather than a stray arc.
+@media (prefers-reduced-motion: reduce) {
+  .fold-spinner-svg {
+    animation: none;
+  }
+  .fold-spinner-head {
+    stroke-dashoffset: 14;
+  }
+}

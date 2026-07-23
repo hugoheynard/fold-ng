@@ -15,7 +15,7 @@ the concrete work to reach ship-quality.
 
 Legend: 🟢 ship-ready · 🟡 minor work · 🔴 blocker.
 
-Scope audited: **31 components + the panel subsystem + 3 directives**, 80 public
+Scope audited: **32 components + the panel subsystem + 3 directives**, 80 public
 exports, **402 test blocks across 62 spec files**, **114 built-in icons**. No
 `any` / `as unknown` / `@ts-ignore` / `eslint-disable` / raw-colour violations in
 component _source_ (the token contract holds); the lone spec-side `as unknown`
@@ -101,12 +101,13 @@ and the gallery nav — **layout first**.
 
 **Foundations** — `src/components/foundations/`
 
-| Component            | DX  | Tests | Docs | Verdict                                                  |
-| -------------------- | :-: | :---: | :--: | -------------------------------------------------------- |
-| `fold-icon`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — shared sprite, trust guard, token sizes |
-| `[foldSurface]`      | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
-| `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page       |
-| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo       |
+| Component            | DX  | Tests | Docs | Verdict                                                                            |
+| -------------------- | :-: | :---: | :--: | ---------------------------------------------------------------------------------- |
+| `fold-icon`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — shared sprite, trust guard, token sizes                           |
+| `fold-spinner`       | 🟢  |  🟢   |  🟢  | **Ship-ready** — currentColor, icon-sized, reduced-motion; powers button `loading` |
+| `[foldSurface]`      | 🟢  |  🟢   |  🟢  | **Ship-ready**                                                                     |
+| `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page                                 |
+| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo                                 |
 
 **Ship-ready today (21):** app-shell, page-layout, page-section, hero-section,
 aside-layout, tab-layout, avatar-list, callout, element-title, field,
@@ -256,10 +257,11 @@ keep native `disabled`/`type`. Consumers use native `(click)` (the custom
 `type` gains `reset`; `prefers-reduced-motion` honoured; `@example` tag. The
 `[class]` host binding merges with a consumer's static class (regression test
 asserts it). Migration: ~262 call sites codemodded (`<fold-button>` →
-`<button foldButton>` / `<a foldButton>`, `(clicked)` → `(click)`), full app AOT
-
-- tsc + lint + tests green. Deferred: a `loading`/busy affordance (needs a
-  spinner primitive first — a separate project).
+`<button foldButton>` / `<a foldButton>`, `(clicked)` → `(click)`); app AOT +
+tsc + lint + tests green. **`loading` shipped** (benchmark lever #2): a
+`fold-spinner` replaces the leading glyph, sets `aria-busy`, blocks activation,
+and stays lit (not dimmed) — the MUI `LoadingButton` shape; the two icon buttons
+carry the same `loading` input.
 
 **`fold-button-icon`** 🟢🟢🟢 — **Ship-ready.** P0-1 fixed by splitting the toggle
 into `fold-toggle-icon`; this component is now purely momentary (no `active`, no

@@ -7,6 +7,7 @@ import {
   output,
 } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
 import type { FoldIconSize } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type {
@@ -38,7 +39,7 @@ import type {
 @Component({
   selector: "fold-toggle-icon",
   standalone: true,
-  imports: [FoldIconComponent],
+  imports: [FoldIconComponent, FoldSpinnerComponent],
   templateUrl: "./toggle-icon.component.html",
   styleUrl: "./toggle-icon.component.scss",
   host: {
@@ -46,6 +47,7 @@ import type {
     "[attr.data-size]": "size()",
     "[attr.data-tone]": "tone()",
     "[attr.data-active]": 'active() ? "" : null',
+    "[attr.data-loading]": "loading() ? '' : null",
   },
 })
 export class FoldToggleIconComponent {
@@ -66,6 +68,9 @@ export class FoldToggleIconComponent {
 
   /** Disable the button — dims it and blocks pointer events. */
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  /** Swap the icon for a spinner and go busy — blocks toggling, stays lit. */
+  readonly loading = input(false, { transform: booleanAttribute });
 
   /** Tooltip text — sets both `title` and `aria-label`. Strongly recommended. */
   readonly tooltip = input<string>();
@@ -91,7 +96,7 @@ export class FoldToggleIconComponent {
   });
 
   onClick(e: MouseEvent): void {
-    if (this.disabled()) {
+    if (this.disabled() || this.loading()) {
       return;
     }
     this.active.update((v) => !v);

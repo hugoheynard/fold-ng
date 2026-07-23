@@ -30,4 +30,5 @@ export default class ButtonPage {
   ];
   protected readonly buttonSizes: FoldButtonSize[] = ["sm", "md", "lg"];
   protected readonly buttonClicks = signal(0);
+  protected readonly busy = signal(false);
 }

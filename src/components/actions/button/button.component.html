@@ -1,4 +1,6 @@
-@if (icon(); as ic) {
+@if (loading()) {
+  <fold-spinner [size]="iconSize()" aria-hidden="true" />
+} @else if (icon(); as ic) {
   <fold-icon [name]="ic" [size]="iconSize()" aria-hidden="true" />
 }
 <ng-content />

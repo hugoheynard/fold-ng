@@ -71,6 +71,8 @@ export type {
 export { FoldChoiceRowComponent } from "./components/content/choice-row/choice-row.component";
 export type { FoldChoiceOption } from "./components/content/choice-row/choice-row.component";
 export { FoldIconComponent } from "./components/foundations/icon/icon.component";
+export { FoldSpinnerComponent } from "./components/foundations/spinner/spinner.component";
+export type { FoldSpinnerSize } from "./components/foundations/spinner/spinner.component";
 export { FoldIdService } from "./a11y/id.service";
 export { FoldFieldIdDirective } from "./a11y/field-id.directive";
 export { FoldRepeatPressDirective } from "./directives/repeat-press.directive";

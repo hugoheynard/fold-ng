@@ -8,6 +8,7 @@ import {
   input,
 } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
 import type { FoldIconSize } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type {
@@ -54,7 +55,7 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
 @Component({
   selector: "button[foldButton], a[foldButton]",
   standalone: true,
-  imports: [FoldIconComponent],
+  imports: [FoldIconComponent, FoldSpinnerComponent],
   templateUrl: "./button.component.html",
   styleUrl: "./button.component.scss",
   encapsulation: ViewEncapsulation.Emulated,
@@ -62,12 +63,15 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
     "[class]": '"fold-button " + variant() + " " + size() + " " + shape()',
     "[class.block]": "block()",
     "[class.is-disabled]": "disabled()",
-    // <button> takes the native disabled + type; <a> can't, so it gets the ARIA
-    // equivalents (and the surface is pointer-events:none while disabled).
-    "[attr.disabled]": "isButton && disabled() ? true : null",
+    "[class.is-loading]": "loading()",
+    // Loading blocks interaction like disabled, but keeps the surface lit (spinner
+    // shown) rather than dimmed. <button> takes native disabled + type; <a> can't,
+    // so it gets the ARIA equivalents (the surface is pointer-events:none either way).
+    "[attr.disabled]": "isButton && blocked() ? true : null",
     "[attr.type]": "isButton ? type() : null",
-    "[attr.aria-disabled]": "!isButton && disabled() ? true : null",
-    "[attr.tabindex]": "!isButton && disabled() ? -1 : null",
+    "[attr.aria-disabled]": "!isButton && blocked() ? true : null",
+    "[attr.aria-busy]": "loading() ? true : null",
+    "[attr.tabindex]": "!isButton && blocked() ? -1 : null",
     "(click)": "onClick($event)",
   },
 })
@@ -121,9 +125,21 @@ export class FoldButtonComponent {
   /** Disable the control — dims it and blocks activation (native on a button, ARIA on an anchor). */
   readonly disabled = input(false, { transform: booleanAttribute });
 
-  /** Swallow activation while disabled (covers keyboard-activated anchors). */
+  /**
+   * Show a spinner in place of the leading icon and go busy: blocks activation
+   * and sets `aria-busy`, but keeps the surface lit (not dimmed like `disabled`).
+   * The spinner is icon-sized, so the button width doesn't jump.
+   */
+  readonly loading = input(false, { transform: booleanAttribute });
+
+  /** Interaction is blocked while disabled OR loading. */
+  protected readonly blocked = computed(
+    () => this.disabled() || this.loading(),
+  );
+
+  /** Swallow activation while blocked (covers keyboard-activated anchors). */
   onClick(event: Event): void {
-    if (this.disabled()) {
+    if (this.blocked()) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }

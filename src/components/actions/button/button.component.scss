@@ -38,6 +38,14 @@
   cursor: not-allowed;
 }
 
+// Loading — blocks interaction like disabled, but stays lit (spinner visible).
+// Wins over the native `:disabled` dim that the busy button also carries.
+:host(.is-loading) {
+  opacity: 1;
+  pointer-events: none;
+  cursor: progress;
+}
+
 :host(:active):not(:disabled):not(.is-disabled) {
   transform: scale(0.97);
 }

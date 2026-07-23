@@ -34,6 +34,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   callout: () => import("./pages/callout/callout.page"),
   disclosure: () => import("./pages/disclosure/disclosure.page"),
   icons: () => import("./pages/icons/icons.page"),
+  spinner: () => import("./pages/spinner/spinner.page"),
   "repeat-press": () => import("./pages/repeat-press/repeat-press.page"),
   themes: () => import("./pages/themes/themes.page"),
   form: () => import("./pages/form/form.page"),
