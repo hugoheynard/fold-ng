@@ -1,0 +1,82 @@
+name: Release
+
+# Publishing is opt-in: a push to a branch NEVER publishes. Only pushing a
+# version tag (v1.2.3) triggers a release. So demo/doc/component fixes on main
+# just redeploy the Pages demo — npm moves only when you deliberately tag.
+#
+#   git tag v0.2.0 && git push origin v0.2.0        → publishes to `latest`
+#   git tag v0.2.0-beta.1 && git push origin …      → publishes to `beta`
+#
+# One-time setup (see docs/RELEASING.md): an npm automation token in the repo
+# secret NPM_TOKEN.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write # create the GitHub Release
+  id-token: write # npm provenance (OIDC attestation)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - run: pnpm install --frozen-lockfile
+
+      # The tag must match package.json — guards against tagging v0.2.0 while the
+      # manifest still says 0.1.0 (which would publish the wrong version).
+      - name: Tag matches package.json version
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG" != "$TAG" ]; then
+            echo "::error::tag v$TAG does not match package.json ($PKG) — bump the version first"
+            exit 1
+          fi
+
+      # Full gate — never publish a red build (CI is the authority; local hooks
+      # can be bypassed with --no-verify).
+      - run: pnpm run lint
+      - run: pnpm exec tsc --noEmit -p tsconfig.app.json
+      - run: pnpm run lint:templates
+      - run: pnpm test
+
+      # Build the publishable artifact (ng-packagr + finalize) + publint + attw.
+      - run: pnpm run verify:pack
+
+      # A pre-release tag (v0.2.0-beta.1, has a hyphen) ships on the `beta`
+      # dist-tag; a clean version goes to `latest`. This keeps `latest` from ever
+      # pointing at a throwaway beta.
+      - name: Resolve dist-tag
+        id: disttag
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            echo "npm=beta" >> "$GITHUB_OUTPUT"
+          else
+            echo "npm=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public --tag ${{ steps.disttag.outputs.npm }}
+        working-directory: dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: GitHub Release
+        run: |
+          FLAG=""
+          [[ "$GITHUB_REF_NAME" == *-* ]] && FLAG="--prerelease"
+          gh release create "$GITHUB_REF_NAME" --generate-notes $FLAG
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -63,16 +63,21 @@ Aujourd'hui l'app résout la **source** workspace. Post-publish, elle consomme l
 - [ ] ⚠️ Accepter la **perte de la boucle source-live** (le compound WebStorm
       `ui > dev:watch` ne reflète plus dans l'app instantanément — republier/relinker).
 
-## 3 · CI GitHub Actions (rejouer toutes les gates)
+## 3 · CI GitHub Actions
 
-- [ ] Workflow push/PR : `pnpm install` (+ lockfile prettier) → `eslint src demo` →
-      `tsc --noEmit -p tsconfig.app.json` → `lint:templates` → `vitest run` →
-      `vite build` → `ng-packagr` (`pnpm run build`).
-- [ ] Statut requis unique **`ci`** + **branch protection** sur `main`.
-- [ ] Sur `main` : **deploy GitHub Pages** — gallery (`vite build`, hash-routing déjà OK,
-      pas de rewrite) + site **typedoc** (`docs:api` → `docs-api/`) + servir `llms.txt`
-      à la racine du site (découverte LLM).
-- [ ] Sur tag : `npm publish --provenance` (badge verified, lu par Socket/Snyk).
+- [x] **Release sur tag. ✅ FAIT.** [`release.yml`](../.github/workflows/release.yml)
+      se déclenche sur un tag `v*` **uniquement** — un push de branche ne publie
+      **jamais**. Garde tag↔package.json, gate complète (`eslint`/`tsc`/`lint:templates`/`vitest`),
+      `verify:pack` (ng-packagr + publint + attw), `npm publish --provenance`
+      (`latest`, ou `beta` si le tag a un `-`), + GitHub Release. Procédure et
+      setup (secret `NPM_TOKEN`) : [`RELEASING.md`](./RELEASING.md).
+- [x] **Deploy GitHub Pages sur `main`. ✅ FAIT** (gallery) —
+      [`pages.yml`](../.github/workflows/pages.yml). Reste optionnel : site
+      **typedoc** (`docs:api`) + servir `llms.txt` à la racine du site.
+- [ ] **Workflow CI push/PR** (gates sur chaque PR, séparé du release) :
+      `eslint src demo` → `tsc -p tsconfig.app.json` → `lint:templates` →
+      `vitest` → `pnpm run build`. Statut requis unique **`ci`** +
+      **branch protection** sur `main`.
 
 ## 4 · Durcissements restants
 
