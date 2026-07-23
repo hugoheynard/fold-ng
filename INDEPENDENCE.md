@@ -168,8 +168,28 @@ Aujourd'hui bloqué : `ng-packagr@22` exige **TS `>=6.0 <6.1`** ; la lib est pin
       exports `./tokens.css` custom → copier `src/tokens/*.css` en assets et
       **réinjecter** ces `exports` dans le `dist/package.json` au publish.
 - [ ] **`npm publish --provenance`** depuis `dist/` (badge verified + signal
-      supply-chain lu par Socket/Snyk). Semver honnête : `0.1.0` → `1.0.0` **quand
-      `RELEASE-READINESS.md` est tout-vert**.
+      supply-chain lu par Socket/Snyk).
+
+### 4.1 · Politique de versioning & dist-tags (ne pas polluer `latest`)
+
+Publier souvent **ne pénalise pas** la découverte — la recency **aide** le score
+« maintenance » de npm. Le seul vrai risque = laisser `latest` pointer une bêta
+jetable. Règles :
+
+- [ ] **Bêtas sous un canal, jamais en `latest`.** `npm publish --tag beta` (ou
+      `next`). `latest` reste sur la dernière version assumée ; `npm install fold-ng`
+      sert le stable, les bêtas sont opt-in (`fold-ng@beta`). **C'est le point qui
+      protège la vitrine.**
+- [ ] **Semver correct — pas de train `0.0.x` infini** (lit « pré-alpha »).
+      Utiliser de **vrais identifiants pré-release** : `0.1.0-beta.1` → `0.1.0-beta.2`
+      → `0.1.0` (stable), ou des **minor bumps** (`0.1.0`, `0.2.0`). Chaque numéro
+      publié est **immuable** (unpublish restreint après 72 h / avec dépendants) —
+      les `0.0.x` grillés restent dans l'historique.
+- [ ] **`latest` → `1.0.0` seulement quand `RELEASE-READINESS.md` est tout-vert.**
+      Avant ça, `latest` = le dernier `0.x` stable ; le `-beta.n` reste sur `beta`.
+- [ ] **Ranger après coup** : `npm deprecate "fold-ng@0.1.0-beta.1" "early beta — use latest"`
+      marque les vieilles bêtas sans les supprimer (liste propre, zéro pénalité).
+- [ ] **Bonus** : les installs réelles (dont l'app) comptent en « popularity ».
 
 ## 5 · Gallery → vitrine GitHub Pages
 
@@ -206,10 +226,15 @@ Post-extraction, `apps/frontend-webapp` ne résout plus la source workspace.
 - **Prod/CI** : `pnpm add fold-ng@<version>` (dépendance publiée normale). L'app
   compile alors du **JS+d.ts** compilé (ng-packagr), plus de la source → gain :
   build app plus rapide, découplage versionné.
-- **Dev/itération** : override local pour ne pas republier à chaque changement —
-  `pnpm.overrides` `file:../fold-ng` **ou** `pnpm link`. Documenter la boucle.
+- **Dev/itération — ne PAS brûler de versions npm publiques.** Pendant la bêta,
+  shepherd consomme la lib **en local** (`pnpm.overrides` → `"fold-ng": "file:../fold-ng"`,
+  ou `pnpm link`) : on itère lib + app sans publier. On ne pousse en public **que**
+  les jalons assumés — et ces jalons pré-release vont sur le canal `beta`
+  (`--tag beta`, cf. §4.1), pas sur `latest`. Si shepherd doit vraiment consommer
+  du publié pendant la bêta : `pnpm add fold-ng@beta` (opt-in explicite).
 - **Décider la cadence** : l'app suit-elle `latest` ou une version épinglée ?
-  (Épinglée + bump volontaire = plus sûr pour une app de prod.)
+  **Épinglée** (`fold-ng@0.1.0`) + bump volontaire = plus sûr pour une app de prod ;
+  jamais un range flou qui aspirerait une bêta.
 - ⚠️ **Perte de la boucle source-live actuelle** (le compound WebStorm `ui > dev:watch`
   reflétait instantanément dans l'app). En published-dep, il faut republier/relinker.
   C'est le vrai coût de l'extraction — l'accepter en connaissance de cause.
