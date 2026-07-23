@@ -1,150 +1,198 @@
-/* ── icons page — the fold-icon system: pitch, registry, full catalogue ──── */
+/* ── icons page — the fold-icon system: pitch, registry, full catalogue ────
+   Premium, airy layout: the page retunes its own vertical rhythm and every
+   band breathes. Scoped under `gal-icons-page` (the page is ViewEncapsulation
+   .None), so nothing here leaks to other gallery pages. */
 
-/* Why-it-holds-up feature cards */
-.feat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
-  gap: var(--fold-space-md);
+gal-icons-page {
+  /* Airier band-to-band rhythm than the default 32px — the page reads spacious,
+     not dense. One knob, inherited by the fold-page-layout below. */
+  --fold-page-gap: 56px;
+  display: block;
 }
-.feat {
+
+/* The opening pitch reads like a statement, not a notice. */
+gal-icons-page fold-callout[variant="accent"] {
+  font-size: var(--fold-text-md);
+  line-height: 1.6;
+}
+
+/* ── Why it holds up — feature cards ─────────────────────────────────────── */
+gal-icons-page .feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
+  gap: var(--fold-space-lg);
+}
+gal-icons-page .feat {
   display: flex;
   flex-direction: column;
-  gap: var(--fold-space-sm);
+  gap: var(--fold-space-md);
+  transition:
+    transform var(--fold-motion-base),
+    box-shadow var(--fold-motion-base),
+    border-color var(--fold-motion-base);
 }
-.feat-ico {
+gal-icons-page .feat:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fold-shadow-md);
+  border-color: var(--fold-color-primary-border);
+}
+gal-icons-page .feat-ico {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   border-radius: var(--fold-radius-md);
-  background: var(--fold-color-primary-surface);
   border: 1px solid var(--fold-color-primary-border);
   color: var(--fold-color-primary-text);
+  background: linear-gradient(
+    150deg,
+    var(--fold-color-primary-surface),
+    transparent 130%
+  );
 }
-.feat-title {
+gal-icons-page .feat-title {
   margin: 0;
   font-size: var(--fold-text-md);
   font-weight: 650;
+  letter-spacing: -0.01em;
   color: var(--fold-color-text);
 }
-.feat-body {
+gal-icons-page .feat-body {
   margin: 0;
   font-size: var(--fold-text-sm);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--fold-color-text-secondary);
 }
 
-/* Usage — size + colour demos side by side */
-.demo-row {
+/* ── Usage — size + colour demos ─────────────────────────────────────────── */
+gal-icons-page .demo-row {
   display: flex;
   flex-wrap: wrap;
   gap: var(--fold-space-xl);
-  margin-top: var(--fold-space-md);
+  margin-top: var(--fold-space-lg);
 }
-.icon-sizes {
+gal-icons-page .demo-row .gal-cell {
+  flex: 1 1 260px;
+  padding: var(--fold-space-lg);
+  border-radius: var(--fold-radius-lg);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
+}
+gal-icons-page .icon-sizes {
   display: flex;
   align-items: flex-end;
-  gap: 22px;
+  flex-wrap: wrap;
+  gap: 26px;
+  margin-top: var(--fold-space-md);
   color: var(--fold-color-text);
 }
-.isz {
+gal-icons-page .isz {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
-.isz span {
+gal-icons-page .isz span {
   font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
-.icon-colors {
+gal-icons-page .icon-colors {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--fold-space-lg);
+  margin-top: var(--fold-space-md);
 }
 
-/* Registry — the two code cards + the live demo */
-.reg-grid {
+/* ── Registry — code cards + live demo ───────────────────────────────────── */
+gal-icons-page .reg-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--fold-space-md);
 }
-.reg-grid .gal-tag {
+gal-icons-page .reg-grid .gal-tag {
   margin-bottom: var(--fold-space-sm);
 }
-.live {
+gal-icons-page .live {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--fold-space-xl);
+  margin-top: var(--fold-space-md);
 }
-.live-copy {
+gal-icons-page .live-copy {
   flex: 1 1 320px;
   display: flex;
   flex-direction: column;
-  gap: var(--fold-space-sm);
+  gap: var(--fold-space-md);
   align-items: flex-start;
 }
-.live-stage {
+gal-icons-page .live-stage {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--fold-space-sm);
-  min-width: 180px;
+  min-width: 200px;
+  min-height: 160px;
   padding: var(--fold-space-xl);
-  border-radius: var(--fold-radius-md);
-  border: 1px dashed var(--fold-color-border);
-  background: var(--fold-color-surface-sunken);
+  border-radius: var(--fold-radius-lg);
+  border: 1px dashed var(--fold-color-primary-border);
   color: var(--fold-color-primary);
+  background: radial-gradient(
+    120% 120% at 50% 0%,
+    var(--fold-color-primary-surface),
+    transparent 70%
+  );
 }
-.live-stage code {
+gal-icons-page .live-stage code {
   color: var(--fold-color-text-muted);
   font-size: var(--fold-text-xs);
 }
-.live-empty {
+gal-icons-page .live-empty {
   color: var(--fold-color-text-faded);
   font-size: var(--fold-text-sm);
 }
 
-/* Catalogue — one titled block per category */
-.cat {
-  margin-top: var(--fold-space-lg);
+/* ── Catalogue — one titled block per category ───────────────────────────── */
+gal-icons-page .cat {
+  margin-top: var(--fold-space-xl);
 }
-.cat:first-child {
+gal-icons-page .cat:first-child {
   margin-top: 0;
 }
-.cat-head {
+gal-icons-page .cat-head {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: var(--fold-space-sm);
   margin-bottom: var(--fold-space-md);
 }
-.cat-title {
+gal-icons-page .cat-title {
   margin: 0;
-  font-size: var(--fold-text-md);
+  font-size: var(--fold-text-lg);
   font-weight: 650;
+  letter-spacing: -0.01em;
   color: var(--fold-color-text);
 }
-.cat-desc {
+gal-icons-page .cat-desc {
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text-muted);
 }
-
-.icon-grid {
+gal-icons-page .icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
-  gap: var(--fold-space-sm);
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: var(--fold-space-md);
   width: 100%;
 }
-.icon-cell {
+gal-icons-page .icon-cell {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 14px 8px;
+  gap: 12px;
+  padding: 18px 8px;
   border-radius: var(--fold-radius-md);
   border: 1px solid var(--fold-color-border-subtle);
   background: var(--fold-color-surface-card);
@@ -152,17 +200,21 @@
   font: inherit;
   cursor: pointer;
   overflow: hidden;
-  transition: var(--fold-motion-fast);
+  transition:
+    transform var(--fold-motion-fast),
+    border-color var(--fold-motion-fast),
+    color var(--fold-motion-fast);
 }
-.icon-cell:hover {
+gal-icons-page .icon-cell:hover {
+  transform: translateY(-2px);
   border-color: var(--fold-color-primary);
   color: var(--fold-color-primary-text);
 }
-.icon-cell.is-copied {
+gal-icons-page .icon-cell.is-copied {
   border-color: var(--fold-color-success);
   color: var(--fold-color-success-text);
 }
-.icon-cell-name {
+gal-icons-page .icon-cell-name {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
