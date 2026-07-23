@@ -6,6 +6,7 @@ import {
   FOLD_SEMANTIC_COLOR_TOKENS,
   FOLD_RADIUS_TOKENS,
   FOLD_TEXT_TOKENS,
+  FOLD_ICON_SIZE_TOKENS,
   FOLD_SPACE_TOKENS,
   FOLD_MOTION_TOKENS,
   FOLD_BLUR_TOKENS,
@@ -94,11 +95,12 @@ describe("token contract · catalogue ↔ CSS", () => {
     }
   });
 
-  it("scales.css declares exactly the radius + type + space + motion + shadow catalogue", () => {
+  it("scales.css declares exactly the radius + type + icon-size + space + motion + shadow catalogue", () => {
     const declared = declaredVars(block(scales, ":root"));
     const expected = [
       ...FOLD_RADIUS_TOKENS.map((t) => `--fold-radius-${t}`),
       ...FOLD_TEXT_TOKENS.map((t) => `--fold-text-${t}`),
+      ...FOLD_ICON_SIZE_TOKENS.map((t) => `--fold-icon-size-${t}`),
       ...FOLD_SPACE_TOKENS.map((t) => `--fold-space-${t}`),
       ...FOLD_MOTION_TOKENS.map((t) => `--fold-motion-${t}`),
       ...FOLD_BLUR_TOKENS.map((t) => `--fold-blur-${t}`),

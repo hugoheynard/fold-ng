@@ -3,15 +3,17 @@ import { DomSanitizer, type SafeHtml } from "@angular/platform-browser";
 import { FoldIconRegistry } from "./icon-registry.service";
 import type { FoldIconName } from "./builtin-icons";
 
-/** Size presets map to a pixel length; a number is interpreted as pixels. */
+/** Size presets map to an icon-size token; a number is interpreted as pixels. */
 export type FoldIconSize = "xs" | "sm" | "md" | "lg" | "xl" | number;
 
-const SIZE_PX: Record<Exclude<FoldIconSize, number>, string> = {
-  xs: "12px",
-  sm: "16px",
-  md: "20px",
-  lg: "24px",
-  xl: "32px",
+/** Preset → `--fold-icon-size-*` token, with a px fallback so an icon still
+ *  renders if a consumer loads the component without the token layer. */
+const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
+  xs: "var(--fold-icon-size-xs, 12px)",
+  sm: "var(--fold-icon-size-sm, 16px)",
+  md: "var(--fold-icon-size-md, 20px)",
+  lg: "var(--fold-icon-size-lg, 24px)",
+  xl: "var(--fold-icon-size-xl, 32px)",
 };
 
 /**
@@ -72,6 +74,6 @@ export class FoldIconComponent {
   /** Resolves the size input to a CSS length string for `--icon-size`. */
   readonly sizeVar = computed<string>(() => {
     const s = this.size();
-    return typeof s === "number" ? `${s}px` : SIZE_PX[s];
+    return typeof s === "number" ? `${s}px` : SIZE_VAR[s];
   });
 }

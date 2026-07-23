@@ -36,6 +36,16 @@
   --fold-text-lg: 16px;
   --fold-text-xl: 20px;
 
+  /* Icon size scale — the length a `fold-icon` renders at (width = height),
+     selected by its size preset. A measurement, so theme-invariant like type
+     and space. The component keeps a px fallback, so icons still render if a
+     consumer loads components without the token layer. */
+  --fold-icon-size-xs: 12px;
+  --fold-icon-size-sm: 16px;
+  --fold-icon-size-md: 20px;
+  --fold-icon-size-lg: 24px;
+  --fold-icon-size-xl: 32px;
+
   /* Space scale — the shared spacing rhythm (gap / padding / margin). Promoted
      once a 2nd+ component needed it (icon, paginator, panel-header, data-table);
      the app's `--gap-*` bridge onto these 1:1. */

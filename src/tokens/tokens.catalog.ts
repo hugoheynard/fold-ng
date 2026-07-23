@@ -119,6 +119,11 @@ export const FOLD_TEXT_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
 export type FoldTextToken = (typeof FOLD_TEXT_TOKENS)[number];
 
+/** Icon-size scale — the length a `fold-icon` renders at, per size preset. */
+export const FOLD_ICON_SIZE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
+
+export type FoldIconSizeToken = (typeof FOLD_ICON_SIZE_TOKENS)[number];
+
 /** Space (gap / padding / margin) scale. */
 export const FOLD_SPACE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
@@ -168,6 +173,11 @@ export function foldRadiusVar(token: FoldRadiusToken): string {
 /** A ready-to-use `var(--fold-text-…)` reference. */
 export function foldTextVar(token: FoldTextToken): string {
   return `var(--fold-text-${token})`;
+}
+
+/** A ready-to-use `var(--fold-icon-size-…)` reference. */
+export function foldIconSizeVar(token: FoldIconSizeToken): string {
+  return `var(--fold-icon-size-${token})`;
 }
 
 /** A ready-to-use `var(--fold-space-…)` reference. */

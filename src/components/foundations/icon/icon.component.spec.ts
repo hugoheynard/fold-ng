@@ -26,8 +26,10 @@ describe("FoldIconComponent", () => {
     expect(root.getAttribute("aria-hidden")).toBeNull();
   });
 
-  it("maps size presets to pixels and accepts an explicit number", () => {
-    expect(mount("search", { size: "lg" }).cmp.sizeVar()).toBe("24px");
+  it("maps a preset to its icon-size token and a number to px", () => {
+    expect(mount("search", { size: "lg" }).cmp.sizeVar()).toBe(
+      "var(--fold-icon-size-lg, 24px)",
+    );
     expect(mount("search", { size: 42 }).cmp.sizeVar()).toBe("42px");
   });
 
