@@ -1,36 +1,19 @@
-/* fold-icon uses ViewEncapsulation.None so these rules can reach the SVG it
-   injects via [innerHTML] — Emulated's scoping attributes never land on an
-   injected node, so a scoped selector could not match it (this is what the
-   component used ::ng-deep for). Every rule is rooted at the `fold-icon`
-   element, whose tag is unique, so the global styles stay effectively scoped
-   and never leak. */
-fold-icon {
+/* The icon renders through <use>, referencing a symbol in the shared sprite —
+   nothing is injected into this component's view, so Emulated encapsulation is
+   enough (no ::ng-deep, no ViewEncapsulation.None). `fill: currentColor` on the
+   instance <svg> inherits across the <use> into the symbol's paths; outlined
+   icons keep their source fill="none"/stroke="currentColor", so inheritance
+   leaves them outlined. */
+:host {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 0;
   color: inherit;
 }
-fold-icon .icon-root {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.icon-root {
+  display: block;
   width: var(--icon-size, 20px);
   height: var(--icon-size, 20px);
-}
-/* The injected <svg> gets block behaviour + fills the container. */
-fold-icon .icon-root svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-/* Filled SVGs paint with the host colour unless they opt out via fill="none"
-   (outlined icons). The :not() guard is what preserves outlined rendering —
-   setting fill unconditionally would turn outlined icons into solid blobs. */
-fold-icon .icon-root svg:not([fill="none"]) {
   fill: currentColor;
-}
-/* Outlined SVGs stroke with currentColor; normalise any child stroke. */
-fold-icon .icon-root svg [stroke]:not([stroke="none"]) {
-  stroke: currentColor;
 }

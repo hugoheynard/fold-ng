@@ -237,14 +237,25 @@ A custom entry with a built-in key overrides it. `name` is typed
 registered custom string is still accepted (an unknown name renders nothing and
 `console.warn`s in dev).
 
-**Trust contract.** `fold-icon` renders markup through `bypassSecurityTrustHtml`
+**Rendering — shared sprite.** Each unique icon is added **once** to a hidden
+document-level SVG sprite as a `<symbol>`; every `<fold-icon>` renders a
+lightweight `<svg><use href="#…"/></svg>` that references it. So the DOM holds
+one copy of an icon's paths no matter how many times it renders — a data-table
+with 500 rows × 3 icons is 1500 tiny `<use>` elements over 3 symbols, not 1500
+copies of the markup. It is **lazy** (only rendered icons enter the sprite) and
+**SSR-safe** (the sprite is serialised into the server HTML, so `<use>` resolves
+on first paint; the client adopts it rather than building a second). `color` and
+`fill: currentColor` inherit across the `<use>` into the symbol, so an icon still
+takes its colour from the host — and outlined icons keep their source
+`fill="none"` / `stroke="currentColor"`.
 
-- `[innerHTML]` — the sanitiser is bypassed so authored SVG survives intact — so
-  every registered value **must be a static, authored `<svg>` string, never
-  derived from user input**. The registry enforces a backstop (not a sanitiser) on
-  all three doors (`provideFoldIcons`, `register`, `registerMany`): a non-`<svg>`
-  root or a `<script>` / inline `on*=` handler throws at registration. Passing
-  user-controlled markup would be a stored-XSS sink — keep icon strings static.
+**Trust contract.** Icon markup is injected into the sprite **unsanitised** (the
+sprite `insertAdjacentHTML`s the authored `<svg>` so it survives intact), so
+every registered value **must be a static, authored `<svg>` string, never
+derived from user input**. The registry enforces a backstop (not a sanitiser) on
+all three doors (`provideFoldIcons`, `register`, `registerMany`): a non-`<svg>`
+root or a `<script>` / inline `on*=` handler throws at registration. Passing
+user-controlled markup would be a stored-XSS sink — keep icon strings static.
 
 ## Auto-colour
 

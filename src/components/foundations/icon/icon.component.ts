@@ -1,13 +1,7 @@
-import {
-  Component,
-  ViewEncapsulation,
-  computed,
-  effect,
-  inject,
-  input,
-} from "@angular/core";
-import { DomSanitizer, type SafeHtml } from "@angular/platform-browser";
+import { Component, computed, effect, inject, input } from "@angular/core";
 import { FoldIconRegistry } from "./icon-registry.service";
+import { FoldIconSprite } from "./icon-sprite.service";
+import { foldIconSymbolId } from "./icon-sprite";
 import type { FoldIconName } from "./builtin-icons";
 
 /** Size presets map to an icon-size token; a number is interpreted as pixels. */
@@ -27,17 +21,13 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
  * `fold-icon` — the single surface for all SVG icons.
  *
  * Icons resolve through the {@link FoldIconRegistry} (built-in set + any the
- * consumer registered), keyed by a typed {@link FoldIconName}. The SVG is
- * rendered via `[innerHTML]` with Angular's sanitiser bypassed, so authored
- * markup survives intact — which is why the registry only accepts static,
- * trusted SVG (never user input; see {@link FoldIconRegistry}'s trust contract).
- * Colour + size come from CSS (`currentColor` + a `--icon-size` custom
- * property), so the SVG inherits `color` from the host.
- *
- * Uses {@link ViewEncapsulation.None} so its styles can reach the injected SVG
- * (Emulated's scoping attributes never land on `[innerHTML]` nodes). Every rule
- * is rooted at the `fold-icon` element, so the global styles stay effectively
- * scoped and never leak — no `::ng-deep` needed.
+ * consumer registered), keyed by a typed {@link FoldIconName}. Each unique icon
+ * is added once to a shared hidden sprite (see {@link FoldIconSprite}); the
+ * component itself renders a lightweight `<svg><use href="#…"/></svg>` that
+ * references it, so the DOM holds one copy of an icon's paths however many times
+ * it renders. Colour + size come from CSS (`currentColor` + a `--icon-size`
+ * custom property) and inherit across the `<use>` into the symbol, so the SVG
+ * takes its `color` from the host.
  *
  * @example
  * ```html
@@ -52,7 +42,6 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
   standalone: true,
   templateUrl: "./icon.component.html",
   styleUrl: "./icon.component.scss",
-  encapsulation: ViewEncapsulation.None,
 })
 export class FoldIconComponent {
   /** Icon name — a built-in (autocompleted) or a consumer-registered string. */
@@ -64,31 +53,33 @@ export class FoldIconComponent {
   /** Optional accessible label. Set → `aria-label`; unset → `aria-hidden`. */
   readonly title = input<string>();
 
-  private readonly sanitizer = inject(DomSanitizer);
   private readonly registry = inject(FoldIconRegistry);
+  private readonly sprite = inject(FoldIconSprite);
 
-  /** Sanitised SVG markup ready for `[innerHTML]`. Reactive on registration. */
-  readonly svg = computed<SafeHtml>(() =>
-    this.sanitizer.bypassSecurityTrustHtml(
-      this.registry.resolve(this.name()) ?? "",
-    ),
+  /** The `#symbol` reference for `<use>`, or null when the name is unknown
+   *  (renders nothing). Pure — sprite population lives in the effect below. */
+  readonly href = computed<string | null>(() =>
+    this.registry.has(this.name()) ? `#${foldIconSymbolId(this.name())}` : null,
   );
-
-  constructor() {
-    // Dev aid: warn when a name fails to resolve. Lives in an effect — the
-    // `svg` computed must stay pure (no side effects) — and re-checks
-    // reactively, so the warning clears the instant the icon is registered.
-    effect(() => {
-      const name = this.name();
-      if (!this.registry.has(name)) {
-        console.warn(`[fold-icon] unknown icon: "${name}"`);
-      }
-    });
-  }
 
   /** Resolves the size input to a CSS length string for `--icon-size`. */
   readonly sizeVar = computed<string>(() => {
     const s = this.size();
     return typeof s === "number" ? `${s}px` : SIZE_VAR[s];
   });
+
+  constructor() {
+    // Mount the shown icon's symbol in the shared sprite (a DOM side effect, so
+    // it lives here and not in `href`), and warn on an unknown name. Reactive:
+    // registering an icon later both mounts its symbol and resolves the `<use>`.
+    effect(() => {
+      const name = this.name();
+      const markup = this.registry.resolve(name);
+      if (markup) {
+        this.sprite.ensure(name, markup);
+      } else {
+        console.warn(`[fold-icon] unknown icon: "${name}"`);
+      }
+    });
+  }
 }

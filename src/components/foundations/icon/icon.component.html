@@ -1,8 +1,11 @@
-<span
+<svg
   class="icon-root"
   role="img"
   [attr.aria-label]="title() || null"
   [attr.aria-hidden]="title() ? null : 'true'"
   [style.--icon-size]="sizeVar()"
-  [innerHTML]="svg()"
-></span>
+>
+  @if (href(); as ref) {
+    <use [attr.href]="ref" />
+  }
+</svg>

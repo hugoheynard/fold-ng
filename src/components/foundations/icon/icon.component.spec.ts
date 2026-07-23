@@ -2,6 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
 import { FoldIconComponent } from "./icon.component";
 import { FoldIconRegistry, provideFoldIcons } from "./icon-registry.service";
+import { FOLD_ICON_SPRITE_ID } from "./icon-sprite";
 
 function mount(name: string, extra: Record<string, unknown> = {}) {
   const fixture = TestBed.createComponent(FoldIconComponent);
@@ -10,13 +11,26 @@ function mount(name: string, extra: Record<string, unknown> = {}) {
     fixture.componentRef.setInput(k, v);
   }
   fixture.detectChanges();
-  const root = fixture.nativeElement.querySelector(".icon-root") as HTMLElement;
+  const root = fixture.nativeElement.querySelector(".icon-root") as SVGElement;
   return { fixture, root, cmp: fixture.componentInstance };
 }
 
+function sprite(): HTMLElement | null {
+  return document.getElementById(FOLD_ICON_SPRITE_ID);
+}
+
 describe("FoldIconComponent", () => {
-  it("renders the SVG markup for a built-in icon", () => {
-    expect(mount("search").root.innerHTML).toContain("<svg");
+  it("renders a <use> referencing the icon's sprite symbol", () => {
+    const use = mount("search").root.querySelector("use");
+    expect(use?.getAttribute("href")).toBe("#fold-icon-search");
+    // …and the symbol is mounted in the shared sprite.
+    expect(sprite()?.querySelector("symbol#fold-icon-search")).toBeTruthy();
+  });
+
+  it("renders nothing for an unknown name (no <use>)", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    expect(mount("__nope__").root.querySelector("use")).toBeNull();
+    warn.mockRestore();
   });
 
   it("sets aria-hidden when no title is given, aria-label when it is", () => {
@@ -45,10 +59,13 @@ describe("FoldIconRegistry (consumer extensibility)", () => {
   it("resolves a runtime-registered custom icon reactively", () => {
     const reg = TestBed.inject(FoldIconRegistry);
     const { fixture, root } = mount("my-custom");
-    expect(root.innerHTML).not.toContain("<svg"); // unknown at first
-    reg.register("my-custom", "<svg data-custom></svg>");
+    expect(root.querySelector("use")).toBeNull(); // unknown at first
+    reg.register("my-custom", '<svg viewBox="0 0 1 1"><path d="M0 0"/></svg>');
     fixture.detectChanges();
-    expect(root.innerHTML).toContain("data-custom");
+    expect(root.querySelector("use")?.getAttribute("href")).toBe(
+      "#fold-icon-my-custom",
+    );
+    expect(sprite()?.querySelector("symbol#fold-icon-my-custom")).toBeTruthy();
   });
 
   it("registerMany merges a set; a custom key overrides a built-in", () => {
