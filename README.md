@@ -53,7 +53,7 @@ export class DemoComponent {
 ```
 
 Everything is dark by default; opt into light with `data-theme="lumen"`. See
-[`TODO.md`](./TODO.md) for the roadmap and the full component list below.
+[`docs/TODO.md`](./docs/TODO.md) for the roadmap and the full component list below.
 
 ## Consuming the tokens
 

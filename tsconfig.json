@@ -1,7 +1,7 @@
 {
   // Self-contained — NO `extends "../../…"`. Inlined from the monorepo's
   // tsconfig.base.flags.json + tsconfig.angular.json so fold-ng stands alone once
-  // extracted (INDEPENDENCE.md §3.1). Keep these flags in lockstep with the
+  // extracted (docs/INDEPENDENCE.md §3.1). Keep these flags in lockstep with the
   // monorepo base until the package is extracted; do not silently drop one.
   "compilerOptions": {
     // --- Strictness (types) ---

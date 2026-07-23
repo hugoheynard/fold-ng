@@ -2,7 +2,7 @@ import { cpSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 /**
- * Post-`ng-packagr` step (INDEPENDENCE.md §4). ng-packagr compiles the TS API
+ * Post-`ng-packagr` step (docs/INDEPENDENCE.md §4). ng-packagr compiles the TS API
  * into `dist/` and writes a `dist/package.json` pointing at the FESM bundle +
  * types — but it knows nothing about our **CSS token exports**. This script
  * finishes the publishable artifact:

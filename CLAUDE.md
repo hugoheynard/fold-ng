@@ -1,6 +1,6 @@
 # fold-ng — writing the gallery
 
-Rules for `dev/` — the gallery app that documents this package. `dev-rules.md`
+Rules for `dev/` — the gallery app that documents this package. `docs/dev-rules.md`
 is the contract for the **components**; this is the contract for the **pages
 that show them off**. `README.md` is the consumer's guide.
 

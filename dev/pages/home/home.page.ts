@@ -69,7 +69,7 @@ export default class HomePage {
       "Fold — a signals-first Angular design system, themeable to the bone.",
     ) +
     "&url=" +
-    encodeURIComponent("https://github.com/hugoheynard/fold");
+    encodeURIComponent("https://github.com/hugoheynard/fold-ng");
 
   protected readonly stats: readonly Stat[] = [
     { value: "26", label: "components" },

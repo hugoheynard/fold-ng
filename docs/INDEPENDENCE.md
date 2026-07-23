@@ -249,9 +249,10 @@ site (découverte LLM).
 ## 6 · Docs qui voyagent
 
 `README` (badges + quickstart déjà en tête) · `CHANGELOG` · `llms.txt` ·
-`dev-rules.md` (contrat contributeur) · `RELEASE-READINESS.md` · `TODO.md` ·
-typedoc. Mettre à jour les URLs `repository`/`homepage` vers le vrai repo public
-une fois créé (aujourd'hui elles pointent `github.com/hugoheynard/fold`, inexistant).
+`docs/dev-rules.md` (contrat contributeur) · `docs/RELEASE-READINESS.md` ·
+`docs/TODO.md` · typedoc. **✅ FAIT** : URLs `repository`/`homepage`/`bugs`
++ liens `llms.txt` + gallery pointent tous `github.com/hugoheynard/fold-ng`
+(les docs internes rangées sous `docs/` — cf. §11).
 
 ## 7 · Préserver l'historique
 
@@ -314,3 +315,19 @@ Statut requis unique `ci` (comme `ci-gate` du monorepo). **Branch protection** s
 - [x] **`publint` + `arethetypeswrong` verts** (`pnpm run verify:pack`, exit 0). ✅
 - [ ] L'app consomme la version publiée et build AOT vert. **← après le premier publish beta.**
 - [ ] Décision mirror-vs-extraction tranchée et l'autre doc archivé/aligné.
+
+---
+
+## 11 · Rangement de la racine (découvrabilité) — ✅ 2026-07-23
+
+La racine d'un repo public = la « une » que scannent bots et humains. Gardés à
+la racine : ce que les bots/conventions attendent (`README`, `LICENSE`,
+`CHANGELOG`, `llms.txt`, `package.json`, lockfile) + les configs que l'outillage
+résout à la racine (`tsconfig*.json`, `vite`/`vitest.config.ts`,
+`eslint.config.mjs`, `ng-package.json`, `index.html`). Rangés sous **`docs/`**
+les docs de process interne : `INDEPENDENCE.md`, `RELEASE-READINESS.md`,
+`TODO.md`, `dev-rules.md`, `roadmap/`. Liens entrants recâblés (`README`,
+`llms.txt`, `CHANGELOG`, `CLAUDE.md`) + commentaires de code (`tsconfig`,
+`eslint.rules`, scripts) pointent `docs/`. **Bug corrigé au passage** : toutes
+les URLs `hugoheynard/fold` (repo inexistant) → `hugoheynard/fold-ng` (docs,
+llms.txt, gallery, `package.json`).

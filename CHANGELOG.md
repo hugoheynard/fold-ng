@@ -31,7 +31,7 @@ components plus a design-token stylesheet.
 
 ### Notes
 
-- 1.0.0 is held until every component in `RELEASE-READINESS.md` is 🟢🟢🟢.
+- 1.0.0 is held until every component in `docs/RELEASE-READINESS.md` is 🟢🟢🟢.
 
-[unreleased]: https://github.com/hugoheynard/fold/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/hugoheynard/fold/releases/tag/v0.1.0
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0

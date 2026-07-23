@@ -13,9 +13,9 @@ with a `@selector` and an `@example`.
 
 ## Getting started
 
-- [Install & quickstart](https://github.com/hugoheynard/fold#readme): `npm install fold-ng`, import tokens, use standalone components.
-- [Design tokens](https://github.com/hugoheynard/fold#the-two-tier-model): two-tier model — primitives (`--fold-ref-*`) → semantic (`--fold-color-*`); components consume the semantic layer only.
-- [Theming](https://github.com/hugoheynard/fold#consuming-the-tokens): `data-theme="umbra|lumen|bubbly|navi"`; re-theme by re-pointing the semantic layer, never touching a component.
+- [Install & quickstart](https://github.com/hugoheynard/fold-ng#readme): `npm install fold-ng`, import tokens, use standalone components.
+- [Design tokens](https://github.com/hugoheynard/fold-ng#the-two-tier-model): two-tier model — primitives (`--fold-ref-*`) → semantic (`--fold-color-*`); components consume the semantic layer only.
+- [Theming](https://github.com/hugoheynard/fold-ng#consuming-the-tokens): `data-theme="umbra|lumen|bubbly|navi"`; re-theme by re-pointing the semantic layer, never touching a component.
 
 ## Components
 
@@ -36,6 +36,6 @@ with a `@selector` and an `@example`.
 
 ## Full API
 
-- [Component & selector table (README)](https://github.com/hugoheynard/fold#components)
-- [Release readiness, per component](https://github.com/hugoheynard/fold/blob/main/RELEASE-READINESS.md)
-- [Roadmap](https://github.com/hugoheynard/fold/blob/main/TODO.md)
+- [Component & selector table (README)](https://github.com/hugoheynard/fold-ng#components)
+- [Release readiness, per component](https://github.com/hugoheynard/fold-ng/blob/main/docs/RELEASE-READINESS.md)
+- [Roadmap](https://github.com/hugoheynard/fold-ng/blob/main/docs/TODO.md)
