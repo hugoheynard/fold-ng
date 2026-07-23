@@ -1,37 +1,144 @@
-/* ── icons page — the fold-icon system + the full catalogue grid ────────── */
+/* ── icons page — the fold-icon system: pitch, registry, full catalogue ──── */
+
+/* Why-it-holds-up feature cards */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: var(--fold-space-md);
+}
+.feat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+}
+.feat-ico {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-primary-surface);
+  border: 1px solid var(--fold-color-primary-border);
+  color: var(--fold-color-primary-text);
+}
+.feat-title {
+  margin: 0;
+  font-size: var(--fold-text-md);
+  font-weight: 650;
+  color: var(--fold-color-text);
+}
+.feat-body {
+  margin: 0;
+  font-size: var(--fold-text-sm);
+  line-height: 1.55;
+  color: var(--fold-color-text-secondary);
+}
+
+/* Usage — size + colour demos side by side */
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-xl);
+  margin-top: var(--fold-space-md);
+}
 .icon-sizes {
   display: flex;
   align-items: flex-end;
   gap: 22px;
   color: var(--fold-color-text);
 }
-
 .isz {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
-
 .isz span {
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
-
 .icon-colors {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--fold-space-lg);
+}
+
+/* Registry — the two code cards + the live demo */
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--fold-space-md);
+}
+.reg-grid .gal-tag {
+  margin-bottom: var(--fold-space-sm);
+}
+.live {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fold-space-xl);
+}
+.live-copy {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  align-items: flex-start;
+}
+.live-stage {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  min-width: 180px;
+  padding: var(--fold-space-xl);
+  border-radius: var(--fold-radius-md);
+  border: 1px dashed var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-primary);
+}
+.live-stage code {
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+}
+.live-empty {
+  color: var(--fold-color-text-faded);
+  font-size: var(--fold-text-sm);
+}
+
+/* Catalogue — one titled block per category */
+.cat {
+  margin-top: var(--fold-space-lg);
+}
+.cat:first-child {
+  margin-top: 0;
+}
+.cat-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--fold-space-sm);
+  margin-bottom: var(--fold-space-md);
+}
+.cat-title {
+  margin: 0;
+  font-size: var(--fold-text-md);
+  font-weight: 650;
+  color: var(--fold-color-text);
+}
+.cat-desc {
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
 }
 
 .icon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
-  gap: 8px;
+  gap: var(--fold-space-sm);
   width: 100%;
 }
-
 .icon-cell {
   display: flex;
   flex-direction: column;
@@ -45,13 +152,16 @@
   font: inherit;
   cursor: pointer;
   overflow: hidden;
+  transition: var(--fold-motion-fast);
 }
-
 .icon-cell:hover {
   border-color: var(--fold-color-primary);
   color: var(--fold-color-primary-text);
 }
-
+.icon-cell.is-copied {
+  border-color: var(--fold-color-success);
+  color: var(--fold-color-success-text);
+}
 .icon-cell-name {
   max-width: 100%;
   overflow: hidden;

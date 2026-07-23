@@ -1,50 +1,145 @@
 <fold-page-layout title="icon">
-  <p description>
-    The single surface for every SVG icon. An icon inherits colour
-    (currentColor) and size from CSS: size via a token (xs…xl) or a pixel
-    number, colour by setting color on any ancestor. name is a typed built-in or
-    any registered string.
-  </p>
   <gal-kind-badge titleBadge kind="component" />
-  <div class="gal-stack">
-    <div class="gal-cell">
-      <span class="gal-tag"
-        >size · xs / sm / md / lg / xl · or a pixel number</span
-      >
-      <div class="icon-sizes">
-        @for (s of iconSizeSteps; track s) {
-        <div class="isz">
-          <fold-icon name="bell" [size]="s" />
-          <span>{{ s }}</span>
+  <p description>
+    One typed component for every SVG icon in the app. <code>name</code> is a
+    compile-checked built-in (or any registered string); colour and size come
+    from CSS, so an icon inherits <code>currentColor</code> and scales with a
+    token. {{ totalCount }} icons ship inlined — no HTTP, no loader config.
+  </p>
+
+  <fold-callout variant="accent" icon="lightning">
+    Every icon renders through a <strong>shared SVG sprite</strong> — one
+    <code>&lt;symbol&gt;</code> per icon, a lightweight <code>&lt;use&gt;</code>
+    per instance — so a 500-row table with three icons each is 1500 tiny
+    references over 3 symbols, not 1500 copies of the markup.
+  </fold-callout>
+
+  <fold-page-section
+    title="Why it holds up"
+    description="The decisions behind the one-liner."
+  >
+    <div class="feat-grid">
+      @for (f of features; track f.title) {
+      <fold-card class="feat">
+        <span class="feat-ico"><fold-icon [name]="f.icon" size="lg" /></span>
+        <h3 class="feat-title">{{ f.title }}</h3>
+        <p class="feat-body">{{ f.body }}</p>
+      </fold-card>
+      }
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Usage"
+    description="A name, an optional size, an optional accessible label."
+  >
+    <fold-card surface="sunken" padding="sm">
+      <pre class="code-pre"><code>{{ usageCode }}</code></pre>
+    </fold-card>
+
+    <div class="demo-row">
+      <div class="gal-cell">
+        <span class="gal-tag"
+          >size · xs / sm / md / lg / xl · or a pixel number</span
+        >
+        <div class="icon-sizes">
+          @for (s of iconSizeSteps; track s) {
+          <div class="isz">
+            <fold-icon name="bell" [size]="s" />
+            <span>{{ s }}</span>
+          </div>
+          }
+          <div class="isz">
+            <fold-icon name="bell" [size]="40" />
+            <span>40px</span>
+          </div>
         </div>
-        }
-        <div class="isz">
-          <fold-icon name="bell" [size]="40" />
-          <span>40px</span>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">color · inherits currentColor</span>
+        <div class="icon-colors">
+          @for (t of iconColorTokens; track t) {
+          <span class="icol" [style.color]="'var(--fold-color-' + t + ')'">
+            <fold-icon name="fire" size="lg" />
+          </span>
+          }
         </div>
       </div>
     </div>
+  </fold-page-section>
 
-    <div class="gal-cell">
-      <span class="gal-tag"
-        >color · inherits currentColor (semantic tokens)</span
-      >
-      <div class="icon-colors">
-        @for (t of iconColorTokens; track t) {
-        <span class="icol" [style.color]="'var(--fold-color-' + t + ')'">
-          <fold-icon name="fire" size="lg" />
-        </span>
-        }
-      </div>
+  <fold-page-section
+    title="Adding your own — the registry"
+    description="The built-in set is the shared core; an app extends it through the root FoldIconRegistry."
+  >
+    <div class="reg-grid">
+      <fold-card surface="sunken" padding="sm">
+        <span class="gal-tag"
+          >at bootstrap — idiomatic, like provideRouter</span
+        >
+        <pre class="code-pre"><code>{{ provideCode }}</code></pre>
+      </fold-card>
+      <fold-card surface="sunken" padding="sm">
+        <span class="gal-tag">at runtime — resolves reactively</span>
+        <pre class="code-pre"><code>{{ runtimeCode }}</code></pre>
+      </fold-card>
     </div>
 
-    <div class="gal-cell">
-      <span class="gal-tag"
-        >all icons ({{ allIconNames.length }}) — click a tile to copy its
-        name</span
-      >
+    <fold-callout variant="warning" icon="shield">
+      <strong>Trust contract:</strong> icon markup is injected unsanitised, so
+      every registered value must be a static, authored
+      <code>&lt;svg&gt;</code> string — never user input. The registry throws on
+      a non-<code>&lt;svg&gt;</code> root or a <code>&lt;script&gt;</code> /
+      <code>on*=</code> handler.
+    </fold-callout>
+
+    <fold-card class="live">
+      <div class="live-copy">
+        <h3 class="feat-title">See it resolve, live</h3>
+        <p class="feat-body">
+          Registering an icon updates the sprite reactively — no reload. Click
+          to register <code>demo-sparkle</code>, then it renders on the right.
+        </p>
+        <fold-button
+          variant="primary"
+          icon="plus"
+          [disabled]="demoRegistered()"
+          (clicked)="registerDemoIcon()"
+        >
+          {{ demoRegistered() ? "Registered ✓" : "Register demo-sparkle" }}
+        </fold-button>
+      </div>
+      <div class="live-stage">
+        @if (demoRegistered()) {
+        <fold-icon name="demo-sparkle" [size]="48" />
+        <code>name="demo-sparkle"</code>
+        } @else {
+        <span class="live-empty">nothing registered yet</span>
+        }
+      </div>
+    </fold-card>
+  </fold-page-section>
+
+  <fold-page-section
+    title="The catalogue"
+    [description]="
+      totalCount + ' icons, grouped by category — click a tile to copy its name.'
+    "
+  >
+    @for (cat of categories; track cat.key) {
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">{{ cat.label }}</h3>
+        <fold-badge
+          [content]="cat.names.length.toString()"
+          variant="neutral"
+          radius="square"
+        />
+        <span class="cat-desc">{{ cat.desc }}</span>
+      </div>
       <div class="icon-grid">
-        @for (n of allIconNames; track n) {
+        @for (n of cat.names; track n) {
         <button
           type="button"
           class="icon-cell"
@@ -59,5 +154,6 @@
         }
       </div>
     </div>
-  </div>
+    }
+  </fold-page-section>
 </fold-page-layout>
