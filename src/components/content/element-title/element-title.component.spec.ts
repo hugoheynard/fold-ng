@@ -2,7 +2,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { FoldElementTitleComponent } from "./element-title.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 @Component({
   standalone: true,

@@ -1,6 +1,6 @@
-// GENERATED from apps/.../assets/icons/ui/*.svg — inline so the package
-// ships self-contained (no .svg text-loader dependency). Single-colour SVGs
-// using `currentColor`, so they inherit `color` from the host.
+// The UI icon set — inlined SVG (no .svg text-loader dependency) so the
+// package ships self-contained. Single-colour SVGs using `currentColor`, so
+// each icon inherits `color` from its host. Hand-maintained; keys are kebab-case.
 export const UI_ICONS = {
   "add-doc":
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.414 5h-4.414v-4.414zm.586 2v17h-20v-21a3 3 0 0 1 3-3h10v7zm-6 7h-3v-3h-2v3h-3v2h3v3h2v-3h3z"/></svg>',

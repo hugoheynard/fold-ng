@@ -1,6 +1,6 @@
 import { booleanAttribute, Component, computed, input } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /** Severity of a {@link FoldCalloutComponent} — colour + default icon. */
 export type FoldCalloutVariant =

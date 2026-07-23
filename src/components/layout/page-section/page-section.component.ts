@@ -1,6 +1,6 @@
 import { booleanAttribute, Component, inject, input } from "@angular/core";
 import { FoldElementTitleComponent } from "../../content/element-title/element-title.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
 
 /**

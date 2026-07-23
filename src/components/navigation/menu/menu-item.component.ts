@@ -1,6 +1,6 @@
 import { Component, booleanAttribute, computed, input } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import {
   FoldBadgeComponent,
   type FoldBadgeVariant,

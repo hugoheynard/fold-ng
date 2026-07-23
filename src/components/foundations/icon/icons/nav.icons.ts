@@ -1,6 +1,6 @@
-// GENERATED from apps/.../assets/icons/nav/*.svg — inline so the package
-// ships self-contained (no .svg text-loader dependency). Single-colour SVGs
-// using `currentColor`, so they inherit `color` from the host.
+// The Navigation icon set — inlined SVG (no .svg text-loader dependency) so the
+// package ships self-contained. Single-colour SVGs using `currentColor`, so
+// each icon inherits `color` from its host. Hand-maintained; keys are kebab-case.
 export const NAV_ICONS = {
   absence:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 1.5 14.5 6.5M14.5 1.5 9.5 6.5"/><path d="M9 11v-1a4 4 0 0 1 6 0v1"/><rect x="2.5" y="11" width="19" height="2.6" rx="0.7"/><path d="M4.5 13.6V22M19.5 13.6V22"/><path d="M7.5 16.6h9M8.5 16.6V22M15.5 16.6V22"/></svg>',

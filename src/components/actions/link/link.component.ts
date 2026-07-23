@@ -1,7 +1,7 @@
 import { booleanAttribute, Component, input, output } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /**
  * `<fold-link>` — an inline text link / link-button: accent-coloured, underline

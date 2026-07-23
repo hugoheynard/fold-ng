@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { DatePipe, NgTemplateOutlet } from "@angular/common";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /** Where a node's date renders relative to its label. */
 export type FoldTimelineDatePlacement = "above" | "below" | "inline" | "hidden";

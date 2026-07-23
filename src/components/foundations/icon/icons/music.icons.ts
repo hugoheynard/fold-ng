@@ -1,6 +1,6 @@
-// GENERATED from apps/.../assets/icons/music/*.svg — inline so the package
-// ships self-contained (no .svg text-loader dependency). Single-colour SVGs
-// using `currentColor`, so they inherit `color` from the host.
+// The Music / transport icon set — inlined SVG (no .svg text-loader dependency) so the
+// package ships self-contained. Single-colour SVGs using `currentColor`, so
+// each icon inherits `color` from its host. Hand-maintained; keys are kebab-case.
 export const MUSIC_ICONS = {
   "fast-forward":
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>',

@@ -13,7 +13,7 @@ import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FoldRepeatPressDirective } from "../../../directives/repeat-press.directive";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 import {

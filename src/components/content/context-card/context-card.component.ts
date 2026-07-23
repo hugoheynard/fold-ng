@@ -1,7 +1,7 @@
 import { Component, input } from "@angular/core";
 import { FoldCardComponent } from "../../content/card/card.component";
 import { FoldElementTitleComponent } from "../../content/element-title/element-title.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /**
  * `<fold-context-card>` — a titled info card in three zones: a **header** (a

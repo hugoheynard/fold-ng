@@ -1,6 +1,6 @@
-// GENERATED from apps/.../assets/icons/people/*.svg — inline so the package
-// ships self-contained (no .svg text-loader dependency). Single-colour SVGs
-// using `currentColor`, so they inherit `color` from the host.
+// The People icon set — inlined SVG (no .svg text-loader dependency) so the
+// package ships self-contained. Single-colour SVGs using `currentColor`, so
+// each icon inherits `color` from its host. Hand-maintained; keys are kebab-case.
 export const PEOPLE_ICONS = {
   briefcase:
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',

@@ -8,7 +8,7 @@ import {
   output,
 } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type { FoldToastVariant } from "./toast.types";
 
 /** Variant → leading status icon. */

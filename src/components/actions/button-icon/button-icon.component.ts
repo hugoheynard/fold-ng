@@ -1,7 +1,7 @@
 import { Component, computed, input, model, output } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconSize } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type {
   FoldButtonIconShape,
   FoldButtonIconSize,

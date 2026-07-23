@@ -108,11 +108,11 @@ export {
   provideFoldIcons,
 } from "./components/foundations/icon/icon-registry.service";
 export type { FoldIconSet } from "./components/foundations/icon/icon-registry.service";
-export { FOLD_BUILTIN_ICONS } from "./components/foundations/icon/icon.registry";
+export { FOLD_BUILTIN_ICONS } from "./components/foundations/icon/builtin-icons";
 export type {
   FoldIconName,
   FoldBuiltinIconName,
-} from "./components/foundations/icon/icon.registry";
+} from "./components/foundations/icon/builtin-icons";
 export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
 export { FoldTabLayoutComponent } from "./components/layout/tab-layout/tab-layout.component";
 export { FoldPageLayoutComponent } from "./components/layout/page-layout/page-layout.component";

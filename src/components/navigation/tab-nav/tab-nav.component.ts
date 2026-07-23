@@ -1,7 +1,7 @@
 import { Component, input, output } from "@angular/core";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 export type FoldTabNavItem = {
   /** Unique key — identifies the tab and is emitted on click. */

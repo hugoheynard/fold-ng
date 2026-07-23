@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, input } from "@angular/core";
 import { DomSanitizer, type SafeHtml } from "@angular/platform-browser";
 import { FoldIconRegistry } from "./icon-registry.service";
-import type { FoldIconName } from "./icon.registry";
+import type { FoldIconName } from "./builtin-icons";
 
 /** Size presets map to a pixel length; a number is interpreted as pixels. */
 export type FoldIconSize = "xs" | "sm" | "md" | "lg" | "xl" | number;

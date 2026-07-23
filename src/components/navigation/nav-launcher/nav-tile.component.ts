@@ -1,6 +1,6 @@
 import { booleanAttribute, Component, input } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /**
  * `[fold-nav-tile]` — one square tile in a {@link FoldNavLauncherComponent} grid:

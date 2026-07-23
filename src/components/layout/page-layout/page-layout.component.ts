@@ -1,6 +1,6 @@
 import { Component, input } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import type { FoldIconName } from "../../foundations/icon/icon.registry";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /**
  * `<fold-page-layout>` — the vertical scaffold for a settings/admin-style page:

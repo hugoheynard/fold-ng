@@ -5,7 +5,7 @@ import {
   inject,
   signal,
 } from "@angular/core";
-import { FOLD_BUILTIN_ICONS } from "./icon.registry";
+import { FOLD_BUILTIN_ICONS } from "./builtin-icons";
 
 /** A `name → SVG markup` map — the shape both built-in and custom icons take. */
 export type FoldIconSet = Readonly<Record<string, string>>;
