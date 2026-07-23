@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from "@angular/core";
+import { Component, computed, effect, inject, input } from "@angular/core";
 import { DomSanitizer, type SafeHtml } from "@angular/platform-browser";
 import { FoldIconRegistry } from "./icon-registry.service";
 import type { FoldIconName } from "./icon.registry";
@@ -51,14 +51,23 @@ export class FoldIconComponent {
   private readonly registry = inject(FoldIconRegistry);
 
   /** Sanitised SVG markup ready for `[innerHTML]`. Reactive on registration. */
-  readonly svg = computed<SafeHtml>(() => {
-    const name = this.name();
-    const raw = this.registry.resolve(name) ?? "";
-    if (!raw && name) {
-      console.warn(`[fold-icon] unknown icon: "${name}"`);
-    }
-    return this.sanitizer.bypassSecurityTrustHtml(raw);
-  });
+  readonly svg = computed<SafeHtml>(() =>
+    this.sanitizer.bypassSecurityTrustHtml(
+      this.registry.resolve(this.name()) ?? "",
+    ),
+  );
+
+  constructor() {
+    // Dev aid: warn when a name fails to resolve. Lives in an effect — the
+    // `svg` computed must stay pure (no side effects) — and re-checks
+    // reactively, so the warning clears the instant the icon is registered.
+    effect(() => {
+      const name = this.name();
+      if (!this.registry.has(name)) {
+        console.warn(`[fold-icon] unknown icon: "${name}"`);
+      }
+    });
+  }
 
   /** Resolves the size input to a CSS length string for `--icon-size`. */
   readonly sizeVar = computed<string>(() => {
