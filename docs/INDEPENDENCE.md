@@ -13,27 +13,40 @@
 
 ---
 
-## 1 · Publier la première bêta — geste sortant (Hugo)
+## 1 · Publier la première release — geste sortant (Hugo)
+
+> **« beta » = deux choses distinctes.** La **maturité** (pré-1.0, API mouvante)
+> se signale par le badge README + le numéro `0.x` — c'est ce que voit un humain.
+> Le **canal de pré-release** npm (`0.y.z-beta.N` sur le dist-tag `beta`) est un
+> mécanisme de test jetable pour la **prochaine** version, **pas** l'étiquette de
+> tes releases publiques. Le suffixe `-beta.N` ne va **jamais** sur `latest`.
+
+**Contrainte de départ** : `0.0.0` (coquille « Coming soon ») squatte déjà
+`latest`, et c'est **ça** que npm indexe. La 1ʳᵉ vraie release doit donc aller
+sur `latest` avec un `0.x` **propre** (pas `-beta` : un `^0.1.0` consommateur
+n'attrape pas les pré-releases, et un `-beta` sur `latest` sème la confusion).
 
 Recette :
 
 ```bash
 npm whoami || npm login
-npm version 0.1.0-beta.1 --no-git-tag-version   # vrai identifiant pré-release
-pnpm run verify:pack                             # build + publint + attw
-cd dist && npm publish --tag beta --access public
+npm version 0.1.0 --no-git-tag-version   # 0.x propre → latest (maturité = badge)
+pnpm run verify:pack                      # build + publint + attw
+cd dist && npm publish --access public    # va sur latest par défaut
+npm deprecate fold-ng@0.0.0 "placeholder to reserve the name — use latest"
 ```
 
-- [ ] **Bêta sous le canal `beta`, jamais `latest`.** `--tag beta` → `npm install fold-ng`
-      ne sert rien (pas de `latest`), `fold-ng@beta` est opt-in. C'est ce qui protège la vitrine.
-- [ ] **Semver propre — pas de train `0.0.x`.** `0.1.0-beta.1` → `-beta.2` → `0.1.0` stable
-      (ou minor bumps `0.1.0`, `0.2.0`). Chaque version publiée est immuable.
+- [ ] **La release publique va sur `latest`**, en `0.x` propre. `npm install fold-ng`
+      sert alors ta vraie lib (fiche riche indexée), pas la coquille vide.
+- [ ] **Le dist-tag `beta` = itérations WIP.** Pour tester un chantier avant de
+      l'assumer : `0.2.0-beta.1` → `npm publish --tag beta` (ne touche pas `latest`) ;
+      quand c'est bon, `0.2.0` → `latest`. Les `-beta.N` sont opt-in (`fold-ng@beta`).
+- [ ] **Semver propre — pas de train `0.0.x`.** Minor bumps `0.1.0` → `0.2.0` sur
+      `latest` ; chaque version publiée est immuable.
 - [ ] **`latest` → `1.0.0` seulement quand `RELEASE-READINESS.md` est tout-vert.**
-      Avant ça, `latest` = dernier `0.x` stable ; les `-beta.n` restent sur `beta`.
+      Avant ça, `latest` = dernier `0.x` (maturité beta assumée par le badge).
 - [ ] **`--provenance`** : ne marche **que depuis un CI supporté** (GitHub Actions + OIDC),
       pas en local → arrive avec le workflow release (§3).
-- [ ] **Après coup** : `npm deprecate "fold-ng@0.1.0-beta.1" "early beta — use latest"`
-      pour tenir la liste propre (zéro pénalité découverte).
 
 ## 2 · Basculer l'app SH3PHERD sur la lib publiée
 
