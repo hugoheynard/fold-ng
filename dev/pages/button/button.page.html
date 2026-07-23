@@ -1,119 +1,170 @@
 <fold-page-layout title="button">
   <gal-kind-badge titleBadge kind="component" />
-  <div class="gal-stack">
-    <div class="gal-cell">
-      <span class="gal-tag">emphasis (intent = primary)</span>
-      <div class="gal-row">
-        @for (e of emphases; track e) {
+  <p description>
+    One directive on a real <code>&lt;button&gt;</code> or
+    <code>&lt;a&gt;</code>, driven by two orthogonal axes —
+    <strong>emphasis</strong> (how loud) × <strong>intent</strong> (what it
+    means). Every combination is expressible, from a quiet outline to a filled
+    destructive CTA, and the host stays a native control so <code>type</code>,
+    <code>disabled</code>, <code>href</code> and form submit come for free.
+  </p>
+
+  <fold-page-section
+    title="Why it holds up"
+    description="The decisions behind the one-liner."
+  >
+    <fold-callout class="pitch" variant="accent" icon="lightning">
+      <code>foldButton</code> is an
+      <strong>attribute-selector component</strong> (<code
+        >button[foldButton], a[foldButton]</code
+      >) — the host <em>is</em> the real button or anchor, the way Angular
+      Material ships <code>matButton</code>. That's why a "link that looks like
+      a button" needs no second component.
+    </fold-callout>
+    <div class="feat-grid">
+      @for (f of features; track f.title) {
+      <fold-card class="feat">
+        <span class="feat-ico"><fold-icon [name]="f.icon" size="lg" /></span>
+        <h3 class="feat-title">{{ f.title }}</h3>
+        <p class="feat-body">{{ f.body }}</p>
+      </fold-card>
+      }
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="The two axes"
+    description="emphasis × intent — set independently. The full matrix, live."
+  >
+    <div class="axes">
+      <div class="axis">
+        <span class="gal-tag">emphasis — how loud</span>
+        <p class="axis-note">
+          <code>solid</code> filled · <code>soft</code> tinted (default) ·
+          <code>outline</code> hairline
+        </p>
+      </div>
+      <div class="axis">
+        <span class="gal-tag">intent — what it means</span>
+        <p class="axis-note">
+          <code>primary</code> (default) · <code>neutral</code> ·
+          <code>warning</code> · <code>danger</code>
+        </p>
+      </div>
+    </div>
+
+    <div class="matrix">
+      <div class="matrix-corner"></div>
+      @for (i of intents; track i) {
+      <div class="matrix-col">{{ i }}</div>
+      } @for (e of emphases; track e) {
+      <div class="matrix-rowhead">{{ e }}</div>
+      @for (i of intents; track i) {
+      <div class="matrix-cell">
         <button
           foldButton
           [emphasis]="e"
+          [intent]="i"
+          size="sm"
           (click)="buttonClicks.set(buttonClicks() + 1)"
         >
           {{ e }}
         </button>
-        }
       </div>
+      } }
     </div>
-    <div class="gal-cell">
-      <span class="gal-tag">intent × emphasis (the full matrix)</span>
-      <div class="gal-stack" style="gap: 8px">
-        @for (e of emphases; track e) {
-        <div class="gal-row" style="align-items: center">
-          <span class="gal-tag" style="width: 60px">{{ e }}</span>
-          @for (i of intents; track i) {
-          <button foldButton [emphasis]="e" [intent]="i">{{ i }}</button>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Usage"
+    description="Bare is soft + primary. Set either axis to move it."
+  >
+    <fold-card surface="sunken" padding="sm">
+      <pre class="code-pre"><code>{{ usageCode }}</code></pre>
+    </fold-card>
+
+    <div class="demo-row">
+      <div class="gal-cell">
+        <span class="gal-tag">size · sm / md / lg</span>
+        <div class="demo-line">
+          @for (s of buttonSizes; track s) {
+          <button foldButton [size]="s">size {{ s }}</button>
           }
         </div>
-        }
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">shape · rounded (default) / pill · icon</span>
+        <div class="demo-line">
+          <button foldButton size="sm">rounded</button>
+          <button foldButton size="sm" shape="pill">pill</button>
+          <button foldButton emphasis="solid" size="sm" icon="check">
+            with icon
+          </button>
+        </div>
       </div>
     </div>
-    <div class="gal-cell">
-      <span class="gal-tag">sizes (soft primary)</span>
-      <div class="gal-row" style="align-items: center">
-        @for (s of buttonSizes; track s) {
-        <button foldButton [size]="s">size {{ s }}</button>
-        }
-      </div>
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag">shapes (rounded default · pill)</span>
-      <div class="gal-row" style="align-items: center">
-        <button foldButton size="sm">rounded</button>
-        <button foldButton size="sm" shape="pill">pill</button>
-        <button foldButton size="sm" shape="pill">
-          <fold-icon name="plus" [size]="13" />
-          Proposer un avenant
-        </button>
-      </div>
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag">block (full-width, solid danger)</span>
-      <div class="gal-narrow">
-        <button foldButton emphasis="solid" intent="danger" block>
-          <fold-icon name="bin" [size]="14" />
-          Résilier le contrat
-        </button>
-      </div>
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag"
-        >icon shorthand (sized from the button) · disabled</span
-      >
-      <div class="gal-row" style="align-items: center">
-        <button foldButton emphasis="solid" icon="check">Confirm</button>
-        <button
-          foldButton
-          emphasis="outline"
-          intent="neutral"
-          size="sm"
-          icon="edit"
+  </fold-page-section>
+
+  <fold-page-section
+    title="States"
+    description="Loading, disabled, and the link-as-button case."
+  >
+    <div class="demo-row">
+      <div class="gal-cell">
+        <span class="gal-tag"
+          >loading — spinner · aria-busy · blocked · lit</span
         >
-          Edit
-        </button>
-        <button foldButton iconTrailing="chevron-right">Next</button>
-        <button foldButton [disabled]="true">Disabled</button>
-        <span class="gal-tag">clicked {{ buttonClicks() }}×</span>
+        <div class="demo-line">
+          <button foldButton emphasis="solid" [loading]="busy()">
+            {{ busy() ? "Saving…" : "Save" }}
+          </button>
+          <button
+            foldButton
+            emphasis="outline"
+            intent="neutral"
+            size="sm"
+            (click)="busy.set(!busy())"
+          >
+            toggle busy
+          </button>
+        </div>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">disabled — dimmed · non-interactive</span>
+        <div class="demo-line">
+          <button foldButton [disabled]="true">Button</button>
+          <button foldButton emphasis="solid" intent="danger" [disabled]="true">
+            Delete
+          </button>
+        </div>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">&lt;a foldButton&gt; — a real link</span>
+        <div class="demo-line">
+          <a foldButton emphasis="solid" href="#button">Anchor CTA</a>
+          <a foldButton emphasis="outline" intent="neutral" href="#button"
+            >Ghost link</a
+          >
+          <a
+            foldButton
+            emphasis="outline"
+            intent="neutral"
+            [disabled]="true"
+            href="#button"
+            >Disabled</a
+          >
+        </div>
       </div>
     </div>
-    <div class="gal-cell">
-      <span class="gal-tag">loading (busy — spinner, aria-busy, blocked)</span>
-      <div class="gal-row" style="align-items: center">
-        <button foldButton emphasis="solid" [loading]="busy()">
-          {{ busy() ? "Saving…" : "Save" }}
-        </button>
-        <button
-          foldButton
-          emphasis="outline"
-          intent="neutral"
-          size="sm"
-          (click)="busy.set(!busy())"
-        >
-          toggle busy
-        </button>
-      </div>
-    </div>
-    <div class="gal-cell">
-      <span class="gal-tag">link as a button (&lt;a foldButton&gt;)</span>
-      <div class="gal-row" style="align-items: center">
-        <a foldButton href="#button">Anchor CTA</a>
-        <a
-          foldButton
-          emphasis="outline"
-          intent="neutral"
-          size="sm"
-          href="#button"
-          >Ghost link</a
-        >
-        <a
-          foldButton
-          emphasis="outline"
-          intent="neutral"
-          [disabled]="true"
-          href="#button"
-          >Disabled link</a
-        >
-      </div>
-    </div>
-  </div>
+
+    <fold-callout class="a11y" variant="info" icon="shield">
+      Prefer native <code>(click)</code> — a disabled
+      <code>&lt;button&gt;</code> blocks it at the platform; a disabled
+      <code>&lt;a&gt;</code> gets <code>aria-disabled</code> +
+      <code>tabindex="-1"</code> and a
+      <code>pointer-events: none</code> surface. Focus ring, reduced-motion and
+      forced-colors are all handled —
+      <span class="clicks">clicked {{ buttonClicks() }}×</span>.
+    </fold-callout>
+  </fold-page-section>
 </fold-page-layout>

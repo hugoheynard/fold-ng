@@ -1,0 +1,173 @@
+/* ── button page — the foldButton system: pitch, the emphasis × intent matrix,
+   usage, states. Airy premium rhythm. Scoped under `gal-button-page` (the page
+   is ViewEncapsulation.None), so nothing here leaks to other gallery pages. */
+
+gal-button-page {
+  --fold-page-gap: 56px;
+  display: block;
+}
+
+/* Section-leading pitch reads like a statement, not a notice. */
+gal-button-page .pitch {
+  display: block;
+  margin-bottom: var(--fold-space-lg);
+  font-size: var(--fold-text-md);
+  line-height: 1.6;
+}
+
+/* ── Why it holds up — feature cards ─────────────────────────────────────── */
+gal-button-page .feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--fold-space-xl);
+}
+@media (max-width: 880px) {
+  gal-button-page .feat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  gal-button-page .feat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+gal-button-page .feat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-md);
+  transition:
+    transform var(--fold-motion-base),
+    box-shadow var(--fold-motion-base),
+    border-color var(--fold-motion-base);
+}
+gal-button-page .feat:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fold-shadow-md);
+  border-color: var(--fold-color-primary-border);
+}
+gal-button-page .feat-ico {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-primary-border);
+  color: var(--fold-color-primary-text);
+  background: linear-gradient(
+    150deg,
+    var(--fold-color-primary-surface),
+    transparent 130%
+  );
+}
+gal-button-page .feat-title {
+  margin: 0;
+  font-size: var(--fold-text-md);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--fold-color-text);
+}
+gal-button-page .feat-body {
+  margin: 0;
+  font-size: var(--fold-text-sm);
+  line-height: 1.6;
+  color: var(--fold-color-text-secondary);
+}
+
+/* ── The two axes — explainer + matrix ───────────────────────────────────── */
+gal-button-page .axes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-xl);
+  margin-bottom: var(--fold-space-lg);
+}
+gal-button-page .axis {
+  flex: 1 1 260px;
+}
+gal-button-page .axis-note {
+  margin: var(--fold-space-sm) 0 0;
+  font-size: var(--fold-text-sm);
+  line-height: 1.6;
+  color: var(--fold-color-text-muted);
+}
+gal-button-page .axis-note code {
+  color: var(--fold-color-text-secondary);
+}
+
+gal-button-page .matrix {
+  display: grid;
+  grid-template-columns: auto repeat(4, minmax(0, 1fr));
+  gap: var(--fold-space-md);
+  align-items: center;
+  padding: var(--fold-space-lg);
+  border-radius: var(--fold-radius-lg);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
+  overflow-x: auto;
+}
+gal-button-page .matrix-corner {
+  min-width: 56px;
+}
+gal-button-page .matrix-col {
+  text-align: center;
+  font-size: var(--fold-text-sm);
+  font-weight: 600;
+  color: var(--fold-color-text-secondary);
+  text-transform: capitalize;
+}
+gal-button-page .matrix-rowhead {
+  text-align: right;
+  padding-right: var(--fold-space-sm);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+  text-transform: capitalize;
+}
+gal-button-page .matrix-cell {
+  display: grid;
+}
+gal-button-page .matrix-cell .fold-button {
+  width: 100%;
+  text-transform: capitalize;
+}
+
+/* ── Usage + states — code + demo cells ──────────────────────────────────── */
+gal-button-page .code-pre {
+  margin: 0;
+  overflow-x: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: var(--fold-text-sm);
+  line-height: 1.7;
+  color: var(--fold-color-text-secondary);
+}
+gal-button-page .code-pre code {
+  color: inherit;
+}
+gal-button-page .demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-xl);
+  margin-top: var(--fold-space-lg);
+}
+gal-button-page .demo-row .gal-cell {
+  flex: 1 1 260px;
+  padding: var(--fold-space-lg);
+  border-radius: var(--fold-radius-lg);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
+}
+gal-button-page .demo-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--fold-space-md);
+  margin-top: var(--fold-space-md);
+}
+gal-button-page .a11y {
+  display: block;
+  margin-top: var(--fold-space-lg);
+  font-size: var(--fold-text-sm);
+  line-height: 1.6;
+}
+gal-button-page .a11y .clicks {
+  color: var(--fold-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
