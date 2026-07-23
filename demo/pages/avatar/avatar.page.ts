@@ -23,8 +23,8 @@ import {
   FoldPaletteRegistry,
   type FoldAutoPaletteName,
 } from "../../../src/public-api";
-import { KindBadgeComponent } from "../../kind-badge.component";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** A clickable avatar demo — its config drives both the rendered vignette and
  *  the markup shown in the code panel when you click it. */

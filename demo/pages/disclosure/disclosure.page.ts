@@ -3,8 +3,8 @@ import {
   FoldDisclosureComponent,
   FoldPageLayoutComponent,
 } from "../../../src/public-api";
-import { KindBadgeComponent } from "../../kind-badge.component";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/disclosure` — the `fold-disclosure` gallery page. */
 @Component({

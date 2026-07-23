@@ -6,7 +6,7 @@ import {
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
 } from "../../../src/public-api";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { THEME_SMELLS, THEME_STEPS } from "./theme-recipe";
 
 /** One theme, as the page documents it. */

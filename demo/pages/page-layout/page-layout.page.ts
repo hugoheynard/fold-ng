@@ -9,8 +9,8 @@ import {
   FoldPageSectionComponent,
   FoldSliderComponent,
 } from "../../../src/public-api";
-import { DevPlaygroundComponent } from "../../playground.component";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 
 /** `/page-layout` — the `fold-page-layout` gallery page. */
 @Component({

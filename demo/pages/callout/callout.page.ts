@@ -7,8 +7,8 @@ import {
   type FoldCalloutAppearance,
   type FoldCalloutVariant,
 } from "../../../src/public-api";
-import { KindBadgeComponent } from "../../kind-badge.component";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/callout` — the `fold-callout` gallery page. */
 @Component({

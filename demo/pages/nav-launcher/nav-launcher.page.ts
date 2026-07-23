@@ -8,7 +8,7 @@ import {
   FoldPageSectionComponent,
 } from "../../../src/public-api";
 import type { FoldIconName } from "../../../src/public-api";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 
 interface LauncherDest {
   readonly id: string;

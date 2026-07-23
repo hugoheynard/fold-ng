@@ -13,8 +13,8 @@ import {
   FoldPageLayoutComponent,
   FoldSliderComponent,
 } from "../../../src/public-api";
-import { DevPlaygroundComponent } from "../../playground.component";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 
 /** `/aside-layout` — the `fold-aside-layout` gallery page. */
 @Component({

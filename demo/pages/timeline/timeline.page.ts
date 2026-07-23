@@ -1,5 +1,5 @@
 import { Component, computed, signal } from "@angular/core";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 import {
   FoldBadgeComponent,
   FoldCardComponent,
@@ -10,7 +10,7 @@ import {
   type FoldTimelineDatePlacement,
   type FoldTimelineNode,
 } from "../../../src/public-api";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/timeline` — the `fold-timeline` gallery page (both orientations + playground). */
 @Component({

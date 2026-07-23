@@ -1,6 +1,6 @@
 import { Component, computed, signal } from "@angular/core";
-import { KindBadgeComponent } from "../../kind-badge.component";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldButtonComponent,
   FoldCardComponent,

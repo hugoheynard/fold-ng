@@ -18,10 +18,10 @@ import {
   FoldPanelHostService,
   FoldSliderComponent,
 } from "../../../src/public-api";
-import { PanelScopeDirective } from "../../panel-scope.directive";
-import { TabPanelComponent } from "../../tab-panel.component";
-import { KindBadgeComponent } from "../../kind-badge.component";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { PanelScopeDirective } from "../../components/panel-scope.directive";
+import { TabPanelComponent } from "../../components/tab-panel.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 
 type ShellMode = "desktop" | "tablet" | "mobile";
 

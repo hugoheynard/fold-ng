@@ -4,7 +4,7 @@ import {
   FoldCardComponent,
   FoldElementTitleComponent,
   FoldPageSectionComponent,
-} from "../src/public-api";
+} from "../../src/public-api";
 
 /**
  * `<dev-playground>` — a gallery dev tool: the param / preview / code triptych.

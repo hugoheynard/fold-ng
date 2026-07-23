@@ -1,5 +1,5 @@
 import { Component, signal } from "@angular/core";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 import {
   FoldButtonIconComponent,
   FoldPageLayoutComponent,

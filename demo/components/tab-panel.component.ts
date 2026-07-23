@@ -3,7 +3,7 @@ import {
   FoldPanelHeaderComponent,
   FoldTabNavComponent,
   type FoldTabNavItem,
-} from "../src/public-api";
+} from "../../src/public-api";
 
 /**
  * A demo panel: an `fold-tab-nav` inside a side panel, opened imperatively via

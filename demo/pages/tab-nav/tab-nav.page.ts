@@ -5,8 +5,8 @@ import {
   signal,
   ViewEncapsulation,
 } from "@angular/core";
-import { KindBadgeComponent } from "../../kind-badge.component";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldBadgeComponent,
   FoldIconComponent,
@@ -18,7 +18,7 @@ import {
   type FoldIconName,
   type FoldTabNavItem,
 } from "../../../src/public-api";
-import { TabPanelComponent } from "../../tab-panel.component";
+import { TabPanelComponent } from "../../components/tab-panel.component";
 
 type TabStyle = "underline" | "fill";
 type TabDirection = "horizontal" | "vertical";

@@ -13,8 +13,8 @@ import {
   FoldPanelHostService,
   FoldToastContainerComponent,
 } from "../../src/public-api";
-import { InspectPanelComponent } from "../inspect-panel.component";
-import { closestFold, inspect } from "../inspect";
+import { InspectPanelComponent } from "./inspect-panel.component";
+import { closestFold, inspect } from "./inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
 import {
   GALLERY_THEME_CONFIG,

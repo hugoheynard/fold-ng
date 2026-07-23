@@ -1,5 +1,5 @@
 import { Component, computed, signal } from "@angular/core";
-import { KindBadgeComponent } from "../../kind-badge.component";
+import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { form, required, FormField } from "@angular/forms/signals";
 import {
   FoldTabLayoutComponent,
@@ -15,7 +15,7 @@ import {
   FoldTabNavComponent,
   type FoldTabNavItem,
 } from "../../../src/public-api";
-import { DevPlaygroundComponent } from "../../playground.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/form` — the `fold-input` gallery page (text · number · select · search). */
 @Component({
