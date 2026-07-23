@@ -37,6 +37,8 @@ export type FoldStickyColumnAnchor = "top" | "center" | "bottom";
  *   aside[foldStickyColumn] { --fold-sticky-column-position: static; }
  * }
  * ```
+ *
+ * @selector `[foldStickyColumn]`
  */
 @Directive({
   selector: "[foldStickyColumn]",

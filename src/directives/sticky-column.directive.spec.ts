@@ -85,4 +85,13 @@ describe("FoldStickyColumnDirective", () => {
     fixture.detectChanges();
     expect(aside.style.top).toBe("calc(50% + 2rem)");
   });
+
+  it("resolves a numeric center offset to px inside the calc", () => {
+    const { fixture, aside } = render();
+    fixture.componentInstance.anchor.set("center");
+    fixture.componentInstance.offset.set(24);
+    fixture.detectChanges();
+    expect(aside.style.top).toBe("calc(50% + 24px)");
+    expect(aside.style.transform).toBe("translateY(-50%)");
+  });
 });

@@ -182,10 +182,13 @@ the package root.
 Directives worth knowing: **`foldSurface`** (`page`·`chrome` — the seam a mixed
 theme re-colours across), **`foldElevated`** (raise any bg-owning element into
 an inset, rounded, shadowed card — the per-surface "floating" mechanism, driven
-by `--fold-surface-inset`/`-radius`/`-shadow`), and **`foldRepeatPress`**
-(press-and-hold auto-repeat for a stepper button — fires once on press then on a
-tunable cadence while held, and stops the instant `foldRepeatPressDisabled`
-goes true mid-hold).
+by `--fold-surface-inset`/`-radius`/`-shadow`), **`foldStickyColumn`** (turn an
+`<aside>` into a sticky side column — `sticky="top·center·bottom"` + `stickyOffset`,
+the rest tunable via `--fold-sticky-column-*`; un-stick with
+`--fold-sticky-column-position: static` at the page's stacking breakpoint), and
+**`foldRepeatPress`** (press-and-hold auto-repeat for a stepper button — fires
+once on press then on a tunable cadence while held, and stops the instant
+`foldRepeatPressDisabled` goes true mid-hold).
 
 ## Form-field ids
 
