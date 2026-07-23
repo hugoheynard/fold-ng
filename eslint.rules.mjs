@@ -1,7 +1,7 @@
 // @ts-check
 /**
  * Vendored ESLint rule fragments — the monorepo's load-bearing bans, copied here
- * so fold-ng lints identically once extracted (docs/INDEPENDENCE.md §3.2). These were
+ * so fold-ng lints identically once extracted. These were
  * `@sh3pherd/eslint-config` (`workspace:*`); that dependency does not resolve
  * outside the monorepo, so the fragments live locally now.
  *

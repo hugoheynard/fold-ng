@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
  * Dead-binding gate for fold-ng — runs Angular's real template type-checker
  * (`strictTemplates`) over the library **and its dev gallery**. Standalone
  * version of the monorepo's `dev-toolbox/scripts/check-ui-templates.ts`, vendored
- * for the extracted repo (docs/INDEPENDENCE.md §3.5).
+ * for the extracted repo.
  *
  * Why: plain `tsc --noEmit` does NOT type-check Angular templates, and Vite
  * builds the gallery with esbuild (also no template check) — so a binding to a
