@@ -41,6 +41,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
       },
       { id: "page-section", label: "page-section" },
       {
+        id: "hero-section",
+        label: "hero-section",
+        badge: "new",
+        badgeTone: "info",
+      },
+      {
         id: "sticky-column",
         label: "sticky-column",
         badge: "new",

@@ -36,6 +36,7 @@ and the gallery nav — **layout first**.
 | `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                         |
 | `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap)    |
 | `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card |
+| `fold-hero-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — full-bleed splash; extracted from home |
 | `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)    |
 | `fold-tab-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)     |
 
@@ -106,10 +107,10 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                  |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo               |
 
-**Ship-ready today (14):** app-shell, page-layout, page-section, aside-layout,
-tab-layout, avatar-list, callout, element-title, field, field-list,
-nav-launcher, timeline, toast, surface. Everything else has scoped, mostly
-mechanical work below.
+**Ship-ready today (15):** app-shell, page-layout, page-section, hero-section,
+aside-layout, tab-layout, avatar-list, callout, element-title, field,
+field-list, nav-launcher, timeline, toast, surface. Everything else has scoped,
+mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 

@@ -1,0 +1,54 @@
+/* A full-bleed splash band. The host owns the bleed + the surface (wash +
+   hairline); the two inner lanes stack a decorative backdrop under the content. */
+:host {
+  display: block;
+  position: relative;
+  overflow: clip; /* contain an oversized backdrop watermark */
+  /* Bleed — cancel *exactly* the gutter fold-page-layout pads with (same token),
+     so the band spans edge-to-edge. As the top band it also swallows the page's
+     top padding to sit flush to the edge. */
+  margin-inline: calc(-1 * var(--fold-page-gutter, 32px));
+  padding: var(--fold-hero-section-pad-top, 56px)
+    var(--fold-hero-section-pad-inline, 24px)
+    var(--fold-hero-section-pad-bottom, 52px);
+  border-bottom: 1px solid var(--fold-color-border);
+  /* A wash of the brand tint over the raised surface so the band reads as the
+     hero, not just the top of the scroll. */
+  background:
+    radial-gradient(
+      120% 140% at 50% 0%,
+      var(--fold-color-primary-surface),
+      transparent 60%
+    ),
+    var(--fold-color-surface-card);
+}
+:host(:first-child) {
+  margin-top: calc(-1 * var(--fold-page-pad-top, 28px));
+}
+:host(.no-wash) {
+  background: var(--fold-color-surface-card);
+}
+
+/* Decorative layer, behind the content. */
+.hs-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* The centred content column, above the backdrop. */
+.hs-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--fold-hero-section-gap, 18px);
+}
+:host(.align-start) .hs-content {
+  align-items: flex-start;
+  text-align: start;
+}
