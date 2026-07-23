@@ -45,12 +45,14 @@ Tout ce qui suit **ne résout pas** une fois `packages/ui/` sorti — à inliner
       dans `eslint.rules.mjs` (local) ; `eslint.config.mjs` pointe dessus ; la
       devDep `workspace:*` est retirée. `eslint src dev` = 0 (règles identiques). (§3.2)
 - [x] **Script `clean`. ✅ FAIT.** `../../dev-toolbox/…` → `rm -rf dist out-tsc
-    docs-api …` local.
-- [ ] **Gate `lint:ui-templates`** = `tsx dev-toolbox/scripts/check-ui-templates.ts`
-      (root). C'est le contrôle **`strictTemplates`** sur lib + gallery. → **copier**
-      le script dans le repo lib (`scripts/check-templates.ts` + script npm
-      `lint:templates`) ou le remplacer par un `ngc`/build AOT équivalent. **PAS
-      ENCORE** (dépend d'un tsx/script vendorisé). (§3.5)
+  docs-api …` local.
+- [~] **Gate `lint:ui-templates`** = `tsx dev-toolbox/scripts/check-ui-templates.ts`
+  (root). **Script vendorisé** dans `packages/ui/scripts/check-templates.ts`
+  (version standalone : tsconfig local + `@angular/compiler-cli` résolu depuis
+  les node_modules du package). **Activation bloquée sur TS6** — le compilateur
+  Angular refuse TS < 6.0 (même blocage que `ng-packagr`, §4) ; en monorepo la
+  lib est TS 5.9.3, donc le gate racine `lint:ui-templates` reste l'actif. À
+  l'extraction (TS6) : ajouter `"lint:templates": "tsx scripts/check-templates.ts"` + la devDep `@angular/compiler-cli`. (§3.5)
 - [x] **Hooks. ✅ PRÊTS (templates inertes).** `.githooks/pre-commit` (lint-staged) + `.githooks/pre-push` (`tsc` + `eslint` + `lint:templates` + `test`) +
       `.lintstagedrc.mjs` local créés dans `packages/ui/`. **Inertes dans le
       monorepo** (git utilise le `.githooks` racine ; le pre-commit racine résout
@@ -147,7 +149,13 @@ run. Garder la **règle lockfile** : `prettier --write pnpm-lock.yaml` après to
   `husky`). Reproduire le comportement du monorepo (hooks self-install au
   `pnpm install`).
 
-### 3.5 · Gate `strictTemplates` (le contrôle qui n'est pas dans `tsc`)
+### 3.5 · Gate `strictTemplates` (le contrôle qui n'est pas dans `tsc`) — ⚠️ script prêt, activation TS6
+
+> `scripts/check-templates.ts` **vendorisé** (standalone). Mais il tourne via
+> `@angular/compiler-cli`, qui **exige TS 6.0** — même blocage que ng-packagr
+> (§4). Donc : en monorepo (TS 5.9.3) on garde le gate racine actif ; à
+> l'extraction + bump TS6, on ajoute le script npm `lint:templates` + la devDep
+> `@angular/compiler-cli` et il devient l'actif.
 
 Le monorepo lance `dev-toolbox/scripts/check-ui-templates.ts` : compile les
 templates de `src/` **+** de la gallery `dev/` avec `strictTemplates` (ngtsc) pour
