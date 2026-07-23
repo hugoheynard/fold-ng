@@ -200,13 +200,23 @@ Aujourd'hui bloqué : `ng-packagr@22` exige **TS `>=6.0 <6.1`** ; la lib est pin
       repassées vertes** : `tsc` 0, `vitest` 472/472, `eslint` 0, `vite build`
       gallery `✓ built`, `strictTemplates` clean. Le blocage `ng-packagr` a
       disparu.
-- [ ] **`ng-packagr`** : `ng-package.json` = `{ "dest":"dist", "lib":{ "entryFile":"src/index.ts" } }` + `tsconfig.lib.json` (`compilationMode:"partial"`, include `src/**`, exclude
-      specs + `dev`).
-- [ ] **Assets tokens CSS** : le `dist/package.json` généré **ne porte pas** les
-      exports `./tokens.css` custom → copier `src/tokens/*.css` en assets et
-      **réinjecter** ces `exports` dans le `dist/package.json` au publish.
+- [x] **`ng-packagr`. ✅ FAIT (2026-07-23).** `ng-package.json` (`dest:dist`,
+      `entryFile:src/index.ts`) + `tsconfig.lib.json` (`compilationMode:partial`,
+      include `src/**`, exclude specs/`__tests__`/`dev`/`scripts`). Script
+      `build` = `ng-packagr … && node scripts/finalize-dist.mjs`. Sort FESM2022
+      + `.d.ts` en partial-Ivy.
+- [x] **Assets tokens CSS. ✅ FAIT.** `scripts/finalize-dist.mjs` copie
+      `src/tokens/*.css` → `dist/tokens/` (chaîne `@import` préservée) et
+      **réinjecte** les 4 exports `./tokens.css` + `./tokens/*.css` dans le
+      `dist/package.json`. Le script **corrige aussi** 2 fuites de ng-packagr :
+      il écrase `exports["."]` (le `import: ./src/index.ts` source fuitait avant
+      le FESM) et **supprime `files`** (héritait `["src", …]` → aurait exclu
+      `fesm2022/`+`types/` du tarball). **Vérifié** : `npm pack` = 13 fichiers,
+      347 kB, aucun `src/`/`dev/`/spec ; `publint` **All good** ; `attw` **tout
+      vert** (`verify:pack`, exit 0 — CSS assets exclus, `cjs-resolves-to-esm`
+      ignoré car lib ESM-only Angular).
 - [ ] **`npm publish --provenance`** depuis `dist/` (badge verified + signal
-      supply-chain lu par Socket/Snyk).
+      supply-chain lu par Socket/Snyk). **← geste sortant : à lancer par Hugo.**
 
 ### 4.1 · Politique de versioning & dist-tags (ne pas polluer `latest`)
 
@@ -297,10 +307,10 @@ Statut requis unique `ci` (comme `ci-gate` du monorepo). **Branch protection** s
 
 ## 10 · Definition of Done (vérif finale)
 
-- [ ] `pnpm install && pnpm eslint src dev && pnpm exec tsc --noEmit -p tsconfig.app.json && pnpm lint:templates && pnpm test && pnpm exec vite build` **vert dans le repo isolé** (aucun `../../`, aucun `workspace:*` non résolu).
+- [x] **`eslint src dev` + `tsc --noEmit` + `lint:templates` + `vitest` + `vite build` verts dans le repo isolé** (aucun `../../`, aucun `workspace:*` non résolu). ✅ 2026-07-23.
 - [ ] Les **5 bans** (`any`/`as`/`@ts-ignore`/`eslint-disable` nu/tailles) échouent bien la CI si violés (tester avec une violation jetable).
 - [ ] `strictTemplates` échoue bien sur un binding mort (fixture-bite conservée).
-- [ ] `npm pack` produit un tarball propre (`files` : `src` ou `dist`, README, CHANGELOG, LICENSE, llms.txt — **pas** `dev/`).
-- [ ] `publint` + `arethetypeswrong` verts (après ng-packagr).
-- [ ] L'app consomme la version publiée et build AOT vert.
+- [x] **`npm pack` produit un tarball propre** — 13 fichiers (`fesm2022/`, `types/`, `tokens/*.css`, README, CHANGELOG, LICENSE, llms.txt), **pas** `dev/`/`src/`/spec. ✅
+- [x] **`publint` + `arethetypeswrong` verts** (`pnpm run verify:pack`, exit 0). ✅
+- [ ] L'app consomme la version publiée et build AOT vert. **← après le premier publish beta.**
 - [ ] Décision mirror-vs-extraction tranchée et l'autre doc archivé/aligné.

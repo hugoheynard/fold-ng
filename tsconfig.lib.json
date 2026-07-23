@@ -1,0 +1,22 @@
+{
+  // Production library build (ng-packagr). Extends the shared strict base but
+  // narrows to shippable source: no specs, no dev gallery, no build scripts.
+  // `compilationMode: partial` emits Angular's partial-Ivy output — the format
+  // a published library must ship (the consumer's own ngtsc completes it).
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/lib",
+    // Drop the test/node ambient types — the shipped lib depends on neither.
+    "types": []
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/__tests__/**",
+    "dev/**",
+    "scripts/**"
+  ]
+}
