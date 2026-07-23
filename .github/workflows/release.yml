@@ -7,8 +7,8 @@ name: Release
 #   git tag v0.2.0 && git push origin v0.2.0        → publishes to `latest`
 #   git tag v0.2.0-beta.1 && git push origin …      → publishes to `beta`
 #
-# One-time setup (see docs/RELEASING.md): an npm automation token in the repo
-# secret NPM_TOKEN.
+# One-time setup (see docs/RELEASING.md): npm Trusted Publisher pointing at this
+# repo + release.yml. No secret to manage — OIDC only.
 
 on:
   push:
@@ -16,7 +16,7 @@ on:
 
 permissions:
   contents: write # create the GitHub Release
-  id-token: write # npm provenance (OIDC attestation)
+  id-token: write # npm trusted publishing (OIDC) + automatic provenance
 
 jobs:
   publish:
@@ -67,11 +67,14 @@ jobs:
             echo "npm=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publish to npm
-        run: npm publish --provenance --access public --tag ${{ steps.disttag.outputs.npm }}
+      # Trusted publishing (OIDC): no NPM_TOKEN. npm exchanges the workflow's
+      # id-token for a short-lived publish credential, and provenance is
+      # automatic. Needs a recent npm — node 22 ships npm 10, OIDC wants >=11.5.1.
+      - run: npm install -g npm@latest
+
+      - name: Publish to npm (trusted publishing)
+        run: npm publish --access public --tag ${{ steps.disttag.outputs.npm }}
         working-directory: dist
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: GitHub Release
         run: |

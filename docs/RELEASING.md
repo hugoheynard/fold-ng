@@ -13,14 +13,20 @@ else. npm moves only when you deliberately tag a release.
 
 ## One-time setup
 
-- [ ] **npm automation token → repo secret `NPM_TOKEN`.**
-      npmjs.com → Access Tokens → _Generate_ → **Automation** (bypasses 2FA in
-      CI). Add it under GitHub → repo **Settings → Secrets and variables →
-      Actions → New repository secret**, named `NPM_TOKEN`. `release.yml` reads
-      it as `NODE_AUTH_TOKEN`.
-- [ ] Nothing else: provenance uses the workflow's OIDC identity
-      (`id-token: write`), no extra secret. The `contents: write` permission lets
-      it open the GitHub Release.
+Publishing uses **npm Trusted Publishing (OIDC)** — no token, nothing to rotate.
+npm trusts this exact repo + workflow and exchanges the run's OIDC identity for a
+short-lived publish credential; provenance is generated automatically.
+
+- [ ] **npm → package `fold-ng` → Settings → Trusted Publisher → GitHub Actions:**
+  - Organization or user: `hugoheynard` · Repository: `fold-ng`
+  - Workflow filename: `release.yml` · Environment: _(leave empty)_
+  - Allowed actions: `npm publish`
+- [ ] **npm → package → Settings → Publishing access:** _Require two-factor
+      authentication and disallow tokens_ (recommended). Trusted publishing is
+      OIDC, not a token, so it keeps working; this just blocks anything else.
+- [ ] Nothing in GitHub to configure: `release.yml` already carries
+      `id-token: write` (OIDC) + `contents: write` (the GitHub Release). **No
+      `NPM_TOKEN` secret needed.**
 
 ## Cutting a release
 
