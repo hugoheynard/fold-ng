@@ -29,6 +29,8 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
  * custom property) and inherit across the `<use>` into the symbol, so the SVG
  * takes its `color` from the host.
  *
+ * @selector `fold-icon`
+ *
  * @example
  * ```html
  * <fold-icon name="search" />

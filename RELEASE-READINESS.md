@@ -31,14 +31,14 @@ and the gallery nav — **layout first**.
 
 **Layout** — `src/components/layout/`
 
-| Component           | DX  | Tests | Docs | Verdict                                                |
-| ------------------- | :-: | :---: | :--: | ------------------------------------------------------ |
-| `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                         |
-| `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap)    |
-| `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card |
+| Component           | DX  | Tests | Docs | Verdict                                                 |
+| ------------------- | :-: | :---: | :--: | ------------------------------------------------------- |
+| `fold-app-shell`    | 🟢  |  🟢   |  🟢  | **Ship-ready**                                          |
+| `fold-page-layout`  | 🟢  |  🟢   |  🟢  | **Ship-ready** (gallery page; fills — no width cap)     |
+| `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card  |
 | `fold-hero-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — full-bleed splash; extracted from home |
-| `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)    |
-| `fold-tab-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)     |
+| `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)     |
+| `fold-tab-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)      |
 
 **Navigation** — `src/components/navigation/`
 
@@ -100,17 +100,17 @@ and the gallery nav — **layout first**.
 
 **Foundations** — `src/components/foundations/`
 
-| Component            | DX  | Tests | Docs | Verdict                                          |
-| -------------------- | :-: | :---: | :--: | ------------------------------------------------ |
-| `fold-icon`          | 🟢  |  🟢   |  🟡  | `@selector`; stale count; `warn` in `computed()` |
-| `[foldSurface]`      | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
-| `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                  |
-| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo               |
+| Component            | DX  | Tests | Docs | Verdict                                                  |
+| -------------------- | :-: | :---: | :--: | -------------------------------------------------------- |
+| `fold-icon`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — shared sprite, trust guard, token sizes |
+| `[foldSurface]`      | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
+| `[foldStickyColumn]` | 🟢  |  🟢   |  🟡  | Add `@selector`                                          |
+| `[foldRepeatPress]`  | 🟢  |  🟢   |  🟡  | Add `@selector`; README row / demo                       |
 
-**Ship-ready today (15):** app-shell, page-layout, page-section, hero-section,
+**Ship-ready today (16):** app-shell, page-layout, page-section, hero-section,
 aside-layout, tab-layout, avatar-list, callout, element-title, field,
-field-list, nav-launcher, timeline, toast, surface. Everything else has scoped,
-mostly mechanical work below.
+field-list, nav-launcher, timeline, toast, surface, icon. Everything else has
+scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -190,8 +190,8 @@ row.) Add each row.
 
 **C-3 · Stale / wrong README facts.**
 
-- Icon count says "102 today" / "~100" (`README.md:168,196`) — actual is **114**.
-  The gallery already derives it live; the README does not.
+- ~~Icon count says "102 today" / "~100" — actual is **114**.~~ ✅ Fixed
+  (README now says 114; count derived from the built-in set).
 - `fold-loading` row claims "spinner + message" — there is **no spinner**
   (`loading-state.component.html` is a single muted `<span>`). Either build the
   spinner or fix the row to "muted loading line".
@@ -199,7 +199,7 @@ row.) Add each row.
 **C-4 · Missing JSDoc `@selector`/`@example` tags.** The bar (rule 4.6) is
 `@selector` + one-liner + `@example`. Missing `@example` **tag** (a fenced block
 exists, the tag doesn't): `button`, `button-icon`, `status-badge`, `avatar`,
-`avatar-detail`, `data-table`. Missing `@selector`: `icon`, `data-table`,
+`avatar-detail`, `data-table`. Missing `@selector`: `data-table`,
 `paginator`, `[foldStickyColumn]`, `[foldRepeatPress]`, and the layout trio
 (`page-layout`/`page-section`/`tab-layout` — verify). Mechanical.
 
@@ -233,9 +233,9 @@ breaks the gate. Extract per C-7 before touching it again.
 `--fold-text-*` token exists. Colour is fully tokenised (the contract passes);
 retokenise spacing/motion on touch (rules 1.5, ledger #7).
 
-**C-10 · One signals-purity nit.** `fold-icon` calls `console.warn` inside a
-`computed()` (`icon.component.ts:54–61`) — a side effect in a pure computed
-(rule 4.2). Move the unknown-name warning to an `effect()`.
+**C-10 · One signals-purity nit.** ✅ **Fixed** — `fold-icon`'s unknown-name
+`console.warn` moved out of the `svg` `computed()` into an `effect()` (rule 4.2);
+`svg` is now pure. (Was `icon.component.ts:54–61`.)
 
 ---
 
@@ -431,10 +431,15 @@ self-closes via optional-injected `PanelRef`. Blockers: **P0-3** (French
 
 ### Primitives & directives
 
-**`fold-icon`** 🟢🟢🟡 — Excellent registry (typed `name` with the `(string & {})`
-autocomplete trick, bootstrap `provideFoldIcons` + reactive runtime `register`,
-`console.warn` on unknown). Actions: (1) add `@selector`; (2) fix the README count
-(C-3); (3) move the `warn` out of `computed()` into an `effect()` (C-10).
+**`fold-icon`** 🟢🟢🟢 — **Ship-ready.** Excellent registry (typed `name` with the
+`(string & {})` autocomplete trick, bootstrap `provideFoldIcons` + reactive
+runtime `register`). Hardened in the 2026-07 icon pass: a **shared SVG sprite**
+(one `<symbol>` per icon, `<use>` per instance — no per-instance markup copies,
+SSR-safe), a **trust guard** rejecting `<script>`/`on*=` on every registered
+icon, **tokenised sizes** (`--fold-icon-size-*`), and `::ng-deep` dropped. The
+former amber (`@selector`, stale count, `warn` in `computed()`) is fully cleared.
+_One thing to eyeball post-merge:_ SSR sprite serialisation (no icon flash before
+hydration) — designed for it and unit-tested, not yet checked in a real SSR build.
 
 **`fold-empty-state`** 🟢🟢🟡 — Clean, token-pure, `:empty`-guarded slots. Action:
 add a `state` gallery page (neutral + alert) — currently undiscoverable (C-5).
