@@ -582,31 +582,31 @@ three are ~all of the 9.5→10 distance.
       MUI `LoadingButton` shape. Spinner exported + gallery page + 4 specs; button
       loading specs added. Package + app gates green.
 - [x] **3 · Orthogonal `emphasis` × `intent` (the Radix model). DONE.** Split the
-    flat 5-value `variant` into `emphasis` (solid·soft·outline) × `intent`
-    (primary·neutral·warning·danger) — filled-destructive and every other combo
-    now expressible. Zero-visual-regression: the 5 legacy combos render
-    identically at rest (a token-driven `--b-*` engine; hover tints unified
-    within ~2%). ~256 sites codemodded (incl. 5 dynamic `[variant]` ternaries →
-    paired `[emphasis]`/`[intent]`). Chose `intent` over `tone` to avoid the
-    icon-button vocabulary collision (rule 4.9). App AOT + tsc + tests green.
+      flat 5-value `variant` into `emphasis` (solid·soft·outline) × `intent`
+      (primary·neutral·warning·danger) — filled-destructive and every other combo
+      now expressible. Zero-visual-regression: the 5 legacy combos render
+      identically at rest (a token-driven `--b-*` engine; hover tints unified
+      within ~2%). ~256 sites codemodded (incl. 5 dynamic `[variant]` ternaries →
+      paired `[emphasis]`/`[intent]`). Chose `intent` over `tone` to avoid the
+      icon-button vocabulary collision (rule 4.9). App AOT + tsc + tests green.
 
 <details><summary>original analysis</summary>
 
 - [ ] **3 · Orthogonal `variant` × `intent` (the Radix model).** Today `variant` is
-    **one flat scale folding emphasis + intent** (`primary`/`solid`/`ghost` are
-    emphasis; `recommended`/`critical` are intent) — Bootstrap-tier, a rung below
-    Radix's orthogonal `variant` (solid/soft/outline/ghost) × `color`
-    (neutral/accent/warning/danger). Splitting enables the un-expressible combos
-    (filled-destructive `solid`+`critical`) a tenor assumes. **Cost: ~230 call
-    sites** (`primary`×55 · `solid`×62 · `ghost`×98 · `critical`×14 ·
-    `recommended`×2 + 8 dyn bindings) → a codemod, not hand-edits. Deliberately
-    **not** done for the internal DS (over-abstraction for combos zero screens
-    use — see `docs(ui): honest fold-button variant taxonomy`); it re-enters scope
-    **only** because the goal here is explicit benchmark-parity. Do it as: add
-    `emphasis` + `intent` inputs, keep `variant` as a deprecated computed alias
-    for one release, codemod the app, then drop `variant`. _(Shipped without the
-    alias — pre-release, so all sites were codemodded and `variant` dropped
-    outright.)_
+      **one flat scale folding emphasis + intent** (`primary`/`solid`/`ghost` are
+      emphasis; `recommended`/`critical` are intent) — Bootstrap-tier, a rung below
+      Radix's orthogonal `variant` (solid/soft/outline/ghost) × `color`
+      (neutral/accent/warning/danger). Splitting enables the un-expressible combos
+      (filled-destructive `solid`+`critical`) a tenor assumes. **Cost: ~230 call
+      sites** (`primary`×55 · `solid`×62 · `ghost`×98 · `critical`×14 ·
+      `recommended`×2 + 8 dyn bindings) → a codemod, not hand-edits. Deliberately
+      **not** done for the internal DS (over-abstraction for combos zero screens
+      use — see `docs(ui): honest fold-button variant taxonomy`); it re-enters scope
+      **only** because the goal here is explicit benchmark-parity. Do it as: add
+      `emphasis` + `intent` inputs, keep `variant` as a deprecated computed alias
+      for one release, codemod the app, then drop `variant`. _(Shipped without the
+      alias — pre-release, so all sites were codemodded and `variant` dropped
+      outright.)_
 
 </details>
 
@@ -648,10 +648,14 @@ open:
   the app supplies French once. Flips the app's a11y language → coordinate.
 - **Retokenise spacing/motion** (rule 1.5) and add a lint so it stays enforced
   like colour is.
-- **`inert` the background behind an open panel** (rule 6.2) for a full modal
-  a11y barrier, not just a keyboard trap.
-- **Panel close → `<fold-icon name="close">`** (rule 4.7), and fold its aria into
-  the i18n input above.
+- [x] **`inert` the background behind an open panel** (rule 6.2) — DONE. The
+      host runs a `hideOthers` walk (host → `<body>`), restored on close; only the
+      top-most panel traps. Full modal barrier, not just a keyboard trap.
+- [x] **Panel close → `<fold-icon name="close">`** (rule 4.7) — DONE. The host's
+      raw-`<svg>` template-panel header is gone; it renders the single
+      `fold-panel-header` (which uses `<fold-icon>`), and the close label is the
+      providable `provideFoldPanelLabels` token (English default). Also: component
+      panels now have an accessible name (`aria-labelledby` → header title).
 
 ## Road to 9.5 (current: ~8.4/10)
 
@@ -670,10 +674,13 @@ as §2/§3 here. This section is the **lib-wide** remainder.
 The blocker to the "reusable across projects" promise (rule 5.1).
 
 - [ ] Every user-facing / `aria-label` string → `input()` with an English default.
-      `fold-paginator` (`perPage`/`of`/`empty`/`prev`/`next`/`page`), panel host +
-      header close (`"Fermer"` → `closeLabel`, default `"Close"`).
-- [ ] App supplies French once (paginator call site + the single panel host).
-- [ ] Fold the panel close `<svg>` into `<fold-icon name="close">` (rule 4.7).
+      `fold-paginator` (`perPage`/`of`/`empty`/`prev`/`next`/`page`). **Panel close
+      DONE** — `provideFoldPanelLabels({ close })` token (English default), app sets
+      `"Fermer"` once.
+- [ ] App supplies French once (paginator call site). **Panel: done** (one
+      `provideFoldPanelLabels` in `app.config.ts`).
+- [x] Fold the panel close `<svg>` into `<fold-icon name="close">` (rule 4.7) —
+      DONE (host renders the single `fold-panel-header`).
 
 **2 · Tests — happy-path only today (Tests 7.5→9).**
 
@@ -692,8 +699,9 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 
 **3 · a11y depth (Modernité 8.5→9, and unblocks a real 6.2 gap).**
 
-- [ ] `inert` the background behind an open panel — a full modal barrier, not a
-      keyboard-only trap (screen-reader virtual cursor currently reaches behind).
+- [x] `inert` the background behind an open panel — DONE. `hideOthers` walk in
+      `fold-panel-host` (host → `<body>`), restored on close; top-most-only trap;
+      component-panel accessible name via `aria-labelledby`.
 - [ ] Reduced-motion: gate the slide/fade animations behind
       `prefers-reduced-motion`. (`fold-toast` entrance + exit now do; sweep the
       rest — menu width transition, panel slide, hero glow.)

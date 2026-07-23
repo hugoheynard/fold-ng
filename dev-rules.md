@@ -212,16 +212,24 @@ so they live as hex in TS and are exempt from 1.3. They must **not** appear in a
 
 ## 6 · Accessibility
 
-6.1 **Overlays trap focus.** Any modal/panel uses `FocusTrapDirective`
-(`role="dialog"` + `aria-modal` + a `tabindex="-1"` host), restores focus on
-close, and closes on `Escape`.
+6.1 **A modal overlay owes four things.** (1) **focus trap** —
+`FocusTrapDirective` (`role="dialog"` + `aria-modal` + `tabindex="-1"` host),
+moving focus in on open and restoring it to the opener on close; (2) **Escape**
+closes it; (3) an **accessible name** — a `role="dialog"` with no
+`aria-label`/`aria-labelledby` is a nameless dialog (a WCAG failure). Wire
+`aria-labelledby` to the header title (fold-panel: the dialog references the
+`fold-panel-header` `<h2>` id via `FoldPanelRef.id`) or take an explicit label;
+(4) a **background barrier** — see 6.2.
 
-6.2 **The trap only counts visible focusables** — `display:none` /
-`visibility:hidden` / `[hidden]` are filtered (with a fallback to raw matches in
-a non-rendering env).
-⚠️ _Known gap:_ the trap is keyboard-only — the page behind is **not** `inert`,
-so a screen-reader virtual cursor can still reach it. Add `inert` to the host's
-siblings for a full modal barrier. Tracked in `TODO.md`.
+6.2 **The barrier is `inert`, not just the trap.** A focus trap is keyboard-only;
+the page behind stays reachable to the screen-reader virtual cursor and to
+programmatic focus, so `aria-modal` alone is a promise the DOM doesn't keep. Mark
+every branch that doesn't contain the overlay `inert` — a `hideOthers` walk from
+the host up to `<body>`, skipping already-`inert` nodes, restored **exactly** on
+close (`fold-panel-host`). Stack-safe: only the top-most overlay traps focus. The
+trap itself only counts **visible** focusables (`display:none` /
+`visibility:hidden` / `[hidden]` filtered, with a raw fallback in a
+non-rendering env).
 
 6.3 **Contrast is derived, not assumed.** Text on a categorical fill picks its
 ink from the fill's luminance (`fold-avatar`), so a custom palette can't produce

@@ -78,14 +78,14 @@ and the gallery nav — **layout first**.
 
 **Feedback** — `src/components/feedback/`
 
-| Component                          | DX  | Tests | Docs | Verdict                                                              |
-| ---------------------------------- | :-: | :---: | :--: | -------------------------------------------------------------------- |
-| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row                         |
-| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                                    |
-| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard                       |
-| `fold-empty-state`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** — gallery page (shared `/state`)                      |
-| `fold-loading`                     | 🟢  |  🟢   |  🟢  | **Ship-ready** — real `fold-spinner` + `role="status"`; gallery page |
-| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🔴  | **French "Fermer"; trap doesn't `inert` bg**                         |
+| Component                          | DX  | Tests | Docs | Verdict                                                                   |
+| ---------------------------------- | :-: | :---: | :--: | ------------------------------------------------------------------------- |
+| `fold-callout`                     | 🟢  |  🟢   |  🟢  | Reference component — add missing README row                              |
+| `fold-disclosure`                  | 🟢  |  🟡   |  🔴  | **No README row**                                                         |
+| `fold-toast` (+ container/service) | 🟢  |  🟢   |  🟢  | Optional: `Dismiss` as input; SSR crypto guard                            |
+| `fold-empty-state`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** — gallery page (shared `/state`)                           |
+| `fold-loading`                     | 🟢  |  🟢   |  🟢  | **Ship-ready** — real `fold-spinner` + `role="status"`; gallery page      |
+| `fold-panel-host` / `-header`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label |
 
 **Forms** — `src/components/forms/`
 
@@ -139,9 +139,11 @@ inputs (`paginator.component.html:12–67`). Violates rule 5.1 in a package that
 claims portability; this is ledger item #6. Extract each to an `input()` with an
 **English** default.
 
-**P0-3 · Panel chrome hard-codes French "Fermer".**
-`panel-host.component.html:29` and `panel-header.component.html:19`. Add
-`closeLabel = input<string>("Close")` to both. Same rule 5.1.
+**P0-3 · Panel chrome hard-codes French "Fermer". ✅ FIXED.**
+`fold-panel-header` now reads `FOLD_PANEL_CLOSE_LABEL` (default `"Close"`) with a
+per-header `closeLabel` override; the app sets `"Fermer"` once via
+`provideFoldPanelLabels`. The host renders that same header for template panels,
+so the second hardcoded copy is gone entirely.
 
 **P0-4 · `fold-file-dropzone` ships French default copy.**
 `label` defaults to `'Glissez un fichier ou parcourez'`, `busyLabel` to
@@ -149,13 +151,12 @@ claims portability; this is ledger item #6. Extract each to an `input()` with an
 defaults to English and lets the caller localise. Flip the defaults to
 `'Drag a file or browse'` / `'Uploading…'`.
 
-**P0-5 · Focus-trap does not `inert` the background.**
-`FocusTrapDirective` traps Tab, filters hidden focusables, sets
-`role="dialog"` + `aria-modal`, closes on Escape, restores focus — but the page
-behind stays reachable to a screen-reader virtual cursor and to programmatic
-focus. `aria-modal` is not a reliable substitute. Mark siblings `inert` on
-activate, restore on cleanup; add a spec asserting they are inert while a panel
-is open. Ledger item #8.
+**P0-5 · Focus-trap does not `inert` the background. ✅ FIXED.**
+`FoldPanelHostComponent` now marks every branch that doesn't contain a panel
+`inert` (a `hideOthers` walk from the host up to `<body>`), restored exactly on
+close — so the page behind is unreachable to pointer, Tab **and** the SR virtual
+cursor. Only the top-most panel traps focus. A host spec asserts a sibling is
+inert while a panel is open and cleared after. Ledger item #8.
 
 **P0-6 · `fold-tab-nav` has no tab a11y contract.**
 Buttons carry only an `is-active` class — no `role="tab"`/`tablist`, no
@@ -450,10 +451,17 @@ config=policy), `provideFoldToasts()` idiom, severity-scaled durations with
 `0`-preserving resolution, exhaustive tests. Optional: `aria-label="Dismiss"` →
 input (C-6); guard `crypto.randomUUID()` for SSR.
 
-**`fold-panel-host` / `fold-panel-header`** 🟢🟢🔴 — Single layout-owned overlay
-chrome; template-vs-component panels are a proper discriminated union; header
-self-closes via optional-injected `PanelRef`. Blockers: **P0-3** (French
-"Fermer") and **P0-5** (no background `inert`).
+**`fold-panel-host` / `fold-panel-header`** 🟢🟢🟢 — **Ship-ready.** Single
+layout-owned overlay chrome; template-vs-component panels are a proper
+discriminated union; header self-closes via optional-injected `PanelRef`. Hardened
+to benchmark (vs Radix / CDK Dialog): every dialog now has an **accessible name**
+(`aria-labelledby` → the header title via `FoldPanelRef.id`, or a `config.ariaLabel`
+fallback); a real **modal barrier** (`inert` `hideOthers` walk from the host to
+`<body>`, restored on close); **only the top-most panel traps focus**; and one
+**providable close label** (`provideFoldPanelLabels`) replaced both hardcoded
+"Fermer"s. The host renders the single `fold-panel-header` for template panels too
+— the duplicated raw-`<svg>` header (P0-3/dev-rule 4.7) is gone. Focus is already
+restored to the opener and scroll-lock is ref-counted. Closes **P0-3** + **P0-5**.
 
 ### Primitives & directives
 
