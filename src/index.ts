@@ -146,6 +146,11 @@ export { FoldPanelHostService } from "./panel/panel-host.service";
 export { FoldPanelRef } from "./panel/panel-ref";
 export { FoldPanelToggle } from "./panel/panel-toggle";
 export { FoldPanelComponentOutletDirective } from "./panel/panel-component-outlet.directive";
+export {
+  provideFoldPanelLabels,
+  FOLD_PANEL_CLOSE_LABEL,
+} from "./panel/panel-labels";
+export type { FoldPanelLabels } from "./panel/panel-labels";
 export type {
   FoldPanelSide,
   FoldPanelContent,

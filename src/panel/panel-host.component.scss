@@ -47,55 +47,8 @@
   }
 }
 
-.panel-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 16px 16px 12px;
-  border-bottom: 1px solid var(--fold-color-glass-border);
-}
-.panel-title-block {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-.panel-title {
-  margin: 0;
-  font-size: var(--fold-text-lg);
-  font-weight: 600;
-  color: var(--fold-color-text);
-  letter-spacing: -0.005em;
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.panel-subtitle {
-  margin: 0;
-  font-size: var(--fold-text-xs);
-  color: var(--fold-color-text-faded);
-  font-variant-numeric: tabular-nums;
-}
-.panel-close {
-  all: unset;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--fold-radius-xs);
-  color: var(--fold-color-text-secondary);
-  cursor: pointer;
-  transition:
-    background-color 100ms ease,
-    color 100ms ease;
-}
-.panel-close:hover {
-  background: var(--fold-color-surface-hover);
-  color: var(--fold-color-text);
-}
+/* The template-panel header is the shared `fold-panel-header` (same as every
+   component panel) — the host owns only the body below it. */
 .panel-body {
   flex: 1 1 auto;
   overflow-y: auto;

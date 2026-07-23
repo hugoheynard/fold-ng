@@ -17,33 +17,11 @@
       (click)="$event.stopPropagation()"
     >
       @if (panel.kind === "template") {
-        <header class="panel-header">
-          <div class="panel-title-block">
-            <h2 class="panel-title">{{ panel.title() }}</h2>
-            @if (panel.subtitle()) {
-              <p class="panel-subtitle">{{ panel.subtitle() }}</p>
-            }
-          </div>
-          <button
-            type="button"
-            class="panel-close"
-            aria-label="Fermer"
-            (click)="panel.onClose()"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            >
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
-        </header>
-
+        <fold-panel-header
+          [title]="panel.title()"
+          [subtitle]="panel.subtitle()"
+          (closed)="panel.onClose()"
+        />
         <div class="panel-body">
           <ng-container [ngTemplateOutlet]="panel.templateRef" />
         </div>

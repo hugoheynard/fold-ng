@@ -16,7 +16,7 @@
     <button
       type="button"
       class="ph__close"
-      [attr.aria-label]="closeLabel()"
+      [attr.aria-label]="effectiveCloseLabel()"
       (click)="onClose()"
     >
       <fold-icon name="close" size="sm" />

@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, type Provider } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, vi } from "vitest";
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelRef } from "./panel-ref";
+import { provideFoldPanelLabels } from "./panel-labels";
 import type { FoldIconName } from "../components/foundations/icon/builtin-icons";
 
 @Component({
@@ -31,7 +32,7 @@ class HostComponent {
   subtitle = "";
   variant: "title" | "eyebrow" = "title";
   icon: FoldIconName | undefined = undefined;
-  closeLabel = "Close";
+  closeLabel: string | undefined = undefined;
   withActions = false;
   withDesc = false;
   closedCount = 0;
@@ -40,11 +41,15 @@ class HostComponent {
 function setup(
   patch: Partial<HostComponent> = {},
   panelRef?: FoldPanelRef,
+  extraProviders: Provider[] = [],
 ): { cmp: HostComponent; host: HTMLElement } {
   TestBed.resetTestingModule(); // allow multiple setups within one test
   TestBed.configureTestingModule({
     imports: [HostComponent],
-    providers: panelRef ? [{ provide: FoldPanelRef, useValue: panelRef }] : [],
+    providers: [
+      ...(panelRef ? [{ provide: FoldPanelRef, useValue: panelRef }] : []),
+      ...extraProviders,
+    ],
   });
   const fixture = TestBed.createComponent(HostComponent);
   Object.assign(fixture.componentInstance, patch);
@@ -121,10 +126,28 @@ describe("FoldPanelHeaderComponent", () => {
     expect(host.querySelector(".ph__title")?.getAttribute("id")).toBeNull();
   });
 
-  it("uses an overridable English close label", () => {
-    const { host } = setup({ closeLabel: "Fermer" });
+  it("defaults the close label to English when nothing is provided", () => {
+    const { host } = setup();
+    expect(host.querySelector(".ph__close")?.getAttribute("aria-label")).toBe(
+      "Close",
+    );
+  });
+
+  it("takes the close label from the app-wide token when set", () => {
+    const { host } = setup({}, undefined, [
+      provideFoldPanelLabels({ close: "Fermer" }),
+    ]);
     expect(host.querySelector(".ph__close")?.getAttribute("aria-label")).toBe(
       "Fermer",
+    );
+  });
+
+  it("lets a per-header closeLabel input win over the token", () => {
+    const { host } = setup({ closeLabel: "Schließen" }, undefined, [
+      provideFoldPanelLabels({ close: "Fermer" }),
+    ]);
+    expect(host.querySelector(".ph__close")?.getAttribute("aria-label")).toBe(
+      "Schließen",
     );
   });
 

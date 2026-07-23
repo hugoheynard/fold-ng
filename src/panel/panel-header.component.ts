@@ -2,6 +2,7 @@ import { Component, computed, inject, input, output } from "@angular/core";
 import { FoldIconComponent } from "../components/foundations/icon/icon.component";
 import type { FoldIconName } from "../components/foundations/icon/builtin-icons";
 import { FoldPanelRef } from "./panel-ref";
+import { FOLD_PANEL_CLOSE_LABEL } from "./panel-labels";
 import { foldPanelTitleId } from "./panel.types";
 
 /**
@@ -65,8 +66,19 @@ export class FoldPanelHeaderComponent {
   readonly icon = input<FoldIconName | undefined>(undefined);
   /** `title` (large descriptive) or `eyebrow` (compact uppercased label). */
   readonly variant = input<"title" | "eyebrow">("title");
-  /** Accessible label for the close button. Defaults to English. */
-  readonly closeLabel = input<string>("Close");
+  /**
+   * Accessible label for the close button. Falls back to the app-wide
+   * {@link FOLD_PANEL_CLOSE_LABEL} (default `"Close"`) when unset — so a
+   * non-English app sets it once via `provideFoldPanelLabels`.
+   */
+  readonly closeLabel = input<string>();
+
+  private readonly defaultCloseLabel = inject(FOLD_PANEL_CLOSE_LABEL);
+
+  /** The label actually rendered — the input if given, else the app default. */
+  protected readonly effectiveCloseLabel = computed(
+    () => this.closeLabel() ?? this.defaultCloseLabel,
+  );
   /**
    * Fires just before the panel is dismissed — bind it for side-effects only
    * (the header self-closes regardless; it is not a veto hook).
