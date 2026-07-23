@@ -7,10 +7,11 @@ import { env } from "node:process";
  *
  * The neutral workbench: it boots the design system in isolation (its own
  * tokens, zero app dependency) so graphical work happens on the components
- * themselves. The whole gallery lives under `demo/` (its own root here) and is
- * dev-only — never part of the published package surface (`exports` in
- * package.json controls that). The build output still lands at the repo's
- * `dist/` so the Pages workflow publishes `./dist`.
+ * themselves. `demo/` holds the gallery; the entry `index.html` stays at the
+ * repo root (the vite root), because the gallery reaches into `src/` — it
+ * imports the components and globs their `.scss`/`.html` at build time — so the
+ * root has to sit above both `demo/` and `src/`. `demo/` never ships (`exports`
+ * in package.json controls the published surface).
  *
  * `base` is the asset URL prefix. Root (`/`) for the dev server; the GitHub
  * Pages deploy (from `main`) overrides it via `PAGES_BASE` to `/fold-ng/`.
@@ -18,8 +19,6 @@ import { env } from "node:process";
  * has to match.
  */
 export default defineConfig({
-  root: "demo",
   base: env.PAGES_BASE ?? "/",
-  build: { outDir: "../dist", emptyOutDir: true },
   plugins: [angular()],
 });

@@ -22,16 +22,22 @@ export interface InspectTarget {
   readonly element: HTMLElement;
 }
 
-const scss = import.meta.glob<string>("../src/components/**/*.component.scss", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
-const html = import.meta.glob<string>("../src/components/**/*.component.html", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
+const scss = import.meta.glob<string>(
+  "../../src/components/**/*.component.scss",
+  {
+    query: "?raw",
+    import: "default",
+    eager: true,
+  },
+);
+const html = import.meta.glob<string>(
+  "../../src/components/**/*.component.html",
+  {
+    query: "?raw",
+    import: "default",
+    eager: true,
+  },
+);
 
 /** `.../card/card.component.scss` → `fold-card` (the file stem is the selector). */
 function selectorFromPath(path: string): string {
