@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from "@angular/common";
+import { DOCUMENT, NgTemplateOutlet } from "@angular/common";
 import {
   Component,
   HostListener,
@@ -94,7 +94,15 @@ const MOBILE_BREAKPOINT = 768;
  * ## Accessibility
  * The shell renders a **skip-link** as its first Tab stop — jumping keyboard
  * users past the rails straight to the `<main>` content (`skipLinkLabel` sets
- * its text). The `<main>` is focusable (`tabindex="-1"`) so the jump lands.
+ * its text). The `<main>` is focusable (`tabindex="-1"`) so the jump lands; the
+ * link moves focus directly rather than following the fragment, so it works
+ * under hash routing too.
+ *
+ * The mobile **drawer is a real modal**, matching the panel host's bar: while
+ * open it is a named `role="dialog"` + `aria-modal="true"` (`drawerLabel`), the
+ * focus-trap moves focus in and restores it on close, and every other region
+ * (header, content, footer, second rail) is `inert` — so a screen-reader's
+ * virtual cursor can't wander behind the open drawer.
  *
  * @selector `fold-app-shell`
  *
@@ -161,6 +169,12 @@ export class FoldAppShellComponent {
   /** The skip-link's label — the first Tab stop, jumping keyboard users past the
    *  rails straight to `<main>`. Override for a non-English app. */
   readonly skipLinkLabel = input("Skip to content");
+
+  /** The mobile drawer's accessible name — it becomes a `role="dialog"` while
+   *  open, so it must be named. Override for a non-English app. */
+  readonly drawerLabel = input("Navigation");
+
+  private readonly document = inject(DOCUMENT);
 
   /** SSR-safe id linking the skip-link to the `<main>` it targets. */
   protected readonly contentId =
@@ -233,6 +247,17 @@ export class FoldAppShellComponent {
   /** Dismiss the drawer — the scrim's click target. */
   protected closeMobileNav(): void {
     this.mobileNavOpen.set(false);
+  }
+
+  /**
+   * Skip-link activation. Moves focus to `<main>` directly instead of letting
+   * the browser follow the `#id` fragment — a hash-routing app (`withHashLocation`)
+   * would treat that fragment as a route change. `preventDefault` keeps the URL
+   * clean; the anchor keeps its `href` for link semantics and no-JS fallback.
+   */
+  protected skipToContent(event: Event): void {
+    event.preventDefault();
+    this.document.getElementById(this.contentId)?.focus();
   }
 
   /* Map each input to its CSS var — `null` when unset so the stylesheet

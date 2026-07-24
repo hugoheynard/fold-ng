@@ -218,6 +218,25 @@ describe("FoldAppShellComponent", () => {
     expect(host.querySelector("a[href], button, [tabindex]")).toBe(skip);
   });
 
+  it("skip-link moves focus to <main> and prevents the fragment navigation", () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    document.body.appendChild(host);
+    try {
+      const skip = host.querySelector("a.skip-link") as HTMLAnchorElement;
+      const main = host.querySelector("main.content") as HTMLElement;
+      const evt = new MouseEvent("click", { cancelable: true, bubbles: true });
+      skip.dispatchEvent(evt);
+      // No `#id` fragment nav (a hash-routing app would treat it as a route);
+      // focus moves straight to <main>.
+      expect(evt.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(main);
+    } finally {
+      host.remove();
+    }
+  });
+
   it('scrolls the content region itself when contentScroll="auto"', () => {
     const fixture = TestBed.createComponent(FoldAppShellComponent);
     fixture.detectChanges();
@@ -298,6 +317,28 @@ describe("FoldAppShellComponent · mobile drawer", () => {
     fixture.detectChanges();
     expect(shell.classList.contains("mobile-nav-open")).toBe(true);
     expect(shell.querySelector(".mobile-scrim")).not.toBeNull();
+  });
+
+  it("is a named modal dialog with an inert background while open", () => {
+    const { fixture, shell } = render();
+    emitWidth?.(480);
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+
+    const rail = shell.querySelector(".rail-primary") as HTMLElement;
+    expect(rail.getAttribute("role")).toBe("dialog");
+    expect(rail.getAttribute("aria-modal")).toBe("true");
+    expect(rail.getAttribute("aria-label")).toBe("Navigation");
+    // Every sibling region is inert, so a screen reader can't wander behind it.
+    expect((shell.querySelector(".header") as HTMLElement).inert).toBe(true);
+    expect((shell.querySelector(".content") as HTMLElement).inert).toBe(true);
+
+    // Closing lifts both the dialog semantics and the inert barrier.
+    fixture.componentInstance.open.set(false);
+    fixture.detectChanges();
+    expect(rail.getAttribute("role")).toBeNull();
+    expect(rail.getAttribute("aria-modal")).toBeNull();
+    expect((shell.querySelector(".content") as HTMLElement).inert).toBe(false);
   });
 
   it("closes the drawer when the scrim is clicked", () => {

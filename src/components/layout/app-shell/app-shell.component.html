@@ -1,16 +1,24 @@
 <!-- Skip-link: the first Tab stop — visually hidden until focused, then jumps
      keyboard users past the rails to <main> (which is focusable, tabindex=-1). -->
-<a class="skip-link" [href]="'#' + contentId">{{ skipLinkLabel() }}</a>
+<a class="skip-link" [href]="'#' + contentId" (click)="skipToContent($event)">{{
+  skipLinkLabel()
+}}</a>
 
+<!-- The primary rail. While the mobile drawer is open it is a real modal dialog
+     (named, aria-modal, focus-trapped) and every sibling region is inert — the
+     same bar the panel host holds; on desktop it's a plain nav rail. -->
 <div
   class="rail-primary"
   foldSurface="chrome"
   [foldFocusTrap]="drawerOpen()"
+  [attr.role]="drawerOpen() ? 'dialog' : null"
+  [attr.aria-modal]="drawerOpen() ? 'true' : null"
+  [attr.aria-label]="drawerOpen() ? drawerLabel() : null"
   tabindex="-1"
 >
   <ng-content select="[railPrimary]" />
 </div>
-<div class="rail-secondary" foldSurface="chrome">
+<div class="rail-secondary" foldSurface="chrome" [inert]="drawerOpen()">
   <ng-content select="[railSecondary]" />
 </div>
 
@@ -21,7 +29,7 @@
 @if (drawerOpen()) {
   <div class="mobile-scrim" (click)="closeMobileNav()" aria-hidden="true"></div>
 }
-<header class="header" foldSurface="chrome">
+<header class="header" foldSurface="chrome" [inert]="drawerOpen()">
   <ng-content select="[header]" />
 </header>
 
@@ -33,12 +41,19 @@
     class="footer"
     [class.footer-inflow]="footerBehavior() === 'scroll'"
     foldSurface="chrome"
+    [inert]="drawerOpen()"
   >
     <ng-content select="[footer]" />
   </footer>
 </ng-template>
 
-<main class="content" foldSurface="page" [id]="contentId" tabindex="-1">
+<main
+  class="content"
+  foldSurface="page"
+  [id]="contentId"
+  tabindex="-1"
+  [inert]="drawerOpen()"
+>
   <ng-content />
   @if (footerBehavior() === "scroll") {
     <ng-container [ngTemplateOutlet]="footerTpl" />

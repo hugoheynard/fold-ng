@@ -52,7 +52,9 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
   styleUrl: "./page-layout.component.scss",
 })
 export class FoldPageLayoutComponent {
-  /** The page heading. Omit for a header-less page. */
+  /** The page heading (`<h1>`). Omit for a header-less page — or when the page
+   *  already carries its `<h1>` elsewhere (e.g. a leading `fold-hero-section`),
+   *  so a page never ends up with two top-level headings. */
   readonly title = input<string>();
   /** An optional leading icon shown beside the title. */
   readonly icon = input<FoldIconName>();

@@ -27,6 +27,12 @@ const HYSTERESIS = 32;
  * - `[tabNav]` → the tab bar (an `fold-tab-nav`, or anything else).
  * - default slot → the content for the active tab.
  *
+ * **A11y — this owns placement, not the ARIA tabs pattern.** The projected bar
+ * carries the `tablist`/`tab` roles; the content is yours. If the tabs switch
+ * in-page panels, give that content `role="tabpanel"` named by the active tab;
+ * if they navigate between routes, keep plain nav semantics and add no tab
+ * roles (the tabs pattern is for panel-switching, not navigation).
+ *
  * A side rail needs a *vertical* bar, a folded one a *horizontal* bar. Rather
  * than guess, the layout exposes {@link stacked} (`exportAs`) so the projected
  * nav follows the layout in one binding:
