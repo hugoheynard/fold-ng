@@ -30,6 +30,9 @@ short-lived publish credential; provenance is generated automatically.
 
 ## Cutting a release
 
+Releases come **only from `main`** — `release.yml` rejects a tag whose commit
+isn't on `main`. So the flow is always: land it on `main`, then tag.
+
 1. **Bump the version and the changelog on `main`.**
 
    ```bash

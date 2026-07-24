@@ -23,6 +23,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the on-main ancestry check works
+
+      # Release only from main. A tag isn't bound to a branch — this rejects a
+      # tag pushed from any commit that isn't on main, so publishing stays a
+      # main-only act.
+      - name: Tag must be on main
+        run: |
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::${GITHUB_REF_NAME} is not on main — release only from main"
+            exit 1
+          fi
 
       - uses: pnpm/action-setup@v4
 
