@@ -2,13 +2,13 @@
   class="tab-bar"
   role="tablist"
   [attr.aria-orientation]="
-    direction() === 'vertical' ? 'vertical' : 'horizontal'
+    resolvedDirection() === 'vertical' ? 'vertical' : 'horizontal'
   "
   [class.style-underline]="activeStyle() === 'underline'"
   [class.style-fill]="activeStyle() === 'fill'"
-  [class.dir-vertical]="direction() === 'vertical'"
+  [class.dir-vertical]="resolvedDirection() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
-  [class.size-reduce]="size() === 'reduce'"
+  [class.is-collapsed]="collapsed()"
   [class.bg-surface]="background() === 'surface'"
   (keydown)="onKeydown($event)"
 >

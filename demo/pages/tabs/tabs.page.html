@@ -72,17 +72,14 @@
     <!-- A page mock: the bar + one panel per key, laid out by fold-nav-layout so
          `vertical` shows a real side rail. The panels ARE the widget's panels. -->
     <div class="tp-frame">
-      <fold-nav-layout
-        [placement]="dir() === 'vertical' ? 'side' : 'top'"
-        #tl="foldNavLayout"
-      >
+      <fold-nav-layout [placement]="dir() === 'vertical' ? 'side' : 'top'">
         <fold-tabs
           tabNav
           #t="foldTabs"
           [tabs]="tabs"
           [activeKey]="active()"
           [activeStyle]="style()"
-          [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
+          direction="auto"
           (tabChange)="active.set($event)"
         />
 

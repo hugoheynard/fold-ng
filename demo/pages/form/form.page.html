@@ -5,14 +5,13 @@
     fold-input-base.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <fold-nav-layout placement="side" #tl="foldNavLayout">
+  <fold-nav-layout placement="side">
     <fold-view-nav
       tabNav
-      [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
-      [tabs]="inputTabs"
+      [items]="inputTabs"
       [activeKey]="inputTab()"
-      (tabChange)="inputTab.set($event)"
+      (activeChange)="inputTab.set($event)"
     />
     @switch (inputTab()) { @case ("text") {
     <div class="gal-stack">

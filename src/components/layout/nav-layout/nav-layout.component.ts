@@ -7,6 +7,10 @@ import {
   signal,
 } from "@angular/core";
 import { observeElementWidth } from "../../../dom/observe-element-width";
+import {
+  FOLD_NAV_LAYOUT,
+  type FoldNavLayoutContext,
+} from "./nav-layout.context";
 
 /**
  * Dead band (px) between folding and unfolding. Wider than any scrollbar, so the
@@ -34,22 +38,19 @@ const HYSTERESIS = 32;
  * `fold-tab-panel`s. This component adds no tab semantics — it only decides where
  * the bar sits and folds it responsively.
  *
- * A side rail needs a *vertical* bar, a folded one a *horizontal* bar. Rather
- * than guess, the layout exposes {@link stacked} (`exportAs`) so the projected
- * nav follows the layout in one binding:
+ * A side rail needs a *vertical* bar, a folded one a *horizontal* bar. The
+ * projected bar handles that itself with `direction="auto"` (its default) — it
+ * reads this layout through DI ({@link FoldNavLayoutContext}), no wiring:
  *
  * ```html
- * <fold-nav-layout placement="side" #tl="foldNavLayout">
- *   <fold-view-nav
- *     tabNav
- *     [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
- *     [tabs]="tabs"
- *     [activeKey]="tab()"
- *     (tabChange)="tab.set($event)"
- *   />
- *   <app-tab-content />
+ * <fold-nav-layout placement="side">
+ *   <fold-view-nav tabNav [items]="items" />
+ *   <router-outlet />
  * </fold-nav-layout>
  * ```
+ *
+ * The layout also exposes {@link stacked} via `exportAs` for consumers that want
+ * to read the folded state themselves.
  *
  * **Two roles — same component, composed differently.**
  * - **Page scaffold** — the tab rail *is* the page's primary structure: use it
@@ -65,14 +66,8 @@ const HYSTERESIS = 32;
  * ```html
  * <!-- a tabbed section: flat structure (page-section) + tab placement -->
  * <fold-page-section title="Settings" bleed>
- *   <fold-nav-layout placement="side" #tl="foldNavLayout">
- *     <fold-view-nav
- *       tabNav
- *       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
- *       [tabs]="tabs"
- *       [activeKey]="tab()"
- *       (tabChange)="tab.set($event)"
- *     />
+ *   <fold-nav-layout placement="side">
+ *     <fold-view-nav tabNav [items]="items" />
  *     <app-settings-panel />
  *   </fold-nav-layout>
  * </fold-page-section>
@@ -92,10 +87,13 @@ const HYSTERESIS = 32;
   standalone: true,
   exportAs: "foldNavLayout",
   host: { "[class.is-row]": "!stacked()" },
+  providers: [
+    { provide: FOLD_NAV_LAYOUT, useExisting: FoldNavLayoutComponent },
+  ],
   templateUrl: "./nav-layout.component.html",
   styleUrl: "./nav-layout.component.scss",
 })
-export class FoldNavLayoutComponent {
+export class FoldNavLayoutComponent implements FoldNavLayoutContext {
   /** Where the nav sits: above the content, or as a rail beside it. */
   readonly placement = input<"top" | "side">("top");
   /** Width (px) at or below which a `side` nav folds back on top. */

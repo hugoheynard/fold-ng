@@ -6,14 +6,13 @@
     native.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <fold-nav-layout placement="side" #tl="foldNavLayout">
+  <fold-nav-layout placement="side">
     <fold-view-nav
       tabNav
-      [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
-      [tabs]="formTabs"
+      [items]="formTabs"
       [activeKey]="formTab()"
-      (tabChange)="formTab.set($event)"
+      (activeChange)="formTab.set($event)"
     />
     <div class="gal-stack">
       @switch (formTab()) { @case ("profile") {

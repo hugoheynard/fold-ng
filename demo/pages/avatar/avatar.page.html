@@ -1,15 +1,14 @@
 <fold-page-layout title="avatar">
   <gal-kind-badge titleBadge kind="component" />
-  <fold-nav-layout placement="side" class="avatar-tabs" #tl="foldNavLayout">
+  <fold-nav-layout placement="side" class="avatar-tabs">
     <fold-view-nav
       tabNav
-      [tabs]="avatarTabs"
+      [items]="avatarTabs"
       [activeKey]="avatarTab()"
-      [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       background="transparent"
       size="comfortable"
       [activeStyle]="'fill'"
-      (tabChange)="avatarTab.set($event)"
+      (activeChange)="avatarTab.set($event)"
     />
     @switch (avatarTab()) { @case ("avatar") {
     <fold-page-section

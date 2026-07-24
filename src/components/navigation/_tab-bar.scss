@@ -42,10 +42,12 @@
   background: none;
   border: none;
   color: var(--fold-color-text-muted);
+  font-family: inherit;
   font-size: 10px;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
+  text-decoration: none; /* items can be <a> — kill the UA underline */
   transition:
     color 0.1s ease,
     background 0.1s ease,
@@ -54,6 +56,12 @@
 }
 .tab-bar-item:hover {
   color: var(--fold-color-text-secondary);
+}
+/* Disabled — non-interactive + dimmed (works for both <button> and <a>). */
+.tab-bar-item.is-disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
 }
 
 /* Comfortable — a prominent, page-level bar (vs the compact default). */
@@ -125,56 +133,60 @@
   font-weight: 600;
 }
 
-/* Reduce — the tightest density: an icon accordion. Every item but the active
-   one shows just its icon; the active one keeps its label and takes the room. An
-   item with no icon keeps its label, so nothing is left unlabelled. Both axes. */
-.size-reduce .tab-bar-item {
+/* Collapsed — the icon mode, a distinct behaviour from the `size` density scale.
+   HORIZONTAL, an icon accordion: every item but the active one shows just its
+   icon; the active one keeps its label and takes the room. An item with no icon
+   keeps its label, so nothing is left unlabelled. */
+.is-collapsed .tab-bar-item {
   flex: 0 0 auto;
   gap: 0;
 }
 /* Scoped to :not(.is-active) rather than hide-then-show: view encapsulation
    appends an attribute to every compound selector, so the `~` hide rule would
    outweigh any show rule on the active item whatever the source order. */
-.size-reduce .tab-bar-item:not(.is-active) .tab-bar-icon ~ .tab-bar-label,
-.size-reduce .tab-bar-item:not(.is-active) .tab-bar-badge {
+.is-collapsed .tab-bar-item:not(.is-active) .tab-bar-icon ~ .tab-bar-label,
+.is-collapsed .tab-bar-item:not(.is-active) .tab-bar-badge {
   display: none;
 }
-.size-reduce .tab-bar-item.is-active {
+.is-collapsed .tab-bar-item.is-active {
   flex: 1 1 auto;
   min-width: 0;
   gap: 7px;
 }
-.size-reduce .tab-bar-item.is-active .tab-bar-label {
+.is-collapsed .tab-bar-item.is-active .tab-bar-label {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Vertical + reduce is a collapsed icon rail, like a folded fold-menu: each item
-   shrinks to just its centred icon and its label becomes a hover/focus tooltip
-   that escapes to the right. The horizontal "active item expands with its label"
-   doesn't map to a vertical rail. An icon-less item keeps its label inline (the
-   `.tab-bar-icon ~` guard), so nothing is left unlabelled. */
-.dir-vertical.size-reduce .tab-bar-item,
-.dir-vertical.size-reduce .tab-bar-item.is-active {
+/* VERTICAL, a collapsed icon rail (like a folded fold-menu): the accordion
+   expand has nowhere to go, so every item shrinks to its centred icon, its label
+   becomes a hover/focus tooltip escaping to the right, and its count sits as a
+   corner bubble. `align-items: center` makes each item hug its icon (not stretch
+   to the rail width), so the corner bubble anchors to the icon at any rail width.
+   An icon-less item keeps its label inline (the `.tab-bar-icon ~` guard). */
+.dir-vertical.is-collapsed {
+  align-items: center;
+}
+.dir-vertical.is-collapsed .tab-bar-item,
+.dir-vertical.is-collapsed .tab-bar-item.is-active {
   position: relative;
   flex: 0 0 auto;
   justify-content: center;
   gap: 0;
 }
 /* The count stays visible on every tab — active or not (overriding the generic
-   reduce rule that hides inactive counts) — as a bubble in the item's top-right
-   corner, clear of the centred icon so it never sits on top of it. */
-.dir-vertical.size-reduce .tab-bar-item .tab-bar-badge {
+   collapsed rule that hides inactive counts) — as a bubble on the icon's corner. */
+.dir-vertical.is-collapsed .tab-bar-item .tab-bar-badge {
   display: block;
   position: absolute;
-  top: 2px;
-  right: 4px;
+  top: -2px;
+  right: -2px;
   transform: scale(0.85);
   transform-origin: top right;
   pointer-events: none;
 }
 /* Label → floating tooltip (only where an icon stands in for it). */
-.dir-vertical.size-reduce .tab-bar-item .tab-bar-icon ~ .tab-bar-label {
+.dir-vertical.is-collapsed .tab-bar-item .tab-bar-icon ~ .tab-bar-label {
   position: absolute;
   left: calc(100% + 8px);
   top: 50%;
@@ -193,15 +205,15 @@
   transition: opacity var(--fold-motion-fast);
   z-index: 100;
 }
-.dir-vertical.size-reduce .tab-bar-item:hover .tab-bar-icon ~ .tab-bar-label,
-.dir-vertical.size-reduce
+.dir-vertical.is-collapsed .tab-bar-item:hover .tab-bar-icon ~ .tab-bar-label,
+.dir-vertical.is-collapsed
   .tab-bar-item:focus-visible
   .tab-bar-icon
   ~ .tab-bar-label {
   opacity: 1;
 }
 /* The tooltip escapes the rail to the right — the host clips by default. */
-:host:has(.dir-vertical.size-reduce) {
+:host:has(.dir-vertical.is-collapsed) {
   overflow: visible;
 }
 

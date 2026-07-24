@@ -2,30 +2,83 @@
   class="tab-bar"
   [class.style-underline]="activeStyle() === 'underline'"
   [class.style-fill]="activeStyle() === 'fill'"
-  [class.dir-vertical]="direction() === 'vertical'"
+  [class.dir-vertical]="resolvedDirection() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
-  [class.size-reduce]="size() === 'reduce'"
+  [class.is-collapsed]="collapsed()"
   [class.bg-surface]="background() === 'surface'"
 >
-  @for (tab of tabs(); track tab.key) {
-    <button
-      type="button"
-      class="tab-bar-item"
-      [class.is-active]="activeKey() === tab.key"
-      [attr.aria-current]="activeKey() === tab.key ? 'page' : null"
-      (click)="tabChange.emit(tab.key)"
-    >
-      @if (tab.icon; as ic) {
-        <fold-icon class="tab-bar-icon" [name]="ic" size="sm" />
-      }
-      <span class="tab-bar-label">{{ tab.label }}</span>
-      @if (tab.badge !== undefined && tab.badge !== null) {
-        <fold-badge
-          class="tab-bar-badge"
-          [content]="tab.badge + ''"
-          [variant]="activeKey() === tab.key ? 'accent' : 'neutral'"
+  @for (item of items(); track item.key) {
+    @if (item.disabled) {
+      <button
+        type="button"
+        class="tab-bar-item is-disabled"
+        disabled
+        aria-disabled="true"
+      >
+        <ng-container
+          [ngTemplateOutlet]="body"
+          [ngTemplateOutletContext]="{ $implicit: item, active: false }"
         />
-      }
-    </button>
+      </button>
+    } @else if (item.link !== undefined) {
+      <a
+        class="tab-bar-item"
+        [routerLink]="item.link"
+        routerLinkActive="is-active"
+        #rla="routerLinkActive"
+        [attr.aria-current]="rla.isActive ? 'page' : null"
+      >
+        <ng-container
+          [ngTemplateOutlet]="body"
+          [ngTemplateOutletContext]="{ $implicit: item, active: rla.isActive }"
+        />
+      </a>
+    } @else if (item.href !== undefined) {
+      <a
+        class="tab-bar-item"
+        [href]="item.href"
+        [class.is-active]="activeKey() === item.key"
+        [attr.aria-current]="activeKey() === item.key ? 'page' : null"
+      >
+        <ng-container
+          [ngTemplateOutlet]="body"
+          [ngTemplateOutletContext]="{
+            $implicit: item,
+            active: activeKey() === item.key,
+          }"
+        />
+      </a>
+    } @else {
+      <button
+        type="button"
+        class="tab-bar-item"
+        [class.is-active]="activeKey() === item.key"
+        [attr.aria-current]="activeKey() === item.key ? 'page' : null"
+        (click)="activeChange.emit(item.key)"
+      >
+        <ng-container
+          [ngTemplateOutlet]="body"
+          [ngTemplateOutletContext]="{
+            $implicit: item,
+            active: activeKey() === item.key,
+          }"
+        />
+      </button>
+    }
   }
 </nav>
+
+<!-- One item's inner content, shared by the link / button branches. -->
+<ng-template #body let-item let-active="active">
+  @if (item.icon; as ic) {
+    <fold-icon class="tab-bar-icon" [name]="ic" size="sm" />
+  }
+  <span class="tab-bar-label">{{ item.label }}</span>
+  @if (item.badge !== undefined && item.badge !== null) {
+    <fold-badge
+      class="tab-bar-badge"
+      [content]="item.badge + ''"
+      [variant]="active ? 'accent' : 'neutral'"
+    />
+  }
+</ng-template>

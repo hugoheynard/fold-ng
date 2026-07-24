@@ -1,5 +1,7 @@
 import {
+  booleanAttribute,
   Component,
+  computed,
   ElementRef,
   inject,
   input,
@@ -10,6 +12,7 @@ import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
+import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
 
 /** A tab in a {@link FoldTabsComponent} bar. */
 export type FoldTabItem = {
@@ -84,14 +87,33 @@ export class FoldTabsComponent implements FoldTabsContext {
   readonly activeKey = input.required<string>();
   /** How the active tab reads: accent underline, or accent fill. */
   readonly activeStyle = input<"underline" | "fill">("underline");
-  /** Bar orientation (drives arrow-key axis + `aria-orientation`). */
-  readonly direction = input<"horizontal" | "vertical">("horizontal");
+  /**
+   * Bar orientation (drives `aria-orientation`). Defaults to `auto`: follows a
+   * wrapping `fold-nav-layout`, else `horizontal`.
+   */
+  readonly direction = input<"horizontal" | "vertical" | "auto">("auto");
   /** Density — see {@link FoldViewNavComponent} for the same scale. */
-  readonly size = input<"reduce" | "compact" | "comfortable">("compact");
+  readonly size = input<"compact" | "comfortable">("compact");
+  /** Collapse to icons — see {@link FoldViewNavComponent.collapsed}. */
+  readonly collapsed = input(false, { transform: booleanAttribute });
   /** `surface` (filled bar, default) or `transparent`. */
   readonly background = input<"transparent" | "surface">("surface");
   /** Emits the newly-selected tab's `key`. */
   readonly tabChange = output<string>();
+
+  /** The nearest layout, if any — lets `direction="auto"` follow it. */
+  private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });
+
+  /** `direction` with `auto` resolved against the wrapping layout. */
+  protected readonly resolvedDirection = computed<"horizontal" | "vertical">(
+    () => {
+      const d = this.direction();
+      if (d !== "auto") {
+        return d;
+      }
+      return this.layout?.stacked() ? "horizontal" : "vertical";
+    },
+  );
 
   /** Per-instance id root, so ids are unique + stable across SSR. */
   private readonly uid = inject(FoldIdService).next("fold-tabs");

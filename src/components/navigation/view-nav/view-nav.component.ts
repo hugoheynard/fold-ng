@@ -1,10 +1,20 @@
-import { Component, input, output } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+} from "@angular/core";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
+import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
 
 export type FoldViewNavItem = {
-  /** Unique key — identifies the tab and is emitted on click. */
+  /** Unique key — identifies the item and is emitted by `activeChange`. */
   key: string;
   /** Display label. */
   label: string;
@@ -12,41 +22,59 @@ export type FoldViewNavItem = {
   icon?: FoldIconName;
   /** Optional trailing badge (e.g. a count). `undefined`/`null` hides it. */
   badge?: string | number | null;
+  /**
+   * Router target — makes this item a real `routerLink` `<a>`: cmd/middle-click
+   * opens a new tab, the URL is a deep link, and the active state is driven
+   * automatically by `routerLinkActive` (no `activeKey` needed). Accepts the
+   * same value as `[routerLink]` — a path string or a commands array.
+   */
+  link?: string | unknown[];
+  /** External URL — renders a plain `<a href>` (no router). */
+  href?: string;
+  /** Disable the item: non-interactive + dimmed. */
+  disabled?: boolean;
 };
 
 /**
- * `<fold-view-nav>` — a **navigation** bar styled as tabs: a `<nav>` of buttons
- * that switch **views** (the parent routes / renders the view for the active
- * key), with `aria-current="page"` on the active one.
+ * `<fold-view-nav>` — a **navigation** bar styled as tabs: a `<nav>` whose items
+ * *go somewhere*. Give each item a `link` (or `href`) and it renders a real
+ * `<a>` — so cmd/middle-click opens a new tab, the URL is a deep link, and the
+ * active item is driven automatically by `routerLinkActive` +
+ * `aria-current="page"`. Without a link an item is a `<button>` that emits
+ * `activeChange` and reads its active state from `activeKey` (view switching
+ * with no route).
  *
- * **Navigation, not the tabs widget.** Reach for this when a tab *goes somewhere*
- * (routing, view switching). When tabs toggle **layered panels in place** (same
- * URL), use {@link FoldTabsComponent} instead — same look, but the ARIA Tabs
- * pattern (`role="tablist"`, arrow keys, `tabpanel`). Using the tabs pattern for
- * navigation is an anti-pattern, so the two are separate components on purpose.
+ * **Navigation, not the tabs widget.** Reach for this when a tab routes / switches
+ * views. When tabs toggle **layered panels in place** (same URL), use
+ * {@link FoldTabsComponent} — same look, but the ARIA Tabs pattern
+ * (`role="tablist"`, arrow keys, `tabpanel`).
  *
- * - `activeStyle` — `underline` (accent border on the active item) or `fill`
- *   (accent background pill, good for sidebars).
- * - `direction` — `horizontal` (row, equal-width) or `vertical` (stacked
- *   sidebar; auto-collapses to a horizontal icon-accordion at ≤768px).
+ * - `activeStyle` — `underline` (accent border) or `fill` (accent pill).
+ * - `direction` — `auto` (default: follows a wrapping `fold-nav-layout`, else
+ *   vertical), `vertical`, or `horizontal`.
  *
  * @selector `fold-view-nav`
  *
  * @example
  * ```html
- * <fold-view-nav
- *   [tabs]="[{ key: 'members', label: 'Members', badge: 3 }, { key: 'settings', label: 'Settings' }]"
- *   [activeKey]="tab()"
- *   activeStyle="underline"
- *   direction="horizontal"
- *   (tabChange)="tab.set($event)"
- * />
+ * <!-- real navigation: link items, active state automatic -->
+ * <fold-view-nav [items]="[
+ *   { key: 'members', label: 'Members', link: 'members', badge: 3 },
+ *   { key: 'settings', label: 'Settings', link: 'settings' },
+ * ]" />
+ * <router-outlet />
  * ```
  */
 @Component({
   selector: "fold-view-nav",
   standalone: true,
-  imports: [FoldIconComponent, FoldBadgeComponent],
+  imports: [
+    NgTemplateOutlet,
+    FoldIconComponent,
+    FoldBadgeComponent,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: "./view-nav.component.html",
   // Inline + token-driven. Neutral 1px lines use --fold-color-border /
   // -surface-raised so they flip correctly in light mode (the app original
@@ -54,46 +82,65 @@ export type FoldViewNavItem = {
   styleUrl: "./view-nav.component.scss",
 })
 export class FoldViewNavComponent {
-  /** The tabs to render, in order. */
-  readonly tabs = input.required<FoldViewNavItem[]>();
+  /** The items to render, in order. */
+  readonly items = input.required<FoldViewNavItem[]>();
 
-  /** The `key` of the currently active tab. */
-  readonly activeKey = input.required<string>();
+  /**
+   * The active item's `key` — for **button** items (no `link`). Link items ignore
+   * it: their active state comes from the URL via `routerLinkActive`.
+   */
+  readonly activeKey = input<string>("");
 
-  /** How the active tab reads: accent underline, or accent fill. */
+  /** How the active item reads: accent underline, or accent fill. */
   readonly activeStyle = input<"underline" | "fill">("underline");
 
   /**
-   * Bar orientation. Defaults to `vertical` because, in its default shape, this
-   * bar reads as the app's **third navigation rail** (app menu → workspace →
-   * in-page views — the `--fold-rail-tertiary` level), and a menu is vertical: a
-   * rail of full labels, one per line (it auto-collapses to horizontal on
-   * mobile). Set `horizontal` for a page-level top bar.
+   * Bar orientation. Defaults to `auto`: inside a `fold-nav-layout` it follows
+   * the layout (vertical rail, horizontal once folded) with no wiring; on its
+   * own it is `vertical` — the readable-first shape, reading as the app's
+   * **third navigation rail** (app menu → workspace → in-page views, the
+   * `--fold-rail-tertiary` level). Force `horizontal` for a page-level top bar.
    */
-  readonly direction = input<"horizontal" | "vertical">("vertical");
+  readonly direction = input<"horizontal" | "vertical" | "auto">("auto");
 
   /**
-   * Density, from tightest to roomiest:
-   * - `reduce` — the tightest. **Horizontal**, an icon accordion: every tab but
-   *   the active one drops its label (and badge) to just its icon, while the
-   *   active tab keeps its label and takes the remaining room. **Vertical**, a
-   *   collapsed icon rail (like a folded menu): every tab shows just its icon,
-   *   its label appearing as a hover/focus tooltip and its count as a corner
-   *   bubble — narrow the layout's `--fold-nav-layout-rail-width` to match.
-   *   Either way a tab with no icon
-   *   keeps its label, so nothing is left unlabelled. Swap to it from your own
-   *   breakpoint when the bar is too tight for every label.
+   * Density — pure padding/typography:
    * - `compact` (default) — inline / popover bars.
    * - `comfortable` — a prominent, page-level bar.
    */
-  readonly size = input<"reduce" | "compact" | "comfortable">("compact");
+  readonly size = input<"compact" | "comfortable">("compact");
 
   /**
-   * `transparent` (default — blends with the app, so the tabs read directly) or
+   * Collapse the bar to icons (independent of {@link size}). **Horizontal**, an
+   * icon accordion: every item but the active one drops to its icon, the active
+   * one keeps its label. **Vertical**, a collapsed icon rail (like a folded
+   * menu): every item shows just its icon, its label a hover/focus tooltip and
+   * its count a corner bubble — narrow the layout's `--fold-nav-layout-rail-width`
+   * to match. Either way an item with no icon keeps its label, so nothing is left
+   * unlabelled. Toggle it from your own breakpoint when the bar is too tight.
+   */
+  readonly collapsed = input(false, { transform: booleanAttribute });
+
+  /**
+   * `transparent` (default — blends with the app, so the items read directly) or
    * `surface` (a filled bar that carries its own rail background).
    */
   readonly background = input<"transparent" | "surface">("transparent");
 
-  /** Emits the `key` of the clicked tab. */
-  readonly tabChange = output<string>();
+  /** Emits the `key` of a clicked **button** item (link items just navigate). */
+  readonly activeChange = output<string>();
+
+  /** The nearest layout, if any — lets `direction="auto"` follow it. */
+  private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });
+
+  /** `direction` with `auto` resolved against the wrapping layout. */
+  protected readonly resolvedDirection = computed<"horizontal" | "vertical">(
+    () => {
+      const d = this.direction();
+      if (d !== "auto") {
+        return d;
+      }
+      return this.layout?.stacked() ? "horizontal" : "vertical";
+    },
+  );
 }

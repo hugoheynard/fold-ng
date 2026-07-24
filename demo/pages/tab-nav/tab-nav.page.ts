@@ -24,7 +24,7 @@ import { TabPanelComponent } from "../../components/tab-panel.component";
 
 type TabStyle = "underline" | "fill";
 type TabDirection = "horizontal" | "vertical";
-type TabSize = "reduce" | "compact" | "comfortable";
+type TabSize = "compact" | "comfortable";
 type TabBackground = "transparent" | "surface";
 
 /** `/tab-nav` — the `fold-view-nav` gallery page. */
@@ -51,10 +51,11 @@ export default class TabNavPage {
 
   /* ── Playground ─────────────────────────────────────────────────────────── */
   protected readonly tabCounts = [2, 3, 5] as const;
-  protected readonly tabSizes = ["reduce", "compact", "comfortable"] as const;
+  protected readonly tabSizes = ["compact", "comfortable"] as const;
   protected readonly tnStyle = signal<TabStyle>("underline");
   protected readonly tnDirection = signal<TabDirection>("vertical");
   protected readonly tnSize = signal<TabSize>("compact");
+  protected readonly tnCollapsed = signal(false);
   protected readonly tnBackground = signal<TabBackground>("transparent");
   protected readonly tnBadge = signal(true);
   protected readonly tnIcon = signal(true);
@@ -98,15 +99,12 @@ export default class TabNavPage {
 
   protected readonly tabNavCode = computed(() => {
     const side = this.tnDirection() === "vertical";
-    // activeKey comes FROM the URL; tabChange goes TO the router. That round-trip
-    // is what makes this navigation (deep links + back/forward stay in sync).
-    const attrs = ['[tabs]="tabs"', '[activeKey]="active()"'];
+    // Link items → real <a routerLink>: cmd/middle-click, deep-links, and the
+    // active state (via routerLinkActive) all come for free. No activeKey.
+    const attrs = ['[items]="items"'];
     if (side) {
-      // In a rail the bar follows the layout: vertical, horizontal once folded.
-      attrs.push(
-        "tabNav",
-        `[direction]="tl.stacked() ? 'horizontal' : 'vertical'"`,
-      );
+      // direction="auto" makes the bar follow the wrapping layout — no wiring.
+      attrs.push("tabNav", 'direction="auto"');
     }
     if (this.tnStyle() !== "underline") {
       attrs.push(`activeStyle="${this.tnStyle()}"`);
@@ -114,18 +112,18 @@ export default class TabNavPage {
     if (this.tnSize() !== "compact") {
       attrs.push(`size="${this.tnSize()}"`);
     }
+    if (this.tnCollapsed()) {
+      attrs.push("collapsed");
+    }
     if (this.tnBackground() !== "transparent") {
       attrs.push(`background="${this.tnBackground()}"`);
     }
-    attrs.push(
-      '(tabChange)="router.navigate([$event], { relativeTo: route })"',
-    );
     const nav = ["<fold-view-nav", ...attrs.map((a) => `  ${a}`), "/>"];
-    // A reduced rail is icon-only, so narrow its track to match.
+    // A collapsed rail is icon-only, so narrow its track to match.
     const layoutOpen =
-      side && this.tnSize() === "reduce"
-        ? '<fold-nav-layout placement="side"\n  style="--fold-nav-layout-rail-width: 56px" #tl="foldNavLayout">'
-        : '<fold-nav-layout placement="side" #tl="foldNavLayout">';
+      side && this.tnCollapsed()
+        ? '<fold-nav-layout placement="side"\n  style="--fold-nav-layout-rail-width: 56px">'
+        : '<fold-nav-layout placement="side">';
     const markup = side
       ? [
           layoutOpen,
@@ -135,17 +133,15 @@ export default class TabNavPage {
         ]
       : [...nav, "<router-outlet />"];
     return [
-      "<!-- the bar navigates; the router renders the matching view -->",
+      "<!-- items navigate; routerLinkActive marks the current one -->",
       ...markup,
       "",
-      "// component — active follows the URL, so a deep link lands on the right tab",
-      "private route = inject(ActivatedRoute);",
-      "protected router = inject(Router);",
-      "tabs = [{ key: 'overview', label: 'Overview' }, …];",
-      "active = toSignal(",
-      "  route.firstChild!.url.pipe(map((s) => s[0]?.path ?? 'overview')),",
-      "  { initialValue: 'overview' },",
-      ");",
+      "// component — no activeKey: the URL drives the active item",
+      "items = [",
+      "  { key: 'overview', label: 'Overview', icon: 'grid', link: 'overview' },",
+      "  { key: 'members', label: 'Members', icon: 'team', link: 'members', badge: 3 },",
+      "  { key: 'settings', label: 'Settings', icon: 'settings', link: 'settings' },",
+      "];",
     ].join("\n");
   });
 

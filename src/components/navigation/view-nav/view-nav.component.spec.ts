@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { describe, it, expect } from "vitest";
+import { provideRouter } from "@angular/router";
+import { beforeEach, describe, it, expect } from "vitest";
 import {
   FoldViewNavComponent,
   type FoldViewNavItem,
@@ -10,24 +11,26 @@ import {
   standalone: true,
   imports: [FoldViewNavComponent],
   template: `<fold-view-nav
-    [tabs]="tabs"
+    [items]="items"
     [activeKey]="activeKey"
     [activeStyle]="activeStyle"
     [direction]="direction"
     [size]="size"
+    [collapsed]="collapsed"
     [background]="background"
-    (tabChange)="picked = $event"
+    (activeChange)="picked = $event"
   />`,
 })
 class HostComponent {
-  tabs: FoldViewNavItem[] = [
+  items: FoldViewNavItem[] = [
     { key: "a", label: "Alpha", badge: 3 },
     { key: "b", label: "Beta", icon: "settings" },
   ];
   activeKey = "a";
   activeStyle: "underline" | "fill" = "underline";
-  direction: "horizontal" | "vertical" = "horizontal";
-  size: "reduce" | "compact" | "comfortable" = "compact";
+  direction: "horizontal" | "vertical" | "auto" = "horizontal";
+  size: "compact" | "comfortable" = "compact";
+  collapsed = false;
   background: "transparent" | "surface" = "transparent";
   picked: string | undefined;
 }
@@ -45,6 +48,10 @@ function setup(patch: Partial<HostComponent> = {}) {
 }
 
 describe("FoldViewNavComponent", () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+  });
+
   it("renders one tab per item with its label", () => {
     const { buttons } = setup();
     const labels = buttons.map((b) =>
@@ -85,10 +92,10 @@ describe("FoldViewNavComponent", () => {
     ).toBe(true);
   });
 
-  it("marks the reduce density on the nav", () => {
-    expect(setup().nav.classList.contains("size-reduce")).toBe(false);
+  it("marks the collapsed icon mode on the nav", () => {
+    expect(setup().nav.classList.contains("is-collapsed")).toBe(false);
     expect(
-      setup({ size: "reduce" }).nav.classList.contains("size-reduce"),
+      setup({ collapsed: true }).nav.classList.contains("is-collapsed"),
     ).toBe(true);
   });
 
@@ -111,5 +118,27 @@ describe("FoldViewNavComponent", () => {
     expect(
       setup({ background: "surface" }).nav.classList.contains("bg-surface"),
     ).toBe(true);
+  });
+
+  it("renders a real anchor for a link item (deep-linkable)", () => {
+    const { buttons } = setup({
+      items: [
+        { key: "a", label: "Alpha", link: "alpha" },
+        { key: "b", label: "Beta", link: "beta" },
+      ],
+    });
+    expect(buttons.every((el) => el.tagName === "A")).toBe(true);
+    expect((buttons[0] as HTMLAnchorElement).getAttribute("href")).toBe(
+      "/alpha",
+    );
+  });
+
+  it("renders a disabled button for a disabled item", () => {
+    const { buttons } = setup({
+      items: [{ key: "a", label: "Alpha", disabled: true }],
+    });
+    expect(buttons[0].tagName).toBe("BUTTON");
+    expect(buttons[0].hasAttribute("disabled")).toBe(true);
+    expect(buttons[0].getAttribute("aria-disabled")).toBe("true");
   });
 });

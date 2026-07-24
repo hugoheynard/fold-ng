@@ -5,14 +5,13 @@
     them bottom-right; FoldToastService owns the queue.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <fold-nav-layout placement="side" #tl="foldNavLayout">
+  <fold-nav-layout placement="side">
     <fold-view-nav
       tabNav
-      [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
-      [tabs]="toastTabs"
+      [items]="toastTabs"
       [activeKey]="toastTab()"
-      (tabChange)="toastTab.set($event)"
+      (activeChange)="toastTab.set($event)"
     />
     <div class="gal-stack">
       @switch (toastTab()) { @case ("variants") {

@@ -64,10 +64,10 @@
         <fold-view-nav
           tabNav
           activeStyle="fill"
-          [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
-          [tabs]="tabs"
+          direction="auto"
+          [items]="tabs"
           [activeKey]="active()"
-          (tabChange)="active.set($event)"
+          (activeChange)="active.set($event)"
         />
         <div class="tl-demo-body">
           <span class="gal-tag">content for “{{ active() }}”</span>
@@ -90,10 +90,10 @@
       <fold-view-nav
         tabNav
         activeStyle="fill"
-        [direction]="tls.stacked() ? 'horizontal' : 'vertical'"
-        [tabs]="sectionTabs"
+        direction="auto"
+        [items]="sectionTabs"
         [activeKey]="sectionActive()"
-        (tabChange)="sectionActive.set($event)"
+        (activeChange)="sectionActive.set($event)"
       />
       <div class="tl-demo-body">
         <span class="gal-tag">section content for “{{ sectionActive() }}”</span>

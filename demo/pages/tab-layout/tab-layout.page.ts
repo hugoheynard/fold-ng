@@ -56,15 +56,15 @@ export default class TabLayoutPage {
     if (this.tlFoldAt() !== 720) {
       attrs.push(`[foldAt]="${this.tlFoldAt()}"`);
     }
-    const open = `<fold-nav-layout${attrs.length ? " " + attrs.join(" ") : ""} #tl="foldNavLayout">`;
+    const open = `<fold-nav-layout${attrs.length ? " " + attrs.join(" ") : ""}>`;
     return [
       open,
+      '  <!-- direction="auto" makes the bar follow the layout — no wiring -->',
       "  <fold-view-nav",
       "    tabNav",
-      `    [direction]="tl.stacked() ? 'horizontal' : 'vertical'"`,
-      '    [tabs]="tabs"',
+      '    [items]="items"',
       '    [activeKey]="tab()"',
-      '    (tabChange)="tab.set($event)"',
+      '    (activeChange)="tab.set($event)"',
       "  />",
       "  <!-- untagged content → the panel the active tab drives -->",
       "  <app-tab-content />",

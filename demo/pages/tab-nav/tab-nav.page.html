@@ -80,6 +80,26 @@
     </div>
 
     <div class="np-field" params>
+      <span class="gal-tag">collapsed</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!tnCollapsed()"
+          (click)="tnCollapsed.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tnCollapsed()"
+          (click)="tnCollapsed.set(true)"
+        >
+          icons
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
       <span class="gal-tag">background</span>
       <div class="ss-seg">
         <button
@@ -153,24 +173,25 @@
 
       <!-- foldAt lowered so the side rail actually fits the narrow demo stage;
          the default (720px) would auto-fold back to a horizontal bar here.
-         A reduced rail is icon-only, so narrow its track to match. -->
+         A collapsed rail is icon-only, so narrow its track to match. The bar's
+         direction="auto" makes it follow this layout — no tl.stacked() wiring. -->
       <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
         [foldAt]="320"
         [style.--fold-nav-layout-rail-width]="
-          tnSize() === 'reduce' && tnDirection() === 'vertical' ? '56px' : null
+          tnCollapsed() && tnDirection() === 'vertical' ? '56px' : null
         "
-        #tl="foldNavLayout"
       >
         <fold-view-nav
           tabNav
-          [tabs]="tnTabs()"
+          [items]="tnTabs()"
           [activeKey]="tnActiveKey()"
           [activeStyle]="tnStyle()"
-          [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
+          direction="auto"
           [size]="tnSize()"
+          [collapsed]="tnCollapsed()"
           [background]="tnBackground()"
-          (tabChange)="tnActive.set($event)"
+          (activeChange)="tnActive.set($event)"
         />
 
         <div class="tn-panel">

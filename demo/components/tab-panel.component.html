@@ -4,12 +4,12 @@
 />
 <div class="pnl-body">
   <fold-view-nav
-    [tabs]="tabs"
+    [items]="tabs"
     [activeKey]="active()"
     direction="horizontal"
     background="surface"
     activeStyle="underline"
-    (tabChange)="active.set($event)"
+    (activeChange)="active.set($event)"
   />
   <div class="pnl-content">
     Active tab: <strong>{{ active() }}</strong>
