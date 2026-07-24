@@ -149,19 +149,51 @@
   text-overflow: ellipsis;
 }
 
-/* Vertical + reduce is a pure icon rail, not an accordion: the horizontal
-   "active item expands with its label" doesn't map to a vertical rail, so the
-   active item drops its label too. An icon-less item still keeps its label
-   (the `.tab-bar-icon ~` guard), so nothing is left unlabelled. */
+/* Vertical + reduce is a collapsed icon rail, like a folded fold-menu: each item
+   shrinks to just its centred icon and its label becomes a hover/focus tooltip
+   that escapes to the right. The horizontal "active item expands with its label"
+   doesn't map to a vertical rail. An icon-less item keeps its label inline (the
+   `.tab-bar-icon ~` guard), so nothing is left unlabelled. */
 .dir-vertical.size-reduce .tab-bar-item,
 .dir-vertical.size-reduce .tab-bar-item.is-active {
+  position: relative;
   flex: 0 0 auto;
   justify-content: center;
   gap: 0;
 }
-.dir-vertical.size-reduce .tab-bar-item .tab-bar-icon ~ .tab-bar-label,
 .dir-vertical.size-reduce .tab-bar-item .tab-bar-badge {
   display: none;
+}
+/* Label → floating tooltip (only where an icon stands in for it). */
+.dir-vertical.size-reduce .tab-bar-item .tab-bar-icon ~ .tab-bar-label {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-glass);
+  border: 1px solid var(--fold-color-glass-border);
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: var(--fold-shadow-md);
+  transition: opacity var(--fold-motion-fast);
+  z-index: 100;
+}
+.dir-vertical.size-reduce .tab-bar-item:hover .tab-bar-icon ~ .tab-bar-label,
+.dir-vertical.size-reduce
+  .tab-bar-item:focus-visible
+  .tab-bar-icon
+  ~ .tab-bar-label {
+  opacity: 1;
+}
+/* The tooltip escapes the rail to the right — the host clips by default. */
+:host:has(.dir-vertical.size-reduce) {
+  overflow: visible;
 }
 
 /* Vertical collapses to a horizontal icon-accordion on mobile. */

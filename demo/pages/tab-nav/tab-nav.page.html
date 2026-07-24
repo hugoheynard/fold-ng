@@ -152,10 +152,14 @@
       </div>
 
       <!-- foldAt lowered so the side rail actually fits the narrow demo stage;
-         the default (720px) would auto-fold back to a horizontal bar here. -->
+         the default (720px) would auto-fold back to a horizontal bar here.
+         A reduced rail is icon-only, so narrow its track to match. -->
       <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
         [foldAt]="320"
+        [style.--fold-nav-layout-rail-width]="
+          tnSize() === 'reduce' && tnDirection() === 'vertical' ? '56px' : null
+        "
         #tl="foldNavLayout"
       >
         <fold-view-nav

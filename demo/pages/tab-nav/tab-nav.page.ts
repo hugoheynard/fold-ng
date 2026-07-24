@@ -121,9 +121,14 @@ export default class TabNavPage {
       '(tabChange)="router.navigate([$event], { relativeTo: route })"',
     );
     const nav = ["<fold-view-nav", ...attrs.map((a) => `  ${a}`), "/>"];
+    // A reduced rail is icon-only, so narrow its track to match.
+    const layoutOpen =
+      side && this.tnSize() === "reduce"
+        ? '<fold-nav-layout placement="side"\n  style="--fold-nav-layout-rail-width: 56px" #tl="foldNavLayout">'
+        : '<fold-nav-layout placement="side" #tl="foldNavLayout">';
     const markup = side
       ? [
-          '<fold-nav-layout placement="side" #tl="foldNavLayout">',
+          layoutOpen,
           ...nav.map((l) => `  ${l}`),
           "  <router-outlet />",
           "</fold-nav-layout>",

@@ -71,10 +71,11 @@ export class FoldViewNavComponent {
    * - `reduce` — the tightest. **Horizontal**, an icon accordion: every tab but
    *   the active one drops its label (and badge) to just its icon, while the
    *   active tab keeps its label and takes the remaining room. **Vertical**, a
-   *   pure icon rail: the active tab drops its label too (the accordion expand
-   *   doesn't map to a rail). Either way a tab with no icon keeps its label, so
-   *   nothing is left unlabelled. Swap to it from your own breakpoint when the
-   *   bar is too tight for every label.
+   *   collapsed icon rail (like a folded menu): every tab shows just its icon,
+   *   its label appearing as a hover/focus tooltip — narrow the layout's
+   *   `--fold-nav-layout-rail-width` to match. Either way a tab with no icon
+   *   keeps its label, so nothing is left unlabelled. Swap to it from your own
+   *   breakpoint when the bar is too tight for every label.
    * - `compact` (default) — inline / popover bars.
    * - `comfortable` — a prominent, page-level bar.
    */
