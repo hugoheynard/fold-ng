@@ -151,8 +151,11 @@
         >
       </div>
 
+      <!-- foldAt lowered so the side rail actually fits the narrow demo stage;
+         the default (720px) would auto-fold back to a horizontal bar here. -->
       <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
+        [foldAt]="320"
         #tl="foldNavLayout"
       >
         <fold-view-nav
