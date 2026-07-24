@@ -38,17 +38,47 @@
 /* Frames the mock content as what the router renders. */
 .tn-panel {
   position: relative;
+  width: 100%;
 }
 
 .tn-outlet-tag {
   position: absolute;
-  top: 8px;
-  right: 10px;
+  top: 10px;
+  right: 12px;
   font-family: var(--fold-font-mono, ui-monospace, monospace);
   font-size: 10px;
   letter-spacing: 0.02em;
   color: var(--fold-color-text-muted);
   opacity: 0.7;
+}
+
+/* A consistent page header per routed view — the tab label reads as the page
+   title, so the switch looks like moving between real app pages. */
+.tn-view-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+}
+
+.tn-view-title {
+  margin: 0;
+  font-size: var(--fold-text-md);
+  font-weight: 700;
+  color: var(--fold-color-text);
+}
+
+.tn-view-path {
+  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  color: var(--fold-color-text-muted);
+}
+
+/* Fixed height so switching tabs never shifts the layout below. */
+.tn-view-body {
+  min-height: 180px;
 }
 
 /* Overview — stat tiles */

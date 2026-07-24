@@ -89,6 +89,13 @@ export default class TabNavPage {
     return keys.includes(this.tnActive()) ? this.tnActive() : (keys[0] ?? "");
   });
 
+  /** The active tab's label — the routed view's page title. */
+  protected readonly tnActiveLabel = computed(
+    () =>
+      this.tnTabs().find((t) => t.key === this.tnActiveKey())?.label ??
+      "Overview",
+  );
+
   protected readonly tabNavCode = computed(() => {
     const side = this.tnDirection() === "vertical";
     // activeKey comes FROM the URL; tabChange goes TO the router. That round-trip
