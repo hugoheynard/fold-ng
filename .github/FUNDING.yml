@@ -1,0 +1,4 @@
+# Powers the "Sponsor" button on the repo. GitHub Sponsors (0% platform fee,
+# Stripe → bank) is the primary channel; PayPal is a one-time fallback.
+github: [hugoheynard]
+custom: ["https://www.paypal.com/paypalme/hugoheynard"]
