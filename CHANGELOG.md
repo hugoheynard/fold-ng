@@ -8,7 +8,7 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 _Nothing yet._
 
-## [0.1.0] - 2026-07-23
+## [0.1.0] - 2026-07-24
 
 First public release line — **production-quality, pre-1.0 (`0.x`)**: fully
 tested and dogfooded in a real application, but the component API may still be

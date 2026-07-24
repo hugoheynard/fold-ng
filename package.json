@@ -23,7 +23,9 @@
     "a11y",
     "wcag",
     "overlay",
-    "dialog"
+    "dialog",
+    "angular-ui",
+    "signals-first"
   ],
   "author": "Hugo Heynard",
   "license": "MIT",
