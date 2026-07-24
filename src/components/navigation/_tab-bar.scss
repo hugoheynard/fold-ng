@@ -149,6 +149,21 @@
   text-overflow: ellipsis;
 }
 
+/* Vertical + reduce is a pure icon rail, not an accordion: the horizontal
+   "active item expands with its label" doesn't map to a vertical rail, so the
+   active item drops its label too. An icon-less item still keeps its label
+   (the `.tab-bar-icon ~` guard), so nothing is left unlabelled. */
+.dir-vertical.size-reduce .tab-bar-item,
+.dir-vertical.size-reduce .tab-bar-item.is-active {
+  flex: 0 0 auto;
+  justify-content: center;
+  gap: 0;
+}
+.dir-vertical.size-reduce .tab-bar-item .tab-bar-icon ~ .tab-bar-label,
+.dir-vertical.size-reduce .tab-bar-item .tab-bar-badge {
+  display: none;
+}
+
 /* Vertical collapses to a horizontal icon-accordion on mobile. */
 @media (max-width: 768px) {
   .dir-vertical {
