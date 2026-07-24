@@ -1,19 +1,29 @@
-<nav
+<div
   class="tab-bar"
+  role="tablist"
+  [attr.aria-orientation]="
+    direction() === 'vertical' ? 'vertical' : 'horizontal'
+  "
   [class.style-underline]="activeStyle() === 'underline'"
   [class.style-fill]="activeStyle() === 'fill'"
   [class.dir-vertical]="direction() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
   [class.size-reduce]="size() === 'reduce'"
   [class.bg-surface]="background() === 'surface'"
+  (keydown)="onKeydown($event)"
 >
   @for (tab of tabs(); track tab.key) {
     <button
+      #tabBtn
       type="button"
+      role="tab"
       class="tab-bar-item"
+      [id]="tabId(tab.key)"
       [class.is-active]="activeKey() === tab.key"
-      [attr.aria-current]="activeKey() === tab.key ? 'page' : null"
-      (click)="tabChange.emit(tab.key)"
+      [attr.aria-selected]="activeKey() === tab.key"
+      [attr.aria-controls]="panelId(tab.key)"
+      [tabindex]="activeKey() === tab.key ? 0 : -1"
+      (click)="select(tab.key)"
     >
       @if (tab.icon; as ic) {
         <fold-icon class="tab-bar-icon" [name]="ic" size="sm" />
@@ -28,4 +38,4 @@
       }
     </button>
   }
-</nav>
+</div>

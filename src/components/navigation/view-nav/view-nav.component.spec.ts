@@ -39,10 +39,8 @@ function setup(patch: Partial<HostComponent> = {}) {
   const host = fixture.nativeElement as HTMLElement;
   return {
     instance: fixture.componentInstance,
-    nav: host.querySelector(".view-nav") as HTMLElement,
-    buttons: [
-      ...host.querySelectorAll(".view-nav-item"),
-    ] as HTMLButtonElement[],
+    nav: host.querySelector(".tab-bar") as HTMLElement,
+    buttons: [...host.querySelectorAll(".tab-bar-item")] as HTMLButtonElement[],
   };
 }
 
@@ -50,7 +48,7 @@ describe("FoldViewNavComponent", () => {
   it("renders one tab per item with its label", () => {
     const { buttons } = setup();
     const labels = buttons.map((b) =>
-      b.querySelector(".view-nav-label")?.textContent?.trim(),
+      b.querySelector(".tab-bar-label")?.textContent?.trim(),
     );
     expect(labels).toEqual(["Alpha", "Beta"]);
   });
@@ -70,12 +68,12 @@ describe("FoldViewNavComponent", () => {
   it("renders a badge and an icon only where provided", () => {
     const { buttons } = setup();
     expect(
-      buttons[0].querySelector(".view-nav-badge")?.textContent?.trim(),
+      buttons[0].querySelector(".tab-bar-badge")?.textContent?.trim(),
     ).toBe("3");
-    expect(buttons[0].querySelector(".view-nav-icon")).toBeNull();
-    expect(buttons[1].querySelector(".view-nav-badge")).toBeNull();
+    expect(buttons[0].querySelector(".tab-bar-icon")).toBeNull();
+    expect(buttons[1].querySelector(".tab-bar-badge")).toBeNull();
     // The icon is an fold-icon (registry-named), not a hand-rolled <svg><path>.
-    const icon = buttons[1].querySelector("fold-icon.view-nav-icon");
+    const icon = buttons[1].querySelector("fold-icon.tab-bar-icon");
     expect(icon).not.toBeNull();
     expect(icon?.querySelector("svg")).not.toBeNull();
   });
@@ -83,7 +81,7 @@ describe("FoldViewNavComponent", () => {
   it("tints the badge accent on the active tab, neutral otherwise", () => {
     const { buttons } = setup({ activeKey: "a" });
     expect(
-      buttons[0].querySelector(".view-nav-badge")?.classList.contains("accent"),
+      buttons[0].querySelector(".tab-bar-badge")?.classList.contains("accent"),
     ).toBe(true);
   });
 

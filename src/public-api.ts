@@ -126,6 +126,12 @@ export { FoldPaginatorComponent } from "./components/content/paginator/paginator
 export type { FoldPageItem } from "./components/content/paginator/paginator.component";
 export { FoldViewNavComponent } from "./components/navigation/view-nav/view-nav.component";
 export type { FoldViewNavItem } from "./components/navigation/view-nav/view-nav.component";
+export { FoldTabsComponent } from "./components/navigation/tabs/tabs.component";
+export type {
+  FoldTabItem,
+  FoldTabsContext,
+} from "./components/navigation/tabs/tabs.component";
+export { FoldTabPanelComponent } from "./components/navigation/tabs/tab-panel.component";
 export { FoldToastComponent } from "./components/feedback/toast/toast.component";
 export { FoldToastContainerComponent } from "./components/feedback/toast/toast-container.component";
 export { FoldToastService } from "./components/feedback/toast/toast.service";
