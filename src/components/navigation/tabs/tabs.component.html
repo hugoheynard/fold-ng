@@ -27,6 +27,10 @@
     >
       @if (tab.icon; as ic) {
         <fold-icon class="tab-bar-icon" [name]="ic" size="sm" />
+      } @else if (collapsed()) {
+        <span class="tab-bar-icon tab-bar-initial" aria-hidden="true">{{
+          tab.label.charAt(0)
+        }}</span>
       }
       <span class="tab-bar-label">{{ tab.label }}</span>
       @if (tab.badge !== undefined && tab.badge !== null) {

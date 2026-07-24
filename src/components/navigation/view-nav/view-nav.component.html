@@ -72,6 +72,12 @@
 <ng-template #body let-item let-active="active">
   @if (item.icon; as ic) {
     <fold-icon class="tab-bar-icon" [name]="ic" size="sm" />
+  } @else if (collapsed()) {
+    <!-- Collapsed needs a fixed glyph; an icon-less item falls back to its
+         initial so the rail stays icon-width and the label still tooltips. -->
+    <span class="tab-bar-icon tab-bar-initial" aria-hidden="true">{{
+      item.label.charAt(0)
+    }}</span>
   }
   <span class="tab-bar-label">{{ item.label }}</span>
   @if (item.badge !== undefined && item.badge !== null) {

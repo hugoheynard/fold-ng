@@ -116,8 +116,9 @@ export class FoldViewNavComponent {
    * one keeps its label. **Vertical**, a collapsed icon rail (like a folded
    * menu): every item shows just its icon, its label a hover/focus tooltip and
    * its count a corner bubble — narrow the layout's `--fold-nav-layout-rail-width`
-   * to match. Either way an item with no icon keeps its label, so nothing is left
-   * unlabelled. Toggle it from your own breakpoint when the bar is too tight.
+   * to match. An item with no icon falls back to a square glyph of its label's
+   * initial, so the rail stays icon-width whether or not items carry icons.
+   * Toggle it from your own breakpoint when the bar is too tight.
    */
   readonly collapsed = input(false, { transform: booleanAttribute });
 
