@@ -105,9 +105,9 @@ export class FoldAvatarComponent {
     if (!n) {
       return "?";
     }
-    const words = n.split(/\s+/);
-    if (words.length >= 2) {
-      return (words[0][0] + words[1][0]).toUpperCase();
+    const [first = "", second = ""] = n.split(/\s+/);
+    if (second) {
+      return (first.charAt(0) + second.charAt(0)).toUpperCase();
     }
     return n.substring(0, 2).toUpperCase();
   });

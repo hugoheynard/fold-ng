@@ -47,9 +47,10 @@ export interface FoldComponentPanelDescriptor extends PanelBase {
    * Explicit accessible name. Optional: a panel that renders `fold-panel-header`
    * is named automatically (the dialog's `aria-labelledby` points at the
    * header's title). Set this only for a component panel that has no
-   * `fold-panel-header` to label it.
+   * `fold-panel-header` to label it. (Carried straight from `config.ariaLabel`,
+   * hence the explicit `| undefined`.)
    */
-  readonly ariaLabel?: string;
+  readonly ariaLabel?: string | undefined;
 }
 
 export type FoldPanelDescriptor =

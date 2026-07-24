@@ -74,7 +74,7 @@ export default class TabNavPage {
     this.TAB_POOL.slice(0, this.tnCount()).map((t) => ({
       key: t.key,
       label: t.label,
-      icon: this.tnIcon() ? t.icon : undefined,
+      ...(this.tnIcon() ? { icon: t.icon } : {}),
       badge: this.tnBadge() ? (t.badge ?? null) : null,
     })),
   );
@@ -82,7 +82,7 @@ export default class TabNavPage {
   /** The active key, kept valid when the tab count shrinks past it. */
   protected readonly tnActiveKey = computed(() => {
     const keys = this.tnTabs().map((t) => t.key);
-    return keys.includes(this.tnActive()) ? this.tnActive() : keys[0];
+    return keys.includes(this.tnActive()) ? this.tnActive() : (keys[0] ?? "");
   });
 
   protected readonly tabNavCode = computed(() => {

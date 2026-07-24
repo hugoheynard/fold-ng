@@ -58,6 +58,9 @@ export class FoldPaletteRegistry {
   /** Deterministic colour for a seed, from the active palette. Reactive. */
   colorFor(seed: string): string {
     const palette = this._current();
-    return palette[Math.abs(foldHashSeed(seed)) % palette.length];
+    const idx = Math.abs(foldHashSeed(seed)) % palette.length;
+    // `_current` always holds a non-empty palette (foldResolvePalette falls back
+    // to `vivid`), so the modulo index resolves; the fallbacks are for the type.
+    return palette[idx] ?? palette[0] ?? "transparent";
   }
 }

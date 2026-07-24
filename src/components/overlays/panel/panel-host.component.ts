@@ -109,16 +109,15 @@ export class FoldPanelHostComponent {
   /** Only the last-opened panel traps focus, so stacked panels don't fight. */
   isTopMost(panel: FoldPanelDescriptor): boolean {
     const panels = this.panels();
-    return panels.length > 0 && panels[panels.length - 1].id === panel.id;
+    const top = panels[panels.length - 1];
+    return top?.id === panel.id;
   }
 
   /** Escape closes the top-most (last-opened) panel. */
   @HostListener("document:keydown.escape")
   onEscape(): void {
-    const panels = this.panels();
-    if (panels.length > 0) {
-      panels[panels.length - 1].onClose();
-    }
+    const top = this.panels().at(-1);
+    top?.onClose();
   }
 
   onBackdrop(event: MouseEvent, panel: FoldPanelDescriptor): void {

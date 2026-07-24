@@ -1,8 +1,9 @@
 {
-  // Self-contained — NO `extends "../../…"`. Inlined from the monorepo's
-  // tsconfig.base.flags.json + tsconfig.angular.json so fold-ng stands alone once
-  // extracted. Keep these flags in lockstep with the
-  // monorepo base until the package is extracted; do not silently drop one.
+  // Self-contained — NO `extends "../../…"`. Originally inlined from the
+  // monorepo's tsconfig.base.flags.json + tsconfig.angular.json. Now extracted,
+  // fold-ng leads: it hardens beyond the monorepo base (noUncheckedIndexedAccess,
+  // exactOptionalPropertyTypes, strictStandalone, typeCheckHostBindings) — never
+  // loosen one.
   "compilerOptions": {
     // --- Strictness (types) ---
     "strict": true,
@@ -18,6 +19,11 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "useUnknownInCatchVariables": true,
+    // arr[i] / obj[key] are typed `T | undefined` — the access must be guarded.
+    "noUncheckedIndexedAccess": true,
+    // `x?: T` (may be absent) is not the same as `x: T | undefined` (present, set
+    // to undefined) — matters for a public API surface.
+    "exactOptionalPropertyTypes": true,
 
     // --- Robustness / readability ---
     "noFallthroughCasesInSwitch": true,
@@ -27,6 +33,10 @@
 
     // --- Interop & modules ---
     "verbatimModuleSyntax": true,
+    // Each file must transpile in isolation (matches esbuild/vite), and a
+    // side-effect import that resolves to nothing is an error.
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
 
@@ -57,7 +67,11 @@
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    // Every component/directive/pipe must be standalone — no NgModule slips in.
+    "strictStandalone": true,
+    // Type-check `host: {}` bindings the same way templates are checked.
+    "typeCheckHostBindings": true
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules"]

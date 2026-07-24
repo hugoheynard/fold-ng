@@ -8,12 +8,12 @@
 export interface FoldNumberConstraints {
   /** The effective step (> 0); also the grid spacing and the default precision. */
   readonly step: number;
-  /** Lower bound, if any. */
-  readonly min?: number;
-  /** Upper bound, if any. */
-  readonly max?: number;
+  /** Lower bound, if any (the constraints object always carries the key). */
+  readonly min?: number | undefined;
+  /** Upper bound, if any (the constraints object always carries the key). */
+  readonly max?: number | undefined;
   /** Decimal-place cap; when omitted, precision is derived from {@link step}. */
-  readonly decimals?: number;
+  readonly decimals?: number | undefined;
   /** Whether the value must land on the step grid. */
   readonly snapToStep: boolean;
 }

@@ -119,15 +119,17 @@ export default class TimelinePage {
     }
     const done = this.tlpDone();
     const clickable = this.tlpClickable();
-    return this.TLP_STEPS.map((step, i) => ({
-      key: step.label,
-      id: null,
-      clickable,
-      label: step.label,
-      displayDate: i < done ? step.date : undefined,
-      done: i < done,
-      icon: i < done ? "check" : undefined,
-    }));
+    return this.TLP_STEPS.map((step, i) => {
+      const reached = i < done;
+      return {
+        key: step.label,
+        id: null,
+        clickable,
+        label: step.label,
+        done: reached,
+        ...(reached ? { displayDate: step.date, icon: "check" } : {}),
+      };
+    });
   });
 
   protected readonly tlpProgress = computed(() => {

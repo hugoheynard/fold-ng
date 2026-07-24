@@ -92,7 +92,10 @@ export default class AppShellPage {
         return;
       }
       const ro = new ResizeObserver((entries) => {
-        this.windowWidth.set(entries[0].contentRect.width);
+        const entry = entries[0];
+        if (entry) {
+          this.windowWidth.set(entry.contentRect.width);
+        }
       });
       ro.observe(el);
       onCleanup(() => ro.disconnect());

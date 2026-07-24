@@ -149,20 +149,22 @@ export default class MenuPage {
   /** Monotonic id source — no Date.now()/random (unavailable + non-deterministic). */
   private sectionSeq = 3;
 
-  /** Icons cycled through to populate a section's simulated items. */
-  private readonly iconPool: readonly FoldIconName[] = [
+  /** Icons cycled through to populate a section's simulated items. `as const`
+   *  keeps it a non-empty tuple, so `iconPool[0]` is a guaranteed fallback. */
+  private readonly iconPool = [
     "home",
     "contracts",
     "music",
     "bell",
     "company",
     "edit",
-  ];
+  ] as const satisfies readonly FoldIconName[];
 
   protected iconsFor(count: number): FoldIconName[] {
+    const pool = this.iconPool;
     return Array.from(
       { length: count },
-      (_, i) => this.iconPool[i % this.iconPool.length],
+      (_, i) => pool[i % pool.length] ?? pool[0],
     );
   }
   protected labelFor(icon: FoldIconName): string {
@@ -178,6 +180,10 @@ export default class MenuPage {
   }
   protected removeSection(id: string): void {
     this.menuSectionList.update((list) => list.filter((s) => s.id !== id));
+  }
+  /** Drop the last section (the "Remove last section" control). No-op if empty. */
+  protected removeLastSection(): void {
+    this.menuSectionList.update((list) => list.slice(0, -1));
   }
   protected setSectionName(id: string, name: string): void {
     this.menuSectionList.update((list) =>
@@ -219,6 +225,9 @@ export default class MenuPage {
     const sections = this.menuSectionList();
     for (let si = 0; si < sections.length; si++) {
       const s = sections[si];
+      if (!s) {
+        continue;
+      }
       const wrap = this.menuSections();
       const pad = wrap ? "    " : "  ";
       if (wrap) {
@@ -229,9 +238,13 @@ export default class MenuPage {
       }
       const icons = this.iconsFor(s.icons);
       for (let ii = 0; ii < icons.length; ii++) {
+        const icon = icons[ii];
+        if (!icon) {
+          continue;
+        }
         const badge = this.badgeAttrs(this.previewBadge(si, ii));
         lines.push(
-          `${pad}<button fold-menu-item icon="${icons[ii]}" label="${this.labelFor(icons[ii])}"${badge}></button>`,
+          `${pad}<button fold-menu-item icon="${icon}" label="${this.labelFor(icon)}"${badge}></button>`,
         );
       }
       if (wrap) {

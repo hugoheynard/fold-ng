@@ -72,7 +72,7 @@ export class GalleryShellComponent {
   protected readonly mobileNavOpen = signal(false);
 
   /** Where the primary rail's "Library" jumps in — the first library entry. */
-  protected readonly firstComponent = GALLERY_NAV_ITEMS[0].id;
+  protected readonly firstComponent = GALLERY_NAV_ITEMS[0]?.id ?? "";
 
   /** Footer chrome — version straight from package.json, year at render time. */
   protected readonly version = pkg.version;
