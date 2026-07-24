@@ -1,0 +1,101 @@
+/* fold-tabs gallery page — the mock panel content. Classes are `tp-*` and the
+   page is ViewEncapsulation.None, so keep the prefix distinct. */
+
+.tp-frame {
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
+  background: var(--fold-color-bg-page);
+  overflow: hidden;
+}
+
+.tp-panel {
+  display: block;
+  padding: 20px;
+}
+
+/* Overview — a stat row. */
+.tp-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tp-stat {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-subtle);
+}
+.tp-stat-value {
+  font-size: var(--fold-text-xl);
+  font-weight: 700;
+  color: var(--fold-color-text);
+}
+.tp-stat-label {
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}
+
+/* Members — avatar rows. */
+.tp-rows,
+.tp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tp-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-subtle);
+}
+.tp-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+  font-size: var(--fold-text-sm);
+  font-weight: 700;
+}
+.tp-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-right: auto;
+}
+.tp-row-title {
+  font-size: var(--fold-text-sm);
+  font-weight: 600;
+  color: var(--fold-color-text);
+}
+.tp-row-sub {
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+
+/* Settings — a label/value form. */
+.tp-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-border-subtle);
+}
+.tp-field-label {
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-secondary);
+}
+.tp-field-control {
+  font-size: var(--fold-text-sm);
+  font-weight: 600;
+  color: var(--fold-color-text);
+}

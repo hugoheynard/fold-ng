@@ -60,7 +60,7 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
       },
       {
         id: "tab-layout",
-        label: "tab-layout",
+        label: "nav-layout",
         badge: "new",
         badgeTone: "info",
       },
@@ -77,7 +77,8 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badge: "new",
         badgeTone: "info",
       },
-      { id: "tab-nav", label: "tab-nav" },
+      { id: "tab-nav", label: "view-nav" },
+      { id: "tabs", label: "tabs", badge: "new", badgeTone: "info" },
     ],
   },
   {

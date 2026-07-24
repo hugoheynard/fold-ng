@@ -1,0 +1,128 @@
+<fold-page-layout title="tabs">
+  <p description>
+    The in-page <strong>ARIA Tabs widget</strong>: a
+    <code>role="tablist"</code> that switches layered panels
+    <strong>without navigating</strong>. Arrow keys move between tabs (roving
+    tabindex — only the active tab is in the Tab order), <code>Home</code>/<code
+      >End</code
+    >
+    jump to the ends, and each tab is wired to its panel (<code
+      >aria-controls</code
+    >
+    ↔ <code>aria-labelledby</code>).
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <!-- The one thing to get right: which of the two look-alikes to reach for. -->
+  <fold-callout variant="accent" icon="grid">
+    <strong>Switching panels in place?</strong> This is your component. If the
+    tabs instead <strong>navigate</strong> between routes/views, use
+    <a routerLink="/tab-nav"><code>fold-view-nav</code></a> — same look, but
+    <code>&lt;nav&gt;</code> + <code>aria-current</code>. Using the tabs pattern
+    for navigation is an anti-pattern, so the two are separate on purpose.
+  </fold-callout>
+
+  <dev-playground [code]="code()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">activeStyle</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="style() === 'underline'"
+          (click)="style.set('underline')"
+        >
+          underline
+        </button>
+        <button
+          type="button"
+          [class.is-on]="style() === 'fill'"
+          (click)="style.set('fill')"
+        >
+          fill
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">direction</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="dir() === 'horizontal'"
+          (click)="dir.set('horizontal')"
+        >
+          horizontal
+        </button>
+        <button
+          type="button"
+          [class.is-on]="dir() === 'vertical'"
+          (click)="dir.set('vertical')"
+        >
+          vertical
+        </button>
+      </div>
+    </div>
+
+    <p class="doc-p" params>
+      Focus a tab, then use <kbd>←</kbd> <kbd>→</kbd> (or <kbd>↑</kbd>
+      <kbd>↓</kbd>) · <kbd>Home</kbd> · <kbd>End</kbd>. Active panel: “{{
+      active() }}”.
+    </p>
+
+    <!-- A page mock: the bar + one panel per key, laid out by fold-nav-layout so
+         `vertical` shows a real side rail. The panels ARE the widget's panels. -->
+    <div class="tp-frame">
+      <fold-nav-layout
+        [placement]="dir() === 'vertical' ? 'side' : 'top'"
+        #tl="foldNavLayout"
+      >
+        <fold-tabs
+          tabNav
+          #t="foldTabs"
+          [tabs]="tabs"
+          [activeKey]="active()"
+          [activeStyle]="style()"
+          [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
+          (tabChange)="active.set($event)"
+        />
+
+        <fold-tab-panel [tabs]="t" key="overview" class="tp-panel">
+          <div class="tp-stats">
+            @for (s of stats; track s.label) {
+            <div class="tp-stat">
+              <span class="tp-stat-value">{{ s.value }}</span>
+              <span class="tp-stat-label">{{ s.label }}</span>
+            </div>
+            }
+          </div>
+        </fold-tab-panel>
+
+        <fold-tab-panel [tabs]="t" key="members" class="tp-panel">
+          <div class="tp-rows">
+            @for (m of members; track m.name) {
+            <div class="tp-row">
+              <span class="tp-avatar">{{ m.initials }}</span>
+              <span class="tp-row-main">
+                <span class="tp-row-title">{{ m.name }}</span>
+                <span class="tp-row-sub">{{ m.role }}</span>
+              </span>
+              <fold-badge [content]="m.status" [variant]="m.tone" />
+            </div>
+            }
+          </div>
+        </fold-tab-panel>
+
+        <fold-tab-panel [tabs]="t" key="settings" class="tp-panel">
+          <div class="tp-form">
+            @for (f of fields; track f.label) {
+            <div class="tp-field">
+              <span class="tp-field-label">{{ f.label }}</span>
+              <span class="tp-field-control">{{ f.value }}</span>
+            </div>
+            }
+          </div>
+        </fold-tab-panel>
+      </fold-nav-layout>
+    </div>
+  </dev-playground>
+</fold-page-layout>

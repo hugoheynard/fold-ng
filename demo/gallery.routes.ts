@@ -17,6 +17,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   "tab-layout": () => import("./pages/tab-layout/tab-layout.page"),
   "page-layout": () => import("./pages/page-layout/page-layout.page"),
   "tab-nav": () => import("./pages/tab-nav/tab-nav.page"),
+  tabs: () => import("./pages/tabs/tabs.page"),
   "page-section": () => import("./pages/page-section/page-section.page"),
   "hero-section": () => import("./pages/hero-section/hero-section.page"),
   card: () => import("./pages/card/card.page"),
