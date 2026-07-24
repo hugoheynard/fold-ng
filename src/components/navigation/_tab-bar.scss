@@ -161,12 +161,14 @@
   justify-content: center;
   gap: 0;
 }
-/* The count stays — there's room — but as a corner bubble on the icon rather
-   than the inline pill, so it reads at a glance without widening the rail. */
+/* The count stays visible on every tab — active or not (overriding the generic
+   reduce rule that hides inactive counts) — as a bubble in the item's top-right
+   corner, clear of the centred icon so it never sits on top of it. */
 .dir-vertical.size-reduce .tab-bar-item .tab-bar-badge {
+  display: block;
   position: absolute;
-  top: 3px;
-  right: 10px;
+  top: 2px;
+  right: 4px;
   transform: scale(0.85);
   transform-origin: top right;
   pointer-events: none;
