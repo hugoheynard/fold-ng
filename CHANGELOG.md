@@ -33,6 +33,13 @@ All notable changes to **fold-ng** are documented here. The format follows
     it, with `aria-current="page"` on the active item.
   - Migration: rename the selectors/classes/tokens; for **in-page** (non-routing)
     tabs, move to the new `fold-tabs` + `fold-tab-panel`.
+- **BREAKING — `fold-view-nav` defaults changed** to the readable-first shape:
+  `direction` now defaults to `vertical` (was `horizontal`) and `background` to
+  `transparent` (was `surface`). Pass `direction="horizontal"` /
+  `background="surface"` to keep the previous look.
+- **`fold-view-nav` — `reduce` × `vertical`** is now a collapsed icon rail: each
+  tab shows only its icon, its label surfacing as a hover/focus tooltip (like a
+  folded `fold-menu`). Narrow `--fold-nav-layout-rail-width` to match.
 
 ### Docs
 
