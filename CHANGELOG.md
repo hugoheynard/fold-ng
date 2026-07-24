@@ -38,8 +38,9 @@ All notable changes to **fold-ng** are documented here. The format follows
   `transparent` (was `surface`). Pass `direction="horizontal"` /
   `background="surface"` to keep the previous look.
 - **`fold-view-nav` — `reduce` × `vertical`** is now a collapsed icon rail: each
-  tab shows only its icon, its label surfacing as a hover/focus tooltip (like a
-  folded `fold-menu`). Narrow `--fold-nav-layout-rail-width` to match.
+  tab shows only its icon, its label surfacing as a hover/focus tooltip and its
+  count as a corner bubble (like a folded `fold-menu`). Narrow
+  `--fold-nav-layout-rail-width` to match.
 
 ### Docs
 
