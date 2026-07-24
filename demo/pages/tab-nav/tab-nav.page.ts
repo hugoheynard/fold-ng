@@ -53,9 +53,9 @@ export default class TabNavPage {
   protected readonly tabCounts = [2, 3, 5] as const;
   protected readonly tabSizes = ["reduce", "compact", "comfortable"] as const;
   protected readonly tnStyle = signal<TabStyle>("underline");
-  protected readonly tnDirection = signal<TabDirection>("horizontal");
+  protected readonly tnDirection = signal<TabDirection>("vertical");
   protected readonly tnSize = signal<TabSize>("compact");
-  protected readonly tnBackground = signal<TabBackground>("surface");
+  protected readonly tnBackground = signal<TabBackground>("transparent");
   protected readonly tnBadge = signal(true);
   protected readonly tnIcon = signal(true);
   protected readonly tnCount = signal<number>(3);
@@ -114,7 +114,7 @@ export default class TabNavPage {
     if (this.tnSize() !== "compact") {
       attrs.push(`size="${this.tnSize()}"`);
     }
-    if (this.tnBackground() !== "surface") {
+    if (this.tnBackground() !== "transparent") {
       attrs.push(`background="${this.tnBackground()}"`);
     }
     attrs.push(

@@ -63,8 +63,12 @@ export class FoldViewNavComponent {
   /** How the active tab reads: accent underline, or accent fill. */
   readonly activeStyle = input<"underline" | "fill">("underline");
 
-  /** Bar orientation (vertical auto-collapses to horizontal on mobile). */
-  readonly direction = input<"horizontal" | "vertical">("horizontal");
+  /**
+   * Bar orientation. Defaults to `vertical` — the readable-first shape: a rail
+   * of full labels, one per line (it auto-collapses to horizontal on mobile).
+   * Set `horizontal` for a page-level top bar.
+   */
+  readonly direction = input<"horizontal" | "vertical">("vertical");
 
   /**
    * Density, from tightest to roomiest:
@@ -81,8 +85,11 @@ export class FoldViewNavComponent {
    */
   readonly size = input<"reduce" | "compact" | "comfortable">("compact");
 
-  /** `surface` (filled bar, default) or `transparent` (blends with the app). */
-  readonly background = input<"transparent" | "surface">("surface");
+  /**
+   * `transparent` (default — blends with the app, so the tabs read directly) or
+   * `surface` (a filled bar that carries its own rail background).
+   */
+  readonly background = input<"transparent" | "surface">("transparent");
 
   /** Emits the `key` of the clicked tab. */
   readonly tabChange = output<string>();
