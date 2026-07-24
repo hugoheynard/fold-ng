@@ -43,5 +43,5 @@ export class FoldLinkComponent {
   /** Disable the button form (no effect on the `href` form). */
   readonly disabled = input(false, { transform: booleanAttribute });
   /** Fires on click in the button form. */
-  readonly clicked = output<void>();
+  readonly clicked = output();
 }

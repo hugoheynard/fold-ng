@@ -83,7 +83,7 @@ export class FoldPanelHeaderComponent {
    * Fires just before the panel is dismissed — bind it for side-effects only
    * (the header self-closes regardless; it is not a veto hook).
    */
-  readonly closed = output<void>();
+  readonly closed = output();
 
   protected readonly iconSize = computed(() =>
     this.variant() === "eyebrow" ? 14 : 18,

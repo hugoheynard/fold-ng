@@ -44,7 +44,7 @@ import {
 })
 export class FoldRepeatPressDirective {
   /** Fires immediately on press, then repeatedly while the pointer is held. */
-  readonly repeat = output<void>({ alias: "foldRepeatPress" });
+  readonly repeat = output({ alias: "foldRepeatPress" });
 
   /** When true, a press does nothing and any running repeat stops at once. */
   readonly disabled = input(false, {

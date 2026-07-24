@@ -67,7 +67,7 @@ export class FoldNavLauncherComponent {
   protected readonly resolvedCols = computed(() => {
     const cols = this.columns();
     if (cols !== "auto") {
-      return Number(cols);
+      return cols;
     }
     return this.tiles().length <= 4 ? 2 : 3;
   });

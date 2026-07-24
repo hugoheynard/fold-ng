@@ -59,7 +59,7 @@ export class FoldToastComponent {
   readonly duration = input(0, { transform: numberAttribute });
 
   /** Emitted on the close button, or when `duration` elapses. */
-  readonly dismiss = output<void>();
+  readonly dismiss = output();
 
   /** The leading status icon for the current variant. */
   readonly icon = computed<FoldIconName>(() => VARIANT_ICON[this.variant()]);

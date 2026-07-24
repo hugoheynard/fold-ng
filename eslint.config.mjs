@@ -48,17 +48,47 @@ export default tslint.config(
     },
     rules: { ...typeEscapeHatches },
   },
-  // ── Type-checked string-safety (production src only) ──
+  // ── Type-checked lint — production `src/` only (the dev gallery under
+  //    `demo/` stays on the base recommended set, matching its dev-artifact
+  //    status). Adopts strictTypeChecked + stylisticTypeChecked, then tunes a
+  //    handful of rules to fit an Angular design system. ──
   {
     files: ["src/**/*.ts"],
     ignores: ["**/*.spec.ts", "**/__tests__/**"],
+    extends: [
+      ...tslint.configs.strictTypeChecked,
+      ...tslint.configs.stylisticTypeChecked,
+    ],
     languageOptions: {
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: { ...stringifySafety, ...correctnessRules },
+    rules: {
+      // Re-assert our load-bearing bans AFTER the presets: stylisticTypeChecked
+      // would otherwise re-allow `as` casts (assertionStyle) on src.
+      ...typeEscapeHatches,
+      ...stringifySafety,
+      ...correctnessRules,
+      // ── Preset tuned for an Angular component library ──
+      // Idiomatic void arrow handlers (`() => this.close()`) aren't "confusing".
+      "@typescript-eslint/no-confusing-void-expression": [
+        "error",
+        { ignoreArrowShorthand: true },
+      ],
+      // A template-only `@Component` with an empty class body is legitimate.
+      "@typescript-eslint/no-extraneous-class": [
+        "error",
+        { allowWithDecorator: true },
+      ],
+      // Would strip real SSR guards: lib.dom types `document.body` non-null, but
+      // it IS null before the DOM exists — those null-checks must stay.
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      // interface vs `type` is intentionally mixed: public option/descriptor
+      // types stay `type` to block consumer declaration-merging.
+      "@typescript-eslint/consistent-type-definitions": "off",
+    },
   },
   {
     files: ["**/*.spec.ts"],
