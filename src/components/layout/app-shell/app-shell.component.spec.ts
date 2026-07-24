@@ -328,7 +328,9 @@ describe("FoldAppShellComponent · mobile drawer", () => {
     const rail = shell.querySelector(".rail-primary") as HTMLElement;
     expect(rail.getAttribute("role")).toBe("dialog");
     expect(rail.getAttribute("aria-modal")).toBe("true");
-    expect(rail.getAttribute("aria-label")).toBe("Navigation");
+    expect(rail.getAttribute("aria-label")).toBe("Menu");
+    // The drawer carries a stable id an app hamburger can point aria-controls at.
+    expect(rail.id).toBeTruthy();
     // Every sibling region is inert, so a screen reader can't wander behind it.
     expect((shell.querySelector(".header") as HTMLElement).inert).toBe(true);
     expect((shell.querySelector(".content") as HTMLElement).inert).toBe(true);

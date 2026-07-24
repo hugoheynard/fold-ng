@@ -6,7 +6,28 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-app-shell` — the mobile drawer is now a real modal.** While open, the
+  off-canvas primary rail is a named `role="dialog"` + `aria-modal="true"` (new
+  `drawerLabel` input, default `"Menu"`), and every other region is `inert` so a
+  screen reader can't wander behind it. New `drawerId` — exposed via
+  `exportAs="foldAppShell"` — lets the app point its hamburger's `aria-controls`
+  at the drawer (see the trigger contract in the component docs).
+
+### Fixed
+
+- **`fold-app-shell` skip-link** moves focus to `<main>` directly and prevents
+  the fragment navigation, so it works under hash routing (`withHashLocation`),
+  where a `#id` jump would otherwise be treated as a route change.
+
+### Changed
+
+- **`FoldComponentPanelDescriptor.ariaLabel`** is now typed `string | undefined`
+  (was `string`) — a non-breaking widening; the descriptor always carries the key.
+- **Internals hardened**, no API change: the library now compiles under
+  `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `strictStandalone`,
+  `typeCheckHostBindings`, and the full `strictTypeChecked` ESLint preset.
 
 ## [0.1.0] - 2026-07-24
 

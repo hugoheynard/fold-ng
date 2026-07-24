@@ -9,6 +9,7 @@
      same bar the panel host holds; on desktop it's a plain nav rail. -->
 <div
   class="rail-primary"
+  [id]="drawerId"
   foldSurface="chrome"
   [foldFocusTrap]="drawerOpen()"
   [attr.role]="drawerOpen() ? 'dialog' : null"

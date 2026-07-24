@@ -100,9 +100,32 @@ const MOBILE_BREAKPOINT = 768;
  *
  * The mobile **drawer is a real modal**, matching the panel host's bar: while
  * open it is a named `role="dialog"` + `aria-modal="true"` (`drawerLabel`), the
- * focus-trap moves focus in and restores it on close, and every other region
- * (header, content, footer, second rail) is `inert` — so a screen-reader's
- * virtual cursor can't wander behind the open drawer.
+ * focus-trap moves focus in and restores it to the trigger on close, and every
+ * other region (header, content, footer, second rail) is `inert` — so a
+ * screen-reader's virtual cursor can't wander behind the open drawer.
+ *
+ * **Trigger contract (app-owned).** The shell owns the drawer/dialog; the app
+ * owns the hamburger that opens it, so the shell can't set ARIA on that button —
+ * it exposes what's needed and documents the wiring. For the pairing to be fully
+ * announced, the hamburger should carry `[attr.aria-expanded]="navOpen()"`,
+ * `aria-haspopup="dialog"`, and `[attr.aria-controls]="shell.drawerId"` (read the
+ * shell via a template ref, `#shell="foldAppShell"`):
+ *
+ * ```html
+ * <fold-app-shell #shell="foldAppShell" [(mobileNavOpen)]="navOpen">
+ *   <app-menu railPrimary />
+ *   <header header>
+ *     <button
+ *       class="hamburger"
+ *       aria-haspopup="dialog"
+ *       [attr.aria-expanded]="navOpen()"
+ *       [attr.aria-controls]="shell.drawerId"
+ *       (click)="navOpen.set(!navOpen())"
+ *     >☰</button>
+ *   </header>
+ *   <router-outlet />
+ * </fold-app-shell>
+ * ```
  *
  * @selector `fold-app-shell`
  *
@@ -125,6 +148,7 @@ const MOBILE_BREAKPOINT = 768;
 @Component({
   selector: "fold-app-shell",
   standalone: true,
+  exportAs: "foldAppShell",
   imports: [FoldSurfaceDirective, NgTemplateOutlet, FocusTrapDirective],
   host: {
     "[style.--fold-shell-rail-width]": "railWidthVar()",
@@ -171,14 +195,23 @@ export class FoldAppShellComponent {
   readonly skipLinkLabel = input("Skip to content");
 
   /** The mobile drawer's accessible name — it becomes a `role="dialog"` while
-   *  open, so it must be named. Override for a non-English app. */
-  readonly drawerLabel = input("Navigation");
+   *  open, so it must be named. `"Menu"` by default (not `"Navigation"`, which
+   *  would echo the `<nav>` landmark inside). Override for a non-English app. */
+  readonly drawerLabel = input("Menu");
 
   private readonly document = inject(DOCUMENT);
 
   /** SSR-safe id linking the skip-link to the `<main>` it targets. */
   protected readonly contentId =
     inject(FoldIdService).next("fold-shell-content");
+
+  /**
+   * SSR-safe id on the mobile drawer (the primary rail). Public and reachable
+   * via `exportAs="foldAppShell"` so the app's hamburger can point
+   * `aria-controls` at the dialog it opens — see the trigger contract in the
+   * class docs.
+   */
+  readonly drawerId = inject(FoldIdService).next("fold-shell-drawer");
 
   /**
    * How the primary rail's navigation is reached on mobile:

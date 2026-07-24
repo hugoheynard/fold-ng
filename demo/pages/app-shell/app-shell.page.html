@@ -140,6 +140,7 @@
         #sph="panelScope"
       >
         <fold-app-shell
+          #previewShell="foldAppShell"
           [headerLayout]="shellHeaderLayout()"
           [footerLayout]="shellFooterLayout()"
           [footerBehavior]="shellFooterBehavior()"
@@ -187,7 +188,9 @@
               type="button"
               class="sp-hamburger"
               (click)="previewNavOpen.set(!previewNavOpen())"
+              aria-haspopup="dialog"
               [attr.aria-expanded]="previewNavOpen()"
+              [attr.aria-controls]="previewShell.drawerId"
               aria-label="Toggle navigation"
             >
               <fold-icon
