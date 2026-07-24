@@ -332,15 +332,15 @@ describe("FoldAppShellComponent · mobile drawer", () => {
     // The drawer carries a stable id an app hamburger can point aria-controls at.
     expect(rail.id).toBeTruthy();
     // Every sibling region is inert, so a screen reader can't wander behind it.
-    expect((shell.querySelector(".header") as HTMLElement).inert).toBe(true);
-    expect((shell.querySelector(".content") as HTMLElement).inert).toBe(true);
+    expect(shell.querySelector(".header")?.hasAttribute("inert")).toBe(true);
+    expect(shell.querySelector(".content")?.hasAttribute("inert")).toBe(true);
 
     // Closing lifts both the dialog semantics and the inert barrier.
     fixture.componentInstance.open.set(false);
     fixture.detectChanges();
     expect(rail.getAttribute("role")).toBeNull();
     expect(rail.getAttribute("aria-modal")).toBeNull();
-    expect((shell.querySelector(".content") as HTMLElement).inert).toBe(false);
+    expect(shell.querySelector(".content")?.hasAttribute("inert")).toBe(false);
   });
 
   it("closes the drawer when the scrim is clicked", () => {

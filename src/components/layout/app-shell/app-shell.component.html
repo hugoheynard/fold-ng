@@ -19,7 +19,11 @@
 >
   <ng-content select="[railPrimary]" />
 </div>
-<div class="rail-secondary" foldSurface="chrome" [inert]="drawerOpen()">
+<div
+  class="rail-secondary"
+  foldSurface="chrome"
+  [attr.inert]="drawerOpen() ? '' : null"
+>
   <ng-content select="[railSecondary]" />
 </div>
 
@@ -30,7 +34,11 @@
 @if (drawerOpen()) {
   <div class="mobile-scrim" (click)="closeMobileNav()" aria-hidden="true"></div>
 }
-<header class="header" foldSurface="chrome" [inert]="drawerOpen()">
+<header
+  class="header"
+  foldSurface="chrome"
+  [attr.inert]="drawerOpen() ? '' : null"
+>
   <ng-content select="[header]" />
 </header>
 
@@ -42,7 +50,7 @@
     class="footer"
     [class.footer-inflow]="footerBehavior() === 'scroll'"
     foldSurface="chrome"
-    [inert]="drawerOpen()"
+    [attr.inert]="drawerOpen() ? '' : null"
   >
     <ng-content select="[footer]" />
   </footer>
@@ -53,7 +61,7 @@
   foldSurface="page"
   [id]="contentId"
   tabindex="-1"
-  [inert]="drawerOpen()"
+  [attr.inert]="drawerOpen() ? '' : null"
 >
   <ng-content />
   @if (footerBehavior() === "scroll") {

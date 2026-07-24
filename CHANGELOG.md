@@ -6,7 +6,12 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-app-shell`** now sets the drawer's background `inert` via an attribute
+  binding (`[attr.inert]`) rather than a property binding. No behaviour change —
+  AOT was always clean — but it silences an `NG0303` "unknown property" warning
+  raised by the JIT element-schema in dev/test runtimes.
 
 ## [0.2.0] - 2026-07-24
 
