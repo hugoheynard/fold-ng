@@ -23,15 +23,16 @@ const HYSTERESIS = 32;
  *   top when the layout gets narrower than {@link foldAt} (so the menu always
  *   precedes the content it drives, never below it).
  *
- * Content projection — the nav stays yours (tabs, active key, events):
- * - `[tabNav]` → the tab bar (an `fold-view-nav`, or anything else).
- * - default slot → the content for the active tab.
+ * Content projection — the bar stays yours (tabs, active key, events):
+ * - `[tabNav]` → the bar. Project a {@link FoldViewNavComponent} if the tabs
+ *   **navigate** (route between views) or a {@link FoldTabsComponent} if they
+ *   **switch panels in place** — this layout is agnostic, it only places the bar.
+ * - default slot → the content (routed views, or the tabs' `fold-tab-panel`s).
  *
- * **A11y — this owns placement, not the ARIA tabs pattern.** The projected bar
- * carries the `tablist`/`tab` roles; the content is yours. If the tabs switch
- * in-page panels, give that content `role="tabpanel"` named by the active tab;
- * if they navigate between routes, keep plain nav semantics and add no tab
- * roles (the tabs pattern is for panel-switching, not navigation).
+ * **A11y lives in the bar, not here.** `fold-view-nav` brings `<nav>` +
+ * `aria-current`; `fold-tabs` brings the full `role="tablist"` widget with its
+ * `fold-tab-panel`s. This component adds no tab semantics — it only decides where
+ * the bar sits and folds it responsively.
  *
  * A side rail needs a *vertical* bar, a folded one a *horizontal* bar. Rather
  * than guess, the layout exposes {@link stacked} (`exportAs`) so the projected

@@ -8,19 +8,37 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-tabs` + `fold-tab-panel` — the in-page ARIA Tabs widget.** A
+  `role="tablist"` of `role="tab"` buttons that switch layered panels without
+  navigating: full roving-tabindex keyboard (arrows on both axes, `Home`/`End`,
+  wrap), `aria-selected` + `aria-orientation`, and each tab wired to its panel
+  (`aria-controls` ↔ `aria-labelledby`). The panels take the bar by template ref
+  (`[tabs]="t"`, `#t="foldTabs"`), so bar and panels coordinate even in separate
+  `fold-nav-layout` slots. Same look as `fold-view-nav`, different semantics.
 - **Rail-width token scale** — `--fold-rail-primary` / `--fold-rail-secondary` /
   `--fold-rail-tertiary`, named to pair 1:1 with the `--fold-color-bg-rail-*`
-  colours (app menu → workspace/aside → in-page nav). `fold-app-shell`,
-  `fold-aside-layout`, and `fold-tab-layout` now default their rail widths from
-  this one scale (values unchanged), so a page's nav hierarchy is tunable in one
-  place. Each layout's local `--fold-<layout>-rail-*` var still overrides.
+  colours. `fold-app-shell`, `fold-aside-layout`, and `fold-nav-layout` default
+  their rail widths from this one scale (values unchanged).
+
+### Changed
+
+- **BREAKING — the tabs family is renamed** so the roles read at a glance (only
+  the in-page widget keeps "tab"):
+  - `fold-tab-layout` → **`fold-nav-layout`** (`FoldNavLayoutComponent`,
+    `exportAs="foldNavLayout"`, tokens `--fold-nav-layout-gap` /
+    `--fold-nav-layout-rail-width`). It lays out a bar — a nav _or_ a tabs
+    widget — plus content, so "tab" was misleading.
+  - `fold-tab-nav` → **`fold-view-nav`** (`FoldViewNavComponent`,
+    `FoldViewNavItem`). It is a navigation bar styled as tabs — now honest about
+    it, with `aria-current="page"` on the active item.
+  - Migration: rename the selectors/classes/tokens; for **in-page** (non-routing)
+    tabs, move to the new `fold-tabs` + `fold-tab-panel`.
 
 ### Docs
 
-- **`fold-tab-layout`** documents its two roles — page scaffold vs. a **tabbed
-  section** composed inside a `fold-page-section` (flat structure + `bleed`, no
-  new mode) — with a worked example; its `nav-width` draws from the tertiary
-  rail token.
+- **`fold-nav-layout`** documents its two roles — page scaffold vs. a tabbed
+  section composed inside a `fold-page-section` — and that its bar is a
+  `fold-view-nav` (routes) or a `fold-tabs` (panels).
 
 ## [0.2.1] - 2026-07-24
 

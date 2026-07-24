@@ -15,10 +15,17 @@ export type FoldViewNavItem = {
 };
 
 /**
- * `<fold-view-nav>` — a tab navigation bar (buttons only; the parent renders the
- * content for the active key).
+ * `<fold-view-nav>` — a **navigation** bar styled as tabs: a `<nav>` of buttons
+ * that switch **views** (the parent routes / renders the view for the active
+ * key), with `aria-current="page"` on the active one.
  *
- * - `activeStyle` — `underline` (accent border on the active tab) or `fill`
+ * **Navigation, not the tabs widget.** Reach for this when a tab *goes somewhere*
+ * (routing, view switching). When tabs toggle **layered panels in place** (same
+ * URL), use {@link FoldTabsComponent} instead — same look, but the ARIA Tabs
+ * pattern (`role="tablist"`, arrow keys, `tabpanel`). Using the tabs pattern for
+ * navigation is an anti-pattern, so the two are separate components on purpose.
+ *
+ * - `activeStyle` — `underline` (accent border on the active item) or `fill`
  *   (accent background pill, good for sidebars).
  * - `direction` — `horizontal` (row, equal-width) or `vertical` (stacked
  *   sidebar; auto-collapses to a horizontal icon-accordion at ≤768px).

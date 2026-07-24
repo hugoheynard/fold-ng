@@ -26,8 +26,8 @@ with a `@selector` and an `@example`.
 - Actions: `[foldButton]` (on a real `<button>`/`<a>`; `emphasis` × `intent` axes; `loading`), `fold-button-icon` (momentary), `fold-toggle-icon` (toggle), `fold-link`.
 - Forms: `fold-input`, `fold-number-input`, `fold-select`, `fold-search`, `fold-slider`, `fold-range-slider`, `fold-file-dropzone` (Angular Signal Forms — no `ngModel`/`ReactiveFormsModule`).
 - Overlays: `fold-panel-host` / `fold-panel-header` (modal side panels with accessible name, `inert` background barrier, focus trap, scroll-lock; imperative `open<TData,TResult>()` → typed `FoldPanelRef`).
-- Navigation: `fold-menu`, `fold-nav-launcher`, `fold-tab-nav`.
-- Layout: `fold-app-shell`, `fold-page-layout`, `fold-aside-layout`, `fold-tab-layout`, `fold-hero-section`.
+- Navigation: `fold-menu`, `fold-nav-launcher`, `fold-view-nav` (tab-styled nav bar, `aria-current`), `fold-tabs` + `fold-tab-panel` (the in-page ARIA Tabs widget — `role="tablist"`, roving arrow keys).
+- Layout: `fold-app-shell`, `fold-page-layout`, `fold-aside-layout`, `fold-nav-layout` (places a nav/tabs bar + content, folds side↔top), `fold-hero-section`.
 - Content: `fold-card`, `fold-hero-card`, `fold-badge`, `fold-status-badge`, `fold-avatar`, `fold-avatar-list`, `fold-timeline`, `fold-data-table`, `fold-paginator`, `fold-field`.
 - Feedback: `fold-callout`, `fold-disclosure`, `fold-toast`, `fold-loading`, `fold-empty-state`.
 - Foundations: `fold-icon` (114 built-in SVGs + registry), `fold-spinner`.
