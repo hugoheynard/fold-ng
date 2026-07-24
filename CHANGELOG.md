@@ -33,14 +33,23 @@ All notable changes to **fold-ng** are documented here. The format follows
     it, with `aria-current="page"` on the active item.
   - Migration: rename the selectors/classes/tokens; for **in-page** (non-routing)
     tabs, move to the new `fold-tabs` + `fold-tab-panel`.
-- **BREAKING — `fold-view-nav` defaults changed** to the readable-first shape:
-  `direction` now defaults to `vertical` (was `horizontal`) and `background` to
-  `transparent` (was `surface`). Pass `direction="horizontal"` /
-  `background="surface"` to keep the previous look.
-- **`fold-view-nav` — `reduce` × `vertical`** is now a collapsed icon rail: each
-  tab shows only its icon, its label surfacing as a hover/focus tooltip and its
-  count as a corner bubble (like a folded `fold-menu`). Narrow
+- **BREAKING — `fold-view-nav` is now a real navigation component.** Items carry
+  a `link` (routerLink), `href`, or nothing (a button), plus optional `disabled`.
+  A linked item renders an actual `<a>`: cmd/middle-click opens a new tab, the
+  URL is a deep link, and the active state comes from `routerLinkActive` +
+  `aria-current="page"` — no `activeKey`. The inputs read as navigation too:
+  `[tabs]` → `[items]`, `(tabChange)` → `(activeChange)`.
+- **BREAKING — `collapsed` split from `size`.** `size` is now pure density
+  (`compact` / `comfortable`); the icon mode is the boolean `collapsed`
+  (`size="reduce"` → `collapsed`). Applies to `fold-tabs` too. Collapsed +
+  vertical is an icon rail like a folded `fold-menu` — icon only, label as a
+  hover/focus tooltip, count as a corner bubble; narrow
   `--fold-nav-layout-rail-width` to match.
+- **BREAKING — `direction` defaults to `auto`** on `fold-view-nav` and
+  `fold-tabs`: inside a `fold-nav-layout` the bar follows the layout with no
+  wiring (the `[direction]="tl.stacked() ? …"` binding is no longer needed);
+  standalone it is `vertical` for `fold-view-nav`, `horizontal` for `fold-tabs`.
+  `fold-view-nav`'s `background` also defaults to `transparent` (was `surface`).
 
 ### Docs
 
