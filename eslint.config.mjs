@@ -8,6 +8,7 @@ import {
   noUnlimitedDisable,
   typeEscapeHatches,
   stringifySafety,
+  correctnessRules,
 } from "./eslint.rules.mjs";
 
 /**
@@ -57,7 +58,7 @@ export default tslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: { ...stringifySafety },
+    rules: { ...stringifySafety, ...correctnessRules },
   },
   {
     files: ["**/*.spec.ts"],

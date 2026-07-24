@@ -4,7 +4,6 @@ import {
   FoldBadgeComponent,
   FoldCardComponent,
   FoldPageLayoutComponent,
-  FoldPageSectionComponent,
   FoldSliderComponent,
   FoldTimelineComponent,
   type FoldTimelineDatePlacement,
@@ -19,7 +18,6 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
-    FoldPageSectionComponent,
     FoldCardComponent,
     FoldTimelineComponent,
     FoldBadgeComponent,

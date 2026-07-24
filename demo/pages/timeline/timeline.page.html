@@ -54,33 +54,34 @@
       </div>
     </div>
     @if (tlpOrientation() === "horizontal") {
-    <fold-slider
-      params
-      label="completed"
-      [min]="0"
-      [max]="4"
-      [valueText]="tlpDone() + ' / 4 · ' + tlpProgress() + '%'"
-      [(value)]="tlpDone"
-    />
-    <div class="np-field" params>
-      <span class="gal-tag">steps</span>
-      <div class="ss-seg">
-        <button
-          type="button"
-          [class.is-on]="!tlpClickable()"
-          (click)="tlpClickable.set(false)"
-        >
-          static
-        </button>
-        <button
-          type="button"
-          [class.is-on]="tlpClickable()"
-          (click)="tlpClickable.set(true)"
-        >
-          clickable
-        </button>
+    <ng-container ngProjectAs="[params]">
+      <fold-slider
+        label="completed"
+        [min]="0"
+        [max]="4"
+        [valueText]="tlpDone() + ' / 4 · ' + tlpProgress() + '%'"
+        [(value)]="tlpDone"
+      />
+      <div class="np-field">
+        <span class="gal-tag">steps</span>
+        <div class="ss-seg">
+          <button
+            type="button"
+            [class.is-on]="!tlpClickable()"
+            (click)="tlpClickable.set(false)"
+          >
+            static
+          </button>
+          <button
+            type="button"
+            [class.is-on]="tlpClickable()"
+            (click)="tlpClickable.set(true)"
+          >
+            clickable
+          </button>
+        </div>
       </div>
-    </div>
+    </ng-container>
     }
     <p class="doc-p" params>Last clicked: “{{ tlpClicked() ?? "—" }}”</p>
     <div class="np-field" params>

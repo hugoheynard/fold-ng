@@ -50,3 +50,20 @@ export const stringifySafety = {
     { allowNumber: true, allowBoolean: false, allowNullish: false },
   ],
 };
+
+/**
+ * Type-aware correctness rules, hand-picked from `strictTypeChecked` for a lib:
+ * no unhandled promises, no `!`/redundant casts, `??` over `||`. TYPE-CHECKED —
+ * same `projectService` block over `src/` as {@link stringifySafety}. Deliberately
+ * NOT the full `strictTypeChecked` preset: its `no-unsafe-*` fire on library
+ * `any` leaks and `no-unnecessary-condition` would strip legitimate SSR
+ * `document.body` null-guards (lib.dom types it non-null). Kept surgical.
+ */
+export const correctnessRules = {
+  "@typescript-eslint/no-floating-promises": "error",
+  "@typescript-eslint/no-misused-promises": "error",
+  "@typescript-eslint/await-thenable": "error",
+  "@typescript-eslint/no-non-null-assertion": "error",
+  "@typescript-eslint/no-unnecessary-type-assertion": "error",
+  "@typescript-eslint/prefer-nullish-coalescing": "error",
+};

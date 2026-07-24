@@ -71,7 +71,10 @@
     // Every component/directive/pipe must be standalone — no NgModule slips in.
     "strictStandalone": true,
     // Type-check `host: {}` bindings the same way templates are checked.
-    "typeCheckHostBindings": true
+    "typeCheckHostBindings": true,
+    // Promote every extended template diagnostic to an error (dead standalone
+    // imports, broken content projection, redundant ?./??, …) — a warning ships.
+    "extendedDiagnostics": { "defaultCategory": "error" }
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules"]

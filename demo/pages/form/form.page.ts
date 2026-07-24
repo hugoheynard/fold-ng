@@ -8,7 +8,6 @@ import {
   type FoldNumberSpinner,
   type FoldNumberControls,
   FoldPageLayoutComponent,
-  FoldPageSectionComponent,
   FoldSearchComponent,
   FoldSelectComponent,
   FoldSliderComponent,
@@ -24,7 +23,6 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
-    FoldPageSectionComponent,
     FoldTabLayoutComponent,
     FoldTabNavComponent,
     FoldInputComponent,
