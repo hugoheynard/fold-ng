@@ -1,11 +1,27 @@
 <fold-page-layout title="view-nav">
   <p description>
-    A tab bar of buttons — it renders the navigation only, the parent renders
-    the content for the active key. Horizontal for a page-level bar, vertical
-    for a sidebar rail (which auto-collapses to a horizontal icon row on
-    mobile). Tabs carry an optional leading icon and a trailing badge.
+    A <strong>navigation</strong> bar styled as tabs — a
+    <code>&lt;nav&gt;</code> whose items <strong>go somewhere</strong>. Clicking
+    one changes the route: the URL updates and the
+    <code>&lt;router-outlet&gt;</code> renders the matching view. The active
+    item is derived from the URL (so deep links, back and forward all stay in
+    sync) and marked with <code>aria-current="page"</code>. Horizontal for a
+    page-level bar, vertical for a sidebar rail (which auto-collapses to a
+    horizontal icon row on mobile).
   </p>
   <gal-kind-badge titleBadge kind="component" />
+
+  <!-- The one distinction to get right: this navigates; its look-alike doesn't. -->
+  <fold-callout variant="accent" icon="globe">
+    <strong>Does the tab go somewhere?</strong> This is your component — it
+    drives <strong>routing</strong> (URL changes,
+    <code>&lt;router-outlet&gt;</code>, browser history). If instead the tabs
+    toggle <strong>layered panels in place</strong> on the same URL, use
+    <a routerLink="/tabs"><code>fold-tabs</code></a> — same look, but the ARIA
+    Tabs widget (<code>role="tablist"</code>, arrow keys). Using this navigation
+    bar to fake in-place tabs is an anti-pattern, so the two are separate on
+    purpose.
+  </fold-callout>
 
   <dev-playground [code]="tabNavCode()" stage>
     <div class="np-field" params>
@@ -118,14 +134,21 @@
       </div>
     </div>
 
-    <p class="doc-p" params>Active: “{{ tnActiveKey() }}”</p>
+    <p class="doc-p" params>
+      Each click navigates — watch the URL. In a real app this panel is a
+      <code>&lt;router-outlet&gt;</code>.
+    </p>
 
-    <!-- A page mock: header, the nav, then the content the active tab drives —
-       each tab renders a genuinely different layout. -->
+    <!-- A page mock. The URL bar is the whole point: clicking a tab NAVIGATES,
+       so the path changes and the router renders the matching view below. -->
     <div class="tn-page">
-      <div class="tn-page-head">
-        <span class="tn-page-title">Workspace</span>
-        <span class="tn-page-sub">Acme Records</span>
+      <div class="tn-urlbar">
+        <fold-icon name="globe" size="sm" class="tn-url-icon" />
+        <span class="tn-url"
+          >acme.app/workspace/<span class="tn-url-seg"
+            >{{ tnActiveKey() }}</span
+          ></span
+        >
       </div>
 
       <fold-nav-layout
@@ -144,6 +167,7 @@
         />
 
         <div class="tn-panel">
+          <span class="tn-outlet-tag">&lt;router-outlet&gt;</span>
           @switch (tnActiveKey()) { @case ("overview") {
           <div class="tn-stats">
             @for (s of overviewStats; track s.label) {

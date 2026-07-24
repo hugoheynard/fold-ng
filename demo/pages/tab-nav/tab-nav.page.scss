@@ -7,21 +7,48 @@
   width: 100%;
 }
 
-.tn-page-head {
+/* A mock browser address bar — the visual proof this NAVIGATES: the last path
+   segment tracks the active tab. */
+.tn-urlbar {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-surface-sunken);
 }
 
-.tn-page-title {
-  font-size: var(--fold-text-md);
-  font-weight: 700;
-  color: var(--fold-color-text);
-}
-
-.tn-page-sub {
-  font-size: var(--fold-text-xs);
+.tn-url-icon {
+  flex: none;
   color: var(--fold-color-text-muted);
+}
+
+.tn-url {
+  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-size: 13px;
+  color: var(--fold-color-text-muted);
+}
+
+.tn-url-seg {
+  color: var(--fold-color-primary);
+  font-weight: 700;
+}
+
+/* Frames the mock content as what the router renders. */
+.tn-panel {
+  position: relative;
+}
+
+.tn-outlet-tag {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--fold-color-text-muted);
+  opacity: 0.7;
 }
 
 /* Overview — stat tiles */

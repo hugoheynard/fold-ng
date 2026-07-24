@@ -5,10 +5,12 @@ import {
   signal,
   ViewEncapsulation,
 } from "@angular/core";
+import { RouterLink } from "@angular/router";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldBadgeComponent,
+  FoldCalloutComponent,
   FoldIconComponent,
   FoldPageLayoutComponent,
   FoldPanelHostService,
@@ -30,8 +32,10 @@ type TabBackground = "transparent" | "surface";
   selector: "gal-tab-nav-page",
   standalone: true,
   imports: [
+    RouterLink,
     KindBadgeComponent,
     FoldPageLayoutComponent,
+    FoldCalloutComponent,
     FoldNavLayoutComponent,
     FoldViewNavComponent,
     FoldIconComponent,
@@ -87,6 +91,8 @@ export default class TabNavPage {
 
   protected readonly tabNavCode = computed(() => {
     const side = this.tnDirection() === "vertical";
+    // activeKey comes FROM the URL; tabChange goes TO the router. That round-trip
+    // is what makes this navigation (deep links + back/forward stay in sync).
     const attrs = ['[tabs]="tabs"', '[activeKey]="active()"'];
     if (side) {
       // In a rail the bar follows the layout: vertical, horizontal once folded.
@@ -104,16 +110,30 @@ export default class TabNavPage {
     if (this.tnBackground() !== "surface") {
       attrs.push(`background="${this.tnBackground()}"`);
     }
-    attrs.push('(tabChange)="active.set($event)"');
+    attrs.push(
+      '(tabChange)="router.navigate([$event], { relativeTo: route })"',
+    );
     const nav = ["<fold-view-nav", ...attrs.map((a) => `  ${a}`), "/>"];
-    if (!side) {
-      return nav.join("\n");
-    }
+    const markup = side
+      ? [
+          '<fold-nav-layout placement="side" #tl="foldNavLayout">',
+          ...nav.map((l) => `  ${l}`),
+          "  <router-outlet />",
+          "</fold-nav-layout>",
+        ]
+      : [...nav, "<router-outlet />"];
     return [
-      '<fold-nav-layout placement="side" #tl="foldNavLayout">',
-      ...nav.map((l) => `  ${l}`),
-      "  <app-tab-content />",
-      "</fold-nav-layout>",
+      "<!-- the bar navigates; the router renders the matching view -->",
+      ...markup,
+      "",
+      "// component — active follows the URL, so a deep link lands on the right tab",
+      "private route = inject(ActivatedRoute);",
+      "protected router = inject(Router);",
+      "tabs = [{ key: 'overview', label: 'Overview' }, …];",
+      "active = toSignal(",
+      "  route.firstChild!.url.pipe(map((s) => s[0]?.path ?? 'overview')),",
+      "  { initialValue: 'overview' },",
+      ");",
     ].join("\n");
   });
 
