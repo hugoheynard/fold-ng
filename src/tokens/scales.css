@@ -61,7 +61,7 @@
      follows; each layout's own `--fold-<layout>-rail-*` var still overrides. */
   --fold-rail-primary: 64px; /* app menu — the compact icon rail (fold-app-shell) */
   --fold-rail-secondary: 220px; /* workspace / content aside (fold-aside-layout) */
-  --fold-rail-tertiary: 200px; /* in-page / section nav (fold-tab-layout) */
+  --fold-rail-tertiary: 200px; /* in-page / section nav (fold-nav-layout) */
 
   /* Motion scale — transition shorthands (duration + easing bundled, matching
      the app so `--t-*` bridge onto these 1:1). One knob per interaction speed. */

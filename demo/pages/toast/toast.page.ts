@@ -1,16 +1,16 @@
 import { Component, inject, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import {
-  FoldTabLayoutComponent,
+  FoldNavLayoutComponent,
   FoldChoiceRowComponent,
   FoldIconComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-  FoldTabNavComponent,
+  FoldViewNavComponent,
   FoldToastComponent,
   FoldToastService,
   type FoldChoiceOption,
-  type FoldTabNavItem,
+  type FoldViewNavItem,
   type FoldToastVariant,
 } from "../../../src/public-api";
 
@@ -21,9 +21,9 @@ import {
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
-    FoldTabLayoutComponent,
+    FoldNavLayoutComponent,
     FoldPageSectionComponent,
-    FoldTabNavComponent,
+    FoldViewNavComponent,
     FoldToastComponent,
     FoldChoiceRowComponent,
     FoldIconComponent,
@@ -36,7 +36,7 @@ export default class ToastPage {
   private readonly toastService = inject(FoldToastService);
   private toastSeq = 0;
 
-  protected readonly toastTabs: FoldTabNavItem[] = [
+  protected readonly toastTabs: FoldViewNavItem[] = [
     { key: "variants", label: "Variants" },
     { key: "behavior", label: "Behavior" },
     { key: "usage", label: "Usage" },

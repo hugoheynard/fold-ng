@@ -17,9 +17,9 @@ import {
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
   FoldSliderComponent,
-  FoldTabLayoutComponent,
-  FoldTabNavComponent,
-  type FoldTabNavItem,
+  FoldNavLayoutComponent,
+  FoldViewNavComponent,
+  type FoldViewNavItem,
   FoldPaletteRegistry,
   type FoldAutoPaletteName,
 } from "../../../src/public-api";
@@ -61,8 +61,8 @@ interface DemoGroup<T> {
     KindBadgeComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
-    FoldTabLayoutComponent,
-    FoldTabNavComponent,
+    FoldNavLayoutComponent,
+    FoldViewNavComponent,
     FoldAvatarComponent,
     FoldAvatarDetailComponent,
     FoldAvatarListComponent,
@@ -75,7 +75,7 @@ interface DemoGroup<T> {
   encapsulation: ViewEncapsulation.None,
 })
 export default class AvatarPage {
-  protected readonly avatarTabs: FoldTabNavItem[] = [
+  protected readonly avatarTabs: FoldViewNavItem[] = [
     { key: "avatar", label: "Avatar" },
     { key: "detail", label: "Detail" },
     { key: "list", label: "List" },

@@ -1,15 +1,15 @@
 import { Component, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import {
-  FoldTabLayoutComponent,
+  FoldNavLayoutComponent,
   FoldChoiceRowComponent,
   FoldIconComponent,
   FoldInputComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
-  FoldTabNavComponent,
+  FoldViewNavComponent,
   type FoldChoiceOption,
-  type FoldTabNavItem,
+  type FoldViewNavItem,
 } from "../../../src/public-api";
 
 /** `/form-layout` — a settings-style form driven by a vertical tab-nav. */
@@ -19,9 +19,9 @@ import {
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
-    FoldTabLayoutComponent,
+    FoldNavLayoutComponent,
     FoldPageSectionComponent,
-    FoldTabNavComponent,
+    FoldViewNavComponent,
     FoldInputComponent,
     FoldChoiceRowComponent,
     FoldIconComponent,
@@ -31,7 +31,7 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export default class FormLayoutPage {
-  protected readonly formTabs: FoldTabNavItem[] = [
+  protected readonly formTabs: FoldViewNavItem[] = [
     { key: "profile", label: "Profile" },
     { key: "account", label: "Account" },
     { key: "notifications", label: "Notifications", badge: 2 },

@@ -56,12 +56,12 @@
     </p>
 
     <div [style.width.px]="tlWidth()" [style.maxWidth]="'100%'">
-      <fold-tab-layout
+      <fold-nav-layout
         [placement]="tlPlacement()"
         [foldAt]="tlFoldAt()"
-        #tl="foldTabLayout"
+        #tl="foldNavLayout"
       >
-        <fold-tab-nav
+        <fold-view-nav
           tabNav
           activeStyle="fill"
           [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
@@ -74,7 +74,7 @@
           <div class="tl-demo-block"></div>
           <div class="tl-demo-block"></div>
         </div>
-      </fold-tab-layout>
+      </fold-nav-layout>
     </div>
   </dev-playground>
 
@@ -86,8 +86,8 @@
     description="Compose inside fold-page-section — flat structure + bleed, no new mode."
     bleed
   >
-    <fold-tab-layout placement="side" #tls="foldTabLayout">
-      <fold-tab-nav
+    <fold-nav-layout placement="side" #tls="foldNavLayout">
+      <fold-view-nav
         tabNav
         activeStyle="fill"
         [direction]="tls.stacked() ? 'horizontal' : 'vertical'"
@@ -99,6 +99,6 @@
         <span class="gal-tag">section content for “{{ sectionActive() }}”</span>
         <div class="tl-demo-block"></div>
       </div>
-    </fold-tab-layout>
+    </fold-nav-layout>
   </fold-page-section>
 </fold-page-layout>

@@ -15,7 +15,7 @@ import { observeElementWidth } from "../../../dom/observe-element-width";
 const HYSTERESIS = 32;
 
 /**
- * `<fold-tab-layout>` — pairs a tab bar with the content it drives, and owns the
+ * `<fold-nav-layout>` — pairs a tab bar with the content it drives, and owns the
  * one thing every tabbed page hand-rolls: where the nav sits.
  *
  * - `placement="top"` (default) — the nav above the content.
@@ -24,7 +24,7 @@ const HYSTERESIS = 32;
  *   precedes the content it drives, never below it).
  *
  * Content projection — the nav stays yours (tabs, active key, events):
- * - `[tabNav]` → the tab bar (an `fold-tab-nav`, or anything else).
+ * - `[tabNav]` → the tab bar (an `fold-view-nav`, or anything else).
  * - default slot → the content for the active tab.
  *
  * **A11y — this owns placement, not the ARIA tabs pattern.** The projected bar
@@ -38,8 +38,8 @@ const HYSTERESIS = 32;
  * nav follows the layout in one binding:
  *
  * ```html
- * <fold-tab-layout placement="side" #tl="foldTabLayout">
- *   <fold-tab-nav
+ * <fold-nav-layout placement="side" #tl="foldNavLayout">
+ *   <fold-view-nav
  *     tabNav
  *     [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
  *     [tabs]="tabs"
@@ -47,7 +47,7 @@ const HYSTERESIS = 32;
  *     (tabChange)="tab.set($event)"
  *   />
  *   <app-tab-content />
- * </fold-tab-layout>
+ * </fold-nav-layout>
  * ```
  *
  * **Two roles — same component, composed differently.**
@@ -64,8 +64,8 @@ const HYSTERESIS = 32;
  * ```html
  * <!-- a tabbed section: flat structure (page-section) + tab placement -->
  * <fold-page-section title="Settings" bleed>
- *   <fold-tab-layout placement="side" #tl="foldTabLayout">
- *     <fold-tab-nav
+ *   <fold-nav-layout placement="side" #tl="foldNavLayout">
+ *     <fold-view-nav
  *       tabNav
  *       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
  *       [tabs]="tabs"
@@ -73,28 +73,28 @@ const HYSTERESIS = 32;
  *       (tabChange)="tab.set($event)"
  *     />
  *     <app-settings-panel />
- *   </fold-tab-layout>
+ *   </fold-nav-layout>
  * </fold-page-section>
  * ```
  *
- * Sizing is CSS custom properties: `--fold-tab-layout-gap` (16px) and
- * `--fold-tab-layout-nav-width` — the side-rail track, defaulting to the shared
+ * Sizing is CSS custom properties: `--fold-nav-layout-gap` (16px) and
+ * `--fold-nav-layout-rail-width` — the side-rail track, defaulting to the shared
  * `--fold-rail-tertiary` (200px). That's the **tertiary** step of the rail
  * hierarchy — the same level the `--fold-color-bg-rail-tertiary` colour names
  * (app menu → workspace → in-page nav) — so every rail in the app stays on one
  * scale. Override the local var per instance.
  *
- * @selector `fold-tab-layout`
+ * @selector `fold-nav-layout`
  */
 @Component({
-  selector: "fold-tab-layout",
+  selector: "fold-nav-layout",
   standalone: true,
-  exportAs: "foldTabLayout",
+  exportAs: "foldNavLayout",
   host: { "[class.is-row]": "!stacked()" },
-  templateUrl: "./tab-layout.component.html",
-  styleUrl: "./tab-layout.component.scss",
+  templateUrl: "./nav-layout.component.html",
+  styleUrl: "./nav-layout.component.scss",
 })
-export class FoldTabLayoutComponent {
+export class FoldNavLayoutComponent {
   /** Where the nav sits: above the content, or as a rail beside it. */
   readonly placement = input<"top" | "side">("top");
   /** Width (px) at or below which a `side` nav folds back on top. */

@@ -12,11 +12,11 @@ import {
   FoldIconComponent,
   FoldPageLayoutComponent,
   FoldPanelHostService,
-  FoldTabLayoutComponent,
-  FoldTabNavComponent,
+  FoldNavLayoutComponent,
+  FoldViewNavComponent,
   type FoldBadgeVariant,
   type FoldIconName,
-  type FoldTabNavItem,
+  type FoldViewNavItem,
 } from "../../../src/public-api";
 import { TabPanelComponent } from "../../components/tab-panel.component";
 
@@ -25,15 +25,15 @@ type TabDirection = "horizontal" | "vertical";
 type TabSize = "reduce" | "compact" | "comfortable";
 type TabBackground = "transparent" | "surface";
 
-/** `/tab-nav` — the `fold-tab-nav` gallery page. */
+/** `/tab-nav` — the `fold-view-nav` gallery page. */
 @Component({
   selector: "gal-tab-nav-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
-    FoldTabLayoutComponent,
-    FoldTabNavComponent,
+    FoldNavLayoutComponent,
+    FoldViewNavComponent,
     FoldIconComponent,
     FoldBadgeComponent,
     DevPlaygroundComponent,
@@ -70,7 +70,7 @@ export default class TabNavPage {
     { key: "billing", label: "Billing", icon: "contracts", badge: 2 },
   ];
 
-  protected readonly tnTabs = computed<FoldTabNavItem[]>(() =>
+  protected readonly tnTabs = computed<FoldViewNavItem[]>(() =>
     this.TAB_POOL.slice(0, this.tnCount()).map((t) => ({
       key: t.key,
       label: t.label,
@@ -105,15 +105,15 @@ export default class TabNavPage {
       attrs.push(`background="${this.tnBackground()}"`);
     }
     attrs.push('(tabChange)="active.set($event)"');
-    const nav = ["<fold-tab-nav", ...attrs.map((a) => `  ${a}`), "/>"];
+    const nav = ["<fold-view-nav", ...attrs.map((a) => `  ${a}`), "/>"];
     if (!side) {
       return nav.join("\n");
     }
     return [
-      '<fold-tab-layout placement="side" #tl="foldTabLayout">',
+      '<fold-nav-layout placement="side" #tl="foldNavLayout">',
       ...nav.map((l) => `  ${l}`),
       "  <app-tab-content />",
-      "</fold-tab-layout>",
+      "</fold-nav-layout>",
     ].join("\n");
   });
 

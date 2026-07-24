@@ -1,5 +1,5 @@
 <nav
-  class="tab-nav"
+  class="view-nav"
   [class.style-underline]="activeStyle() === 'underline'"
   [class.style-fill]="activeStyle() === 'fill'"
   [class.dir-vertical]="direction() === 'vertical'"
@@ -10,17 +10,18 @@
   @for (tab of tabs(); track tab.key) {
     <button
       type="button"
-      class="tab-nav-item"
+      class="view-nav-item"
       [class.is-active]="activeKey() === tab.key"
+      [attr.aria-current]="activeKey() === tab.key ? 'page' : null"
       (click)="tabChange.emit(tab.key)"
     >
       @if (tab.icon; as ic) {
-        <fold-icon class="tab-nav-icon" [name]="ic" size="sm" />
+        <fold-icon class="view-nav-icon" [name]="ic" size="sm" />
       }
-      <span class="tab-nav-label">{{ tab.label }}</span>
+      <span class="view-nav-label">{{ tab.label }}</span>
       @if (tab.badge !== undefined && tab.badge !== null) {
         <fold-badge
-          class="tab-nav-badge"
+          class="view-nav-badge"
           [content]="tab.badge + ''"
           [variant]="activeKey() === tab.key ? 'accent' : 'neutral'"
         />

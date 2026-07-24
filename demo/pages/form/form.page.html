@@ -5,8 +5,8 @@
     fold-input-base.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <fold-tab-layout placement="side" #tl="foldTabLayout">
-    <fold-tab-nav
+  <fold-nav-layout placement="side" #tl="foldNavLayout">
+    <fold-view-nav
       tabNav
       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
       activeStyle="fill"
@@ -359,5 +359,5 @@
       </div>
     </div>
     } }
-  </fold-tab-layout>
+  </fold-nav-layout>
 </fold-page-layout>

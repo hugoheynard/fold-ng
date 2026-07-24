@@ -21,7 +21,7 @@ export const FOLD_SEMANTIC_COLOR_TOKENS = [
   "bg-rail-primary",
   /** Rail 2 — the workspace menu. */
   "bg-rail-secondary",
-  /** Rail 3 — tertiary nav (e.g. a `fold-tab-nav` section sidebar). */
+  /** Rail 3 — tertiary nav (e.g. a `fold-view-nav` section sidebar). */
   "bg-rail-tertiary",
 
   /* ── Primary / accent ─────────────────────────────────────── */

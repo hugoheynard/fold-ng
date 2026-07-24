@@ -1,7 +1,7 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, afterEach } from "vitest";
-import { FoldTabLayoutComponent } from "./tab-layout.component";
+import { FoldNavLayoutComponent } from "./nav-layout.component";
 
 /** Captures the observer callback so a test can feed it widths directly. */
 let emitWidth: ((width: number) => void) | undefined;
@@ -30,16 +30,16 @@ afterEach(() => {
 
 @Component({
   standalone: true,
-  imports: [FoldTabLayoutComponent],
-  template: `<fold-tab-layout
+  imports: [FoldNavLayoutComponent],
+  template: `<fold-nav-layout
     [placement]="placement()"
     [foldAt]="foldAt()"
-    #tl="foldTabLayout"
+    #tl="foldNavLayout"
   >
     <nav tabNav class="nav">Nav</nav>
     <div class="body">Body</div>
     <span class="probe">{{ tl.stacked() }}</span>
-  </fold-tab-layout>`,
+  </fold-nav-layout>`,
 })
 class HostComponent {
   readonly placement = signal<"top" | "side">("top");
@@ -52,12 +52,12 @@ function render() {
   const root = fixture.nativeElement as HTMLElement;
   return {
     fixture,
-    layout: root.querySelector("fold-tab-layout") as HTMLElement,
+    layout: root.querySelector("fold-nav-layout") as HTMLElement,
     root,
   };
 }
 
-describe("FoldTabLayoutComponent", () => {
+describe("FoldNavLayoutComponent", () => {
   it("projects the nav and the content into their regions", () => {
     const { layout } = render();
     expect(layout.querySelector(".tl-nav .nav")?.textContent).toBe("Nav");
@@ -92,7 +92,7 @@ describe("FoldTabLayoutComponent", () => {
       fixture.componentInstance.foldAt.set(720);
       fixture.detectChanges();
       const layout = (fixture.nativeElement as HTMLElement).querySelector(
-        "fold-tab-layout",
+        "fold-nav-layout",
       ) as HTMLElement;
       const at = (width: number) => {
         emitWidth?.(width);

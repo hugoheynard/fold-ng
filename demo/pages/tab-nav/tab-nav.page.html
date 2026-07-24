@@ -128,11 +128,11 @@
         <span class="tn-page-sub">Acme Records</span>
       </div>
 
-      <fold-tab-layout
+      <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
-        #tl="foldTabLayout"
+        #tl="foldNavLayout"
       >
-        <fold-tab-nav
+        <fold-view-nav
           tabNav
           [tabs]="tnTabs()"
           [activeKey]="tnActiveKey()"
@@ -199,7 +199,7 @@
           </div>
           } }
         </div>
-      </fold-tab-layout>
+      </fold-nav-layout>
     </div>
   </dev-playground>
 

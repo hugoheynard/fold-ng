@@ -5,12 +5,12 @@ import {
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
   FoldSliderComponent,
-  FoldTabLayoutComponent,
-  FoldTabNavComponent,
-  type FoldTabNavItem,
+  FoldNavLayoutComponent,
+  FoldViewNavComponent,
+  type FoldViewNavItem,
 } from "../../../src/public-api";
 
-/** `/tab-layout` — the `fold-tab-layout` gallery page. */
+/** `/tab-layout` — the `fold-nav-layout` gallery page. */
 @Component({
   selector: "gal-tab-layout-page",
   standalone: true,
@@ -18,8 +18,8 @@ import {
     KindBadgeComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
-    FoldTabLayoutComponent,
-    FoldTabNavComponent,
+    FoldNavLayoutComponent,
+    FoldViewNavComponent,
     FoldSliderComponent,
     DevPlaygroundComponent,
   ],
@@ -28,7 +28,7 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export default class TabLayoutPage {
-  protected readonly tabs: FoldTabNavItem[] = [
+  protected readonly tabs: FoldViewNavItem[] = [
     { key: "overview", label: "Overview", icon: "grid" },
     { key: "members", label: "Members", icon: "team", badge: 3 },
     { key: "settings", label: "Settings", icon: "settings" },
@@ -36,7 +36,7 @@ export default class TabLayoutPage {
   protected readonly active = signal("overview");
 
   /** The "tabbed section" example — its own tabs, composed inside a page-section. */
-  protected readonly sectionTabs: FoldTabNavItem[] = [
+  protected readonly sectionTabs: FoldViewNavItem[] = [
     { key: "general", label: "General", icon: "settings" },
     { key: "billing", label: "Billing", icon: "contracts" },
     { key: "team", label: "Team", icon: "team" },
@@ -56,10 +56,10 @@ export default class TabLayoutPage {
     if (this.tlFoldAt() !== 720) {
       attrs.push(`[foldAt]="${this.tlFoldAt()}"`);
     }
-    const open = `<fold-tab-layout${attrs.length ? " " + attrs.join(" ") : ""} #tl="foldTabLayout">`;
+    const open = `<fold-nav-layout${attrs.length ? " " + attrs.join(" ") : ""} #tl="foldNavLayout">`;
     return [
       open,
-      "  <fold-tab-nav",
+      "  <fold-view-nav",
       "    tabNav",
       `    [direction]="tl.stacked() ? 'horizontal' : 'vertical'"`,
       '    [tabs]="tabs"',
@@ -68,7 +68,7 @@ export default class TabLayoutPage {
       "  />",
       "  <!-- untagged content → the panel the active tab drives -->",
       "  <app-tab-content />",
-      "</fold-tab-layout>",
+      "</fold-nav-layout>",
     ].join("\n");
   });
 }

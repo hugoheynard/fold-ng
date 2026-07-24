@@ -3,7 +3,7 @@ import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
-export type FoldTabNavItem = {
+export type FoldViewNavItem = {
   /** Unique key — identifies the tab and is emitted on click. */
   key: string;
   /** Display label. */
@@ -15,7 +15,7 @@ export type FoldTabNavItem = {
 };
 
 /**
- * `<fold-tab-nav>` — a tab navigation bar (buttons only; the parent renders the
+ * `<fold-view-nav>` — a tab navigation bar (buttons only; the parent renders the
  * content for the active key).
  *
  * - `activeStyle` — `underline` (accent border on the active tab) or `fill`
@@ -23,11 +23,11 @@ export type FoldTabNavItem = {
  * - `direction` — `horizontal` (row, equal-width) or `vertical` (stacked
  *   sidebar; auto-collapses to a horizontal icon-accordion at ≤768px).
  *
- * @selector `fold-tab-nav`
+ * @selector `fold-view-nav`
  *
  * @example
  * ```html
- * <fold-tab-nav
+ * <fold-view-nav
  *   [tabs]="[{ key: 'members', label: 'Members', badge: 3 }, { key: 'settings', label: 'Settings' }]"
  *   [activeKey]="tab()"
  *   activeStyle="underline"
@@ -37,18 +37,18 @@ export type FoldTabNavItem = {
  * ```
  */
 @Component({
-  selector: "fold-tab-nav",
+  selector: "fold-view-nav",
   standalone: true,
   imports: [FoldIconComponent, FoldBadgeComponent],
-  templateUrl: "./tab-nav.component.html",
+  templateUrl: "./view-nav.component.html",
   // Inline + token-driven. Neutral 1px lines use --fold-color-border /
   // -surface-raised so they flip correctly in light mode (the app original
   // hard-coded white-alpha, which would vanish on a light background).
-  styleUrl: "./tab-nav.component.scss",
+  styleUrl: "./view-nav.component.scss",
 })
-export class FoldTabNavComponent {
+export class FoldViewNavComponent {
   /** The tabs to render, in order. */
-  readonly tabs = input.required<FoldTabNavItem[]>();
+  readonly tabs = input.required<FoldViewNavItem[]>();
 
   /** The `key` of the currently active tab. */
   readonly activeKey = input.required<string>();

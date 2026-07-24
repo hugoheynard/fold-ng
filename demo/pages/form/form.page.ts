@@ -2,7 +2,7 @@ import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { form, required, FormField } from "@angular/forms/signals";
 import {
-  FoldTabLayoutComponent,
+  FoldNavLayoutComponent,
   FoldInputComponent,
   FoldNumberInputComponent,
   type FoldNumberSpinner,
@@ -11,8 +11,8 @@ import {
   FoldSearchComponent,
   FoldSelectComponent,
   FoldSliderComponent,
-  FoldTabNavComponent,
-  type FoldTabNavItem,
+  FoldViewNavComponent,
+  type FoldViewNavItem,
 } from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 
@@ -23,8 +23,8 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
-    FoldTabLayoutComponent,
-    FoldTabNavComponent,
+    FoldNavLayoutComponent,
+    FoldViewNavComponent,
     FoldInputComponent,
     FoldNumberInputComponent,
     FoldSelectComponent,
@@ -36,7 +36,7 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   templateUrl: "./form.page.html",
 })
 export default class FormPage {
-  protected readonly inputTabs: FoldTabNavItem[] = [
+  protected readonly inputTabs: FoldViewNavItem[] = [
     { key: "text", label: "Text" },
     { key: "number", label: "Number" },
     { key: "select", label: "Select" },

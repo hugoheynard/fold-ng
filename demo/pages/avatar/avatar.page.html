@@ -1,7 +1,7 @@
 <fold-page-layout title="avatar">
   <gal-kind-badge titleBadge kind="component" />
-  <fold-tab-layout placement="side" class="avatar-tabs" #tl="foldTabLayout">
-    <fold-tab-nav
+  <fold-nav-layout placement="side" class="avatar-tabs" #tl="foldNavLayout">
+    <fold-view-nav
       tabNav
       [tabs]="avatarTabs"
       [activeKey]="avatarTab()"
@@ -254,5 +254,5 @@
       </dev-playground>
     </fold-page-section>
     } }
-  </fold-tab-layout>
+  </fold-nav-layout>
 </fold-page-layout>

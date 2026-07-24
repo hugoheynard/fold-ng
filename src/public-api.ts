@@ -118,14 +118,14 @@ export type {
   FoldBuiltinIconName,
 } from "./components/foundations/icon/builtin-icons";
 export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
-export { FoldTabLayoutComponent } from "./components/layout/tab-layout/tab-layout.component";
+export { FoldNavLayoutComponent } from "./components/layout/nav-layout/nav-layout.component";
 export { FoldPageLayoutComponent } from "./components/layout/page-layout/page-layout.component";
 export { FoldPageSectionComponent } from "./components/layout/page-section/page-section.component";
 export { FoldHeroSectionComponent } from "./components/layout/hero-section/hero-section.component";
 export { FoldPaginatorComponent } from "./components/content/paginator/paginator.component";
 export type { FoldPageItem } from "./components/content/paginator/paginator.component";
-export { FoldTabNavComponent } from "./components/navigation/tab-nav/tab-nav.component";
-export type { FoldTabNavItem } from "./components/navigation/tab-nav/tab-nav.component";
+export { FoldViewNavComponent } from "./components/navigation/view-nav/view-nav.component";
+export type { FoldViewNavItem } from "./components/navigation/view-nav/view-nav.component";
 export { FoldToastComponent } from "./components/feedback/toast/toast.component";
 export { FoldToastContainerComponent } from "./components/feedback/toast/toast-container.component";
 export { FoldToastService } from "./components/feedback/toast/toast.service";
