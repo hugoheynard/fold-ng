@@ -51,7 +51,17 @@ sous-chemin `fold-ng/tokens.css`, tous deux exposés par le tarball).
 - [x] **Protection publication. ✅** (2026-07-24) rulesets GitHub `protect-main` +
       `protect-release-tags` (deletion + non_fast_forward) → `main` et les tags
       `v*` immuables. Reste côté mainteneur : **2FA compte** GitHub + npm.
-- [ ] **Workflow CI PR-gate** (⬅ **seul reste**) — gates sur chaque push/PR,
-      séparé du release : `eslint src demo` → `tsc -p tsconfig.app.json` →
-      `lint:templates` → `vitest` → `pnpm run build`. Statut requis unique **`ci`**,
-      branché dans un ruleset `main` (require status check) une fois vert.
+- [x] **Workflow CI PR-gate. ✅** (2026-07-24) [`ci.yml`](../.github/workflows/ci.yml) —
+      un job unique `ci` sur chaque push/PR : `lint` → `tsc -p tsconfig.app.json` →
+      `lint:templates` → `test` → `verify:pack` (build lib + publint + attw) →
+      build gallery. Permissions read-only, ne publie jamais. **`ci` est un statut
+      requis** sur `main` via le ruleset `protect-main` (`required_status_checks`),
+      avec **bypass rôle admin `always`** pour que les push directs de release
+      (`release.mjs`) passent — release.yml rejoue la barre avant publish de toute
+      façon.
+
+---
+
+**INDEPENDENCE est clôturé.** fold-ng est un repo autonome, publié, gaté et
+protégé ; l'app SH3PHERD consomme le publié. Reste hors-scope de ce doc : la 2FA
+compte (GitHub + npm), et l'optionnel typedoc/`llms.txt` sur le site Pages.
