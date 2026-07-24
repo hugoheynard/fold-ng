@@ -64,9 +64,11 @@ export class FoldViewNavComponent {
   readonly activeStyle = input<"underline" | "fill">("underline");
 
   /**
-   * Bar orientation. Defaults to `vertical` — the readable-first shape: a rail
-   * of full labels, one per line (it auto-collapses to horizontal on mobile).
-   * Set `horizontal` for a page-level top bar.
+   * Bar orientation. Defaults to `vertical` because, in its default shape, this
+   * bar reads as the app's **third navigation rail** (app menu → workspace →
+   * in-page views — the `--fold-rail-tertiary` level), and a menu is vertical: a
+   * rail of full labels, one per line (it auto-collapses to horizontal on
+   * mobile). Set `horizontal` for a page-level top bar.
    */
   readonly direction = input<"horizontal" | "vertical">("vertical");
 
