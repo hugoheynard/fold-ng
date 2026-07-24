@@ -24,7 +24,7 @@
 }
 /* Only the rail gets a track — stacked, the nav spans the full width. */
 :host(.is-row) .tl-nav {
-  flex: 0 0 var(--fold-tab-layout-nav-width, 200px);
+  flex: 0 0 var(--fold-tab-layout-nav-width, var(--fold-rail-tertiary, 200px));
 }
 
 .tl-body {

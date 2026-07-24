@@ -5,7 +5,7 @@
   /* The menu owns its width; the shell's `auto` rail column follows it. Reads
      the shell's base rail width (its `railWidth`), falling back to 64 when used
      standalone. Expanded overrides this with its content width below. */
-  width: var(--fold-shell-rail-width, 64px);
+  width: var(--fold-shell-rail-width, var(--fold-rail-primary, 64px));
   height: 100%;
   /* border-box so the vertical padding stays inside the rail height instead of
      overflowing the bottom (which the shell cell clips → footer looks flush). */

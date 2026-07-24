@@ -26,12 +26,12 @@
 }
 :host:has([asideleft]) .al-grid {
   grid-template-columns:
-    var(--fold-aside-layout-rail-width, 220px)
+    var(--fold-aside-layout-rail-width, var(--fold-rail-secondary, 220px))
     var(--fold-aside-layout-center-width, minmax(0, 1fr));
 }
 :host:has([asideleft]):has([asideright]) .al-grid {
   grid-template-columns:
-    var(--fold-aside-layout-rail-width, 220px)
+    var(--fold-aside-layout-rail-width, var(--fold-rail-secondary, 220px))
     var(--fold-aside-layout-center-width, minmax(0, 1fr))
     var(--fold-aside-layout-side-width, 300px);
 }

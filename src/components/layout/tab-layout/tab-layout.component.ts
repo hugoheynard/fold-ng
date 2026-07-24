@@ -50,8 +50,39 @@ const HYSTERESIS = 32;
  * </fold-tab-layout>
  * ```
  *
+ * **Two roles — same component, composed differently.**
+ * - **Page scaffold** — the tab rail *is* the page's primary structure: use it
+ *   directly (usually `placement="side"`), the folded bar leading the content.
+ * - **Tabbed section** — a tabbed block *inside* a page, among other sections.
+ *   Don't reach for a new mode — wrap it in a {@link FoldPageSectionComponent}.
+ *   The section owns the title, the `<section>` + heading semantics, the vertical
+ *   rhythm and the optional `bleed`; tab-layout stays pure placement. It paints
+ *   nothing (no card), so it sits **flat** — add `bleed` on the section for an
+ *   edge-to-edge band. The rail folds on the **section's** width (it measures
+ *   itself), not the viewport, so nested tabs collapse on their own.
+ *
+ * ```html
+ * <!-- a tabbed section: flat structure (page-section) + tab placement -->
+ * <fold-page-section title="Settings" bleed>
+ *   <fold-tab-layout placement="side" #tl="foldTabLayout">
+ *     <fold-tab-nav
+ *       tabNav
+ *       [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
+ *       [tabs]="tabs"
+ *       [activeKey]="tab()"
+ *       (tabChange)="tab.set($event)"
+ *     />
+ *     <app-settings-panel />
+ *   </fold-tab-layout>
+ * </fold-page-section>
+ * ```
+ *
  * Sizing is CSS custom properties: `--fold-tab-layout-gap` (16px) and
- * `--fold-tab-layout-nav-width` (200px, the side rail track).
+ * `--fold-tab-layout-nav-width` — the side-rail track, defaulting to the shared
+ * `--fold-rail-tertiary` (200px). That's the **tertiary** step of the rail
+ * hierarchy — the same level the `--fold-color-bg-rail-tertiary` colour names
+ * (app menu → workspace → in-page nav) — so every rail in the app stays on one
+ * scale. Override the local var per instance.
  *
  * @selector `fold-tab-layout`
  */

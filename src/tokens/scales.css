@@ -55,6 +55,14 @@
   --fold-space-lg: 16px;
   --fold-space-xl: 20px;
 
+  /* Rail-width scale — the shared widths for the nav-rail hierarchy, named to
+     pair 1:1 with the `--fold-color-bg-rail-*` colour tokens (primary app menu →
+     secondary workspace/aside → tertiary in-page nav). Retune once, every rail
+     follows; each layout's own `--fold-<layout>-rail-*` var still overrides. */
+  --fold-rail-primary: 64px; /* app menu — the compact icon rail (fold-app-shell) */
+  --fold-rail-secondary: 220px; /* workspace / content aside (fold-aside-layout) */
+  --fold-rail-tertiary: 200px; /* in-page / section nav (fold-tab-layout) */
+
   /* Motion scale — transition shorthands (duration + easing bundled, matching
      the app so `--t-*` bridge onto these 1:1). One knob per interaction speed. */
   --fold-motion-fast: 0.1s ease;

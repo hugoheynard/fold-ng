@@ -6,7 +6,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **Rail-width token scale** — `--fold-rail-primary` / `--fold-rail-secondary` /
+  `--fold-rail-tertiary`, named to pair 1:1 with the `--fold-color-bg-rail-*`
+  colours (app menu → workspace/aside → in-page nav). `fold-app-shell`,
+  `fold-aside-layout`, and `fold-tab-layout` now default their rail widths from
+  this one scale (values unchanged), so a page's nav hierarchy is tunable in one
+  place. Each layout's local `--fold-<layout>-rail-*` var still overrides.
+
+### Docs
+
+- **`fold-tab-layout`** documents its two roles — page scaffold vs. a **tabbed
+  section** composed inside a `fold-page-section` (flat structure + `bleed`, no
+  new mode) — with a worked example; its `nav-width` draws from the tertiary
+  rail token.
 
 ## [0.2.1] - 2026-07-24
 

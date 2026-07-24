@@ -129,6 +129,13 @@ export const FOLD_SPACE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 
 export type FoldSpaceToken = (typeof FOLD_SPACE_TOKENS)[number];
 
+/** Rail-width scale — the nav-rail hierarchy's shared widths, named to pair with
+ *  the `--fold-color-bg-rail-*` colours (primary app menu → secondary workspace /
+ *  aside → tertiary in-page nav). */
+export const FOLD_RAIL_TOKENS = ["primary", "secondary", "tertiary"] as const;
+
+export type FoldRailToken = (typeof FOLD_RAIL_TOKENS)[number];
+
 /** Motion scale — `transition` shorthands (duration + easing). */
 export const FOLD_MOTION_TOKENS = ["fast", "base", "slow"] as const;
 
