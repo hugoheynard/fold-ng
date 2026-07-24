@@ -7,6 +7,7 @@
 [![license](https://img.shields.io/npm/l/fold-ng.svg)](./LICENSE)
 [![status: pre-1.0](https://img.shields.io/badge/status-pre--1.0-2ea043)](./CHANGELOG.md)
 [![live demo](https://img.shields.io/badge/live_demo-gallery-6f42c1)](https://hugoheynard.github.io/fold-ng/)
+[![Sponsor](https://img.shields.io/github/sponsors/hugoheynard?logo=githubsponsors&label=Sponsor&color=ea4aaa)](https://github.com/sponsors/hugoheynard)
 
 **fold-ng** is an accessible, **dark-first Angular 22 UI component library and
 design system** — signals-first, standalone, zoneless, and SSR-ready. It ships a
