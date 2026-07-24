@@ -84,7 +84,8 @@ A published version is **immutable** — you cannot overwrite `0.2.0`. If a
 release is bad:
 
 - ship a fix as `0.2.1` (the normal path);
-- `npm deprecate "fold-ng@0.2.0" "broken — use 0.2.1"` to warn installers;
+- **`pnpm run deprecate 0.2.0 "broken — use 0.2.1"`** to warn installers
+  (wraps `npm deprecate` with a confirm + your 2FA prompt; `--undo` lifts it);
 - move `latest` back if needed: `npm dist-tag add fold-ng@0.1.0 latest`.
 
 `npm unpublish` is restricted (72h window, no dependents) — treat publish as

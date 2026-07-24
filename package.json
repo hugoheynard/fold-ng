@@ -74,6 +74,7 @@
     "release:minor": "node scripts/release.mjs minor",
     "release:major": "node scripts/release.mjs major",
     "release:beta": "node scripts/release.mjs beta",
+    "deprecate": "node scripts/deprecate.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "docs:api": "typedoc",
