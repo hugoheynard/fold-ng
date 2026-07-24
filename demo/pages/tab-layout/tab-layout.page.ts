@@ -3,6 +3,7 @@ import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldPageLayoutComponent,
+  FoldPageSectionComponent,
   FoldSliderComponent,
   FoldTabLayoutComponent,
   FoldTabNavComponent,
@@ -16,6 +17,7 @@ import {
   imports: [
     KindBadgeComponent,
     FoldPageLayoutComponent,
+    FoldPageSectionComponent,
     FoldTabLayoutComponent,
     FoldTabNavComponent,
     FoldSliderComponent,
@@ -32,6 +34,14 @@ export default class TabLayoutPage {
     { key: "settings", label: "Settings", icon: "settings" },
   ];
   protected readonly active = signal("overview");
+
+  /** The "tabbed section" example — its own tabs, composed inside a page-section. */
+  protected readonly sectionTabs: FoldTabNavItem[] = [
+    { key: "general", label: "General", icon: "settings" },
+    { key: "billing", label: "Billing", icon: "contracts" },
+    { key: "team", label: "Team", icon: "team" },
+  ];
+  protected readonly sectionActive = signal("general");
 
   protected readonly tlPlacement = signal<"top" | "side">("side");
   protected readonly tlFoldAt = signal(720);
