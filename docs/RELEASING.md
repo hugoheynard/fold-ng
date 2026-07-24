@@ -30,37 +30,38 @@ short-lived publish credential; provenance is generated automatically.
 
 ## Cutting a release
 
-Releases come **only from `main`** — `release.yml` rejects a tag whose commit
-isn't on `main`. So the flow is always: land it on `main`, then tag.
+One command, from `main`:
 
-1. **Bump the version and the changelog on `main`.**
+```bash
+pnpm release:patch     # 0.1.0 → 0.1.1   a fix
+pnpm release:minor     # 0.1.0 → 0.2.0   a feature (back-compatible)
+pnpm release:major     # 0.1.0 → 1.0.0   a breaking change
+pnpm release:beta      # 0.1.0 → 0.1.1-beta.0   WIP cut → the `beta` dist-tag
+```
 
-   ```bash
-   # edit docs/… if needed, then:
-   npm version 0.2.0 --no-git-tag-version    # writes package.json
-   # update CHANGELOG.md: move [Unreleased] → [0.2.0] - <today>, add the entry
-   git commit -am "release: 0.2.0"
-   git push origin main
-   ```
+The script ([`scripts/release.mjs`](../scripts/release.mjs)):
 
-   (A pre-release cut: `npm version 0.2.0-beta.1 --no-git-tag-version`.)
+1. **Guards** — refuses unless you're on `main`, the tree is clean, and local
+   `main` is in sync with `origin/main`. (Releases come **only from `main`** —
+   `release.yml` also rejects a tag whose commit isn't on `main`.)
+2. **Bumps** `package.json` to the next version.
+3. **Stamps the changelog** — moves `[Unreleased]` to `[x.y.z] - <today>` and
+   resets `[Unreleased]`. If `[Unreleased]` was empty it asks for a one-line
+   summary (blank → links to the GitHub release).
+4. **Shows a preview and asks to confirm** (a published version is immutable).
+5. On yes: **commits, tags `vx.y.z`, and pushes `main` + the tag.**
 
-2. **Tag and push the tag** — this is the trigger:
+Pushing the tag fires [`release.yml`](../.github/workflows/release.yml), which —
+only if everything is green:
 
-   ```bash
-   git tag v0.2.0
-   git push origin v0.2.0
-   ```
+- checks the tag matches `package.json`;
+- runs the full gate — `eslint` · `tsc` · `strictTemplates` · `vitest`;
+- builds + re-verifies the artifact (`ng-packagr`, `publint`, `arethetypeswrong`);
+- **`npm publish`** to `latest` (or `beta` for a `-…` version), via OIDC + provenance;
+- opens a GitHub Release with auto-generated notes.
 
-3. **`release.yml` runs** and, only if everything is green:
-   - checks the tag matches `package.json` (a mistagged version fails fast);
-   - runs the full gate — `eslint` · `tsc` · `strictTemplates` · `vitest`;
-   - builds the publishable artifact (`ng-packagr` + `finalize-dist`) and
-     re-verifies it (`publint` + `arethetypeswrong`);
-   - `npm publish --provenance` to `latest` (or `beta` for a `-…` tag);
-   - opens a GitHub Release with auto-generated notes.
-
-That's it — no manual `npm publish`.
+No manual `npm version`, tag, or `npm publish`. Just write your changelog notes
+under `[Unreleased]` as you work, then `pnpm release:<type>` when it's time.
 
 ## Version & dist-tag policy
 
