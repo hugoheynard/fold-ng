@@ -1,0 +1,13 @@
+# Force the two structured forms below instead of a blank textarea, and steer
+# questions/ideas to Discussions so the issue tracker stays bugs + concrete work.
+blank_issues_enabled: false
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/hugoheynard/fold-ng/discussions/new?category=q-a
+    about: "How do I…? Not sure if it's a bug? Ask in Discussions (Q&A) — faster and searchable."
+  - name: Idea or design discussion
+    url: https://github.com/hugoheynard/fold-ng/discussions/new?category=ideas
+    about: "Half-formed ideas, API direction, “what if” — start in Discussions (Ideas) before an issue."
+  - name: Live demo & component gallery
+    url: https://hugoheynard.github.io/fold-ng/
+    about: "Browse every component, the token editor, and the panel sandbox."

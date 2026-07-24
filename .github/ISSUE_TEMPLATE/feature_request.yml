@@ -1,0 +1,28 @@
+name: Feature request
+description: Propose a new component, token, or API for fold-ng.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: "For open-ended “what if” ideas, [Discussions → Ideas](https://github.com/hugoheynard/fold-ng/discussions/new?category=ideas) is the better first stop. Use this form when the shape is concrete."
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: "What are you trying to do that fold-ng makes hard or impossible today?"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: "The component/token/API you have in mind. A rough signature or markup sketch helps."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: "Workarounds you've tried, or other shapes you weighed."
+    validations:
+      required: false

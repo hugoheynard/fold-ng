@@ -1,0 +1,56 @@
+name: Bug report
+description: Something in fold-ng behaves incorrectly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for the report. A minimal reproduction is worth ten paragraphs — please include one."
+  - type: input
+    id: version
+    attributes:
+      label: fold-ng version
+      description: "Output of `npm ls fold-ng` (e.g. 0.1.0)."
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: angular
+    attributes:
+      label: Angular version
+      description: "fold-ng targets Angular 22. Which minor are you on?"
+      placeholder: "22.0.7"
+    validations:
+      required: true
+  - type: dropdown
+    id: rendering
+    attributes:
+      label: Rendering mode
+      options:
+        - Client-side only
+        - SSR / hydration
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: "Steps, a StackBlitz, or a minimal snippet. What does someone run to see it?"
+      placeholder: |
+        1. Open a panel with `panels.open(MyPanel, { data })`
+        2. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: "Include the exact error text / console output if any."
+    validations:
+      required: true
