@@ -1,0 +1,53 @@
+name: CI
+
+# The pre-merge gate. Runs the SAME bar as the release gate — minus publishing —
+# on every PR and every push to main. Nothing merges red. release.yml re-runs
+# this gate before it publishes (local hooks can be bypassed with --no-verify,
+# so CI is the authority), but this workflow is what a branch-protection rule
+# points at: make `ci` a required status check on main and a red PR can't merge.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read # read-only: this gate never publishes and never writes refs
+
+# A newer push to the same PR/branch supersedes the in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Same four checks the release gate runs, same order.
+      - run: pnpm run lint
+      - run: pnpm exec tsc --noEmit -p tsconfig.app.json
+      - run: pnpm run lint:templates
+      - run: pnpm test
+
+      # The publishable artifact must stay valid: build (ng-packagr + finalize)
+      # + publint + attw. Catches a broken package.json/exports before a tag ever
+      # tries to publish it.
+      - run: pnpm run verify:pack
+
+      # The gallery must still build — it's what pages.yml deploys on merge to
+      # main. Gate it here so a broken demo is caught on the PR, not after merge.
+      - name: Build gallery
+        run: pnpm run dev:build
+        env:
+          PAGES_BASE: /fold-ng/
