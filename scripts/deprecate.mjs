@@ -58,6 +58,19 @@ if (go !== "y" && go !== "yes") {
   exit(1);
 }
 
+// Warn early if this machine isn't logged in — deprecate needs write auth, and
+// npm reports that as a cryptic 404. (0.1.0 was published by CI via OIDC, not
+// from here, so the laptop may never have logged in.)
+try {
+  execSync("npm whoami", { stdio: "pipe" });
+} catch {
+  console.error(
+    "\n✗ not logged in to npm on this machine — run `npm login` first" +
+      "\n  (a 404/401 on deprecate means missing write auth, not a missing version).\n",
+  );
+  exit(1);
+}
+
 // stdio: inherit so npm's interactive OTP prompt works.
 try {
   execFileSync("npm", ["deprecate", `${pkg}@${target}`, msg], {
