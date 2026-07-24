@@ -1,4 +1,11 @@
-import { cpSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import {
+  cpSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  readdirSync,
+  rmSync,
+} from "node:fs";
 import { resolve } from "node:path";
 
 /**
@@ -69,6 +76,14 @@ for (const doc of ["CHANGELOG.md", "llms.txt"]) {
   }
 }
 
+// 4 · Drop TS build artefacts ng-packagr leaves in dist/. A `.tsbuildinfo` is an
+//     incremental-compile cache (~100 kB) — pure cruft in a published package.
+for (const f of readdirSync(DIST)) {
+  if (f.endsWith(".tsbuildinfo")) {
+    rmSync(resolve(DIST, f));
+  }
+}
+
 console.log(
-  "✓ finalize-dist: tokens CSS copied, exports re-injected, docs carried into dist/",
+  "✓ finalize-dist: tokens CSS copied, exports re-injected, docs carried into dist/, tsbuildinfo pruned",
 );

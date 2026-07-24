@@ -12,6 +12,9 @@ All notable changes to **fold-ng** are documented here. The format follows
   binding (`[attr.inert]`) rather than a property binding. No behaviour change —
   AOT was always clean — but it silences an `NG0303` "unknown property" warning
   raised by the JIT element-schema in dev/test runtimes.
+- **Published tarball** no longer ships `tsconfig.lib.tsbuildinfo` — a ~100 kB
+  TypeScript incremental-build cache that `finalize-dist` now prunes. Smaller
+  install (14 → 13 files).
 
 ## [0.2.0] - 2026-07-24
 

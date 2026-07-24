@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
 [![npm downloads](https://img.shields.io/npm/dm/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
-[![minzipped size](https://img.shields.io/bundlephobia/minzip/fold-ng)](https://bundlephobia.com/package/fold-ng)
+[![install size](https://packagephobia.com/badge?p=fold-ng)](https://packagephobia.com/result?p=fold-ng)
 [![types included](https://img.shields.io/npm/types/fold-ng.svg)](https://www.npmjs.com/package/fold-ng)
 [![license](https://img.shields.io/npm/l/fold-ng.svg)](./LICENSE)
 [![status: pre-1.0](https://img.shields.io/badge/status-pre--1.0-2ea043)](./CHANGELOG.md)
@@ -34,6 +34,12 @@ npm install fold-ng
 
 Angular 22 (`@angular/core`, `@angular/common`, `@angular/forms`,
 `@angular/platform-browser`) is a peer dependency.
+
+> **Bundle size.** Components are standalone and the package is side-effect-free
+> except its CSS (`sideEffects: ["**/*.css"]`), so you only ship what you import —
+> not the whole library. (No Bundlephobia badge: it can't measure an Angular
+> partial-Ivy package, which needs the Angular linker to become final JS — the
+> install-size badge above is the honest figure.)
 
 ## Quickstart
 
