@@ -61,6 +61,13 @@ every token `as const` and exposes `fold*Var` helpers so TS call-sites get
 autocomplete + a compile error on a typo. CSS `styles:` strings can't use them,
 which is exactly why 1.3/1.7 exist — the guard covers what the type system can't.
 
+1.9 **Named surfaces re-point roles, never a component's internals.** A region
+that needs a different palette (`[data-surface="chrome"]`, `[data-surface="accent"]`)
+re-declares role tokens for its sub-tree; a theme diverges by overriding those
+roles under the surface. The accent surface auto-inverts via a capture-then-invert
+trick (avoids the `primary`/`on-primary` CSS cycle). Full mechanism + the
+per-theme override seam: [`surfaces.md`](surfaces.md).
+
 ---
 
 ## 2 · TypeScript
