@@ -52,6 +52,9 @@
 }
 .pg-preview {
   grid-area: preview;
+  /* a query container so the header's device cluster can collapse to icon-only
+     against the PREVIEW panel's width (not the whole playground's) */
+  container: pgpreview / inline-size;
 }
 .pg-code {
   grid-area: code;
@@ -92,6 +95,16 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* The preview content is always wrapped in a viewport frame so a single
+   <ng-content> serves both modes. Off (default), the wrappers are layout-
+   transparent — the demo behaves exactly as if projected straight into the body
+   (incl. stage's aspect-ratio window). On (`responsive`), they become the real
+   resizable frame styled below. */
+.pg-vp-frame,
+.pg-vp-inner {
+  display: contents;
 }
 /* `stage` mode: sit the preview on an app-background backdrop, inset + padded
    inside the card, so a demo that is itself a card reads with clear hierarchy. */
@@ -177,4 +190,151 @@
   font-size: 12px;
   line-height: 1.6;
   color: var(--fold-color-text-secondary);
+}
+
+/* ── Responsive viewport controller (opt-in via `responsive`) ─────────────────
+   A device/px ruler bar above a resizable frame. The demo renders at a real
+   width and is scaled to fit with `zoom`, so its own container queries resolve
+   at the true width. */
+.pg-preview-body.is-responsive {
+  gap: 0;
+  padding: 0;
+  min-height: 460px;
+}
+/* When a page also opts into `stage`, the responsive frame IS the stage — drop
+   the aspect-ratio window so the two don't fight. */
+:host(.pg-stage) .pg-preview-body.is-responsive {
+  flex: 1 1 auto;
+  aspect-ratio: auto;
+  min-height: 460px;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+/* The controls ride the preview header's right edge (projected [titleAction]),
+   stacked: device segmented control over the width slider. Keeps the preview
+   frame full-height — no dedicated bar row. */
+.pg-vp {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.pg-vp-devices {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-sunken);
+}
+.pg-vp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 0;
+  border-radius: var(--fold-radius-sm);
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.pg-vp-btn:hover {
+  color: var(--fold-color-text);
+}
+.pg-vp-btn.is-on {
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  box-shadow: var(--fold-shadow-sm);
+}
+.pg-vp-ic {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.pg-vp-px {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--fold-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pg-vp-btn.is-on .pg-vp-px {
+  color: var(--fold-color-primary);
+}
+
+.pg-vp-slider {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.pg-vp-slider input[type="range"] {
+  width: 200px;
+  accent-color: var(--fold-color-primary);
+  cursor: ew-resize;
+}
+.pg-vp-readout {
+  min-width: 58px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fold-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Narrow preview panel: the labelled device buttons won't share the header row
+   with the title, so collapse them to icon-only (name + px live in the button
+   `title` tooltip). At the mobile fold the whole cluster steps aside for the
+   Code toggle. Measured against the preview panel (container: pgpreview). */
+@container pgpreview (max-width: 560px) {
+  .pg-vp-name,
+  .pg-vp-px {
+    display: none;
+  }
+  .pg-vp-btn {
+    padding: 6px 8px;
+  }
+  .pg-vp-slider input[type="range"] {
+    width: 150px;
+  }
+}
+@container pgpreview (max-width: 400px) {
+  .pg-vp {
+    display: none;
+  }
+}
+
+/* the resizable frame — a canvas the device sits centered on, scrolling only if
+   a render is somehow drawn wider than the frame (it never is: zoom fits it) */
+.pg-preview-body.is-responsive .pg-vp-frame {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 20px;
+  background: var(--fold-color-bg-page);
+}
+.pg-preview-body.is-responsive .pg-vp-inner {
+  display: block;
+  flex: 0 0 auto;
+  /* the demo's own @container queries resolve against THIS width (the real px),
+     which is the whole point of rendering true-width then zooming to fit */
+  container-type: inline-size;
+}
+/* a device (constrained width) gets a faint viewport edge; fluid gets none */
+.pg-preview-body.is-responsive .pg-vp-inner.is-device {
+  border-radius: var(--fold-radius-md);
+  outline: 1px solid var(--fold-color-border-subtle);
+  outline-offset: 0;
 }

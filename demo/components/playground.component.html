@@ -19,6 +19,58 @@
       raisedBands
     >
       <fold-element-title cardHeader variant="title" icon="eye" title="Preview">
+        <!-- responsive: the device/px ruler + width slider ride the header's
+             right edge (stacked), so the preview keeps its full height -->
+        @if (responsive()) {
+          <div titleAction class="pg-vp">
+            <div class="pg-vp-devices" role="group" aria-label="Preview width">
+              <button
+                type="button"
+                class="pg-vp-btn"
+                title="Fluid — fills the frame"
+                [class.is-on]="activeViewport() === 'fluid'"
+                [attr.aria-pressed]="activeViewport() === 'fluid'"
+                (click)="setViewport(null)"
+              >
+                <svg class="pg-vp-ic" viewBox="0 0 24 24" aria-hidden="true">
+                  <path [attr.d]="fluidIcon" fill="currentColor" />
+                </svg>
+                <span class="pg-vp-name">Fluid</span>
+              </button>
+              @for (v of viewports; track v.id) {
+                <button
+                  type="button"
+                  class="pg-vp-btn"
+                  [title]="v.label + ' — ' + v.w + 'px'"
+                  [class.is-on]="activeViewport() === v.id"
+                  [attr.aria-pressed]="activeViewport() === v.id"
+                  (click)="setViewport(v.w)"
+                >
+                  <svg class="pg-vp-ic" viewBox="0 0 24 24" aria-hidden="true">
+                    <path [attr.d]="v.d" fill="currentColor" />
+                  </svg>
+                  <span class="pg-vp-name">{{ v.label }}</span>
+                  <span class="pg-vp-px">{{ v.w }}</span>
+                </button>
+              }
+            </div>
+            <div class="pg-vp-slider">
+              <input
+                #slider
+                type="range"
+                [min]="VP_MIN"
+                [max]="VP_MAX"
+                step="1"
+                [value]="sliderValue()"
+                (input)="onSlider(slider.valueAsNumber)"
+                aria-label="Custom preview width"
+              />
+              <span class="pg-vp-readout">{{
+                vpWidth() === null ? "Fluid" : vpWidth() + " px"
+              }}</span>
+            </div>
+          </div>
+        }
         <!-- mobile only: the code panel collapses; this reveals it as a glass
              overlay over the preview -->
         <button
@@ -37,8 +89,17 @@
       <div cardHeader class="pg-head-actions">
         <ng-content select="[preview-actions]" />
       </div>
-      <div class="pg-body pg-preview-body">
-        <ng-content />
+      <div class="pg-body pg-preview-body" [class.is-responsive]="responsive()">
+        <div class="pg-vp-frame" #vpFrame>
+          <div
+            class="pg-vp-inner"
+            [class.is-device]="responsive() && vpWidth() !== null"
+            [style.width]="responsive() ? vpInnerWidth() : null"
+            [style.zoom]="responsive() ? vpScale() : null"
+          >
+            <ng-content />
+          </div>
+        </div>
         @if (codeOpen()) {
           <div class="pg-code-overlay">
             <div class="pg-code-overlay-top">
