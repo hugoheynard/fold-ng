@@ -30,6 +30,12 @@ import {
  * | `ringStyle`  | `'solid' \| 'dotted'`  | `'solid'` | Ring line style (`dotted` = scheduled).      |
  *
  * @selector `fold-avatar-detail`
+ *
+ * @example
+ * ```html
+ * <fold-avatar-detail primary="Alex Rivers" secondary="alex@sh3pherd.dev" />
+ * <fold-avatar-detail primary="Acme Corp" secondary="Organisation" square />
+ * ```
  */
 @Component({
   selector: "fold-avatar-detail",

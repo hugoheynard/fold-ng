@@ -52,4 +52,39 @@ describe("FoldAvatarDetailComponent", () => {
       }).cmp.resolvedAvatarName(),
     ).toBe("AR Team");
   });
+
+  it("forwards its presentation inputs to the embedded avatar", () => {
+    const fixture = TestBed.createComponent(FoldAvatarDetailComponent);
+    const ref = fixture.componentRef;
+    ref.setInput("primary", "Alex Rivers");
+    ref.setInput("size", "lg");
+    ref.setInput("variant", "ghost");
+    ref.setInput("square", true);
+    ref.setInput("muted", true);
+    ref.setInput("ring", "accent");
+    ref.setInput("ringStyle", "dotted");
+    fixture.detectChanges();
+
+    const avatar = (fixture.nativeElement as HTMLElement).querySelector(
+      ".avatar",
+    );
+    expect(avatar?.classList.contains("size-lg")).toBe(true);
+    expect(avatar?.classList.contains("variant-ghost")).toBe(true);
+    expect(avatar?.classList.contains("shape-square")).toBe(true);
+    expect(avatar?.classList.contains("is-muted")).toBe(true);
+    expect(avatar?.getAttribute("data-ring")).toBe("accent");
+    expect(avatar?.getAttribute("data-ring-style")).toBe("dotted");
+  });
+
+  it("forwards imageUrl — the avatar shows the image instead of initials", () => {
+    const fixture = TestBed.createComponent(FoldAvatarDetailComponent);
+    fixture.componentRef.setInput("primary", "Acme Corp");
+    fixture.componentRef.setInput("imageUrl", "/logo.svg");
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector("img.avatar-img")?.getAttribute("src")).toBe(
+      "/logo.svg",
+    );
+  });
 });
