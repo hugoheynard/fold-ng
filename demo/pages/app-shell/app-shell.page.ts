@@ -40,8 +40,11 @@ export default class AppShellPage {
   protected readonly theme = signal<"dark" | "light">("dark");
 
   /* ── Live shell parameters (driven by the Settings panel) ── */
-  /** Raise the primary rail into a floating card (per-region `foldElevated`). */
-  protected readonly railElevated = signal(false);
+  /** `foldElevated` is per-region — each surface floats on its own — so the demo
+   *  exposes one toggle per region rather than a single global switch. */
+  protected readonly elevatedPrimary = signal(false);
+  protected readonly elevatedSecondary = signal(false);
+  protected readonly elevatedHeader = signal(false);
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
   protected readonly shellFooterLayout = signal<"inset" | "full">("full");
   protected readonly shellFooterBehavior = signal<"pinned" | "scroll">(
@@ -76,9 +79,9 @@ export default class AppShellPage {
       `  [railWidth]="${this.shellRailWidth()}"`,
       `  [headerHeight]="${this.shellHeaderHeight()}"`,
       ">",
-      `  <fold-menu railPrimary${this.railElevated() ? " foldElevated" : ""}>…</fold-menu>`,
-      "  <fold-menu railSecondary>…</fold-menu>",
-      "  <header header>…</header>",
+      `  <fold-menu railPrimary${this.elevatedPrimary() ? " foldElevated" : ""}>…</fold-menu>`,
+      `  <fold-menu railSecondary${this.elevatedSecondary() ? " foldElevated" : ""}>…</fold-menu>`,
+      `  <header header${this.elevatedHeader() ? " foldElevated" : ""}>…</header>`,
       "  <!-- untagged content → the main area -->",
       "  <main>…</main>",
       ...(this.shellFooter()

@@ -14,21 +14,28 @@
 
   <dev-playground [code]="shellCode()" [initialWidth]="1280">
     <div class="np-field" params>
-      <span class="gal-tag">rail foldElevated</span>
+      <span class="gal-tag">foldElevated (per region)</span>
       <div class="ss-seg">
         <button
           type="button"
-          [class.is-on]="!railElevated()"
-          (click)="railElevated.set(false)"
+          [class.is-on]="elevatedPrimary()"
+          (click)="elevatedPrimary.set(!elevatedPrimary())"
         >
-          flat
+          rail 1
         </button>
         <button
           type="button"
-          [class.is-on]="railElevated()"
-          (click)="railElevated.set(true)"
+          [class.is-on]="elevatedSecondary()"
+          (click)="elevatedSecondary.set(!elevatedSecondary())"
         >
-          elevated
+          rail 2
+        </button>
+        <button
+          type="button"
+          [class.is-on]="elevatedHeader()"
+          (click)="elevatedHeader.set(!elevatedHeader())"
+        >
+          header
         </button>
       </div>
     </div>
@@ -134,7 +141,7 @@
           railPrimary
           tint="primary"
           [expanded]="previewNavOpen()"
-          [foldElevated]="railElevated()"
+          [foldElevated]="elevatedPrimary()"
         >
           <div header class="rail-brand">S3</div>
           @for (i of railNav; track i.id) {
@@ -153,7 +160,12 @@
             label="Settings"
           ></button>
         </fold-menu>
-        <fold-menu railSecondary level="secondary" [expanded]="true">
+        <fold-menu
+          railSecondary
+          level="secondary"
+          [expanded]="true"
+          [foldElevated]="elevatedSecondary()"
+        >
           <div header class="lib-head">Workspace</div>
           <button
             fold-menu-item
@@ -164,7 +176,7 @@
           <button fold-menu-item icon="contracts" label="Contracts"></button>
           <button fold-menu-item icon="music" label="Library"></button>
         </fold-menu>
-        <div header class="sp-header">
+        <div header class="sp-header" [foldElevated]="elevatedHeader()">
           <!-- rendered always; shown only when the shell folds to one column
                  (container query in the scss), so it tracks the real width -->
           <button
