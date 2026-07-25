@@ -35,6 +35,7 @@ export type {
 } from "./components/actions/button-icon/button-icon.types";
 export { FoldToggleIconComponent } from "./components/actions/toggle-icon/toggle-icon.component";
 export { FoldCardComponent } from "./components/content/card/card.component";
+export type { FoldCardBandChrome } from "./components/content/card/card.component";
 export { FoldContextCardComponent } from "./components/content/context-card/context-card.component";
 export { FoldElementTitleComponent } from "./components/content/element-title/element-title.component";
 export { FoldFileDropzoneComponent } from "./components/forms/file-dropzone/file-dropzone.component";

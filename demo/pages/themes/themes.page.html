@@ -14,7 +14,7 @@
     description="Open one to see the roles it actually resolves to — every swatch below is live, rendered inside that theme rather than listed from a table."
   >
     @for (t of themes; track t.name) {
-    <fold-card class="th-card" padding="none" separators>
+    <fold-card class="th-card" padding="none" separators="both">
       <div cardHeader class="th-head">
         <div class="th-id">
           <span class="th-name">{{ t.name }}</span>
@@ -94,7 +94,7 @@
       }
     </ol>
 
-    <fold-card class="th-smells" separators raisedBands>
+    <fold-card class="th-smells" separators="both" raisedBands="both">
       <strong cardHeader>Then look at it, and distrust these</strong>
       <ul class="th-smell-list">
         @for (smell of smells; track smell) {

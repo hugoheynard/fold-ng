@@ -84,18 +84,17 @@
   padding: var(--fold-card-padding, var(--_pad));
 }
 
-/* ── Optional chrome — independent, so each toggles on its own ────────────── */
-/* raisedBands: tint the bands a clear step above the body (the overlay is
-   stacked so a low-alpha token still reads). */
-:host(.raised-bands) .card-header:not(:empty),
-:host(.raised-bands) .card-footer:not(:empty) {
+/* ── Optional chrome — per band, independent axes, each toggles on its own ─── */
+/* raisedBands: tint a band a clear step above the body. */
+:host(.raise-header) .card-header:not(:empty),
+:host(.raise-footer) .card-footer:not(:empty) {
   background-color: var(--_band-raise);
 }
 /* separators: a fine hairline between a band and the body. */
-:host(.has-sep) .card-header:not(:empty) {
+:host(.sep-header) .card-header:not(:empty) {
   border-bottom: 1px solid var(--_sep-line);
 }
-:host(.has-sep) .card-footer:not(:empty) {
+:host(.sep-footer) .card-footer:not(:empty) {
   border-top: 1px solid var(--_sep-line);
 }
 

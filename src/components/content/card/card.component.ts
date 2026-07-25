@@ -1,5 +1,9 @@
 import { booleanAttribute, Component, input, output } from "@angular/core";
 
+/** Which band(s) carry a chrome treatment (a separator hairline or a raised
+ *  tint): neither, just the header, just the footer, or both. */
+export type FoldCardBandChrome = "none" | "header" | "footer" | "both";
+
 /**
  * `<fold-card>` — the canonical raised content surface: a solid
  * `surface-card` background, a hairline border and a consistent radius. Use it
@@ -13,9 +17,13 @@ import { booleanAttribute, Component, input, output } from "@angular/core";
  * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`. Sets the *body*
  *   padding; override with a custom value via `--fold-card-padding`.
  * - `interactive` — makes the whole card a clickable control (see below).
- * - `separators` — draw a hairline between a projected header/footer and the body.
- * - `raisedBands` — tint the header/footer bands a step above the surface
- *   (fainter on `sunken`).
+ * - `separators` — which bands get a hairline against the body:
+ *   `none` (default) · `header` · `footer` · `both`.
+ * - `raisedBands` — which bands are tinted a step above the surface (fainter on
+ *   `sunken`): `none` (default) · `header` · `footer` · `both`.
+ *
+ * `separators` and `raisedBands` are per-band and independent axes, so a card can
+ * have (say) a raised, un-separated header over a flush footer.
  *
  * Content projection:
  * - default slot → the card body.
@@ -38,7 +46,7 @@ import { booleanAttribute, Component, input, output } from "@angular/core";
  * ```html
  * <fold-card>Static content</fold-card>
  * <fold-card surface="sunken" padding="lg">Deep container</fold-card>
- * <fold-card separators>
+ * <fold-card separators="both">
  *   <h3 cardHeader>Title</h3>
  *   Body content
  *   <div cardFooter>Actions</div>
@@ -70,8 +78,10 @@ import { booleanAttribute, Component, input, output } from "@angular/core";
     "[class.p-sm]": "padding() === 'sm'",
     "[class.p-lg]": "padding() === 'lg'",
     "[class.is-interactive]": "interactive()",
-    "[class.has-sep]": "separators()",
-    "[class.raised-bands]": "raisedBands()",
+    "[class.sep-header]": "hasBand(separators(), 'header')",
+    "[class.sep-footer]": "hasBand(separators(), 'footer')",
+    "[class.raise-header]": "hasBand(raisedBands(), 'header')",
+    "[class.raise-footer]": "hasBand(raisedBands(), 'footer')",
     "[attr.role]": "interactive() ? 'button' : null",
     "[attr.tabindex]": "interactive() ? 0 : null",
     "[attr.aria-label]": "interactive() ? (ariaLabel() ?? null) : null",
@@ -95,14 +105,23 @@ export class FoldCardComponent {
   readonly interactive = input(false, { transform: booleanAttribute });
   /** Accessible name for the interactive card, when its content isn't enough. */
   readonly ariaLabel = input<string>();
-  /** Draw a hairline between a projected header/footer and the body. */
-  readonly separators = input(false, { transform: booleanAttribute });
-  /** Lift the header/footer bands with a subtle raised tint over the card
-   *  surface (fainter on `sunken`), to set the chrome apart from the body. */
-  readonly raisedBands = input(false, { transform: booleanAttribute });
+  /** Which bands get a hairline against the body — `none` (default), `header`,
+   *  `footer`, or `both`. */
+  readonly separators = input<FoldCardBandChrome>("none");
+  /** Which bands are lifted with a subtle raised tint over the card surface
+   *  (fainter on `sunken`) — `none` (default), `header`, `footer`, or `both`. */
+  readonly raisedBands = input<FoldCardBandChrome>("none");
 
   /** Fires when an `interactive` card is activated (click, Enter, or Space). */
   readonly activated = output<Event>();
+
+  /** Whether a per-band chrome value applies to the given band. */
+  protected hasBand(
+    value: FoldCardBandChrome,
+    band: "header" | "footer",
+  ): boolean {
+    return value === band || value === "both";
+  }
 
   protected onActivate(event: Event): void {
     if (this.interactive()) {

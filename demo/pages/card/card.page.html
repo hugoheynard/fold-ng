@@ -88,22 +88,32 @@
     </div>
 
     <div class="np-field" params>
-      <span class="gal-tag">chrome</span>
+      <span class="gal-tag">separators</span>
       <div class="ss-seg">
+        @for (c of bandChromes; track c) {
         <button
           type="button"
-          [class.is-on]="cpSeparators()"
-          (click)="cpSeparators.set(!cpSeparators())"
+          [class.is-on]="cpSeparators() === c"
+          (click)="cpSeparators.set(c)"
         >
-          separators
+          {{ c }}
         </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">raisedBands</span>
+      <div class="ss-seg">
+        @for (c of bandChromes; track c) {
         <button
           type="button"
-          [class.is-on]="cpRaised()"
-          (click)="cpRaised.set(!cpRaised())"
+          [class.is-on]="cpRaised() === c"
+          (click)="cpRaised.set(c)"
         >
-          raisedBands
+          {{ c }}
         </button>
+        }
       </div>
     </div>
 

@@ -2,6 +2,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { FoldCardComponent } from "./card.component";
+import type { FoldCardBandChrome } from "./card.component";
 
 @Component({
   standalone: true,
@@ -31,8 +32,8 @@ class HostComponent {
   readonly padding = signal<"none" | "sm" | "md" | "lg">("md");
   readonly interactive = signal(false);
   readonly ariaLabel = signal<string | undefined>(undefined);
-  readonly separators = signal(false);
-  readonly raisedBands = signal(false);
+  readonly separators = signal<FoldCardBandChrome>("none");
+  readonly raisedBands = signal<FoldCardBandChrome>("none");
   readonly withHeader = signal(false);
   readonly withFooter = signal(false);
   readonly activations: Event[] = [];
@@ -183,33 +184,52 @@ describe("FoldCardComponent", () => {
     expect(card.querySelector(".card-header .body")).toBeNull();
   });
 
-  it("toggles the separators modifier via the `separators` input", () => {
+  it("maps `separators` to per-band classes (none/header/footer/both)", () => {
     const { fixture, card } = render();
-    expect(card.classList.contains("has-sep")).toBe(false);
-    fixture.componentInstance.separators.set(true);
+    const sep = fixture.componentInstance.separators;
+    expect(card.classList.contains("sep-header")).toBe(false);
+    expect(card.classList.contains("sep-footer")).toBe(false);
+
+    sep.set("header");
     fixture.detectChanges();
-    expect(card.classList.contains("has-sep")).toBe(true);
+    expect(card.classList.contains("sep-header")).toBe(true);
+    expect(card.classList.contains("sep-footer")).toBe(false);
+
+    sep.set("footer");
+    fixture.detectChanges();
+    expect(card.classList.contains("sep-header")).toBe(false);
+    expect(card.classList.contains("sep-footer")).toBe(true);
+
+    sep.set("both");
+    fixture.detectChanges();
+    expect(card.classList.contains("sep-header")).toBe(true);
+    expect(card.classList.contains("sep-footer")).toBe(true);
   });
 
-  it("toggles the raised-bands modifier via the `raisedBands` input", () => {
+  it("maps `raisedBands` to per-band classes (none/header/footer/both)", () => {
     const { fixture, card } = render();
-    expect(card.classList.contains("raised-bands")).toBe(false);
-    fixture.componentInstance.raisedBands.set(true);
+    const raised = fixture.componentInstance.raisedBands;
+    raised.set("footer");
     fixture.detectChanges();
-    expect(card.classList.contains("raised-bands")).toBe(true);
+    expect(card.classList.contains("raise-footer")).toBe(true);
+    expect(card.classList.contains("raise-header")).toBe(false);
+
+    raised.set("both");
+    fixture.detectChanges();
+    expect(card.classList.contains("raise-header")).toBe(true);
+    expect(card.classList.contains("raise-footer")).toBe(true);
   });
 
-  it("separators and raisedBands are independent modifiers", () => {
+  it("separators and raisedBands are independent per-band axes", () => {
     const { fixture, card } = render();
-    fixture.componentInstance.raisedBands.set(true);
+    // a raised header over a separated footer — asymmetric, each axis its own band
+    fixture.componentInstance.raisedBands.set("header");
+    fixture.componentInstance.separators.set("footer");
     fixture.detectChanges();
-    expect(card.classList.contains("raised-bands")).toBe(true);
-    expect(card.classList.contains("has-sep")).toBe(false);
-    fixture.componentInstance.separators.set(true);
-    fixture.componentInstance.raisedBands.set(false);
-    fixture.detectChanges();
-    expect(card.classList.contains("has-sep")).toBe(true);
-    expect(card.classList.contains("raised-bands")).toBe(false);
+    expect(card.classList.contains("raise-header")).toBe(true);
+    expect(card.classList.contains("raise-footer")).toBe(false);
+    expect(card.classList.contains("sep-footer")).toBe(true);
+    expect(card.classList.contains("sep-header")).toBe(false);
   });
 });
 
