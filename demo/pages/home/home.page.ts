@@ -8,6 +8,7 @@ import {
   FoldCalloutComponent,
   FoldCardComponent,
   FoldDisclosureComponent,
+  FoldElementTitleComponent,
   FoldHeroSectionComponent,
   FoldIconComponent,
   type FoldIconName,
@@ -38,6 +39,7 @@ interface Feature {
     FoldAsideLayoutComponent,
     FoldAvatarDetailComponent,
     FoldDisclosureComponent,
+    FoldElementTitleComponent,
     FoldIconComponent,
     FoldButtonComponent,
     FoldBadgeComponent,
@@ -100,7 +102,7 @@ export default class HomePage {
     {
       icon: "org-chart",
       title: "Layouts that fold",
-      body: "app-shell, tab-layout, aside-layout, sticky-column — the structural pieces every app hand-rolls, responsive on their own width, yours in one binding.",
+      body: "app-shell, nav-layout, aside-layout, sticky-column — the structural pieces every app hand-rolls, responsive on their own width, yours in one binding.",
     },
     {
       icon: "completed",

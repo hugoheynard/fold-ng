@@ -70,8 +70,18 @@
   <fold-page-section>
     <fold-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
       <!-- left rail: one card, the numbers -->
-      <fold-card asideLeft class="home-figures" separators raisedBands>
-        <strong cardHeader>By the numbers</strong>
+      <fold-card
+        asideLeft
+        class="home-figures"
+        separators="both"
+        raisedBands="both"
+      >
+        <fold-element-title
+          cardHeader
+          variant="title"
+          icon="stats"
+          title="By the numbers"
+        />
         <div class="home-figures-body">
           @for (s of stats; track s.label) {
           <div class="home-figure">
@@ -86,13 +96,14 @@
 
       <section class="home-features">
         @for (f of features; track f.title) {
-        <fold-card class="home-feature" separators raisedBands>
-          <div cardHeader class="home-feature-head">
-            <span class="home-feature-icon">
-              <fold-icon [name]="f.icon" size="md" />
-            </span>
-            <strong>{{ f.title }}</strong>
-          </div>
+        <fold-card class="home-feature" separators="both" raisedBands="both">
+          <fold-element-title
+            cardHeader
+            variant="title"
+            iconTone="primary"
+            [icon]="f.icon"
+            [title]="f.title"
+          />
           <p class="gal-body">{{ f.body }}</p>
         </fold-card>
         }
@@ -114,8 +125,18 @@
       </fold-callout>
 
       <!-- right rail: support -->
-      <fold-card asideRight class="home-support" separators raisedBands>
-        <strong cardHeader>Support Fold</strong>
+      <fold-card
+        asideRight
+        class="home-support"
+        separators="both"
+        raisedBands="both"
+      >
+        <fold-element-title
+          cardHeader
+          variant="title"
+          icon="heart"
+          title="Support Fold"
+        />
         <div class="home-support-body">
           <p class="gal-body">
             Fold is <strong>donationware</strong> — free to use, built in the
@@ -162,8 +183,18 @@
       </fold-card>
 
       <!-- right rail: the author -->
-      <fold-card asideRight class="home-author" separators raisedBands>
-        <strong cardHeader>About the author</strong>
+      <fold-card
+        asideRight
+        class="home-author"
+        separators="both"
+        raisedBands="both"
+      >
+        <fold-element-title
+          cardHeader
+          variant="title"
+          icon="user"
+          title="About the author"
+        />
         <div class="home-author-body">
           <fold-avatar-detail
             primary="Hugo Heynard"
