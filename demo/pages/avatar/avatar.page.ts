@@ -93,17 +93,43 @@ export default class AvatarPage {
   /** A team roster for the avatar-list — a few carry per-face state so the
    *  showcase demonstrates absence + scheduled status in context. */
   protected readonly team: readonly FoldAvatarListItem[] = [
-    { name: "Clément Aubry" },
+    {
+      name: "Clément Aubry",
+      imageUrl: `${import.meta.env.BASE_URL}avatars/p1.svg`,
+    }, // photo
     { name: "Inès Bernard", variant: "ghost" }, // a guest among members
     { name: "Marc Machine", muted: true }, // absent today
-    { name: "Sofia Duarte", ring: "accent", ringStyle: "dotted" }, // incoming
+    {
+      name: "Sofia Duarte",
+      ring: "accent",
+      ringStyle: "dotted",
+      imageUrl: `${import.meta.env.BASE_URL}avatars/p3.svg`,
+    }, // incoming, photo
     { name: "Léa Petit", ring: "warning", ringStyle: "dotted" }, // leaving
-    { name: "Tom Rivière" },
+    {
+      name: "Tom Rivière",
+      imageUrl: `${import.meta.env.BASE_URL}avatars/p6.svg`,
+    }, // photo
     { name: "Nora Khan" },
   ];
   /** A self-contained image (data URI) for the imageUrl demos — no network. */
   protected readonly demoAvatarImage =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%232f855a'/%3E%3Ctext x='22' y='30' font-size='20' fill='white' text-anchor='middle' font-family='sans-serif'%3ES3%3C/text%3E%3C/svg%3E";
+
+  /** Six in-repo portrait assets (`public/avatars`, ~0.7 KB each) — a real team
+   *  for the photo demos. `BASE_URL` keeps them correct in dev and on Pages. */
+  protected readonly photoTeam: readonly { name: string; imageUrl: string }[] =
+    [
+      "Amara Okafor",
+      "Noah Bianchi",
+      "Priya Raman",
+      "Léa Petit",
+      "Kwame Mensah",
+      "Elena Rossi",
+    ].map((name, i) => ({
+      name,
+      imageUrl: `${import.meta.env.BASE_URL}avatars/p${i + 1}.svg`,
+    }));
 
   /** The palette registry is a root singleton — switching it recolours every
    *  avatar in the app at once (a given seed keeps one colour, app-wide). */

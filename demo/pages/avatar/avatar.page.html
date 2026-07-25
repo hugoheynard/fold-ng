@@ -45,6 +45,16 @@
           }
           <div class="gal-cell">
             <span class="gal-tag"
+              >imageUrl — a real team (in-repo photo assets, ~0.7 KB each)</span
+            >
+            <div class="gal-row">
+              @for (m of photoTeam; track m.imageUrl) {
+              <fold-avatar [name]="m.name" [imageUrl]="m.imageUrl" size="lg" />
+              }
+            </div>
+          </div>
+          <div class="gal-cell">
+            <span class="gal-tag"
               >deterministic colour per seed — switch recolours all at
               once</span
             >
