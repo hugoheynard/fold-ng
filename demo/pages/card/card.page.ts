@@ -2,13 +2,15 @@ import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
+  FoldBadgeComponent,
   FoldButtonComponent,
   FoldCardComponent,
+  FoldLinkComponent,
   FoldPageLayoutComponent,
   type FoldCardBandChrome,
 } from "../../../src/public-api";
 
-type CardSurface = "card" | "sunken";
+type CardSurface = "card" | "sunken" | "accent";
 type CardRadius = "sm" | "md" | "lg";
 type CardPadding = "none" | "sm" | "md" | "lg";
 
@@ -21,11 +23,18 @@ type CardPadding = "none" | "sm" | "md" | "lg";
     FoldPageLayoutComponent,
     FoldCardComponent,
     FoldButtonComponent,
+    FoldBadgeComponent,
+    FoldLinkComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./card.page.html",
 })
 export default class CardPage {
+  protected readonly surfaces: readonly CardSurface[] = [
+    "card",
+    "sunken",
+    "accent",
+  ];
   protected readonly radii: readonly CardRadius[] = ["sm", "md", "lg"];
   protected readonly paddings: readonly CardPadding[] = [
     "none",
@@ -57,8 +66,8 @@ export default class CardPage {
 
   protected readonly cardCode = computed(() => {
     const attrs: string[] = [];
-    if (this.cpSurface() === "sunken") {
-      attrs.push('surface="sunken"');
+    if (this.cpSurface() !== "card") {
+      attrs.push(`surface="${this.cpSurface()}"`);
     }
     if (this.cpRadius() !== "lg") {
       attrs.push(`radius="${this.cpRadius()}"`);

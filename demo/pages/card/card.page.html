@@ -20,20 +20,15 @@
     <div class="np-field" params>
       <span class="gal-tag">surface</span>
       <div class="ss-seg">
+        @for (s of surfaces; track s) {
         <button
           type="button"
-          [class.is-on]="cpSurface() === 'card'"
-          (click)="cpSurface.set('card')"
+          [class.is-on]="cpSurface() === s"
+          (click)="cpSurface.set(s)"
         >
-          card
+          {{ s }}
         </button>
-        <button
-          type="button"
-          [class.is-on]="cpSurface() === 'sunken'"
-          (click)="cpSurface.set('sunken')"
-        >
-          sunken
-        </button>
+        }
       </div>
     </div>
 
@@ -163,6 +158,55 @@
       Activated {{ opened() }}× — click it, or <kbd>Tab</kbd> to it and press
       <kbd>Enter</kbd> / <kbd>Space</kbd>. It must not contain its own buttons
       or links (a <code>role="button"</code> can't wrap interactive controls).
+    </p>
+  </div>
+
+  <div class="gal-cell">
+    <span class="gal-tag"
+      >surface="accent" — accent fill, content auto-inverts</span
+    >
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      "
+    >
+      <!-- a plain card and an accent card, side by side, with the SAME nested
+           content — the accent card re-points the whole sub-tree, so the badge,
+           link, muted text and buttons all stay compatible with no extra code. -->
+      @for (accent of [false, true]; track accent) {
+      <fold-card
+        [surface]="accent ? 'accent' : 'card'"
+        separators="header"
+        raisedBands="header"
+      >
+        <strong cardHeader>Studio Plan</strong>
+        <p class="gal-body" style="margin: 0 0 4px">
+          Everything in Pro, plus shared workspaces.
+          <fold-badge content="Popular" variant="accent" />
+        </p>
+        <p class="gal-body" style="margin: 0">
+          <fold-link href="https://fold.sh3pherd.dev/docs" trailingIcon="globe">
+            Compare plans
+          </fold-link>
+        </p>
+        <div
+          cardFooter
+          style="display: flex; gap: 8px; justify-content: flex-end"
+        >
+          <button foldButton size="sm" emphasis="outline">Details</button>
+          <button foldButton size="sm">Choose</button>
+        </div>
+      </fold-card>
+      }
+    </div>
+    <p class="gal-body">
+      Same markup in both cards. On the accent one, text, the separator/raised
+      header, the badge, the link and both buttons resolve against an on-accent
+      palette — every value a <code>color-mix</code> of the accent, so it holds
+      on all themes. Solid buttons become an inverse chip; the soft/outline
+      emphases go glass.
     </p>
   </div>
 </fold-page-layout>
