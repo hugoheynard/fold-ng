@@ -1,0 +1,138 @@
+<fold-page-layout title="surfaces">
+  <p description>
+    A <strong>named surface</strong> re-points some semantic role tokens for its
+    sub-tree, so any component inside resolves its colours against the region's
+    palette — with <strong>no per-component code</strong>. It's stamped with
+    <code>[data-surface="…"]</code> (via the <code>foldSurface</code> directive,
+    or a component's own host binding). Two ship: <code>chrome</code> (app
+    furniture a mixed theme recolours) and <code>accent</code> (an
+    <strong>auto-inverting</strong> accent fill).
+  </p>
+  <gal-kind-badge titleBadge kind="foundation" />
+
+  <fold-callout variant="info" icon="info">
+    <strong
+      >The design system isn't a cage — it's a set of relationships.</strong
+    >
+    Writing your own CSS in a card is always free: raw values don't reference
+    the roles, so a surface never touches them. An <em>override</em> isn't a
+    hack — it re-anchors one <strong>relationship</strong> (text ↔ ground ↔
+    accent) inside a controlled frame, and coherence follows because the ratios
+    are preserved. You speak in roles and gain the adaptation, or you paint a
+    pixel and own it — both live in the same card.
+  </fold-callout>
+
+  <!-- Live proof: the SAME content, plain vs on the accent surface. -->
+  <fold-page-section title="Auto-inversion, live" icon="palette">
+    <p class="gal-body">
+      Identical markup in both cards. On the accent one, the icon tile, text,
+      the raised/separated header, the badge, the link and both buttons all read
+      on the accent — because the region re-points the roles they already
+      resolve against, not because the card special-cases any of them.
+    </p>
+    <div class="sf-grid">
+      @for (accent of [false, true]; track accent) {
+      <fold-card
+        [surface]="accent ? 'accent' : 'card'"
+        separators="header"
+        raisedBands="header"
+      >
+        <fold-element-title
+          cardHeader
+          variant="title"
+          iconTone="primary"
+          [icon]="demo.icon"
+          [title]="demo.title"
+        />
+        <p class="gal-body" style="margin: 0 0 6px">
+          {{ demo.body }} <fold-badge content="Popular" variant="accent" />
+        </p>
+        <p class="gal-body" style="margin: 0">
+          <fold-link href="https://fold.sh3pherd.dev/docs" trailingIcon="globe">
+            Compare plans
+          </fold-link>
+        </p>
+        <div
+          cardFooter
+          style="display: flex; gap: 8px; justify-content: flex-end"
+        >
+          <button foldButton size="sm" emphasis="outline">Details</button>
+          <button foldButton size="sm">Choose</button>
+        </div>
+      </fold-card>
+      }
+    </div>
+  </fold-page-section>
+
+  <!-- The mechanism -->
+  <fold-page-section title="How it works" icon="fold">
+    <fold-callout variant="accent" icon="lightning">
+      <strong>Why it can't be a flat override.</strong> An inverting surface
+      must <em>swap</em> the brand pair — <code>primary</code> becomes the light
+      ink, <code>on-primary</code> becomes the accent. Written on one element
+      that's a CSS custom-property cycle (<code>a: var(b); b: var(a)</code> →
+      both invalid). It's the wall a naïve "just set color + background" hits
+      the moment you nest a badge, a link, or a solid button.
+    </fold-callout>
+    <p class="gal-body">
+      The move:
+      <strong>capture on the surface, invert on the descendants.</strong>
+      The surface records the accent + its ink into two private vars
+      <em>while the tokens still hold their normal values</em>; the inverted
+      role-set is applied to descendants from those captures — so a role can
+      reference the pre-inversion value it replaces. No cycle, and every value
+      is a <code>color-mix</code> of the captured pair, so it's
+      <strong>derived, not authored</strong>: one definition holds on all five
+      themes, gradation kept in-hue.
+    </p>
+    <pre class="sf-pre"><code>{{ captureCode }}</code></pre>
+    <p class="gal-body">
+      An accent card is an <strong>emphasis surface</strong>: a mid-bright
+      accent caps white text near 3:1, so the text ramp is compressed and the
+      floor is <strong>AA-large (3:1)</strong> — reaching AA-body (4.5) would
+      mean darkening the brand accent, a deliberate no. A WCAG
+      <strong>contrast test</strong> resolves every theme's accent and fails the
+      build if the on-accent text drops below its floor. Certified, not
+      eyeballed.
+    </p>
+  </fold-page-section>
+
+  <!-- Overriding -->
+  <fold-page-section title="Overriding per theme" icon="sliders">
+    <p class="gal-body">
+      The derived defaults are good, not sacred. If a theme's accent is light
+      and the light-ink ramp reads thin, override any role by nesting the
+      theme's own selector under the surface — the same seam
+      <code>chrome</code> uses. Re-pointing <code>--_accent-ink</code> /
+      <code>--_accent-fill</code> is the cheapest lever (the whole ramp
+      follows); re-point one <code>--fold-color-*</code> when only that role
+      must move.
+    </p>
+    <pre class="sf-pre"><code>{{ overrideCode }}</code></pre>
+    <p class="gal-body">
+      Variables only — a theme never names a component's internals. Full
+      write-up in <code>docs/surfaces.md</code>.
+    </p>
+  </fold-page-section>
+
+  <!-- Gotchas -->
+  <fold-page-section title="Gotchas" icon="warning">
+    <fold-callout variant="warning" icon="info">
+      <ul class="sf-list">
+        <li>
+          <code>[data-surface="accent"] *</code> touches every descendant — the
+          price of the capture-then-invert split. Fine at card scale; don't wrap
+          huge trees.
+        </li>
+        <li>
+          <strong>Don't nest</strong> an accent surface inside another — the
+          inner would re-capture already-inverted values.
+        </li>
+        <li>
+          <strong>One ground per surface.</strong> <code>surface</code> stays
+          one axis: there is no <code>accent</code> × <code>sunken</code>.
+        </li>
+      </ul>
+    </fold-callout>
+  </fold-page-section>
+</fold-page-layout>

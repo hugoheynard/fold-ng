@@ -1,0 +1,35 @@
+/* `/surfaces` doc page. Global (ViewEncapsulation.None): the page owns these
+   `sf-` classes and projects them into fold sections. */
+
+/* Live proof grid: plain vs accent, side by side. */
+.sf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* Code blocks — a sunken slab with the mono ramp. */
+.sf-pre {
+  margin: 12px 0 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border-radius: var(--fold-radius-md);
+  border: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--fold-color-text-secondary);
+}
+
+.sf-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sf-list code {
+  font-size: 12px;
+}

@@ -39,6 +39,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   spinner: () => import("./pages/spinner/spinner.page"),
   "repeat-press": () => import("./pages/repeat-press/repeat-press.page"),
   themes: () => import("./pages/themes/themes.page"),
+  surfaces: () => import("./pages/surfaces/surfaces.page"),
   form: () => import("./pages/form/form.page"),
   avatar: () => import("./pages/avatar/avatar.page"),
   "app-shell": () => import("./pages/app-shell/app-shell.page"),

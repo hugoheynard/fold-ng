@@ -139,6 +139,13 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     color: "#64748b",
     items: [
       { id: "themes", label: "themes", icon: "grid", badge: "new" },
+      {
+        id: "surfaces",
+        label: "surfaces",
+        icon: "palette",
+        badge: "new",
+        badgeTone: "info",
+      },
       { id: "icons", label: "icons" },
       { id: "spinner", label: "spinner", badge: "new" },
       {
