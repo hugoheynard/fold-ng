@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Portrait">
+  <rect width="96" height="96" fill="#cfe3ff"/>
+  <path d="M14 96c0-20 15-30 34-30s34 10 34 30Z" fill="#3a4a63"/>
+  <rect x="42" y="52" width="12" height="18" rx="6" fill="#e7b48c"/>
+  <ellipse cx="48" cy="40" rx="18" ry="20" fill="#f2c8a0"/>
+  <path d="M30 40c0-16 8-24 18-24s18 8 18 24c0-9-6-13-18-13S30 31 30 40Z" fill="#2d2a26"/>
+  <circle cx="42" cy="41" r="1.7" fill="#3b3630"/>
+  <circle cx="54" cy="41" r="1.7" fill="#3b3630"/>
+  <path d="M43 49q5 4 10 0" stroke="#c98f68" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+</svg>
