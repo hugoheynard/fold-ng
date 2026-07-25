@@ -8,6 +8,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-page-layout` — a custom title slot.** Project `[pageTitle]`
+  (`FoldPageTitleDirective`) for a rich header — an avatar, a two-tone name — in
+  place of the plain `icon` + `title` inputs; it renders inside the page `<h1>`
+  and its presence alone switches the header on. Non-breaking.
 - **`fold-tabs` + `fold-tab-panel` — the in-page ARIA Tabs widget.** A
   `role="tablist"` of `role="tab"` buttons that switch layered panels without
   navigating: full roving-tabindex keyboard (arrows on both axes, `Home`/`End`,

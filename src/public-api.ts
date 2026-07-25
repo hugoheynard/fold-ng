@@ -119,7 +119,10 @@ export type {
 } from "./components/foundations/icon/builtin-icons";
 export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
 export { FoldNavLayoutComponent } from "./components/layout/nav-layout/nav-layout.component";
-export { FoldPageLayoutComponent } from "./components/layout/page-layout/page-layout.component";
+export {
+  FoldPageLayoutComponent,
+  FoldPageTitleDirective,
+} from "./components/layout/page-layout/page-layout.component";
 export { FoldPageSectionComponent } from "./components/layout/page-section/page-section.component";
 export { FoldHeroSectionComponent } from "./components/layout/hero-section/hero-section.component";
 export { FoldPaginatorComponent } from "./components/content/paginator/paginator.component";

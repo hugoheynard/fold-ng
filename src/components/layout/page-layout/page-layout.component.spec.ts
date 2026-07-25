@@ -1,7 +1,10 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldPageLayoutComponent } from "./page-layout.component";
+import {
+  FoldPageLayoutComponent,
+  FoldPageTitleDirective,
+} from "./page-layout.component";
 
 @Component({
   standalone: true,
@@ -76,5 +79,25 @@ describe("FoldPageLayoutComponent", () => {
     fixture.componentInstance.icon.set("grid");
     fixture.detectChanges();
     expect(root.querySelector(".page-title .page-icon")).not.toBeNull();
+  });
+
+  it("shows the header from a projected [pageTitle] with no title input", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPageLayoutComponent, FoldPageTitleDirective],
+      template: `<fold-page-layout>
+        <span pageTitle class="custom">Acme Records</span>
+      </fold-page-layout>`,
+    })
+    class CustomTitleHost {}
+
+    const fixture = TestBed.createComponent(CustomTitleHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    // Header renders on the strength of the projected title alone, inside the h1.
+    expect(root.querySelector(".page-head")).not.toBeNull();
+    expect(root.querySelector(".page-title .custom")?.textContent?.trim()).toBe(
+      "Acme Records",
+    );
   });
 });

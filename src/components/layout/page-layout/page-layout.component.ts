@@ -1,6 +1,23 @@
-import { Component, input } from "@angular/core";
+import { Component, contentChild, Directive, input } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
+
+/**
+ * Marks a custom page title projected into {@link FoldPageLayoutComponent} — put
+ * it on inline heading content when the plain `icon` + `title` inputs aren't
+ * enough (an avatar, a two-tone title, a live status). It renders inside the
+ * page's `<h1>`, so keep it inline and text-like. Its presence switches the
+ * header on in place of the input-driven title.
+ *
+ * @example
+ * ```html
+ * <fold-page-layout>
+ *   <span pageTitle><fold-avatar … /> Acme Records</span>
+ * </fold-page-layout>
+ * ```
+ */
+@Directive({ selector: "[pageTitle]", standalone: true })
+export class FoldPageTitleDirective {}
 
 /**
  * `<fold-page-layout>` — the vertical scaffold for a settings/admin-style page:
@@ -23,6 +40,10 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
+ * - `[pageTitle]` ({@link FoldPageTitleDirective}) → a custom title, rendered
+ *   inside the `<h1>` in place of the `icon` + `title` inputs, for when a plain
+ *   string won't do (an avatar, a two-tone title). Its presence alone switches
+ *   the header on.
  * - `[titleBadge]` → an inline pill beside the title (e.g. a status/kind badge).
  * - `p[description]` → the intro under the title. A **slot**, not a string
  *   input: a description that needs a `<code>`, a link or a second sentence is
@@ -58,4 +79,8 @@ export class FoldPageLayoutComponent {
   readonly title = input<string>();
   /** An optional leading icon shown beside the title. */
   readonly icon = input<FoldIconName>();
+
+  /** A projected `[pageTitle]`, if any — switches the header on for a custom
+   *  title even without the `title` input. */
+  protected readonly customTitle = contentChild(FoldPageTitleDirective);
 }
