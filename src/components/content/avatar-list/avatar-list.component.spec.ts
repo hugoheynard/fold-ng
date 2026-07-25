@@ -70,8 +70,8 @@ describe("FoldAvatarListComponent", () => {
   it("top='first' stacks the leading face highest; 'last' flips it", () => {
     const first = zIndexes(mount({ avatars: FACES.slice(0, 3), top: "first" }));
     const last = zIndexes(mount({ avatars: FACES.slice(0, 3), top: "last" }));
-    expect(first[0]).toBeGreaterThan(first[2]);
-    expect(last[2]).toBeGreaterThan(last[0]);
+    expect(first[0]!).toBeGreaterThan(first[2]!);
+    expect(last[2]!).toBeGreaterThan(last[0]!);
   });
 
   it("square coerces the bare attribute (empty string) to true", () => {

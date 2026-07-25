@@ -69,25 +69,25 @@ describe("FoldViewNavComponent", () => {
 
   it("marks the active tab", () => {
     const { buttons } = setup({ activeKey: "b" });
-    expect(buttons[0].classList.contains("is-active")).toBe(false);
-    expect(buttons[1].classList.contains("is-active")).toBe(true);
+    expect(buttons[0]!.classList.contains("is-active")).toBe(false);
+    expect(buttons[1]!.classList.contains("is-active")).toBe(true);
   });
 
   it("emits the clicked key", () => {
     const { buttons, instance } = setup();
-    buttons[1].click();
+    buttons[1]!.click();
     expect(instance.picked).toBe("b");
   });
 
   it("renders a badge and an icon only where provided", () => {
     const { buttons } = setup();
     expect(
-      buttons[0].querySelector(".tab-bar-badge")?.textContent?.trim(),
+      buttons[0]!.querySelector(".tab-bar-badge")?.textContent?.trim(),
     ).toBe("3");
-    expect(buttons[0].querySelector(".tab-bar-icon")).toBeNull();
-    expect(buttons[1].querySelector(".tab-bar-badge")).toBeNull();
+    expect(buttons[0]!.querySelector(".tab-bar-icon")).toBeNull();
+    expect(buttons[1]!.querySelector(".tab-bar-badge")).toBeNull();
     // The icon is an fold-icon (registry-named), not a hand-rolled <svg><path>.
-    const icon = buttons[1].querySelector("fold-icon.tab-bar-icon");
+    const icon = buttons[1]!.querySelector("fold-icon.tab-bar-icon");
     expect(icon).not.toBeNull();
     expect(icon?.querySelector("svg")).not.toBeNull();
   });
@@ -95,7 +95,7 @@ describe("FoldViewNavComponent", () => {
   it("tints the badge accent on the active tab, neutral otherwise", () => {
     const { buttons } = setup({ activeKey: "a" });
     expect(
-      buttons[0].querySelector(".tab-bar-badge")?.classList.contains("accent"),
+      buttons[0]!.querySelector(".tab-bar-badge")?.classList.contains("accent"),
     ).toBe(true);
   });
 
@@ -135,9 +135,7 @@ describe("FoldViewNavComponent", () => {
       ],
     });
     expect(buttons.every((el) => el.tagName === "A")).toBe(true);
-    expect((buttons[0] as HTMLAnchorElement).getAttribute("href")).toBe(
-      "/alpha",
-    );
+    expect(buttons[0]!.getAttribute("href")).toBe("/alpha");
   });
 
   it("drives the active state from the URL for link items (routerLinkActive)", async () => {
@@ -155,18 +153,18 @@ describe("FoldViewNavComponent", () => {
         ".tab-bar-item",
       ),
     ];
-    expect(anchors[1].classList.contains("is-active")).toBe(true);
-    expect(anchors[1].getAttribute("aria-current")).toBe("page");
-    expect(anchors[0].classList.contains("is-active")).toBe(false);
-    expect(anchors[0].getAttribute("aria-current")).toBeNull();
+    expect(anchors[1]!.classList.contains("is-active")).toBe(true);
+    expect(anchors[1]!.getAttribute("aria-current")).toBe("page");
+    expect(anchors[0]!.classList.contains("is-active")).toBe(false);
+    expect(anchors[0]!.getAttribute("aria-current")).toBeNull();
   });
 
   it("renders a disabled button for a disabled item", () => {
     const { buttons } = setup({
       items: [{ key: "a", label: "Alpha", disabled: true }],
     });
-    expect(buttons[0].tagName).toBe("BUTTON");
-    expect(buttons[0].hasAttribute("disabled")).toBe(true);
-    expect(buttons[0].getAttribute("aria-disabled")).toBe("true");
+    expect(buttons[0]!.tagName).toBe("BUTTON");
+    expect(buttons[0]!.hasAttribute("disabled")).toBe(true);
+    expect(buttons[0]!.getAttribute("aria-disabled")).toBe("true");
   });
 });

@@ -30,8 +30,12 @@ function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
   const button = fixture.nativeElement.querySelector("button") as HTMLElement;
-  const press = (): void => button.dispatchEvent(new Event("pointerdown"));
-  const release = (type: string): void => button.dispatchEvent(new Event(type));
+  const press = (): void => {
+    button.dispatchEvent(new Event("pointerdown"));
+  };
+  const release = (type: string): void => {
+    button.dispatchEvent(new Event(type));
+  };
   const count = (): number => fixture.componentInstance.count;
   return { fixture, button, press, release, count };
 }
