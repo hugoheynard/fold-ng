@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { provideRouter } from "@angular/router";
+import { provideRouter, Router } from "@angular/router";
 import { beforeEach, describe, it, expect } from "vitest";
 import {
   FoldViewNavComponent,
@@ -49,7 +49,14 @@ function setup(patch: Partial<HostComponent> = {}) {
 
 describe("FoldViewNavComponent", () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: "alpha", children: [] },
+          { path: "beta", children: [] },
+        ]),
+      ],
+    });
   });
 
   it("renders one tab per item with its label", () => {
@@ -131,6 +138,27 @@ describe("FoldViewNavComponent", () => {
     expect((buttons[0] as HTMLAnchorElement).getAttribute("href")).toBe(
       "/alpha",
     );
+  });
+
+  it("drives the active state from the URL for link items (routerLinkActive)", async () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.componentInstance.items = [
+      { key: "a", label: "Alpha", link: "alpha" },
+      { key: "b", label: "Beta", link: "beta" },
+    ];
+    fixture.detectChanges();
+    await TestBed.inject(Router).navigateByUrl("/beta");
+    fixture.detectChanges();
+
+    const anchors = [
+      ...(fixture.nativeElement as HTMLElement).querySelectorAll(
+        ".tab-bar-item",
+      ),
+    ];
+    expect(anchors[1].classList.contains("is-active")).toBe(true);
+    expect(anchors[1].getAttribute("aria-current")).toBe("page");
+    expect(anchors[0].classList.contains("is-active")).toBe(false);
+    expect(anchors[0].getAttribute("aria-current")).toBeNull();
   });
 
   it("renders a disabled button for a disabled item", () => {
