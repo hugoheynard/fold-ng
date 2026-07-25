@@ -38,15 +38,16 @@ and the gallery nav — **layout first**.
 | `fold-page-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — semantic `<section>`; box → fold-card  |
 | `fold-hero-section` | 🟢  |  🟢   |  🟢  | **Ship-ready** — full-bleed splash; extracted from home |
 | `fold-aside-layout` | 🟢  |  🟢   |  🟢  | **Ship-ready** (README row + `stackLeftFirst` test)     |
-| `fold-tab-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)      |
+| `fold-nav-layout`   | 🟢  |  🟢   |  🟢  | **Ship-ready** (`as unknown as` fixed; README row)      |
 
 **Navigation** — `src/components/navigation/`
 
-| Component                        | DX  | Tests | Docs | Verdict                                          |
-| -------------------------------- | :-: | :---: | :--: | ------------------------------------------------ |
-| `fold-menu` (+ item/section/sep) | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs |
-| `fold-nav-launcher` (+ nav-tile) | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
-| `fold-tab-nav`                   | 🟢  |  🟡   |  🟢  | **No `role="tab"`/`aria-selected`**              |
+| Component                        | DX  | Tests | Docs | Verdict                                             |
+| -------------------------------- | :-: | :---: | :--: | --------------------------------------------------- |
+| `fold-menu` (+ item/section/sep) | 🟢  |  🟡   |  🟢  | Test `resolvedPlacement`; aria strings as inputs    |
+| `fold-nav-launcher` (+ nav-tile) | 🟢  |  🟢   |  🟢  | **Ship-ready**                                      |
+| `fold-view-nav`                  | 🟢  |  🟢   |  🟢  | **Ship-ready** — real nav; `aria-current="page"`    |
+| `fold-tabs` (+ tab-panel)        | 🟢  |  🟢   |  🟢  | **Ship-ready** — ARIA `tablist`, roving, `tabpanel` |
 
 **Actions** — `src/components/actions/`
 
@@ -114,13 +115,13 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page                                 |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo                                 |
 
-**Ship-ready today (21):** app-shell, page-layout, page-section, hero-section,
-aside-layout, tab-layout, avatar-list, callout, element-title, field,
-field-list, nav-launcher, timeline, toast, surface, icon, repeat-press,
+**Ship-ready today (23):** app-shell, page-layout, page-section, hero-section,
+aside-layout, nav-layout, view-nav, tabs, avatar-list, callout, element-title,
+field, field-list, nav-launcher, timeline, toast, surface, icon, repeat-press,
 sticky-column, button, button-icon, toggle-icon. Everything else has scoped,
 mostly mechanical work below.
 
-> **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with tab-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
+> **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with nav-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
 ---
 
@@ -163,13 +164,16 @@ close — so the page behind is unreachable to pointer, Tab **and** the SR virtu
 cursor. Only the top-most panel traps focus. A host spec asserts a sibling is
 inert while a panel is open and cleared after. Ledger item #8.
 
-**P0-6 · `fold-tab-nav` has no tab a11y contract.**
-Buttons carry only an `is-active` class — no `role="tab"`/`tablist`, no
-`aria-selected`/`aria-current` (`tab-nav.component`). A "tab bar" that doesn't
-announce as tabs. Add the roles + `aria-selected`, and assert them.
+**P0-6 · `fold-tab-nav` had no tab a11y contract. ✅ FIXED (by split).**
+The old `fold-tab-nav` conflated two widgets. It was split by semantics:
+`fold-view-nav` is a real **navigation** bar (`<a routerLink>` items, active
+state from the URL via `routerLinkActive` + `aria-current="page"`), and
+`fold-tabs` (+ `fold-tab-panel`) is the **ARIA Tabs** widget (`role="tablist"` of
+`role="tab"` buttons, `aria-selected`, roving arrow-key focus, each tab wired to
+its `role="tabpanel"`). Both ship with specs asserting their roles/keyboard.
 
 **P0-7 · Strict-TS breach in a spec. ✅ Fixed.**
-`tab-layout.component.spec.ts` used `as unknown as ResizeObserver` /
+`nav-layout.component.spec.ts` used `as unknown as ResizeObserver` /
 `as unknown as typeof ResizeObserver`. Resolved: the fake is now
 `implements ResizeObserver`, so both the callback's `observer` arg and the
 `globalThis` assignment type-check with no assertion. Zero `as unknown` in the
@@ -198,16 +202,17 @@ row.) Add each row.
 
 - ~~Icon count says "102 today" / "~100" — actual is **114**.~~ ✅ Fixed
   (README now says 114; count derived from the built-in set).
-- `fold-loading` row claims "spinner + message" — there is **no spinner**
-  (`loading-state.component.html` is a single muted `<span>`). Either build the
-  spinner or fix the row to "muted loading line".
+- ~~`fold-loading` row claims "spinner + message" — there is **no spinner**.~~
+  ✅ Fixed — a real `fold-spinner` (currentColor, icon-sized, reduced-motion)
+  was built and now backs both `fold-loading` (`role="status"`) and the button
+  `loading` state.
 
 **C-4 · Missing JSDoc `@selector`/`@example` tags.** The bar (rule 4.6) is
 `@selector` + one-liner + `@example`. Missing `@example` **tag** (a fenced block
 exists, the tag doesn't): `status-badge`, `avatar`,
 `avatar-detail`, `data-table`. Missing `@selector`: `data-table`,
 `paginator`, and the layout trio
-(`page-layout`/`page-section`/`tab-layout` — verify). Mechanical.
+(`page-layout`/`page-section`/`nav-layout` — verify). Mechanical.
 
 **C-5 · Gallery coverage holes.** Shipped components with **zero gallery
 presence** (fall back to the stub page — not among the Library nav entries):
@@ -234,9 +239,10 @@ it relieves `number-input.component.ts` from the 299/300-line ceiling (C-8).
 breaks the gate. Extract per C-7 before touching it again.
 
 **C-9 · Token debt (aspirational, not yet enforced).** card / context-card / hero
-/ element-title / tab-nav SCSS still hard-code px spacing and
-`0.18s ease` motion, and `tab-nav` has a raw `font-size: 10px` where a
-`--fold-text-*` token exists. Colour is fully tokenised (the contract passes);
+/ element-title / the nav bar (`_tab-bar.scss`, shared by `view-nav`/`tabs`) SCSS
+still hard-code px spacing and `0.18s ease` motion, and the nav bar has a raw
+`font-size: 10px` where a `--fold-text-*` token exists. Colour is fully tokenised
+(the contract passes);
 retokenise spacing/motion on touch (rules 1.5, ledger #7).
 
 **C-10 · One signals-purity nit.** ✅ **Fixed** — `fold-icon`'s unknown-name
@@ -298,9 +304,17 @@ on the disabled anchor path, or document that disabled is button-only.
 `radiogroup` role + roving-tabindex arrow-key nav for the segmented toggle;
 (3) edge spec for `activeKey` with no matching option.
 
-**`fold-tab-nav`** 🟢🟡🟢 — See **P0-6**. Also (2) `font-size: 10px` → a text
-token; (3) assert that `size="reduce"` actually hides non-active labels/badges.
-The gallery page is the best in the set.
+**`fold-view-nav`** 🟢🟢🟢 — Ship-ready. Real navigation: `<a routerLink>` items,
+active state from the URL (`routerLinkActive` + `aria-current="page"`),
+`direction="auto"` following a wrapping `fold-nav-layout`. See **P0-6** (the split
+that created it). Residual token debt only (C-9: `font-size: 10px` → a text token
+in the shared `_tab-bar.scss`). The gallery page is the best in the set.
+
+**`fold-tabs`** (+ `fold-tab-panel`) 🟢🟢🟢 — Ship-ready. The ARIA Tabs widget
+carved out of the old tab-nav (rule 4.9): `role="tablist"` of `role="tab"`
+buttons, `aria-selected`, roving arrow-key focus, each tab wired to its
+`role="tabpanel"` (`aria-controls` ↔ `aria-labelledby`); panels take the bar by
+ref so they coordinate across `fold-nav-layout` slots. Roles + keyboard asserted.
 
 ### Surfaces & scaffolding
 
@@ -343,10 +357,13 @@ duplication in one cut; spacing is tokenised; README row + gallery page added.
 Elevation is moot here (no box); a card that should _float_ is a `fold-card` +
 `foldElevated` concern, deferred to a real 2nd use.
 
-**`fold-tab-layout`** 🟢🟢🟢 — Ship-ready. Tiny API hiding a hysteresis'd
-`ResizeObserver` fold; `exportAs` + `stacked()` is excellent ergonomics. Closed:
-P0-7 (the two `as unknown as` casts → `implements ResizeObserver`) + README row.
-SCSS is already fully tokenised (gap / nav-width CSS-var contract).
+**`fold-nav-layout`** 🟢🟢🟢 — Ship-ready. Tiny API hiding a hysteresis'd
+`ResizeObserver` fold; `exportAs="foldNavLayout"` + `stacked()` is excellent
+ergonomics. Places a bar (`[tabNav]` — a `fold-view-nav` or a `fold-tabs`) with
+its content, `placement="top"` or a `side` rail that folds back on top below
+`foldAt`. Closed: P0-7 (the two `as unknown as` casts → `implements
+ResizeObserver`) + README row. SCSS is already fully tokenised (gap / rail-width
+CSS-var contract).
 
 ### Identity & data display
 
@@ -517,9 +534,9 @@ Ordered so each wave is a coherent set of atomic commits; correctness and
 portability first, polish last.
 
 **Wave 1 — Blockers (§2).** P0-1 button-icon a11y bug · P0-2 paginator i18n ·
-P0-3 panel i18n · P0-4 dropzone i18n · P0-5 focus-trap `inert` · P0-6 tab-nav
-roles · P0-7 spec cast. Each ships with the spec that proves it. (P0-2/3/4 close
-ledger item #6; P0-5 closes #8 — align with TODO.md.)
+P0-3 panel i18n · P0-4 dropzone i18n · P0-5 focus-trap `inert` · P0-6 tab a11y
+(split into `view-nav` + `tabs`) · P0-7 spec cast. Each ships with the spec that
+proves it. (P0-2/3/4 close ledger item #6; P0-5 closes #8 — align with TODO.md.)
 
 **Wave 2 — DX correctness.** C-1 `booleanAttribute` parity · `fold-input`
 `autofocus` (wire or drop) · `fold-link` `target`/`rel` + `MouseEvent` · C-7/C-8
@@ -535,7 +552,7 @@ data-table toggles/guards · badge neutral/success · menu `resolvedPlacement` �
 disclosure aria-hidden/`toggle()` · context-card `iconTone`.
 
 **Wave 5 — Polish (aspirational).** C-9 retokenise spacing/motion on touch ·
-hero `on-primary` assertion · choice-row/tab-nav keyboard a11y · per-node timeline
+hero `on-primary` assertion · choice-row keyboard a11y · per-node timeline
 title · toast SSR crypto guard.
 
 After Wave 3 the package is releasable (portable, accessible, honestly

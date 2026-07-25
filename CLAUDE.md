@@ -45,18 +45,17 @@ The description is a **slot**, so it takes `<code>`, links and a second
 sentence — the layout supplies the typography. Never re-style it on the page;
 if it needs its own layout, project nothing and put a block in the body.
 
-1.5 **A page with sub-pages uses `fold-tab-layout`**, not a bare bar in a spacer
-div. Bind the projected nav to the layout so it folds with it:
+1.5 **A page with sub-pages uses `fold-nav-layout`**, not a bare bar in a spacer
+div. Pick the bar by intent: if the sub-pages **navigate** (the URL changes) use
+`fold-view-nav` + `<router-outlet>`; if they toggle **in-place panels** on the
+same URL use `fold-tabs` + `fold-tab-panel`. `direction="auto"` makes the bar
+follow the layout as it folds — no `stacked()` wiring:
 
 ```html
-<fold-tab-layout placement="side" #tl="foldTabLayout">
-  <fold-tab-nav
-    tabNav
-    [direction]="tl.stacked() ? 'horizontal' : 'vertical'"
-    …
-  />
-  @switch (tab()) { … }
-</fold-tab-layout>
+<fold-nav-layout placement="side">
+  <fold-view-nav tabNav [items]="items" direction="auto" />
+  <router-outlet />
+</fold-nav-layout>
 ```
 
 1.6 **Registering a page** is two edits: an entry in `GALLERY_NAV`
@@ -178,7 +177,7 @@ element pass `{ read: ElementRef }`, or the DOM writes go nowhere — silently.
 6.3 **ResizeObserver + scrollbars oscillate.** A layout that folds on its own
 width can free ~15px by folding and flip forever. Any width threshold that
 changes layout needs a dead band wider than a scrollbar (see
-`fold-tab-layout`, 32px).
+`fold-nav-layout`, 32px).
 
 6.4 **Codemods across pages need a typecheck, not a build.** Regex edits over
 `demo/pages/*` have twice produced valid-looking, broken output (an import

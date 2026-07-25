@@ -683,7 +683,7 @@ Ordered by impact on the score.
 
 **Two feeders into this average, tracked apart:** the **P0 ship blockers**
 (RELEASE-READINESS §2 — button-icon `aria-pressed`, the French a11y strings,
-focus-trap `inert`, tab-nav roles, the spec `as unknown`) each drag a component
+focus-trap `inert`, tab a11y (the view-nav/tabs split), the spec `as unknown`) each drag a component
 below its cluster and must clear first; and **Roadmap 1.0.1** (top of this file)
 is the shell's own 8.5→9.5 slice, whose a11y + snapshot items are the same levers
 as §2/§3 here. This section is the **lib-wide** remainder.
@@ -713,7 +713,7 @@ The blocker to the "reusable across projects" promise (rule 5.1).
       **Includes the app-shell mode-combos** itemised in Roadmap 1.0.1 (drawer
       open/closed, elevated rail, footer scroll/pinned, mobile collapse) — the
       crop bug shipped for lack of exactly this.
-- [ ] Coverage floor in CI; fill the thinly-tested components (tab-nav, app-shell).
+- [ ] Coverage floor in CI; fill the thinly-tested components (menu, app-shell).
 
 **3 · a11y depth (Modernité 8.5→9, and unblocks a real 6.2 gap).**
 

@@ -115,7 +115,7 @@ etc.; document the slot names in the component's JSDoc.
 
 4.5 **Inline `template`/`styles` is fine; reach for `templateUrl`/`styleUrl`
 when a file crosses ~250 lines** so no single file passes 300. (Inline styles
-push a component toward the limit — `tab-nav` sits at 298.)
+push a component toward the limit — `number-input` sits at 299.)
 
 4.6 **Every component ships JSDoc** with `@selector`, a one-line what-it-is, and
 an `@example`. The README table stays in sync.
