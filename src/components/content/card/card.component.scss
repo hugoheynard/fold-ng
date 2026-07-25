@@ -121,3 +121,31 @@
     transition: none;
   }
 }
+
+/* ── Accent surface (`surface="accent"`) ──────────────────────────────────────
+   An accent-filled card. The whole on-accent role inversion lives in the token
+   layer (`[data-surface="accent"]` in semantic.css), stamped on the host via the
+   `data-surface` attribute — so the card only owns what's card-specific here:
+   painting the accent ground, and re-pointing its band/separator vars.
+
+   The band/separator vars are declared on `:host` (a `var()` custom property is
+   substituted where it's declared), so the token layer's descendant overrides
+   can't reach them. Re-point them from the captures the token layer exposes on
+   the host (`--_accent-ink` / `--_accent-fill`), in-hue, so a raised or separated
+   band is a lighter step of the ACCENT, not the page's grey. */
+:host(.s-accent) {
+  background: var(--fold-color-primary);
+  border-color: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+  --_band-raise: color-mix(
+    in srgb,
+    var(--_accent-ink) 16%,
+    var(--_accent-fill)
+  );
+  --_sep-line: color-mix(in srgb, var(--_accent-ink) 24%, transparent);
+}
+/* the interactive focus ring reads on the accent ground (the host keeps the true
+   accent as its `--fold-color-primary`, so override the ring colour here). */
+:host(.s-accent.is-interactive:focus-visible) {
+  outline-color: var(--fold-color-on-primary);
+}

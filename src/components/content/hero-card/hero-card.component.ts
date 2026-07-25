@@ -34,6 +34,8 @@ import { Component, booleanAttribute, input } from "@angular/core";
   host: {
     "[class.s-sunken]": "surface() === 'sunken'",
     "[class.s-primary]": "surface() === 'primary'",
+    // a solid primary ground is an accent surface: auto-invert the content too.
+    "[attr.data-surface]": "surface() === 'primary' ? 'accent' : null",
     "[class.a-subtle]": "accent() === 'subtle'",
     "[class.a-gradient]": "accent() === 'gradient'",
     "[class.has-bar]": "accentBar()",

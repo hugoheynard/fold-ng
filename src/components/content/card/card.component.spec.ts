@@ -27,7 +27,7 @@ import type { FoldCardBandChrome } from "./card.component";
   </fold-card>`,
 })
 class HostComponent {
-  readonly surface = signal<"card" | "sunken">("card");
+  readonly surface = signal<"card" | "sunken" | "accent">("card");
   readonly radius = signal<"sm" | "md" | "lg">("lg");
   readonly padding = signal<"none" | "sm" | "md" | "lg">("md");
   readonly interactive = signal(false);
@@ -109,6 +109,16 @@ describe("FoldCardComponent", () => {
     fixture.componentInstance.surface.set("sunken");
     fixture.detectChanges();
     expect(card.classList.contains("s-sunken")).toBe(true);
+  });
+
+  it("marks an accent card with s-accent + data-surface (auto-inversion)", () => {
+    const { fixture, card } = render();
+    fixture.componentInstance.surface.set("accent");
+    fixture.detectChanges();
+    expect(card.classList.contains("s-accent")).toBe(true);
+    expect(card.classList.contains("s-sunken")).toBe(false);
+    // the data-surface attr is what triggers the token-layer role inversion
+    expect(card.getAttribute("data-surface")).toBe("accent");
   });
 
   it("adds is-interactive + a button role/tabindex via `interactive`", () => {

@@ -12,7 +12,8 @@ export type FoldCardBandChrome = "none" | "header" | "footer" | "both";
  *
  * - `surface` — `card` (the raised card tint, default) · `sunken` (a deeper
  *   surface for large containers, below the card — the ref's second card tint;
- *   pairs with a fainter `border-subtle` hairline).
+ *   pairs with a fainter `border-subtle` hairline) · `accent` (an accent-filled
+ *   card whose content sub-tree auto-inverts to a compatible on-accent palette).
  * - `radius` — `lg` (14px, default) · `md` · `sm`.
  * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`. Sets the *body*
  *   padding; override with a custom value via `--fold-card-padding`.
@@ -72,6 +73,8 @@ export type FoldCardBandChrome = "none" | "header" | "footer" | "both";
   standalone: true,
   host: {
     "[class.s-sunken]": "surface() === 'sunken'",
+    "[class.s-accent]": "surface() === 'accent'",
+    "[attr.data-surface]": "surface() === 'accent' ? 'accent' : null",
     "[class.r-sm]": "radius() === 'sm'",
     "[class.r-md]": "radius() === 'md'",
     "[class.p-none]": "padding() === 'none'",
@@ -92,8 +95,12 @@ export type FoldCardBandChrome = "none" | "header" | "footer" | "both";
   styleUrl: "./card.component.scss",
 })
 export class FoldCardComponent {
-  /** Surface tint — `card` (raised, default) or `sunken` (deeper container). */
-  readonly surface = input<"card" | "sunken">("card");
+  /** Surface tint — `card` (raised, default), `sunken` (deeper container), or
+   *  `accent` (an **accent-filled** card: the accent colour as ground, with the
+   *  whole content sub-tree auto-inverted to a compatible on-accent role-set —
+   *  text, borders, band gradation, and even nested buttons/links/icon-tiles
+   *  convert automatically). Use it to make a card in a grid stand out. */
+  readonly surface = input<"card" | "sunken" | "accent">("card");
   /** Corner radius — `lg` (default), `md`, or `sm`. */
   readonly radius = input<"sm" | "md" | "lg">("lg");
   /** Body padding — `md` (default), `none`, `sm`, or `lg`; a custom value can be
