@@ -7,6 +7,7 @@ import {
   input,
   signal,
 } from "@angular/core";
+import { FOLD_ICON_SPRITE_ID } from "../../src/components/foundations/icon/icon-sprite";
 
 /**
  * `iframe[devPreviewFrame]` — turns a bare `<iframe>` into the playground's
@@ -22,8 +23,16 @@ import {
  *   detection keeps driving the demo from its normal place in the component
  *   tree. No second Angular bootstrap.
  * - **Style mirroring** — every `<style>` / `<link rel="stylesheet">` in the host
- *   `<head>` is cloned into the iframe (emulated-encapsulation component styles
- *   *are* `<style>` tags), and a `MutationObserver` mirrors any added later.
+ *   `<head>` is copied into the iframe (emulated-encapsulation component styles
+ *   *are* `<style>` tags; links are re-pointed at their absolute URL so they load
+ *   regardless of the frame's base), and a `MutationObserver` mirrors any added
+ *   later.
+ * - **Icon sprite** — `fold-icon` renders `<use href="#…">` against a hidden SVG
+ *   sprite on the document; that sprite (and any symbol added on the fly) is
+ *   mirrored into the frame so icons resolve there too.
+ * - **Base typography** — the app's base `font-family`/`color` live on the shell
+ *   root, outside the frame; they are re-applied to the iframe body so text
+ *   doesn't fall back to the browser default.
  * - **Theme mirroring** — the theme host's `data-theme` is copied onto the
  *   iframe root and kept in sync, so the preview follows the gallery theme (the
  *   semantic-token `[data-theme="…"]` blocks then resolve inside the frame).
@@ -81,28 +90,77 @@ export class DevPreviewFrameDirective {
     doc.body.style.margin = "0";
     doc.body.style.background = "transparent";
     this.mirrorStyles(doc);
+    this.mirrorSprite(doc);
     this.mirrorTheme(doc);
+    this.applyBaseTypography(doc);
     doc.body.appendChild(src);
     this.observeHeight(doc, src);
   }
 
-  /** Clone existing head stylesheets into the frame, then mirror any added. */
+  /** Copy existing head stylesheets into the frame, then mirror any added. */
   private mirrorStyles(doc: Document): void {
     const selector = 'style, link[rel="stylesheet"]';
     for (const node of Array.from(document.head.querySelectorAll(selector))) {
-      doc.head.appendChild(node.cloneNode(true));
+      doc.head.appendChild(this.copyStyleNode(doc, node));
     }
     const observer = new MutationObserver((records) => {
       for (const record of records) {
         for (const added of Array.from(record.addedNodes)) {
           if (added instanceof Element && added.matches(selector)) {
-            doc.head.appendChild(added.cloneNode(true));
+            doc.head.appendChild(this.copyStyleNode(doc, added));
           }
         }
       }
     });
     observer.observe(document.head, { childList: true });
     this.cleanups.push(() => observer.disconnect());
+  }
+
+  /** A `<style>` copies verbatim; a `<link>` is rebuilt with its *absolute* URL,
+   *  so it resolves against the app origin, not the frame's `about:blank` base. */
+  private copyStyleNode(doc: Document, node: Element): Node {
+    if (node instanceof HTMLLinkElement) {
+      const link = doc.createElement("link");
+      link.rel = "stylesheet";
+      link.href = node.href;
+      if (node.media) {
+        link.media = node.media;
+      }
+      return link;
+    }
+    return node.cloneNode(true);
+  }
+
+  /** Mirror the icon sprite (and lazily-added symbols) so the adopted icons'
+   *  `<use href="#…">` resolve inside the frame document. */
+  private mirrorSprite(doc: Document): void {
+    const source = document.getElementById(FOLD_ICON_SPRITE_ID);
+    if (!source) {
+      return;
+    }
+    const mirror = source.cloneNode(true);
+    doc.body.appendChild(mirror);
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        for (const added of Array.from(record.addedNodes)) {
+          if (added instanceof Element) {
+            mirror.appendChild(added.cloneNode(true));
+          }
+        }
+      }
+    });
+    observer.observe(source, { childList: true });
+    this.cleanups.push(() => observer.disconnect());
+  }
+
+  /** Re-apply the app's base typography (which lives on the shell root, outside
+   *  the frame) so demo text inherits the right font + a theme-reactive colour. */
+  private applyBaseTypography(doc: Document): void {
+    const host = this.themeHost();
+    doc.body.style.fontFamily = host
+      ? getComputedStyle(host).fontFamily
+      : "system-ui, -apple-system, sans-serif";
+    doc.body.style.color = "var(--fold-color-text)";
   }
 
   /** Copy `data-theme` from the theme host and keep it in sync. */
