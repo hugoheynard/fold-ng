@@ -368,6 +368,22 @@ subtree mirror → public `dev`, gallery served on GitHub Pages via hash routing
 Open investigations — run the probe, bring back a finding, _then_ decide. Not
 committed work; the point is to learn before we lock anything.
 
+- **[2026-07-26] Should the specs be type-checked under the strict
+  `tsconfig.json`?** Probe done 2026-07-25: `tsconfig.spec.json` **extends** the
+  strict base (so it inherits `noUncheckedIndexedAccess` /
+  `exactOptionalPropertyTypes`), but **no gate runs it** — the real gates are
+  `tsconfig.app.json` (excludes `**/*.spec.ts`) + `tsconfig.lib.json` (lib only,
+  no specs). Result: `tsc -p tsconfig.spec.json` reports **~70 errors across ~11
+  spec files** (avatar-list, choice-row, data-table, field-list, timeline, toast
+  ×2, file-dropzone, tabs, view-nav, repeat-press). Three were cleaned with the
+  avatar work (view-nav, repeat-press, avatar-list); **~8 files remain**. Decide:
+  (a) wire `tsc -p tsconfig.spec.json` into pre-push/CI and clear the backlog
+  (specs get the same strictness as prod — catches stale `!`/index bugs in
+  tests), or (b) relax `tsconfig.spec.json` to drop `noUncheckedIndexedAccess`
+  for specs (accept looser tests, no backlog). Cross-ref the P0 "spec
+  `as unknown`" note in Road to 9.5 §2 — same theme (specs are outside the type
+  gate today).
+
 - **DX sweep across the components.** AppShell now uses the house pattern —
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining
