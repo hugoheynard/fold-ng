@@ -1,12 +1,4 @@
-import {
-  Component,
-  computed,
-  effect,
-  ElementRef,
-  signal,
-  viewChild,
-  ViewEncapsulation,
-} from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import {
   FoldAppShellComponent,
   FoldElevatedDirective,
@@ -22,8 +14,6 @@ import { PanelScopeDirective } from "../../components/panel-scope.directive";
 import { TabPanelComponent } from "../../components/tab-panel.component";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
-
-type ShellMode = "desktop" | "tablet" | "mobile";
 
 /** `/app-shell` — the `fold-app-shell` gallery page (live preview playground). */
 @Component({
@@ -61,46 +51,6 @@ export default class AppShellPage {
   protected readonly shellFooter = signal(true);
   protected readonly shellRailWidth = signal(64);
   protected readonly shellHeaderHeight = signal(56);
-
-  /* ── Preview viewport — the switch resizes the shell so its container queries
-   *    fold it (secondary rail at tablet, both rails at mobile). ── */
-  protected readonly shellModes = ["desktop", "tablet", "mobile"] as const;
-  protected readonly shellMode = signal<ShellMode>("desktop");
-  private readonly SHELL_MODE_WIDTH: Record<ShellMode, number> = {
-    desktop: 1200,
-    tablet: 880,
-    mobile: 380,
-  };
-  /** Real render width per viewport — clears the shell's fold thresholds. */
-  protected readonly shellWidth = computed(
-    () => this.SHELL_MODE_WIDTH[this.shellMode()],
-  );
-
-  private readonly windowEl = viewChild<ElementRef<HTMLElement>>("shellWindow");
-  private readonly windowWidth = signal(0);
-  /** Auto-fit scale (CSS `zoom`) so the real-width shell fits the preview panel;
-   *  paint-only, so the fold (container queries) resolves at the real width. */
-  protected readonly shellScale = computed(() => {
-    const avail = this.windowWidth();
-    return avail === 0 ? 1 : Math.min(1, avail / this.shellWidth());
-  });
-
-  constructor() {
-    effect((onCleanup) => {
-      const el = this.windowEl()?.nativeElement;
-      if (!el || typeof ResizeObserver === "undefined") {
-        return;
-      }
-      const ro = new ResizeObserver((entries) => {
-        const entry = entries[0];
-        if (entry) {
-          this.windowWidth.set(entry.contentRect.width);
-        }
-      });
-      ro.observe(el);
-      onCleanup(() => ro.disconnect());
-    });
-  }
 
   protected setHeaderLayout(value: "inset" | "full"): void {
     this.shellHeaderLayout.set(value);
@@ -158,7 +108,7 @@ export default class AppShellPage {
   protected readonly previewNav = signal<string>("home");
 
   /** The preview's mobile-drawer state — two-way bound to the shell, toggled by
-   *  the header hamburger that appears in `mobile` mode. */
+   *  the header hamburger that appears once the shell folds to one column. */
   protected readonly previewNavOpen = signal(false);
 
   /** Filler blocks so the preview content overflows — lets `footerBehavior`

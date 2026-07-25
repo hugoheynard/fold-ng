@@ -1,24 +1,11 @@
-/* The preview window: a real-width shell scaled down with CSS `zoom` (auto-fit
-   via a ResizeObserver), centered on the backdrop; scrolls if it overflows. */
-.shell-window {
-  height: 460px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-lg);
-  background: var(--fold-color-bg-page);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
 .shell-preview {
-  /* The container the shell's container queries key off — the mode switch sets
-     its width so the shell folds (secondary at ≤1024, both at ≤768). A definite
-     height gives the shell room; `zoom` (bound inline) scales the whole thing. */
+  /* The container the shell's container queries key off. The playground's
+     responsive controller sets the real width + zoom on its frame; this fills
+     it (100%), so the shell folds at the true width (secondary at ≤1024, both
+     at ≤768). A definite height gives the shell room. */
   container-type: inline-size;
+  width: 100%;
   height: 640px;
-  transition: width var(--fold-motion-base);
 }
 
 /* The rails are real fold-menu instances — they size + round themselves. */
@@ -35,10 +22,11 @@
   font-size: 13px;
 }
 
-/* Preview drawer toggle — only rendered in mobile mode (see the page). Keeps the
-   "Header" label hugging it, actions pushed to the right. */
+/* Preview drawer toggle — shown only once the shell folds to one column, keyed
+   off the shell-preview container's real width (matches the shell's own ≤768
+   fold). Keeps the "Header" label hugging it, actions pushed to the right. */
 .sp-hamburger {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 30px;
@@ -49,6 +37,11 @@
   background: transparent;
   color: var(--fold-color-text-secondary);
   cursor: pointer;
+}
+@container (max-width: 768px) {
+  .sp-hamburger {
+    display: inline-flex;
+  }
 }
 
 .sp-hamburger:hover {

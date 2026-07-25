@@ -12,7 +12,7 @@
   </p>
   <gal-kind-badge titleBadge kind="component" />
 
-  <dev-playground [code]="shellCode()">
+  <dev-playground [code]="shellCode()" [initialWidth]="1280">
     <div class="np-field" params>
       <span class="gal-tag">rail foldElevated</span>
       <div class="ss-seg">
@@ -117,121 +117,99 @@
       [(value)]="shellHeaderHeight"
     />
 
-    <div class="ss-seg" preview-actions>
-      @for (m of shellModes; track m) {
-      <button
-        type="button"
-        [class.is-on]="shellMode() === m"
-        (click)="shellMode.set(m)"
+    <!-- The playground's responsive controller renders this at a real device
+         width and scales it to fit; the shell folds on its own width (container
+         queries) so picking a device truly collapses the rails. -->
+    <div class="shell-preview" panelScope #sph="panelScope">
+      <fold-app-shell
+        #previewShell="foldAppShell"
+        [headerLayout]="shellHeaderLayout()"
+        [footerLayout]="shellFooterLayout()"
+        [footerBehavior]="shellFooterBehavior()"
+        [railWidth]="shellRailWidth()"
+        [headerHeight]="shellHeaderHeight()"
+        [(mobileNavOpen)]="previewNavOpen"
       >
-        {{ m }}
-      </button>
-      }
-    </div>
-
-    <!-- A real shell at real pixel width, scaled to fit; folds on its own width
-       (container queries) so the mode switch truly collapses the rails. -->
-    <div class="shell-window" #shellWindow>
-      <div
-        class="shell-preview"
-        [style.width.px]="shellWidth()"
-        [style.zoom]="shellScale()"
-        panelScope
-        #sph="panelScope"
-      >
-        <fold-app-shell
-          #previewShell="foldAppShell"
-          [headerLayout]="shellHeaderLayout()"
-          [footerLayout]="shellFooterLayout()"
-          [footerBehavior]="shellFooterBehavior()"
-          [railWidth]="shellRailWidth()"
-          [headerHeight]="shellHeaderHeight()"
-          [(mobileNavOpen)]="previewNavOpen"
+        <fold-menu
+          railPrimary
+          tint="primary"
+          [expanded]="previewNavOpen()"
+          [foldElevated]="railElevated()"
         >
-          <fold-menu
-            railPrimary
-            tint="primary"
-            [expanded]="previewNavOpen()"
-            [foldElevated]="railElevated()"
+          <div header class="rail-brand">S3</div>
+          @for (i of railNav; track i.id) {
+          <button
+            fold-menu-item
+            [icon]="i.icon"
+            [label]="i.label"
+            [active]="previewNav() === i.id"
+            (click)="previewNav.set(i.id); previewNavOpen.set(false)"
+          ></button>
+          }
+          <button
+            footer
+            fold-menu-item
+            icon="settings"
+            label="Settings"
+          ></button>
+        </fold-menu>
+        <fold-menu railSecondary level="secondary" [expanded]="true">
+          <div header class="lib-head">Workspace</div>
+          <button
+            fold-menu-item
+            icon="grid"
+            label="Overview"
+            [active]="true"
+          ></button>
+          <button fold-menu-item icon="contracts" label="Contracts"></button>
+          <button fold-menu-item icon="music" label="Library"></button>
+        </fold-menu>
+        <div header class="sp-header">
+          <!-- rendered always; shown only when the shell folds to one column
+                 (container query in the scss), so it tracks the real width -->
+          <button
+            type="button"
+            class="sp-hamburger"
+            (click)="previewNavOpen.set(!previewNavOpen())"
+            aria-haspopup="dialog"
+            [attr.aria-expanded]="previewNavOpen()"
+            [attr.aria-controls]="previewShell.drawerId"
+            aria-label="Toggle navigation"
           >
-            <div header class="rail-brand">S3</div>
-            @for (i of railNav; track i.id) {
-            <button
-              fold-menu-item
-              [icon]="i.icon"
-              [label]="i.label"
-              [active]="previewNav() === i.id"
-              (click)="previewNav.set(i.id); previewNavOpen.set(false)"
-            ></button>
-            }
-            <button
-              footer
-              fold-menu-item
-              icon="settings"
-              label="Settings"
-            ></button>
-          </fold-menu>
-          <fold-menu railSecondary level="secondary" [expanded]="true">
-            <div header class="lib-head">Workspace</div>
-            <button
-              fold-menu-item
-              icon="grid"
-              label="Overview"
-              [active]="true"
-            ></button>
-            <button fold-menu-item icon="contracts" label="Contracts"></button>
-            <button fold-menu-item icon="music" label="Library"></button>
-          </fold-menu>
-          <div header class="sp-header">
-            @if (shellMode() === "mobile") {
-            <button
-              type="button"
-              class="sp-hamburger"
-              (click)="previewNavOpen.set(!previewNavOpen())"
-              aria-haspopup="dialog"
-              [attr.aria-expanded]="previewNavOpen()"
-              [attr.aria-controls]="previewShell.drawerId"
-              aria-label="Toggle navigation"
-            >
+            <fold-icon [name]="previewNavOpen() ? 'close' : 'menu'" size="sm" />
+          </button>
+          <span>Header</span>
+          <div class="sp-actions">
+            <button type="button" (click)="openPreviewPanel(sph.service)">
+              <fold-icon name="contracts" size="sm" />
+              Open panel
+            </button>
+            <button type="button" (click)="toggleTheme()">
               <fold-icon
-                [name]="previewNavOpen() ? 'close' : 'menu'"
+                [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"
                 size="sm"
               />
+              {{ theme() === "dark" ? "Light" : "Dark" }}
             </button>
-            }
-            <span>Header</span>
-            <div class="sp-actions">
-              <button type="button" (click)="openPreviewPanel(sph.service)">
-                <fold-icon name="contracts" size="sm" />
-                Open panel
-              </button>
-              <button type="button" (click)="toggleTheme()">
-                <fold-icon
-                  [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"
-                  size="sm"
-                />
-                {{ theme() === "dark" ? "Light" : "Dark" }}
-              </button>
-            </div>
           </div>
-          <div class="sp-content">
-            @for (b of previewBlocks; track b) {
-            <div class="sp-block"></div>
-            }
-          </div>
-
-          @if (shellFooter()) {
-          <div footer class="sp-footer">
-            <fold-icon name="play" size="sm" />
-            <span class="sp-footer-track">Now playing — Track 03</span>
-            <span class="sp-footer-time">1:24 / 3:57</span>
-          </div>
+        </div>
+        <div class="sp-content">
+          @for (b of previewBlocks; track b) {
+          <div class="sp-block"></div>
           }
+        </div>
 
-          <!-- the preview's own panel host — panels open inside the preview -->
-          <fold-panel-host />
-        </fold-app-shell>
-      </div>
+        @if (shellFooter()) {
+        <div footer class="sp-footer">
+          <fold-icon name="play" size="sm" />
+          <span class="sp-footer-track">Now playing — Track 03</span>
+          <span class="sp-footer-time">1:24 / 3:57</span>
+        </div>
+        }
+
+        <!-- the preview's own panel host — panels open inside the preview -->
+        <fold-panel-host />
+      </fold-app-shell>
     </div>
   </dev-playground>
 </fold-page-layout>
