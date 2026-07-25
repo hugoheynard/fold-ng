@@ -46,6 +46,8 @@ interface DetailDemo {
   readonly variant?: FoldAvatarVariant;
   readonly square?: boolean;
   readonly image?: boolean;
+  /** A real photo asset (overrides `image`'s data-URI logo). */
+  readonly photoSrc?: string;
 }
 /** A labelled row of demos. */
 interface DemoGroup<T> {
@@ -205,9 +207,14 @@ export default class AvatarPage {
     },
     { label: "single line", items: [{ primary: "Inès Bernard" }] },
     {
-      label: "ghost (guest) · square (org) · image",
+      label: "ghost (guest) · guest w/ photo · square (org) · image",
       items: [
         { primary: "Marc Machine", secondary: "Invité", variant: "ghost" },
+        {
+          primary: "Rina Osei",
+          secondary: "Invité",
+          photoSrc: `${import.meta.env.BASE_URL}avatars/p2.svg`,
+        },
         { primary: "Foldpherd", secondary: "Organisation", square: true },
         { primary: "Léa Petit", secondary: "Design", image: true },
       ],
@@ -283,7 +290,11 @@ function detailDemoCode(d: DetailDemo): string {
     d.size && d.size !== "md" ? `size="${d.size}"` : "",
     d.variant && d.variant !== "solid" ? `variant="${d.variant}"` : "",
     d.square ? "square" : "",
-    d.image ? `[imageUrl]="logoUrl"` : "",
+    d.photoSrc
+      ? `[imageUrl]="photoUrl"`
+      : d.image
+        ? `[imageUrl]="logoUrl"`
+        : "",
   ].filter(Boolean);
   return `<fold-avatar-detail ${attrs.join(" ")} />`;
 }

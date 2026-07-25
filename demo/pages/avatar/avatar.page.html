@@ -137,7 +137,9 @@
                   [size]="d.size ?? 'md'"
                   [variant]="d.variant ?? 'solid'"
                   [square]="d.square ?? false"
-                  [imageUrl]="d.image ? demoAvatarImage : undefined"
+                  [imageUrl]="
+                    d.photoSrc ?? (d.image ? demoAvatarImage : undefined)
+                  "
                 />
               </button>
               }
