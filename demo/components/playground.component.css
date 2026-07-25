@@ -97,13 +97,12 @@
   gap: 10px;
 }
 
-/* The preview content is always wrapped in a viewport frame so a single
-   <ng-content> serves both modes. Off (default), the wrappers are layout-
-   transparent — the demo behaves exactly as if projected straight into the body
-   (incl. stage's aspect-ratio window). On (`responsive`), they become the real
-   resizable frame styled below. */
+/* The demo is authored in `.pg-vp-src`. Off (default), both wrappers are layout-
+   transparent — the demo projects straight into the body (incl. stage's
+   aspect-ratio window). On (`responsive`), the frame becomes the resizable canvas
+   (below) and `.pg-vp-src` is relocated into the iframe by the frame directive. */
 .pg-vp-frame,
-.pg-vp-inner {
+.pg-vp-src {
   display: contents;
 }
 /* `stage` mode: sit the preview on an app-background backdrop, inset + padded
@@ -313,8 +312,8 @@
   }
 }
 
-/* the resizable frame — a canvas the device sits centered on, scrolling only if
-   a render is somehow drawn wider than the frame (it never is: zoom fits it) */
+/* the resizable frame — a canvas the device (iframe) sits centered on, scrolling
+   only if the scaled render is taller than the frame */
 .pg-preview-body.is-responsive .pg-vp-frame {
   display: flex;
   align-items: flex-start;
@@ -325,20 +324,34 @@
   padding: 20px;
   background: var(--fold-color-bg-page);
 }
-.pg-preview-body.is-responsive .pg-vp-inner {
-  display: block;
+/* the stage reserves the *scaled* painted box (transform alone doesn't shrink
+   layout size), so the frame centers/scrolls the iframe correctly */
+.pg-vp-stage {
+  position: relative;
   flex: 0 0 auto;
-  /* The frame IS the demo's viewport: named `fold-preview` so a demo's own
-     scaffolding folds against it with `@container fold-preview (...)` instead of
-     a `@media` (viewport) query — which can't fire, the preview resizes the
-     container, not the window. A real fold component self-folds here for free
-     (its :host is already a container), so only hand-built demo layout needs
-     this. See the `responsive` input docs. */
-  container: fold-preview / inline-size;
 }
-/* a device (constrained width) gets a faint viewport edge; fluid gets none */
-.pg-preview-body.is-responsive .pg-vp-inner.is-device {
+/* a device (constrained width) gets a faint viewport edge + clipped corners;
+   fluid gets none */
+.pg-vp-stage.is-device {
   border-radius: var(--fold-radius-md);
   outline: 1px solid var(--fold-color-border-subtle);
-  outline-offset: 0;
+  overflow: hidden;
+}
+.pg-vp-iframe {
+  display: block;
+  border: 0;
+  /* scaled from the top-left so the painted box lines up with the stage */
+  transform-origin: top left;
+  background: transparent;
+}
+
+/* Inside the iframe: the relocated demo fills the device width and is a named
+   `fold-preview` container, so demo scaffolding may fold with EITHER a plain
+   `@media`/`@container (…)` (the iframe is a real viewport) OR the explicit
+   `@container fold-preview (…)`. This rule is mirrored into the iframe with the
+   rest of the head styles, so it applies there. */
+.pg-vp-src.is-hosted {
+  display: block;
+  width: 100%;
+  container: fold-preview / inline-size;
 }

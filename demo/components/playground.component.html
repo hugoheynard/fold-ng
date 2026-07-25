@@ -91,12 +91,33 @@
       </div>
       <div class="pg-body pg-preview-body" [class.is-responsive]="responsive()">
         <div class="pg-vp-frame" #vpFrame>
-          <div
-            class="pg-vp-inner"
-            [class.is-device]="responsive() && vpWidth() !== null"
-            [style.width]="responsive() ? vpInnerWidth() : null"
-            [style.zoom]="responsive() ? vpScale() : null"
-          >
+          @if (responsive()) {
+            <!-- The device frame: a real iframe (isolated viewport) sized to the
+                 chosen device width and scaled to fit. The demo is relocated into
+                 it from #vpSrc below, so its @media / container queries resolve at
+                 the device width — not the browser window. -->
+            <div
+              class="pg-vp-stage"
+              [class.is-device]="vpWidth() !== null"
+              [style.width]="stageWidth()"
+              [style.height.px]="stageHeight()"
+            >
+              <iframe
+                class="pg-vp-iframe"
+                title="Preview"
+                devPreviewFrame
+                [source]="vpSrc"
+                [themeHost]="themeHostEl"
+                [style.width]="iframeWidth()"
+                [style.height.px]="contentHeight()"
+                [style.transform]="iframeTransform()"
+              ></iframe>
+            </div>
+          }
+          <!-- The demo is authored here. Off `responsive`, it projects straight
+               into the body (wrappers are display:contents). On `responsive`, the
+               frame directive moves this subtree into the iframe. -->
+          <div class="pg-vp-src" #vpSrc [class.is-hosted]="responsive()">
             <ng-content />
           </div>
         </div>

@@ -16,6 +16,7 @@ import {
   FoldElementTitleComponent,
   FoldPageSectionComponent,
 } from "../../src/public-api";
+import { DevPreviewFrameDirective } from "./preview-frame.directive";
 
 /** A viewport preset on the responsive ruler bar. `w` is the real render width
  *  in px; `d` is a device-glyph SVG path (24×24, filled with `currentColor`). */
@@ -57,6 +58,7 @@ interface Viewport {
     FoldElementTitleComponent,
     FoldCardComponent,
     FoldPageSectionComponent,
+    DevPreviewFrameDirective,
   ],
   templateUrl: "./playground.component.html",
   styleUrl: "./playground.component.css",
@@ -73,22 +75,19 @@ export class DevPlaygroundComponent {
 
   /**
    * The responsive viewport controller — a device/px ruler + width slider on the
-   * preview header. On by default: every playground gets it. The demo renders at
-   * the chosen **real** width and is scaled to fit the frame with CSS `zoom`, so
-   * its own container queries resolve at the true width (a 1280px desktop layout
-   * stays a desktop layout even when drawn small). Overrides `stage` when both
-   * are set.
+   * preview header. On by default: every playground gets it. The demo renders in
+   * an **iframe** sized to the chosen device width and scaled to fit the frame,
+   * so it gets a *real, isolated viewport*. Overrides `stage` when both are set.
    *
    * Pass `[responsive]="false"` on the rare demo where a fixed-width preview is
    * the point (e.g. a `stage` window that must keep its own proportions).
    *
-   * The frame is a **named container** (`fold-preview`). A fold component folds
-   * itself here for free — its `:host` is already a container, so it reacts to
-   * the device width with zero per-demo code. Only hand-built demo scaffolding
-   * (a wrapper grid, say) needs to fold explicitly, and it must do so with
-   * `@container fold-preview (max-width: …)` — NOT a `@media` query, which can't
-   * fire (the preview resizes the container, not the window). So: render the real
-   * component and let it fold; never hand-roll a viewport-toggle window per demo.
+   * Because the preview is a true viewport, **any** responsive mechanism resolves
+   * against the device width, not the browser window: `@media`, `@container`,
+   * `ResizeObserver` and `position: sticky` all just work. Render the real
+   * component and let it fold on its own width — write demo scaffolding with
+   * plain `@media`/`@container` as you would in an app; never hand-roll a
+   * viewport-toggle window per demo. See {@link DevPreviewFrameDirective}.
    */
   readonly responsive = input(true, { transform: booleanAttribute });
 
@@ -158,8 +157,21 @@ export class DevPlaygroundComponent {
     return this.viewports.find((v) => v.w === w)?.id ?? "custom";
   });
 
-  /** Scale-to-fit factor applied as CSS `zoom` — never upscales past 1. `zoom`
-   *  (not `transform`) so layout + `position: sticky` resolve at the real width.
+  /** The iframe device frame (present only while `responsive`). Its
+   *  `contentHeight` sizes the frame — an iframe has no intrinsic height. */
+  private readonly previewFrame = viewChild(DevPreviewFrameDirective);
+  /** The element whose `data-theme` the preview mirrors — the gallery-shell host
+   *  (it carries `[attr.data-theme]`, absent for the umbra base). Resolved lazily
+   *  so the query runs in the browser only. */
+  protected readonly themeHostEl =
+    typeof document === "undefined"
+      ? null
+      : document.querySelector<HTMLElement>("gallery-shell");
+
+  /** Scale-to-fit factor applied as `transform: scale()` on the iframe — never
+   *  upscales past 1. The demo lays out at its true device width inside the
+   *  iframe (so its `@media`/container queries resolve there); the transform only
+   *  shrinks the painted result to fit the frame.
    *
    *  Fits into the FROZEN `fitWidth` (so widening the window doesn't rescale the
    *  preview), but capped to the LIVE frame width — so when the window shrinks
@@ -180,11 +192,34 @@ export class DevPlaygroundComponent {
     return Math.min(1, avail / w);
   });
 
-  /** Inner width style: fluid fills the frame; a device renders at its true px. */
-  protected readonly vpInnerWidth = computed(() => {
+  /** Adopted-content height (px), from the iframe frame. Drives both the iframe's
+   *  own height and the scaled stage box the frame reserves for it. */
+  protected readonly contentHeight = computed(
+    () => this.previewFrame()?.contentHeight() ?? 0,
+  );
+
+  /** iframe layout width: fluid fills the frame; a device gets its true px. This
+   *  is the width the demo's `@media` queries see. */
+  protected readonly iframeWidth = computed(() => {
     const w = this.vpWidth();
     return w === null ? "100%" : `${w}px`;
   });
+
+  /** `transform: scale()` string — omitted at 1× so fluid stays crisp. */
+  protected readonly iframeTransform = computed(() => {
+    const scale = this.vpScale();
+    return scale === 1 ? "none" : `scale(${scale})`;
+  });
+
+  /** The scaled box the frame reserves for the iframe, so it centers/scrolls the
+   *  *painted* size (transform doesn't affect layout size on its own). */
+  protected readonly stageWidth = computed(() => {
+    const w = this.vpWidth();
+    return w === null ? "100%" : `${w * this.vpScale()}px`;
+  });
+  protected readonly stageHeight = computed(
+    () => this.contentHeight() * this.vpScale(),
+  );
 
   /** Slider position — the real width, snapping to the max when fluid. */
   protected readonly sliderValue = computed(
