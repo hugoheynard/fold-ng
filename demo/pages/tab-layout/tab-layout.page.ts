@@ -45,8 +45,6 @@ export default class TabLayoutPage {
 
   protected readonly tlPlacement = signal<"top" | "side">("side");
   protected readonly tlFoldAt = signal(720);
-  /** Preview width — drag it across `foldAt` to watch a side rail fold on top. */
-  protected readonly tlWidth = signal(760);
 
   protected readonly tabLayoutCode = computed(() => {
     const attrs: string[] = [];

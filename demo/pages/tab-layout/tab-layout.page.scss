@@ -1,12 +1,20 @@
 /* ── tab-layout page: a stand-in content panel for the active tab ── */
+/* Give the demo real height so it reads as a panel in the responsive frame, not
+   a thin band on an empty canvas. */
+.tl-demo {
+  min-height: 300px;
+}
+
 .tl-demo-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 .tl-demo-block {
-  height: 52px;
+  flex: 1;
+  min-height: 52px;
   border-radius: var(--fold-radius-md);
   border: 1px solid var(--fold-color-border-subtle);
   background: var(--fold-color-surface-card);

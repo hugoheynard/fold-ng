@@ -9,7 +9,7 @@
   </p>
   <gal-kind-badge titleBadge kind="component" />
 
-  <dev-playground [code]="tabLayoutCode()" stage>
+  <dev-playground [code]="tabLayoutCode()" [initialWidth]="1280">
     <div class="np-field" params>
       <span class="gal-tag">placement</span>
       <div class="ss-seg">
@@ -40,42 +40,33 @@
       [(value)]="tlFoldAt"
     />
 
-    <fold-slider
-      params
-      label="preview width"
-      [min]="320"
-      [max]="900"
-      [step]="20"
-      [valueText]="tlWidth() + 'px'"
-      [(value)]="tlWidth"
-    />
-
     <p class="doc-p" params>
-      stacked: “{{ tl.stacked() }}” — drag the width past foldAt to see a side
-      rail fold back on top.
+      stacked: “{{ tl.stacked() }}” — drag the preview device past foldAt to see
+      a side rail fold back on top.
     </p>
 
-    <div [style.width.px]="tlWidth()" [style.maxWidth]="'100%'">
-      <fold-nav-layout
-        [placement]="tlPlacement()"
-        [foldAt]="tlFoldAt()"
-        #tl="foldNavLayout"
-      >
-        <fold-view-nav
-          tabNav
-          activeStyle="fill"
-          direction="auto"
-          [items]="tabs"
-          [activeKey]="active()"
-          (activeChange)="active.set($event)"
-        />
-        <div class="tl-demo-body">
-          <span class="gal-tag">content for “{{ active() }}”</span>
-          <div class="tl-demo-block"></div>
-          <div class="tl-demo-block"></div>
-        </div>
-      </fold-nav-layout>
-    </div>
+    <!-- Rendered straight in the responsive frame: fold-nav-layout folds on its
+         own width, so the preview device drives it — no wrapper width slider. -->
+    <fold-nav-layout
+      class="tl-demo"
+      [placement]="tlPlacement()"
+      [foldAt]="tlFoldAt()"
+      #tl="foldNavLayout"
+    >
+      <fold-view-nav
+        tabNav
+        activeStyle="fill"
+        direction="auto"
+        [items]="tabs"
+        [activeKey]="active()"
+        (activeChange)="active.set($event)"
+      />
+      <div class="tl-demo-body">
+        <span class="gal-tag">content for “{{ active() }}”</span>
+        <div class="tl-demo-block"></div>
+        <div class="tl-demo-block"></div>
+      </div>
+    </fold-nav-layout>
   </dev-playground>
 
   <!-- The other role: a tabbed SECTION inside a page. page-section owns the
