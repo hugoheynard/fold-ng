@@ -11,24 +11,6 @@
   --fold-aside-layout-stack: 24px;
 }
 
-/* Start-now row: the aside-layout's grid, mirrored, so the disclosure lands in
-   column 2 — aligned with the feature cards below, rails empty above it. */
-.home-startnow-row {
-  display: grid;
-  grid-template-columns:
-    var(--home-rail)
-    minmax(0, 1fr)
-    var(--home-side);
-  gap: var(--home-gap);
-  max-width: var(--home-max);
-  margin-inline: auto;
-  width: 100%;
-}
-
-.home-startnow-row .home-startnow {
-  grid-column: 2;
-}
-
 /* ── left rail: the numbers, one card ─────────────────────────── */
 .home-figures-body {
   display: flex;
@@ -239,6 +221,11 @@
   --fold-disclosure-summary-bg: var(--fold-color-primary);
   --fold-disclosure-summary-color: var(--fold-color-on-primary);
   border-color: var(--fold-color-primary);
+  /* sits in the hero, below the CTAs: a small gap + a readable, centred width */
+  margin-top: 20px;
+  width: 100%;
+  max-width: 440px;
+  text-align: left;
 }
 
 .home-startnow-summary {

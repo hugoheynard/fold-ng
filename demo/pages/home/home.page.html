@@ -36,10 +36,7 @@
         See the themes
       </a>
     </div>
-  </fold-hero-section>
-
-  <!-- ── start now: above the layout, aligned with its centre column ── -->
-  <div class="home-startnow-row">
+    <!-- start now: in the header, below the CTAs — one command to install -->
     <fold-disclosure class="home-startnow" [(open)]="startNowOpen">
       <span summary class="home-startnow-summary">
         <fold-icon name="lightning" size="sm" />
@@ -64,7 +61,7 @@
 <span class="home-terminal-line"><span class="home-terminal-prompt">$</span> echo '@import "fold-ng/tokens.css";' &gt;&gt; styles.css</span></code></pre>
       </div>
     </fold-disclosure>
-  </div>
+  </fold-hero-section>
 
   <!-- ── below: rails flank the feature cards ───────────────────── -->
   <fold-page-section>
@@ -95,8 +92,17 @@
       <!-- centre: the feature cards + close -->
 
       <section class="home-features">
-        @for (f of features; track f.title) {
-        <fold-card class="home-feature" separators="both" raisedBands="both">
+        @for (f of features; track f.title; let i = $index) {
+        <!-- checkerboard the accent fill across the two-column grid (1st, 4th,
+             5th cards). surface="accent" auto-inverts the whole card's content
+             to an on-accent palette, so the icon tile, title and body stay
+             compatible with zero extra markup. -->
+        <fold-card
+          class="home-feature"
+          [surface]="accentCards.has(i) ? 'accent' : 'card'"
+          separators="both"
+          raisedBands="both"
+        >
           <fold-element-title
             cardHeader
             variant="title"
