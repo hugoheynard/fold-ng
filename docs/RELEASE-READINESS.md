@@ -60,22 +60,22 @@ and the gallery nav — **layout first**.
 
 **Content** — `src/components/content/`
 
-| Component                        | DX  | Tests | Docs | Verdict                                          |
-| -------------------------------- | :-: | :---: | :--: | ------------------------------------------------ |
-| `fold-card`                      | 🟡  |  🟢   |  🟢  | `booleanAttribute` on `interactive`              |
-| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip          |
-| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                     |
-| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
-| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
-| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                |
-| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`            |
-| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | Add luminance-ink test + `@example` tag          |
-| `fold-avatar-detail`             | 🟢  |  🔴   |  🟡  | Test forwarded inputs; `@example`                |
-| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
-| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                   |
-| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                     |
-| `fold-data-table`                | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**   |
-| `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery** |
+| Component                        | DX  | Tests | Docs | Verdict                                            |
+| -------------------------------- | :-: | :---: | :--: | -------------------------------------------------- |
+| `fold-card`                      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible `interactive` contract |
+| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip            |
+| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                       |
+| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
+| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
+| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                  |
+| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`              |
+| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | Add luminance-ink test + `@example` tag            |
+| `fold-avatar-detail`             | 🟢  |  🔴   |  🟡  | Test forwarded inputs; `@example`                  |
+| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
+| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
+| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                       |
+| `fold-data-table`                | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**     |
+| `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**   |
 
 **Feedback** — `src/components/feedback/`
 
@@ -115,11 +115,11 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page                                 |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo                                 |
 
-**Ship-ready today (23):** app-shell, page-layout, page-section, hero-section,
-aside-layout, nav-layout, view-nav, tabs, avatar-list, callout, element-title,
-field, field-list, nav-launcher, timeline, toast, surface, icon, repeat-press,
-sticky-column, button, button-icon, toggle-icon. Everything else has scoped,
-mostly mechanical work below.
+**Ship-ready today (24):** app-shell, page-layout, page-section, hero-section,
+aside-layout, nav-layout, view-nav, tabs, card, avatar-list, callout,
+element-title, field, field-list, nav-launcher, timeline, toast, surface, icon,
+repeat-press, sticky-column, button, button-icon, toggle-icon. Everything else
+has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with nav-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -185,10 +185,10 @@ package.
 
 Grouped so each can land as one atomic commit across the affected components.
 
-**C-1 · `booleanAttribute` parity.** Boolean inputs lacking the transform their
-siblings have, so a bare attribute or `="false"` mis-coerces. ✅ Done for the
-button family (`button`/`button-icon`/`toggle-icon` `disabled`). Remaining:
-`card.interactive` (`card.component.ts:72`) — add `{ transform: booleanAttribute }`.
+**C-1 · `booleanAttribute` parity. ✅ Done.** Boolean inputs lacking the transform
+their siblings have, so a bare attribute or `="false"` mis-coerces. Done for the
+button family (`button`/`button-icon`/`toggle-icon` `disabled`) and for
+`card.interactive` (now `booleanAttribute`, with a coercion spec).
 (`page-layout.wide`/`fluid` no longer apply — both inputs were removed; the page
 fills its container, width is a content concern.)
 
@@ -318,7 +318,14 @@ ref so they coordinate across `fold-nav-layout` slots. Roles + keyboard asserted
 
 ### Surfaces & scaffolding
 
-**`fold-card`** 🟡🟢🟢 — Action: `booleanAttribute` on `interactive` (C-1).
+**`fold-card`** 🟢🟢🟢 — Ship-ready (rigorous audit, 2026-07-25). The
+`interactive` input was hardened from a visual-only, mis-coercing flag into a
+real accessible control: `booleanAttribute` + `role="button"`/`tabindex`, a
+`:focus-visible` ring, Enter/Space/click → `(activated)`, `ariaLabel`, and a
+`prefers-reduced-motion` guard on the lift. The header/footer bands moved off
+`<header>`/`<footer>` (which exposed spurious `banner`/`contentinfo` landmarks)
+to neutral `<div>`s. Specs lock the coercion + the keyboard/role contract; the
+gallery demos it. Kept: the body-padding invariant and `overflow: clip`.
 
 **`fold-context-card`** 🟢🟡🟡 — Composes card + element-title (good SRP).
 Action: add an `iconTone` pass-through spec (the one uncovered input); note the
