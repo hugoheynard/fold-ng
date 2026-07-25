@@ -23,10 +23,32 @@
   </a>
 
   <dev-playground [code]="code()">
-    <!-- header slots -->
+    <!-- header type: the icon + title inputs, or a projected [pageTitle] -->
     <div class="np-field" params>
       <span class="gal-tag">header</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="headerMode() === 'title'"
+          (click)="headerMode.set('title')"
+        >
+          page title
+        </button>
+        <button
+          type="button"
+          [class.is-on]="headerMode() === 'custom'"
+          (click)="headerMode.set('custom')"
+        >
+          custom title
+        </button>
+      </div>
+    </div>
+
+    <!-- header slots + the bleed section -->
+    <div class="np-field" params>
+      <span class="gal-tag">slots</span>
       <div class="pl-toggles">
+        @if (headerMode() === "title") {
         <button
           type="button"
           class="pl-chip"
@@ -35,6 +57,7 @@
         >
           icon
         </button>
+        }
         <button
           type="button"
           class="pl-chip"
@@ -59,6 +82,14 @@
         >
           pageActions
         </button>
+        <button
+          type="button"
+          class="pl-chip"
+          [class.is-on]="showBleed()"
+          (click)="showBleed.set(!showBleed())"
+        >
+          bleed section
+        </button>
       </div>
     </div>
 
@@ -75,48 +106,73 @@
     <!-- A real fold-page-layout, filling the preview box. The gutter slider
          drives its themed margins live; the bleed band inside cancels exactly
          that same token, so it stays flush as you drag. -->
-    <div class="pl-window">
-      <fold-page-layout
-        [icon]="showIcon() ? 'grid' : undefined"
-        title="Billing"
-        [style.--fold-page-gutter.px]="gutter()"
-      >
-        @if (showBadge()) {
-        <fold-badge titleBadge content="Pro" variant="accent" radius="pill" />
-        } @if (showDesc()) {
-        <p description>Your company subscription and payment methods.</p>
-        } @if (showActions()) {
-        <button type="button" class="pl-btn" pageActions>Export</button>
-        }
+    <div class="pl-window-wrap" [style.--pl-gutter.px]="gutter()">
+      <!-- Gutter visualiser: a dashed rule at each content edge, the band
+           between it and the frame edge labelled with the gutter width. It sits
+           over the (scrolling) window and stays put as the slider moves. -->
+      <div class="pl-ruler" aria-hidden="true">
+        <span class="pl-gutter-band pl-gutter-band-left">
+          <span class="pl-gutter-label">{{ gutter() }}px</span>
+        </span>
+        <span class="pl-gutter-band pl-gutter-band-right">
+          <span class="pl-gutter-label">{{ gutter() }}px</span>
+        </span>
+      </div>
 
-        <fold-page-section title="Payment methods">
-          <fold-card>
-            <p class="gal-body">
-              The default method is charged on renewal. Add a backup so a
-              declined card never interrupts service.
-            </p>
-          </fold-card>
-        </fold-page-section>
+      <div class="pl-window">
+        <fold-page-layout
+          [icon]="headerMode() === 'title' && showIcon() ? 'grid' : undefined"
+          [title]="headerMode() === 'title' ? 'Billing' : undefined"
+          [style.--fold-page-gutter.px]="gutter()"
+        >
+          @if (headerMode() === "custom") {
+          <span pageTitle class="pl-custom-title">
+            <fold-avatar name="Acme Records" size="sm" />
+            <span class="pl-custom-title-text"
+              >Acme Records
+              <span class="pl-custom-title-sub">· Workspace</span></span
+            >
+          </span>
+          } @if (showBadge()) {
+          <fold-badge titleBadge content="Pro" variant="accent" radius="pill" />
+          } @if (showDesc()) {
+          <p description>Your company subscription and payment methods.</p>
+          } @if (showActions()) {
+          <button type="button" class="pl-btn" pageActions>Export</button>
+          }
 
-        <fold-page-section bleed>
-          <fold-card surface="sunken" radius="sm">
-            <p class="gal-body">
-              Bleed band — spans the layout edge-to-edge. It cancels
-              <code>--fold-page-gutter</code> exactly (the same token the page
-              pads with), so it stays flush as you drag the slider.
-            </p>
-          </fold-card>
-        </fold-page-section>
+          <fold-page-section title="Payment methods">
+            <fold-card>
+              <p class="gal-body">
+                The default method is charged on renewal. Add a backup so a
+                declined card never interrupts service.
+              </p>
+            </fold-card>
+          </fold-page-section>
 
-        <fold-page-section title="Invoices">
-          <fold-card>
-            <p class="gal-body">
-              Back in the gutter. The body keeps its steady vertical rhythm at
-              any width.
-            </p>
-          </fold-card>
-        </fold-page-section>
-      </fold-page-layout>
+          @if (showBleed()) {
+          <fold-page-section bleed>
+            <fold-card surface="sunken" radius="sm">
+              <p class="gal-body">
+                Bleed band — spans the layout edge-to-edge. It cancels
+                <code>--fold-page-gutter</code> exactly (the same token the page
+                pads with), so it stays flush against the dashed guides as you
+                drag the slider.
+              </p>
+            </fold-card>
+          </fold-page-section>
+          }
+
+          <fold-page-section title="Invoices">
+            <fold-card>
+              <p class="gal-body">
+                Back in the gutter. The body keeps its steady vertical rhythm at
+                any width.
+              </p>
+            </fold-card>
+          </fold-page-section>
+        </fold-page-layout>
+      </div>
     </div>
   </dev-playground>
 

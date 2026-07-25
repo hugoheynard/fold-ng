@@ -1,16 +1,20 @@
 import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
+  FoldAvatarComponent,
   FoldBadgeComponent,
   FoldButtonComponent,
   FoldCalloutComponent,
   FoldCardComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
+  FoldPageTitleDirective,
   FoldSliderComponent,
 } from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+
+type HeaderMode = "title" | "custom";
 
 /** `/page-layout` — the `fold-page-layout` gallery page. */
 @Component({
@@ -20,8 +24,10 @@ import { KindBadgeComponent } from "../../components/kind-badge.component";
     RouterLink,
     KindBadgeComponent,
     FoldPageLayoutComponent,
+    FoldPageTitleDirective,
     FoldPageSectionComponent,
     FoldCardComponent,
+    FoldAvatarComponent,
     FoldBadgeComponent,
     FoldButtonComponent,
     FoldCalloutComponent,
@@ -33,18 +39,30 @@ import { KindBadgeComponent } from "../../components/kind-badge.component";
   encapsulation: ViewEncapsulation.None,
 })
 export default class PageLayoutPage {
+  /** Header: the plain `icon` + `title` inputs, or a projected `[pageTitle]`. */
+  protected readonly headerMode = signal<HeaderMode>("title");
   /** Header slots, toggled independently so the anatomy is explorable. */
   protected readonly showIcon = signal(true);
   protected readonly showBadge = signal(false);
   protected readonly showDesc = signal(true);
   protected readonly showActions = signal(true);
+  /** The full-bleed band section — cancels the gutter to span edge-to-edge. */
+  protected readonly showBleed = signal(true);
   /** The horizontal page gutter — the single `--fold-page-gutter` token. */
   protected readonly gutter = signal(32);
 
   /** The live snippet, rebuilt from the chosen inputs. */
   protected readonly code = computed(() => {
-    const icon = this.showIcon() ? ' icon="grid"' : "";
-    const lines = [`<fold-page-layout${icon} title="Billing">`];
+    const lines: string[] = [];
+    if (this.headerMode() === "custom") {
+      lines.push(
+        "<fold-page-layout>",
+        '  <span pageTitle><fold-avatar name="Acme Records" size="sm" /> Acme Records</span>',
+      );
+    } else {
+      const icon = this.showIcon() ? ' icon="grid"' : "";
+      lines.push(`<fold-page-layout${icon} title="Billing">`);
+    }
     if (this.showBadge()) {
       lines.push('  <fold-badge titleBadge content="Pro" variant="accent" />');
     }
@@ -58,6 +76,13 @@ export default class PageLayoutPage {
     }
     lines.push(
       '  <fold-page-section title="Payment methods">…</fold-page-section>',
+    );
+    if (this.showBleed()) {
+      lines.push(
+        "  <fold-page-section bleed>… edge-to-edge band …</fold-page-section>",
+      );
+    }
+    lines.push(
       '  <fold-page-section title="Invoices">…</fold-page-section>',
       "</fold-page-layout>",
     );

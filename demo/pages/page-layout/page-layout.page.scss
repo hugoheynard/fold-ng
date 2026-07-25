@@ -3,6 +3,11 @@
       edge and the (card / sunken) sections; a bleed band cancels it and sits
       flush to the edges — live as the slider moves. No width cap: the page fills,
       so there is nothing to scale — the window scrolls if the content is tall. ── */
+/* Non-scrolling frame that hosts the ruler overlay above the scrolling window. */
+.pl-window-wrap {
+  position: relative;
+}
+
 .pl-window {
   max-height: 460px;
   overflow: auto;
@@ -10,6 +15,62 @@
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-md);
   background: var(--fold-color-bg-page);
+}
+
+/* Gutter visualiser — two edge bands the width of --fold-page-gutter, each with
+   a dashed rule at the content edge and a px label, laid over the window. */
+.pl-ruler {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.pl-gutter-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--pl-gutter, 32px);
+  display: flex;
+  justify-content: center;
+  background: var(--fold-color-primary-surface);
+}
+.pl-gutter-band-left {
+  left: 0;
+  border-right: 1px dashed var(--fold-color-primary);
+}
+.pl-gutter-band-right {
+  right: 0;
+  border-left: 1px dashed var(--fold-color-primary);
+}
+.pl-gutter-label {
+  margin-top: 8px;
+  height: fit-content;
+  padding: 1px 5px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* A projected [pageTitle] — an avatar + a two-tone name, inside the page <h1>. */
+.pl-custom-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.pl-custom-title-text {
+  font-size: var(--fold-text-lg);
+  font-weight: 700;
+  color: var(--fold-color-text);
+}
+.pl-custom-title-sub {
+  font-weight: 500;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
 }
 
 /* Header-slot toggles — a row of on/off chips. */
