@@ -7,6 +7,7 @@ import {
   input,
   linkedSignal,
   signal,
+  untracked,
   viewChild,
 } from "@angular/core";
 import {
@@ -139,8 +140,14 @@ export class DevPlaygroundComponent {
    *  Seeded from `initialWidth`, then owned by the device buttons + slider. */
   protected readonly vpWidth = linkedSignal(() => this.initialWidth());
   private readonly vpFrame = viewChild<ElementRef<HTMLElement>>("vpFrame");
-  /** The frame's available width, tracked so `zoom` fits the render to it. */
+  /** The frame's live available width (updates on every resize). */
   private readonly frameWidth = signal(0);
+  /** The frame width the current fit was computed against — FROZEN. It is only
+   *  re-captured when the device changes (or on the first measure), never on a
+   *  plain window resize, so the preview holds its size instead of rescaling as
+   *  you drag the window. If the frame later shrinks under it, the frame's own
+   *  `overflow: auto` scrolls — nothing breaks. */
+  private readonly fitWidth = signal(0);
 
   /** The preset (or `"fluid"` / `"custom"`) matching the current width. */
   protected readonly activeViewport = computed(() => {
@@ -152,11 +159,22 @@ export class DevPlaygroundComponent {
   });
 
   /** Scale-to-fit factor applied as CSS `zoom` — never upscales past 1. `zoom`
-   *  (not `transform`) so layout + `position: sticky` resolve at the real width. */
+   *  (not `transform`) so layout + `position: sticky` resolve at the real width.
+   *
+   *  Fits into the FROZEN `fitWidth` (so widening the window doesn't rescale the
+   *  preview), but capped to the LIVE frame width — so when the window shrinks
+   *  below the frozen size the render scales down to stay inside the frame
+   *  instead of spilling out. Net: stable on grow, fit on shrink. */
   protected readonly vpScale = computed(() => {
     const w = this.vpWidth();
-    const avail = this.frameWidth();
-    if (w === null || avail === 0) {
+    if (w === null) {
+      return 1;
+    }
+    const frozen = this.fitWidth();
+    const live = this.frameWidth();
+    const avail =
+      frozen > 0 && live > 0 ? Math.min(frozen, live) : frozen || live;
+    if (avail === 0) {
       return 1;
     }
     return Math.min(1, avail / w);
@@ -174,6 +192,7 @@ export class DevPlaygroundComponent {
   );
 
   constructor() {
+    // Live frame width, from a ResizeObserver on the frame.
     effect((onCleanup) => {
       const el = this.vpFrame()?.nativeElement;
       if (!el || typeof ResizeObserver === "undefined") {
@@ -188,6 +207,28 @@ export class DevPlaygroundComponent {
       ro.observe(el);
       onCleanup(() => {
         ro.disconnect();
+      });
+    });
+
+    // Freeze the fit: capture the frame width when the DEVICE changes (slider /
+    // preset). Tracks `vpWidth` only — `frameWidth` is read untracked, so a plain
+    // window resize never re-fits.
+    effect(() => {
+      this.vpWidth();
+      const live = untracked(() => this.frameWidth());
+      if (live > 0) {
+        untracked(() => this.fitWidth.set(live));
+      }
+    });
+
+    // First fit: capture the frame width the moment it is first measured (the
+    // device may never change). Tracks `frameWidth` but no-ops once fit.
+    effect(() => {
+      const live = this.frameWidth();
+      untracked(() => {
+        if (live > 0 && this.fitWidth() === 0) {
+          this.fitWidth.set(live);
+        }
       });
     });
   }
