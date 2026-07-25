@@ -23,7 +23,7 @@
     purpose.
   </fold-callout>
 
-  <dev-playground [code]="tabNavCode()" stage>
+  <dev-playground [code]="tabNavCode()" [initialWidth]="1280">
     <div class="np-field" params>
       <span class="gal-tag">activeStyle</span>
       <div class="ss-seg">
@@ -171,10 +171,11 @@
         >
       </div>
 
-      <!-- foldAt lowered so the side rail actually fits the narrow demo stage;
-         the default (720px) would auto-fold back to a horizontal bar here.
-         A collapsed rail is icon-only, so narrow its track to match. The bar's
-         direction="auto" makes it follow this layout — no tl.stacked() wiring. -->
+      <!-- foldAt kept low so the side rail holds across the preview widths (the
+         default 720 would auto-fold it back to a horizontal bar); drag the
+         device below it to watch it fold. A collapsed rail is icon-only, so
+         narrow its track to match. direction="auto" makes the bar follow this
+         layout — no tl.stacked() wiring. -->
       <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
         [foldAt]="320"
