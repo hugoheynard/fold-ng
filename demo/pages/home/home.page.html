@@ -65,6 +65,23 @@
 
   <!-- ── below: rails flank the feature cards ───────────────────── -->
   <fold-page-section>
+    <!-- the "Fold renders itself" line — a full-width banner above the rails,
+         not projected into the aside layout's centre column -->
+    <fold-callout class="home-close" variant="accent">
+      Everything on this page — the cards, the buttons, this callout, the rails
+      beside it — is Fold rendering itself.
+      <a
+        foldButton
+        actions
+        routerLink="/card"
+        size="sm"
+        emphasis="outline"
+        intent="neutral"
+      >
+        Open a component
+      </a>
+    </fold-callout>
+
     <fold-aside-layout class="home-layout" asideLeftLabel="Fold in numbers">
       <!-- left rail: one card, the numbers -->
       <fold-card
@@ -114,21 +131,6 @@
         </fold-card>
         }
       </section>
-
-      <fold-callout class="home-close" variant="accent">
-        Everything on this page — the cards, the buttons, this callout, the
-        rails beside it — is Fold rendering itself.
-        <a
-          foldButton
-          actions
-          routerLink="/card"
-          size="sm"
-          emphasis="outline"
-          intent="neutral"
-        >
-          Open a component
-        </a>
-      </fold-callout>
 
       <!-- right rail: support -->
       <fold-card
