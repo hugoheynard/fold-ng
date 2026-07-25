@@ -6,36 +6,11 @@ import {
   input,
 } from "@angular/core";
 import { FoldPaletteRegistry } from "../../../color/palette-registry.service";
+import { foldReadableInk } from "../../../color/contrast";
 
 /** Ink for text on a light vs dark categorical fill. */
 const DARK_INK = "#1a202c";
 const LIGHT_INK = "#ffffff";
-
-/**
- * Pick a readable ink for text drawn on `fill`, from its relative luminance —
- * so a custom (dark) palette supplied via `provideFoldPalette` still gets legible
- * initials instead of the fixed dark ink. Non-hex fills fall back to dark ink.
- */
-function readableInk(fill: string): string {
-  const hex = fill.trim().replace(/^#/, "");
-  const full =
-    hex.length === 3
-      ? hex
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : hex;
-  if (!/^[0-9a-fA-F]{6}$/.test(full)) {
-    return DARK_INK;
-  }
-  const channel = (i: number): number => {
-    const c = parseInt(full.slice(i, i + 2), 16) / 255;
-    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-  };
-  const luminance =
-    0.2126 * channel(0) + 0.7152 * channel(2) + 0.0722 * channel(4);
-  return luminance > 0.4 ? DARK_INK : LIGHT_INK;
-}
 
 /** Fill style — `ghost` dashes the outline (guests). */
 export type FoldAvatarVariant = "solid" | "ghost";
@@ -74,6 +49,13 @@ export type FoldAvatarRingStyle = "solid" | "dotted";
  * | `ringStyle` | `'solid' \| 'dotted'`  | `'solid'` | Ring line style — `dotted` for scheduled/tentative states. |
  *
  * @selector `fold-avatar`
+ *
+ * @example
+ * ```html
+ * <fold-avatar name="Clément Aubry" size="lg" />
+ * <fold-avatar name="Léa Petit" ring="accent" ringStyle="dotted" />
+ * <fold-avatar name="Acme Corp" square imageUrl="/logo.svg" />
+ * ```
  */
 @Component({
   selector: "fold-avatar",
@@ -97,8 +79,11 @@ export class FoldAvatarComponent {
   /** Ring line style — `'dotted'` for scheduled / tentative states. */
   readonly ringStyle = input<FoldAvatarRingStyle>("solid");
 
-  /** Readable ink for the initials, derived from the fill's luminance. */
-  protected readonly onColor = computed(() => readableInk(this.color()));
+  /** Readable ink for the initials — the higher-contrast of dark/light ink on
+   *  the fill, so a custom palette stays legible. */
+  protected readonly onColor = computed(() =>
+    foldReadableInk(this.color(), DARK_INK, LIGHT_INK),
+  );
 
   readonly initials = computed(() => {
     const n = this.name().trim();
