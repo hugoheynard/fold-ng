@@ -702,3 +702,148 @@
     transparent
   );
 }
+
+/* ── Extra theme: TITAN ───────────────────────────────────────
+   Brushed titanium, light + warm. A cool brushed-steel ground — the
+   header + rails sit at the page's own tint, so the top reads frameless
+   — with bright polished cards that float off it on the shared elevation
+   shadow (that lift is the "raised metal piece", no per-theme shadow
+   needed). The brand is HEAT-anodized titanium: the copper-orange the
+   metal takes when torched, warming the whole steel read. Content borders
+   re-point to a SOLID steel primitive (a palpable machined seam, where
+   the light themes use an alpha hairline); corners soften in scales.css.
+   Status families hold at the lumen (light) tints — only ground + brand
+   move. Uniform-polarity, so no chrome override is needed. */
+[data-theme="titan"] {
+  /* Surfaces — header + rails at the page's own tint (a frameless top) */
+  --fold-color-bg-page: var(--fold-ref-steel-200);
+  --fold-color-bg-header: var(--fold-ref-steel-150);
+  --fold-color-bg-rail-primary: var(--fold-ref-steel-100);
+  --fold-color-bg-rail-secondary: var(--fold-ref-steel-150);
+  --fold-color-bg-rail-tertiary: color-mix(
+    in srgb,
+    var(--fold-ref-black) 3%,
+    transparent
+  );
+
+  /* Primary / accent — heat-anodized copper-orange, deep enough for white */
+  --fold-color-primary: var(--fold-ref-titanium-500);
+  --fold-color-primary-strong: var(--fold-ref-titanium-600);
+  --fold-color-on-primary: var(--fold-ref-white);
+  --fold-color-primary-text: var(--fold-ref-titanium-700);
+  --fold-color-primary-surface: color-mix(
+    in srgb,
+    var(--fold-ref-titanium-500) 10%,
+    transparent
+  );
+  --fold-color-primary-border: color-mix(
+    in srgb,
+    var(--fold-ref-titanium-500) 28%,
+    transparent
+  );
+
+  /* Info (purple) — lumen tint */
+  --fold-color-info: var(--fold-ref-purple-600);
+  --fold-color-info-text: var(--fold-ref-purple-500);
+  --fold-color-info-surface: color-mix(
+    in srgb,
+    var(--fold-ref-purple-600) 8%,
+    transparent
+  );
+  --fold-color-info-border: color-mix(
+    in srgb,
+    var(--fold-ref-purple-600) 22%,
+    transparent
+  );
+
+  /* Warning (amber) */
+  --fold-color-warning: var(--fold-ref-amber-600);
+  --fold-color-warning-text: var(--fold-ref-amber-550);
+  --fold-color-warning-surface: color-mix(
+    in srgb,
+    var(--fold-ref-amber-600) 8%,
+    transparent
+  );
+  --fold-color-warning-border: color-mix(
+    in srgb,
+    var(--fold-ref-amber-600) 22%,
+    transparent
+  );
+
+  /* Alert (red) */
+  --fold-color-alert: var(--fold-ref-red-600);
+  --fold-color-alert-text: var(--fold-ref-red-450);
+  --fold-color-alert-surface: color-mix(
+    in srgb,
+    var(--fold-ref-red-600) 8%,
+    transparent
+  );
+  --fold-color-alert-border: color-mix(
+    in srgb,
+    var(--fold-ref-red-600) 22%,
+    transparent
+  );
+
+  /* Success (green) */
+  --fold-color-success: var(--fold-ref-green-500);
+  --fold-color-success-text: var(--fold-ref-green-550);
+  --fold-color-success-surface: color-mix(
+    in srgb,
+    var(--fold-ref-green-500) 10%,
+    transparent
+  );
+  --fold-color-success-border: color-mix(
+    in srgb,
+    var(--fold-ref-green-500) 25%,
+    transparent
+  );
+
+  /* Text — graphite on the light page (high contrast) */
+  --fold-color-text: var(--fold-ref-steel-900);
+  --fold-color-text-secondary: var(--fold-ref-steel-600);
+  --fold-color-text-muted: var(--fold-ref-steel-500);
+  --fold-color-text-faded: var(--fold-ref-steel-400);
+
+  /* Card — a bright polished-steel plate that floats off the silver ground */
+  --fold-color-surface-card: var(--fold-ref-steel-50);
+  --fold-color-surface-sunken: var(--fold-ref-steel-100);
+
+  /* Neutral surfaces — faint black overlays for hover/raise cues on light */
+  --fold-color-surface-subtle: color-mix(
+    in srgb,
+    var(--fold-ref-black) 3%,
+    transparent
+  );
+  --fold-color-surface-raised: color-mix(
+    in srgb,
+    var(--fold-ref-black) 5%,
+    transparent
+  );
+  --fold-color-surface-hover: var(
+    --fold-ref-steel-150
+  ); /* solid raised hover */
+
+  /* Borders — SOLID brushed-steel seams (the palpable metal edge), where the
+     light themes use an alpha hairline. */
+  --fold-color-border: var(--fold-ref-steel-300);
+  --fold-color-border-subtle: var(--fold-ref-steel-150);
+
+  /* Glass — frosted brushed steel */
+  --fold-color-glass: color-mix(
+    in srgb,
+    var(--fold-ref-steel-50) 66%,
+    transparent
+  );
+  --fold-color-glass-border: color-mix(
+    in srgb,
+    var(--fold-ref-black) 12%,
+    transparent
+  );
+
+  /* Scrim — a darkening veil behind the mobile nav drawer. */
+  --fold-color-scrim: color-mix(
+    in srgb,
+    var(--fold-ref-black) 45%,
+    transparent
+  );
+}

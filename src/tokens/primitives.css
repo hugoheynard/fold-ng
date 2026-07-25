@@ -108,6 +108,25 @@
   --fold-ref-grape-600: #9333ea; /* hover / strong              */
   --fold-ref-grape-700: #7e22ce; /* readable brand text         */
 
+  /* ── Steel / Titanium — the TITAN theme families ──────────────
+     Brushed titanium, light: a cool near-neutral steel ramp for the
+     brushed silver page, the header + rails at its own tint, and the
+     bright polished cards that float on it — plus a HEAT-anodized
+     titanium brand, the copper-orange the metal takes when torched. */
+  --fold-ref-steel-900: #1b1f24; /* graphite body text              */
+  --fold-ref-steel-600: #566069; /* secondary text                 */
+  --fold-ref-steel-500: #7c8894; /* muted text                     */
+  --fold-ref-steel-400: #9aa6b1; /* faded text                     */
+  --fold-ref-steel-300: #c0c8d0; /* solid brushed-steel border     */
+  --fold-ref-steel-200: #d4dae1; /* brushed page ground            */
+  --fold-ref-steel-150: #e2e7ec; /* header · rail 2 · hover · divider */
+  --fold-ref-steel-100: #eef1f5; /* raised rail plate · sunken     */
+  --fold-ref-steel-50: #f8fafc; /* bright polished card             */
+
+  --fold-ref-titanium-700: #863810; /* brand text (burnt copper)    */
+  --fold-ref-titanium-600: #a5451a; /* hover / strong               */
+  --fold-ref-titanium-500: #c2521b; /* brand base (copper-orange · AA w/ white) */
+
   /* ── Pure black — pairs with white for neutral alpha overlays */
   --fold-ref-black: #000000;
 }

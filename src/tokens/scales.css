@@ -112,3 +112,14 @@
   --fold-radius-md: 16px;
   --fold-radius-lg: 24px;
 }
+
+/* ── Theme shape override: TITAN ──────────────────────────────
+   Softened, iPhone-premium: corners rounded a step past the base so a
+   polished-steel card reads like a device, not a slab — but short of
+   bubbly's pill. `pill` and `round` stay: shapes, not scale steps. */
+[data-theme="titan"] {
+  --fold-radius-xs: 5px;
+  --fold-radius-sm: 10px;
+  --fold-radius-md: 14px;
+  --fold-radius-lg: 20px;
+}

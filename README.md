@@ -90,12 +90,14 @@ set `data-theme` on an ancestor — usually `<html>`:
 <html data-theme="lumen"></html>
 ```
 
-Four themes ship: `umbra` (the dark base, no attribute), `lumen` (light),
-`bubbly`
-(festive lavender, violet brand, rounded) and `navi` (dark chrome, light page).
-The extras exist to prove the point — each is the umbra or lumen block with its
-primitive families re-pointed. Adding a fifth is a new `[data-theme]` block in
-`semantic.css` plus the primitives it names.
+Five themes ship: `umbra` (the dark base, no attribute), `lumen` (light),
+`bubbly` (festive lavender, violet brand, rounded), `navi` (dark chrome, light
+page) and `titan` (brushed titanium — a light brushed-steel ground with a
+frameless top and floating rails, bright cards, a heat-anodized copper-orange
+brand, solid steel borders, iPhone-soft corners). The extras exist to prove the point — each
+is the umbra or lumen block with its primitive families re-pointed. Adding a
+sixth is a new `[data-theme]` block in `semantic.css` plus the primitives it
+names.
 
 `bubbly` and `navi` also change their corners — **radius is the one scale a theme may
 re-declare**, because corner softness is a brand axis (friendly vs

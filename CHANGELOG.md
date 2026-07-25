@@ -6,7 +6,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`titan` theme — brushed titanium.** A fifth `[data-theme]`: a light, warm
+  brushed-steel read. A cool `steel` ground with the header + rails at the page's
+  own tint (a frameless top), bright polished cards floating off it on the shared
+  elevation shadow, and a heat-anodized `titanium` **copper-orange** brand.
+  Borders re-point to a **solid** steel primitive (a palpable machined seam, not
+  the alpha hairline the light themes share); corners soften a step in
+  `scales.css`. In the gallery both rails float as steel plates while the header
+  stays flat. Uniform-polarity, so no chrome override. The token contract (theme
+  parity, no-hex, no dead primitives) stays green.
 
 ## [0.3.0] - 2026-07-25
 

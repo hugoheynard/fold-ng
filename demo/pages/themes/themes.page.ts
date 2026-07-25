@@ -75,6 +75,15 @@ export default class ThemesPage {
       palette: "navy (chrome + brand) · ivory (page) · slate (text)",
       note: 'Mixing chrome and page needs text/surface/brand to differ per region, which one set of roles cannot express — so navi re-declares them on [data-surface="chrome"], a contract the shell (and any element) opts into via the foldSurface directive. Variables only, no reaching into a component.',
     },
+    {
+      attr: "titan",
+      name: "titan",
+      summary:
+        "Brushed titanium — light and warm. A cool brushed-steel ground with the header + rails at the page's own tint (a frameless top), bright polished cards floating off it, and a heat-anodized copper-orange brand. Corners softened, solid steel borders instead of hairlines.",
+      palette:
+        "steel (ground + surfaces + text) · titanium (copper-orange brand)",
+      note: "Uniform-polarity, so no chrome override — one steel ground at a few tints. The elevation is the shared shadow: on the light ground the floating rails and cards genuinely lift, no per-theme shadow needed. The brand is warm on purpose — heat-anodized titanium goes copper, not blue.",
+    },
   ];
 
   /** The roles each theme block declares — the swatch grid below every theme. */

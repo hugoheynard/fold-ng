@@ -19,7 +19,7 @@ with a `@selector` and an `@example`.
 
 - [Install & quickstart](https://github.com/hugoheynard/fold-ng#readme): `npm install fold-ng`, import tokens, use standalone components.
 - [Design tokens](https://github.com/hugoheynard/fold-ng#the-two-tier-model): two-tier model — primitives (`--fold-ref-*`) → semantic (`--fold-color-*`); components consume the semantic layer only.
-- [Theming](https://github.com/hugoheynard/fold-ng#consuming-the-tokens): `data-theme="umbra|lumen|bubbly|navi"`; re-theme by re-pointing the semantic layer, never touching a component.
+- [Theming](https://github.com/hugoheynard/fold-ng#consuming-the-tokens): `data-theme="umbra|lumen|bubbly|navi|titan"`; re-theme by re-pointing the semantic layer, never touching a component.
 
 ## Components
 

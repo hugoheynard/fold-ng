@@ -73,6 +73,14 @@ export const THEME_STEPS: readonly ThemeStep[] = [
 }`,
   },
   {
+    title: "Mix flat and elevated on purpose",
+    body: "Elevation is a per-region choice, not a theme-wide switch. Decide which surfaces earn a shadow and which stay flat — answering uniformly either floats everything into soup or flattens the hierarchy away. Borders are the same call: an alpha hairline whispers, a solid line shouts. And the strongest depth cue is free — a light ground under a bright surface lifts it on the shared shadow, no per-theme shadow (which the contract forbids anyway).",
+    example:
+      "titan keeps the header flat at the page tint (a frameless top) but floats both rails (foldElevated) into brushed-steel plates over the light ground. Its borders re-point to a SOLID steel primitive, not the alpha hairline the light themes share, so every panel edge reads as a machined seam.",
+    code: `titan: { elevated: ["railPrimary", "railSecondary"] } /* rails float */
+--fold-color-border: var(--fold-ref-steel-300);      /* solid seam, not alpha */`,
+  },
+  {
     title: "Let the contract test finish the job",
     body: "Three failures are caught for you: a theme missing any catalogue role, a semantic value carrying a literal hex, and a primitive declared but never used. Run the suite before judging the result by eye.",
     example:

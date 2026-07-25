@@ -1,5 +1,5 @@
 /** The themes the token layer ships — see `src/tokens/semantic.css`. */
-export type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly";
+export type GalleryTheme = "umbra" | "lumen" | "navi" | "bubbly" | "titan";
 
 /** A shell region the gallery can raise into a floating card (via `foldElevated`).
  *  The header cell pads when its content is elevated, so a fixed-height row still
@@ -12,6 +12,7 @@ export const GALLERY_THEMES: readonly GalleryTheme[] = [
   "lumen",
   "navi",
   "bubbly",
+  "titan",
 ];
 
 /**
@@ -64,6 +65,16 @@ export const GALLERY_THEME_CONFIG: Record<GalleryTheme, GalleryThemeConfig> = {
     dataTheme: "bubbly",
     // Bubbly lifts all its chrome into cards — both rails and the header float.
     elevated: ["railPrimary", "railSecondary", "header"],
+    mobileNav: "drawer",
+    usesLauncher: false,
+    tileVariant: "surface",
+  },
+  titan: {
+    dataTheme: "titan",
+    // Both rails float as brushed-steel plates over the light page; the header
+    // stays flat at the page tint (a frameless top). The elevation shadow does
+    // the "raised metal piece" work on the light ground.
+    elevated: ["railPrimary", "railSecondary"],
     mobileNav: "drawer",
     usesLauncher: false,
     tileVariant: "surface",
