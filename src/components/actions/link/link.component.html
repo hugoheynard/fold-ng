@@ -8,7 +8,12 @@
   }
 </ng-template>
 @if (href(); as h) {
-  <a class="lnk" [href]="h">
+  <a
+    class="lnk"
+    [href]="h"
+    [attr.target]="target() ?? null"
+    [attr.rel]="resolvedRel()"
+  >
     <ng-container [ngTemplateOutlet]="inner" />
   </a>
 } @else {
@@ -16,7 +21,7 @@
     type="button"
     class="lnk"
     [disabled]="disabled()"
-    (click)="clicked.emit()"
+    (click)="clicked.emit($event)"
   >
     <ng-container [ngTemplateOutlet]="inner" />
   </button>

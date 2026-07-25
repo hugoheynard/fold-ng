@@ -56,7 +56,7 @@ and the gallery nav — **layout first**.
 | `foldButton`       | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]`; `emphasis`×`intent`; `loading`; forced-colors |
 | `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                                   |
 | `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                                 |
-| `fold-link`        | 🟡  |  🟢   |  🟢  | `target`/`rel` for external links                                                                    |
+| `fold-link`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — `target`/`rel` (safe `noopener` default); `(clicked)` is a `MouseEvent`             |
 
 **Content** — `src/components/content/`
 
@@ -293,11 +293,11 @@ button-icon: shares the icon-button surface (partial + shape/size/tone types),
 adds `[(active)]` + always-present `aria-pressed` (true/false) + a pressed
 state, emits `toggled`. Spec covers both aria-pressed states + disabled.
 
-**`fold-link`** 🟡🟢🟢 — The a-vs-button split by `href` is clean. Actions:
-(1) add `target`/`rel` inputs (default `rel="noopener noreferrer"` when
-`target="_blank"`) — the JSDoc advertises external links; (2) emit `MouseEvent`
-from `clicked` for consistency with the button components; (3) `aria-disabled`
-on the disabled anchor path, or document that disabled is button-only.
+**`fold-link`** 🟢🟢🟢 — Ship-ready. The a-vs-button split by `href` is clean.
+Closed: `target`/`rel` inputs (auto `rel="noopener noreferrer"` on `target="_blank"`,
+overridable) + `(clicked)` now emits the `MouseEvent`; specs cover the safe-rel
+default + override. `disabled` is documented as button-only (an anchor can't be
+natively disabled).
 
 **`fold-choice-row`** 🟢🟢🟡 — Minimal, controlled, portable `ariaLabel`. Actions:
 (1) dedicated gallery page showing both layouts + the `count` badge; (2) consider
@@ -545,10 +545,10 @@ P0-3 panel i18n · P0-4 dropzone i18n · P0-5 focus-trap `inert` · P0-6 tab a11
 (split into `view-nav` + `tabs`) · P0-7 spec cast. Each ships with the spec that
 proves it. (P0-2/3/4 close ledger item #6; P0-5 closes #8 — align with TODO.md.)
 
-**Wave 2 — DX correctness.** C-1 `booleanAttribute` parity · `fold-input`
-`autofocus` (wire or drop) · `fold-link` `target`/`rel` + `MouseEvent` · C-7/C-8
-extract the form error-base (unblocks number-input's line budget) · C-6 remaining
-hardcoded aria strings → inputs.
+**Wave 2 — DX correctness.** ~~C-1 `booleanAttribute` parity~~ ✅ · `fold-input`
+`autofocus` (wire or drop) · ~~`fold-link` `target`/`rel` + `MouseEvent`~~ ✅ ·
+C-7/C-8 extract the form error-base (unblocks number-input's line budget) · C-6
+remaining hardcoded aria strings → inputs.
 
 **Wave 3 — Docs & showcase.** C-2 README rows · C-3 stale facts (114 icons,
 loading spinner) · C-4 `@selector`/`@example` tags · C-5 gallery pages

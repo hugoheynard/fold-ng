@@ -1,4 +1,10 @@
-import { booleanAttribute, Component, input, output } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  input,
+  output,
+} from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
@@ -12,6 +18,9 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  * - `tone` — `accent` (default, brand link) · `muted` (secondary).
  * - `icon` / `trailingIcon` — optional glyphs around the label.
  * - `disabled` — button mode only.
+ * - `target` / `rel` — anchor mode only. Setting `target="_blank"` auto-applies
+ *   `rel="noopener noreferrer"` (safe by default); override with an explicit
+ *   `rel`.
  *
  * @selector `fold-link`
  *
@@ -20,7 +29,9 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  * <fold-link icon="company" trailingIcon="chevron-right" (clicked)="openOrg()">
  *   Voir l'organigramme
  * </fold-link>
- * <fold-link href="https://sh3pherd.dev/docs" tone="muted">Documentation</fold-link>
+ * <fold-link href="https://sh3pherd.dev/docs" target="_blank" tone="muted">
+ *   Documentation
+ * </fold-link>
  * ```
  */
 @Component({
@@ -40,8 +51,19 @@ export class FoldLinkComponent {
   readonly tone = input<"accent" | "muted">("accent");
   /** When set, the link renders as an `<a href>` instead of a button. */
   readonly href = input<string>();
+  /** Anchor target (e.g. `_blank`). Anchor mode only. */
+  readonly target = input<string>();
+  /** Anchor `rel`. Anchor mode only. Defaults to `noopener noreferrer` when
+   *  `target="_blank"`; set explicitly to override. */
+  readonly rel = input<string>();
   /** Disable the button form (no effect on the `href` form). */
   readonly disabled = input(false, { transform: booleanAttribute });
-  /** Fires on click in the button form. */
-  readonly clicked = output();
+  /** Fires on click in the button form; carries the `MouseEvent`. */
+  readonly clicked = output<MouseEvent>();
+
+  /** Resolved `rel` — the explicit value, or a safe default for a new tab. */
+  protected readonly resolvedRel = computed(
+    () =>
+      this.rel() ?? (this.target() === "_blank" ? "noopener noreferrer" : null),
+  );
 }

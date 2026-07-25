@@ -12,6 +12,8 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
     [trailingIcon]="trailingIcon()"
     [tone]="tone()"
     [href]="href()"
+    [target]="target()"
+    [rel]="rel()"
     [disabled]="disabled()"
     (clicked)="onClick()"
   >
@@ -23,6 +25,8 @@ class HostComponent {
   readonly trailingIcon = signal<FoldIconName | undefined>(undefined);
   readonly tone = signal<"accent" | "muted">("accent");
   readonly href = signal<string | undefined>(undefined);
+  readonly target = signal<string | undefined>(undefined);
+  readonly rel = signal<string | undefined>(undefined);
   readonly disabled = signal(false);
   clicks = 0;
   onClick() {
@@ -58,6 +62,30 @@ describe("FoldLinkComponent", () => {
     const a = host.querySelector("a.lnk");
     expect(a?.getAttribute("href")).toBe("https://example.test");
     expect(host.querySelector("button.lnk")).toBeNull();
+  });
+
+  it("auto-applies a safe rel for target=_blank, overridable", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.href.set("https://example.test");
+    fixture.componentInstance.target.set("_blank");
+    fixture.detectChanges();
+    const a = host.querySelector("a.lnk");
+    expect(a?.getAttribute("target")).toBe("_blank");
+    expect(a?.getAttribute("rel")).toBe("noopener noreferrer");
+
+    // an explicit rel overrides the safe default
+    fixture.componentInstance.rel.set("nofollow");
+    fixture.detectChanges();
+    expect(a?.getAttribute("rel")).toBe("nofollow");
+  });
+
+  it("sets no rel for a same-tab anchor", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.href.set("https://example.test");
+    fixture.detectChanges();
+    const a = host.querySelector("a.lnk");
+    expect(a?.getAttribute("target")).toBeNull();
+    expect(a?.getAttribute("rel")).toBeNull();
   });
 
   it("projects leading + trailing icons", () => {
