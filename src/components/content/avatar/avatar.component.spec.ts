@@ -74,6 +74,51 @@ describe("FoldAvatarComponent", () => {
     expect(img?.getAttribute("src")).toBe("/logo.png");
   });
 
+  it("falls back to initials when the image fails to load", () => {
+    const { fixture } = mount({
+      name: "Hugo Heynard",
+      imageUrl: "/broken.png",
+    });
+    const img = fixture.nativeElement.querySelector(
+      "img.avatar-img",
+    ) as HTMLImageElement;
+    img.dispatchEvent(new Event("error"));
+    fixture.detectChanges();
+    // The <img> is gone; the initials render instead of a broken-image glyph.
+    expect(fixture.nativeElement.querySelector("img.avatar-img")).toBeNull();
+    const el = fixture.nativeElement.querySelector(".avatar") as HTMLElement;
+    expect(el.textContent?.trim()).toBe("HH");
+  });
+
+  it("retries the image after the failed URL is replaced", () => {
+    const fixture = TestBed.createComponent(FoldAvatarComponent);
+    fixture.componentRef.setInput("name", "Acme");
+    fixture.componentRef.setInput("imageUrl", "/broken.png");
+    fixture.detectChanges();
+    (
+      fixture.nativeElement.querySelector("img.avatar-img") as HTMLImageElement
+    ).dispatchEvent(new Event("error"));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector("img.avatar-img")).toBeNull();
+
+    fixture.componentRef.setInput("imageUrl", "/fixed.png");
+    fixture.detectChanges();
+    const img = fixture.nativeElement.querySelector(
+      "img.avatar-img",
+    ) as HTMLImageElement | null;
+    expect(img?.getAttribute("src")).toBe("/fixed.png");
+  });
+
+  it("keeps the dashed guest edge on a photo (ghost + image is not a no-op)", () => {
+    const { el } = mount({
+      name: "Guest",
+      variant: "ghost",
+      imageUrl: "/photo.png",
+    });
+    expect(el.classList.contains("has-image")).toBe(true);
+    expect(el.classList.contains("variant-ghost")).toBe(true);
+  });
+
   it("square coerces the bare attribute (empty string) to true", () => {
     const fixture = TestBed.createComponent(FoldAvatarComponent);
     fixture.componentRef.setInput("name", "Acme");

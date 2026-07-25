@@ -1,16 +1,22 @@
-@if (imageUrl()) {
+@if (showImage()) {
   <div
     class="avatar has-image"
     [class.size-sm]="size() === 'sm'"
     [class.size-md]="size() === 'md'"
     [class.size-lg]="size() === 'lg'"
+    [class.variant-ghost]="variant() === 'ghost'"
     [class.shape-square]="square()"
     [class.is-muted]="muted()"
     [attr.data-ring]="ring() === 'none' ? null : ring()"
     [attr.data-ring-style]="ringStyle()"
     [attr.title]="name()"
   >
-    <img [src]="imageUrl()" [alt]="name()" class="avatar-img" />
+    <img
+      [src]="imageUrl()"
+      [alt]="name()"
+      class="avatar-img"
+      (error)="imageFailed.set(true)"
+    />
   </div>
 } @else {
   <div

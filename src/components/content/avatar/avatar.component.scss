@@ -38,6 +38,11 @@
   background: var(--fold-color-surface-raised);
   border: 1px solid var(--fold-color-border);
 }
+/* A guest keeps the dashed edge even with a photo — `variant="ghost"` is no
+   longer a silent no-op when an image is present. */
+.avatar.has-image.variant-ghost {
+  border-style: dashed;
+}
 .avatar-img {
   width: 100%;
   height: 100%;

@@ -4,6 +4,7 @@ import {
   computed,
   inject,
   input,
+  linkedSignal,
 } from "@angular/core";
 import { FoldPaletteRegistry } from "../../../color/palette-registry.service";
 import { foldReadableInk } from "../../../color/contrast";
@@ -28,11 +29,17 @@ export type FoldAvatarRingStyle = "solid" | "dotted";
  * (so the same seed is the same colour everywhere, and one `registry.use(...)`
  * recolours every avatar).
  *
+ * A broken `imageUrl` falls back to the initials rather than the browser's
+ * broken-image glyph (and retries when the URL changes).
+ *
  * Three orthogonal state axes compose: `variant` (fill), `muted` (presence —
  * dim for an absence/inactive person), and `ring` + `ringStyle` (a status
  * outline). The component stays domain-agnostic: a screen maps its own states
  * (e.g. absent → `[muted]`, a scheduled arrival → `ring="accent"`
- * `ringStyle="dotted"`), the avatar just draws the primitives.
+ * `ringStyle="dotted"`), the avatar just draws the primitives. The ring is a
+ * redundant emphasis cue — never the sole carrier of a state — because on a
+ * light page a soft status hue (amber/green) can't clear WCAG 3:1 as a thin
+ * line (status-ring-contrast.spec.ts).
  *
  * ## Inputs
  *
@@ -43,7 +50,7 @@ export type FoldAvatarRingStyle = "solid" | "dotted";
  * | `colorSeed` | `string`               | `name`    | String used to pick the deterministic colour.   |
  * | `variant`   | `'solid' \| 'ghost'`   | `'solid'` | `'ghost'` renders a dashed border (for guests). |
  * | `square`    | `boolean`              | `false`   | Square shape with a small radius (for orgs).    |
- * | `imageUrl`  | `string`               | —         | Image/logo URL. Replaces initials when set.     |
+ * | `imageUrl`  | `string`               | —         | Image/logo URL. Replaces initials when set; falls back to initials if it fails to load. |
  * | `muted`     | `boolean`              | `false`   | Dim the avatar (same hue, less intense) — absence / inactive. |
  * | `ring`      | `FoldAvatarRing`        | `'none'`  | A status outline (`accent`/`info`/`warning`/`alert`/`success`). |
  * | `ringStyle` | `'solid' \| 'dotted'`  | `'solid'` | Ring line style — `dotted` for scheduled/tentative states. |
@@ -78,6 +85,18 @@ export class FoldAvatarComponent {
   readonly ring = input<FoldAvatarRing>("none");
   /** Ring line style — `'dotted'` for scheduled / tentative states. */
   readonly ringStyle = input<FoldAvatarRingStyle>("solid");
+
+  /** True once the `<img>` fails to load. Resets whenever `imageUrl` changes,
+   *  so a corrected URL is retried rather than staying on the fallback. */
+  protected readonly imageFailed = linkedSignal(() => {
+    this.imageUrl();
+    return false;
+  });
+  /** Show the image only when a URL is set AND it has not failed — a broken URL
+   *  falls back to the initials instead of the browser's broken-image glyph. */
+  protected readonly showImage = computed(
+    () => Boolean(this.imageUrl()) && !this.imageFailed(),
+  );
 
   /** Readable ink for the initials — the higher-contrast of dark/light ink on
    *  the fill, so a custom palette stays legible. */
