@@ -291,6 +291,27 @@ setter (`registry.use(...)`) that recolours/re-resolves in the same frame.
 9.3 **Consumers never touch the internals** (palette arrays, the hash, the icon
 map) — only the registry's public method.
 
+## 10 · Changelog (docs ship with code)
+
+10.1 **A user-facing change updates `CHANGELOG.md` `[Unreleased]` in the _same_
+commit** (or an immediately-following `docs:` commit). "User-facing" = anything a
+consumer of the published package can observe: a public component/input/output,
+an exported type, a token, a theme, a behaviour or a11y change. Add the line
+under the right Keep-a-Changelog heading (`Added` / `Changed` / `Fixed` / `Docs`)
+and mark breaking changes **`BREAKING`**. This is the fold-ng spelling of the
+repo rule _"docs ship with code — never leave docs stale"_.
+
+10.2 **Demo-only work stays out of the changelog.** Gallery pages, playground
+wiring, the preview iframe, internal test/tsconfig hygiene — none of it reaches a
+package consumer, so it never appears in `CHANGELOG.md`. It lives in commit
+messages (and `docs/TODO.md` when it's a tracked decision).
+
+10.3 **Don't defer the log to release time.** Reconciling `[Unreleased]` only when
+cutting a version is how a breaking change silently ships — the per-commit line is
+the safeguard, `scripts/release.mjs` just stamps the date. If you notice drift
+(the log fell behind reality), fix it in a standalone `docs(changelog):` commit and
+treat the lapse as the exception, not the workflow.
+
 ---
 
 ## Findings ledger
