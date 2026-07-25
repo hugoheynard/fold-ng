@@ -1,28 +1,7 @@
 /* ── fold-aside-layout demo ────────────────────────────────── */
-/* A real window auto-scaled to fit: the layout renders at its real width (desktop
-   1120 > the 1040 fold threshold → 3 cols; mobile 380 → 1 col) and is scaled down
-   with CSS `zoom` to exactly the window width (a ResizeObserver feeds the scale),
-   so it fills without horizontal scroll. `zoom` scales only the paint — layout,
-   the container-query fold and `position: sticky` all still resolve at the real
-   local width, so the fold stays honest and the rails stick as the (taller than
-   the window) centre column scrolls. */
-.asl-window {
-  height: 340px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  border: 1px solid var(--fold-color-border);
-  border-radius: var(--fold-radius-md);
-  background: var(--fold-color-bg-page);
-  /* a window simulator: center the rendered "device" on the backdrop */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.asl-window-inner {
-  /* width (desktop 1120 / mobile 380) + auto-fit zoom are bound inline. */
-}
-
+/* Rendered straight in the playground's responsive frame: the component folds on
+   its own width (container queries → 3 cols > 1040, rails merge, 1 col < 700), so
+   dragging the preview device is what folds it — no window simulator here. */
 .asl-real {
   --fold-aside-layout-max: none;
 }

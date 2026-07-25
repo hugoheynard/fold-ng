@@ -8,23 +8,7 @@
     (via <code>:has()</code>). Zero inputs; each track is a CSS var.
   </p>
 
-  <dev-playground [code]="asideLayoutCode()">
-    <div class="ss-seg" preview-actions>
-      <button
-        type="button"
-        [class.is-on]="aslMode() === 'desktop'"
-        (click)="aslMode.set('desktop')"
-      >
-        desktop
-      </button>
-      <button
-        type="button"
-        [class.is-on]="aslMode() === 'mobile'"
-        (click)="aslMode.set('mobile')"
-      >
-        mobile
-      </button>
-    </div>
+  <dev-playground [code]="asideLayoutCode()" [initialWidth]="1280">
     <div class="np-field" params>
       <span class="gal-tag">left rail</span>
       <div class="ss-seg">
@@ -94,114 +78,104 @@
     />
     }
 
-    <!-- A real window rendered at a real width (desktop 1120 > the 1040 fold
-         threshold → 3 cols; mobile 380 → 1 col), then scaled down with CSS `zoom`
-         so it fits. `zoom` only scales the paint — layout + the container-query
-         fold still resolve at the real local width, so the fold stays honest and
-         `position: sticky` keeps working. -->
-    <div class="asl-window" #aslWindow>
-      <div
-        class="asl-window-inner"
-        [class.is-mobile]="aslMode() === 'mobile'"
-        [style.width.px]="aslWidth()"
-        [style.zoom]="aslScale()"
-      >
-        <fold-aside-layout
-          class="asl-real"
-          [class.is-equal]="aslEqual()"
-          [topOffset]="aslOffset()"
-          [style.--fold-aside-layout-rail-width]="
-            aslEqual() ? null : aslRailWidth() + 'px'
-          "
-          [style.--fold-aside-layout-side-width]="
-            aslEqual() ? null : aslSideWidth() + 'px'
-          "
-        >
-          @if (aslLeft()) {
-          <fold-card asideLeft>
-            <span class="gal-tag">On this page</span>
-            <nav class="asl-nav">
-              <a class="is-on">Overview</a>
-              <a>Terms</a>
-              <a>Signatures</a>
-            </nav>
-          </fold-card>
-          }
-          <fold-card>
-            <strong cardHeader>Section one</strong>
-            <p class="gal-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum.
-            </p>
-            <p class="gal-body">
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit anim id est laborum. Curabitur pretium
-              tincidunt lacus, eget gravida odio pretium at.
-            </p>
-          </fold-card>
-          <fold-card>
-            <strong cardHeader>Section two</strong>
-            <p class="gal-body">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit.
-            </p>
-            <p class="gal-body">
-              Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-              consectetur, adipisci velit, sed quia non numquam eius modi
-              tempora incidunt ut labore et dolore magnam aliquam quaerat.
-            </p>
-          </fold-card>
-          <fold-card>
-            <strong cardHeader>Section three</strong>
-            <p class="gal-body">
-              Ut enim ad minima veniam, quis nostrum exercitationem ullam
-              corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
-              consequatur. Quis autem vel eum iure reprehenderit qui in ea
-              voluptate velit esse quam nihil molestiae consequatur.
-            </p>
-            <p class="gal-body">
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt.
-            </p>
-          </fold-card>
-          <fold-card asideRight>
-            <span class="gal-tag">Details</span>
-            <dl class="asl-meta">
-              <div>
-                <dt>Status</dt>
-                <dd>Active</dd>
-              </div>
-              <div>
-                <dt>Owner</dt>
-                <dd>Marc Machine</dd>
-              </div>
-              <div>
-                <dt>Signed</dt>
-                <dd>12 Jun 2026</dd>
-              </div>
-              <div>
-                <dt>Renews</dt>
-                <dd>12 Jun 2027</dd>
-              </div>
-            </dl>
-          </fold-card>
-          <fold-card asideRight>
-            <span class="gal-tag">Actions</span>
-            <div class="asl-actions asl-actions--stack">
-              <button type="button" class="asl-btn is-primary">Edit</button>
-              <button type="button" class="asl-btn">Archive</button>
-            </div>
-          </fold-card>
-        </fold-aside-layout>
-      </div>
-    </div>
+    <!-- The real component, rendered straight in the playground's responsive
+         frame. fold-aside-layout self-folds on its own width (container queries):
+         drag the preview to tablet and the rails merge, to mobile and it stacks
+         to one column — no per-demo viewport plumbing. -->
+    <fold-aside-layout
+      class="asl-real"
+      [class.is-equal]="aslEqual()"
+      [topOffset]="aslOffset()"
+      [style.--fold-aside-layout-rail-width]="
+        aslEqual() ? null : aslRailWidth() + 'px'
+      "
+      [style.--fold-aside-layout-side-width]="
+        aslEqual() ? null : aslSideWidth() + 'px'
+      "
+    >
+      @if (aslLeft()) {
+      <fold-card asideLeft>
+        <span class="gal-tag">On this page</span>
+        <nav class="asl-nav">
+          <a class="is-on">Overview</a>
+          <a>Terms</a>
+          <a>Signatures</a>
+        </nav>
+      </fold-card>
+      }
+      <fold-card>
+        <strong cardHeader>Section one</strong>
+        <p class="gal-body">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum.
+        </p>
+        <p class="gal-body">
+          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+          officia deserunt mollit anim id est laborum. Curabitur pretium
+          tincidunt lacus, eget gravida odio pretium at.
+        </p>
+      </fold-card>
+      <fold-card>
+        <strong cardHeader>Section two</strong>
+        <p class="gal-body">
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+          accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
+          ab illo inventore veritatis et quasi architecto beatae vitae dicta
+          sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
+          aspernatur aut odit aut fugit.
+        </p>
+        <p class="gal-body">
+          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+          consectetur, adipisci velit, sed quia non numquam eius modi tempora
+          incidunt ut labore et dolore magnam aliquam quaerat.
+        </p>
+      </fold-card>
+      <fold-card>
+        <strong cardHeader>Section three</strong>
+        <p class="gal-body">
+          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
+          suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis
+          autem vel eum iure reprehenderit qui in ea voluptate velit esse quam
+          nihil molestiae consequatur.
+        </p>
+        <p class="gal-body">
+          At vero eos et accusamus et iusto odio dignissimos ducimus qui
+          blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
+          et quas molestias excepturi sint occaecati cupiditate non provident,
+          similique sunt in culpa qui officia deserunt.
+        </p>
+      </fold-card>
+      <fold-card asideRight>
+        <span class="gal-tag">Details</span>
+        <dl class="asl-meta">
+          <div>
+            <dt>Status</dt>
+            <dd>Active</dd>
+          </div>
+          <div>
+            <dt>Owner</dt>
+            <dd>Marc Machine</dd>
+          </div>
+          <div>
+            <dt>Signed</dt>
+            <dd>12 Jun 2026</dd>
+          </div>
+          <div>
+            <dt>Renews</dt>
+            <dd>12 Jun 2027</dd>
+          </div>
+        </dl>
+      </fold-card>
+      <fold-card asideRight>
+        <span class="gal-tag">Actions</span>
+        <div class="asl-actions asl-actions--stack">
+          <button type="button" class="asl-btn is-primary">Edit</button>
+          <button type="button" class="asl-btn">Archive</button>
+        </div>
+      </fold-card>
+    </fold-aside-layout>
   </dev-playground>
 </fold-page-layout>

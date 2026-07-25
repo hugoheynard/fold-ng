@@ -47,7 +47,7 @@
    CONTAINER, not the viewport, so it keys off @container instead. Same effect:
    at a narrow width the grid collapses to one column — the aside drops BELOW the
    content — and `--fold-sticky-column-position: static` un-sticks it. */
-@container (max-width: 640px) {
+@container fold-preview (max-width: 640px) {
   .sticky-demo-grid {
     grid-template-columns: 1fr;
   }

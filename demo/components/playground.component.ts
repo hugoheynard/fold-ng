@@ -80,6 +80,14 @@ export class DevPlaygroundComponent {
    *
    * Pass `[responsive]="false"` on the rare demo where a fixed-width preview is
    * the point (e.g. a `stage` window that must keep its own proportions).
+   *
+   * The frame is a **named container** (`fold-preview`). A fold component folds
+   * itself here for free — its `:host` is already a container, so it reacts to
+   * the device width with zero per-demo code. Only hand-built demo scaffolding
+   * (a wrapper grid, say) needs to fold explicitly, and it must do so with
+   * `@container fold-preview (max-width: …)` — NOT a `@media` query, which can't
+   * fire (the preview resizes the container, not the window). So: render the real
+   * component and let it fold; never hand-roll a viewport-toggle window per demo.
    */
   readonly responsive = input(true, { transform: booleanAttribute });
 

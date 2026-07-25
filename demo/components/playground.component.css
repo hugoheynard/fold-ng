@@ -328,9 +328,13 @@
 .pg-preview-body.is-responsive .pg-vp-inner {
   display: block;
   flex: 0 0 auto;
-  /* the demo's own @container queries resolve against THIS width (the real px),
-     which is the whole point of rendering true-width then zooming to fit */
-  container-type: inline-size;
+  /* The frame IS the demo's viewport: named `fold-preview` so a demo's own
+     scaffolding folds against it with `@container fold-preview (...)` instead of
+     a `@media` (viewport) query — which can't fire, the preview resizes the
+     container, not the window. A real fold component self-folds here for free
+     (its :host is already a container), so only hand-built demo layout needs
+     this. See the `responsive` input docs. */
+  container: fold-preview / inline-size;
 }
 /* a device (constrained width) gets a faint viewport edge; fluid gets none */
 .pg-preview-body.is-responsive .pg-vp-inner.is-device {
