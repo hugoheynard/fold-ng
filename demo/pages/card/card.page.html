@@ -135,4 +135,24 @@
       }
     </fold-card>
   </dev-playground>
+
+  <div class="gal-cell">
+    <span class="gal-tag"
+      >interactive — role="button" · keyboard · focus ring</span
+    >
+    <fold-card
+      interactive
+      ariaLabel="Open Acme Records"
+      (activated)="open()"
+      style="max-width: 320px"
+    >
+      <strong>Acme Records</strong>
+      <p class="gal-body" style="margin: 4px 0 0">128 contracts · 96 active</p>
+    </fold-card>
+    <p class="gal-body">
+      Activated {{ opened() }}× — click it, or <kbd>Tab</kbd> to it and press
+      <kbd>Enter</kbd> / <kbd>Space</kbd>. It must not contain its own buttons
+      or links (a <code>role="button"</code> can't wrap interactive controls).
+    </p>
+  </div>
 </fold-page-layout>

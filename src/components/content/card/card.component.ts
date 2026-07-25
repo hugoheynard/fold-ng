@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, input } from "@angular/core";
+import { booleanAttribute, Component, input, output } from "@angular/core";
 
 /**
  * `<fold-card>` — the canonical raised content surface: a solid
@@ -12,7 +12,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * - `radius` — `lg` (14px, default) · `md` · `sm`.
  * - `padding` — `md` (16px, default) · `none` · `sm` · `lg`. Sets the *body*
  *   padding; override with a custom value via `--fold-card-padding`.
- * - `interactive` — adds a hover lift (for clickable cards).
+ * - `interactive` — makes the whole card a clickable control (see below).
  * - `separators` — draw a hairline between a projected header/footer and the body.
  * - `raisedBands` — tint the header/footer bands a step above the surface
  *   (fainter on `sunken`).
@@ -26,6 +26,14 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * the header/footer carry their own (independent) chrome padding, and the host
  * never pads. So the content padding is identical whether or not the bands show —
  * toggling a header/footer never shifts the body.
+ *
+ * **Interactive cards.** `interactive` turns the whole card into a real control:
+ * the host gains `role="button"`, `tabindex="0"`, a focus ring and a hover lift,
+ * and Enter / Space (or a click) emit `(activated)`. Give it an accessible name
+ * with `ariaLabel` when the card's text isn't a sufficient label.
+ * A `role="button"` must not wrap other interactive controls — so an interactive
+ * card must NOT contain buttons/links. For a card with its own inner actions,
+ * keep it non-interactive and put a single primary `<a>`/`<button>` inside.
  *
  * ```html
  * <fold-card>Static content</fold-card>
@@ -42,6 +50,14 @@ import { booleanAttribute, Component, input } from "@angular/core";
  * (default `clip`) lets content escape the rounded corners.
  *
  * @selector `fold-card`
+ *
+ * @example
+ * ```html
+ * <fold-card interactive ariaLabel="Open Acme Records" (activated)="open()">
+ *   <h3>Acme Records</h3>
+ *   <p>128 contracts · 96 active</p>
+ * </fold-card>
+ * ```
  */
 @Component({
   selector: "fold-card",
@@ -56,6 +72,11 @@ import { booleanAttribute, Component, input } from "@angular/core";
     "[class.is-interactive]": "interactive()",
     "[class.has-sep]": "separators()",
     "[class.raised-bands]": "raisedBands()",
+    "[attr.role]": "interactive() ? 'button' : null",
+    "[attr.tabindex]": "interactive() ? 0 : null",
+    "[attr.aria-label]": "interactive() ? (ariaLabel() ?? null) : null",
+    "(click)": "onActivate($event)",
+    "(keydown)": "onKeydown($event)",
   },
   templateUrl: "./card.component.html",
   styleUrl: "./card.component.scss",
@@ -68,11 +89,34 @@ export class FoldCardComponent {
   /** Body padding — `md` (default), `none`, `sm`, or `lg`; a custom value can be
    *  set with the `--fold-card-padding` CSS variable. */
   readonly padding = input<"none" | "sm" | "md" | "lg">("md");
-  /** Add a hover lift for clickable cards. */
-  readonly interactive = input(false);
+  /** Make the whole card a clickable control: `role="button"` + `tabindex`, a
+   *  focus ring, a hover lift, and Enter/Space/click → `(activated)`. Must not
+   *  wrap other interactive controls (see the class docs). */
+  readonly interactive = input(false, { transform: booleanAttribute });
+  /** Accessible name for the interactive card, when its content isn't enough. */
+  readonly ariaLabel = input<string>();
   /** Draw a hairline between a projected header/footer and the body. */
   readonly separators = input(false, { transform: booleanAttribute });
   /** Lift the header/footer bands with a subtle raised tint over the card
    *  surface (fainter on `sunken`), to set the chrome apart from the body. */
   readonly raisedBands = input(false, { transform: booleanAttribute });
+
+  /** Fires when an `interactive` card is activated (click, Enter, or Space). */
+  readonly activated = output<Event>();
+
+  protected onActivate(event: Event): void {
+    if (this.interactive()) {
+      this.activated.emit(event);
+    }
+  }
+
+  /** Enter/Space activate the card, matching the native button keyboard contract
+   *  (Space is prevented from scrolling the page). */
+  protected onKeydown(event: KeyboardEvent): void {
+    if (!this.interactive() || (event.key !== "Enter" && event.key !== " ")) {
+      return;
+    }
+    event.preventDefault();
+    this.activated.emit(event);
+  }
 }

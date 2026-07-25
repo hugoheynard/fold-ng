@@ -99,15 +99,26 @@
   border-top: 1px solid var(--_sep-line);
 }
 
-/* interactive: a hover lift for clickable cards. */
+/* interactive: a clickable card (role=button + tabindex on the host) — a hover
+   lift + a visible focus ring so keyboard users see where they are. */
 :host(.is-interactive) {
   cursor: pointer;
   transition:
     transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.1s ease;
+    box-shadow 0.18s ease;
 }
 :host(.is-interactive:hover) {
   transform: translateY(-2px);
   box-shadow: var(--fold-shadow-md);
+}
+:host(.is-interactive:focus-visible) {
+  outline: 2px solid var(--fold-color-primary);
+  outline-offset: 2px;
+}
+
+/* Honour reduced-motion: keep the lift's end state, drop the animation. */
+@media (prefers-reduced-motion: reduce) {
+  :host(.is-interactive) {
+    transition: none;
+  }
 }

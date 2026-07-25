@@ -11,8 +11,10 @@ import { FoldCardComponent } from "./card.component";
     [radius]="radius()"
     [padding]="padding()"
     [interactive]="interactive()"
+    [ariaLabel]="ariaLabel()"
     [separators]="separators()"
     [raisedBands]="raisedBands()"
+    (activated)="activations.push($event)"
   >
     @if (withHeader()) {
       <span cardHeader class="head">Header</span>
@@ -28,10 +30,12 @@ class HostComponent {
   readonly radius = signal<"sm" | "md" | "lg">("lg");
   readonly padding = signal<"none" | "sm" | "md" | "lg">("md");
   readonly interactive = signal(false);
+  readonly ariaLabel = signal<string | undefined>(undefined);
   readonly separators = signal(false);
   readonly raisedBands = signal(false);
   readonly withHeader = signal(false);
   readonly withFooter = signal(false);
+  readonly activations: Event[] = [];
 }
 
 function render() {
@@ -44,9 +48,17 @@ function render() {
 describe("FoldCardComponent", () => {
   it("renders the three region elements (header / body / footer)", () => {
     const { card } = render();
-    expect(card.querySelector("header.card-header")).not.toBeNull();
+    expect(card.querySelector("div.card-header")).not.toBeNull();
     expect(card.querySelector("div.card-body")).not.toBeNull();
-    expect(card.querySelector("footer.card-footer")).not.toBeNull();
+    expect(card.querySelector("div.card-footer")).not.toBeNull();
+  });
+
+  it("uses neutral <div> bands, not <header>/<footer> landmark elements", () => {
+    const { card } = render();
+    // <header>/<footer> inside a non-sectioning custom element expose spurious
+    // banner/contentinfo landmarks — the bands must be plain divs.
+    expect(card.querySelector("header")).toBeNull();
+    expect(card.querySelector("footer")).toBeNull();
   });
 
   it("projects default content into the body", () => {
@@ -98,12 +110,51 @@ describe("FoldCardComponent", () => {
     expect(card.classList.contains("s-sunken")).toBe(true);
   });
 
-  it("adds is-interactive via the `interactive` input", () => {
+  it("adds is-interactive + a button role/tabindex via `interactive`", () => {
     const { fixture, card } = render();
     expect(card.classList.contains("is-interactive")).toBe(false);
+    expect(card.getAttribute("role")).toBeNull();
+    expect(card.getAttribute("tabindex")).toBeNull();
     fixture.componentInstance.interactive.set(true);
     fixture.detectChanges();
     expect(card.classList.contains("is-interactive")).toBe(true);
+    expect(card.getAttribute("role")).toBe("button");
+    expect(card.getAttribute("tabindex")).toBe("0");
+  });
+
+  it("exposes `ariaLabel` only while interactive", () => {
+    const { fixture, card } = render();
+    fixture.componentInstance.ariaLabel.set("Open Acme");
+    fixture.detectChanges();
+    // not interactive → the label must not leak onto a presentational card
+    expect(card.getAttribute("aria-label")).toBeNull();
+    fixture.componentInstance.interactive.set(true);
+    fixture.detectChanges();
+    expect(card.getAttribute("aria-label")).toBe("Open Acme");
+  });
+
+  it("emits `activated` on click, Enter and Space when interactive", () => {
+    const { fixture, card } = render();
+    const host = fixture.componentInstance;
+    host.interactive.set(true);
+    fixture.detectChanges();
+
+    card.click();
+    card.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    card.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
+    expect(host.activations.length).toBe(3);
+
+    // an unrelated key is ignored
+    card.dispatchEvent(new KeyboardEvent("keydown", { key: "a" }));
+    expect(host.activations.length).toBe(3);
+  });
+
+  it("never emits `activated` when not interactive", () => {
+    const { fixture, card } = render();
+    const host = fixture.componentInstance;
+    card.click();
+    card.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    expect(host.activations.length).toBe(0);
   });
 
   it("projects [cardHeader] and [cardFooter] into their bands", () => {
@@ -159,5 +210,42 @@ describe("FoldCardComponent", () => {
     fixture.detectChanges();
     expect(card.classList.contains("has-sep")).toBe(true);
     expect(card.classList.contains("raised-bands")).toBe(false);
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [FoldCardComponent],
+  template: `<fold-card interactive>bare</fold-card>`,
+})
+class BareInteractiveHost {}
+
+@Component({
+  standalone: true,
+  imports: [FoldCardComponent],
+  template: `<fold-card interactive="false">explicit false</fold-card>`,
+})
+class FalseInteractiveHost {}
+
+// The original bug: `interactive` lacked `booleanAttribute`, so a bare attribute
+// coerced to "" (falsy — no effect) while `interactive="false"` coerced to a
+// truthy string. These pin the corrected coercion.
+describe("FoldCardComponent · interactive attribute coercion", () => {
+  function cardOf(host: typeof BareInteractiveHost): HTMLElement {
+    const fixture = TestBed.createComponent(host);
+    fixture.detectChanges();
+    return fixture.nativeElement.querySelector("fold-card") as HTMLElement;
+  }
+
+  it("treats a bare `interactive` attribute as true", () => {
+    const card = cardOf(BareInteractiveHost);
+    expect(card.classList.contains("is-interactive")).toBe(true);
+    expect(card.getAttribute("role")).toBe("button");
+  });
+
+  it('treats `interactive="false"` as false', () => {
+    const card = cardOf(FalseInteractiveHost);
+    expect(card.classList.contains("is-interactive")).toBe(false);
+    expect(card.getAttribute("role")).toBeNull();
   });
 });

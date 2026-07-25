@@ -41,6 +41,12 @@ export default class CardPage {
   protected readonly cpHeader = signal(true);
   protected readonly cpFooter = signal(true);
 
+  /** Interactive-card demo: counts activations (click / Enter / Space). */
+  protected readonly opened = signal(0);
+  protected open(): void {
+    this.opened.update((n) => n + 1);
+  }
+
   protected readonly cardCode = computed(() => {
     const attrs: string[] = [];
     if (this.cpSurface() === "sunken") {
