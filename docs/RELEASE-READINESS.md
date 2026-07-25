@@ -60,22 +60,22 @@ and the gallery nav — **layout first**.
 
 **Content** — `src/components/content/`
 
-| Component                        | DX  | Tests | Docs | Verdict                                            |
-| -------------------------------- | :-: | :---: | :--: | -------------------------------------------------- |
-| `fold-card`                      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible `interactive` contract |
-| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip            |
-| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                       |
-| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
-| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
-| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                  |
-| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`              |
-| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | Add luminance-ink test + `@example` tag            |
-| `fold-avatar-detail`             | 🟢  |  🔴   |  🟡  | Test forwarded inputs; `@example`                  |
-| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
-| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                     |
-| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                       |
-| `fold-data-table`                | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**     |
-| `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**   |
+| Component                        | DX  | Tests | Docs | Verdict                                                  |
+| -------------------------------- | :-: | :---: | :--: | -------------------------------------------------------- |
+| `fold-card`                      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible `interactive` contract       |
+| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                  |
+| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                             |
+| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
+| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
+| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                        |
+| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`                    |
+| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | **Ship-ready** — max-contrast ink; AA proven per palette |
+| `fold-avatar-detail`             | 🟢  |  🟢   |  🟢  | **Ship-ready** — forwarding + `@example` covered         |
+| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
+| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
+| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                             |
+| `fold-data-table`                | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**           |
+| `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**         |
 
 **Feedback** — `src/components/feedback/`
 
@@ -383,16 +383,15 @@ package — the least portable component here. Actions: (1) decide the stance �
 document the status keys as an explicit contract, or move the synonym map to an
 `input()`; (2) `@example` tag; (3) show `suspended` + a synonym in the gallery.
 
-**`fold-avatar`** 🟢🟢🟢 — Luminance-derived ink handles custom dark palettes
-correctly. Actions: (1) add the missing test for that path (light fill → dark
-ink, dark fill → light ink — the contract in rule 6.3 is untested); (2)
-`@example` tag.
+**`fold-avatar`** 🟢🟢🟢 — Ship-ready. The initials ink now picks the
+**higher-contrast** of dark/light (via `foldReadableInk`), so the magic `0.4`
+threshold is gone and any fill is optimal. A contrast spec proves every built-in
+palette fill clears **AA (≥ 4.5:1)** for the initials, and documents the floor
+for custom palettes. `@example` added; the gallery ships a real-photo team demo.
 
-**`fold-avatar-detail`** 🟢🔴🟡 — Forwards ~10 avatar inputs
-(`muted`/`ring`/`ringStyle`/`square`/`imageUrl`/`variant`/`size`) but only 3
-tests exist — **none assert the forwarded inputs reach the child**, a silent-break
-surface. Actions: (1) forwarding tests; (2) `@example` tag; (3) show a ring/muted
-detail cell in the gallery.
+**`fold-avatar-detail`** 🟢🟢🟢 — Ship-ready. Forwards ~10 avatar inputs; specs
+now assert the presentation inputs (`size`/`variant`/`square`/`muted`/`ring`/
+`ringStyle`) and `imageUrl` actually reach the child. `@example` added.
 
 **`fold-avatar-list`** 🟢🟢🟢 — Ship-ready. Optional: assert the `+N` chip `title`.
 
