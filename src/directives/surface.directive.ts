@@ -2,10 +2,12 @@ import { Directive, input } from "@angular/core";
 
 /**
  * A named surface — the ground a subtree paints itself on. `page` is the
- * document body; `chrome` is application furniture (rails, header) that a
- * theme may colour differently from the page.
+ * document body; `chrome` is application furniture (rails, header) that a theme
+ * may colour differently from the page; `accent` is an **auto-inverting** region
+ * filled with the brand accent, whose content re-points to a compatible
+ * on-accent palette (see the `[data-surface="accent"]` block in `semantic.css`).
  */
-export type FoldSurfaceName = "page" | "chrome";
+export type FoldSurfaceName = "page" | "chrome" | "accent";
 
 /**
  * `[foldSurface]` — declares the element a **named surface**, so a theme can

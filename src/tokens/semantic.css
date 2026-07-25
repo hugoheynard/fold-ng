@@ -186,6 +186,99 @@
   color: var(--fold-color-text);
 }
 
+/* ── Accent surface — an auto-inverting region ────────────────────────────────
+   `[data-surface="accent"]` (stamped by fold-card's `surface="accent"`, or the
+   `foldSurface` directive) fills with the brand accent and re-points its whole
+   content sub-tree to an on-accent palette — text, borders, band gradation and
+   even nested buttons / links / icon-tiles read on the accent, with no
+   per-component code.
+
+   The move that makes this both theme-agnostic AND able to *swap* the brand pair
+   (`primary` ↔ `on-primary`, needed for a solid button or a filled icon tile)
+   without a CSS custom-property cycle: the accent + its ink are CAPTURED on the
+   surface element (where the tokens still hold their normal values), then the
+   inverted role-set is applied to DESCENDANTS from those captures — so a role can
+   reference the pre-inversion value it is replacing. Every value is a `color-mix`
+   of the captured pair, so it holds on every theme, and the surface and band
+   steps stay a lighter shade of the accent (gradation kept in-hue).
+
+   A theme that needs to diverge overrides any role by nesting a rule for its own
+   `[data-theme=…]` under `[data-surface="accent"]` — the same seam as chrome. */
+[data-surface="accent"] {
+  color: var(--fold-color-on-primary);
+  --_accent-ink: var(--fold-color-on-primary);
+  --_accent-fill: var(--fold-color-primary);
+}
+[data-surface="accent"] * {
+  /* text ramp → the light ink. COMPRESSED vs a normal surface: an accent ground
+     has little contrast headroom (a mid-bright accent caps white text near 3:1),
+     so the accent card is an emphasis surface — its text clears AA-large (3:1),
+     asserted by accent-contrast.spec.ts, and secondary/muted keep more ink than
+     they would on the page. A light accent that still reads thin overrides the
+     ramp per theme (surfaces.md). */
+  --fold-color-text: var(--_accent-ink);
+  --fold-color-text-secondary: color-mix(
+    in srgb,
+    var(--_accent-ink) 96%,
+    transparent
+  );
+  --fold-color-text-muted: color-mix(
+    in srgb,
+    var(--_accent-ink) 74%,
+    transparent
+  );
+  --fold-color-text-faded: color-mix(
+    in srgb,
+    var(--_accent-ink) 58%,
+    transparent
+  );
+  /* borders + separators → thin ink lines */
+  --fold-color-border: color-mix(in srgb, var(--_accent-ink) 24%, transparent);
+  --fold-color-border-subtle: color-mix(
+    in srgb,
+    var(--_accent-ink) 15%,
+    transparent
+  );
+  /* nested surfaces + raised tiles/bands → a lighter step of the ACCENT itself */
+  --fold-color-surface-card: color-mix(
+    in srgb,
+    var(--_accent-ink) 12%,
+    var(--_accent-fill)
+  );
+  --fold-color-surface-raised: color-mix(
+    in srgb,
+    var(--_accent-ink) 16%,
+    var(--_accent-fill)
+  );
+  --fold-color-surface-hover: color-mix(
+    in srgb,
+    var(--_accent-ink) 18%,
+    var(--_accent-fill)
+  );
+  --fold-color-surface-sunken: color-mix(
+    in srgb,
+    var(--_accent-ink) 8%,
+    var(--_accent-fill)
+  );
+  /* the brand pair, SWAPPED from the captures (no cycle): the fill becomes the
+     light ink (link text, glass button, chip ground) and its on-colour becomes
+     the accent — so a filled icon tile or solid button reads accent-on-light. */
+  --fold-color-primary: var(--_accent-ink);
+  --fold-color-on-primary: var(--_accent-fill);
+  --fold-color-primary-text: var(--_accent-ink);
+  --fold-color-primary-strong: var(--_accent-ink);
+  --fold-color-primary-surface: color-mix(
+    in srgb,
+    var(--_accent-ink) 16%,
+    transparent
+  );
+  --fold-color-primary-border: color-mix(
+    in srgb,
+    var(--_accent-ink) 32%,
+    transparent
+  );
+}
+
 /* ── Elevated surfaces ────────────────────────────────────────
    A `[data-elevated]` (stamped by the `[foldElevated]` directive) is a raised
    card: radius + shadow, riding on the element's own background so its colour
