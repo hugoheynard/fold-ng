@@ -9,6 +9,39 @@ import {
 } from "@angular/core";
 import { FOLD_ICON_SPRITE_ID } from "../../src/components/foundations/icon/icon-sprite";
 
+/** The head nodes worth mirroring into the frame: inline styles + stylesheets. */
+export const STYLE_SELECTOR = 'style, link[rel="stylesheet"]';
+
+/**
+ * Copy one head style node into `targetDoc`, ready to append to its `<head>`.
+ *
+ * A `<style>` clones verbatim — its inline CSS is self-contained. A `<link>` is
+ * **rebuilt** rather than cloned: `cloneNode` copies the raw `href` attribute
+ * (often relative), which would then resolve against the frame's `about:blank`
+ * base and 404. Reading `node.href` (the resolved *absolute* URL) and carrying
+ * the subresource-integrity / crossorigin / referrer / media attributes
+ * reconstructs a link that loads from the app origin exactly as the original did.
+ *
+ * @guarantee a mirrored `<link>` carries an absolute href + its media,
+ *   integrity, crossorigin and referrerpolicy attributes.
+ * @verified-by preview-frame.directive.spec.ts
+ */
+export function copyStyleNode(targetDoc: Document, node: Element): Node {
+  if (!(node instanceof HTMLLinkElement)) {
+    return node.cloneNode(true);
+  }
+  const link = targetDoc.createElement("link");
+  link.rel = "stylesheet";
+  link.href = node.href;
+  for (const name of ["media", "integrity", "crossorigin", "referrerpolicy"]) {
+    const value = node.getAttribute(name);
+    if (value !== null) {
+      link.setAttribute(name, value);
+    }
+  }
+  return link;
+}
+
 /**
  * `iframe[devPreviewFrame]` — turns a bare `<iframe>` into the playground's
  * responsive device frame.
@@ -99,36 +132,22 @@ export class DevPreviewFrameDirective {
 
   /** Copy existing head stylesheets into the frame, then mirror any added. */
   private mirrorStyles(doc: Document): void {
-    const selector = 'style, link[rel="stylesheet"]';
-    for (const node of Array.from(document.head.querySelectorAll(selector))) {
-      doc.head.appendChild(this.copyStyleNode(doc, node));
+    for (const node of Array.from(
+      document.head.querySelectorAll(STYLE_SELECTOR),
+    )) {
+      doc.head.appendChild(copyStyleNode(doc, node));
     }
     const observer = new MutationObserver((records) => {
       for (const record of records) {
         for (const added of Array.from(record.addedNodes)) {
-          if (added instanceof Element && added.matches(selector)) {
-            doc.head.appendChild(this.copyStyleNode(doc, added));
+          if (added instanceof Element && added.matches(STYLE_SELECTOR)) {
+            doc.head.appendChild(copyStyleNode(doc, added));
           }
         }
       }
     });
     observer.observe(document.head, { childList: true });
     this.cleanups.push(() => observer.disconnect());
-  }
-
-  /** A `<style>` copies verbatim; a `<link>` is rebuilt with its *absolute* URL,
-   *  so it resolves against the app origin, not the frame's `about:blank` base. */
-  private copyStyleNode(doc: Document, node: Element): Node {
-    if (node instanceof HTMLLinkElement) {
-      const link = doc.createElement("link");
-      link.rel = "stylesheet";
-      link.href = node.href;
-      if (node.media) {
-        link.media = node.media;
-      }
-      return link;
-    }
-    return node.cloneNode(true);
   }
 
   /** Mirror the icon sprite (and lazily-added symbols) so the adopted icons'

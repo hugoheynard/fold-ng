@@ -2,7 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist/out-tsc/spec",
+    // the root config roots at ./src; specs also cover demo tooling, so widen it.
+    "rootDir": ".",
     "types": ["vitest/globals", "node"]
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "demo/**/*.spec.ts",
+    "demo/**/*.ts"
+  ]
 }
