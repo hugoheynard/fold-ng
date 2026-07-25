@@ -1,13 +1,174 @@
 <fold-page-layout title="link">
+  <p description>
+    An inline text link / link-button: accent-coloured, underline on hover, with
+    optional leading + trailing glyphs. Given <code>href</code> it renders an
+    <code>&lt;a&gt;</code>; otherwise a <code>&lt;button&gt;</code> that emits
+    <code>(clicked)</code> — the same look for navigation and in-app actions.
+  </p>
   <gal-kind-badge titleBadge kind="component" />
-  <div class="gal-row">
-    <fold-link icon="company" trailingIcon="chevron-right"
-      >accent + icons</fold-link
-    >
-    <fold-link tone="muted">muted</fold-link>
-    <fold-link href="https://sh3pherd.dev" tone="muted"
-      >anchor (href)</fold-link
-    >
-    <fold-link [disabled]="true">disabled</fold-link>
-  </div>
+
+  <dev-playground [code]="linkCode()" [responsive]="false">
+    <label class="np-field" params>
+      <span class="gal-tag">label</span>
+      <input
+        #labelInput
+        class="gal-text"
+        type="text"
+        [value]="label()"
+        (input)="label.set(labelInput.value)"
+        aria-label="Link label"
+      />
+    </label>
+
+    <div class="np-field" params>
+      <span class="gal-tag">tone</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="tone() === 'accent'"
+          (click)="tone.set('accent')"
+        >
+          accent
+        </button>
+        <button
+          type="button"
+          [class.is-on]="tone() === 'muted'"
+          (click)="tone.set('muted')"
+        >
+          muted
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">mode</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="mode() === 'button'"
+          (click)="mode.set('button')"
+        >
+          button
+        </button>
+        <button
+          type="button"
+          [class.is-on]="mode() === 'anchor'"
+          (click)="mode.set('anchor')"
+        >
+          anchor (href)
+        </button>
+      </div>
+    </div>
+
+    <label class="np-field" params>
+      <span class="gal-tag">leading icon</span>
+      <select
+        #leadSel
+        class="gal-select"
+        [value]="leadingIcon()"
+        (change)="leadingIcon.set(leadSel.value)"
+      >
+        @for (i of leadingIcons; track i) {
+        <option [value]="i">{{ i }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="np-field" params>
+      <span class="gal-tag">trailing icon</span>
+      <select
+        #trailSel
+        class="gal-select"
+        [value]="trailingIcon()"
+        (change)="trailingIcon.set(trailSel.value)"
+      >
+        @for (i of trailingIcons; track i) {
+        <option [value]="i">{{ i }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="np-field" params>
+      <span class="gal-tag">disabled <em>(button only)</em></span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!disabled()"
+          (click)="disabled.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="disabled()"
+          (click)="disabled.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+
+    <!-- Live composition: one element serves both forms — an href makes it an
+         anchor, its absence a button; disabled applies to the button only. -->
+    <div class="link-preview">
+      <fold-link
+        [tone]="tone()"
+        [icon]="leading()"
+        [trailingIcon]="trailing()"
+        [href]="mode() === 'anchor' ? demoHref : undefined"
+        [disabled]="disabled()"
+      >
+        {{ label() }}
+      </fold-link>
+    </div>
+  </dev-playground>
+
+  <!-- Real compositions: how the link reads inside actual UI, not just as a
+       lone control. Each cell is a pattern you'd reach for. -->
+  <fold-page-section title="Compositions" icon="fold">
+    <div class="link-compo">
+      <div class="gal-cell">
+        <span class="gal-tag">inline in prose</span>
+        <p class="link-prose">
+          Signatures are locked once every party has signed. Need to change a
+          term after that? Raise an
+          <fold-link href="https://fold.sh3pherd.dev/docs">addendum</fold-link>
+          instead — it keeps the original contract intact and auditable.
+        </p>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">back-link</span>
+        <fold-link icon="arrow-back">Back to contracts</fold-link>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">call to action</span>
+        <fold-link icon="company" trailingIcon="chevron-right">
+          View the organisation
+        </fold-link>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">external (muted)</span>
+        <fold-link
+          href="https://fold.sh3pherd.dev/docs"
+          tone="muted"
+          trailingIcon="globe"
+        >
+          Open the documentation
+        </fold-link>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">download action</span>
+        <fold-link icon="download">Download the report</fold-link>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">disabled</span>
+        <fold-link [disabled]="true">Unavailable</fold-link>
+      </div>
+    </div>
+  </fold-page-section>
 </fold-page-layout>

@@ -1,0 +1,49 @@
+/* `/link` page — playground param controls + the compositions gallery. Global
+   (ViewEncapsulation.None): the demo owns these `link-`/`gal-` classes, and the
+   playground projects them, so they can't be view-scoped. */
+
+/* Text + select param fields, matched to the segmented (.ss-seg) controls. */
+.gal-text,
+.gal-select {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: var(--fold-radius-sm);
+  border: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: 12px;
+}
+.gal-text:focus-visible,
+.gal-select:focus-visible {
+  outline: 2px solid var(--fold-color-primary);
+  outline-offset: 1px;
+}
+
+.np-field .gal-tag em {
+  font-style: normal;
+  color: var(--fold-color-text-muted);
+  font-weight: 400;
+}
+
+/* The live playground preview sits centred on its stage. */
+.link-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 24px;
+}
+
+/* Compositions: a responsive grid of real usage cells. */
+.link-compo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.link-prose {
+  margin: 0;
+  color: var(--fold-color-text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
