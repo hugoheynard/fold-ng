@@ -16,6 +16,11 @@ import {
   FoldPageSectionComponent,
 } from "../../../src/public-api";
 import pkg from "../../../package.json";
+import {
+  FOLD_COMPONENT_COUNT,
+  FOLD_THEME_COUNT,
+  FOLD_TEST_COUNT,
+} from "../../shell/gallery-stats";
 
 /** A headline number on the landing hero. */
 interface Stat {
@@ -76,9 +81,9 @@ export default class HomePage {
     encodeURIComponent("https://github.com/hugoheynard/fold-ng");
 
   protected readonly stats: readonly Stat[] = [
-    { value: "26", label: "components" },
-    { value: "4", label: "themes" },
-    { value: "400", label: "tests" },
+    { value: `${FOLD_COMPONENT_COUNT}`, label: "components" },
+    { value: `${FOLD_THEME_COUNT}`, label: "themes" },
+    { value: `${FOLD_TEST_COUNT}`, label: "tests" },
     { value: "0", label: "runtime theming cost" },
   ];
 
@@ -88,7 +93,7 @@ export default class HomePage {
     {
       icon: "grid",
       title: "Themeable to the bone",
-      body: "Four themes, and not one touches a component. A theme re-points semantic roles at different primitives — the swatch, not the widget. Add a fifth in one CSS block.",
+      body: `${FOLD_THEME_COUNT} themes, and not one touches a component. A theme re-points semantic roles at different primitives — the swatch, not the widget. Add the next in one CSS block.`,
     },
     {
       icon: "lightning",
