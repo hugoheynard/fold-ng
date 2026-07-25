@@ -40,3 +40,18 @@
   font-weight: 600;
   text-align: center;
 }
+
+/* The stacking breakpoint — the directive's headline behaviour. A real page
+   keys this off a @media (viewport) breakpoint (see the code snippet); here the
+   demo lives inside the playground's responsive frame, which resizes the
+   CONTAINER, not the viewport, so it keys off @container instead. Same effect:
+   at a narrow width the grid collapses to one column — the aside drops BELOW the
+   content — and `--fold-sticky-column-position: static` un-sticks it. */
+@container (max-width: 640px) {
+  .sticky-demo-grid {
+    grid-template-columns: 1fr;
+  }
+  .sticky-demo-side {
+    --fold-sticky-column-position: static;
+  }
+}
