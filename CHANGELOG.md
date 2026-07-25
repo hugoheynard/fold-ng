@@ -8,6 +8,31 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **Auto-inverting accent surface.** A new `[data-surface="accent"]` region
+  (stamped by `fold-card surface="accent"`, `fold-hero-card surface="accent"`,
+  or the `foldSurface` directive) fills with the brand accent and re-points its
+  **whole content sub-tree** to an on-accent palette — text, borders, band
+  gradation, and even nested buttons / links / icon-tiles read on the accent
+  with no per-component code. It is theme-agnostic and derived (every value a
+  `color-mix` of the captured accent pair), and swaps the brand pair
+  (`primary` ↔ `on-primary`) without a CSS custom-property cycle by capturing on
+  the surface and inverting on descendants. A theme can override any role by
+  nesting a rule for its own `[data-theme=…]` under `[data-surface="accent"]`.
+  `FoldSurfaceName` gains `'accent'`. See `docs/surfaces.md`.
+- **On-accent contrast contract.** A contract test derives the on-accent text
+  ramp per theme and asserts it clears a documented WCAG floor (the accent is an
+  emphasis surface — AA-large 3:1 — or the theme must override the ramp). No
+  eyeballing.
+- **`fold-card` — an accessible interactive contract.** `interactive` cards are
+  now real controls: `role="button"`, `tabindex`, `Enter`/`Space` activation, an
+  `(activated)` output, an `ariaLabel` input, a visible focus ring, and
+  `prefers-reduced-motion` respected. The projected bands are neutral `<div>`s
+  (not `<header>`/`<footer>`), so a card is a single control with no nested
+  landmarks.
+- **`fold-link` — `target` + `rel` for external links.** A linked `fold-link`
+  takes `target` (e.g. `_blank`) and `rel`; `rel` defaults to a safe
+  `noopener noreferrer` whenever `target="_blank"`, and `(clicked)` now emits the
+  `MouseEvent` (so cmd/middle-click and modifier state are observable).
 - **`titan` theme — brushed titanium.** A fifth `[data-theme]`: a light, warm
   brushed-steel read. A cool `steel` ground with the header + rails at the page's
   own tint (a frameless top), bright polished cards floating off it on the shared
@@ -17,6 +42,32 @@ All notable changes to **fold-ng** are documented here. The format follows
   `scales.css`. In the gallery both rails float as steel plates while the header
   stays flat. Uniform-polarity, so no chrome override. The token contract (theme
   parity, no-hex, no dead primitives) stays green.
+
+### Changed
+
+- **BREAKING — `fold-card` band chrome is per-band.** `separators` and
+  `raisedBands` change from booleans to a `FoldCardBandChrome`
+  (`'none' | 'header' | 'footer' | 'both'`), so a header and a footer are dressed
+  independently. Migration: `<fold-card separators>` → `separators="both"`;
+  drop the attribute for `'none'`.
+
+### Fixed
+
+- **`fold-avatar` — a broken image falls back to the initials** instead of the
+  browser's broken-image glyph, and retries when `imageUrl` changes. `ghost`
+  combined with `imageUrl` is no longer a silent no-op — a guest keeps the
+  dashed edge even with a photo.
+- **`fold-avatar` — initials stay legible on every palette fill.** The initials
+  ink is now the higher-contrast of the dark/light pair (was a magic-threshold
+  guess), and a contrast contract asserts every built-in palette fill clears AA
+  (≥ 4.5:1). A status-ring perceivability contract locks the `ring` colours
+  against a WCAG 1.4.11 regression.
+
+### Docs
+
+- **`docs/surfaces.md`** documents the auto-inversion principle and the
+  per-theme override seam; a `/surfaces` gallery page shows the live plain-vs-
+  accent proof. `docs/STRENGTHS.md` captures the top-tier design arguments.
 
 ## [0.3.0] - 2026-07-25
 
