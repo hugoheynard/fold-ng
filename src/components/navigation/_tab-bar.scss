@@ -142,16 +142,17 @@
 
 /* Collapsed — the icon mode, a distinct behaviour from the `size` density scale.
    HORIZONTAL, an icon accordion: every item but the active one shows just its
-   icon; the active one keeps its label and takes the room. An item with no icon
-   keeps its label, so nothing is left unlabelled. */
+   icon; the active one keeps its label inline and takes the room. VERTICAL, an
+   icon rail: every item is icon-only. An icon-only item's label becomes a
+   hover/focus tooltip (so the bar stays navigable + gives screen readers the
+   name); an icon-less item falls back to its initial glyph. */
 .is-collapsed .tab-bar-item {
+  position: relative;
   flex: 0 0 auto;
   gap: 0;
 }
-/* Scoped to :not(.is-active) rather than hide-then-show: view encapsulation
-   appends an attribute to every compound selector, so the `~` hide rule would
-   outweigh any show rule on the active item whatever the source order. */
-.is-collapsed .tab-bar-item:not(.is-active) .tab-bar-icon ~ .tab-bar-label,
+/* The active item's badge is hidden while collapsed (its label is shown inline,
+   the count would crowd the row); vertical re-shows it as a corner bubble below. */
 .is-collapsed .tab-bar-item:not(.is-active) .tab-bar-badge {
   display: none;
 }
@@ -165,39 +166,14 @@
   text-overflow: ellipsis;
 }
 
-/* VERTICAL, a collapsed icon rail (like a folded fold-menu): the accordion
-   expand has nowhere to go, so every item shrinks to its centred icon, its label
-   becomes a hover/focus tooltip escaping to the right, and its count sits as a
-   corner bubble. `align-items: center` makes each item hug its icon (not stretch
-   to the rail width), so the corner bubble anchors to the icon at any rail width.
-   An icon-less item keeps its label inline (the `.tab-bar-icon ~` guard). */
-.dir-vertical.is-collapsed {
-  align-items: center;
-}
-.dir-vertical.is-collapsed .tab-bar-item,
-.dir-vertical.is-collapsed .tab-bar-item.is-active {
-  position: relative;
-  flex: 0 0 auto;
-  justify-content: center;
-  gap: 0;
-}
-/* The count stays visible on every tab — active or not (overriding the generic
-   collapsed rule that hides inactive counts) — as a bubble on the icon's corner. */
-.dir-vertical.is-collapsed .tab-bar-item .tab-bar-badge {
-  display: block;
+/* The icon-only items whose label becomes a tooltip: every vertical item, and
+   the inactive horizontal ones (the active horizontal item shows its label). */
+.dir-vertical.is-collapsed .tab-bar-item .tab-bar-icon ~ .tab-bar-label,
+.is-collapsed:not(.dir-vertical)
+  .tab-bar-item:not(.is-active)
+  .tab-bar-icon
+  ~ .tab-bar-label {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  transform: scale(0.85);
-  transform-origin: top right;
-  pointer-events: none;
-}
-/* Label → floating tooltip (only where an icon stands in for it). */
-.dir-vertical.is-collapsed .tab-bar-item .tab-bar-icon ~ .tab-bar-label {
-  position: absolute;
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
   padding: 4px 8px;
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-glass);
@@ -212,15 +188,63 @@
   transition: opacity var(--fold-motion-fast);
   z-index: 100;
 }
+/* Vertical: escape to the right, centred on the icon. */
+.dir-vertical.is-collapsed .tab-bar-item .tab-bar-icon ~ .tab-bar-label {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* Horizontal: drop below the icon, centred. */
+.is-collapsed:not(.dir-vertical)
+  .tab-bar-item:not(.is-active)
+  .tab-bar-icon
+  ~ .tab-bar-label {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* Reveal on hover / keyboard focus — both axes, every icon-only item. */
 .dir-vertical.is-collapsed .tab-bar-item:hover .tab-bar-icon ~ .tab-bar-label,
 .dir-vertical.is-collapsed
   .tab-bar-item:focus-visible
   .tab-bar-icon
+  ~ .tab-bar-label,
+.is-collapsed:not(.dir-vertical)
+  .tab-bar-item:not(.is-active):hover
+  .tab-bar-icon
+  ~ .tab-bar-label,
+.is-collapsed:not(.dir-vertical)
+  .tab-bar-item:not(.is-active):focus-visible
+  .tab-bar-icon
   ~ .tab-bar-label {
   opacity: 1;
 }
-/* The tooltip escapes the rail to the right — the host clips by default. */
-:host:has(.dir-vertical.is-collapsed) {
+
+/* VERTICAL rail specifics: each item hugs its icon (align-items: center, not
+   stretched to the rail width), so the corner count bubble anchors to the icon
+   at any rail width. */
+.dir-vertical.is-collapsed {
+  align-items: center;
+}
+.dir-vertical.is-collapsed .tab-bar-item,
+.dir-vertical.is-collapsed .tab-bar-item.is-active {
+  justify-content: center;
+  gap: 0;
+}
+/* The count stays visible on every vertical tab — active or not — as a bubble on
+   the icon's corner (overriding the generic hide of inactive counts). */
+.dir-vertical.is-collapsed .tab-bar-item .tab-bar-badge {
+  display: block;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  transform: scale(0.85);
+  transform-origin: top right;
+  pointer-events: none;
+}
+/* The tooltip escapes the bar (right on a rail, below on a top bar) — the host
+   clips by default. */
+:host:has(.is-collapsed) {
   overflow: visible;
 }
 
