@@ -8,7 +8,6 @@ import {
   inject,
   input,
   model,
-  signal,
   viewChild,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
@@ -19,13 +18,15 @@ import { FoldPopoverTriggerDirective } from "../../overlays/popover/popover-trig
 import type { FoldPopoverPlacement } from "../../overlays/popover/placement";
 import { FoldInputBaseComponent } from "../input/input-base.component";
 import { FoldOptionComponent } from "./option.component";
+import { FoldListboxNav } from "./listbox-nav";
+import { FOLD_LISTBOX_OWNER, type FoldListboxOwner } from "./listbox-owner";
 
 /**
  * `<fold-listbox>` — a **styleable** single-select, the richer sibling of the
  * native-`<select>`-wrapping {@link FoldSelectComponent}. Reach for it when the
  * options need custom rendering the native popup can't give (an icon, a second
  * line, a status) — otherwise `fold-select` stays the lighter, mobile-native
- * default.
+ * default. For picking several values, use `fold-multiselect`.
  *
  * Built on {@link FoldPopoverComponent}: the popover owns positioning, the native
  * top layer, outside-click / `Escape` dismissal and focus return. On top of that
@@ -55,8 +56,13 @@ import { FoldOptionComponent } from "./option.component";
   templateUrl: "./listbox.component.html",
   styleUrl: "./listbox.component.scss",
   host: { "[class]": 'size() + " " + variant()' },
+  providers: [
+    { provide: FOLD_LISTBOX_OWNER, useExisting: FoldListboxComponent },
+  ],
 })
-export class FoldListboxComponent implements FormValueControl<string> {
+export class FoldListboxComponent
+  implements FormValueControl<string>, FoldListboxOwner
+{
   /** Selected value (the chosen option's `value`). A `model()` so `FormField`
    *  and `[(value)]` stay in sync. */
   readonly value = model<string>("");
@@ -95,18 +101,18 @@ export class FoldListboxComponent implements FormValueControl<string> {
 
   private readonly options = contentChildren(FoldOptionComponent);
   private readonly list = viewChild<ElementRef<HTMLElement>>("list");
-  /** Keyboard-active row = index into {@link options}. Lives here, not read from
-   *  the DOM, so it stays correct however focus moves. */
-  private readonly activeIndex = signal(-1);
+
+  /** Shared roving/keyboard core; single-select commits + closes on activation. */
+  private readonly nav = new FoldListboxNav(() => this.options(), {
+    select: (index) => this.selectAt(index),
+    close: () => this.open.set(false),
+  });
+  /** `aria-activedescendant`, read by each `fold-option` for its `is-active`. */
+  readonly activeId = this.nav.activeId;
 
   /** The selected option's label, for the trigger. */
   protected readonly selectedLabel = computed<string | undefined>(
     () => this.options().find((o) => o.value() === this.value())?.label,
-  );
-  /** `aria-activedescendant`: the active option's id, or none. Read by each
-   *  `fold-option` to derive its own `is-active` state. */
-  readonly activeId = computed<string | null>(
-    () => this.options()[this.activeIndex()]?.id ?? null,
   );
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {
@@ -133,13 +139,18 @@ export class FoldListboxComponent implements FormValueControl<string> {
         queueMicrotask(() => {
           if (this.open()) {
             this.list()?.nativeElement.focus();
-            this.armActive();
+            this.nav.arm(this.selectedIndex());
           }
         });
       } else {
-        this.activeIndex.set(-1);
+        this.nav.reset();
       }
     });
+  }
+
+  /** A value is selected when it equals the current one. */
+  isSelected(value: string): boolean {
+    return this.value() === value;
   }
 
   /** Open with the keys a native select opens on. */
@@ -153,36 +164,9 @@ export class FoldListboxComponent implements FormValueControl<string> {
     }
   }
 
-  /** Keyboard while the list is open and focused. */
+  /** Keyboard while the list is open and focused — delegated to the core. */
   protected onListKeydown(event: KeyboardEvent): void {
-    switch (event.key) {
-      case "ArrowDown":
-        event.preventDefault();
-        this.move(1);
-        break;
-      case "ArrowUp":
-        event.preventDefault();
-        this.move(-1);
-        break;
-      case "Home":
-        event.preventDefault();
-        this.setActive(this.edge(1));
-        break;
-      case "End":
-        event.preventDefault();
-        this.setActive(this.edge(-1));
-        break;
-      case "Enter":
-      case " ":
-        event.preventDefault();
-        this.selectActive();
-        break;
-      case "Tab":
-        this.open.set(false);
-        break;
-      default:
-        this.typeahead(event);
-    }
+    this.nav.onKeydown(event);
   }
 
   /** Click on a row selects it (delegated, so projected rows need no wiring). */
@@ -197,8 +181,15 @@ export class FoldListboxComponent implements FormValueControl<string> {
   protected onListPointermove(event: PointerEvent): void {
     const o = this.enabledOptionFrom(event.target);
     if (o) {
-      this.setActive(this.options().indexOf(o));
+      this.nav.point(this.options().indexOf(o));
     }
+  }
+
+  /** Index of the selected option (or -1) — where the keyboard arms on open. */
+  private selectedIndex(): number {
+    return this.options().findIndex(
+      (o) => o.value() === this.value() && !o.disabled(),
+    );
   }
 
   /** The enabled option under an event target, or null. */
@@ -213,49 +204,8 @@ export class FoldListboxComponent implements FormValueControl<string> {
     return o && !o.disabled() ? o : null;
   }
 
-  /** First (`dir` = 1) or last (`dir` = -1) enabled option index, or -1. */
-  private edge(dir: 1 | -1): number {
-    const opts = this.options();
-    const order = [...opts.keys()];
-    for (const idx of dir === 1 ? order : order.reverse()) {
-      if (!opts[idx]?.disabled()) {
-        return idx;
-      }
-    }
-    return -1;
-  }
-
-  private armActive(): void {
-    const selected = this.options().findIndex(
-      (o) => o.value() === this.value() && !o.disabled(),
-    );
-    this.setActive(selected >= 0 ? selected : this.edge(1));
-  }
-
-  private move(delta: number): void {
-    const opts = this.options();
-    let i = this.activeIndex();
-    let remaining = opts.length;
-    while (remaining > 0) {
-      i = (i + delta + opts.length) % opts.length;
-      if (!opts[i]?.disabled()) {
-        this.setActive(i);
-        return;
-      }
-      remaining -= 1;
-    }
-  }
-
-  private setActive(index: number): void {
-    if (index < 0) {
-      return;
-    }
-    this.activeIndex.set(index);
-    this.options()[index]?.scrollIntoView();
-  }
-
-  private selectActive(): void {
-    const o = this.options()[this.activeIndex()];
+  private selectAt(index: number): void {
+    const o = this.options()[index];
     if (o && !o.disabled()) {
       this.commit(o);
     }
@@ -265,37 +215,5 @@ export class FoldListboxComponent implements FormValueControl<string> {
     this.value.set(option.value());
     this.touched.set(true);
     this.open.set(false);
-  }
-
-  private typeBuffer = "";
-  private typeAt = 0;
-
-  /** Multi-letter type-ahead: keystrokes within 500 ms accumulate, so "de" jumps
-   *  to "Delete", not just the next "d". Mirrors the dropdown menu's behaviour. */
-  private typeahead(event: KeyboardEvent): void {
-    if (
-      event.key.length !== 1 ||
-      event.ctrlKey ||
-      event.metaKey ||
-      event.altKey
-    ) {
-      return;
-    }
-    const now = Date.now();
-    this.typeBuffer =
-      now - this.typeAt > 500 ? event.key : this.typeBuffer + event.key;
-    this.typeAt = now;
-    const query = this.typeBuffer.toLowerCase();
-    const opts = this.options();
-    const from = query.length === 1 ? 1 : 0;
-    const current = Math.max(this.activeIndex(), 0);
-    for (let i = 0; i < opts.length; i += 1) {
-      const idx = (current + from + i) % opts.length;
-      const o = opts[idx];
-      if (o && !o.disabled() && o.label.toLowerCase().startsWith(query)) {
-        this.setActive(idx);
-        return;
-      }
-    }
   }
 }

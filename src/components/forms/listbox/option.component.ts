@@ -7,7 +7,7 @@ import {
   input,
 } from "@angular/core";
 import { FoldIdService } from "../../../a11y/id.service";
-import { FoldListboxComponent } from "./listbox.component";
+import { FOLD_LISTBOX_OWNER } from "./listbox-owner";
 
 /**
  * `<fold-option>` — a single choice inside a {@link FoldListboxComponent}. Project
@@ -43,7 +43,7 @@ import { FoldListboxComponent } from "./listbox.component";
 })
 export class FoldOptionComponent {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly listbox = inject(FoldListboxComponent);
+  private readonly owner = inject(FOLD_LISTBOX_OWNER);
 
   /** The value written back to the listbox when this option is chosen. */
   readonly value = input.required<string>();
@@ -55,8 +55,8 @@ export class FoldOptionComponent {
 
   /** Derived from the parent — evaluated lazily during this option's own render,
    *  so the required `value` is always set by the time it's read. */
-  readonly selected = computed(() => this.listbox.value() === this.value());
-  readonly active = computed(() => this.listbox.activeId() === this.id);
+  readonly selected = computed(() => this.owner.isSelected(this.value()));
+  readonly active = computed(() => this.owner.activeId() === this.id);
 
   /** The option's visible text — used for the trigger label and type-ahead. */
   get label(): string {
