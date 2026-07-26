@@ -9,7 +9,7 @@ import { FoldPopoverTriggerDirective } from "./popover-trigger.directive";
   imports: [FoldPopoverComponent, FoldPopoverTriggerDirective],
   template: `<fold-popover [(open)]="open">
     <button class="trigger" foldPopoverTrigger>Open</button>
-    <div class="content">Panel body</div>
+    <div foldPopoverPanel class="content">Panel body</div>
   </fold-popover>`,
 })
 class HostComponent {

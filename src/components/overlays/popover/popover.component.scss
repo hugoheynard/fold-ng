@@ -9,7 +9,13 @@
   padding: 0;
   border: 0;
   overflow: visible;
-  max-width: calc(100vw - 2 * var(--fold-space-md));
+  /* Size to content (the projected panel). `max-content` is explicit so the
+     fixed box doesn't collapse to 0 in the top layer; the cap is a plain rem —
+     `vw` resolves to 0 for a top-layer box in some engines, which would clamp
+     the width to nothing. Off-viewport overflow is handled by the shift in
+     computePlacement. */
+  width: max-content;
+  max-width: 22rem;
 
   background: var(--fold-color-surface-raised);
   color: var(--fold-color-text);

@@ -1,7 +1,6 @@
 import {
   afterRenderEffect,
   Component,
-  contentChild,
   effect,
   ElementRef,
   inject,
@@ -12,7 +11,6 @@ import {
 } from "@angular/core";
 import { FoldIdService } from "../../../a11y/id.service";
 import { computePlacement, type FoldPopoverPlacement } from "./placement";
-import { FoldPopoverTriggerDirective } from "./popover-trigger.directive";
 
 /**
  * `<fold-popover>` — an anchored floating layer. Project a trigger
@@ -32,11 +30,14 @@ import { FoldPopoverTriggerDirective } from "./popover-trigger.directive";
  *
  * @selector `fold-popover`
  *
+ * The trigger carries `[foldPopoverTrigger]`; the floating content is marked
+ * `foldPopoverPanel`.
+ *
  * @example
  * ```html
  * <fold-popover placement="bottom-end">
  *   <button foldButton foldPopoverTrigger>Filters</button>
- *   <div class="my-panel">…</div>
+ *   <div foldPopoverPanel class="my-panel">…</div>
  * </fold-popover>
  * ```
  */
@@ -53,6 +54,7 @@ import { FoldPopoverTriggerDirective } from "./popover-trigger.directive";
 })
 export class FoldPopoverComponent {
   private readonly renderer = inject(Renderer2);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
   /** Preferred placement before collision handling. @default "bottom-start" */
   readonly placement = input<FoldPopoverPlacement>("bottom-start");
@@ -70,18 +72,29 @@ export class FoldPopoverComponent {
   readonly panelId = inject(FoldIdService).next("fold-popover");
 
   private readonly panel = viewChild<ElementRef<HTMLElement>>("panel");
-  protected readonly trigger = contentChild(FoldPopoverTriggerDirective);
+
+  /**
+   * The trigger element — the projected `[foldPopoverTrigger]`. Found by DOM
+   * query on the host (projected content is a DOM descendant of the host), so it
+   * resolves regardless of how deeply it is re-projected (e.g. through
+   * `fold-dropdown`) — a content query would not survive the re-projection.
+   */
+  private triggerEl(): HTMLElement | null {
+    return this.host.nativeElement.querySelector<HTMLElement>(
+      "[foldPopoverTrigger]",
+    );
+  }
 
   constructor() {
     // Keep the trigger's aria in sync with open state + wiring.
     effect(() => {
-      const t = this.trigger();
-      if (!t) {
+      const open = this.open();
+      const el = this.triggerEl();
+      if (!el) {
         return;
       }
-      const el = t.el.nativeElement;
       this.renderer.setAttribute(el, "aria-controls", this.panelId);
-      this.renderer.setAttribute(el, "aria-expanded", String(this.open()));
+      this.renderer.setAttribute(el, "aria-expanded", String(open));
     });
 
     // Open/close the native popover + own the dismissal and positioning.
@@ -106,8 +119,7 @@ export class FoldPopoverComponent {
             return;
           }
           const inPanel = el.contains(target);
-          const inTrigger =
-            this.trigger()?.el.nativeElement.contains(target) ?? false;
+          const inTrigger = this.triggerEl()?.contains(target) ?? false;
           if (!inPanel && !inTrigger) {
             this.open.set(false);
           }
@@ -130,7 +142,7 @@ export class FoldPopoverComponent {
         });
       } else if (supported && el.matches(":popover-open")) {
         el.hidePopover();
-        this.trigger()?.el.nativeElement.focus({ preventScroll: true });
+        this.triggerEl()?.focus({ preventScroll: true });
       }
     });
   }
@@ -138,7 +150,7 @@ export class FoldPopoverComponent {
   /** Position the panel against the trigger with flip + shift. */
   private reposition(): void {
     const panel = this.panel()?.nativeElement;
-    const anchorEl = this.trigger()?.el.nativeElement;
+    const anchorEl = this.triggerEl();
     if (!panel || !anchorEl) {
       return;
     }
@@ -162,7 +174,7 @@ export class FoldPopoverComponent {
     const target = event.target;
     if (
       target instanceof Node &&
-      (this.trigger()?.el.nativeElement.contains(target) ?? false)
+      (this.triggerEl()?.contains(target) ?? false)
     ) {
       this.open.update((v) => !v);
     }
@@ -172,7 +184,7 @@ export class FoldPopoverComponent {
     const target = event.target;
     if (
       target instanceof Node &&
-      (this.trigger()?.el.nativeElement.contains(target) ?? false)
+      (this.triggerEl()?.contains(target) ?? false)
     ) {
       event.preventDefault();
       this.open.set(true);
