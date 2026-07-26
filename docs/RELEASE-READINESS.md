@@ -23,7 +23,9 @@ breach (P0-7) is now fixed too. Method: six parallel per-cluster audits, each re
 `.ts`/`.html`/`.scss`/`.spec.ts` + the matching gallery page. **Updated
 2026-07-26: `fold-data-table` completed its top-tier pass (selection, roving
 keyboard, `mobileLayout`, `foldToolbar`, sticky/density; hardcore-review fixes)
-and `fold-checkbox` shipped — both now ship-ready.**
+and `fold-checkbox` shipped — both now ship-ready. `fold-inline-confirm` added
+(extracted from SH3PHERD): the in-place destructive-action guard —
+simple / type-to-confirm / secret, i18n, focus management — ships ready.**
 
 ---
 
@@ -54,12 +56,13 @@ and the gallery nav — **layout first**.
 
 **Actions** — `src/components/actions/`
 
-| Component          | DX  | Tests | Docs | Verdict                                                                                              |
-| ------------------ | :-: | :---: | :--: | ---------------------------------------------------------------------------------------------------- |
-| `foldButton`       | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]`; `emphasis`×`intent`; `loading`; forced-colors |
-| `fold-button-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                                   |
-| `fold-toggle-icon` | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                                 |
-| `fold-link`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — `target`/`rel` (safe `noopener` default); `(clicked)` is a `MouseEvent`             |
+| Component             | DX  | Tests | Docs | Verdict                                                                                                     |
+| --------------------- | :-: | :---: | :--: | ----------------------------------------------------------------------------------------------------------- |
+| `foldButton`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]`; `emphasis`×`intent`; `loading`; forced-colors        |
+| `fold-button-icon`    | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                                          |
+| `fold-toggle-icon`    | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                                        |
+| `fold-link`           | 🟢  |  🟢   |  🟢  | **Ship-ready** — `target`/`rel` (safe `noopener` default); `(clicked)` is a `MouseEvent`                    |
+| `fold-inline-confirm` | 🟢  |  🟢   |  🟢  | **Ship-ready** — in-place guard; simple / type-to-confirm / secret; i18n; focus + Escape; emits typed value |
 
 **Content** — `src/components/content/`
 

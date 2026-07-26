@@ -8,6 +8,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-inline-confirm` — in-place destructive-action guard.** Extracted from
+  SH3PHERD's shared inline-confirm (which replaced four ad-hoc patterns) and
+  rebuilt to fold conventions. The host projects a real focusable trigger
+  (`foldButton` / `fold-button-icon`); on activation it is swapped, in the same
+  slot, for a confirm/cancel row — no modal, no layout jump. Three families:
+  **simple** (`confirmed` emits `""`), **type-to-confirm** (`[match]` — the
+  button unlocks once the text matches, case-insensitive + trimmed), and
+  **secret** (`password` — a masked field that confirms when non-empty and emits
+  the typed value, since a password can only be verified server-side). `Escape`
+  cancels; `Enter` confirms; focus moves into the affordance on open and back to
+  the trigger on cancel. Fully i18n via `provideFoldInlineConfirmLabels()`
+  (English default) or a per-instance `labels` input. Composed of `fold-button`,
+  `fold-button-icon` and `fold-input`. New gallery `/inline-confirm` page; 13
+  spec blocks.
+
 - **Slider hardcore pass — `fold-slider` + `fold-range-slider`.** `fold-slider`
   now implements `FormValueControl<number>` (bind `[formField]`, or `[(value)]`);
   the visible label is a real `<label for>` (else `ariaLabel`); a `valueText`
