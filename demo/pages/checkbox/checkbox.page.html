@@ -1,0 +1,191 @@
+<fold-page-layout title="checkbox">
+  <p description>
+    fold-checkbox — the boolean form control. A native
+    <code>&lt;input type="checkbox"&gt;</code> (keyboard, focus, the checkbox
+    role, form submission and <code>indeterminate</code> all for free) is
+    visually replaced by a tokenised box + check/dash mark. Drive it with
+    <code>[(checked)]</code> or bind a signal form field with
+    <code>[formField]</code> (it implements <code>FormCheckboxControl</code>).
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <!-- ── states ── -->
+  <div class="gal-cell" style="max-width: 520px">
+    <span class="gal-tag">states</span>
+    <fold-card surface="sunken" style="--fold-card-padding: 20px">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <fold-checkbox label="Unchecked" [(checked)]="a" />
+        <fold-checkbox label="Checked" [(checked)]="b" />
+        <fold-checkbox
+          label="Indeterminate"
+          ariaLabel="Indeterminate"
+          [indeterminate]="true"
+        />
+        <fold-checkbox label="Disabled" [disabled]="true" />
+        <fold-checkbox
+          label="Disabled + checked"
+          [checked]="true"
+          [disabled]="true"
+        />
+      </div>
+    </fold-card>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <!-- ── sizes ── -->
+    <div class="gal-cell" style="max-width: 260px">
+      <span class="gal-tag">sizes</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <fold-checkbox
+            size="sm"
+            label="Small (dense rows)"
+            [checked]="true"
+          />
+          <fold-checkbox size="md" label="Medium (default)" [checked]="true" />
+        </div>
+      </fold-card>
+    </div>
+
+    <!-- ── form field: hint → error once touched ── -->
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">form field · hint → error</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-checkbox
+          label="I accept the terms"
+          required
+          hint="Required to create an account"
+          [(checked)]="consent"
+          [(touched)]="consentTouched"
+          [errors]="consentErrors()"
+        />
+        <p class="doc-p">
+          Blur it while unchecked to surface the error (touched-gated).
+        </p>
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── select-all (parent indeterminate over children) ── -->
+  <div class="gal-cell" style="max-width: 320px">
+    <span class="gal-tag">select-all · indeterminate parent</span>
+    <fold-card surface="sunken" style="--fold-card-padding: 20px">
+      <fold-checkbox
+        label="All permissions"
+        ariaLabel="All permissions"
+        [checked]="allOn()"
+        [indeterminate]="someOn()"
+        (checkedChange)="toggleAll()"
+      />
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 10px;
+          padding-left: 16px;
+          border-left: 1px solid var(--fold-color-border-subtle);
+        "
+      >
+        @for (k of permKeys; track k) {
+        <fold-checkbox
+          [label]="k"
+          [checked]="perms()[k] ?? false"
+          (checkedChange)="setPerm(k, $event)"
+        />
+        }
+      </div>
+    </fold-card>
+  </div>
+
+  <!-- ── playground ── -->
+  <dev-playground [code]="playgroundCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">size</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgSize() === 'sm'"
+          (click)="pgSize.set('sm')"
+        >
+          sm
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgSize() === 'md'"
+          (click)="pgSize.set('md')"
+        >
+          md
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">state</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgIndeterminate()"
+          (click)="pgIndeterminate.set(false)"
+        >
+          normal
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgIndeterminate()"
+          (click)="pgIndeterminate.set(true)"
+        >
+          indeterminate
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">disabled</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgDisabled()"
+          (click)="pgDisabled.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgDisabled()"
+          (click)="pgDisabled.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">required</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgRequired()"
+          (click)="pgRequired.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgRequired()"
+          (click)="pgRequired.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+
+    <fold-card surface="sunken" style="--fold-card-padding: 28px">
+      <fold-checkbox
+        label="Subscribe"
+        [size]="pgSize()"
+        [required]="pgRequired()"
+        [indeterminate]="pgIndeterminate()"
+        [disabled]="pgDisabled()"
+        [(checked)]="pgChecked"
+      />
+    </fold-card>
+  </dev-playground>
+</fold-page-layout>

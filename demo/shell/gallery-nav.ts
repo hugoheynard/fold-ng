@@ -136,6 +136,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badge: "new",
         badgeTone: "info",
       },
+      {
+        id: "checkbox",
+        label: "checkbox",
+        badge: "new",
+        badgeTone: "info",
+      },
       { id: "form-layout", label: "form layout" },
       { id: "dropzone", label: "file dropzone" },
     ],
