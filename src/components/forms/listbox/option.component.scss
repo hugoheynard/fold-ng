@@ -11,15 +11,8 @@
   scroll-margin: 0.35rem;
 }
 
-// Keyboard-active row — driven by the listbox, not `:hover`, so pointer and
-// keyboard can't fight over which row looks focused.
-:host(.is-active) {
-  background: var(--fold-color-surface-hover);
-}
-
 :host(.is-selected) {
   font-weight: 600;
-  color: var(--fold-color-text);
 }
 
 // A pure-CSS check on the selected row, pinned to the trailing edge.
@@ -32,6 +25,15 @@
   border: solid var(--fold-color-primary);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+// Keyboard-active / hovered row — driven by the listbox, not `:hover`, so pointer
+// and keyboard share one highlight. A brand-tinted fill (over the now-opaque
+// panel) + accent text makes the current row unmistakable. Declared after
+// `is-selected` so its text colour wins on a row that is both.
+:host(.is-active) {
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
 }
 
 :host(.is-disabled) {
