@@ -103,10 +103,11 @@ describe("FoldDropdownComponent", () => {
     expect(r.fixture.componentInstance.open()).toBe(false);
   });
 
-  it("rovs tabindex with ArrowDown, skipping disabled items", () => {
+  it("rovs tabindex with ArrowDown, skipping disabled items", async () => {
     const r = render();
     r.fixture.componentInstance.open.set(true);
     r.fixture.detectChanges();
+    await Promise.resolve(); // the open-arm focus is deferred to a microtask
     // opening arms the first enabled item (Edit)
     expect(r.item("i-edit").getAttribute("tabindex")).toBe("0");
     // ArrowDown → skips the disabled Duplicate → Delete becomes tabbable

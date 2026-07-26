@@ -34,11 +34,17 @@
   border-radius: inherit;
 }
 
+/* A rotated square tucked *behind* the panel (`z-index: -1`, the panel's fixed
+   position makes a stacking context): its inner half hides under the panel's
+   background, so only the outer half — with the border — pokes out and reads as
+   a seamless tip. */
 .fpop-arrow {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  z-index: -1;
+  width: 11px;
+  height: 11px;
   background: var(--fold-color-surface-raised);
+  border: 1px solid var(--fold-color-border-subtle);
   transform: rotate(45deg);
 }
 

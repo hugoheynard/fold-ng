@@ -81,6 +81,18 @@ describe("computePlacement", () => {
     expect(r.x).toBe(8); // pinned to left padding
   });
 
+  it("follows a custom fallbackPlacements chain when the preferred can't fit", () => {
+    const r = computePlacement({
+      ...base,
+      anchor: { x: 100, y: 40, width: 40, height: 20 }, // little room above
+      placement: "top-start",
+      // skip the default (bottom) — try right first, which fits
+      fallbackPlacements: ["right-start", "bottom-start"],
+      viewport: { width: 1000, height: 800 },
+    });
+    expect(r.placement).toBe("right-start");
+  });
+
   it("supports horizontal placement (right)", () => {
     const r = computePlacement({ ...base, placement: "right" });
     expect(r.x).toBe(100 + 40 + 8); // anchor right + offset

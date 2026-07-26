@@ -181,6 +181,7 @@ export { FoldPopoverTriggerDirective } from "./components/overlays/popover/popov
 export { FoldDropdownComponent } from "./components/overlays/popover/dropdown.component";
 export { FoldDropdownItemComponent } from "./components/overlays/popover/dropdown-item.component";
 export { computePlacement } from "./components/overlays/popover/placement";
+export { autoUpdate } from "./components/overlays/popover/auto-update";
 export type {
   FoldPopoverPlacement,
   FoldPopoverSide,

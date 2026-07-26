@@ -57,10 +57,17 @@ export class FoldDropdownComponent {
   private readonly active = signal(0);
 
   constructor() {
-    // On open, arm + focus the first enabled item (popover auto-focus is off).
+    // On open, arm + focus the first enabled item. Deferred to a microtask so it
+    // runs AFTER the popover's own render effect has `showPopover()`n the panel
+    // in the same flush — focusing a still-hidden panel would no-op and leave
+    // focus on the trigger (outside the menu, so keydowns wouldn't reach it).
     afterRenderEffect(() => {
       if (this.open()) {
-        this.focusIndex(0);
+        queueMicrotask(() => {
+          if (this.open()) {
+            this.focusIndex(0);
+          }
+        });
       }
     });
   }

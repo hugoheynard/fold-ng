@@ -41,6 +41,12 @@ export interface FoldPlacementInput {
   readonly floating: { readonly width: number; readonly height: number };
   /** Preferred placement before collision handling. */
   readonly placement: FoldPopoverPlacement;
+  /**
+   * Ordered fallbacks tried (after the preferred) when the preferred side can't
+   * fit — the first that fits wins, else the roomiest of all candidates. Each
+   * may change side *and* alignment. Defaults to the opposite side.
+   */
+  readonly fallbackPlacements?: readonly FoldPopoverPlacement[] | undefined;
   /** Gap between the anchor and the floating element, in px. */
   readonly offset: number;
   /** Viewport size (usually `innerWidth` / `innerHeight`). */
@@ -164,29 +170,45 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
+/** Room needed on a placement's main axis to fit the floating element. */
+function needFor(
+  side: FoldPopoverSide,
+  floating: { width: number; height: number },
+): number {
+  return isVertical(side) ? floating.height : floating.width;
+}
+
 /**
- * Choose the side to place on (**flip**): keep the preferred side if the
- * floating element fits there; otherwise fall back to its opposite, and if
- * neither fits, take whichever has the most room (the `size` middleware then
- * caps + scrolls the overflow, so it degrades gracefully instead of spilling).
+ * Choose the placement (**flip**): try the preferred, then each fallback (the
+ * opposite side by default); the first whose side fits the floating element
+ * wins. If none fit, take whichever has the most room — the `size` middleware
+ * then caps + scrolls the overflow, so it degrades gracefully.
  */
-function chooseSide(
-  preferred: FoldPopoverSide,
-  need: number,
-  anchor: FoldRect,
-  viewport: { width: number; height: number },
-  offset: number,
-): FoldPopoverSide {
-  const roomPreferred = roomFor(preferred, anchor, viewport);
-  if (roomPreferred >= need + offset) {
-    return preferred;
+function choosePlacement(input: FoldPlacementInput): {
+  side: FoldPopoverSide;
+  align: FoldPopoverAlign;
+} {
+  const preferred = parse(input.placement);
+  const opposite: FoldPopoverPlacement =
+    preferred.align === "center"
+      ? OPPOSITE[preferred.side]
+      : `${OPPOSITE[preferred.side]}-${preferred.align}`;
+  const fallbacks = input.fallbackPlacements ?? [opposite];
+  const candidates = [input.placement, ...fallbacks];
+  let best = preferred;
+  let bestRoom = -Infinity;
+  for (const candidate of candidates) {
+    const parsed = parse(candidate);
+    const room = roomFor(parsed.side, input.anchor, input.viewport);
+    if (room >= needFor(parsed.side, input.floating) + input.offset) {
+      return parsed;
+    }
+    if (room > bestRoom) {
+      bestRoom = room;
+      best = parsed;
+    }
   }
-  const opposite = OPPOSITE[preferred];
-  const roomOpposite = roomFor(opposite, anchor, viewport);
-  if (roomOpposite >= need + offset || roomOpposite > roomPreferred) {
-    return opposite;
-  }
-  return preferred;
+  return best;
 }
 
 /**
@@ -199,10 +221,9 @@ export function computePlacement(
   input: FoldPlacementInput,
 ): FoldPlacementResult {
   const { anchor, floating, offset, viewport, padding } = input;
-  const parsed = parse(input.placement);
-  const vertical = isVertical(parsed.side);
-  const need = vertical ? floating.height : floating.width;
-  const side = chooseSide(parsed.side, need, anchor, viewport, offset);
+  const chosen = choosePlacement(input);
+  const side = chosen.side;
+  const align = chosen.align;
 
   // size: the room on the chosen side (main axis) and the viewport (cross axis).
   const maxMain = Math.max(
@@ -224,15 +245,15 @@ export function computePlacement(
   let y: number;
   if (isVertical(side)) {
     y = mainAxisCoord(side, anchor, eff, offset);
-    x = crossAxisCoord(side, parsed.align, anchor, eff);
+    x = crossAxisCoord(side, align, anchor, eff);
     x = clamp(x, padding, viewport.width - eff.width - padding);
   } else {
     x = mainAxisCoord(side, anchor, eff, offset);
-    y = crossAxisCoord(side, parsed.align, anchor, eff);
+    y = crossAxisCoord(side, align, anchor, eff);
     y = clamp(y, padding, viewport.height - eff.height - padding);
   }
 
   const placement: FoldPopoverPlacement =
-    parsed.align === "center" ? side : `${side}-${parsed.align}`;
+    align === "center" ? side : `${side}-${align}`;
   return { x, y, placement, maxWidth, maxHeight };
 }
