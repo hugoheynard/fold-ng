@@ -56,13 +56,13 @@ and the gallery nav — **layout first**.
 
 **Actions** — `src/components/actions/`
 
-| Component             | DX  | Tests | Docs | Verdict                                                                                                     |
-| --------------------- | :-: | :---: | :--: | ----------------------------------------------------------------------------------------------------------- |
-| `foldButton`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]`; `emphasis`×`intent`; `loading`; forced-colors        |
-| `fold-button-icon`    | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                                          |
-| `fold-toggle-icon`    | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                                        |
-| `fold-link`           | 🟢  |  🟢   |  🟢  | **Ship-ready** — `target`/`rel` (safe `noopener` default); `(clicked)` is a `MouseEvent`                    |
-| `fold-inline-confirm` | 🟢  |  🟢   |  🟢  | **Ship-ready** — in-place guard; simple / type-to-confirm / secret; i18n; focus + Escape; emits typed value |
+| Component             | DX  | Tests | Docs | Verdict                                                                                                                                                                                               |
+| --------------------- | :-: | :---: | :--: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `foldButton`          | 🟢  |  🟢   |  🟢  | **Ship-ready** — `button[foldButton]`/`a[foldButton]`; `emphasis`×`intent`; `loading`; forced-colors                                                                                                  |
+| `fold-button-icon`    | 🟢  |  🟢   |  🟢  | **Ship-ready** — now purely momentary (P0-1 fixed)                                                                                                                                                    |
+| `fold-toggle-icon`    | 🟢  |  🟢   |  🟢  | **Ship-ready** — the toggle split out of button-icon                                                                                                                                                  |
+| `fold-link`           | 🟢  |  🟢   |  🟢  | **Ship-ready** — `target`/`rel` (safe `noopener` default); `(clicked)` is a `MouseEvent`                                                                                                              |
+| `fold-inline-confirm` | 🟢  |  🟢   |  🟢  | **Ship-ready** — in-place guard; simple / type-to-confirm / secret; benchmark-hardened (message `aria-describedby`, focus-return, controlled `[(open)]` + async, `confirmIcon` / chosen `cancelIcon`) |
 
 **Content** — `src/components/content/`
 

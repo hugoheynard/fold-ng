@@ -17,11 +17,20 @@ All notable changes to **fold-ng** are documented here. The format follows
   button unlocks once the text matches, case-insensitive + trimmed), and
   **secret** (`password` — a masked field that confirms when non-empty and emits
   the typed value, since a password can only be verified server-side). `Escape`
-  cancels; `Enter` confirms; focus moves into the affordance on open and back to
-  the trigger on cancel. Fully i18n via `provideFoldInlineConfirmLabels()`
+  cancels; `Enter` confirms. Fully i18n via `provideFoldInlineConfirmLabels()`
   (English default) or a per-instance `labels` input. Composed of `fold-button`,
-  `fold-button-icon` and `fold-input`. New gallery `/inline-confirm` page; 13
-  spec blocks.
+  `fold-button-icon` and `fold-input`. New gallery `/inline-confirm` page.
+
+  Hardened against a competitor benchmark (Radix `AlertDialog` / React-Aria):
+  the warning `message` is wired to the confirm button via `aria-describedby`
+  (so it is announced on focus, not stranded on the group); focus reliably
+  returns to the trigger on close (the previous attempt read the trigger before
+  it re-rendered and no-op'd); the trigger no longer double-fires on `Enter`.
+  New API: `confirmIcon` (leading icon on the confirm button) and `cancelIcon`
+  now takes an **icon name of your choice** (was a fixed `×`); a two-way
+  `[(open)]` model plus `keepOpenOnConfirm` give a controlled async story —
+  keep the affordance open, show `loading`, close it when the request settles.
+  16 spec blocks.
 
 - **Slider hardcore pass — `fold-slider` + `fold-range-slider`.** `fold-slider`
   now implements `FormValueControl<number>` (bind `[formField]`, or `[(value)]`);
