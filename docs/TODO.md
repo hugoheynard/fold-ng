@@ -44,6 +44,23 @@ already validated, 13 sites), delete the app copies, bump the pin, gate. Kept
 app-side (domain, not extracted): target-bar, theme-toggle, rating-sparkline,
 leave-balance-display, configurable-tab-bar, etc.
 
+## Overlays — `fold-dialog` (centered modal)
+
+- [ ] **`fold-dialog` — a centered modal dialog.** The missing **modal**
+      overlay: not anchored (unlike `fold-popover`), not a side sheet (unlike
+      `fold-panel-host`). For confirmation modals and modal forms. A dialog is
+      **not** a popover — it's modal (background `inert`, focus **trapped**,
+      backdrop, scroll-locked, `Escape`), non-anchored, centered. - Build on native `<dialog>` + `.showModal()` (top-layer, native
+      backdrop + Escape) and **reuse the panel-host modal primitives already
+      written** — `FocusTrapDirective`, the `inert`-background walk, the
+      body scroll-lock (`overlays/panel/panel-host.component.ts`). - API: `[(open)]` two-way, `role="dialog"` + `aria-modal="true"`, a
+      `titleId`/`aria-labelledby`, projected header/body/footer (or reuse
+      `fold-panel-header`), focus-first + return-focus-to-invoker on close,
+      optional `dismissable` (backdrop click). `size` (sm/md/lg) + max-height
+      with internal scroll. - `fold-inline-confirm` already covers the _non-modal_ confirm case
+      (in-place guard); `fold-dialog` is for when the choice must **block**. - Not from SH3PHERD `shared/` — a net-new component; sequence after the
+      0.5 extractions unless a real use-case pulls it forward.
+
 ## Roadmap 1.0.1 — `fold-app-shell` polish
 
 Post-1.0 the shell is **8.5/10**: structure + decoupling are big-lib grade
