@@ -1,5 +1,6 @@
 import { Component, computed, signal } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldAvatarComponent,
@@ -83,6 +84,7 @@ const STATUS_META: Record<
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     DevPlaygroundComponent,
     FoldPageLayoutComponent,
     FoldCardComponent,

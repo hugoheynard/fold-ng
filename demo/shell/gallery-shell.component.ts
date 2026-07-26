@@ -1,5 +1,11 @@
 import { Component, computed, inject, signal } from "@angular/core";
-import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { toSignal } from "@angular/core/rxjs-interop";
+import {
+  ActivatedRoute,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from "@angular/router";
 import {
   FoldAppShellComponent,
   FoldElevatedDirective,
@@ -15,7 +21,7 @@ import {
 } from "../../src/public-api";
 import { InspectPanelComponent } from "./inspect-panel.component";
 import { closestFold, inspect } from "./inspect";
-import { GALLERY_NAV, GALLERY_NAV_ITEMS } from "./gallery-nav";
+import { GALLERY_NAV, GALLERY_NAV_ITEMS, galleryLabel } from "./gallery-nav";
 import {
   GALLERY_THEME_CONFIG,
   GALLERY_THEMES,
@@ -56,6 +62,16 @@ import pkg from "../../package.json";
 })
 export class GalleryShellComponent {
   private readonly panelHost = inject(FoldPanelHostService);
+
+  /** The `?from=<id>` origin, when a page was reached from a "Built from" link —
+   *  drives the sticky "← Back to …" bar above the routed page. */
+  private readonly queryParams = toSignal(inject(ActivatedRoute).queryParamMap);
+  protected readonly backTo = computed<{ id: string; label: string } | null>(
+    () => {
+      const from = this.queryParams()?.get("from");
+      return from ? { id: from, label: galleryLabel(from) } : null;
+    },
+  );
 
   /** Every theme the token layer ships, in switcher order. */
   protected readonly themes = GALLERY_THEMES;

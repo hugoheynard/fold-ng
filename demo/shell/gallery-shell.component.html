@@ -108,6 +108,14 @@
     </div>
   </div>
 
+  <!-- ── sticky "back to origin" when reached from a "Built from" link ── -->
+  @if (backTo(); as b) {
+    <a class="gal-backto" [routerLink]="['/', b.id]">
+      <fold-icon name="arrow-back" [size]="14" />
+      Back to {{ b.label }}
+    </a>
+  }
+
   <!-- ── content: the routed page owns its own scroll ─────────── -->
   <router-outlet />
 

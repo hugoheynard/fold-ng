@@ -180,3 +180,8 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
 export const GALLERY_NAV_ITEMS: readonly GalleryNavItem[] = GALLERY_NAV.flatMap(
   (g) => g.items,
 );
+
+/** The rail label for a nav id (falls back to the id itself). */
+export function galleryLabel(id: string): string {
+  return GALLERY_NAV_ITEMS.find((i) => i.id === id)?.label ?? id;
+}
