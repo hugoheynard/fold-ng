@@ -1,0 +1,76 @@
+@if (!open()) {
+  <!-- Idle: the host's projected trigger. A click anywhere in it starts the
+       flow; the trigger itself stays a real focusable control (button / anchor),
+       so keyboard activation is native — no extra role/tabindex here. -->
+  <span
+    #triggerWrap
+    class="fic-trigger"
+    (click)="activate()"
+    (keydown.enter)="activate()"
+  >
+    <ng-content />
+  </span>
+} @else {
+  <div
+    #groupEl
+    class="fic-confirm"
+    role="group"
+    [attr.aria-label]="l().group"
+    [attr.aria-describedby]="message() ? msgId : null"
+    (keydown.escape)="cancel(); $event.stopPropagation()"
+  >
+    @if (message(); as text) {
+      <p class="fic-message" [id]="msgId">{{ text }}</p>
+    }
+
+    @if (needsInput()) {
+      <div class="fic-field">
+        <p class="fic-prompt">{{ prompt() }}</p>
+        <fold-input
+          [type]="fieldType()"
+          [size]="size() === 'lg' ? 'lg' : 'sm'"
+          [placeholder]="placeholder() ?? (match() || l().secret)"
+          [autocomplete]="password() ? 'current-password' : 'off'"
+          [(value)]="typed"
+          (keydown.enter)="confirm()"
+        />
+      </div>
+    }
+
+    <div class="fic-actions">
+      <button
+        #confirmBtn
+        foldButton
+        emphasis="solid"
+        [intent]="intent()"
+        [size]="size()"
+        [disabled]="!canConfirm()"
+        (click)="confirm()"
+      >
+        {{ loading() ? l().busy : l().confirm }}
+      </button>
+
+      @if (cancelIcon() && !needsInput()) {
+        <fold-button-icon
+          icon="close"
+          tone="ghost"
+          [size]="size()"
+          [disabled]="loading()"
+          [tooltip]="l().cancelAria"
+          (clicked)="cancel()"
+        />
+      } @else {
+        <button
+          foldButton
+          emphasis="soft"
+          intent="neutral"
+          [size]="size()"
+          [disabled]="loading()"
+          (click)="cancel()"
+        >
+          {{ l().cancel }}
+        </button>
+      }
+    </div>
+  </div>
+}

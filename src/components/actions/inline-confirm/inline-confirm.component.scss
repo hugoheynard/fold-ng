@@ -1,0 +1,63 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* The trigger wrapper is layout-transparent: the projected control keeps its own
+   box + focus ring; we only need a click target around it. */
+.fic-trigger {
+  display: contents;
+}
+
+/* The confirm affordance that replaces the trigger in place. Column when it
+   carries a message / field, otherwise a tight inline button row. */
+.fic-confirm {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  min-width: 0;
+  animation: fic-in var(--fold-motion-fast);
+}
+
+.fic-message {
+  margin: 0;
+  font-size: var(--fold-text-xs);
+  line-height: 1.5;
+  color: var(--fold-color-text-secondary);
+}
+
+.fic-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-xs);
+}
+
+.fic-prompt {
+  margin: 0;
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+
+.fic-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+}
+
+@keyframes fic-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fic-confirm {
+    animation: none;
+  }
+}
