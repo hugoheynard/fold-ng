@@ -97,6 +97,27 @@ describe("FoldPasswordFieldComponent", () => {
     expect(r.valid()).toBe(true);
   });
 
+  it("lets a projected [rules] slot replace the default checklist", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPasswordFieldComponent],
+      template: `<fold-password-field #pw="foldPasswordField" [(value)]="value">
+        <div rules>
+          <span class="custom-count">{{ pw.checklist().length }}</span>
+        </div>
+      </fold-password-field>`,
+    })
+    class ProjHost {
+      readonly value = signal("");
+    }
+    const fixture = TestBed.createComponent(ProjHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    // the default list is the ng-content fallback → suppressed when projected
+    expect(host.querySelectorAll(".pw-rule").length).toBe(0);
+    expect(host.querySelector(".custom-count")?.textContent).toBe("4");
+  });
+
   it("renders a password input with a reveal toggle that flips the type", () => {
     const r = render();
     expect(r.input().getAttribute("type")).toBe("password");

@@ -41,6 +41,7 @@ import {
   imports: [FoldInputComponent],
   templateUrl: "./password-field.component.html",
   styleUrl: "./password-field.component.scss",
+  exportAs: "foldPasswordField",
 })
 export class FoldPasswordFieldComponent implements FormValueControl<string> {
   /** The password value. A `model()` so `FormField` and `[(value)]` stay in sync. */
@@ -83,8 +84,10 @@ export class FoldPasswordFieldComponent implements FormValueControl<string> {
   /** Emits whether every rule passes, on each change. */
   readonly validChange = output<boolean>();
 
-  /** Each rule paired with its live pass/fail state. */
-  protected readonly checklist = computed(() =>
+  /** Each rule paired with its live pass/fail state. Public + `exportAs`, so a
+   *  custom `[rules]` projection can render its own list off the same state:
+   *  `#pw="foldPasswordField"` then loop `pw.checklist()`. */
+  readonly checklist = computed(() =>
     this.rules().map((r) => ({ label: r.label, met: r.test(this.value()) })),
   );
   /** True when every rule passes. */

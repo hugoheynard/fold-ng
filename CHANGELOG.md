@@ -17,7 +17,10 @@ All notable changes to **fold-ng** are documented here. The format follows
   `zod` `safeParse`, a length check or anything drops in — `rules` defaults to a
   sensible policy (`foldDefaultPasswordRules`). `validChange` emits when every
   rule passes; Signal-Forms-native; the checklist is an `aria-live` list that
-  labels each row met / not met. New gallery `/password` page.
+  labels each row met / not met. The checklist is **redesignable**: project into
+  the `[rules]` slot and drive your own markup off the exported live state
+  (`#pw="foldPasswordField"` → `pw.checklist()`), with the default list as the
+  fallback. New gallery `/password` page.
 
 - **`fold-popover` + `fold-dropdown` — anchored floating layer & actions menu.**
   fold's first floating primitive. `fold-popover` renders projected content in
