@@ -40,3 +40,24 @@
   color: var(--fold-color-text-muted);
   cursor: not-allowed;
 }
+
+// High-contrast: token colours collapse to system colours, so redraw the two
+// cues (active row, selected check) against guaranteed-visible system colours.
+@media (forced-colors: active) {
+  :host(.is-active) {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  :host(.is-selected)::after {
+    border-color: CanvasText;
+  }
+
+  :host(.is-active.is-selected)::after {
+    border-color: HighlightText;
+  }
+
+  :host(.is-disabled) {
+    color: GrayText;
+  }
+}

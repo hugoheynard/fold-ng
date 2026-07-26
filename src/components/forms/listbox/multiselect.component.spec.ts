@@ -18,6 +18,8 @@ import { FoldOptionComponent } from "./option.component";
       >Jazz</fold-option
     >
     <fold-option class="o-soul" value="soul">Soul music</fold-option>
+    <fold-option class="o-funk" value="funk">Funk</fold-option>
+    <fold-option class="o-elec" value="elec">Electro</fold-option>
   </fold-multiselect>`,
 })
 class HostComponent {
@@ -61,7 +63,7 @@ describe("FoldMultiselectComponent", () => {
   it("is a multi-selectable listbox of options", () => {
     const r = render();
     expect(r.list().getAttribute("aria-multiselectable")).toBe("true");
-    expect(r.list().querySelectorAll("[role='option']").length).toBe(3);
+    expect(r.list().querySelectorAll("[role='option']").length).toBe(5);
   });
 
   it("summarises the selection on the trigger", () => {
@@ -71,6 +73,15 @@ describe("FoldMultiselectComponent", () => {
     r.fixture.detectChanges();
     expect(r.trigger().textContent).toContain("Rock");
     expect(r.trigger().textContent).toContain("Soul music");
+  });
+
+  it("collapses the summary to a +N tail past three picks", () => {
+    const r = render();
+    r.value.set(["rock", "soul", "funk", "elec"]);
+    r.fixture.detectChanges();
+    // three labels, then "+1" for the fourth
+    expect(r.trigger().textContent).toContain("+1");
+    expect(r.trigger().textContent).not.toContain("Electro");
   });
 
   it("reflects membership through aria-selected", () => {

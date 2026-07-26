@@ -1,3 +1,5 @@
+@use "../field-box" as box;
+
 // Shared chrome for the select-family triggers (fold-listbox, fold-multiselect):
 // the <button> box (mirrors input-shell's tokens/sizes/`panel` variant, but for a
 // button, which that mixin doesn't target) and the popover list panel. Included at
@@ -56,34 +58,52 @@
     color: var(--fold-color-text-muted);
   }
 
-  // ─── Sizes (match input-shell) ──────────────────────────
-  :host(.sm) .lb-trigger {
-    height: 1.75rem;
-    font-size: var(--fold-text-sm);
-    padding: 0.25rem 0.5rem;
+  // The clear (×) affordance sits over the caret slot — a sibling of the trigger
+  // (never nested: a <button> can't contain a <button>). The trigger hides its
+  // caret while the clear shows, so they don't stack.
+  .lb-field {
+    position: relative;
+  }
+
+  .lb-trigger.has-clear .lb-caret {
+    visibility: hidden;
+  }
+
+  .lb-clear {
+    all: unset;
+    position: absolute;
+    inset-inline-end: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    padding: 0.15rem;
     border-radius: var(--fold-radius-xs);
+    color: var(--fold-color-text-muted);
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--fold-color-text);
+      background: var(--fold-color-surface-hover);
+    }
+  }
+
+  // ─── Sizes + panel — shared metrics (see _field-box.scss) ───
+  :host(.sm) .lb-trigger {
+    @include box.size(sm);
   }
 
   :host(.md) .lb-trigger {
-    height: 2.25rem;
-    font-size: var(--fold-text-md);
-    padding: 0.4rem 0.65rem;
-    border-radius: var(--fold-radius-sm);
+    @include box.size(md);
   }
 
   :host(.lg) .lb-trigger {
-    height: 2.75rem;
-    font-size: var(--fold-text-lg);
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--fold-radius-sm);
+    @include box.size(lg);
   }
 
-  // `panel` variant — flatter side-panel chrome, like input-shell's.
   :host(.panel) .lb-trigger {
-    height: auto;
-    padding: 7px 10px;
-    border-radius: var(--fold-radius-sm);
-    background: var(--fold-color-surface-raised);
+    @include box.panel;
 
     &:focus-visible {
       box-shadow: none;

@@ -19,7 +19,14 @@ import type { FoldPopoverPlacement } from "../../overlays/popover/placement";
 import { FoldInputBaseComponent } from "../input/input-base.component";
 import { FoldOptionComponent } from "./option.component";
 import { FoldListboxNav } from "./listbox-nav";
-import { FOLD_LISTBOX_OWNER, type FoldListboxOwner } from "./listbox-owner";
+import {
+  FOLD_LISTBOX_OWNER,
+  warnOnOrphanValue,
+  type FoldListboxOwner,
+} from "./listbox-owner";
+
+/** Labels beyond this count collapse to a "+N" tail on the trigger summary. */
+const SUMMARY_MAX = 3;
 
 /**
  * `<fold-multiselect>` — the multi-select sibling of {@link FoldListboxComponent}.
@@ -107,16 +114,27 @@ export class FoldMultiselectComponent
   /** `aria-activedescendant`, read by each `fold-option` for its `is-active`. */
   readonly activeId = this.nav.activeId;
 
-  /** The chosen labels (in option order), joined — the trigger summary. */
+  /** The selection as a Set — O(1) membership per option (vs. O(n) `includes`,
+   *  which is O(n²) across a long list on every change detection). */
+  private readonly selectedSet = computed(() => new Set(this.value()));
+
+  /** The chosen labels (in option order) — joined, collapsing to "…, +N" past
+   *  {@link SUMMARY_MAX} so the trigger can't grow unbounded. */
   protected readonly summaryLabel = computed<string | undefined>(() => {
-    const set = this.value();
-    if (set.length === 0) {
+    if (this.value().length === 0) {
       return undefined;
     }
+    const set = this.selectedSet();
     const labels = this.options()
-      .filter((o) => set.includes(o.value()))
+      .filter((o) => set.has(o.value()))
       .map((o) => o.label);
-    return labels.length ? labels.join(", ") : undefined;
+    if (labels.length === 0) {
+      return undefined;
+    }
+    if (labels.length <= SUMMARY_MAX) {
+      return labels.join(", ");
+    }
+    return `${labels.slice(0, SUMMARY_MAX).join(", ")} +${labels.length - SUMMARY_MAX}`;
   });
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {
@@ -134,12 +152,17 @@ export class FoldMultiselectComponent
     return this.hint() ? `${this.inputId}-hint` : null;
   });
 
+  /** Has the popup been opened this lifetime — so any close marks touched (blur
+   *  parity), even one that picked nothing. */
+  private hasOpened = false;
+
   constructor() {
     // On open, move focus into the list and arm on the first selected row (or the
     // first enabled one). Deferred to a microtask so it runs AFTER the popover's
-    // render effect has shown the panel in the same flush.
+    // render effect has shown the panel in the same flush. On close, mark touched.
     afterRenderEffect(() => {
       if (this.open()) {
+        this.hasOpened = true;
         queueMicrotask(() => {
           if (this.open()) {
             this.list()?.nativeElement.focus();
@@ -148,13 +171,21 @@ export class FoldMultiselectComponent
         });
       } else {
         this.nav.reset();
+        if (this.hasOpened) {
+          this.touched.set(true);
+        }
       }
     });
+    warnOnOrphanValue(
+      () => this.value(),
+      () => this.options(),
+      "fold-multiselect",
+    );
   }
 
   /** A value is selected when it's in the set. */
   isSelected(value: string): boolean {
-    return this.value().includes(value);
+    return this.selectedSet().has(value);
   }
 
   /** Open with the keys a native select opens on. */

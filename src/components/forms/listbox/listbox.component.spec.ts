@@ -10,8 +10,10 @@ import { FoldOptionComponent } from "./option.component";
   template: `<fold-listbox
     label="Devise"
     placeholder="Choisir…"
+    [allowClear]="true"
     [(value)]="value"
     [(open)]="open"
+    [(touched)]="touched"
   >
     <fold-option class="o-eur" value="EUR">Euro</fold-option>
     <fold-option class="o-usd" value="USD" [disabled]="true"
@@ -23,6 +25,7 @@ import { FoldOptionComponent } from "./option.component";
 class HostComponent {
   readonly value = signal("");
   readonly open = signal(false);
+  readonly touched = signal(false);
 }
 
 function render() {
@@ -41,7 +44,9 @@ function render() {
     fixture,
     value: fixture.componentInstance.value,
     open: fixture.componentInstance.open,
+    touched: fixture.componentInstance.touched,
     trigger: () => q<HTMLButtonElement>(".lb-trigger"),
+    clear: () => host.querySelector<HTMLButtonElement>(".lb-clear"),
     list: () => q<HTMLElement>("[role='listbox']"),
     option: (cls: string) => q<HTMLElement>(`.${cls}`),
     key: (key: string) =>
@@ -139,6 +144,38 @@ describe("FoldListboxComponent", () => {
     r.key("Enter");
     r.fixture.detectChanges();
     expect(r.value()).toBe("GBP");
+    expect(r.open()).toBe(false);
+  });
+
+  it("marks touched when the popup is opened then dismissed (blur parity)", async () => {
+    const r = render();
+    expect(r.touched()).toBe(false);
+    await r.openMenu();
+    r.open.set(false); // dismissed without picking (Escape / outside / Tab)
+    r.fixture.detectChanges();
+    expect(r.touched()).toBe(true);
+  });
+
+  it("offers a clear affordance only once a value is set, and it resets", () => {
+    const r = render();
+    expect(r.clear()).toBeNull(); // empty → no clear
+    r.value.set("EUR");
+    r.fixture.detectChanges();
+    const clear = r.clear();
+    expect(clear).not.toBeNull();
+    clear?.click();
+    r.fixture.detectChanges();
+    expect(r.value()).toBe("");
+    expect(r.touched()).toBe(true);
+  });
+
+  it("closed-trigger type-ahead picks without opening", () => {
+    const r = render();
+    r.trigger().dispatchEvent(
+      new KeyboardEvent("keydown", { key: "p", bubbles: true }),
+    );
+    r.fixture.detectChanges();
+    expect(r.value()).toBe("GBP"); // "Pound sterling"
     expect(r.open()).toBe(false);
   });
 });

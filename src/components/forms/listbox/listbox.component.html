@@ -10,31 +10,45 @@
   <fold-popover
     [(open)]="open"
     [autoFocus]="false"
+    [ariaControls]="listId"
     [placement]="placement()"
     [fallbackPlacements]="['top-start', 'bottom-end', 'top-end']"
   >
-    <button
-      type="button"
-      class="lb-trigger"
-      [id]="inputId"
-      foldPopoverTrigger="listbox"
-      [disabled]="disabled()"
-      [attr.aria-invalid]="errorMessage() ? true : null"
-      [attr.aria-describedby]="describedBy()"
-      (keydown)="onTriggerKeydown($event)"
-    >
-      @if (selectedLabel(); as lbl) {
-        <span class="lb-value">{{ lbl }}</span>
-      } @else {
-        <span class="lb-placeholder">{{ placeholder() }}</span>
+    <div class="lb-field">
+      <button
+        type="button"
+        class="lb-trigger"
+        [class.has-clear]="showClear()"
+        [id]="inputId"
+        foldPopoverTrigger="listbox"
+        [disabled]="disabled()"
+        [attr.aria-invalid]="errorMessage() ? true : null"
+        [attr.aria-describedby]="describedBy()"
+        (keydown)="onTriggerKeydown($event)"
+      >
+        @if (selectedLabel(); as lbl) {
+          <span class="lb-value">{{ lbl }}</span>
+        } @else {
+          <span class="lb-placeholder">{{ placeholder() }}</span>
+        }
+        <fold-icon
+          name="chevron-down"
+          size="sm"
+          class="lb-caret"
+          aria-hidden="true"
+        />
+      </button>
+      @if (showClear()) {
+        <button
+          type="button"
+          class="lb-clear"
+          [attr.aria-label]="clearLabel()"
+          (click)="clear($event)"
+        >
+          <fold-icon name="close" size="sm" aria-hidden="true" />
+        </button>
       }
-      <fold-icon
-        name="chevron-down"
-        size="sm"
-        class="lb-caret"
-        aria-hidden="true"
-      />
-    </button>
+    </div>
 
     <div
       #list

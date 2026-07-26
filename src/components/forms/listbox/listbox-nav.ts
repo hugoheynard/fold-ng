@@ -89,7 +89,7 @@ export class FoldListboxNav {
         this.handlers.close();
         break;
       default:
-        this.typeahead(event);
+        this.typeahead(event, (index) => this.setActive(index));
     }
   }
 
@@ -128,15 +128,17 @@ export class FoldListboxNav {
   }
 
   /** Multi-letter type-ahead: keystrokes within 500 ms accumulate, so "de" jumps
-   *  to "Delete", not just the next "d". */
-  private typeahead(event: KeyboardEvent): void {
+   *  to "Delete", not just the next "d". `onMatch` gets the matched index — the
+   *  open list arms it (`setActive`); a closed trigger commits it directly.
+   *  Returns true if the key was a type-ahead character (so a caller can stop). */
+  typeahead(event: KeyboardEvent, onMatch: (index: number) => void): boolean {
     if (
       event.key.length !== 1 ||
       event.ctrlKey ||
       event.metaKey ||
       event.altKey
     ) {
-      return;
+      return false;
     }
     const now = Date.now();
     this.typeBuffer =
@@ -150,9 +152,10 @@ export class FoldListboxNav {
       const idx = (current + from + i) % opts.length;
       const o = opts[idx];
       if (o && !o.disabled() && o.label.toLowerCase().startsWith(query)) {
-        this.setActive(idx);
-        return;
+        onMatch(idx);
+        return true;
       }
     }
+    return true;
   }
 }

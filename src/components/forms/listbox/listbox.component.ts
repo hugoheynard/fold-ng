@@ -19,7 +19,11 @@ import type { FoldPopoverPlacement } from "../../overlays/popover/placement";
 import { FoldInputBaseComponent } from "../input/input-base.component";
 import { FoldOptionComponent } from "./option.component";
 import { FoldListboxNav } from "./listbox-nav";
-import { FOLD_LISTBOX_OWNER, type FoldListboxOwner } from "./listbox-owner";
+import {
+  FOLD_LISTBOX_OWNER,
+  warnOnOrphanValue,
+  type FoldListboxOwner,
+} from "./listbox-owner";
 
 /**
  * `<fold-listbox>` — a **styleable** single-select, the richer sibling of the
@@ -93,6 +97,10 @@ export class FoldListboxComponent
   readonly placeholder = input<string>();
   /** Preferred popup placement. @default 'bottom-start' */
   readonly placement = input<FoldPopoverPlacement>("bottom-start");
+  /** Show a clear (×) affordance on the trigger once a value is picked. */
+  readonly allowClear = input(false, { transform: booleanAttribute });
+  /** Accessible name of the clear button. @default 'Clear' */
+  readonly clearLabel = input("Clear");
 
   /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
   readonly inputId = inject(FoldIdService).next("fold-listbox");
@@ -114,6 +122,10 @@ export class FoldListboxComponent
   protected readonly selectedLabel = computed<string | undefined>(
     () => this.options().find((o) => o.value() === this.value())?.label,
   );
+  /** Whether the clear affordance is currently offered. */
+  protected readonly showClear = computed(
+    () => this.allowClear() && this.value() !== "" && !this.disabled(),
+  );
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {
     if (!this.touched()) {
@@ -130,12 +142,20 @@ export class FoldListboxComponent
     return this.hint() ? `${this.inputId}-hint` : null;
   });
 
+  /** Has the popup been opened at least once this lifetime — so closing it (by
+   *  Escape, outside-click, Tab or a pick) can mark the field touched, exactly as
+   *  a native `<select>` does on blur. Without this a `required` select that the
+   *  user opens and dismisses would never surface its error. */
+  private hasOpened = false;
+
   constructor() {
     // On open, move focus into the list and arm the active row on the selection
     // (or the first enabled option). Deferred to a microtask so it runs AFTER the
-    // popover's render effect has shown the panel in the same flush.
+    // popover's render effect has shown the panel in the same flush. On close,
+    // mark touched (blur parity).
     afterRenderEffect(() => {
       if (this.open()) {
+        this.hasOpened = true;
         queueMicrotask(() => {
           if (this.open()) {
             this.list()?.nativeElement.focus();
@@ -144,8 +164,16 @@ export class FoldListboxComponent
         });
       } else {
         this.nav.reset();
+        if (this.hasOpened) {
+          this.touched.set(true);
+        }
       }
     });
+    warnOnOrphanValue(
+      () => this.value(),
+      () => this.options(),
+      "fold-listbox",
+    );
   }
 
   /** A value is selected when it equals the current one. */
@@ -153,7 +181,15 @@ export class FoldListboxComponent
     return this.value() === value;
   }
 
-  /** Open with the keys a native select opens on. */
+  /** Clear the selection (the `allowClear` ×). */
+  protected clear(event: Event): void {
+    event.stopPropagation(); // don't let the trigger open
+    this.value.set("");
+    this.touched.set(true);
+  }
+
+  /** Open with the keys a native select opens on; otherwise type-ahead picks
+   *  directly without opening — native-`<select>` parity. */
   protected onTriggerKeydown(event: KeyboardEvent): void {
     if (this.open()) {
       return;
@@ -161,7 +197,9 @@ export class FoldListboxComponent
     if (["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
       event.preventDefault();
       this.open.set(true);
+      return;
     }
+    this.nav.typeahead(event, (index) => this.selectAt(index));
   }
 
   /** Keyboard while the list is open and focused — delegated to the core. */
