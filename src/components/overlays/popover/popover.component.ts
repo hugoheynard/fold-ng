@@ -82,6 +82,10 @@ export class FoldPopoverComponent {
 
   /** SSR-safe id linking the trigger's `aria-controls` to the panel. */
   readonly panelId = inject(FoldIdService).next("fold-popover");
+  /** Override the trigger's `aria-controls` target — point it at the real
+   *  controlled element (e.g. an inner `role="listbox"`) when the panel is just a
+   *  wrapper. @default the panel's own id. */
+  readonly ariaControls = input<string>();
 
   private readonly panel = viewChild<ElementRef<HTMLElement>>("panel");
   private readonly inner = viewChild<ElementRef<HTMLElement>>("inner");
@@ -135,7 +139,11 @@ export class FoldPopoverComponent {
       const haspopup =
         hp === "menu" || hp === "listbox" || hp === "true" ? hp : "dialog";
       this.renderer.setAttribute(focusable, "aria-haspopup", haspopup);
-      this.renderer.setAttribute(focusable, "aria-controls", this.panelId);
+      this.renderer.setAttribute(
+        focusable,
+        "aria-controls",
+        this.ariaControls() ?? this.panelId,
+      );
       this.renderer.setAttribute(focusable, "aria-expanded", String(open));
     });
 
@@ -183,8 +191,17 @@ export class FoldPopoverComponent {
           stopAutoUpdate();
         });
       } else if (supported && el.matches(":popover-open")) {
+        // Only pull focus back to the trigger if it's still inside the closing
+        // panel (Escape / select) or nowhere in particular (a click on blank
+        // space → body). If it already moved elsewhere — Tab to the next field,
+        // a click on another control — leave it there instead of yanking it back.
+        const active = document.activeElement;
+        const restore =
+          !active || active === document.body || el.contains(active);
         el.hidePopover();
-        this.focusableTrigger()?.focus({ preventScroll: true });
+        if (restore) {
+          this.focusableTrigger()?.focus({ preventScroll: true });
+        }
       }
     });
   }
