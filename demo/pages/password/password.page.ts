@@ -27,6 +27,8 @@ export default class PasswordPage {
   protected readonly value = signal("");
   protected readonly valid = signal(false);
   protected readonly revealable = signal(true);
+  /** Second field, for the projected-checklist demo. */
+  protected readonly value2 = signal("");
 
   /** Static snippet for the "Injecting rules" section — regex + zod, no deps. */
   protected readonly rulesExample = [
