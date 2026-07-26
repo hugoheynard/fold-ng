@@ -9,9 +9,11 @@ import {
   FoldInlineConfirmComponent,
   FoldPageLayoutComponent,
   type FoldButtonIntent,
+  type FoldIconName,
 } from "../../../src/public-api";
 
 type Family = "simple" | "type" | "password";
+type CancelChoice = "label" | "close" | "reset";
 
 /** `/inline-confirm` — the `fold-inline-confirm` gallery page (simple, type, secret). */
 @Component({
@@ -58,9 +60,18 @@ export default class InlineConfirmPage {
     "primary",
     "neutral",
   ];
+  protected readonly cancelChoices: readonly CancelChoice[] = [
+    "label",
+    "close",
+    "reset",
+  ];
+  protected readonly confirmIcons: readonly FoldIconName[] = ["bin", "check"];
   protected readonly pgFamily = signal<Family>("simple");
   protected readonly pgIntent = signal<FoldButtonIntent>("danger");
-  protected readonly pgCancelIcon = signal(false);
+  protected readonly pgCancel = signal<CancelChoice>("label");
+  protected readonly pgConfirmIcon = signal<FoldIconName | undefined>(
+    undefined,
+  );
   protected readonly pgMessage = signal(true);
   protected readonly pgLoading = signal(false);
   protected readonly pgLog = signal<string | null>(null);
@@ -71,6 +82,15 @@ export default class InlineConfirmPage {
   protected readonly pgPassword = computed(
     () => this.pgFamily() === "password",
   );
+  /** `label` → no icon (undefined); a choice → that icon name. */
+  protected readonly pgCancelIcon = computed<FoldIconName | undefined>(() => {
+    const c = this.pgCancel();
+    return c === "close" ? "close" : c === "reset" ? "reset" : undefined;
+  });
+
+  protected toggleConfirmIcon(icon: FoldIconName): void {
+    this.pgConfirmIcon.update((cur) => (cur === icon ? undefined : icon));
+  }
 
   protected onPlaygroundConfirm(value: string): void {
     this.pgLog.set(value === "" ? "confirmed" : `confirmed → “${value}”`);
@@ -90,8 +110,13 @@ export default class InlineConfirmPage {
     if (this.pgMessage()) {
       lines.push('  message="This can\'t be undone."');
     }
-    if (this.pgCancelIcon() && this.pgFamily() === "simple") {
-      lines.push("  cancelIcon");
+    const confirmIcon = this.pgConfirmIcon();
+    if (confirmIcon) {
+      lines.push(`  confirmIcon="${confirmIcon}"`);
+    }
+    const cancelIcon = this.pgCancelIcon();
+    if (cancelIcon) {
+      lines.push(`  cancelIcon="${cancelIcon}"`);
     }
     if (this.pgLoading()) {
       lines.push('  [loading]="pending()"');

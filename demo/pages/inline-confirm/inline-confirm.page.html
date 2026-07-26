@@ -47,7 +47,11 @@
     <div class="gal-cell" style="max-width: 360px">
       <span class="gal-tag">simple · button trigger · icon cancel</span>
       <fold-card surface="sunken" style="--fold-card-padding: 20px">
-        <fold-inline-confirm cancelIcon (confirmed)="onConfirm($event)">
+        <fold-inline-confirm
+          cancelIcon="close"
+          confirmIcon="bin"
+          (confirmed)="onConfirm($event)"
+        >
           <button foldButton emphasis="outline" intent="danger" size="sm">
             Remove access
           </button>
@@ -154,22 +158,38 @@
       </div>
     </div>
     <div class="np-field" params>
-      <span class="gal-tag">cancelIcon</span>
+      <span class="gal-tag">cancel</span>
+      <div class="ss-seg">
+        @for (c of cancelChoices; track c) {
+        <button
+          type="button"
+          [class.is-on]="pgCancel() === c"
+          (click)="pgCancel.set(c)"
+        >
+          {{ c }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">confirmIcon</span>
       <div class="ss-seg">
         <button
           type="button"
-          [class.is-on]="pgCancelIcon()"
-          (click)="pgCancelIcon.set(true)"
+          [class.is-on]="!pgConfirmIcon()"
+          (click)="pgConfirmIcon.set(undefined)"
         >
-          on
+          none
         </button>
+        @for (icon of confirmIcons; track icon) {
         <button
           type="button"
-          [class.is-on]="!pgCancelIcon()"
-          (click)="pgCancelIcon.set(false)"
+          [class.is-on]="pgConfirmIcon() === icon"
+          (click)="toggleConfirmIcon(icon)"
         >
-          off
+          {{ icon }}
         </button>
+        }
       </div>
     </div>
     <div class="np-field" params>
@@ -198,6 +218,7 @@
           [intent]="pgIntent()"
           [match]="pgMatch()"
           [password]="pgPassword()"
+          [confirmIcon]="pgConfirmIcon()"
           [cancelIcon]="pgCancelIcon()"
           [loading]="pgLoading()"
           [message]="pgMessage() ? 'This can\'t be undone.' : undefined"
