@@ -1,0 +1,66 @@
+:host {
+  display: inline-block;
+}
+
+.vt {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--fold-color-border-subtle);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-sunken);
+}
+
+.vt-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--fold-radius-xs);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+  cursor: pointer;
+  transition:
+    color var(--fold-motion-fast),
+    background var(--fold-motion-fast);
+
+  &.icon-only {
+    padding: 0.3rem 0.45rem;
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--fold-color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 1px;
+  }
+
+  // The selected segment lifts onto the raised card surface.
+  &.is-on {
+    background: var(--fold-color-surface-card);
+    color: var(--fold-color-text);
+    box-shadow: var(--fold-shadow-sm);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ─── sm ─────────────────────────────────────────────────
+:host(.sm) .vt-btn {
+  padding: 0.2rem 0.5rem;
+  font-size: var(--fold-text-xs);
+}
+
+@media (forced-colors: active) {
+  .vt-btn.is-on {
+    outline: 1px solid Highlight;
+    color: Highlight;
+  }
+}

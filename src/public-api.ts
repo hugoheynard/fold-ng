@@ -107,6 +107,8 @@ export {
   foldRegexRule,
   type FoldPasswordRule,
 } from "./components/forms/password/password-rules";
+export { FoldViewToggleComponent } from "./components/forms/view-toggle/view-toggle.component";
+export type { FoldViewToggleOption } from "./components/forms/view-toggle/view-toggle.component";
 export { FoldCheckboxComponent } from "./components/forms/checkbox/checkbox.component";
 export { FoldSliderComponent } from "./components/forms/slider/slider.component";
 export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";
