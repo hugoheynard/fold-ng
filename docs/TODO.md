@@ -23,6 +23,16 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         triangle). Deferred by decision (2026-07-26).
   - [ ] **Context menu / cursor anchor** — open the popover at a point (a
         virtual anchor rect) on right-click, not only against a trigger element.
+- [x] **`fold-listbox` (+ `fold-option`) — styleable single-select.** ✅ Done: on
+      `fold-popover`; `role="listbox"` + `aria-activedescendant`, keyboard (↑/↓ /
+      Home·End / type-ahead / Enter), disabled-skip, `FormValueControl<string>`,
+      `fold-input` box chrome. Options derive their own selected/active via
+      `computed` (no push during CD — avoids reading the required `value` early).
+      Gallery `/listbox` + Playwright suite. This is the styleable half of the
+      `fold-select` migration story below; native `fold-select` stays the default.
+  - [ ] **Multi-select** (`values: string[]`, `multiple`, keep-open on pick).
+  - [ ] **Option groups** (`fold-optgroup`, `role="group"` + label).
+  - [ ] **Filter / combobox variant** — a typed input that filters the list.
 - [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
       switch; generic, zero domain. Cleanest extraction.
 - [ ] **`fold-soft-warning` → reconcile with `fold-callout`** (from `shared/soft-warning`,

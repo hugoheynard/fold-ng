@@ -41,6 +41,21 @@ All notable changes to **fold-ng** are documented here. The format follows
   instead of its inner control — the popover now resolves the focusable element
   for both focus and the aria wiring.
 
+- **`fold-listbox` (+ `fold-option`) — a styleable single-select.** The richer
+  sibling of `fold-select` (which wraps a native `<select>`): reach for it when
+  options need custom rendering the OS popup can't give — an icon, a second line,
+  a status dot. Built on `fold-popover`, so it inherits the native top layer,
+  flip/shift positioning, outside-click + `Escape` dismissal and focus return.
+  On top it implements the ARIA select pattern — a `role="listbox"` that holds
+  focus and drives `aria-activedescendant` — with full keyboard (↑/↓, `Home`/
+  `End`, multi-letter type-ahead, `Enter`), a disabled-row skip, and a pure-CSS
+  selected check. Signal-Forms-native (`FormValueControl<string>`, so `[formField]`
+  and `[(value)]` both work) and shares `fold-input`'s box chrome (sizes, `panel`
+  variant). Options are dumb + presentational — each derives its own selected /
+  active state from the parent by `computed`, so nothing is pushed in during
+  change detection. New gallery `/listbox` page and a Playwright suite. Multi-
+  select, option groups and a filter/combobox variant are tracked for later.
+
 - **`fold-inline-confirm` — in-place destructive-action guard.** Extracted from
   SH3PHERD's shared inline-confirm (which replaced four ad-hoc patterns) and
   rebuilt to fold conventions. The host projects a real focusable trigger
@@ -139,7 +154,23 @@ All notable changes to **fold-ng** are documented here. The format follows
   select, keyboard nav, the loading + empty states, a custom mobile card, and a
   playground for every flag).
 
+### Fixed
+
+- **Heading inputs no longer leak a native `title` tooltip.** A static
+  `title="…"` on a component that has a `title` input both seeds the input _and_
+  stays on the host as a real HTML attribute — so `fold-page-layout`,
+  `fold-page-section`, `fold-element-title`, `fold-context-card`,
+  `fold-empty-state` and `fold-panel-header` rendered their heading a second time
+  as a browser tooltip on hover. The reflected attribute is now stripped
+  (`host: { '[attr.title]': 'null' }`); `fold-icon` keeps its `title` on purpose
+  (it maps to `aria-label`).
+
 ### Changed
+
+- **CI + release gates now run the Playwright browser tier.** The `test:e2e`
+  suite (native popover top layer, focus, positioning — behaviour jsdom can't
+  reach) is wired into both `ci.yml` (inside the single required `ci` job) and
+  `release.yml`, so a PR or a tag can't go green on a broken overlay.
 
 - **`fold-data-table` — clickable rows are a roving-tabindex group.** They now
   answer Space as well as Enter (page-scroll suppressed) and Arrow Up/Down +
