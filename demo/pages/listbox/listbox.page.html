@@ -76,6 +76,7 @@
             placeholder="Choisir une devise…"
             [size]="size()"
             [variant]="variant()"
+            [allowClear]="true"
             [(value)]="lbValue"
           >
             @for (c of currencies; track c.value) {

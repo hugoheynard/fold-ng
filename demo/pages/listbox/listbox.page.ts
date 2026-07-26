@@ -75,7 +75,9 @@ export default class ListboxPage {
   protected readonly selValue = signal("EUR");
 
   protected readonly lbCode = computed(() =>
-    this.snippet("fold-listbox", '[(value)]="currency"', "fold-option"),
+    this.snippet("fold-listbox", '[(value)]="currency"', "fold-option", [
+      "allowClear",
+    ]),
   );
   protected readonly msCode = computed(() =>
     this.snippet("fold-multiselect", '[(value)]="picked"', "fold-option"),
@@ -85,8 +87,13 @@ export default class ListboxPage {
   );
 
   /** Build the generated snippet for a control from the current knobs. */
-  private snippet(tag: string, valueBind: string, optionTag: string): string {
-    const attrs = ['label="Devise"', valueBind];
+  private snippet(
+    tag: string,
+    valueBind: string,
+    optionTag: string,
+    extra: readonly string[] = [],
+  ): string {
+    const attrs = ['label="Devise"', valueBind, ...extra];
     if (this.size() !== "md") {
       attrs.push(`size="${this.size()}"`);
     }

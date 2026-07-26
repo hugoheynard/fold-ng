@@ -168,6 +168,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Fixed
 
+- **Select family — a review-driven hardening pass** (`fold-listbox` /
+  `fold-multiselect` / `fold-popover`). Closing focus no longer traps: the
+  popover only pulls focus back to the trigger when it's still inside the closing
+  panel (Escape / pick) or nowhere — a `Tab` out now **advances** to the next
+  field like a native `<select>`. Dismissing the popup (Escape, outside-click,
+  Tab, or a pick) now marks the field **touched**, so a `required` select that's
+  opened and abandoned surfaces its error (blur parity). The trigger's
+  `aria-controls` points at the real `role="listbox"` (new `ariaControls` on
+  `fold-popover`), the active-row highlight and selected check get a
+  `forced-colors` treatment, and `fold-multiselect` membership is a `Set`
+  (O(1), not O(n²) across a long list) with the trigger summary collapsing to
+  "…, +N". Dev-mode now warns when a control holds a value with no matching
+  `<fold-option>`. New: `allowClear` on `fold-listbox` (a clear × once a value is
+  picked) and closed-trigger type-ahead (type to pick without opening).
+
 - **`fold-popover` panels are now opaque.** The panel used `surface-raised` — a
   ~5% tint meant to _sit on_ an opaque surface — so on the top layer the page
   bled through (visible while scrolling a long `fold-listbox`). It now composites
@@ -186,6 +201,11 @@ All notable changes to **fold-ng** are documented here. The format follows
   (it maps to `aria-label`).
 
 ### Changed
+
+- **Form-control box metrics are single-sourced** (`_field-box.scss`). The size
+  and `panel` dimensions shared by the native inputs (`input-shell`) and the
+  select-family triggers (`_listbox-shell`) now live in one Sass mixin, so a
+  metric redesign lands in both instead of drifting.
 
 - **CI + release gates now run the Playwright browser tier.** The `test:e2e`
   suite (native popover top layer, focus, positioning — behaviour jsdom can't

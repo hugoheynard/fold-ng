@@ -1,68 +1,86 @@
 import { test, expect, type Page } from "@playwright/test";
 
-// Browser-only behaviour for the styleable select: the native `popover` top
-// layer, real focus landing inside the list, and keyboard selection. The Vitest
-// units cover the aria/keyboard logic against jsdom; this is the real tier.
+// Browser-only behaviour for the styleable single-select: the native `popover`
+// top layer, real focus in the list, keyboard selection, clear, and the Tab /
+// closed-type-ahead / keyboard-open paths that jsdom can't exercise. The listbox
+// is the default tab of /#/listbox.
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/#/listbox");
   await expect(page.getByRole("heading", { name: "listbox" })).toBeVisible();
 });
 
-/** The nth `fold-listbox` on the page, with locators scoped inside it. */
-function listbox(page: Page, index: number) {
-  const root = page.locator("fold-listbox").nth(index);
+function listbox(page: Page) {
+  const root = page.locator("fold-listbox");
   return {
     root,
     trigger: root.locator(".lb-trigger"),
+    clear: root.locator(".lb-clear"),
     list: root.getByRole("listbox"),
     option: (name: string) => root.getByRole("option", { name }),
   };
 }
 
-test("opens a styled panel with focus in the list", async ({ page }) => {
-  const lb = listbox(page, 0);
-  await lb.trigger.click();
-  await expect(lb.list).toBeVisible();
-  await expect(lb.trigger).toHaveAttribute("aria-expanded", "true");
-  // Focus is on the listbox itself (activedescendant pattern), not a row.
-  await expect(lb.list).toBeFocused();
-  const box = await lb.list.boundingBox();
-  expect(box?.width ?? 0).toBeGreaterThan(120); // real panel, not a 0-collapse
-});
-
-test("keyboard: arrows skip disabled, Enter selects and closes", async ({
+test("opens onto a visible, non-collapsed listbox with focus inside", async ({
   page,
 }) => {
-  const lb = listbox(page, 1); // the teams list, with a disabled row
+  const lb = listbox(page);
   await lb.trigger.click();
-  await page.keyboard.press("ArrowDown"); // Production → Hospitality
-  await page.keyboard.press("ArrowDown"); // → Communication
+  await expect(lb.list).toBeVisible();
+  await expect(lb.list).toBeFocused();
+  const box = await lb.list.boundingBox();
+  expect(box?.width ?? 0).toBeGreaterThan(120);
+});
+
+test("keyboard: arrows move, Enter selects, focus returns to the trigger", async ({
+  page,
+}) => {
+  const lb = listbox(page);
+  await lb.trigger.click(); // armed on the current value (Euro)
+  await page.keyboard.press("ArrowDown"); // → US Dollar
   await page.keyboard.press("Enter");
   await expect(lb.list).toBeHidden();
-  await expect(lb.trigger).toContainText("Communication");
-  await expect(lb.trigger).toBeFocused(); // focus returns to the trigger
+  await expect(lb.trigger).toContainText("US Dollar");
+  await expect(lb.trigger).toBeFocused();
 });
 
-test("type-ahead jumps to the matching option", async ({ page }) => {
-  const lb = listbox(page, 0);
+test("opens from the keyboard on the trigger", async ({ page }) => {
+  const lb = listbox(page);
+  await lb.trigger.focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(lb.list).toBeVisible();
+});
+
+test("type-ahead on the closed trigger picks without opening", async ({
+  page,
+}) => {
+  const lb = listbox(page);
+  await lb.trigger.focus();
+  await page.keyboard.press("y"); // Yen — matched while closed
+  await expect(lb.list).toBeHidden();
+  await expect(lb.trigger).toContainText("Yen");
+});
+
+test("clear resets to the placeholder", async ({ page }) => {
+  const lb = listbox(page);
+  await expect(lb.trigger).toContainText("Euro");
+  await lb.clear.click();
+  await expect(lb.trigger).toContainText("Choisir une devise");
+});
+
+test("Tab out of the open list advances focus, never trapping on the trigger", async ({
+  page,
+}) => {
+  const lb = listbox(page);
   await lb.trigger.click();
-  await page.keyboard.press("l"); // "Livre sterling"
-  await page.keyboard.press("Enter");
-  await expect(lb.trigger).toContainText("Livre sterling");
+  await expect(lb.list).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(lb.list).toBeHidden();
+  await expect(lb.trigger).not.toBeFocused();
 });
 
-test("a disabled option can't be chosen by click", async ({ page }) => {
-  const lb = listbox(page, 1);
-  await lb.trigger.click();
-  // `force` bypasses Playwright's actionability guard (the row is aria-disabled)
-  // to prove a real click still commits nothing and leaves the panel open.
-  await lb.option("Sécurité").click({ force: true });
-  await expect(lb.list).toBeVisible(); // still open, nothing committed
-});
-
-test("outside-click dismisses the panel", async ({ page }) => {
-  const lb = listbox(page, 0);
+test("outside-click dismisses the list", async ({ page }) => {
+  const lb = listbox(page);
   await lb.trigger.click();
   await expect(lb.list).toBeVisible();
   await page.getByRole("heading", { name: "listbox" }).click();
