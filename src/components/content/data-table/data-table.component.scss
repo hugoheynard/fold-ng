@@ -9,6 +9,9 @@
 }
 
 .folddt-wrap {
+  /* Single source of truth for the checkbox-column width — the select cells AND
+     the sticky-offset of the pinned identity column both read it. */
+  --folddt-sel-w: 0px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -18,6 +21,9 @@
   border-radius: var(--fold-radius-lg);
   background: var(--fold-color-surface-sunken);
   box-shadow: var(--fold-shadow-md);
+}
+.folddt--select {
+  --folddt-sel-w: 44px;
 }
 
 /* The scrollable body — the toolbar (a sibling above) stays put while this
@@ -258,7 +264,7 @@
 }
 .folddt-select-h,
 .folddt-cell--select {
-  width: 44px;
+  width: var(--folddt-sel-w);
   padding-left: 16px;
   padding-right: 0;
   text-align: left;
@@ -289,14 +295,9 @@
 }
 
 /* ── Sticky identity column (opt-in) — pins the checkbox + identity cells to
-   the left while the body scrolls horizontally. Sticky cells need an opaque
-   base (transparent tints would let scrolled content bleed through). ── */
-.folddt--sticky-first {
-  --folddt-sel-w: 0px;
-}
-.folddt--sticky-first.folddt--select {
-  --folddt-sel-w: 44px;
-}
+   the left while the body scrolls horizontally. The identity cell's left offset
+   is `--folddt-sel-w` (the shared select-column width, 0 when not selectable).
+   Sticky cells need an opaque base (transparent tints would bleed through). ── */
 .folddt--sticky-first .folddt-cell--select,
 .folddt--sticky-first .folddt-select-h {
   position: sticky;

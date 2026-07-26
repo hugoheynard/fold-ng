@@ -1,17 +1,22 @@
 import {
   Component,
+  DestroyRef,
   type TemplateRef,
   booleanAttribute,
   computed,
   contentChild,
   contentChildren,
+  effect,
+  inject,
   input,
+  isDevMode,
   output,
   signal,
 } from "@angular/core";
 import { NgClass, NgTemplateOutlet } from "@angular/common";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
+import { focusAdjacentRow, focusEdgeRow } from "./data-table-keyboard";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
@@ -104,6 +109,46 @@ export class FoldDataTableComponent<T> {
 
   /** Key of the row that currently holds the single tab stop (roving tabindex). */
   private readonly focusedKey = signal<string | number | null>(null);
+  /** True on a narrow viewport — gates the custom mobile-card rendering so the
+   *  desktop never instantiates the (CSS-hidden) per-row cards. */
+  protected readonly isNarrow = signal(false);
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    // Track the same 700px breakpoint the mobile CSS uses, so `mobileLayout=
+    // "custom"` only builds its card list when the cards are actually shown.
+    // SSR / no matchMedia → false (desktop-first; the client corrects on hydration).
+    if (
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function"
+    ) {
+      const mq = window.matchMedia("(max-width: 700px)");
+      this.isNarrow.set(mq.matches);
+      const onChange = (e: MediaQueryListEvent): void => {
+        this.isNarrow.set(e.matches);
+      };
+      mq.addEventListener("change", onChange);
+      this.destroyRef.onDestroy(() => {
+        mq.removeEventListener("change", onChange);
+      });
+    }
+
+    // Dev guard: `truncate` clips against the column `width`; without one it
+    // silently won't truncate. Warn so the misuse surfaces at authoring time.
+    effect(() => {
+      if (!isDevMode()) {
+        return;
+      }
+      for (const col of this.columns()) {
+        if (col.truncate && !col.width) {
+          console.warn(
+            `[fold-data-table] column "${col.key}" sets truncate but no width; ` +
+              `truncation needs a width to clip against.`,
+          );
+        }
+      }
+    });
+  }
 
   private readonly cells = contentChildren(FoldDataTableCellDirective);
   private readonly cellMap = computed(() => {
@@ -136,6 +181,27 @@ export class FoldDataTableComponent<T> {
 
   /** The first column is the identity/primary cell (full-width on mobile). */
   readonly primaryKey = computed(() => this.columns()[0]?.key ?? "");
+
+  /** Total ARIA column count (data columns + the checkbox column). */
+  readonly colCount = computed(
+    () => this.columns().length + (this.selectable() ? 1 : 0),
+  );
+
+  /** Current row keys, in order — the roving-nav anchor set. */
+  private readonly rowKeys = computed(() =>
+    this.rows().map((row, i) => this.keyOf(row, i)),
+  );
+  /** The row that holds the single tab stop: the focused row while it still
+   *  exists, else the first row — so a removed/filtered focus never strands the
+   *  roving group with zero tab stops. */
+  private readonly activeRowKey = computed<string | number | null>(() => {
+    const focused = this.focusedKey();
+    const keys = this.rowKeys();
+    if (focused !== null && keys.includes(focused)) {
+      return focused;
+    }
+    return keys[0] ?? null;
+  });
 
   cellTemplate(key: string): TemplateRef<unknown> | null {
     return this.cellMap().get(key) ?? null;
@@ -230,17 +296,13 @@ export class FoldDataTableComponent<T> {
 
   /* ── roving-tabindex keyboard navigation over clickable rows ── */
 
-  /** The single tab stop: the focused row, else the first row. */
+  /** The single tab stop: the focused (or fallback first) row. */
   rowTabIndex(row: T, index: number): 0 | -1 | null {
     if (!this.clickable()) {
       return null;
     }
-    const first = this.rows()[0];
-    if (first === undefined) {
-      return -1;
-    }
-    const active = this.focusedKey() ?? this.keyOf(first, 0);
-    return this.keyOf(row, index) === active ? 0 : -1;
+    const active = this.activeRowKey();
+    return active !== null && this.keyOf(row, index) === active ? 0 : -1;
   }
 
   onRowFocus(row: T, index: number): void {
@@ -248,6 +310,11 @@ export class FoldDataTableComponent<T> {
   }
 
   onRowKeydown(event: KeyboardEvent, row: T): void {
+    // Only when the row itself holds focus — never when the key bubbled up from
+    // an inner control (a link, a button, the selection checkbox), which owns it.
+    if (event.target !== event.currentTarget) {
+      return;
+    }
     switch (event.key) {
       case "Enter":
         this.onRowActivate(row);
@@ -257,49 +324,23 @@ export class FoldDataTableComponent<T> {
         event.preventDefault();
         break;
       case "ArrowDown":
-        this.focusRow(event.currentTarget, "nextElementSibling");
+        focusAdjacentRow(event.currentTarget, "nextElementSibling");
         event.preventDefault();
         break;
       case "ArrowUp":
-        this.focusRow(event.currentTarget, "previousElementSibling");
+        focusAdjacentRow(event.currentTarget, "previousElementSibling");
         event.preventDefault();
         break;
       case "Home":
-        this.focusEdgeRow(event.currentTarget, "firstElementChild");
+        focusEdgeRow(event.currentTarget, "firstElementChild");
         event.preventDefault();
         break;
       case "End":
-        this.focusEdgeRow(event.currentTarget, "lastElementChild");
+        focusEdgeRow(event.currentTarget, "lastElementChild");
         event.preventDefault();
         break;
       default:
         break;
-    }
-  }
-
-  private focusRow(
-    from: EventTarget | null,
-    edge: "nextElementSibling" | "previousElementSibling",
-  ): void {
-    if (!(from instanceof Element)) {
-      return;
-    }
-    const sibling = from[edge];
-    if (sibling instanceof HTMLElement) {
-      sibling.focus();
-    }
-  }
-
-  private focusEdgeRow(
-    from: EventTarget | null,
-    edge: "firstElementChild" | "lastElementChild",
-  ): void {
-    if (!(from instanceof Element)) {
-      return;
-    }
-    const target = from.parentElement?.[edge];
-    if (target instanceof HTMLElement) {
-      target.focus();
     }
   }
 }

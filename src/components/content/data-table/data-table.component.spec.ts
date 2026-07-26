@@ -1,6 +1,6 @@
 import { Component, signal } from "@angular/core";
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { FoldDataTableComponent } from "./data-table.component";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
@@ -36,6 +36,7 @@ const COLUMNS: FoldTableColumn[] = [
     >
       <ng-template foldCell="name" let-row>
         <span class="name-cell">{{ row.name }}</span>
+        <button class="cell-btn" type="button">edit</button>
       </ng-template>
       <ng-template foldCell="plain" let-row>detail-{{ row.id }}</ng-template>
     </fold-data-table>
@@ -187,6 +188,59 @@ describe("FoldDataTableComponent", () => {
 
     rows[0]!.dispatchEvent(new KeyboardEvent("keydown", { key: "End" }));
     expect(document.activeElement).toBe(rows[1]);
+  });
+
+  it("ignores key events bubbling up from an inner control (no stolen keys)", () => {
+    const { host, el } = setup();
+    const btn = el.querySelector<HTMLButtonElement>(".cell-btn")!;
+
+    // Enter on the inner button must NOT also activate the row.
+    btn.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+    );
+    expect(host.clicked).toBeNull();
+
+    // Space on the inner control must NOT be swallowed (native activation kept)
+    // nor trigger a row click.
+    const space = new KeyboardEvent("keydown", {
+      key: " ",
+      bubbles: true,
+      cancelable: true,
+    });
+    btn.dispatchEvent(space);
+    expect(host.clicked).toBeNull();
+    expect(space.defaultPrevented).toBe(false);
+
+    // Arrow on the inner control must NOT move row focus.
+    btn.focus();
+    btn.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+    );
+    expect(document.activeElement).toBe(btn);
+  });
+
+  it("keeps a tab stop when the focused row is removed from rows", () => {
+    const { fixture, host, el } = setup();
+    const before = el.querySelectorAll<HTMLElement>("tbody tr");
+    before[1]!.dispatchEvent(new Event("focus")); // focus Bob (row 2)
+    fixture.detectChanges();
+    expect(before[1]!.getAttribute("tabindex")).toBe("0");
+
+    // Remove the focused row — the roving group must not lose its only tab stop.
+    host.rows.set([{ id: "a", name: "Alice", tone: null }]);
+    fixture.detectChanges();
+    const after = el.querySelectorAll<HTMLElement>("tbody tr");
+    expect(after.length).toBe(1);
+    expect(after[0]!.getAttribute("tabindex")).toBe("0"); // fell back to first
+  });
+
+  it("exposes an aria-colcount and a labelled sort control", () => {
+    const { el } = setup();
+    // 2 data columns, no selection column here.
+    expect(el.querySelector("table")?.getAttribute("aria-colcount")).toBe("2");
+    expect(
+      el.querySelector(".folddt-th-sort")?.getAttribute("aria-label"),
+    ).toBe("Sort by Nom");
   });
 });
 
@@ -352,11 +406,33 @@ class MobileHostComponent {
 }
 
 describe("FoldDataTableComponent — mobile layout", () => {
-  function mobileSetup(): {
+  // The component reads `window.matchMedia` in its constructor to gate the
+  // custom card list, so the viewport must be mocked before createComponent.
+  function mockViewport(narrow: boolean): void {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: (query: string) => ({
+        matches: narrow,
+        media: query,
+        onchange: null,
+        addEventListener() {},
+        removeEventListener() {},
+        addListener() {},
+        removeListener() {},
+        dispatchEvent: () => false,
+      }),
+    });
+  }
+  afterEach(() => {
+    Reflect.deleteProperty(window, "matchMedia");
+  });
+
+  function mobileSetup(narrow = true): {
     fixture: ComponentFixture<MobileHostComponent>;
     host: MobileHostComponent;
     el: HTMLElement;
   } {
+    mockViewport(narrow);
     const fixture = TestBed.createComponent(MobileHostComponent);
     fixture.detectChanges();
     return {
@@ -383,8 +459,8 @@ describe("FoldDataTableComponent — mobile layout", () => {
     expect(el.querySelector(".folddt--custom")).toBeNull();
   });
 
-  it("custom mode renders the parent foldRowCard once per row", () => {
-    const { fixture, host, el } = mobileSetup();
+  it("custom mode renders the parent foldRowCard once per row (narrow)", () => {
+    const { fixture, host, el } = mobileSetup(true);
     host.mobileLayout.set("custom");
     fixture.detectChanges();
     expect(el.querySelector(".folddt--custom")).not.toBeNull();
@@ -392,6 +468,16 @@ describe("FoldDataTableComponent — mobile layout", () => {
     expect(cards.length).toBe(2);
     expect(cards[0]!.textContent).toBe("0:Alice");
     expect(cards[1]!.textContent).toBe("1:Bob");
+  });
+
+  it("custom mode does NOT instantiate the card list on a wide viewport", () => {
+    const { fixture, host, el } = mobileSetup(false);
+    host.mobileLayout.set("custom");
+    fixture.detectChanges();
+    // The mode class is still set (the CSS owns the mobile swap), but the
+    // per-row cards are not built on desktop — no wasted rendering.
+    expect(el.querySelector(".folddt--custom")).not.toBeNull();
+    expect(el.querySelector(".folddt-cardlist")).toBeNull();
   });
 });
 
@@ -461,5 +547,46 @@ describe("FoldDataTableComponent — toolbar", () => {
     expect(bar().classList.contains("folddt-toolbar--accent")).toBe(true);
     // The accent bar opts into the shared auto-inverting surface.
     expect(bar().getAttribute("data-surface")).toBe("accent");
+  });
+});
+
+/* ── truncate dev guard (needs a column width to clip against) ── */
+
+@Component({
+  standalone: true,
+  imports: [FoldDataTableComponent, FoldDataTableCellDirective],
+  template: `
+    <fold-data-table [columns]="columns" [rows]="rows">
+      <ng-template foldCell="a" let-row>{{ row.a }}</ng-template>
+    </fold-data-table>
+  `,
+})
+class TruncateHostComponent {
+  columns: FoldTableColumn[] = [{ key: "a", label: "A", truncate: true }];
+  readonly rows = [{ a: "x" }];
+}
+
+describe("FoldDataTableComponent — truncate dev guard", () => {
+  it("warns when a column sets truncate without a width", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const fixture = TestBed.createComponent(TruncateHostComponent);
+    fixture.detectChanges();
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('column "a" sets truncate but no width'),
+    );
+    warn.mockRestore();
+  });
+
+  it("does not warn once the truncating column has a width", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const fixture = TestBed.createComponent(TruncateHostComponent);
+    fixture.componentInstance.columns = [
+      { key: "a", label: "A", truncate: true, width: "80px" },
+    ];
+    fixture.detectChanges();
+    expect(warn).not.toHaveBeenCalledWith(
+      expect.stringContaining("truncate but no width"),
+    );
+    warn.mockRestore();
   });
 });

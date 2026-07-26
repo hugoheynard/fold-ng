@@ -18,7 +18,7 @@
     <ng-content select="[foldToolbar]" />
   </div>
   <div class="folddt-scroll">
-    <table class="folddt">
+    <table class="folddt" [attr.aria-colcount]="colCount()">
       @if (caption(); as cap) {
         <caption class="folddt-caption">
           {{
@@ -53,6 +53,7 @@
                   class="folddt-th-sort"
                   [class.right]="col.align === 'right'"
                   [class.center]="col.align === 'center'"
+                  [attr.aria-label]="'Sort by ' + col.label"
                   (click)="sortChange.emit(col.key)"
                 >
                   <span>{{ col.label }}</span>
@@ -141,7 +142,7 @@
     </table>
   </div>
 
-  @if (rowCardTemplate(); as card) {
+  @if (isNarrow() && rowCardTemplate(); as card) {
     <div class="folddt-cardlist" role="list">
       @for (row of rows(); track keyOf(row, $index); let i = $index) {
         <div class="folddt-cardlist-item" role="listitem">
