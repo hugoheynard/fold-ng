@@ -37,6 +37,9 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
     "[class.v-title]": "variant() === 'title'",
     "[class.it-primary]": "iconTone() === 'primary'",
     "[class.it-faded]": "iconTone() === 'faded'",
+    // `title` is a heading input — strip the reflected native attribute so it
+    // never doubles as a browser tooltip.
+    "[attr.title]": "null",
   },
   templateUrl: "./element-title.component.html",
   styleUrl: "./element-title.component.scss",

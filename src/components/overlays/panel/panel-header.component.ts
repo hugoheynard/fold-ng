@@ -56,6 +56,9 @@ import { foldPanelTitleId } from "./panel.types";
   selector: "fold-panel-header",
   standalone: true,
   imports: [FoldIconComponent],
+  // `title` is a heading input — strip the native attribute a static
+  // `title="…"` leaves behind, so it never doubles as a browser tooltip.
+  host: { "[attr.title]": "null" },
   templateUrl: "./panel-header.component.html",
   styleUrl: "./panel-header.component.scss",
 })

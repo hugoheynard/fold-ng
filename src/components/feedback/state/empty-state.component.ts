@@ -31,7 +31,9 @@ import { Component, input } from "@angular/core";
 @Component({
   selector: "fold-empty-state",
   standalone: true,
-  host: { "[class.alert]": "tone() === 'alert'" },
+  // `[attr.title]: null` strips the native attribute a static `title="…"`
+  // leaves behind, so the heading input never doubles as a browser tooltip.
+  host: { "[class.alert]": "tone() === 'alert'", "[attr.title]": "null" },
   templateUrl: "./empty-state.component.html",
   styleUrl: "./empty-state.component.scss",
 })

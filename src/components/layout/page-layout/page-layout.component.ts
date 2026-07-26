@@ -69,6 +69,9 @@ export class FoldPageTitleDirective {}
   selector: "fold-page-layout",
   standalone: true,
   imports: [FoldIconComponent],
+  // `title` is a heading input — strip the native attribute a static
+  // `title="…"` leaves behind, so it never doubles as a browser tooltip.
+  host: { "[attr.title]": "null" },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
 })

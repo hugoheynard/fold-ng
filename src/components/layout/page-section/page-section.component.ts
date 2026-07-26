@@ -51,6 +51,9 @@ import { FoldIdService } from "../../../a11y/id.service";
   host: {
     "[class.stack]": "stack()",
     "[class.is-bleed]": "bleed()",
+    // `title` is a heading input — strip the reflected native attribute so it
+    // never doubles as a browser tooltip.
+    "[attr.title]": "null",
   },
   templateUrl: "./page-section.component.html",
   styleUrl: "./page-section.component.scss",

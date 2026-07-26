@@ -28,6 +28,9 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
   selector: "fold-context-card",
   standalone: true,
   imports: [FoldCardComponent, FoldElementTitleComponent],
+  // `title` is a heading input — strip the native attribute a static
+  // `title="…"` leaves behind, so it never doubles as a browser tooltip.
+  host: { "[attr.title]": "null" },
   templateUrl: "./context-card.component.html",
   styleUrl: "./context-card.component.scss",
 })
