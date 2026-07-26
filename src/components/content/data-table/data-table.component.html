@@ -2,75 +2,163 @@
   class="folddt-wrap"
   [class.folddt--zebra]="zebra()"
   [class.folddt--hover]="hover()"
-  [class.folddt--cards]="mobileCards()"
+  [class.folddt--cards]="mobileLayout() === 'auto-cards'"
+  [class.folddt--custom]="mobileLayout() === 'custom'"
+  [class.folddt--compact]="density() === 'compact'"
+  [class.folddt--sticky-first]="stickyFirst()"
+  [class.folddt--select]="selectable()"
 >
-  <table class="folddt">
-    <thead>
-      <tr>
-        @for (col of columns(); track col.key) {
-          <th
-            scope="col"
-            [style.width]="col.width || null"
-            [attr.aria-sort]="col.sortable ? ariaSort(col.key) : null"
-          >
-            @if (col.sortable) {
-              <button
-                type="button"
-                class="folddt-th-sort"
-                [class.right]="col.align === 'right'"
-                (click)="sortChange.emit(col.key)"
-              >
-                <span>{{ col.label }}</span>
-                <span class="folddt-arrow" [class.on]="isSorted(col.key)">{{
-                  sortArrow(col.key)
-                }}</span>
-              </button>
-            } @else {
-              <span
-                class="folddt-th-plain"
-                [class.right]="col.align === 'right'"
-                >{{ col.label }}</span
-              >
-            }
-          </th>
-        }
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of rows(); track keyOf(row, $index); let i = $index) {
-        @let tone = toneOf(row);
-        <tr
-          class="folddt-row"
-          [class.tone-warning]="tone === 'warning'"
-          [class.tone-alert]="tone === 'alert'"
-          [class.tone-success]="tone === 'success'"
-          [class.clickable]="clickable()"
-          [attr.tabindex]="clickable() ? 0 : null"
-          (click)="onRowActivate(row)"
-          (keydown.enter)="onRowActivate(row)"
-        >
+  <div
+    class="folddt-toolbar"
+    [class.folddt-toolbar--sunken]="toolbarSurface() === 'sunken'"
+    [class.folddt-toolbar--raised]="toolbarSurface() === 'raised'"
+    [class.folddt-toolbar--accent]="toolbarSurface() === 'accent'"
+    [attr.data-surface]="toolbarSurface() === 'accent' ? 'accent' : null"
+  >
+    <ng-content select="[foldToolbar]" />
+  </div>
+  <div class="folddt-scroll">
+    <table class="folddt">
+      @if (caption(); as cap) {
+        <caption class="folddt-caption">
+          {{
+            cap
+          }}
+        </caption>
+      }
+      <thead>
+        <tr>
+          @if (selectable()) {
+            <th scope="col" class="folddt-select-h">
+              <input
+                type="checkbox"
+                class="folddt-check"
+                aria-label="Select all rows"
+                [checked]="allSelected()"
+                [indeterminate]="someSelected()"
+                (change)="toggleAll()"
+              />
+            </th>
+          }
           @for (col of columns(); track col.key) {
-            <td
-              class="folddt-cell"
-              [class.is-primary]="col.key === primaryKey()"
-              [class.right]="col.align === 'right'"
-              [ngClass]="col.cellClass || ''"
-              [attr.data-label]="col.label"
+            <th
+              scope="col"
+              [class.is-primary-h]="col.key === primaryKey()"
+              [style.width]="col.width || null"
+              [attr.aria-sort]="col.sortable ? ariaSort(col.key) : null"
             >
-              @if (cellTemplate(col.key); as tpl) {
-                <ng-container
-                  [ngTemplateOutlet]="tpl"
-                  [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                />
+              @if (col.sortable) {
+                <button
+                  type="button"
+                  class="folddt-th-sort"
+                  [class.right]="col.align === 'right'"
+                  [class.center]="col.align === 'center'"
+                  (click)="sortChange.emit(col.key)"
+                >
+                  <span>{{ col.label }}</span>
+                  <fold-icon
+                    class="folddt-arrow"
+                    [class.on]="isSorted(col.key)"
+                    [name]="sortIcon(col.key)"
+                    [size]="14"
+                  />
+                </button>
+              } @else {
+                <span
+                  class="folddt-th-plain"
+                  [class.right]="col.align === 'right'"
+                  [class.center]="col.align === 'center'"
+                  >{{ col.label }}</span
+                >
               }
-            </td>
+            </th>
           }
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (row of rows(); track keyOf(row, $index); let i = $index) {
+          @let tone = toneOf(row);
+          <tr
+            class="folddt-row"
+            [class.tone-warning]="tone === 'warning'"
+            [class.tone-alert]="tone === 'alert'"
+            [class.tone-success]="tone === 'success'"
+            [class.clickable]="clickable()"
+            [class.is-selected]="selectable() && isRowSelected(row, i)"
+            [attr.tabindex]="rowTabIndex(row, i)"
+            [attr.aria-selected]="selectable() ? isRowSelected(row, i) : null"
+            (click)="onRowActivate(row)"
+            (focus)="onRowFocus(row, i)"
+            (keydown)="onRowKeydown($event, row)"
+          >
+            @if (selectable()) {
+              <td class="folddt-cell folddt-cell--select">
+                <input
+                  type="checkbox"
+                  class="folddt-check"
+                  [attr.aria-label]="labelFor(row)"
+                  [checked]="isRowSelected(row, i)"
+                  (click)="$event.stopPropagation()"
+                  (change)="toggleRow(row, i)"
+                />
+              </td>
+            }
+            @for (col of columns(); track col.key) {
+              @if (col.key === primaryKey()) {
+                <th
+                  scope="row"
+                  class="folddt-cell is-primary"
+                  [class.right]="col.align === 'right'"
+                  [class.center]="col.align === 'center'"
+                  [class.truncate]="col.truncate"
+                  [ngClass]="col.cellClass || ''"
+                  [attr.data-label]="col.label"
+                >
+                  <ng-container
+                    [ngTemplateOutlet]="cellTemplate(col.key)"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </th>
+              } @else {
+                <td
+                  class="folddt-cell"
+                  [class.right]="col.align === 'right'"
+                  [class.center]="col.align === 'center'"
+                  [class.truncate]="col.truncate"
+                  [ngClass]="col.cellClass || ''"
+                  [attr.data-label]="col.label"
+                >
+                  <ng-container
+                    [ngTemplateOutlet]="cellTemplate(col.key)"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </td>
+              }
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 
-  @if (rows().length === 0 && empty(); as e) {
+  @if (rowCardTemplate(); as card) {
+    <div class="folddt-cardlist" role="list">
+      @for (row of rows(); track keyOf(row, $index); let i = $index) {
+        <div class="folddt-cardlist-item" role="listitem">
+          <ng-container
+            [ngTemplateOutlet]="card"
+            [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+          />
+        </div>
+      }
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="folddt-loading">
+      <fold-spinner label="Loading…" />
+    </div>
+  } @else if (rows().length === 0 && empty(); as e) {
     <div class="folddt-empty">
       <div class="folddt-empty-t">{{ e.title }}</div>
       @if (e.subtitle) {

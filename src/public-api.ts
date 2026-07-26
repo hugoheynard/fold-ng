@@ -59,6 +59,7 @@ export { FoldNavTileComponent } from "./components/navigation/nav-launcher/nav-t
 export { FoldHeroCardComponent } from "./components/content/hero-card/hero-card.component";
 export { FoldDataTableComponent } from "./components/content/data-table/data-table.component";
 export { FoldDataTableCellDirective } from "./components/content/data-table/data-table-cell.directive";
+export { FoldDataTableRowCardDirective } from "./components/content/data-table/data-table-row-card.directive";
 export {
   FoldStickyColumnDirective,
   type FoldStickyColumnAnchor,

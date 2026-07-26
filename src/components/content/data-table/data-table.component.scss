@@ -9,13 +9,57 @@
 }
 
 .folddt-wrap {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;
+  overflow: hidden; /* clip the toolbar + scroll region to the rounded frame */
   border: 1px solid var(--fold-color-border-subtle);
   border-radius: var(--fold-radius-lg);
   background: var(--fold-color-surface-sunken);
   box-shadow: var(--fold-shadow-md);
+}
+
+/* The scrollable body — the toolbar (a sibling above) stays put while this
+   region scrolls in both axes and the header sticks to its top. */
+.folddt-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Toolbar / title bar — a visible band above the column header. The parent
+   projects its content with `[foldToolbar]` (a title, a count, actions) and owns
+   the inner layout; the band only supplies the chrome. Like `fold-card`'s
+   header/footer, it collapses to nothing when the parent projects nothing. */
+.folddt-toolbar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--fold-color-border);
+  color: var(--fold-color-text);
+  /* default — a subtle header lift between the sunken body and the card tint. */
+  background: color-mix(
+    in srgb,
+    var(--fold-color-surface-sunken) 50%,
+    var(--fold-color-surface-card)
+  );
+}
+/* No projected content → no bar (robust to whitespace, unlike `:empty`). */
+.folddt-toolbar:not(:has(*)) {
+  display: none;
+}
+/* Surface levels — the title bar's "weight". Token-only, so every theme carries
+   its own values; `accent` also stamps `data-surface="accent"` (see the HTML),
+   which re-points the whole projected sub-tree to the on-accent palette. */
+.folddt-toolbar--sunken {
+  background: var(--fold-color-surface-sunken);
+}
+.folddt-toolbar--raised {
+  background: var(--fold-color-surface-raised);
+}
+.folddt-toolbar--accent {
+  background: var(--fold-color-primary);
+  border-bottom-color: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
 }
 
 .folddt {
@@ -23,6 +67,19 @@
   border-collapse: separate;
   border-spacing: 0;
   font-size: var(--fold-text-sm);
+}
+
+/* Accessible table name — present for AT, out of the visual layout. */
+.folddt-caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Sticky header — opaque, subtly lifted above the body surface. */
@@ -73,8 +130,8 @@
 }
 
 .folddt-arrow {
+  display: inline-flex;
   color: var(--fold-color-text-faded);
-  font-size: 11px;
   transition: color var(--fold-motion-fast);
 }
 .folddt-arrow.on {
@@ -87,10 +144,10 @@
 .folddt-row.clickable {
   cursor: pointer;
 }
-.folddt-row td {
+.folddt-row .folddt-cell {
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
-.folddt-row:last-child td {
+.folddt-row:last-child .folddt-cell {
   border-bottom: 0;
 }
 .folddt-row:focus-visible {
@@ -103,49 +160,71 @@
   .folddt-row:nth-child(even):not(.tone-warning):not(.tone-alert):not(
     .tone-success
   )
-  td {
+  .folddt-cell {
   background: var(--fold-color-surface-subtle);
 }
 
 /* Hover (default on) — wins over zebra + tone tint. */
-.folddt--hover .folddt-row:hover td {
+.folddt--hover .folddt-row:hover .folddt-cell {
   background: var(--fold-color-surface-raised);
 }
-.folddt--hover .folddt-row.tone-warning:hover td {
+.folddt--hover .folddt-row.tone-warning:hover .folddt-cell {
   background: color-mix(in srgb, var(--fold-color-warning) 16%, transparent);
 }
-.folddt--hover .folddt-row.tone-alert:hover td {
+.folddt--hover .folddt-row.tone-alert:hover .folddt-cell {
   background: color-mix(in srgb, var(--fold-color-alert) 17%, transparent);
 }
 
+/* Cells — the primary column is a `<th scope="row">`, so neutralise the UA's
+   bold + centre and let it read exactly like a `<td>`. */
 .folddt-cell {
   padding: 11px 18px;
   color: var(--fold-color-text);
+  font-weight: inherit;
+  text-align: left;
   white-space: nowrap;
   vertical-align: middle;
 }
 .folddt-cell.right {
   text-align: right;
 }
+.folddt-cell.center {
+  text-align: center;
+}
+/* Clip to one line + ellipsis. Effective when the column carries a `width`. */
+.folddt-cell.truncate {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-/* Per-row tone accents (left bar + tint). */
-.folddt-row.tone-warning td:first-child {
+/* Per-row tone accents (left bar + tint). Selectors stay element-agnostic so
+   they land on the primary `<th>` and the following `<td>`s alike. */
+.folddt-row.tone-warning .folddt-cell:first-child {
   box-shadow: inset 3px 0 0 var(--fold-color-warning);
 }
-.folddt-row.tone-warning td {
+.folddt-row.tone-warning .folddt-cell {
   background: color-mix(in srgb, var(--fold-color-warning) 10%, transparent);
 }
-.folddt-row.tone-alert td:first-child {
+.folddt-row.tone-alert .folddt-cell:first-child {
   box-shadow: inset 3px 0 0 var(--fold-color-alert);
 }
-.folddt-row.tone-alert td {
+.folddt-row.tone-alert .folddt-cell {
   background: color-mix(in srgb, var(--fold-color-alert) 11%, transparent);
 }
-.folddt-row.tone-success td:first-child {
+.folddt-row.tone-success .folddt-cell:first-child {
   box-shadow: inset 3px 0 0 var(--fold-color-success);
 }
-.folddt-row.tone-success td {
+.folddt-row.tone-success .folddt-cell {
   background: color-mix(in srgb, var(--fold-color-success) 9%, transparent);
+}
+
+.folddt-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
 }
 
 .folddt-empty {
@@ -161,6 +240,120 @@
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text-muted);
   margin-top: 4px;
+}
+
+/* The custom mobile-card list is desktop-hidden; it takes over on narrow
+   screens only when `mobileLayout="custom"` (see the media query below). */
+.folddt-cardlist {
+  display: none;
+}
+
+/* ── Selection (controlled) ── */
+.folddt-check {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--fold-color-primary);
+  cursor: pointer;
+}
+.folddt-select-h,
+.folddt-cell--select {
+  width: 44px;
+  padding-left: 16px;
+  padding-right: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+.folddt-select-h {
+  vertical-align: middle;
+}
+/* Selected-row tint — loses to hover (lower specificity) by design. */
+.folddt-row.is-selected .folddt-cell {
+  background: color-mix(in srgb, var(--fold-color-primary) 8%, transparent);
+}
+.folddt-row.is-selected .folddt-cell:first-child {
+  box-shadow: inset 3px 0 0 var(--fold-color-primary);
+}
+
+/* ── Density ── */
+.folddt--compact .folddt-cell {
+  padding: 6px 14px;
+}
+.folddt--compact .folddt-th-sort,
+.folddt--compact .folddt-th-plain {
+  padding: 8px 14px;
+}
+.folddt--compact .folddt-cell--select {
+  padding-left: 12px;
+  padding-right: 0;
+}
+
+/* ── Sticky identity column (opt-in) — pins the checkbox + identity cells to
+   the left while the body scrolls horizontally. Sticky cells need an opaque
+   base (transparent tints would let scrolled content bleed through). ── */
+.folddt--sticky-first {
+  --folddt-sel-w: 0px;
+}
+.folddt--sticky-first.folddt--select {
+  --folddt-sel-w: 44px;
+}
+.folddt--sticky-first .folddt-cell--select,
+.folddt--sticky-first .folddt-select-h {
+  position: sticky;
+  left: 0;
+  background: var(--fold-color-surface-sunken);
+}
+.folddt--sticky-first .folddt-select-h {
+  z-index: 3;
+}
+.folddt--sticky-first .folddt-cell.is-primary {
+  position: sticky;
+  left: var(--folddt-sel-w);
+  z-index: 1;
+  background: var(--fold-color-surface-sunken);
+}
+.folddt--sticky-first thead th.is-primary-h {
+  position: sticky;
+  left: var(--folddt-sel-w);
+  z-index: 3;
+}
+/* Keep the tone tint + selection readable on the opaque sticky identity cell. */
+.folddt--sticky-first .folddt-row.tone-warning .folddt-cell.is-primary {
+  background: color-mix(
+    in srgb,
+    var(--fold-color-warning) 10%,
+    var(--fold-color-surface-sunken)
+  );
+}
+.folddt--sticky-first .folddt-row.tone-alert .folddt-cell.is-primary {
+  background: color-mix(
+    in srgb,
+    var(--fold-color-alert) 11%,
+    var(--fold-color-surface-sunken)
+  );
+}
+.folddt--sticky-first .folddt-row.tone-success .folddt-cell.is-primary {
+  background: color-mix(
+    in srgb,
+    var(--fold-color-success) 9%,
+    var(--fold-color-surface-sunken)
+  );
+}
+.folddt--sticky-first .folddt-row.is-selected .folddt-cell.is-primary {
+  background: color-mix(
+    in srgb,
+    var(--fold-color-primary) 8%,
+    var(--fold-color-surface-sunken)
+  );
+}
+
+/* Motion-reduced users get no cell/header transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .folddt-row,
+  .folddt-th-sort,
+  .folddt-arrow {
+    transition: none;
+  }
 }
 
 /* ── Mobile: table → stacked cards (≤700px) ── */
@@ -209,7 +402,7 @@
   .folddt--cards .folddt-row.tone-success {
     border-left: 3px solid var(--fold-color-success);
   }
-  .folddt--cards .folddt-row td:first-child {
+  .folddt--cards .folddt-row .folddt-cell:first-child {
     box-shadow: none;
   }
   .folddt--cards .folddt-cell {
@@ -243,5 +436,37 @@
   }
   .folddt--cards .folddt-cell.is-primary::before {
     display: none;
+  }
+  /* The checkbox sits inline at the top of the card, with no field label. */
+  .folddt--cards .folddt-cell--select {
+    width: auto;
+    justify-content: flex-start;
+    padding: 8px 0;
+  }
+  .folddt--cards .folddt-cell--select::before {
+    display: none;
+  }
+  /* Sticky pinning is meaningless once rows are cards. */
+  .folddt--cards .folddt-cell--select,
+  .folddt--cards .folddt-cell.is-primary,
+  .folddt--cards.folddt--sticky-first .folddt-cell {
+    position: static;
+  }
+
+  /* Custom layout: the table steps aside, the parent's card list takes over. */
+  .folddt--custom {
+    overflow-x: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .folddt--custom .folddt {
+    display: none;
+  }
+  .folddt--custom .folddt-cardlist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 }

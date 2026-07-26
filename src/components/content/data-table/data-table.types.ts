@@ -24,10 +24,13 @@ export interface FoldTableColumn {
   readonly label: string;
   /** Renders a sort button in the header; emits `sortChange` with `key`. */
   readonly sortable?: boolean;
-  /** Right-align the header + cells (numeric columns). */
-  readonly align?: "right";
+  /** Text alignment of the header + cells. Default left; `right` for numeric. */
+  readonly align?: "right" | "center";
   /** Optional fixed column width (any CSS length). */
   readonly width?: string;
+  /** Clip overflowing text to one line with an ellipsis (pair with `width`).
+   *  Cell templates should set their own `title` for the full-text tooltip. */
+  readonly truncate?: boolean;
   /** Extra class applied to every cell in the column. */
   readonly cellClass?: string;
 }
