@@ -161,6 +161,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badgeTone: "info",
       },
       {
+        id: "password",
+        label: "password field",
+        badge: "new",
+        badgeTone: "info",
+      },
+      {
         id: "checkbox",
         label: "checkbox",
         badge: "new",
