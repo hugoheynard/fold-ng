@@ -30,7 +30,10 @@ Priority: the popover primitive. Usage counts are current app call-sites.
       `computed` (no push during CD — avoids reading the required `value` early).
       Gallery `/listbox` + Playwright suite. This is the styleable half of the
       `fold-select` migration story below; native `fold-select` stays the default.
-  - [ ] **Multi-select** (`values: string[]`, `multiple`, keep-open on pick).
+  - [x] **Multi-select** → `fold-multiselect` (sibling, not a flag: value is
+        `readonly string[]`, toggle + keep-open, `aria-multiselectable`). ✅ Done.
+        The keyboard/roving core + option↔owner contract are now shared between
+        the two (a `FOLD_LISTBOX_OWNER` token; removed a circular import).
   - [ ] **Option groups** (`fold-optgroup`, `role="group"` + label).
   - [ ] **Filter / combobox variant** — a typed input that filters the list.
 - [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table

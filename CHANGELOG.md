@@ -53,8 +53,20 @@ All notable changes to **fold-ng** are documented here. The format follows
   and `[(value)]` both work) and shares `fold-input`'s box chrome (sizes, `panel`
   variant). Options are dumb + presentational — each derives its own selected /
   active state from the parent by `computed`, so nothing is pushed in during
-  change detection. New gallery `/listbox` page and a Playwright suite. Multi-
-  select, option groups and a filter/combobox variant are tracked for later.
+  change detection. New gallery `/listbox` page and a Playwright suite. Option
+  groups and a filter/combobox variant are tracked for later.
+
+- **`fold-multiselect` — the multi-select sibling.** Same styleable popover +
+  `fold-option` rows, but the value is a set (`readonly string[]`): activating a
+  row **toggles** its membership and the panel **stays open**. It's a separate
+  component, not a `multiple` flag, because the Signal-Forms value type genuinely
+  differs from single-select's `string` — keeping `[formField]` / `[(value)]`
+  honestly typed (no `any`). `role="listbox"` + `aria-multiselectable`, the same
+  keyboard core (`Enter`/`Space` toggle), each selected row keeps its check, and
+  the trigger summarises the picks. The keyboard/roving/type-ahead core and the
+  option↔owner contract are now **shared** between the two components (a
+  `FOLD_LISTBOX_OWNER` token instead of a concrete injection, which also removed
+  a circular import). New `/listbox` demo section + a Playwright suite.
 
 - **`fold-inline-confirm` — in-place destructive-action guard.** Extracted from
   SH3PHERD's shared inline-confirm (which replaced four ad-hoc patterns) and
