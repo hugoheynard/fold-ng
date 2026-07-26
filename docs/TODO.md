@@ -11,10 +11,11 @@ The remaining generic UI still living in the app's `shared/`. Build these here,
 (the app pins the published package, so nothing lands app-side until 0.5 ships).
 Priority: the popover primitive. Usage counts are current app call-sites.
 
-- [ ] **`fold-popover` — anchored popover primitive** (from `shared/ui-frames/popover-frame`,
-      **11 uses**, + `shared/popover-menu`, 3). The floating/positioning layer
-      `fold-menu` should sit on. **Highest priority.** The biggest piece — do it
-      first and deliberately.
+- [x] **`fold-popover` — anchored popover primitive** (from `shared/ui-frames/popover-frame`,
+      **11 uses**, + `shared/popover-menu`, 3). ✅ Done: native top-layer +
+      dependency-free flip/shift (`computePlacement`), `[(open)]`, dismissal +
+      focus-return + auto aria; plus `fold-dropdown` (+ `-item`) — `role="menu"`,
+      roving / Home·End / type-ahead. Gallery `/popover`, 22 specs.
 - [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
       switch; generic, zero domain. Cleanest extraction.
 - [ ] **`fold-soft-warning` → reconcile with `fold-callout`** (from `shared/soft-warning`,

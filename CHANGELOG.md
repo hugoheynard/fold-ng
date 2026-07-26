@@ -8,6 +8,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-popover` + `fold-dropdown` — anchored floating layer & actions menu.**
+  fold's first floating primitive. `fold-popover` renders projected content in
+  the native **top layer** (the `popover` attribute — escapes `overflow: hidden`
+  and every `z-index`), anchored to a projected `[foldPopoverTrigger]` by a
+  **dependency-free flip/shift engine** (`computePlacement`, exported and
+  unit-tested in isolation — no Floating UI). Controlled via `[(open)]`;
+  dismissal (outside-click + `Escape`) and focus-return are built in, and the
+  trigger gets `aria-haspopup`/`aria-expanded`/`aria-controls` wired
+  automatically. `fold-dropdown` (+ `fold-dropdown-item`) is the actions menu on
+  top: `role="menu"`, ↑/↓ roving tabindex, `Home`/`End`, type-ahead, opens onto
+  its first enabled item, closes returning focus to the trigger. New gallery
+  `/popover` page; 22 spec blocks (placement math + both components).
+
 - **`fold-inline-confirm` — in-place destructive-action guard.** Extracted from
   SH3PHERD's shared inline-confirm (which replaced four ad-hoc patterns) and
   rebuilt to fold conventions. The host projects a real focusable trigger

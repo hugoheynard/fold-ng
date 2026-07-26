@@ -25,7 +25,10 @@ breach (P0-7) is now fixed too. Method: six parallel per-cluster audits, each re
 keyboard, `mobileLayout`, `foldToolbar`, sticky/density; hardcore-review fixes)
 and `fold-checkbox` shipped — both now ship-ready. `fold-inline-confirm` added
 (extracted from SH3PHERD): the in-place destructive-action guard —
-simple / type-to-confirm / secret, i18n, focus management — ships ready.**
+simple / type-to-confirm / secret, i18n, focus management — ships ready.
+`fold-popover` + `fold-dropdown` added: fold's first floating primitive
+(native top-layer, dependency-free flip/shift, `[(open)]`, dismissal +
+focus-return) and the `role="menu"` actions menu on top — both ship-ready.**
 
 ---
 
@@ -95,9 +98,11 @@ and the gallery nav — **layout first**.
 
 **Overlays** — `src/components/overlays/`
 
-| Component                     | DX  | Tests | Docs | Verdict                                                                   |
-| ----------------------------- | :-: | :---: | :--: | ------------------------------------------------------------------------- |
-| `fold-panel-host` / `-header` | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label |
+| Component                     | DX  | Tests | Docs | Verdict                                                                                                         |
+| ----------------------------- | :-: | :---: | :--: | --------------------------------------------------------------------------------------------------------------- |
+| `fold-panel-host` / `-header` | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label                                       |
+| `fold-popover` (+ trigger)    | 🟢  |  🟢   |  🟢  | **Ship-ready** — native top-layer, dependency-free flip/shift, `[(open)]`, dismissal + focus-return + auto aria |
+| `fold-dropdown` (+ item)      | 🟢  |  🟢   |  🟢  | **Ship-ready** — `role="menu"`, roving/Home/End/type-ahead, focus-onto-first, closes to trigger                 |
 
 **Forms** — `src/components/forms/`
 
