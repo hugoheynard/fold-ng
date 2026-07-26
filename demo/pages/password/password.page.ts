@@ -8,6 +8,8 @@ import {
   FoldPasswordFieldComponent,
 } from "../../../src/public-api";
 
+type Design = "default" | "custom";
+
 /** `/password` — the `fold-password-field` gallery page. */
 @Component({
   selector: "gal-password-page",
@@ -27,8 +29,9 @@ export default class PasswordPage {
   protected readonly value = signal("");
   protected readonly valid = signal(false);
   protected readonly revealable = signal(true);
-  /** Second field, for the projected-checklist demo. */
-  protected readonly value2 = signal("");
+  /** Which checklist rendering the playground shows — the built-in dots, or a
+   *  custom projection (inline chips). */
+  protected readonly design = signal<Design>("default");
 
   /** Static snippet for the "Injecting rules" section — regex + zod, no deps. */
   protected readonly rulesExample = [
@@ -42,14 +45,30 @@ export default class PasswordPage {
     "];",
   ].join("\n");
 
-  protected readonly code = computed(() =>
-    [
-      "<fold-password-field",
+  protected readonly code = computed(() => {
+    const reveal = this.revealable() ? [] : ['  [revealable]="false"'];
+    if (this.design() === "default") {
+      return [
+        "<fold-password-field",
+        '  label="New password"',
+        ...reveal,
+        '  [(value)]="password"',
+        '  (validChange)="ok.set($event)"',
+        "/>",
+      ].join("\n");
+    }
+    return [
+      '<fold-password-field #pw="foldPasswordField"',
       '  label="New password"',
-      ...(this.revealable() ? [] : ['  [revealable]="false"']),
+      ...reveal,
       '  [(value)]="password"',
-      '  (validChange)="ok.set($event)"',
-      "/>",
-    ].join("\n"),
-  );
+      ">",
+      '  <div rules class="chips">',
+      "    @for (rule of pw.checklist(); track rule.label) {",
+      '      <span [class.is-met]="rule.met">{{ rule.label }}</span>',
+      "    }",
+      "  </div>",
+      "</fold-password-field>",
+    ].join("\n");
+  });
 }
