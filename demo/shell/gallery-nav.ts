@@ -72,6 +72,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     items: [
       { id: "menu", label: "menu" },
       {
+        id: "popover",
+        label: "popover · dropdown",
+        badge: "new",
+        badgeTone: "info",
+      },
+      {
         id: "nav-launcher",
         label: "nav-launcher",
         badge: "new",
