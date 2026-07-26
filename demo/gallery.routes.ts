@@ -32,6 +32,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   "data-table": () => import("./pages/data-table/data-table.page"),
   checkbox: () => import("./pages/checkbox/checkbox.page"),
   paginator: () => import("./pages/paginator/paginator.page"),
+  slider: () => import("./pages/slider/slider.page"),
   "form-layout": () => import("./pages/form-layout/form-layout.page"),
   dropzone: () => import("./pages/dropzone/dropzone.page"),
   toast: () => import("./pages/toast/toast.page"),

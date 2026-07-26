@@ -1,0 +1,125 @@
+<fold-page-layout title="slider">
+  <p description>
+    fold-slider — a single-value range slider (styled native
+    <code>&lt;input type="range"&gt;</code>, so keyboard/focus/role are native).
+    Signal Forms via <code>[formField]</code> (a
+    <code>FormValueControl&lt;number&gt;</code>) or standalone
+    <code>[(value)]</code>; a real <code>&lt;label for&gt;</code>, a
+    <code>valueText</code> override announced through
+    <code>aria-valuetext</code>, and touched-gated <code>hint</code> /
+    <code>errors</code>. <code>fold-range-slider</code> is the dual-thumb
+    sibling (<code>{{ '{' }} min, max {{ '}' }}</code>).
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <!-- ── single ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">single · label + value</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-slider
+          label="Volume"
+          [min]="0"
+          [max]="100"
+          [(value)]="volume"
+          hint="Drag or use the arrow keys"
+        />
+      </fold-card>
+    </div>
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">valueText override → aria-valuetext</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-slider
+          label="Lower bound"
+          [min]="0"
+          [max]="10"
+          [valueText]="boundText()"
+          [(value)]="bound"
+        />
+      </fold-card>
+    </div>
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">disabled</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-slider label="Locked" [value]="40" disabled />
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── range ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 340px">
+      <span class="gal-tag">range · number</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-range-slider
+          label="BPM"
+          [min]="60"
+          [max]="220"
+          [step]="5"
+          [(value)]="bpm"
+        />
+      </fold-card>
+    </div>
+    <div class="gal-cell" style="max-width: 340px">
+      <span class="gal-tag">range · duration (aria-valuetext = mm:ss)</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-range-slider
+          label="Clip window"
+          unit="duration"
+          [min]="0"
+          [max]="240"
+          [step]="5"
+          [(value)]="clip"
+        />
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── playground ── -->
+  <dev-playground [code]="playgroundCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">step</span>
+      <div class="ss-seg">
+        @for (s of [1, 5, 10, 25]; track s) {
+        <button
+          type="button"
+          [class.is-on]="pgStep() === s"
+          (click)="pgStep.set(s)"
+        >
+          {{ s }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">disabled</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgDisabled()"
+          (click)="pgDisabled.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgDisabled()"
+          (click)="pgDisabled.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+
+    <fold-card surface="sunken" style="--fold-card-padding: 24px">
+      <fold-slider
+        label="Volume"
+        [min]="pgMin()"
+        [max]="pgMax()"
+        [step]="pgStep()"
+        [disabled]="pgDisabled()"
+        [(value)]="pgValue"
+      />
+    </fold-card>
+  </dev-playground>
+</fold-page-layout>

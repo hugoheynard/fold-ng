@@ -148,6 +148,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badge: "new",
         badgeTone: "info",
       },
+      {
+        id: "slider",
+        label: "slider · range",
+        badge: "new",
+        badgeTone: "info",
+      },
       { id: "form-layout", label: "form layout" },
       { id: "dropzone", label: "file dropzone" },
     ],
