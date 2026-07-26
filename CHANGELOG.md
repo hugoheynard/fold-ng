@@ -6,7 +6,70 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-data-table` — controlled row selection.** `selectable` renders a
+  checkbox column plus a header select-all with an indeterminate state over the
+  current rows; the parent owns the set via `selected` (a `Set` of row keys) and
+  `selectionChange` (emits the next set — the table never mutates). Selected rows
+  carry an accent tint + `aria-selected`, and a `selectionLabel` names each
+  checkbox. Toggling a checkbox never triggers `rowClick`.
+- **`fold-data-table` — `mobileLayout` (parent owns the small-screen shape).**
+  `scroll` (default — stay tabular, scroll horizontally; the table imposes no
+  card), `auto-cards` (each row stacks into a label/value card), or `custom` —
+  the parent supplies `<ng-template foldRowCard let-row>` (new
+  `FoldDataTableRowCardDirective`) and the table renders _that_ per row on mobile
+  instead of an imposed card. The table owns the chrome, not the content.
+- **`fold-data-table` — a `loading` state.** A fetching table now shows a
+  centred `fold-spinner` instead of the empty state, so an in-flight roster
+  reads as "loading", never as "no data".
+- **`fold-data-table` — an optional toolbar/title bar.** Project content with
+  `[foldToolbar]` (a title, a live count, a bulk-action bar that appears once
+  rows are selected) and it renders as a visible band above the column header —
+  the same content-projection idiom as `fold-card`'s `[cardHeader]`, collapsing
+  to nothing when the parent projects nothing. It stays put while the body
+  scrolls (the table now has an inner scroll region). `toolbarSurface` lends the
+  table a level —
+  `default` / `sunken` / `raised` / `accent` — mapped only to fold surface
+  tokens (no hard-coded colour); `accent` reuses the shared
+  `[data-surface="accent"]` machinery, so the bar's content auto-inverts to the
+  on-accent palette per theme.
+- **`fold-data-table` — an accessible `caption`.** A new `caption` input renders
+  a visually-hidden `<caption>` that names the table for assistive tech
+  (distinct from the visible `foldToolbar` title).
+- **`fold-data-table` — `stickyFirst` + `density`.** `stickyFirst` pins the
+  checkbox + identity columns while the body scrolls horizontally (opaque-backed
+  so tints don't bleed); `density="compact"` tightens the row padding.
+- **`fold-data-table` — column `align: "center"` and `truncate`.** `center`
+  joins `right`; `truncate` clips a column to one ellipsised line (pair with
+  `width`).
+- **`data-table` gallery page.** Added `/data-table` to the demo (live sort, row
+  select, keyboard nav, the loading + empty states, a custom mobile card, and a
+  playground for every flag).
+
+### Changed
+
+- **`fold-data-table` — clickable rows are a roving-tabindex group.** They now
+  answer Space as well as Enter (page-scroll suppressed) and Arrow Up/Down +
+  Home/End move focus between rows with a single tab stop — the ARIA grid
+  keyboard pattern, not a wall of tab stops.
+- **`fold-data-table` — sort indicators are now `fold-icon`s** (`expand-all` when
+  idle, `chevron-up` / `chevron-down` when active) rather than text glyphs, so
+  the direction cue is theme-aware, pixel-aligned, and consistent with the rest
+  of the system. The icon is decorative — `aria-sort` on the `<th>` stays the
+  accessible carrier.
+- Transitions now respect `prefers-reduced-motion`.
+
+- **BREAKING (`fold-data-table`): the primary column renders as
+  `<th scope="row">`** (was a `<td>`) so screen readers announce each row by its
+  identity cell. Consumers that target the first cell with a `td`-specific
+  selector should switch to the `.folddt-cell` class (present on both the row
+  header and the data cells).
+- **BREAKING (`fold-data-table`): `mobileCards` (boolean) is replaced by
+  `mobileLayout`, and the default flips from cards to scroll.** A narrow-screen
+  table now stays tabular (scrolls) unless asked to stack. `[mobileCards]="true"`
+  (or unset) → `mobileLayout="auto-cards"` to keep the stacked cards;
+  `[mobileCards]="false"` → drop it (`scroll` is the default).
 
 ## [0.4.0] - 2026-07-25
 
