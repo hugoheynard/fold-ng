@@ -8,6 +8,18 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **Slider hardcore pass — `fold-slider` + `fold-range-slider`.** `fold-slider`
+  now implements `FormValueControl<number>` (bind `[formField]`, or `[(value)]`);
+  the visible label is a real `<label for>` (else `ariaLabel`); a `valueText`
+  override is announced via `aria-valuetext`; `hint` + touched-gated `errors`.
+  `fold-range-slider` gets a `model()` value (`[(value)]` parity), `disabled`,
+  and i18n thumb labels (`minLabel` / `maxLabel`, English default) resolving the
+  hardcoded aria suffixes; it's a labelled `role="group"` with formatted
+  `aria-valuetext` per thumb (duration reads `mm:ss`). Both share a hardened
+  thumb — a focus-visible ring (was invisible on keyboard focus),
+  `prefers-reduced-motion`, `forced-colors`, and tokenised motion. New gallery
+  `/slider` page; README rows; specs 12 → 20.
+
 - **`fold-paginator` hardcore pass.** Fully i18n — every string
   (`Pagination`/prev/next/page/size/range/empty) is now overridable via
   `provideFoldPaginatorLabels()` (English default) or a per-instance `labels`

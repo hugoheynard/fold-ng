@@ -16,7 +16,7 @@ the concrete work to reach ship-quality.
 Legend: 🟢 ship-ready · 🟡 minor work · 🔴 blocker.
 
 Scope audited: **33 components + the panel subsystem + 3 directives**, 96 public
-exports, **556 test blocks across 78 spec files**, **114 built-in icons**. No
+exports, **564 test blocks across 78 spec files**, **114 built-in icons**. No
 `any` / `as unknown` / `@ts-ignore` / `eslint-disable` / raw-colour violations in
 component _source_ (the token contract holds); the lone spec-side `as unknown`
 breach (P0-7) is now fixed too. Method: six parallel per-cluster audits, each reading every
@@ -104,8 +104,8 @@ and the gallery nav — **layout first**.
 | `fold-checkbox`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — native + `FormCheckboxControl`; gallery page |
 | `fold-number-input`  | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate           |
 | `fold-select`        | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                             |
-| `fold-slider`        | 🟡  |  🟢   |  🟡  | Not a `FormValueControl`; README row                          |
-| `fold-range-slider`  | 🟡  |  🟢   |  🟡  | **Hardcoded aria suffixes; no README/gallery**                |
+| `fold-slider`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — FormValueControl, real label, focus, gallery |
+| `fold-range-slider`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — [(value)], i18n aria, disabled, gallery      |
 | `fold-file-dropzone` | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row             |
 | `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                            |
 
@@ -119,11 +119,11 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page                                 |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo                                 |
 
-**Ship-ready today (27):** app-shell, page-layout, page-section, hero-section,
+**Ship-ready today (29):** app-shell, page-layout, page-section, hero-section,
 aside-layout, nav-layout, view-nav, tabs, card, avatar-list, callout,
 element-title, field, field-list, nav-launcher, timeline, toast, surface, icon,
 repeat-press, sticky-column, button, button-icon, toggle-icon, **data-table**,
-**checkbox**, **paginator**. Everything else has scoped, mostly mechanical work below.
+**checkbox**, **paginator**, **slider**, **range-slider**. Everything else has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with nav-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -198,7 +198,7 @@ fills its container, width is a content concern.)
 
 **C-2 · README table is out of sync (rule 4.6).** Exported public components with
 **no README row**: `fold-callout`,
-`fold-disclosure`, `fold-select`, `fold-slider`, `fold-range-slider`,
+`fold-disclosure`, `fold-select`,
 `fold-file-dropzone`, `fold-repeat-press`. (`fold-page-section` now has its own
 row.) Add each row.
 
@@ -223,13 +223,12 @@ presence** (fall back to the stub page — not among the Library nav entries):
 `fold-empty-state` + `fold-loading` (a `state`
 page), and `[foldRepeatPress]`. (`fold-data-table` now has its own `/data-table`
 page, and `fold-checkbox` a `/checkbox` page.) `fold-choice-row` renders only incidentally inside
-other pages (its `chips` layout + `count` badge are never shown), and
-`fold-range-slider` / `fold-slider` are imported but not clearly demoed. A release
+other pages (its `chips` layout + `count` badge are never shown), (`fold-slider` + `fold-range-slider` now have the `/slider` page.) A release
 showcase must render every public component.
 
 **C-6 · Hardcoded English UI strings that should be inputs.** Not portability
 _blockers_ (they're English), but they can't be localised and break the
-"user-facing text is an `input()`" rule: menu toggle/chevron
+"user-facing text is an `input()`" rule: (range-slider suffixes ✅) menu toggle/chevron
 `"Collapse menu"`/`"Expand menu"` (`menu.component.html:34`), toast close
 `aria-label="Dismiss"` (`toast.component.html:9`), range-slider
 `" minimum"`/`" maximum"` aria suffixes (string-concat), `fold-loading` default
@@ -467,17 +466,19 @@ box currently has no accessible name unless the caller wraps it; (2) `type="sear
 Actions: (1) README row (C-2); (2) add a `[formField]` snippet to the `@example`;
 (3) ensure the gallery Select tab shows a placeholder + a required/error variant.
 
-**`fold-slider`** 🟡🟢🟡 — Actions: (1) README row (C-2); (2) decide the family
-contract — implement `FormValueControl<number>` for `[formField]` parity with
-input/number/select, or document why it stays `[(value)]`-only; (3) give it a
-real gallery section (imported, unclear if rendered); (4) the visible `.sl-label`
-is a `<span>`, not `<label for>` — only the aria-label names the control.
+**`fold-slider`** 🟢🟢🟢 — **Ship-ready** (hardcore pass, 2026-07-26). Now
+`FormValueControl<number>` (`[formField]`) as well as `[(value)]`; the visible
+label is a real `<label for>` (else `ariaLabel`); a `valueText` override is
+announced via `aria-valuetext`; `hint` + touched-gated `errors`; a focus-visible
+thumb ring, `prefers-reduced-motion` and `forced-colors`. README row + gallery
+`/slider`. 20 specs across the pair.
 
-**`fold-range-slider`** 🟡🟢🟡 — Actions: (1) extract the `" minimum"`/`" maximum"`
-aria suffixes to inputs with English defaults (C-6 — currently string-concat,
-unlocalisable); (2) README row + gallery section (appears **not showcased
-anywhere**); (3) consider `model()` for `[(value)]` parity with `fold-slider`
-(today it's `input` + `output`, more caller boilerplate); (4) add `disabled`.
+**`fold-range-slider`** 🟢🟢🟢 — **Ship-ready** (hardcore pass, 2026-07-26).
+`value` is a `model()` (`[(value)]` parity); the thumb aria suffixes are
+`minLabel` / `maxLabel` inputs (English default, C-6 fixed); a labelled
+`role="group"`, formatted `aria-valuetext` per thumb (duration reads `mm:ss`,
+not raw seconds); `disabled`; shares the hardened thumb (focus ring, reduced
+motion, forced colors). README row + gallery `/slider`.
 
 **`fold-file-dropzone`** 🟡🟢🟡 — Solid affordance (drag visuals, keyboard
 activation, same-file re-pick reset, disabled/busy guards). Actions: **P0-4**
