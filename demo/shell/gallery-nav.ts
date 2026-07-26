@@ -167,6 +167,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badgeTone: "info",
       },
       {
+        id: "view-toggle",
+        label: "view-toggle",
+        badge: "new",
+        badgeTone: "info",
+      },
+      {
         id: "checkbox",
         label: "checkbox",
         badge: "new",

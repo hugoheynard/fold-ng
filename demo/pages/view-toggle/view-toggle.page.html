@@ -1,0 +1,59 @@
+<fold-page-layout title="view-toggle">
+  <p description>
+    <code>fold-view-toggle</code> — a compact
+    <strong>segmented single-select</strong> (Cards / Table, a density switch, a
+    chart mode…). Generic and zero-domain: pass <code>options</code>, bind
+    <code>[(value)]</code>. It's a real <code>role="radiogroup"</code> — roving
+    tabindex, arrow-key selection, <code>Home</code>/<code>End</code> — not two
+    independent toggles.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['icons']" />
+
+  <dev-playground [code]="code()" [responsive]="false">
+    <div params>
+      <div class="vtp-field">
+        <span class="gal-tag">size</span>
+        <div class="vtp-seg">
+          @for (s of sizes; track s) {
+          <button
+            type="button"
+            [class.is-on]="size() === s"
+            (click)="size.set(s)"
+          >
+            {{ s }}
+          </button>
+          }
+        </div>
+      </div>
+      <div class="vtp-field">
+        <span class="gal-tag">iconOnly</span>
+        <div class="vtp-seg">
+          <button
+            type="button"
+            [class.is-on]="!iconOnly()"
+            (click)="iconOnly.set(false)"
+          >
+            off
+          </button>
+          <button
+            type="button"
+            [class.is-on]="iconOnly()"
+            (click)="iconOnly.set(true)"
+          >
+            on
+          </button>
+        </div>
+      </div>
+      <p class="gal-readout">value = <code>{{ view() }}</code></p>
+    </div>
+
+    <fold-view-toggle
+      ariaLabel="View"
+      [options]="options"
+      [size]="size()"
+      [iconOnly]="iconOnly()"
+      [(value)]="view"
+    />
+  </dev-playground>
+</fold-page-layout>

@@ -48,6 +48,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   form: () => import("./pages/form/form.page"),
   listbox: () => import("./pages/listbox/listbox.page"),
   password: () => import("./pages/password/password.page"),
+  "view-toggle": () => import("./pages/view-toggle/view-toggle.page"),
   avatar: () => import("./pages/avatar/avatar.page"),
   "app-shell": () => import("./pages/app-shell/app-shell.page"),
   menu: () => import("./pages/menu/menu.page"),
