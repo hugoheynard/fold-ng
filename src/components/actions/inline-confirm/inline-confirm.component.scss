@@ -29,6 +29,10 @@
 
 .fic-field {
   display: block;
+  /* Give the input real room to type into; caps at the container so it still
+     collapses gracefully inside a narrow card or table cell. */
+  width: 15rem;
+  max-width: 100%;
 }
 
 .fic-actions {
