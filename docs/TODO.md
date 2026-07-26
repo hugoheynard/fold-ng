@@ -63,9 +63,18 @@ Priority: the popover primitive. Usage counts are current app call-sites.
 - [ ] **`fold-sortable-row` — drag-reorder row frame** (from `shared/sortable-row-frame`,
       2). **Absorbs `shared/ui-frames/card-frame-horizontal`** (3, the program
       drag-cards) — that's how card-frame "disappears".
-- [ ] **password field** (from `shared/forms/password-field`, 3) — password input +
-      live validation-rule dots. Decide: a `fold-password-field`, or a
-      "revealable + rules" capability on `fold-input`.
+- [x] **password field** (from `shared/forms/password-field`, 3). ✅ Done
+      (2026-07-26) — **two layers** (decided): `revealable` (eye toggle) added to
+      `fold-input` as a reusable capability, and `fold-password-field` composing
+      it with a live requirements checklist. Rules are **injected** via a
+      `FoldPasswordRule` type (`{ label, test }`) — a regex fits `foldRegexRule`,
+      a `zod` `safeParse` fits `test` directly, no dependency added. Gallery
+      `/password`; specs cover rules + reveal.
+  - [ ] **Richer rule-injection ergonomics** — a `zod`-schema → rules adapter
+        (map issues to labelled rules) and a regex-descriptor form, so consumers
+        needn't hand-write `test` closures for the common cases.
+  - [ ] **Strength meter** — an optional aggregate bar (weak/ok/strong) beside
+        the checklist.
 - [ ] **`fold-back-link`** (from `shared/back-link`, 3) — router back-link; generic
       but Router-coupled.
 

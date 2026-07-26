@@ -8,6 +8,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-password-field` + `revealable` on `fold-input`.** A password input with
+  a **live requirements checklist** — a dot per rule that turns on as the value
+  satisfies it — built in two layers. `fold-input` gains a reusable `revealable`
+  (a show/hide eye toggle on a `type="password"` input); `fold-password-field`
+  composes it with the checklist. Rules are **injected**, not hard-coded: a
+  `FoldPasswordRule` is `{ label, test }`, so a `RegExp` (`foldRegexRule`), a
+  `zod` `safeParse`, a length check or anything drops in — `rules` defaults to a
+  sensible policy (`foldDefaultPasswordRules`). `validChange` emits when every
+  rule passes; Signal-Forms-native; the checklist is an `aria-live` list that
+  labels each row met / not met. New gallery `/password` page.
+
 - **`fold-popover` + `fold-dropdown` — anchored floating layer & actions menu.**
   fold's first floating primitive. `fold-popover` renders projected content in
   the native **top layer** (the `popover` attribute — escapes `overflow: hidden`
