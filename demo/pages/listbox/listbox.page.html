@@ -57,6 +57,28 @@
     </div>
   </div>
 
+  <!-- ── multi-select ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 340px">
+      <span class="gal-tag">fold-multiselect · toggle, stays open</span>
+      <fold-multiselect
+        label="Genres"
+        placeholder="Choisir plusieurs genres…"
+        hint="Enter/Espace ou clic pour cocher ; le panneau reste ouvert."
+        [(value)]="genres"
+      >
+        <fold-option value="rock">Rock</fold-option>
+        <fold-option value="jazz">Jazz</fold-option>
+        <fold-option value="soul">Soul</fold-option>
+        <fold-option value="funk">Funk</fold-option>
+        <fold-option value="electro">Électro</fold-option>
+      </fold-multiselect>
+      <p class="gal-readout">
+        value = <code>[{{ genres().join(", ") }}]</code>
+      </p>
+    </div>
+  </div>
+
   <!-- ── native vs styleable ── -->
   <fold-card class="gal-compare">
     <span class="gal-tag"

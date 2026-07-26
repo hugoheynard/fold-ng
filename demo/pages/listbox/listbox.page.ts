@@ -4,6 +4,7 @@ import { ComposedOfComponent } from "../../components/composed-of.component";
 import {
   FoldCardComponent,
   FoldListboxComponent,
+  FoldMultiselectComponent,
   FoldOptionComponent,
   FoldPageLayoutComponent,
   FoldSelectComponent,
@@ -26,6 +27,7 @@ interface Team {
     FoldPageLayoutComponent,
     FoldCardComponent,
     FoldListboxComponent,
+    FoldMultiselectComponent,
     FoldOptionComponent,
     FoldSelectComponent,
   ],
@@ -62,6 +64,9 @@ export default class ListboxPage {
   protected readonly teamName = computed(
     () => this.teams.find((t) => t.value === this.team())?.name ?? "—",
   );
+
+  /* ── multi-select (toggle, panel stays open) ── */
+  protected readonly genres = signal<readonly string[]>(["rock", "jazz"]);
 
   /* ── vs. the native wrapper, side by side ── */
   protected readonly nativeCurrency = signal("EUR");
