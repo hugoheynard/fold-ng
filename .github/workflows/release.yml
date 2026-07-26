@@ -65,6 +65,12 @@ jobs:
       - run: pnpm run lint:templates
       - run: pnpm test
 
+      # Browser tier (native popover / focus / positioning) — same as ci.yml, so
+      # a tag never publishes something the PR gate would have caught.
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run test:e2e
+
       # Build the publishable artifact (ng-packagr + finalize) + publint + attw.
       - run: pnpm run verify:pack
 

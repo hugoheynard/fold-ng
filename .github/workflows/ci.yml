@@ -40,6 +40,14 @@ jobs:
       - run: pnpm run lint:templates
       - run: pnpm test
 
+      # Browser tier: behaviour jsdom can't reach — the native `popover` top
+      # layer, real positioning, keyboard/focus. Playwright's config starts the
+      # gallery (Vite) itself. Kept inside `ci` so the one required status check
+      # covers it too. `--with-deps` pulls the Chromium OS libraries on the runner.
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run test:e2e
+
       # The publishable artifact must stay valid: build (ng-packagr + finalize)
       # + publint + attw. Catches a broken package.json/exports before a tag ever
       # tries to publish it.
