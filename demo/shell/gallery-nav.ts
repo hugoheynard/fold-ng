@@ -88,6 +88,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
       { id: "button", label: "button" },
       { id: "button-icon", label: "button-icon" },
       { id: "link", label: "link" },
+      {
+        id: "inline-confirm",
+        label: "inline-confirm",
+        badge: "new",
+        badgeTone: "info",
+      },
     ],
   },
   {

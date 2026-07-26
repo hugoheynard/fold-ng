@@ -1,0 +1,214 @@
+<fold-page-layout title="inline-confirm">
+  <p description>
+    fold-inline-confirm — an in-place “are you sure?” guard, no modal. The host
+    projects the trigger (a real <code>foldButton</code> /
+    <code>fold-button-icon</code>); on activation it is replaced, in the same
+    slot, by a confirm/cancel row. Three families:
+    <strong>simple</strong> (<code>confirmed</code> emits <code>""</code>),
+    <strong>type-to-confirm</strong> (<code>[match]</code> — the button unlocks
+    once the text matches), and <strong>secret</strong> (<code>password</code> —
+    a masked field that emits the typed value for the server to check).
+    <code>Escape</code> cancels, focus moves into the affordance and back to the
+    trigger, labels are overridable
+    (<code>provideFoldInlineConfirmLabels</code>).
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['button', 'button-icon', 'form']" />
+
+  <!-- ── simple family ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 360px">
+      <span class="gal-tag">simple · icon trigger</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 16px">
+        <ul class="ic-list">
+          @for (row of rows(); track row) {
+          <li class="ic-item">
+            <span>{{ row }}</span>
+            <fold-inline-confirm (confirmed)="remove(row)">
+              <fold-button-icon
+                icon="bin"
+                tone="critical"
+                size="sm"
+                tooltip="Delete"
+              />
+            </fold-inline-confirm>
+          </li>
+          } @empty {
+          <li class="ic-empty">
+            <button foldButton emphasis="soft" size="sm" (click)="resetRows()">
+              Reset list
+            </button>
+          </li>
+          }
+        </ul>
+      </fold-card>
+    </div>
+
+    <div class="gal-cell" style="max-width: 360px">
+      <span class="gal-tag">simple · button trigger · icon cancel</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-inline-confirm cancelIcon (confirmed)="onConfirm($event)">
+          <button foldButton emphasis="outline" intent="danger" size="sm">
+            Remove access
+          </button>
+        </fold-inline-confirm>
+      </fold-card>
+    </div>
+
+    <div class="gal-cell" style="max-width: 360px">
+      <span class="gal-tag">with message</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-inline-confirm
+          message="The invite link stops working immediately."
+          (confirmed)="onConfirm($event)"
+        >
+          <button foldButton intent="danger" size="sm">Revoke link</button>
+        </fold-inline-confirm>
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── typed families ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 360px">
+      <span class="gal-tag">type-to-confirm · [match]</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-inline-confirm
+          match="prod-cluster"
+          message="This permanently deletes the cluster."
+          (confirmed)="onConfirm($event)"
+        >
+          <button foldButton intent="danger" size="sm">Delete cluster</button>
+        </fold-inline-confirm>
+      </fold-card>
+    </div>
+
+    <div class="gal-cell" style="max-width: 360px">
+      <span class="gal-tag">secret · password (emits the value)</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <fold-inline-confirm
+          password
+          message="Enter your password to delete your account."
+          (confirmed)="onConfirm($event)"
+        >
+          <button foldButton intent="danger" size="sm">Delete account</button>
+        </fold-inline-confirm>
+      </fold-card>
+    </div>
+
+    <div class="gal-cell" style="max-width: 220px">
+      <span class="gal-tag">last emitted</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 20px">
+        <code class="ic-readout">{{ lastConfirm() ?? "—" }}</code>
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── playground ── -->
+  <dev-playground [code]="playgroundCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">family</span>
+      <div class="ss-seg">
+        @for (f of families; track f) {
+        <button
+          type="button"
+          [class.is-on]="pgFamily() === f"
+          (click)="pgFamily.set(f)"
+        >
+          {{ f }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">intent</span>
+      <div class="ss-seg">
+        @for (i of intents; track i) {
+        <button
+          type="button"
+          [class.is-on]="pgIntent() === i"
+          (click)="pgIntent.set(i)"
+        >
+          {{ i }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">message</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgMessage()"
+          (click)="pgMessage.set(true)"
+        >
+          on
+        </button>
+        <button
+          type="button"
+          [class.is-on]="!pgMessage()"
+          (click)="pgMessage.set(false)"
+        >
+          off
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">cancelIcon</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgCancelIcon()"
+          (click)="pgCancelIcon.set(true)"
+        >
+          on
+        </button>
+        <button
+          type="button"
+          [class.is-on]="!pgCancelIcon()"
+          (click)="pgCancelIcon.set(false)"
+        >
+          off
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">loading</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgLoading()"
+          (click)="pgLoading.set(true)"
+        >
+          on
+        </button>
+        <button
+          type="button"
+          [class.is-on]="!pgLoading()"
+          (click)="pgLoading.set(false)"
+        >
+          off
+        </button>
+      </div>
+    </div>
+
+    <fold-card surface="sunken" style="--fold-card-padding: 24px">
+      <div class="ic-stage">
+        <fold-inline-confirm
+          [intent]="pgIntent()"
+          [match]="pgMatch()"
+          [password]="pgPassword()"
+          [cancelIcon]="pgCancelIcon()"
+          [loading]="pgLoading()"
+          [message]="pgMessage() ? 'This can\'t be undone.' : undefined"
+          (confirmed)="onPlaygroundConfirm($event)"
+        >
+          <button foldButton [intent]="pgIntent()">Delete</button>
+        </fold-inline-confirm>
+        @if (pgLog(); as log) {
+        <span class="ic-log">{{ log }}</span>
+        }
+      </div>
+    </fold-card>
+  </dev-playground>
+</fold-page-layout>

@@ -23,6 +23,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   card: () => import("./pages/card/card.page"),
   button: () => import("./pages/button/button.page"),
   "button-icon": () => import("./pages/button-icon/button-icon.page"),
+  "inline-confirm": () => import("./pages/inline-confirm/inline-confirm.page"),
   link: () => import("./pages/link/link.page"),
   "element-title": () => import("./pages/element-title/element-title.page"),
   "context-card": () => import("./pages/context-card/context-card.page"),
