@@ -13,3 +13,7 @@ docs-api/
 .idea/
 .vscode/
 *.iml
+
+# Playwright
+test-results/
+playwright-report/

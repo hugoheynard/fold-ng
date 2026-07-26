@@ -82,7 +82,8 @@
     "docs:api": "typedoc",
     "lint": "eslint src demo",
     "lint:templates": "tsx scripts/check-templates.ts",
-    "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo"
+    "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo",
+    "test:e2e": "playwright test"
   },
   "peerDependencies": {
     "@angular/common": "^22",
@@ -95,7 +96,6 @@
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.6.2",
-    "@arethetypeswrong/cli": "^0.18.5",
     "@analogjs/vitest-angular": "^2.6.2",
     "@angular/build": "^22.0.7",
     "@angular/common": "^22.0.7",
@@ -105,8 +105,10 @@
     "@angular/forms": "^22.0.7",
     "@angular/platform-browser": "^22.0.7",
     "@angular/router": "^22.0.7",
+    "@arethetypeswrong/cli": "^0.18.5",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@eslint/js": "^9.28.0",
+    "@playwright/test": "^1.62.0",
     "@types/node": "^22.9.0",
     "concurrently": "^9.1.2",
     "eslint": "^9.28.0",
