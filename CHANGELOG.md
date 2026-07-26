@@ -59,6 +59,14 @@ All notable changes to **fold-ng** are documented here. The format follows
   of the system. The icon is decorative — `aria-sort` on the `<th>` stays the
   accessible carrier.
 - Transitions now respect `prefers-reduced-motion`.
+- **`fold-data-table` hardening (hardcore-review follow-ups).** Row keydown now
+  fires only when the row itself is focused — keys bubbling from an inner control
+  (a link, a button, the selection checkbox) are no longer stolen or
+  double-handled; the roving tab stop survives the focused row being removed
+  (never strands the group with zero tab stops); the `custom` mobile layout no
+  longer instantiates its card list on desktop; `truncate` warns in dev when its
+  column lacks a `width` to clip against; `aria-colcount` + a "Sort by …" label
+  on the sort control; the checkbox-column width is a single source of truth.
 
 - **BREAKING (`fold-data-table`): the primary column renders as
   `<th scope="row">`** (was a `<td>`) so screen readers announce each row by its
