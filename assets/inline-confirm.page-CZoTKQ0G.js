@@ -1,0 +1,47 @@
+import{s as d,y as h,ɵ as T,c as F,b as M,d as e,e as n,f as o,g as w,i as v,u as y,C as c,I as B,j as s,m as _,v as L,o as b,k,D as p,J as x,B as g,q as f,l as P,E as u,H as C}from"./index-Dx-EuELi.js";import{K as $}from"./kind-badge.component-BHaV4JT9.js";import{C as D}from"./composed-of.component-FTsuykVb.js";import{D as O}from"./playground.component-CQ3qxdqC.js";import{FoldButtonComponent as z}from"./button.component-B3QvxMEF.js";import{FoldButtonIconComponent as E}from"./button-icon.component-GbUN2qt2.js";import{FoldInlineConfirmComponent as j}from"./inline-confirm.component-Dft8pxGP.js";import"./element-title.component-CPB4kdhs.js";import"./page-section.component-mUwKCrfJ.js";import"./slider.component-d2anJr45.js";import"./input-value-Co_u-z_8.js";import"./spinner.component-BuH8iUOI.js";import"./tokens.catalog-DF_6rd51.js";import"./input.component-BiQcxnjX.js";import"./input-base.component-Qi0d9XuF.js";import"./label.component-BR7borAk.js";const R=()=>["button","button-icon","form"];function S(m,i){if(m&1){const r=g();e(0,"li",9)(1,"span"),n(2),o(),e(3,"fold-inline-confirm",30),c("confirmed",function(){const a=u(r).$implicit,l=f();return C(l.remove(a))}),w(4,"fold-button-icon",31),o()()}if(m&2){const r=i.$implicit;s(2),k(r)}}function V(m,i){if(m&1){const r=g();e(0,"li",10)(1,"button",32),c("click",function(){u(r);const a=f();return C(a.resetRows())}),n(2," Reset list "),o()()}}function G(m,i){if(m&1){const r=g();e(0,"button",24),c("click",function(){const a=u(r).$implicit,l=f();return C(l.pgFamily.set(a))}),n(1),o()}if(m&2){const r=i.$implicit,t=f();p("is-on",t.pgFamily()===r),s(),P(" ",r," ")}}function K(m,i){if(m&1){const r=g();e(0,"button",24),c("click",function(){const a=u(r).$implicit,l=f();return C(l.pgIntent.set(a))}),n(1),o()}if(m&2){const r=i.$implicit,t=f();p("is-on",t.pgIntent()===r),s(),P(" ",r," ")}}function q(m,i){m&1&&(e(0,"span",29),n(1),o()),m&2&&(s(),k(i))}class I{rows=d(["Spring tour","Summer festival","Gala"]);remove(i){this.rows.update(r=>r.filter(t=>t!==i))}resetRows(){this.rows.set(["Spring tour","Summer festival","Gala"])}lastConfirm=d(null);onConfirm(i){this.lastConfirm.set(i===""?"(confirmed)":i)}families=["simple","type","password"];intents=["danger","warning","primary","neutral"];pgFamily=d("simple");pgIntent=d("danger");pgCancelIcon=d(!1);pgMessage=d(!0);pgLoading=d(!1);pgLog=d(null);pgMatch=h(()=>this.pgFamily()==="type"?"delete":"");pgPassword=h(()=>this.pgFamily()==="password");onPlaygroundConfirm(i){this.pgLog.set(i===""?"confirmed":`confirmed → “${i}”`)}playgroundCode=h(()=>{const i=["<fold-inline-confirm"];return this.pgIntent()!=="danger"&&i.push(`  intent="${this.pgIntent()}"`),this.pgFamily()==="type"&&i.push('  [match]="project.name"'),this.pgFamily()==="password"&&i.push("  password"),this.pgMessage()&&i.push(`  message="This can't be undone."`),this.pgCancelIcon()&&this.pgFamily()==="simple"&&i.push("  cancelIcon"),this.pgLoading()&&i.push('  [loading]="pending()"'),i.push('  (confirmed)="onConfirm($event)">'),i.push('  <button foldButton intent="danger">Delete</button>'),i.push("</fold-inline-confirm>"),i.join(`
+`)});static ɵfac=function(r){return new(r||I)};static ɵcmp=T({type:I,selectors:[["gal-inline-confirm-page"]],decls:125,vars:25,consts:[["title","inline-confirm"],["description",""],["titleBadge","","kind","component"],[3,"ids"],[1,"gal-row","gal-row--wide"],[1,"gal-cell",2,"max-width","360px"],[1,"gal-tag"],["surface","sunken",2,"--fold-card-padding","16px"],[1,"ic-list"],[1,"ic-item"],[1,"ic-empty"],["surface","sunken",2,"--fold-card-padding","20px"],["cancelIcon","",3,"confirmed"],["foldButton","","emphasis","outline","intent","danger","size","sm"],["message","The invite link stops working immediately.",3,"confirmed"],["foldButton","","intent","danger","size","sm"],["match","prod-cluster","message","This permanently deletes the cluster.",3,"confirmed"],["password","","message","Enter your password to delete your account.",3,"confirmed"],[1,"gal-cell",2,"max-width","220px"],[1,"ic-readout"],[3,"code"],["params","",1,"np-field"],[1,"ss-seg"],["type","button",3,"is-on"],["type","button",3,"click"],["surface","sunken",2,"--fold-card-padding","24px"],[1,"ic-stage"],[3,"confirmed","intent","match","password","cancelIcon","loading","message"],["foldButton","",3,"intent"],[1,"ic-log"],[3,"confirmed"],["icon","bin","tone","critical","size","sm","tooltip","Delete"],["foldButton","","emphasis","soft","size","sm",3,"click"]],template:function(r,t){if(r&1&&(e(0,"fold-page-layout",0)(1,"p",1),n(2," fold-inline-confirm — an in-place “are you sure?” guard, no modal. The host projects the trigger (a real "),e(3,"code"),n(4,"foldButton"),o(),n(5," / "),e(6,"code"),n(7,"fold-button-icon"),o(),n(8,"); on activation it is replaced, in the same slot, by a confirm/cancel row. Three families: "),e(9,"strong"),n(10,"simple"),o(),n(11," ("),e(12,"code"),n(13,"confirmed"),o(),n(14," emits "),e(15,"code"),n(16,'""'),o(),n(17,"), "),e(18,"strong"),n(19,"type-to-confirm"),o(),n(20," ("),e(21,"code"),n(22,"[match]"),o(),n(23," — the button unlocks once the text matches), and "),e(24,"strong"),n(25,"secret"),o(),n(26," ("),e(27,"code"),n(28,"password"),o(),n(29," — a masked field that emits the typed value for the server to check). "),e(30,"code"),n(31,"Escape"),o(),n(32," cancels, focus moves into the affordance and back to the trigger, labels are overridable ("),e(33,"code"),n(34,"provideFoldInlineConfirmLabels"),o(),n(35,"). "),o(),w(36,"gal-kind-badge",2)(37,"gal-composed-of",3),e(38,"div",4)(39,"div",5)(40,"span",6),n(41,"simple · icon trigger"),o(),e(42,"fold-card",7)(43,"ul",8),v(44,S,5,1,"li",9,y,!1,V,3,0,"li",10),o()()(),e(47,"div",5)(48,"span",6),n(49,"simple · button trigger · icon cancel"),o(),e(50,"fold-card",11)(51,"fold-inline-confirm",12),c("confirmed",function(l){return t.onConfirm(l)}),e(52,"button",13),n(53," Remove access "),o()()()(),e(54,"div",5)(55,"span",6),n(56,"with message"),o(),e(57,"fold-card",11)(58,"fold-inline-confirm",14),c("confirmed",function(l){return t.onConfirm(l)}),e(59,"button",15),n(60,"Revoke link"),o()()()()(),e(61,"div",4)(62,"div",5)(63,"span",6),n(64,"type-to-confirm · [match]"),o(),e(65,"fold-card",11)(66,"fold-inline-confirm",16),c("confirmed",function(l){return t.onConfirm(l)}),e(67,"button",15),n(68,"Delete cluster"),o()()()(),e(69,"div",5)(70,"span",6),n(71,"secret · password (emits the value)"),o(),e(72,"fold-card",11)(73,"fold-inline-confirm",17),c("confirmed",function(l){return t.onConfirm(l)}),e(74,"button",15),n(75,"Delete account"),o()()()(),e(76,"div",18)(77,"span",6),n(78,"last emitted"),o(),e(79,"fold-card",11)(80,"code",19),n(81),o()()()(),e(82,"dev-playground",20)(83,"div",21)(84,"span",6),n(85,"family"),o(),e(86,"div",22),v(87,G,2,3,"button",23,y),o()(),e(89,"div",21)(90,"span",6),n(91,"intent"),o(),e(92,"div",22),v(93,K,2,3,"button",23,y),o()(),e(95,"div",21)(96,"span",6),n(97,"message"),o(),e(98,"div",22)(99,"button",24),c("click",function(){return t.pgMessage.set(!0)}),n(100," on "),o(),e(101,"button",24),c("click",function(){return t.pgMessage.set(!1)}),n(102," off "),o()()(),e(103,"div",21)(104,"span",6),n(105,"cancelIcon"),o(),e(106,"div",22)(107,"button",24),c("click",function(){return t.pgCancelIcon.set(!0)}),n(108," on "),o(),e(109,"button",24),c("click",function(){return t.pgCancelIcon.set(!1)}),n(110," off "),o()()(),e(111,"div",21)(112,"span",6),n(113,"loading"),o(),e(114,"div",22)(115,"button",24),c("click",function(){return t.pgLoading.set(!0)}),n(116," on "),o(),e(117,"button",24),c("click",function(){return t.pgLoading.set(!1)}),n(118," off "),o()()(),e(119,"fold-card",25)(120,"div",26)(121,"fold-inline-confirm",27),c("confirmed",function(l){return t.onPlaygroundConfirm(l)}),e(122,"button",28),n(123,"Delete"),o()(),B(124,q,2,1,"span",29),o()()()()),r&2){let a;s(37),_("ids",L(24,R)),s(7),b(t.rows()),s(37),k(t.lastConfirm()??"—"),s(),_("code",t.playgroundCode()),s(5),b(t.families),s(6),b(t.intents),s(6),p("is-on",t.pgMessage()),s(2),p("is-on",!t.pgMessage()),s(6),p("is-on",t.pgCancelIcon()),s(2),p("is-on",!t.pgCancelIcon()),s(6),p("is-on",t.pgLoading()),s(2),p("is-on",!t.pgLoading()),s(4),_("intent",t.pgIntent())("match",t.pgMatch())("password",t.pgPassword())("cancelIcon",t.pgCancelIcon())("loading",t.pgLoading())("message",t.pgMessage()?"This can't be undone.":void 0),s(),_("intent",t.pgIntent()),s(2),x((a=t.pgLog())?124:-1,a)}},dependencies:[$,D,O,F,M,z,E,j],styles:[`.ic-list[_ngcontent-%COMP%] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ic-item[_ngcontent-%COMP%] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fold-space-md);
+  min-height: 34px;
+  padding: 4px 8px;
+  border-radius: var(--fold-radius-sm);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-secondary);
+}
+
+.ic-item[_ngcontent-%COMP%]:hover {
+  background: var(--fold-color-surface-hover);
+}
+
+.ic-empty[_ngcontent-%COMP%] {
+  padding: 6px 8px;
+}
+
+.ic-readout[_ngcontent-%COMP%] {
+  font-family: var(--fold-font-mono, monospace);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-primary-text);
+}
+
+.ic-stage[_ngcontent-%COMP%] {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-lg);
+  flex-wrap: wrap;
+}
+
+.ic-log[_ngcontent-%COMP%] {
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}`]})}export{I as default};
