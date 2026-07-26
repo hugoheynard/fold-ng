@@ -1,0 +1,150 @@
+:host {
+  --cb-size: 18px;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+:host(.sm) {
+  --cb-size: 15px;
+}
+
+.cb {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text);
+  user-select: none;
+}
+.cb.is-disabled {
+  cursor: not-allowed;
+  color: var(--fold-color-text-muted);
+}
+
+/* The native input carries the semantics; it sits transparently over the box
+   (still focusable + hit-testable), the styled box is what the user sees. */
+.cb-native {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cb-size);
+  height: var(--cb-size);
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.cb-box {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: var(--cb-size);
+  height: var(--cb-size);
+  border: 1.5px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-on-primary);
+  transition:
+    background var(--fold-motion-fast),
+    border-color var(--fold-motion-fast),
+    box-shadow var(--fold-motion-fast);
+}
+.cb:hover .cb-native:not(:disabled) ~ .cb-box {
+  border-color: var(--fold-color-primary);
+}
+
+/* Checked / mixed fill. */
+.cb-native:checked ~ .cb-box,
+.cb-native:indeterminate ~ .cb-box {
+  background: var(--fold-color-primary);
+  border-color: var(--fold-color-primary);
+}
+
+/* Focus ring — a soft glow on the box (the native outline is hidden). */
+.cb-native:focus-visible ~ .cb-box {
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--fold-color-primary) 35%, transparent);
+}
+
+/* Marks — cross-faded on state; indeterminate wins over checked. */
+.cb-mark {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--fold-motion-fast),
+    transform var(--fold-motion-fast);
+}
+.cb-native:checked ~ .cb-box .cb-check {
+  opacity: 1;
+  transform: none;
+}
+.cb-native:indeterminate ~ .cb-box .cb-check {
+  opacity: 0;
+}
+.cb-native:indeterminate ~ .cb-box .cb-dash {
+  opacity: 1;
+  transform: none;
+}
+
+/* Disabled. */
+.cb-native:disabled ~ .cb-box {
+  background: var(--fold-color-surface-raised);
+  border-color: var(--fold-color-border-subtle);
+}
+.cb-native:checked:disabled ~ .cb-box,
+.cb-native:indeterminate:disabled ~ .cb-box {
+  background: color-mix(
+    in srgb,
+    var(--fold-color-primary) 45%,
+    var(--fold-color-surface-sunken)
+  );
+  border-color: transparent;
+}
+
+.cb-label {
+  line-height: 1.3;
+}
+.cb-req {
+  color: var(--fold-color-alert);
+}
+
+.cb-msg {
+  padding-left: calc(var(--cb-size) + 8px);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+.cb-msg.is-error {
+  color: var(--fold-color-alert);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-box,
+  .cb-mark {
+    transition: none;
+  }
+}
+
+/* Windows high-contrast — keep the box + state visible with system colours. */
+@media (forced-colors: active) {
+  .cb-box {
+    border-color: CanvasText;
+  }
+  .cb-native:checked ~ .cb-box,
+  .cb-native:indeterminate ~ .cb-box {
+    background: Highlight;
+    border-color: Highlight;
+  }
+  .cb-mark {
+    color: HighlightText;
+  }
+  .cb-native:focus-visible ~ .cb-box {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+}

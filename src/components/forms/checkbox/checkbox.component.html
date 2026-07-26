@@ -1,0 +1,52 @@
+<label class="cb" [class.is-disabled]="disabled()">
+  <input
+    #native
+    type="checkbox"
+    class="cb-native"
+    [id]="inputId"
+    [checked]="checked()"
+    [indeterminate]="indeterminate()"
+    [disabled]="disabled()"
+    [required]="required()"
+    [attr.aria-label]="label() ? null : (ariaLabel() ?? null)"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="errorMessage() ? true : null"
+    (change)="onChange($event)"
+    (blur)="onBlur()"
+  />
+  <span class="cb-box" aria-hidden="true">
+    <svg class="cb-mark cb-check" viewBox="0 0 16 16" fill="none">
+      <path
+        d="M3.5 8.5l3 3 6-6.5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    <svg class="cb-mark cb-dash" viewBox="0 0 16 16" fill="none">
+      <path
+        d="M4 8h8"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+  </span>
+  @if (label(); as text) {
+    <span class="cb-label"
+      >{{ text }}
+      @if (required()) {
+        <span class="cb-req" aria-hidden="true"> *</span>
+      }
+    </span>
+  }
+</label>
+@if (message(); as msg) {
+  <span
+    class="cb-msg"
+    [class.is-error]="errorMessage()"
+    [id]="errorMessage() ? inputId + '-error' : inputId + '-hint'"
+    >{{ msg }}</span
+  >
+}

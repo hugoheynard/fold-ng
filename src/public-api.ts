@@ -91,6 +91,7 @@ export {
 } from "./components/forms/input/number-input.component";
 export { FoldSearchComponent } from "./components/forms/input/search.component";
 export { FoldSelectComponent } from "./components/forms/input/select.component";
+export { FoldCheckboxComponent } from "./components/forms/checkbox/checkbox.component";
 export { FoldSliderComponent } from "./components/forms/slider/slider.component";
 export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";
 export type { FoldRangeValue } from "./components/forms/slider/range-slider.component";
