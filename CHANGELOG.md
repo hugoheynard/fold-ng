@@ -8,6 +8,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-checkbox` — the boolean form control.** A native
+  `<input type="checkbox">` (keyboard, focus, the `checkbox` role, form
+  submission and `indeterminate` all native) visually replaced by a tokenised
+  box + check/dash mark. Signal-forms native via `FormCheckboxControl` (bind
+  `[formField]`), or standalone `[(checked)]`; plus `indeterminate`, `label` /
+  `ariaLabel`, `hint` + touched-gated `errors`, `required`, `size` (`sm`/`md`),
+  `disabled`. Accessible by construction (visible label wraps the control, or a
+  required `ariaLabel` — dev-warns when neither is set), with a focus-visible
+  ring, `prefers-reduced-motion` and `forced-colors` handled. `fold-data-table`'s
+  selection column now uses it.
+
 - **`fold-data-table` — controlled row selection.** `selectable` renders a
   checkbox column plus a header select-all with an indeterminate state over the
   current rows; the parent owns the set via `selected` (a `Set` of row keys) and
