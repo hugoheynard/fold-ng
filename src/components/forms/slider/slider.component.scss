@@ -52,3 +52,11 @@
     cursor: not-allowed;
   }
 }
+
+.sl-msg {
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+.sl-msg.is-error {
+  color: var(--fold-color-alert);
+}

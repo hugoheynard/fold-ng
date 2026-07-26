@@ -15,7 +15,10 @@ import {
     [max]="max()"
     [step]="step()"
     [unit]="unit()"
-    [value]="value()"
+    [disabled]="disabled()"
+    [minLabel]="minLabel()"
+    [maxLabel]="maxLabel()"
+    [(value)]="value"
     (valueChange)="onChange($event)"
   />`,
 })
@@ -24,6 +27,9 @@ class HostComponent {
   readonly max = signal(100);
   readonly step = signal(1);
   readonly unit = signal<"number" | "duration">("number");
+  readonly disabled = signal(false);
+  readonly minLabel = signal("minimum");
+  readonly maxLabel = signal("maximum");
   readonly value = signal<FoldRangeValue | undefined>(undefined);
   readonly last = signal<FoldRangeValue | undefined>(undefined);
   onChange(v: FoldRangeValue): void {
@@ -84,5 +90,41 @@ describe("FoldRangeSliderComponent", () => {
     expect(host.querySelector(".rs-values")?.textContent?.trim()).toBe(
       "1:30 – 3:20",
     );
+  });
+
+  it("two-way binds the value via [(value)]", () => {
+    const { fixture, max } = render();
+    fixture.componentInstance.value.set({ min: 20, max: 80 });
+    fixture.detectChanges();
+    max.value = "60";
+    max.dispatchEvent(new Event("input"));
+    expect(fixture.componentInstance.value()).toEqual({ min: 20, max: 60 });
+  });
+
+  it("is a labelled group with per-thumb i18n aria + formatted aria-valuetext", () => {
+    const { fixture, host, min, max } = render();
+    const group = host.querySelector(".rs");
+    expect(group?.getAttribute("role")).toBe("group");
+    const labelId = host.querySelector(".rs-label")?.id;
+    expect(group?.getAttribute("aria-labelledby")).toBe(labelId);
+    expect(min.getAttribute("aria-label")).toBe("BPM minimum");
+    expect(max.getAttribute("aria-label")).toBe("BPM maximum");
+
+    fixture.componentInstance.minLabel.set("bas");
+    fixture.componentInstance.maxLabel.set("haut");
+    fixture.componentInstance.unit.set("duration");
+    fixture.componentInstance.value.set({ min: 90, max: 200 });
+    fixture.detectChanges();
+    expect(min.getAttribute("aria-label")).toBe("BPM bas");
+    expect(min.getAttribute("aria-valuetext")).toBe("1:30"); // formatted, not "90"
+    expect(max.getAttribute("aria-valuetext")).toBe("3:20");
+  });
+
+  it("reflects disabled on both thumbs", () => {
+    const { fixture, min, max } = render();
+    fixture.componentInstance.disabled.set(true);
+    fixture.detectChanges();
+    expect(min.disabled).toBe(true);
+    expect(max.disabled).toBe(true);
   });
 });

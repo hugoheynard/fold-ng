@@ -1,5 +1,5 @@
-<div class="rs">
-  <span class="rs-label">{{ label() }}</span>
+<div class="rs" role="group" [attr.aria-labelledby]="labelId">
+  <span class="rs-label" [id]="labelId">{{ label() }}</span>
   <div class="rs-track-wrap">
     <div class="rs-track">
       <div
@@ -15,7 +15,9 @@
       [max]="max()"
       [step]="step()"
       [value]="currentMin()"
-      [attr.aria-label]="label() + ' minimum'"
+      [disabled]="disabled()"
+      [attr.aria-label]="label() + ' ' + minLabel()"
+      [attr.aria-valuetext]="formatValue(currentMin())"
       (input)="onMinChange($event)"
     />
     <input
@@ -25,7 +27,9 @@
       [max]="max()"
       [step]="step()"
       [value]="currentMax()"
-      [attr.aria-label]="label() + ' maximum'"
+      [disabled]="disabled()"
+      [attr.aria-label]="label() + ' ' + maxLabel()"
+      [attr.aria-valuetext]="formatValue(currentMax())"
       (input)="onMaxChange($event)"
     />
   </div>

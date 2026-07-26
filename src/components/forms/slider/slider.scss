@@ -1,4 +1,6 @@
-// Shared slider thumb — used by both fold-slider (single) and fold-range-slider (dual).
+// Shared slider thumb — used by both fold-slider (single) and fold-range-slider
+// (dual). Includes a focus-visible ring (keyboard users must see the thumb),
+// reduced-motion and forced-colors handling.
 @mixin thumb {
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -10,7 +12,7 @@
     border: 2px solid var(--fold-color-surface-card);
     cursor: pointer;
     pointer-events: auto;
-    transition: transform 0.1s ease;
+    transition: transform var(--fold-motion-fast);
   }
   &::-webkit-slider-thumb:hover {
     transform: scale(1.2);
@@ -23,5 +25,42 @@
     border: 2px solid var(--fold-color-surface-card);
     cursor: pointer;
     pointer-events: auto;
+  }
+
+  // Focus ring — a soft glow on the focused thumb (the native outline is off).
+  &:focus-visible {
+    outline: none;
+  }
+  &:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--fold-color-primary) 30%, transparent);
+  }
+  &:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--fold-color-primary) 30%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::-webkit-slider-thumb {
+      transition: none;
+    }
+    &::-webkit-slider-thumb:hover {
+      transform: none;
+    }
+  }
+
+  // Windows high-contrast — a solid, visible thumb + a real focus ring.
+  @media (forced-colors: active) {
+    &::-webkit-slider-thumb {
+      background: ButtonText;
+      border-color: Canvas;
+    }
+    &::-moz-range-thumb {
+      background: ButtonText;
+      border-color: Canvas;
+    }
+    &:focus-visible::-webkit-slider-thumb {
+      box-shadow: 0 0 0 2px CanvasText;
+    }
   }
 }

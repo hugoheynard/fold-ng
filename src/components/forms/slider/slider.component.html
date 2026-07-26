@@ -1,8 +1,8 @@
 <div class="sl">
   @if (label() || showValue()) {
     <div class="sl-head">
-      @if (label()) {
-        <span class="sl-label">{{ label() }}</span>
+      @if (label(); as text) {
+        <label class="sl-label" [for]="inputId">{{ text }}</label>
       }
       @if (showValue()) {
         <span class="sl-value">{{ display() }}</span>
@@ -13,13 +13,25 @@
     [id]="inputId"
     class="sl-input"
     type="range"
-    [min]="min()"
-    [max]="max()"
-    [step]="step()"
+    [min]="rMin()"
+    [max]="rMax()"
+    [step]="rStep()"
     [value]="value()"
     [disabled]="disabled()"
     [style.--sl-pct]="percent() + '%'"
-    [attr.aria-label]="label()"
+    [attr.aria-label]="label() ? null : (ariaLabel() ?? null)"
+    [attr.aria-valuetext]="valueText() ?? null"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="errorMessage() ? true : null"
     (input)="onInput($event)"
+    (blur)="onBlur()"
   />
+  @if (message(); as msg) {
+    <span
+      class="sl-msg"
+      [class.is-error]="errorMessage()"
+      [id]="errorMessage() ? inputId + '-error' : inputId + '-hint'"
+      >{{ msg }}</span
+    >
+  }
 </div>

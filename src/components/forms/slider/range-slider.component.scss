@@ -57,6 +57,13 @@
 
   @include slider.thumb;
 }
+.rs-thumb:disabled {
+  cursor: not-allowed;
+}
+/* Dim the whole track when disabled (both thumbs share the state). */
+.rs-track-wrap:has(.rs-thumb:disabled) {
+  opacity: 0.5;
+}
 
 .rs-values {
   font-size: 10px;
