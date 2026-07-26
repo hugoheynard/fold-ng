@@ -29,8 +29,17 @@ All notable changes to **fold-ng** are documented here. The format follows
   scroll/resize) so the anchor never drifts; an optional **`arrow`** points at
   the trigger; **enter + exit transitions** are native CSS (`@starting-style` +
   `transition-behavior: allow-discrete`, no JS timers); and the dropdown's
-  type-ahead is **multi-letter** (buffered). Nested/sub-menus and cursor-anchored
-  context menus are tracked for a later pass.
+  type-ahead is **multi-letter** (buffered); `fallbackPlacements` makes the flip
+  chain configurable; the `autoUpdate` helper is exported. Nested/sub-menus and
+  cursor-anchored context menus are tracked for a later pass.
+
+  Added a **Playwright interaction suite** (`pnpm test:e2e`, real Chromium) for
+  what jsdom can't reach — native top-layer open, box sizing, keyboard/focus.
+  It caught two focus bugs now fixed: the dropdown focused its first item
+  _before_ the popover had shown the panel (so keydowns missed the menu), and
+  focus-return targeted a non-focusable wrapper trigger (e.g. `fold-button-icon`)
+  instead of its inner control — the popover now resolves the focusable element
+  for both focus and the aria wiring.
 
 - **`fold-inline-confirm` — in-place destructive-action guard.** Extracted from
   SH3PHERD's shared inline-confirm (which replaced four ad-hoc patterns) and
