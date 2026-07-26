@@ -1,3 +1,70 @@
+/* ── in-context integration cards ── */
+.ic-context {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--fold-space-lg);
+  max-width: 860px;
+  margin-bottom: var(--fold-space-xl);
+}
+
+.ic-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.ic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--fold-space-md);
+  padding: var(--fold-space-md) var(--fold-space-lg);
+}
+.ic-row + .ic-row {
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
+.ic-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.ic-row-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  font-size: var(--fold-text-sm);
+  font-weight: 600;
+  color: var(--fold-color-text);
+}
+.ic-row-desc {
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+
+.ic-current {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: var(--fold-radius-pill);
+  color: var(--fold-color-primary-text);
+  background: var(--fold-color-primary-surface);
+}
+
+.ic-row-note {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-md) var(--fold-space-lg);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-primary-text);
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
 .ic-list {
   list-style: none;
   margin: 0;

@@ -15,7 +15,154 @@
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['button', 'button-icon', 'form']" />
 
-  <!-- ── simple family ── -->
+  <!-- ══ in context — real integrations, on a surface ══ -->
+  <span class="gal-tag">in context</span>
+  <div class="ic-context">
+    <!-- Danger-zone settings card: several destructive rows, each guarded in
+         place. Contextual confirm verbs via the per-instance [labels] input. -->
+    <fold-card
+      class="ic-card"
+      padding="none"
+      separators="both"
+      raisedBands="header"
+    >
+      <fold-element-title
+        cardHeader
+        variant="title"
+        icon="lock"
+        title="Danger zone"
+      />
+      <div class="ic-rows">
+        <div class="ic-row">
+          <div class="ic-row-text">
+            <span class="ic-row-title">Transfer ownership</span>
+            <span class="ic-row-desc"
+              >Hand this workspace to another admin.</span
+            >
+          </div>
+          <fold-inline-confirm
+            intent="warning"
+            [labels]="{ confirm: 'Transfer' }"
+            (confirmed)="act('Ownership transferred')"
+          >
+            <button foldButton emphasis="outline" intent="warning" size="sm">
+              Transfer
+            </button>
+          </fold-inline-confirm>
+        </div>
+
+        <div class="ic-row">
+          <div class="ic-row-text">
+            <span class="ic-row-title">Delete all projects</span>
+            <span class="ic-row-desc"
+              >Removes every project. Cannot be undone.</span
+            >
+          </div>
+          <fold-inline-confirm
+            match="DELETE"
+            message="Type DELETE to wipe all projects."
+            confirmIcon="bin"
+            [labels]="{ confirm: 'Delete all' }"
+            (confirmed)="act('Projects deleted')"
+          >
+            <button foldButton emphasis="outline" intent="danger" size="sm">
+              Delete all
+            </button>
+          </fold-inline-confirm>
+        </div>
+
+        <div class="ic-row">
+          <div class="ic-row-text">
+            <span class="ic-row-title">Delete account</span>
+            <span class="ic-row-desc"
+              >Enter your password to close the account.</span
+            >
+          </div>
+          <fold-inline-confirm
+            password
+            message="Confirm your password to continue."
+            [labels]="{ confirm: 'Delete account' }"
+            (confirmed)="act('Account deleted')"
+          >
+            <button foldButton intent="danger" size="sm">Delete</button>
+          </fold-inline-confirm>
+        </div>
+      </div>
+      @if (danger(); as done) {
+      <div class="ic-row-note">{{ done }}</div>
+      }
+    </fold-card>
+
+    <!-- Active-sessions card: a header-level "revoke others" plus a per-row
+         icon-cancel revoke — many inline-confirms living in one list. -->
+    <fold-card
+      class="ic-card"
+      padding="none"
+      separators="both"
+      raisedBands="header"
+    >
+      <fold-element-title
+        cardHeader
+        variant="title"
+        icon="globe"
+        title="Active sessions"
+      >
+        @if (sessions().length > 1) {
+        <fold-inline-confirm
+          titleAction
+          intent="danger"
+          message="Sign out every other device?"
+          [labels]="{ confirm: 'Revoke others' }"
+          (confirmed)="revokeOthers()"
+        >
+          <button foldButton emphasis="soft" intent="neutral" size="sm">
+            Revoke others
+          </button>
+        </fold-inline-confirm>
+        }
+      </fold-element-title>
+      <div class="ic-rows">
+        @for (s of sessions(); track s.id) {
+        <div class="ic-row ic-session">
+          <div class="ic-row-text">
+            <span class="ic-row-title">
+              {{ s.device }} @if (s.current) {
+              <span class="ic-current">current</span>
+              }
+            </span>
+            <span class="ic-row-desc">{{ s.meta }}</span>
+          </div>
+          @if (!s.current) {
+          <fold-inline-confirm
+            cancelIcon="close"
+            [labels]="{ confirm: 'Revoke' }"
+            (confirmed)="revoke(s.id)"
+          >
+            <button foldButton emphasis="outline" intent="danger" size="sm">
+              Revoke
+            </button>
+          </fold-inline-confirm>
+          }
+        </div>
+        } @empty {
+        <div class="ic-row-note">
+          Only this device is signed in.
+          <button
+            foldButton
+            emphasis="soft"
+            size="sm"
+            (click)="resetSessions()"
+          >
+            Reset demo
+          </button>
+        </div>
+        }
+      </div>
+    </fold-card>
+  </div>
+
+  <!-- ── building blocks: each family in isolation ── -->
+  <span class="gal-tag">building blocks</span>
   <div class="gal-row gal-row--wide">
     <div class="gal-cell" style="max-width: 360px">
       <span class="gal-tag">simple · icon trigger</span>

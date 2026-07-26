@@ -6,6 +6,7 @@ import {
   FoldButtonComponent,
   FoldButtonIconComponent,
   FoldCardComponent,
+  FoldElementTitleComponent,
   FoldInlineConfirmComponent,
   FoldPageLayoutComponent,
   type FoldButtonIntent,
@@ -14,6 +15,13 @@ import {
 
 type Family = "simple" | "type" | "password";
 type CancelChoice = "label" | "close" | "reset";
+
+interface Session {
+  readonly id: string;
+  readonly device: string;
+  readonly meta: string;
+  readonly current: boolean;
+}
 
 /** `/inline-confirm` — the `fold-inline-confirm` gallery page (simple, type, secret). */
 @Component({
@@ -25,6 +33,7 @@ type CancelChoice = "label" | "close" | "reset";
     DevPlaygroundComponent,
     FoldPageLayoutComponent,
     FoldCardComponent,
+    FoldElementTitleComponent,
     FoldButtonComponent,
     FoldButtonIconComponent,
     FoldInlineConfirmComponent,
@@ -46,6 +55,46 @@ export default class InlineConfirmPage {
   protected readonly lastConfirm = signal<string | null>(null);
   protected onConfirm(value: string): void {
     this.lastConfirm.set(value === "" ? "(confirmed)" : value);
+  }
+
+  /* ── in-context: a "danger zone" settings card ── */
+  protected readonly danger = signal<string | null>(null);
+  protected act(label: string): void {
+    this.danger.set(`${label} ✓`);
+  }
+
+  /* ── in-context: an "active sessions" card ── */
+  private seedSessions(): Session[] {
+    return [
+      {
+        id: "s1",
+        device: "MacBook Pro",
+        meta: "Paris · Chrome · this device",
+        current: true,
+      },
+      {
+        id: "s2",
+        device: "iPhone 15",
+        meta: "Paris · Safari · 2h ago",
+        current: false,
+      },
+      {
+        id: "s3",
+        device: "iPad Air",
+        meta: "Lyon · Safari · yesterday",
+        current: false,
+      },
+    ];
+  }
+  protected readonly sessions = signal<Session[]>(this.seedSessions());
+  protected revoke(id: string): void {
+    this.sessions.update((list) => list.filter((s) => s.id !== id));
+  }
+  protected revokeOthers(): void {
+    this.sessions.update((list) => list.filter((s) => s.current));
+  }
+  protected resetSessions(): void {
+    this.sessions.set(this.seedSessions());
   }
 
   /* ── playground ── */
