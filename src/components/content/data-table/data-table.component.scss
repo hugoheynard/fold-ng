@@ -254,14 +254,7 @@
   display: none;
 }
 
-/* ── Selection (controlled) ── */
-.folddt-check {
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  accent-color: var(--fold-color-primary);
-  cursor: pointer;
-}
+/* ── Selection (controlled) — the checkbox is a fold-checkbox (size="sm"). ── */
 .folddt-select-h,
 .folddt-cell--select {
   width: var(--folddt-sel-w);

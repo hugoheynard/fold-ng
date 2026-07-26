@@ -311,7 +311,9 @@ describe("FoldDataTableComponent — selection + polish", () => {
     expect(rowChecks.length).toBe(2);
     expect(rowChecks[0]!.getAttribute("aria-label")).toBe("Select Alice");
     expect(
-      el.querySelector('thead .folddt-check[aria-label="Select all rows"]'),
+      el.querySelector(
+        'thead .folddt-select-h input[aria-label="Select all rows"]',
+      ),
     ).not.toBeNull();
   });
 
@@ -320,7 +322,7 @@ describe("FoldDataTableComponent — selection + polish", () => {
     const first = el.querySelector<HTMLInputElement>(
       "tbody .folddt-cell--select input",
     );
-    first!.dispatchEvent(new Event("change"));
+    first!.click(); // toggles the native checkbox + fires change
     fixture.detectChanges();
     expect([...host.selected()]).toEqual(["a"]);
     expect(el.querySelector("tbody tr")?.getAttribute("aria-selected")).toBe(
@@ -334,20 +336,20 @@ describe("FoldDataTableComponent — selection + polish", () => {
   it("select-all is indeterminate for a partial set, checked for a full one", () => {
     const { fixture, host, el } = selSetup();
     const header = () =>
-      el.querySelector<HTMLInputElement>("thead .folddt-check")!;
+      el.querySelector<HTMLInputElement>("thead .folddt-select-h input")!;
 
     host.selected.set(new Set(["a"]));
     fixture.detectChanges();
     expect(header().indeterminate).toBe(true);
     expect(header().checked).toBe(false);
 
-    header().dispatchEvent(new Event("change")); // partial → select all
+    header().click(); // partial → select all
     fixture.detectChanges();
     expect([...host.selected()].sort()).toEqual(["a", "b"]);
     expect(header().checked).toBe(true);
     expect(header().indeterminate).toBe(false);
 
-    header().dispatchEvent(new Event("change")); // all → clear
+    header().click(); // all → clear
     fixture.detectChanges();
     expect([...host.selected()]).toEqual([]);
   });

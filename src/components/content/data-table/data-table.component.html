@@ -30,13 +30,12 @@
         <tr>
           @if (selectable()) {
             <th scope="col" class="folddt-select-h">
-              <input
-                type="checkbox"
-                class="folddt-check"
-                aria-label="Select all rows"
+              <fold-checkbox
+                size="sm"
+                ariaLabel="Select all rows"
                 [checked]="allSelected()"
                 [indeterminate]="someSelected()"
-                (change)="toggleAll()"
+                (checkedChange)="toggleAll()"
               />
             </th>
           }
@@ -94,13 +93,12 @@
           >
             @if (selectable()) {
               <td class="folddt-cell folddt-cell--select">
-                <input
-                  type="checkbox"
-                  class="folddt-check"
-                  [attr.aria-label]="labelFor(row)"
+                <fold-checkbox
+                  size="sm"
+                  [ariaLabel]="labelFor(row)"
                   [checked]="isRowSelected(row, i)"
                   (click)="$event.stopPropagation()"
-                  (change)="toggleRow(row, i)"
+                  (checkedChange)="toggleRow(row, i)"
                 />
               </td>
             }

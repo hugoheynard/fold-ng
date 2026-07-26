@@ -19,6 +19,7 @@ import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
 import { focusAdjacentRow, focusEdgeRow } from "./data-table-keyboard";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
+import { FoldCheckboxComponent } from "../../forms/checkbox/checkbox.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type {
   FoldTableColumn,
@@ -57,7 +58,13 @@ import type {
 @Component({
   selector: "fold-data-table",
   standalone: true,
-  imports: [NgClass, NgTemplateOutlet, FoldIconComponent, FoldSpinnerComponent],
+  imports: [
+    NgClass,
+    NgTemplateOutlet,
+    FoldIconComponent,
+    FoldSpinnerComponent,
+    FoldCheckboxComponent,
+  ],
   templateUrl: "./data-table.component.html",
   styleUrl: "./data-table.component.scss",
 })
@@ -290,8 +297,8 @@ export class FoldDataTableComponent<T> {
     this.selectionChange.emit(next);
   }
 
-  labelFor(row: T): string | null {
-    return this.selectionLabel()?.(row) ?? null;
+  labelFor(row: T): string {
+    return this.selectionLabel()?.(row) ?? "Select row";
   }
 
   /* ── roving-tabindex keyboard navigation over clickable rows ── */
