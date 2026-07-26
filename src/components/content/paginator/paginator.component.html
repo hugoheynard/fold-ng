@@ -1,7 +1,8 @@
-@let options = pageSizeOptions();
+@let labels = l();
+@let sizes = sizeOptions();
 
 <div class="paginator-left">
-  @if (options.length > 0) {
+  @if (pageSizeOptions().length > 0) {
     <label class="page-size">
       <select
         #pageSizeSelect
@@ -9,32 +10,34 @@
         [value]="pageSize()"
         [disabled]="disabled()"
         (change)="onPageSizeChange(pageSizeSelect.value)"
-        aria-label="Éléments par page"
+        [attr.aria-label]="labels.pageSize"
       >
-        @for (opt of options; track opt) {
-          <option [value]="opt">{{ opt }}</option>
+        @for (opt of sizes; track opt) {
+          <option [value]="opt" [selected]="opt === pageSize()">
+            {{ opt }}
+          </option>
         }
       </select>
-      <span class="page-size__label">par page</span>
+      <span class="page-size__label">{{ labels.perPage }}</span>
     </label>
   }
 
   @if (totalItems() > 0) {
-    <span class="range"
-      >{{ rangeStart() }}–{{ rangeEnd() }} sur {{ totalItems() }}</span
-    >
+    <span class="range">{{
+      labels.range(rangeStart(), rangeEnd(), totalItems())
+    }}</span>
   } @else {
-    <span class="range range--empty">Aucun élément</span>
+    <span class="range range--empty">{{ labels.empty }}</span>
   }
 </div>
 
-<nav class="pages" aria-label="Pagination">
+<nav class="pages" [attr.aria-label]="labels.nav">
   <button
     type="button"
-    class="nav-btn"
+    class="nav-btn nav-btn--prev"
     [disabled]="!canGoPrev()"
     (click)="prev()"
-    aria-label="Page précédente"
+    [attr.aria-label]="labels.previous"
   >
     <fold-icon name="chevron-left" [size]="15" />
   </button>
@@ -44,9 +47,9 @@
       <button
         type="button"
         class="page-btn"
-        [class.is-active]="item.page === currentPage()"
-        [attr.aria-current]="item.page === currentPage() ? 'page' : null"
-        [attr.aria-label]="'Page ' + item.page"
+        [class.is-active]="item.page === page()"
+        [attr.aria-current]="item.page === page() ? 'page' : null"
+        [attr.aria-label]="labels.page(item.page)"
         [disabled]="disabled()"
         (click)="goToPage(item.page)"
       >
@@ -59,10 +62,10 @@
 
   <button
     type="button"
-    class="nav-btn"
+    class="nav-btn nav-btn--next"
     [disabled]="!canGoNext()"
     (click)="next()"
-    aria-label="Page suivante"
+    [attr.aria-label]="labels.next"
   >
     <fold-icon name="chevron-right" [size]="15" />
   </button>

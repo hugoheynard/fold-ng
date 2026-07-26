@@ -130,6 +130,12 @@ export { FoldPageSectionComponent } from "./components/layout/page-section/page-
 export { FoldHeroSectionComponent } from "./components/layout/hero-section/hero-section.component";
 export { FoldPaginatorComponent } from "./components/content/paginator/paginator.component";
 export type { FoldPageItem } from "./components/content/paginator/paginator.component";
+export {
+  provideFoldPaginatorLabels,
+  FOLD_PAGINATOR_LABELS,
+  FOLD_PAGINATOR_DEFAULT_LABELS,
+} from "./components/content/paginator/paginator-labels";
+export type { FoldPaginatorLabels } from "./components/content/paginator/paginator-labels";
 export { FoldViewNavComponent } from "./components/navigation/view-nav/view-nav.component";
 export type { FoldViewNavItem } from "./components/navigation/view-nav/view-nav.component";
 export { FoldTabsComponent } from "./components/navigation/tabs/tabs.component";

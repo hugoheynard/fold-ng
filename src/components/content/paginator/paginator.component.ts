@@ -1,5 +1,18 @@
-import { Component, computed, input, output } from "@angular/core";
+import {
+  afterRenderEffect,
+  booleanAttribute,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  output,
+} from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import {
+  FOLD_PAGINATOR_LABELS,
+  type FoldPaginatorLabels,
+} from "./paginator-labels";
 
 /**
  * Item representing one slot in the page navigation bar.
@@ -7,14 +20,29 @@ import { FoldIconComponent } from "../../foundations/icon/icon.component";
  */
 export type FoldPageItem = { kind: "page"; page: number } | { kind: "gap" };
 
+/** Which control a page change should refocus after the parent re-renders. */
+type RefocusTarget = "active" | "prev" | "next";
+
 /**
  * `fold-paginator` — presentational, fully controlled.
  *
  * Designed for **server-side pagination** (offset/limit): the parent owns
  * `currentPage`, `pageSize` and `totalItems`, fires the HTTP call on
- * `(pageChange)` / `(pageSizeChange)`, then feeds the new values back in.
+ * `(pageChange)` / `(pageSizeChange)`, then feeds the new values back in. The
+ * component tolerates a lagging or out-of-range `currentPage` — the visible
+ * range, the active button and the prev/next guards all use an internally
+ * clamped page, so a stale value can never render a nonsensical range.
  *
  * Renders: `[page size selector] [items range] [‹ 1 2 3 … N ›]`.
+ *
+ * **Accessible:** the `<nav>`, both arrows, each page (`aria-current="page"` on
+ * the active one) and the size selector carry labels, all overridable for i18n
+ * via {@link provideFoldPaginatorLabels} (English by default) or the `labels`
+ * input. After a page change it moves focus to the control the user was on (the
+ * active page, or the prev/next arrow while it stays enabled) so keyboard focus
+ * is never dropped to `<body>`.
+ *
+ * @selector `fold-paginator`
  *
  * @example
  * ```html
@@ -55,13 +83,25 @@ export class FoldPaginatorComponent {
   readonly siblingCount = input<number>(1);
 
   /** Disables all controls (both page nav and size selector). */
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input(false, { transform: booleanAttribute });
+
+  /** Per-instance label overrides (merged over the app-wide / English defaults). */
+  readonly labels = input<Partial<FoldPaginatorLabels>>();
 
   /** Fires with the new 1-indexed page number. */
   readonly pageChange = output<number>();
 
   /** Fires with the newly selected page size. */
   readonly pageSizeChange = output<number>();
+
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly injectedLabels = inject(FOLD_PAGINATOR_LABELS);
+
+  /** Effective labels — the app-wide (or English) set, with the `labels` input on top. */
+  readonly l = computed<FoldPaginatorLabels>(() => ({
+    ...this.injectedLabels,
+    ...this.labels(),
+  }));
 
   // ─── Derived state ────────────────────────────────────────────
 
@@ -75,23 +115,46 @@ export class FoldPaginatorComponent {
     return Math.ceil(total / size);
   });
 
+  /** The current page clamped into `[1, totalPages]` — the value everything
+   *  visible derives from, so a lagging/out-of-range parent never shows a
+   *  broken range or highlights a phantom page. */
+  readonly page = computed<number>(() =>
+    Math.min(Math.max(this.currentPage(), 1), this.totalPages()),
+  );
+
+  /** Sanitised sibling count — a non-negative integer. */
+  private readonly siblings = computed<number>(() =>
+    Math.max(0, Math.floor(this.siblingCount())),
+  );
+
+  /** The rendered size options, always including the current `pageSize` (so the
+   *  `<select>` can never silently show a value the parent isn't using). */
+  readonly sizeOptions = computed<readonly number[]>(() => {
+    const opts = this.pageSizeOptions();
+    const size = this.pageSize();
+    if (opts.includes(size)) {
+      return opts;
+    }
+    return [...opts, size].sort((a, b) => a - b);
+  });
+
   /** Zero-indexed start / end of the currently visible range (for the label). */
   readonly rangeStart = computed<number>(() => {
     if (this.totalItems() === 0) {
       return 0;
     }
-    return (this.currentPage() - 1) * this.pageSize() + 1;
+    return (this.page() - 1) * this.pageSize() + 1;
   });
 
   readonly rangeEnd = computed<number>(() =>
-    Math.min(this.currentPage() * this.pageSize(), this.totalItems()),
+    Math.min(this.page() * this.pageSize(), this.totalItems()),
   );
 
   readonly canGoPrev = computed<boolean>(
-    () => !this.disabled() && this.currentPage() > 1,
+    () => !this.disabled() && this.page() > 1,
   );
   readonly canGoNext = computed<boolean>(
-    () => !this.disabled() && this.currentPage() < this.totalPages(),
+    () => !this.disabled() && this.page() < this.totalPages(),
   );
 
   /**
@@ -103,8 +166,8 @@ export class FoldPaginatorComponent {
    */
   readonly pageItems = computed<FoldPageItem[]>(() => {
     const total = this.totalPages();
-    const current = this.currentPage();
-    const sibs = Math.max(0, this.siblingCount());
+    const current = this.page();
+    const sibs = this.siblings();
 
     // Small enough to show every page — no ellipsis needed.
     // `5 + 2*sibs` = first + last + current + 2*sibs around current + 2 gap slots.
@@ -139,28 +202,60 @@ export class FoldPaginatorComponent {
     return items;
   });
 
+  // ─── Focus management (keep keyboard focus after a page change) ─
+
+  private refocus: RefocusTarget | null = null;
+  private lastFocusedPage = -1;
+
+  constructor() {
+    // Browser-only, runs after the DOM reflects the new page. When a page
+    // change originated from a click here, move focus to the control the user
+    // was on so it is never dropped to <body>.
+    afterRenderEffect(() => {
+      const page = this.page();
+      if (this.refocus !== null && page !== this.lastFocusedPage) {
+        this.applyRefocus(this.refocus);
+        this.refocus = null;
+      }
+      this.lastFocusedPage = page;
+    });
+  }
+
+  private applyRefocus(target: RefocusTarget): void {
+    const root = this.host.nativeElement;
+    const active = root.querySelector<HTMLElement>(".page-btn.is-active");
+    let el: HTMLElement | null = active;
+    if (target === "prev" && this.canGoPrev()) {
+      el = root.querySelector<HTMLElement>(".nav-btn--prev");
+    } else if (target === "next" && this.canGoNext()) {
+      el = root.querySelector<HTMLElement>(".nav-btn--next");
+    }
+    el?.focus();
+  }
+
   // ─── Handlers ─────────────────────────────────────────────────
 
-  goToPage(page: number): void {
+  goToPage(page: number, via: RefocusTarget = "active"): void {
     if (this.disabled()) {
       return;
     }
     const clamped = Math.max(1, Math.min(page, this.totalPages()));
-    if (clamped === this.currentPage()) {
+    if (clamped === this.page()) {
       return;
     }
+    this.refocus = via;
     this.pageChange.emit(clamped);
   }
 
   prev(): void {
     if (this.canGoPrev()) {
-      this.goToPage(this.currentPage() - 1);
+      this.goToPage(this.page() - 1, "prev");
     }
   }
 
   next(): void {
     if (this.canGoNext()) {
-      this.goToPage(this.currentPage() + 1);
+      this.goToPage(this.page() + 1, "next");
     }
   }
 
