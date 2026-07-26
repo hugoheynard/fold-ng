@@ -15,12 +15,15 @@ the concrete work to reach ship-quality.
 
 Legend: 🟢 ship-ready · 🟡 minor work · 🔴 blocker.
 
-Scope audited: **32 components + the panel subsystem + 3 directives**, 80 public
-exports, **402 test blocks across 62 spec files**, **114 built-in icons**. No
+Scope audited: **33 components + the panel subsystem + 3 directives**, 96 public
+exports, **544 test blocks across 78 spec files**, **114 built-in icons**. No
 `any` / `as unknown` / `@ts-ignore` / `eslint-disable` / raw-colour violations in
 component _source_ (the token contract holds); the lone spec-side `as unknown`
 breach (P0-7) is now fixed too. Method: six parallel per-cluster audits, each reading every
-`.ts`/`.html`/`.scss`/`.spec.ts` + the matching gallery page.
+`.ts`/`.html`/`.scss`/`.spec.ts` + the matching gallery page. **Updated
+2026-07-26: `fold-data-table` completed its top-tier pass (selection, roving
+keyboard, `mobileLayout`, `foldToolbar`, sticky/density; hardcore-review fixes)
+and `fold-checkbox` shipped — both now ship-ready.**
 
 ---
 
@@ -74,7 +77,7 @@ and the gallery nav — **layout first**.
 | `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
 | `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
 | `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                             |
-| `fold-data-table`                | 🟢  |  🟢   |  🔴  | **No gallery page; no `@selector`/`@example`**           |
+| `fold-data-table`                | 🟢  |  🟢   |  🟢  | **Ship-ready** — top-tier pass + gallery + hardening     |
 | `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**         |
 
 **Feedback** — `src/components/feedback/`
@@ -95,15 +98,16 @@ and the gallery nav — **layout first**.
 
 **Forms** — `src/components/forms/`
 
-| Component            | DX  | Tests | Docs | Verdict                                             |
-| -------------------- | :-: | :---: | :--: | --------------------------------------------------- |
-| `fold-input`         | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                 |
-| `fold-number-input`  | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate |
-| `fold-select`        | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                   |
-| `fold-slider`        | 🟡  |  🟢   |  🟡  | Not a `FormValueControl`; README row                |
-| `fold-range-slider`  | 🟡  |  🟢   |  🟡  | **Hardcoded aria suffixes; no README/gallery**      |
-| `fold-file-dropzone` | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row   |
-| `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                  |
+| Component            | DX  | Tests | Docs | Verdict                                                       |
+| -------------------- | :-: | :---: | :--: | ------------------------------------------------------------- |
+| `fold-input`         | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                           |
+| `fold-checkbox`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — native + `FormCheckboxControl`; gallery page |
+| `fold-number-input`  | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate           |
+| `fold-select`        | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                             |
+| `fold-slider`        | 🟡  |  🟢   |  🟡  | Not a `FormValueControl`; README row                          |
+| `fold-range-slider`  | 🟡  |  🟢   |  🟡  | **Hardcoded aria suffixes; no README/gallery**                |
+| `fold-file-dropzone` | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row             |
+| `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                            |
 
 **Foundations** — `src/components/foundations/`
 
@@ -115,11 +119,11 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page                                 |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo                                 |
 
-**Ship-ready today (24):** app-shell, page-layout, page-section, hero-section,
+**Ship-ready today (26):** app-shell, page-layout, page-section, hero-section,
 aside-layout, nav-layout, view-nav, tabs, card, avatar-list, callout,
 element-title, field, field-list, nav-launcher, timeline, toast, surface, icon,
-repeat-press, sticky-column, button, button-icon, toggle-icon. Everything else
-has scoped, mostly mechanical work below.
+repeat-press, sticky-column, button, button-icon, toggle-icon, **data-table**,
+**checkbox**. Everything else has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with nav-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -209,15 +213,16 @@ row.) Add each row.
 
 **C-4 · Missing JSDoc `@selector`/`@example` tags.** The bar (rule 4.6) is
 `@selector` + one-liner + `@example`. Missing `@example` **tag** (a fenced block
-exists, the tag doesn't): `status-badge`, `avatar`,
-`avatar-detail`, `data-table`. Missing `@selector`: `data-table`,
-`paginator`, and the layout trio
+exists, the tag doesn't): `status-badge`, `avatar`, `avatar-detail`. Missing
+`@selector`: `paginator`, and the layout trio
 (`page-layout`/`page-section`/`nav-layout` — verify). Mechanical.
+(`data-table` now carries both — done in the top-tier pass.)
 
 **C-5 · Gallery coverage holes.** Shipped components with **zero gallery
 presence** (fall back to the stub page — not among the Library nav entries):
-`fold-data-table`, `fold-paginator`, `fold-empty-state` + `fold-loading` (a `state`
-page), and `[foldRepeatPress]`. `fold-choice-row` renders only incidentally inside
+`fold-paginator`, `fold-empty-state` + `fold-loading` (a `state`
+page), and `[foldRepeatPress]`. (`fold-data-table` now has its own `/data-table`
+page, and `fold-checkbox` a `/checkbox` page.) `fold-choice-row` renders only incidentally inside
 other pages (its `chips` layout + `count` badge are never shown), and
 `fold-range-slider` / `fold-slider` are imported but not clearly demoed. A release
 showcase must render every public component.
@@ -395,11 +400,20 @@ now assert the presentation inputs (`size`/`variant`/`square`/`muted`/`ring`/
 
 **`fold-avatar-list`** 🟢🟢🟢 — Ship-ready. Optional: assert the `+N` chip `title`.
 
-**`fold-data-table`** 🟢🟢🔴 — Properly generic over `T`, clean controlled/
-presentational contract, column-metadata-vs-projected-cells separation. Docs are
-the blocker: (1) JSDoc has **neither `@selector` nor `@example`**; (2) **no
-gallery page at all**; (3) add tests for the `zebra`/`hover`/`mobileCards`
-toggles, the unsorted `↕` arrow, and the non-clickable no-`rowClick` guard.
+**`fold-data-table`** 🟢🟢🟢 — **Ship-ready** (top-tier pass, 2026-07-26).
+Generic over `T`, controlled/presentational throughout. Now best-in-class for its
+niche without leaving that contract: **controlled row selection** (checkbox
+column via `fold-checkbox` + header select-all/indeterminate, parent owns the
+`Set`), **roving-tabindex keyboard nav** (Enter/Space + Arrow/Home/End, guarded
+against inner-control key theft), **`mobileLayout`** = `scroll` (default) /
+`auto-cards` / `custom` (`foldRowCard` — the parent owns the mobile card, gated
+to the narrow viewport so desktop never builds it), an optional **`foldToolbar`**
+title bar with a token-only `toolbarSurface` level (accent reuses the
+`[data-surface="accent"]` auto-invert), `stickyFirst`, `density`, column
+`align`/`truncate` (dev-warns without a `width`), sort as a decorative
+`fold-icon` on `aria-sort`, `<th scope="row">` identity cell, `caption`,
+`aria-colcount`, loading + empty states. `@selector` + `@example` present; 27
+specs incl. the a11y/keyboard edges. Gallery `/data-table` shows every flag.
 
 **`fold-paginator`** 🟢🟢🟡 — Excellent controlled logic (discriminated
 `FoldPageItem`, clamp + dedupe, comprehensive logic tests). Actions: **P0-2**
@@ -420,6 +434,17 @@ full label/required/optional/hint/error + aria wiring. Action: the `autofocus`
 input (`input.component.ts:120`) is **declared but never applied** — a DX lie;
 wire it (focus effect) or drop it. Nice-to-have: `type`/`autocomplete`
 passthrough test.
+
+**`fold-checkbox`** 🟢🟢🟢 — **Ship-ready** (2026-07-26). A native
+`<input type="checkbox">` (keyboard, focus, `checkbox` role, form submission,
+`indeterminate` — all native) visually replaced by a tokenised box + check/dash
+mark. Signal-forms native via **`FormCheckboxControl`** (`[formField]`) or
+standalone `[(checked)]`; `indeterminate`, `label`/`ariaLabel`, `hint` +
+touched-gated `errors`, `required`, `size`, `disabled`. Accessible by
+construction (label wraps the control, else a required `ariaLabel` — dev-warns
+when neither is set), focus-visible ring, `prefers-reduced-motion`,
+`forced-colors`; token-only colours. 11 specs; gallery `/checkbox`. Backs the
+data-table selection column.
 
 **`fold-number-input`** 🟢🟢🟢 — Best-documented control (empty⇒`null`, unified
 `settleNumber` clamp/snap/precision, keyboard/pointer/wheel, exhaustive specs).
@@ -551,11 +576,12 @@ remaining hardcoded aria strings → inputs.
 
 **Wave 3 — Docs & showcase.** C-2 README rows · C-3 stale facts (114 icons,
 loading spinner) · C-4 `@selector`/`@example` tags · C-5 gallery pages
-(data-table, paginator, state, repeat-press, choice-row variants, sliders).
+(paginator, state, repeat-press, choice-row variants, sliders). _(data-table +
+checkbox gallery pages ✅ done.)_
 
-**Wave 4 — Test depth.** avatar luminance-ink · avatar-detail forwarding ·
-data-table toggles/guards · badge neutral/success · menu `resolvedPlacement` ·
-disclosure aria-hidden/`toggle()` · context-card `iconTone`.
+**Wave 4 — Test depth.** avatar luminance-ink · avatar-detail forwarding · badge
+neutral/success · menu `resolvedPlacement` · disclosure aria-hidden/`toggle()` ·
+context-card `iconTone`. _(data-table toggles/guards ✅ covered.)_
 
 **Wave 5 — Polish (aspirational).** C-9 retokenise spacing/motion on touch ·
 hero `on-primary` assertion · choice-row keyboard a11y · per-node timeline
