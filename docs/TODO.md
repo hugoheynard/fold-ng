@@ -541,6 +541,20 @@ avatar-detail}/*` shims that re-exported `fold-ng` are deleted; all ~115
   new `optional` label marker). Dates stay native (no DS date component yet);
   file upload is the dropzone, not a field.
 
+- **App-side: migrate the native `<input type="checkbox">` sites to
+  `fold-checkbox`.** `fold-checkbox` shipped (forms/), but the app still hand-rolls
+  ~20 native checkboxes with `accent-color` styling (global `src/styles.scss`
+  `form input[type="checkbox"]` + per-feature `.check`/`.toggle` blocks in inbox
+  preferences, scheduling/absence policy pages, artist-profile, notifications
+  tab, edit-template popover, activate, permission-sets, …). **This is an APP
+  chore, not lib work** (fold-ng side is done). Migrate each to `<fold-checkbox
+[(checked)]=… label=…>` (or `ariaLabel` where the label is separate), delete
+  the local checkbox CSS, and drop the global `accent-color` rule once the last
+  native one is gone. Watch the few that are actually **toggle switches** styled
+  as checkboxes (inbox `.toggle`) — those want a future `fold-switch`, not
+  `fold-checkbox`; leave them until it lands. Signal-forms sites bind
+  `[formField]` directly (fold-checkbox is a `FormCheckboxControl`).
+
 - **`fold-timeline` — revisit the design + usage once a 3rd shape lands.** The
   component grew fast (2 real consumers: the vertical avenants rail + the
   horizontal signature stepper) and is healthy, but it now carries **two
