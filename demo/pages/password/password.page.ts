@@ -8,7 +8,7 @@ import {
   FoldPasswordFieldComponent,
 } from "../../../src/public-api";
 
-type Design = "default" | "custom";
+type Design = "default" | "ticks" | "custom";
 
 /** `/password` — the `fold-password-field` gallery page. */
 @Component({
@@ -47,10 +47,12 @@ export default class PasswordPage {
 
   protected readonly code = computed(() => {
     const reveal = this.revealable() ? [] : ['  [revealable]="false"'];
-    if (this.design() === "default") {
+    if (this.design() !== "custom") {
+      const marker = this.design() === "ticks" ? ['  marker="check"'] : [];
       return [
         "<fold-password-field",
         '  label="New password"',
+        ...marker,
         ...reveal,
         '  [(value)]="password"',
         '  (validChange)="ok.set($event)"',

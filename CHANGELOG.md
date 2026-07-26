@@ -20,7 +20,8 @@ All notable changes to **fold-ng** are documented here. The format follows
   labels each row met / not met. The checklist is **redesignable**: project into
   the `[rules]` slot and drive your own markup off the exported live state
   (`#pw="foldPasswordField"` → `pw.checklist()`), with the default list as the
-  fallback. New gallery `/password` page.
+  fallback. The built-in row marker is a `dot` (filling in) or a `check` tick
+  (`marker="check"`). New gallery `/password` page.
 
 - **`fold-popover` + `fold-dropdown` — anchored floating layer & actions menu.**
   fold's first floating primitive. `fold-popover` renders projected content in
