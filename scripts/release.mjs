@@ -2,12 +2,18 @@ import { execSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { argv, exit, stdin, stdout } from "node:process";
 import { createInterface } from "node:readline/promises";
+import { parseChangelog, deriveBump } from "./lib/changelog.mjs";
 
 /**
- * One-command release. `node scripts/release.mjs <patch|minor|major|beta>`:
+ * One-command release. `node scripts/release.mjs [patch|minor|major|beta]`:
  * bump package.json + stamp the changelog + commit + tag + push — which fires
  * release.yml (gates → build → npm publish via OIDC). Use the npm scripts:
- * `pnpm release:patch` · `release:minor` · `release:major` · `release:beta`.
+ * `pnpm release` (derived) · `release:minor` · `release:major` · `release:beta`.
+ *
+ * The level is **derived from the CHANGELOG's [Unreleased] section** when no
+ * argument is given (breaking → minor in 0.x; features → minor; else patch) —
+ * so the changelog you already curate defines the bump. Pass an explicit level
+ * to override. Preview the derivation without side effects with `pnpm eta`.
  *
  *   patch  0.1.0 → 0.1.1   (a fix)
  *   minor  0.1.0 → 0.2.0   (a feature, back-compatible)
@@ -31,9 +37,24 @@ const die = (msg) => {
 };
 const version = () => JSON.parse(readFileSync("package.json", "utf8")).version;
 
-const type = argv[2];
+// ── Resolve the bump level: explicit arg, else derived from [Unreleased]. ──
+let type = argv[2];
+if (!type) {
+  const releases = parseChangelog(readFileSync("CHANGELOG.md", "utf8"));
+  const unreleased = releases.find((r) => r.unreleased);
+  if (!unreleased || unreleased.groups.every((g) => g.items.length === 0)) {
+    die("nothing unreleased in CHANGELOG.md — nothing to release.");
+  }
+  const derived = deriveBump(unreleased, version());
+  type = derived.level;
+  console.log(
+    `\n  Bump derived from CHANGELOG: ${type}  (${derived.reasons.join(" · ")})`,
+  );
+}
 if (!TYPES[type]) {
-  die("usage: node scripts/release.mjs <patch|minor|major|beta>");
+  die(
+    "usage: node scripts/release.mjs [patch|minor|major|beta]  (omit → derived from CHANGELOG)",
+  );
 }
 
 // ── Preconditions: main, clean, in sync — the release must come from main. ──

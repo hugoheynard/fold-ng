@@ -72,6 +72,8 @@
     "build": "rm -rf dist && ng-packagr -p ng-package.json -c tsconfig.lib.json && node scripts/finalize-dist.mjs",
     "verify:pack": "pnpm run build && publint dist && attw --pack dist --ignore-rules cjs-resolves-to-esm --exclude-entrypoints tokens.css tokens/primitives.css tokens/scales.css tokens/semantic.css",
     "pack:check": "pnpm run build && cd dist && npm pack --dry-run",
+    "eta": "node scripts/release-eta.mjs",
+    "release": "node scripts/release.mjs",
     "release:patch": "node scripts/release.mjs patch",
     "release:minor": "node scripts/release.mjs minor",
     "release:major": "node scripts/release.mjs major",
