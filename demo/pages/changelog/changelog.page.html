@@ -1,0 +1,80 @@
+<fold-page-layout title="changelog">
+  <p description>
+    The full history of <code>fold-ng</code>, rendered from
+    <code>CHANGELOG.md</code> as a designed timeline. This gallery tracks the
+    <strong>dev</strong> branch — npm's <code>latest</code> is
+    <code>{{ published }}</code>.
+  </p>
+
+  <fold-callout variant="info" class="cl-banner">
+    This page mirrors <strong>dev</strong>. The
+    <strong>Unreleased</strong> entries below ship in the next version — they
+    are not on npm yet (latest published: <code>{{ published }}</code>).
+  </fold-callout>
+
+  <fold-timeline
+    ariaLabel="Release history"
+    datePlacement="hidden"
+    [nodes]="nodes"
+  >
+    <ng-template #node let-n>
+      @let release = releaseFor(n.key); @if (release) {
+      <fold-card
+        surface="sunken"
+        class="cl-release"
+        [class.cl-release--dev]="release.unreleased"
+      >
+        <header class="cl-head">
+          <div class="cl-ver">
+            <h2>{{ release.unreleased ? "Unreleased" : release.version }}</h2>
+            @if (release.date) {
+            <time>{{ release.date }}</time>
+            }
+          </div>
+          <div class="cl-tags">
+            @if (release.unreleased) {
+            <fold-badge content="dev · not on npm" variant="warning" />
+            } @if (release.breaking > 0) {
+            <fold-badge
+              [content]="release.breaking + ' breaking'"
+              variant="alert"
+            />
+            } @for (c of countsOf(release); track c.kind) {
+            <fold-badge [content]="c.count + ' ' + c.kind" [variant]="c.tone" />
+            }
+          </div>
+        </header>
+
+        @for (group of release.groups; track group.kind) { @if
+        (group.items.length > 0) {
+        <section class="cl-group">
+          <h3 class="cl-group-title">
+            <fold-badge
+              [content]="group.kind"
+              [variant]="toneFor(group.kind)"
+            />
+          </h3>
+          <ul class="cl-items">
+            @for (item of group.items; track $index) {
+            <li class="cl-item" [class.is-breaking]="item.breaking">
+              @if (item.breaking) {
+              <span class="cl-break">Breaking</span>
+              }
+              <span class="cl-lead">
+                <gal-changelog-runs [runs]="item.lead" />
+              </span>
+              @if (item.rest.length > 0) {
+              <span class="cl-rest">
+                <gal-changelog-runs [runs]="item.rest" />
+              </span>
+              }
+            </li>
+            }
+          </ul>
+        </section>
+        } }
+      </fold-card>
+      }
+    </ng-template>
+  </fold-timeline>
+</fold-page-layout>

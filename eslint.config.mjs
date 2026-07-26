@@ -31,6 +31,7 @@ export default tslint.config(
       "eslint.rules.mjs",
       "vite.config.ts",
       "**/*.js",
+      "**/*.generated.ts",
     ],
   },
   eslint.configs.recommended,

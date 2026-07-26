@@ -1,0 +1,112 @@
+.cl-banner {
+  margin-bottom: var(--fold-space-lg);
+}
+
+fold-timeline {
+  display: block;
+}
+
+// Each release hangs off the timeline rail as a card. The card is the node's
+// label region, so it takes the full available width.
+.cl-release {
+  display: block;
+  width: 100%;
+  margin-bottom: var(--fold-space-lg);
+  --fold-card-padding: var(--fold-space-lg);
+}
+
+// The Unreleased head reads as "in dev" — a dashed brand edge, not shipped.
+.cl-release--dev {
+  outline: 1px dashed var(--fold-color-primary-border);
+  outline-offset: -1px;
+}
+
+.cl-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fold-space-sm) var(--fold-space-md);
+  margin-bottom: var(--fold-space-md);
+}
+
+.cl-ver {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fold-space-sm);
+
+  h2 {
+    margin: 0;
+    font-size: var(--fold-text-xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  time {
+    font-size: var(--fold-text-sm);
+    color: var(--fold-color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.cl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-xs);
+}
+
+.cl-group {
+  & + & {
+    margin-top: var(--fold-space-md);
+  }
+}
+
+.cl-group-title {
+  margin: 0 0 var(--fold-space-sm);
+}
+
+.cl-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+}
+
+.cl-item {
+  display: block;
+  padding-left: var(--fold-space-md);
+  border-left: 2px solid var(--fold-color-border-subtle);
+  line-height: 1.55;
+
+  &.is-breaking {
+    border-left-color: var(--fold-color-primary);
+  }
+}
+
+.cl-break {
+  display: inline-block;
+  margin-right: var(--fold-space-xs);
+  padding: 0 0.4em;
+  font-size: var(--fold-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fold-color-primary-text);
+  background: var(--fold-color-primary-surface);
+  border-radius: var(--fold-radius-xs);
+  vertical-align: middle;
+}
+
+.cl-lead {
+  color: var(--fold-color-text);
+  font-weight: 600;
+}
+
+.cl-rest {
+  display: block;
+  margin-top: 2px;
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-sm);
+}

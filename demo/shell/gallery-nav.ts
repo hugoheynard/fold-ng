@@ -189,6 +189,11 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
     ],
   },
   {
+    label: "Project",
+    color: "#0ea5e9",
+    items: [{ id: "changelog", label: "changelog", icon: "timeline" }],
+  },
+  {
     label: "Foundations",
     color: "#64748b",
     items: [
