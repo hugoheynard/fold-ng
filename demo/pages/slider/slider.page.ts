@@ -35,15 +35,18 @@ export default class SliderPage {
   protected readonly bpm = signal<FoldRangeValue>({ min: 90, max: 160 });
   protected readonly clip = signal<FoldRangeValue>({ min: 30, max: 210 });
 
-  /* ── playground ── */
+  /* ── playground — switch between the single and range siblings ── */
+  protected readonly pgMode = signal<"single" | "range">("single");
   protected readonly pgValue = signal(40);
+  protected readonly pgRange = signal<FoldRangeValue>({ min: 25, max: 75 });
   protected readonly pgMin = signal(0);
   protected readonly pgMax = signal(100);
   protected readonly pgStep = signal(5);
   protected readonly pgDisabled = signal(false);
 
   protected readonly playgroundCode = computed(() => {
-    const lines = ['<fold-slider label="Volume"'];
+    const tag = this.pgMode() === "range" ? "fold-range-slider" : "fold-slider";
+    const lines = [`<${tag} label="Volume"`];
     if (this.pgMin() !== 0) {
       lines.push(`  [min]="${this.pgMin()}"`);
     }

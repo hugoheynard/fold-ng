@@ -75,8 +75,27 @@
     </div>
   </div>
 
-  <!-- ── playground ── -->
+  <!-- ── playground · switch single ↔ range ── -->
   <dev-playground [code]="playgroundCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">component</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgMode() === 'single'"
+          (click)="pgMode.set('single')"
+        >
+          fold-slider
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgMode() === 'range'"
+          (click)="pgMode.set('range')"
+        >
+          fold-range-slider
+        </button>
+      </div>
+    </div>
     <div class="np-field" params>
       <span class="gal-tag">step</span>
       <div class="ss-seg">
@@ -112,6 +131,7 @@
     </div>
 
     <fold-card surface="sunken" style="--fold-card-padding: 24px">
+      @if (pgMode() === "single") {
       <fold-slider
         label="Volume"
         [min]="pgMin()"
@@ -120,6 +140,16 @@
         [disabled]="pgDisabled()"
         [(value)]="pgValue"
       />
+      } @else {
+      <fold-range-slider
+        label="Volume"
+        [min]="pgMin()"
+        [max]="pgMax()"
+        [step]="pgStep()"
+        [disabled]="pgDisabled()"
+        [(value)]="pgRange"
+      />
+      }
     </fold-card>
   </dev-playground>
 </fold-page-layout>
