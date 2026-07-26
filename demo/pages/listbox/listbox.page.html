@@ -1,139 +1,182 @@
 <fold-page-layout title="listbox">
   <p description>
-    <code>fold-listbox</code> — a <strong>styleable</strong> single-select built
-    on <code>fold-popover</code>. The popover gives it the native top layer,
-    flip/shift positioning, outside-click + <code>Escape</code> dismissal and
-    focus return; on top sits the ARIA select pattern —
-    <code>role="listbox"</code> with <code>aria-activedescendant</code>, full
-    keyboard (↑/↓, <code>Home</code>/<code>End</code>, type-ahead,
-    <code>Enter</code>) — and Signal-Forms wiring. Reach for it when options
-    need custom rendering the native <code>&lt;select&gt;</code> popup can't
-    give; otherwise <code>fold-select</code> stays the lighter default.
+    The <strong>styleable select family</strong> — three ways to pick from a
+    list, same tokens and box chrome. <code>fold-listbox</code> (one value) and
+    <code>fold-multiselect</code> (a set) are built on
+    <code>fold-popover</code> for a fully styleable panel;
+    <code>fold-select</code> wraps a native <code>&lt;select&gt;</code> for a
+    mobile-native, zero-JS default. Pick a tab.
   </p>
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['popover', 'icons']" />
 
-  <!-- ── basic ── -->
-  <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="max-width: 320px">
-      <span class="gal-tag">basic · single-select</span>
-      <fold-listbox
-        label="Devise"
-        placeholder="Choisir une devise…"
-        hint="Le montant sera converti à l'affichage."
-        [(value)]="currency"
-      >
-        <fold-option value="EUR">Euro (€)</fold-option>
-        <fold-option value="USD">US Dollar ($)</fold-option>
-        <fold-option value="GBP">Livre sterling (£)</fold-option>
-        <fold-option value="JPY">Yen (¥)</fold-option>
-      </fold-listbox>
-      <p class="gal-readout">value = <code>{{ currency() }}</code></p>
-    </div>
-
-    <!-- ── custom-rendered rows ── -->
-    <div class="gal-cell" style="max-width: 340px">
-      <span class="gal-tag">custom rows · what native can't do</span>
-      <fold-listbox
-        label="Équipe"
-        placeholder="Affecter à une équipe…"
-        [(value)]="team"
-      >
-        @for (t of teams; track t.value) {
-        <fold-option [value]="t.value" [disabled]="t.tone === 'off'">
-          <span
-            class="lb-dot"
-            [class]="'is-' + t.tone"
-            aria-hidden="true"
-          ></span>
-          <span class="lb-row">
-            <span class="lb-name">{{ t.name }}</span>
-            <span class="lb-desc">{{ t.desc }}</span>
-          </span>
-        </fold-option>
+  <!-- Shared playground knobs (only one panel is visible at a time). -->
+  <ng-template #knobs>
+    <div class="sel-knob">
+      <span class="gal-tag">size</span>
+      <div class="sel-seg">
+        @for (s of sizes; track s) {
+        <button
+          type="button"
+          [class.is-on]="size() === s"
+          (click)="size.set(s)"
+        >
+          {{ s }}
+        </button>
         }
-      </fold-listbox>
-      <p class="gal-readout">équipe = <code>{{ teamName() }}</code></p>
-    </div>
-  </div>
-
-  <!-- ── multi-select ── -->
-  <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="max-width: 340px">
-      <span class="gal-tag">fold-multiselect · toggle, stays open</span>
-      <fold-multiselect
-        label="Genres"
-        placeholder="Choisir plusieurs genres…"
-        hint="Enter/Espace ou clic pour cocher ; le panneau reste ouvert."
-        [(value)]="genres"
-      >
-        <fold-option value="rock">Rock</fold-option>
-        <fold-option value="jazz">Jazz</fold-option>
-        <fold-option value="soul">Soul</fold-option>
-        <fold-option value="funk">Funk</fold-option>
-        <fold-option value="electro">Électro</fold-option>
-      </fold-multiselect>
-      <p class="gal-readout">
-        value = <code>[{{ genres().join(", ") }}]</code>
-      </p>
-    </div>
-  </div>
-
-  <!-- ── native vs styleable ── -->
-  <fold-card class="gal-compare">
-    <span class="gal-tag"
-      >fold-select (native) vs. fold-listbox (styleable)</span
-    >
-    <div class="gal-compare-grid">
-      <div>
-        <fold-select label="Devise · natif" [(value)]="nativeCurrency">
-          <option value="EUR">Euro (€)</option>
-          <option value="USD">US Dollar ($)</option>
-          <option value="GBP">Livre sterling (£)</option>
-        </fold-select>
-        <p class="gal-note">
-          OS-rendered popup — mobile-native, unstyleable, plain text rows.
-        </p>
-      </div>
-      <div>
-        <fold-listbox label="Devise · listbox" [(value)]="nativeCurrency">
-          <fold-option value="EUR">Euro (€)</fold-option>
-          <fold-option value="USD">US Dollar ($)</fold-option>
-          <fold-option value="GBP">Livre sterling (£)</fold-option>
-        </fold-listbox>
-        <p class="gal-note">
-          Same value model — a fully styleable panel, rich rows, one top layer.
-        </p>
       </div>
     </div>
-  </fold-card>
-
-  <!-- ── sizes + states ── -->
-  <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="max-width: 200px">
-      <span class="gal-tag">sizes</span>
-      <fold-listbox size="sm" placeholder="Small" [(value)]="sized">
-        <fold-option value="a">Alpha</fold-option>
-        <fold-option value="b">Bravo</fold-option>
-      </fold-listbox>
-      <fold-listbox size="md" placeholder="Medium" [(value)]="sized">
-        <fold-option value="a">Alpha</fold-option>
-        <fold-option value="b">Bravo</fold-option>
-      </fold-listbox>
-      <fold-listbox size="lg" placeholder="Large" [(value)]="sized">
-        <fold-option value="a">Alpha</fold-option>
-        <fold-option value="b">Bravo</fold-option>
-      </fold-listbox>
+    <div class="sel-knob">
+      <span class="gal-tag">variant</span>
+      <div class="sel-seg">
+        @for (v of variants; track v) {
+        <button
+          type="button"
+          [class.is-on]="variant() === v"
+          (click)="variant.set(v)"
+        >
+          {{ v }}
+        </button>
+        }
+      </div>
     </div>
-    <div class="gal-cell" style="max-width: 220px">
-      <span class="gal-tag">disabled control</span>
-      <fold-listbox
-        label="Verrouillé"
-        placeholder="Indisponible"
-        [disabled]="true"
-      >
-        <fold-option value="a">Alpha</fold-option>
-      </fold-listbox>
+  </ng-template>
+
+  <div class="sel-shell">
+    <fold-tabs
+      #t="foldTabs"
+      class="sel-rail"
+      direction="vertical"
+      [tabs]="tabs"
+      [activeKey]="tab()"
+      (tabChange)="tab.set($event)"
+    />
+
+    <div class="sel-panels">
+      <!-- ── listbox ─────────────────────────────────────────────── -->
+      <fold-tab-panel [tabs]="t" key="listbox">
+        <p class="sel-lede">
+          A single-select on the native top layer. Options can be anything you
+          project — an icon, a second line, a status — which is the reason to
+          reach for it over the native <code>&lt;select&gt;</code>. Full
+          keyboard, <code>role="listbox"</code> with
+          <code>aria-activedescendant</code>, and Signal Forms (<code
+            >value: string</code
+          >).
+        </p>
+
+        <dev-playground [code]="lbCode()" [responsive]="false">
+          <div params>
+            <ng-container [ngTemplateOutlet]="knobs" />
+          </div>
+          <fold-listbox
+            label="Devise"
+            placeholder="Choisir une devise…"
+            [size]="size()"
+            [variant]="variant()"
+            [(value)]="lbValue"
+          >
+            @for (c of currencies; track c.value) {
+            <fold-option [value]="c.value">{{ c.label }}</fold-option>
+            }
+          </fold-listbox>
+        </dev-playground>
+
+        <fold-page-section title="Tech — how it works" icon="code">
+          <p class="sel-prose">
+            The trigger stays in the normal flow; opening hands the panel to the
+            browser's <strong>top layer</strong>, so it escapes any
+            <code>overflow</code> / <code>z-index</code>. The
+            <code>role="listbox"</code> holds focus and points
+            <code>aria-activedescendant</code> at the active row — the rows
+            themselves stay dumb, each computing its own selected / active state
+            from the owner. Selecting commits the value and closes, returning
+            focus to the trigger.
+          </p>
+          <gal-select-schema kind="listbox" />
+        </fold-page-section>
+      </fold-tab-panel>
+
+      <!-- ── multiselect ─────────────────────────────────────────── -->
+      <fold-tab-panel [tabs]="t" key="multi">
+        <p class="sel-lede">
+          The same popover and rows, but the value is a
+          <strong>set</strong> (<code>readonly string[]</code>): activating a
+          row toggles it and the panel <strong>stays open</strong>. A separate
+          component, not a <code>multiple</code> flag, so the Signal-Forms value
+          type stays honest. <code>aria-multiselectable</code>; the trigger
+          summarises the picks.
+        </p>
+
+        <dev-playground [code]="msCode()" [responsive]="false">
+          <div params>
+            <ng-container [ngTemplateOutlet]="knobs" />
+          </div>
+          <fold-multiselect
+            label="Devises"
+            placeholder="Choisir plusieurs…"
+            [size]="size()"
+            [variant]="variant()"
+            [(value)]="msValue"
+          >
+            @for (c of currencies; track c.value) {
+            <fold-option [value]="c.value">{{ c.label }}</fold-option>
+            }
+          </fold-multiselect>
+        </dev-playground>
+
+        <fold-page-section title="Tech — how it works" icon="code">
+          <p class="sel-prose">
+            Structurally identical to the listbox — same top-layer panel, same
+            roving keyboard core (shared via a <code>FOLD_LISTBOX_OWNER</code>
+            token). The only differences live at the edges:
+            <code>aria-multiselectable</code>, activation
+            <strong>toggles membership</strong> instead of committing, and the
+            panel is never closed on a pick — so several choices are one
+            interaction.
+          </p>
+          <gal-select-schema kind="multi" />
+        </fold-page-section>
+      </fold-tab-panel>
+
+      <!-- ── native select ───────────────────────────────────────── -->
+      <fold-tab-panel [tabs]="t" key="select">
+        <p class="sel-lede">
+          A thin wrapper around a real <code>&lt;select&gt;</code> — the lighter
+          default. Not styleable inside the popup and rows are plain text, but
+          you get the OS's keyboard, focus and a native mobile wheel for free.
+          Reach for it unless you need custom rows.
+        </p>
+
+        <dev-playground [code]="selCode()" [responsive]="false">
+          <div params>
+            <ng-container [ngTemplateOutlet]="knobs" />
+          </div>
+          <fold-select
+            label="Devise"
+            placeholder="Choisir…"
+            [size]="size()"
+            [variant]="variant()"
+            [(value)]="selValue"
+          >
+            @for (c of currencies; track c.value) {
+            <option [value]="c.value">{{ c.label }}</option>
+            }
+          </fold-select>
+        </dev-playground>
+
+        <fold-page-section title="Tech — how it works" icon="code">
+          <p class="sel-prose">
+            No popover, no ARIA to run: <code>fold-select</code> only restyles
+            the closed control (box + caret) and forwards <code>[value]</code> /
+            <code>(change)</code> to Signal Forms. When it opens, the
+            <strong>operating system</strong> paints the option list — outside
+            your DOM, so it can't be styled, but keyboard, focus and the touch
+            wheel are all handled for you.
+          </p>
+          <gal-select-schema kind="select" />
+        </fold-page-section>
+      </fold-tab-panel>
     </div>
   </div>
 </fold-page-layout>

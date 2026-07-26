@@ -1,31 +1,43 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { ComposedOfComponent } from "../../components/composed-of.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
+import { SelectSchemaComponent } from "./select-schema.component";
 import {
-  FoldCardComponent,
   FoldListboxComponent,
   FoldMultiselectComponent,
   FoldOptionComponent,
   FoldPageLayoutComponent,
+  FoldPageSectionComponent,
   FoldSelectComponent,
+  FoldTabPanelComponent,
+  FoldTabsComponent,
+  type FoldTabItem,
 } from "../../../src/public-api";
 
-interface Team {
+type Size = "sm" | "md" | "lg";
+type Variant = "default" | "panel";
+interface Currency {
   readonly value: string;
-  readonly name: string;
-  readonly desc: string;
-  readonly tone: "ok" | "warn" | "off";
+  readonly label: string;
 }
 
-/** `/listbox` — the styleable `fold-listbox` single-select gallery page. */
+/** `/listbox` — the styleable-select family: listbox · multiselect · native select,
+ *  each with a playground and a "Tech" architecture section. */
 @Component({
   selector: "gal-listbox-page",
   standalone: true,
   imports: [
+    NgTemplateOutlet,
     KindBadgeComponent,
     ComposedOfComponent,
+    DevPlaygroundComponent,
+    SelectSchemaComponent,
     FoldPageLayoutComponent,
-    FoldCardComponent,
+    FoldPageSectionComponent,
+    FoldTabsComponent,
+    FoldTabPanelComponent,
     FoldListboxComponent,
     FoldMultiselectComponent,
     FoldOptionComponent,
@@ -33,44 +45,65 @@ interface Team {
   ],
   templateUrl: "./listbox.page.html",
   styleUrl: "./listbox.page.scss",
+  encapsulation: ViewEncapsulation.None,
 })
 export default class ListboxPage {
-  /* ── basic single-select ── */
-  protected readonly currency = signal("EUR");
-
-  /* ── custom-rendered rows (the reason to pick listbox over native) ── */
-  protected readonly team = signal("");
-  protected readonly teams: readonly Team[] = [
-    { value: "prod", name: "Production", desc: "Scène & régie", tone: "ok" },
-    {
-      value: "hosp",
-      name: "Hospitality",
-      desc: "Accueil artistes",
-      tone: "ok",
-    },
-    {
-      value: "com",
-      name: "Communication",
-      desc: "Presse & réseaux",
-      tone: "warn",
-    },
-    {
-      value: "sec",
-      name: "Sécurité",
-      desc: "Complet — plus de place",
-      tone: "off",
-    },
+  protected readonly tab = signal("listbox");
+  protected readonly tabs: FoldTabItem[] = [
+    { key: "listbox", label: "listbox", icon: "list" },
+    { key: "multi", label: "multiselect", icon: "check-circle" },
+    { key: "select", label: "select · native", icon: "chevron-down" },
   ];
-  protected readonly teamName = computed(
-    () => this.teams.find((t) => t.value === this.team())?.name ?? "—",
+
+  /** Shared demo options for all three controls. */
+  protected readonly currencies: readonly Currency[] = [
+    { value: "EUR", label: "Euro (€)" },
+    { value: "USD", label: "US Dollar ($)" },
+    { value: "GBP", label: "Livre sterling (£)" },
+    { value: "JPY", label: "Yen (¥)" },
+  ];
+
+  /** Playground knobs — shared across the tabs (only one panel shows at a time). */
+  protected readonly sizes: Size[] = ["sm", "md", "lg"];
+  protected readonly variants: Variant[] = ["default", "panel"];
+  protected readonly size = signal<Size>("md");
+  protected readonly variant = signal<Variant>("default");
+
+  /** Live values, one per control. */
+  protected readonly lbValue = signal("EUR");
+  protected readonly msValue = signal<readonly string[]>(["EUR", "GBP"]);
+  protected readonly selValue = signal("EUR");
+
+  protected readonly lbCode = computed(() =>
+    this.snippet("fold-listbox", '[(value)]="currency"', "fold-option"),
+  );
+  protected readonly msCode = computed(() =>
+    this.snippet("fold-multiselect", '[(value)]="picked"', "fold-option"),
+  );
+  protected readonly selCode = computed(() =>
+    this.snippet("fold-select", '[(value)]="currency"', "option"),
   );
 
-  /* ── multi-select (toggle, panel stays open) ── */
-  protected readonly genres = signal<readonly string[]>(["rock", "jazz"]);
-
-  /* ── vs. the native wrapper, side by side ── */
-  protected readonly nativeCurrency = signal("EUR");
-
-  /* ── sizes ── */
-  protected readonly sized = signal("md");
+  /** Build the generated snippet for a control from the current knobs. */
+  private snippet(tag: string, valueBind: string, optionTag: string): string {
+    const attrs = ['label="Devise"', valueBind];
+    if (this.size() !== "md") {
+      attrs.push(`size="${this.size()}"`);
+    }
+    if (this.variant() !== "default") {
+      attrs.push(`variant="${this.variant()}"`);
+    }
+    const options = this.currencies
+      .map(
+        (c) => `  <${optionTag} value="${c.value}">${c.label}</${optionTag}>`,
+      )
+      .join("\n");
+    return [
+      `<${tag}`,
+      ...attrs.map((a) => `  ${a}`),
+      ">",
+      options,
+      `</${tag}>`,
+    ].join("\n");
+  }
 }

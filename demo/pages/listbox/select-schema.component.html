@@ -1,0 +1,20 @@
+<div class="sc" [class.sc-native]="schema().kind === 'native'">
+  @for (layer of schema().layers; track layer.box; let first = $first) {
+    @if (!first) {
+      <div class="sc-flow" aria-hidden="true">
+        <span class="sc-flow-line"></span>
+        <span class="sc-flow-label">{{ layer.flow }}</span>
+        <span class="sc-flow-arrow">↓</span>
+      </div>
+    }
+    <div class="sc-layer" [style.--i]="$index">
+      <span class="sc-num">{{ $index + 1 }}</span>
+      <div class="sc-body">
+        <code class="sc-box">{{ layer.box }}</code>
+        <span class="sc-note">{{ layer.note }}</span>
+      </div>
+    </div>
+  }
+
+  <p class="sc-footer">{{ schema().footer }}</p>
+</div>

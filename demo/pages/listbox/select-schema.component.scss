@@ -1,0 +1,99 @@
+:host {
+  display: block;
+}
+
+.sc {
+  --sc-accent: var(--fold-color-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 620px;
+}
+
+// Native select leaves the DOM at the OS-popup layer — flag it in a neutral hue.
+.sc.sc-native {
+  --sc-accent: var(--fold-color-text-secondary);
+}
+
+.sc-layer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--fold-color-border-subtle);
+  border-inline-start: 3px solid var(--sc-accent);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-card);
+}
+
+.sc-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+}
+
+.sc-native .sc-num {
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text-secondary);
+}
+
+.sc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sc-box {
+  font-family: var(--fold-font-mono, monospace);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text);
+}
+
+.sc-note {
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+  line-height: 1.4;
+}
+
+// The connector between two layers — a short line, a flow label, an arrow.
+.sc-flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline-start: 1.5rem;
+  height: 1.6rem;
+  color: var(--fold-color-text-faded);
+}
+
+.sc-flow-line {
+  width: 2px;
+  height: 100%;
+  background: var(--fold-color-border);
+}
+
+.sc-flow-label {
+  font-size: var(--fold-text-xs);
+  font-style: italic;
+}
+
+.sc-flow-arrow {
+  margin-inline-start: -0.2rem;
+  font-size: var(--fold-text-sm);
+}
+
+.sc-footer {
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-sunken);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-secondary);
+  line-height: 1.5;
+}
