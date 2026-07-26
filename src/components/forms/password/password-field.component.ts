@@ -8,6 +8,7 @@ import {
   output,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
+import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldInputComponent } from "../input/input.component";
 import {
   foldDefaultPasswordRules,
@@ -38,7 +39,7 @@ import {
 @Component({
   selector: "fold-password-field",
   standalone: true,
-  imports: [FoldInputComponent],
+  imports: [FoldInputComponent, FoldIconComponent],
   templateUrl: "./password-field.component.html",
   styleUrl: "./password-field.component.scss",
   exportAs: "foldPasswordField",
@@ -74,6 +75,9 @@ export class FoldPasswordFieldComponent implements FormValueControl<string> {
   readonly rules = input<readonly FoldPasswordRule[]>(
     foldDefaultPasswordRules(),
   );
+  /** Built-in row marker: a filling `dot`, or a `check` tick on satisfied rows.
+   *  @default 'dot' */
+  readonly marker = input<"dot" | "check">("dot");
   /** Accessible name of the requirements list. @default 'Password requirements' */
   readonly rulesLabel = input("Password requirements");
   /** Word prefixed to a satisfied rule for screen readers. @default 'met' */

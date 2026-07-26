@@ -118,6 +118,23 @@ describe("FoldPasswordFieldComponent", () => {
     expect(host.querySelector(".custom-count")?.textContent).toBe("4");
   });
 
+  it("marker='check' renders a tick on satisfied rows", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPasswordFieldComponent],
+      template: `<fold-password-field marker="check" [(value)]="value" />`,
+    })
+    class CheckHost {
+      readonly value = signal("Abcdefg1"); // satisfies all four
+    }
+    const fixture = TestBed.createComponent(CheckHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelectorAll(".pw-mark").length).toBe(4);
+    expect(host.querySelectorAll(".pw-mark fold-icon").length).toBe(4);
+    expect(host.querySelectorAll(".pw-dot").length).toBe(0);
+  });
+
   it("renders a password input with a reveal toggle that flips the type", () => {
     const r = render();
     expect(r.input().getAttribute("type")).toBe("password");
