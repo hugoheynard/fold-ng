@@ -1,0 +1,60 @@
+// Custom option rows — a status dot + a two-line label, to show what the native
+// `<select>` popup can't render.
+.lb-row {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.lb-name {
+  font-weight: 600;
+}
+
+.lb-desc {
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+
+.lb-dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-text-muted);
+
+  &.is-ok {
+    background: var(--fold-color-success);
+  }
+
+  &.is-warn {
+    background: var(--fold-color-warning);
+  }
+
+  &.is-off {
+    background: var(--fold-color-text-faded);
+  }
+}
+
+.gal-readout {
+  margin-top: 0.6rem;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-secondary);
+}
+
+.gal-compare {
+  margin-top: 1.5rem;
+  padding: 1rem 1.15rem;
+}
+
+.gal-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.gal-note {
+  margin-top: 0.5rem;
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}

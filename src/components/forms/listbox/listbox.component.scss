@@ -1,0 +1,96 @@
+:host {
+  display: block;
+}
+
+// Trigger box — mirrors the native controls' chrome (input-shell.scss) but for a
+// <button>, which that mixin doesn't target. Same tokens, so a redesign there
+// should be echoed here.
+.lb-trigger {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-family: inherit;
+  color: var(--fold-color-text);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border-subtle);
+  cursor: pointer;
+  transition:
+    border-color var(--fold-motion-fast),
+    box-shadow var(--fold-motion-fast);
+
+  &:hover:not(:disabled) {
+    border-color: var(--fold-color-border);
+  }
+
+  &:focus-visible {
+    border-color: var(--fold-color-primary);
+    box-shadow: 0 0 0 2px var(--fold-color-primary-border);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.lb-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-placeholder {
+  color: var(--fold-color-text-faded);
+}
+
+// The caret is pushed to the trailing edge; the value takes the remaining room.
+.lb-caret {
+  margin-inline-start: auto;
+  color: var(--fold-color-text-muted);
+}
+
+// ─── Sizes (match input-shell) ──────────────────────────
+:host(.sm) .lb-trigger {
+  height: 1.75rem;
+  font-size: var(--fold-text-sm);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--fold-radius-xs);
+}
+
+:host(.md) .lb-trigger {
+  height: 2.25rem;
+  font-size: var(--fold-text-md);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--fold-radius-sm);
+}
+
+:host(.lg) .lb-trigger {
+  height: 2.75rem;
+  font-size: var(--fold-text-lg);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--fold-radius-sm);
+}
+
+// `panel` variant — flatter side-panel chrome, like input-shell's.
+:host(.panel) .lb-trigger {
+  height: auto;
+  padding: 7px 10px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-raised);
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+}
+
+// ─── The listbox panel ──────────────────────────────────
+.lb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 11rem;
+  outline: none;
+}

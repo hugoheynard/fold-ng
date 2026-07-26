@@ -1,0 +1,55 @@
+<fold-input-base
+  [label]="label()"
+  [for]="inputId"
+  [required]="required()"
+  [optional]="optional()"
+  [optionalLabel]="optionalLabel()"
+  [hint]="hint()"
+  [error]="errorMessage()"
+>
+  <fold-popover
+    [(open)]="open"
+    [autoFocus]="false"
+    [placement]="placement()"
+    [fallbackPlacements]="['top-start', 'bottom-end', 'top-end']"
+  >
+    <button
+      type="button"
+      class="lb-trigger"
+      [id]="inputId"
+      foldPopoverTrigger="listbox"
+      [disabled]="disabled()"
+      [attr.aria-invalid]="errorMessage() ? true : null"
+      [attr.aria-describedby]="describedBy()"
+      (keydown)="onTriggerKeydown($event)"
+    >
+      @if (selectedLabel(); as lbl) {
+        <span class="lb-value">{{ lbl }}</span>
+      } @else {
+        <span class="lb-placeholder">{{ placeholder() }}</span>
+      }
+      <fold-icon
+        name="chevron-down"
+        size="sm"
+        class="lb-caret"
+        aria-hidden="true"
+      />
+    </button>
+
+    <div
+      #list
+      foldPopoverPanel
+      class="lb-list"
+      role="listbox"
+      tabindex="-1"
+      [id]="listId"
+      [attr.aria-label]="label()"
+      [attr.aria-activedescendant]="activeId()"
+      (keydown)="onListKeydown($event)"
+      (click)="onListClick($event)"
+      (pointermove)="onListPointermove($event)"
+    >
+      <ng-content />
+    </div>
+  </fold-popover>
+</fold-input-base>

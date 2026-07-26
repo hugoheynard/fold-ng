@@ -1,0 +1,117 @@
+<fold-page-layout title="listbox">
+  <p description>
+    <code>fold-listbox</code> — a <strong>styleable</strong> single-select built
+    on <code>fold-popover</code>. The popover gives it the native top layer,
+    flip/shift positioning, outside-click + <code>Escape</code> dismissal and
+    focus return; on top sits the ARIA select pattern —
+    <code>role="listbox"</code> with <code>aria-activedescendant</code>, full
+    keyboard (↑/↓, <code>Home</code>/<code>End</code>, type-ahead,
+    <code>Enter</code>) — and Signal-Forms wiring. Reach for it when options
+    need custom rendering the native <code>&lt;select&gt;</code> popup can't
+    give; otherwise <code>fold-select</code> stays the lighter default.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['popover', 'icons']" />
+
+  <!-- ── basic ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">basic · single-select</span>
+      <fold-listbox
+        label="Devise"
+        placeholder="Choisir une devise…"
+        hint="Le montant sera converti à l'affichage."
+        [(value)]="currency"
+      >
+        <fold-option value="EUR">Euro (€)</fold-option>
+        <fold-option value="USD">US Dollar ($)</fold-option>
+        <fold-option value="GBP">Livre sterling (£)</fold-option>
+        <fold-option value="JPY">Yen (¥)</fold-option>
+      </fold-listbox>
+      <p class="gal-readout">value = <code>{{ currency() }}</code></p>
+    </div>
+
+    <!-- ── custom-rendered rows ── -->
+    <div class="gal-cell" style="max-width: 340px">
+      <span class="gal-tag">custom rows · what native can't do</span>
+      <fold-listbox
+        label="Équipe"
+        placeholder="Affecter à une équipe…"
+        [(value)]="team"
+      >
+        @for (t of teams; track t.value) {
+        <fold-option [value]="t.value" [disabled]="t.tone === 'off'">
+          <span
+            class="lb-dot"
+            [class]="'is-' + t.tone"
+            aria-hidden="true"
+          ></span>
+          <span class="lb-row">
+            <span class="lb-name">{{ t.name }}</span>
+            <span class="lb-desc">{{ t.desc }}</span>
+          </span>
+        </fold-option>
+        }
+      </fold-listbox>
+      <p class="gal-readout">équipe = <code>{{ teamName() }}</code></p>
+    </div>
+  </div>
+
+  <!-- ── native vs styleable ── -->
+  <fold-card class="gal-compare">
+    <span class="gal-tag"
+      >fold-select (native) vs. fold-listbox (styleable)</span
+    >
+    <div class="gal-compare-grid">
+      <div>
+        <fold-select label="Devise · natif" [(value)]="nativeCurrency">
+          <option value="EUR">Euro (€)</option>
+          <option value="USD">US Dollar ($)</option>
+          <option value="GBP">Livre sterling (£)</option>
+        </fold-select>
+        <p class="gal-note">
+          OS-rendered popup — mobile-native, unstyleable, plain text rows.
+        </p>
+      </div>
+      <div>
+        <fold-listbox label="Devise · listbox" [(value)]="nativeCurrency">
+          <fold-option value="EUR">Euro (€)</fold-option>
+          <fold-option value="USD">US Dollar ($)</fold-option>
+          <fold-option value="GBP">Livre sterling (£)</fold-option>
+        </fold-listbox>
+        <p class="gal-note">
+          Same value model — a fully styleable panel, rich rows, one top layer.
+        </p>
+      </div>
+    </div>
+  </fold-card>
+
+  <!-- ── sizes + states ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 200px">
+      <span class="gal-tag">sizes</span>
+      <fold-listbox size="sm" placeholder="Small" [(value)]="sized">
+        <fold-option value="a">Alpha</fold-option>
+        <fold-option value="b">Bravo</fold-option>
+      </fold-listbox>
+      <fold-listbox size="md" placeholder="Medium" [(value)]="sized">
+        <fold-option value="a">Alpha</fold-option>
+        <fold-option value="b">Bravo</fold-option>
+      </fold-listbox>
+      <fold-listbox size="lg" placeholder="Large" [(value)]="sized">
+        <fold-option value="a">Alpha</fold-option>
+        <fold-option value="b">Bravo</fold-option>
+      </fold-listbox>
+    </div>
+    <div class="gal-cell" style="max-width: 220px">
+      <span class="gal-tag">disabled control</span>
+      <fold-listbox
+        label="Verrouillé"
+        placeholder="Indisponible"
+        [disabled]="true"
+      >
+        <fold-option value="a">Alpha</fold-option>
+      </fold-listbox>
+    </div>
+  </div>
+</fold-page-layout>

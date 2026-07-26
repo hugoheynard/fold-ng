@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--fold-radius-sm);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text);
+  cursor: pointer;
+  user-select: none;
+  scroll-margin: 0.35rem;
+}
+
+// Keyboard-active row — driven by the listbox, not `:hover`, so pointer and
+// keyboard can't fight over which row looks focused.
+:host(.is-active) {
+  background: var(--fold-color-surface-hover);
+}
+
+:host(.is-selected) {
+  font-weight: 600;
+  color: var(--fold-color-text);
+}
+
+// A pure-CSS check on the selected row, pinned to the trailing edge.
+:host(.is-selected)::after {
+  content: "";
+  margin-inline-start: auto;
+  width: 0.36rem;
+  height: 0.66rem;
+  margin-bottom: 0.15rem;
+  border: solid var(--fold-color-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+:host(.is-disabled) {
+  color: var(--fold-color-text-muted);
+  cursor: not-allowed;
+}
