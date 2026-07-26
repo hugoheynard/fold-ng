@@ -120,19 +120,36 @@ export class FoldDropdownComponent {
     }
   }
 
+  /** Type-ahead buffer (multi-letter): keystrokes within 500 ms accumulate, so
+   *  "de" jumps to "Delete", not just the next "d". */
+  private typeBuffer = "";
+  private typeAt = 0;
+
   private typeahead(
     event: KeyboardEvent,
     items: FoldDropdownItemComponent[],
     current: number,
   ): void {
-    if (event.key.length !== 1 || event.ctrlKey || event.metaKey) {
+    if (
+      event.key.length !== 1 ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey
+    ) {
       return;
     }
-    const char = event.key.toLowerCase();
-    for (let step = 1; step <= items.length; step += 1) {
-      const idx = (current + step) % items.length;
+    const now = Date.now();
+    this.typeBuffer =
+      now - this.typeAt > 500 ? event.key : this.typeBuffer + event.key;
+    this.typeAt = now;
+    const query = this.typeBuffer.toLowerCase();
+    // A fresh single letter advances to the NEXT match (cycles same-initial
+    // items); an extended buffer stays on the current item if it still matches.
+    const from = query.length === 1 ? 1 : 0;
+    for (let i = 0; i < items.length; i += 1) {
+      const idx = (current + from + i) % items.length;
       const label = items[idx]?.button?.textContent?.trim().toLowerCase() ?? "";
-      if (label.startsWith(char)) {
+      if (label.startsWith(query)) {
         this.focusIndex(idx);
         return;
       }

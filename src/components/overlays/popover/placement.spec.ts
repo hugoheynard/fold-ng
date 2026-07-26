@@ -42,14 +42,24 @@ describe("computePlacement", () => {
     expect(r.y).toBe(700 - 120 - 8); // above the anchor
   });
 
-  it("does NOT flip when the opposite side has no room either", () => {
+  it("falls back to the roomier side when neither fits, and caps the height", () => {
     const r = computePlacement({
       ...base,
       floating: { width: 200, height: 780 }, // taller than either side's room
-      anchor: { x: 100, y: 400, width: 40, height: 20 },
+      anchor: { x: 100, y: 500, width: 40, height: 20 }, // more room above
       placement: "bottom",
+      viewport: { width: 1000, height: 800 },
     });
-    expect(r.placement).toBe("bottom"); // stays put; shift keeps it visible
+    expect(r.placement).toBe("top"); // above has more room (500 > 280)
+    // size: capped to the room above, minus offset + padding (500 - 8 - 8)
+    expect(r.maxHeight).toBe(484);
+    expect(r.y).toBe(8); // top-aligned, shifted to the top padding
+  });
+
+  it("reports the available size on the resolved side (size middleware)", () => {
+    const r = computePlacement(base); // bottom-start, roomy
+    expect(r.maxHeight).toBe(800 - (100 + 20) - 8 - 8); // vp - anchorBottom - offset - padding
+    expect(r.maxWidth).toBe(1000 - 2 * 8); // viewport width minus padding
   });
 
   it("shifts along the cross axis to stay within the right edge", () => {

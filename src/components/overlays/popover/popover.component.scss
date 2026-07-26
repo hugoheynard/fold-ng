@@ -3,19 +3,15 @@
 }
 
 .fpop-panel {
-  /* Reset the UA popover box; JS owns position/left/top (fixed). */
+  /* Reset the UA popover box; JS owns position/left/top/max-width (fixed, px). */
   inset: auto;
   margin: 0;
   padding: 0;
   border: 0;
-  overflow: visible;
-  /* Size to content (the projected panel). `max-content` is explicit so the
-     fixed box doesn't collapse to 0 in the top layer; the cap is a plain rem —
-     `vw` resolves to 0 for a top-layer box in some engines, which would clamp
-     the width to nothing. Off-viewport overflow is handled by the shift in
-     computePlacement. */
+  overflow: visible; /* let the arrow sit outside the box */
+  /* Size to content; the JS `size` middleware caps max-width/height (in px, not
+     vw — vw resolves to 0 for a top-layer box in some engines). */
   width: max-content;
-  max-width: 22rem;
 
   background: var(--fold-color-surface-raised);
   color: var(--fold-color-text);
@@ -27,24 +23,46 @@
     outline: 2px solid var(--fold-color-primary);
     outline-offset: 1px;
   }
-
-  &:not(:popover-open) {
-    display: none;
-  }
 }
 
+/* The scroll region — the `size` middleware sets its max-height so a tall panel
+   scrolls inside the viewport instead of overflowing it. */
+.fpop-inner {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  border-radius: inherit;
+}
+
+.fpop-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--fold-color-surface-raised);
+  transform: rotate(45deg);
+}
+
+/* Enter + exit, natively: @starting-style drives the open transition, and
+   `transition-behavior: allow-discrete` on display/overlay keeps the element
+   painted through the close transition — no JS timers. */
 @media (prefers-reduced-motion: no-preference) {
-  .fpop-panel:popover-open {
-    animation: fpop-in var(--fold-motion-fast);
+  .fpop-panel {
+    opacity: 0;
+    transform: scale(0.96);
+    transition:
+      opacity var(--fold-motion-fast),
+      transform var(--fold-motion-fast),
+      overlay var(--fold-motion-fast) allow-discrete,
+      display var(--fold-motion-fast) allow-discrete;
   }
-  @keyframes fpop-in {
-    from {
+  .fpop-panel:popover-open {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    .fpop-panel:popover-open {
       opacity: 0;
-      transform: translateY(-4px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
+      transform: scale(0.96);
     }
   }
 }
@@ -52,5 +70,8 @@
 @media (forced-colors: active) {
   .fpop-panel {
     outline: 1px solid CanvasText;
+  }
+  .fpop-arrow {
+    border: 1px solid CanvasText;
   }
 }

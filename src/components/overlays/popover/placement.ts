@@ -5,11 +5,14 @@
  * element (viewport coordinates, for `position: fixed`) plus the placement it
  * actually resolved to after collision handling.
  *
- * Two middlewares, in the order a good popover applies them:
- * 1. **flip** — if the preferred side overflows the viewport and the opposite
- *    side has more room, flip to it (so a bottom menu opens upward near the
- *    fold instead of spilling offscreen).
- * 2. **shift** — slide along the cross axis to stay within the viewport padding,
+ * Three middlewares, in the order a good popover applies them:
+ * 1. **flip** — pick the best-fitting side: keep the preferred one if it fits,
+ *    else its opposite, else whichever has the most room (so a bottom menu opens
+ *    upward near the fold instead of spilling offscreen).
+ * 2. **size** — report the space available on the chosen side (`maxWidth` /
+ *    `maxHeight`), so the caller caps the panel and scrolls the overflow instead
+ *    of letting it run off the viewport.
+ * 3. **shift** — slide along the cross axis to stay within the viewport padding,
  *    without leaving the anchor's side.
  *
  * We deliberately do not depend on Floating UI — fold ships no runtime deps.
@@ -49,8 +52,13 @@ export interface FoldPlacementInput {
 export interface FoldPlacementResult {
   readonly x: number;
   readonly y: number;
-  /** The placement after any flip — drives the arrow / `data-placement`. */
+  /** The placement after flip — drives the arrow / `data-placement`. */
   readonly placement: FoldPopoverPlacement;
+  /** Space available to the floating element on the resolved side, minus
+   *  padding — the consumer caps `max-width` / `max-height` to these and lets
+   *  the panel scroll (the `size` middleware). */
+  readonly maxWidth: number;
+  readonly maxHeight: number;
 }
 
 const OPPOSITE: Record<FoldPopoverSide, FoldPopoverSide> = {
@@ -157,42 +165,74 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 /**
- * Resolve a concrete `{ x, y, placement }` for a floating element. See the file
- * header for the flip → shift order.
+ * Choose the side to place on (**flip**): keep the preferred side if the
+ * floating element fits there; otherwise fall back to its opposite, and if
+ * neither fits, take whichever has the most room (the `size` middleware then
+ * caps + scrolls the overflow, so it degrades gracefully instead of spilling).
+ */
+function chooseSide(
+  preferred: FoldPopoverSide,
+  need: number,
+  anchor: FoldRect,
+  viewport: { width: number; height: number },
+  offset: number,
+): FoldPopoverSide {
+  const roomPreferred = roomFor(preferred, anchor, viewport);
+  if (roomPreferred >= need + offset) {
+    return preferred;
+  }
+  const opposite = OPPOSITE[preferred];
+  const roomOpposite = roomFor(opposite, anchor, viewport);
+  if (roomOpposite >= need + offset || roomOpposite > roomPreferred) {
+    return opposite;
+  }
+  return preferred;
+}
+
+/**
+ * Resolve `{ x, y, placement, maxWidth, maxHeight }` for a floating element.
+ * Order: **flip** (choose the best-fitting side) → **size** (available space on
+ * that side, for the caller to cap + scroll) → **shift** (slide along the cross
+ * axis to stay in the viewport).
  */
 export function computePlacement(
   input: FoldPlacementInput,
 ): FoldPlacementResult {
   const { anchor, floating, offset, viewport, padding } = input;
   const parsed = parse(input.placement);
-  let side = parsed.side;
+  const vertical = isVertical(parsed.side);
+  const need = vertical ? floating.height : floating.width;
+  const side = chooseSide(parsed.side, need, anchor, viewport, offset);
 
-  // flip: if the preferred side can't fit the floating element but its opposite
-  // can, use the opposite.
-  const need = isVertical(side) ? floating.height : floating.width;
-  if (roomFor(side, anchor, viewport) < need + offset) {
-    const opposite = OPPOSITE[side];
-    if (roomFor(opposite, anchor, viewport) >= need + offset) {
-      side = opposite;
-    }
-  }
+  // size: the room on the chosen side (main axis) and the viewport (cross axis).
+  const maxMain = Math.max(
+    0,
+    roomFor(side, anchor, viewport) - offset - padding,
+  );
+  const crossViewport = isVertical(side) ? viewport.width : viewport.height;
+  const maxCross = Math.max(0, crossViewport - 2 * padding);
+  const maxHeight = isVertical(side) ? maxMain : maxCross;
+  const maxWidth = isVertical(side) ? maxCross : maxMain;
 
-  const vertical = isVertical(side);
+  // position with the effective (capped) size so a scrolled panel still sits
+  // flush against the anchor and shifts within the viewport.
+  const eff = {
+    width: Math.min(floating.width, maxWidth),
+    height: Math.min(floating.height, maxHeight),
+  };
   let x: number;
   let y: number;
-  if (vertical) {
-    y = mainAxisCoord(side, anchor, floating, offset);
-    x = crossAxisCoord(side, parsed.align, anchor, floating);
-    // shift along x into the viewport.
-    x = clamp(x, padding, viewport.width - floating.width - padding);
+  if (isVertical(side)) {
+    y = mainAxisCoord(side, anchor, eff, offset);
+    x = crossAxisCoord(side, parsed.align, anchor, eff);
+    x = clamp(x, padding, viewport.width - eff.width - padding);
   } else {
-    x = mainAxisCoord(side, anchor, floating, offset);
-    y = crossAxisCoord(side, parsed.align, anchor, floating);
-    // shift along y into the viewport.
-    y = clamp(y, padding, viewport.height - floating.height - padding);
+    x = mainAxisCoord(side, anchor, eff, offset);
+    y = crossAxisCoord(side, parsed.align, anchor, eff);
+    y = clamp(y, padding, viewport.height - eff.height - padding);
   }
 
   const placement: FoldPopoverPlacement =
     parsed.align === "center" ? side : `${side}-${parsed.align}`;
-  return { x, y, placement };
+  return { x, y, placement, maxWidth, maxHeight };
 }

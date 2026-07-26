@@ -1,4 +1,9 @@
 <ng-content />
 <div #panel class="fpop-panel" popover="manual" [id]="panelId" tabindex="-1">
-  <ng-content select="[foldPopoverPanel]" />
+  @if (arrow()) {
+    <div #arrow class="fpop-arrow" aria-hidden="true"></div>
+  }
+  <div #inner class="fpop-inner">
+    <ng-content select="[foldPopoverPanel]" />
+  </div>
 </div>

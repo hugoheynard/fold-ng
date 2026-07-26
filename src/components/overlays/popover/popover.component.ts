@@ -1,5 +1,6 @@
 import {
   afterRenderEffect,
+  booleanAttribute,
   Component,
   effect,
   ElementRef,
@@ -65,6 +66,8 @@ export class FoldPopoverComponent {
   /** Move focus into the panel on open. @default true (a dropdown sets false to
    *  focus its first item instead). */
   readonly autoFocus = input(true);
+  /** Show a small arrow pointing at the trigger. @default false */
+  readonly arrow = input(false, { transform: booleanAttribute });
   /** Two-way open state — drive it, or let the trigger toggle it. */
   readonly open = model(false);
 
@@ -72,6 +75,8 @@ export class FoldPopoverComponent {
   readonly panelId = inject(FoldIdService).next("fold-popover");
 
   private readonly panel = viewChild<ElementRef<HTMLElement>>("panel");
+  private readonly inner = viewChild<ElementRef<HTMLElement>>("inner");
+  private readonly arrowEl = viewChild<ElementRef<HTMLElement>>("arrow");
 
   /**
    * The trigger element — the projected `[foldPopoverTrigger]`. Found by DOM
@@ -132,13 +137,27 @@ export class FoldPopoverComponent {
         const onScroll = (): void => this.reposition();
         document.addEventListener("pointerdown", onDown, true);
         document.addEventListener("keydown", onKey, true);
+        // autoUpdate: reposition on scroll/resize AND when the trigger or panel
+        // changes size (ResizeObserver), so the anchor never drifts.
         window.addEventListener("scroll", onScroll, true);
         window.addEventListener("resize", onScroll);
+        const ro =
+          typeof ResizeObserver === "undefined"
+            ? null
+            : new ResizeObserver(onScroll);
+        if (ro) {
+          const trigger = this.triggerEl();
+          if (trigger) {
+            ro.observe(trigger);
+          }
+          ro.observe(el);
+        }
         onCleanup(() => {
           document.removeEventListener("pointerdown", onDown, true);
           document.removeEventListener("keydown", onKey, true);
           window.removeEventListener("scroll", onScroll, true);
           window.removeEventListener("resize", onScroll);
+          ro?.disconnect();
         });
       } else if (supported && el.matches(":popover-open")) {
         el.hidePopover();
@@ -147,7 +166,8 @@ export class FoldPopoverComponent {
     });
   }
 
-  /** Position the panel against the trigger with flip + shift. */
+  /** Position the panel against the trigger: flip → size (cap + scroll) → shift,
+   *  then place the arrow. */
   private reposition(): void {
     const panel = this.panel()?.nativeElement;
     const anchorEl = this.triggerEl();
@@ -168,6 +188,64 @@ export class FoldPopoverComponent {
     this.renderer.setStyle(panel, "top", `${result.y}px`);
     this.renderer.setStyle(panel, "margin", "0");
     this.renderer.setAttribute(panel, "data-placement", result.placement);
+    // Apply the size caps only when positive — a degenerate 0-size viewport
+    // (SSR / detached) must not collapse the panel to nothing.
+    this.applyCap(panel, "max-width", result.maxWidth);
+    this.applyCap(this.inner()?.nativeElement, "max-height", result.maxHeight);
+    this.positionArrow(result.placement, anchor, result.x, result.y);
+  }
+
+  /** Set a `max-*` cap in px, but only when positive (skip a degenerate 0). */
+  private applyCap(
+    el: HTMLElement | undefined,
+    prop: string,
+    value: number,
+  ): void {
+    if (!el) {
+      return;
+    }
+    if (value > 0) {
+      this.renderer.setStyle(el, prop, `${value}px`);
+    } else {
+      this.renderer.removeStyle(el, prop);
+    }
+  }
+
+  /** Center the arrow on the anchor along the cross axis, clamped to the panel. */
+  private positionArrow(
+    placement: FoldPopoverPlacement,
+    anchor: DOMRect,
+    x: number,
+    y: number,
+  ): void {
+    const arrow = this.arrowEl()?.nativeElement;
+    const panel = this.panel()?.nativeElement;
+    if (!arrow || !panel) {
+      return;
+    }
+    const side = placement.split("-")[0];
+    const s = 10; // arrow box, px
+    const inset = 6; // keep clear of the rounded corner
+    const set = (prop: string, value: string): void =>
+      this.renderer.setStyle(arrow, prop, value);
+    for (const p of ["top", "bottom", "left", "right"]) {
+      this.renderer.removeStyle(arrow, p);
+    }
+    if (side === "top" || side === "bottom") {
+      const raw = anchor.x + anchor.width / 2 - x - s / 2;
+      set(
+        "left",
+        `${Math.max(inset, Math.min(raw, panel.offsetWidth - s - inset))}px`,
+      );
+      set(side === "bottom" ? "top" : "bottom", `${-s / 2}px`);
+    } else {
+      const raw = anchor.y + anchor.height / 2 - y - s / 2;
+      set(
+        "top",
+        `${Math.max(inset, Math.min(raw, panel.offsetHeight - s - inset))}px`,
+      );
+      set(side === "right" ? "left" : "right", `${-s / 2}px`);
+    }
   }
 
   protected onHostClick(event: MouseEvent): void {
