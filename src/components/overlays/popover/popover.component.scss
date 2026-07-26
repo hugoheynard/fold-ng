@@ -13,7 +13,15 @@
      vw — vw resolves to 0 for a top-layer box in some engines). */
   width: max-content;
 
-  background: var(--fold-color-surface-raised);
+  /* Opaque floating surface: an opaque card base lifted by the translucent
+     raised tint (layered as a solid gradient — two colours can't be comma
+     background layers). `surface-raised` alone is a ~5% overlay meant to sit on
+     an already-opaque surface; on a top-layer panel the page would bleed through. */
+  background-color: var(--fold-color-surface-card);
+  background-image: linear-gradient(
+    var(--fold-color-surface-raised),
+    var(--fold-color-surface-raised)
+  );
   color: var(--fold-color-text);
   border-radius: var(--fold-radius-md);
   box-shadow: var(--fold-shadow-lg);
@@ -43,7 +51,11 @@
   z-index: -1;
   width: 11px;
   height: 11px;
-  background: var(--fold-color-surface-raised);
+  background-color: var(--fold-color-surface-card);
+  background-image: linear-gradient(
+    var(--fold-color-surface-raised),
+    var(--fold-color-surface-raised)
+  );
   border: 1px solid var(--fold-color-border-subtle);
   transform: rotate(45deg);
 }

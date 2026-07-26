@@ -156,6 +156,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Fixed
 
+- **`fold-popover` panels are now opaque.** The panel used `surface-raised` — a
+  ~5% tint meant to _sit on_ an opaque surface — so on the top layer the page
+  bled through (visible while scrolling a long `fold-listbox`). It now composites
+  that tint over an opaque `surface-card` base. The popover also publishes its
+  trigger width as `--fold-popover-anchor-width`, and `fold-listbox` reads it for
+  a `min-width` — so the panel is never narrower than the trigger (a coherent
+  select look).
+
 - **Heading inputs no longer leak a native `title` tooltip.** A static
   `title="…"` on a component that has a `title` input both seeds the input _and_
   stays on the host as a real HTML attribute — so `fold-page-layout`,

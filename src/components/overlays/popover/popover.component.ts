@@ -8,6 +8,7 @@ import {
   input,
   model,
   Renderer2,
+  RendererStyleFlags2,
   viewChild,
 } from "@angular/core";
 import { FoldIdService } from "../../../a11y/id.service";
@@ -29,6 +30,10 @@ import { autoUpdate } from "./auto-update";
  *
  * For an actions menu with `role="menu"` + keyboard, use `fold-dropdown`, which
  * is built on this.
+ *
+ * The panel's width is `max-content`; to make it match the trigger (a select-like
+ * dropdown), read the published `--fold-popover-anchor-width` in the panel's CSS
+ * (e.g. `min-width: var(--fold-popover-anchor-width)`) — it tracks the trigger.
  *
  * @selector `fold-popover`
  *
@@ -206,6 +211,14 @@ export class FoldPopoverComponent {
     this.renderer.setStyle(panel, "left", `${result.x}px`);
     this.renderer.setStyle(panel, "top", `${result.y}px`);
     this.renderer.setStyle(panel, "margin", "0");
+    // Expose the trigger width so a panel can match it (a select-like dropdown):
+    // read `var(--fold-popover-anchor-width)` in the projected panel's CSS.
+    this.renderer.setStyle(
+      panel,
+      "--fold-popover-anchor-width",
+      `${anchor.width}px`,
+      RendererStyleFlags2.DashCase,
+    );
     this.renderer.setAttribute(panel, "data-placement", result.placement);
     // Apply the size caps only when positive — a degenerate 0-size viewport
     // (SSR / detached) must not collapse the panel to nothing.
