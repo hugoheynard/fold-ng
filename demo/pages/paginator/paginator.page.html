@@ -1,0 +1,120 @@
+<fold-page-layout title="paginator">
+  <p description>
+    fold-paginator — presentational and fully controlled, for server-side
+    pagination: the parent owns <code>currentPage</code> /
+    <code>pageSize</code> / <code>totalItems</code>, fires the fetch on
+    <code>(pageChange)</code> / <code>(pageSizeChange)</code>, and feeds the new
+    values back. It tolerates a lagging or out-of-range page (the range + active
+    button clamp internally), keeps keyboard focus after a page change, and
+    every label is overridable for i18n
+    (<code>provideFoldPaginatorLabels</code>, English by default).
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <!-- ── live controlled loop ── -->
+  <div class="gal-cell" style="max-width: 640px">
+    <span class="gal-tag">live · controlled · keyboard-focus preserved</span>
+    <fold-card surface="sunken" style="--fold-card-padding: 8px 18px">
+      <fold-paginator
+        [currentPage]="page()"
+        [pageSize]="size()"
+        [totalItems]="total"
+        (pageChange)="onPage($event)"
+        (pageSizeChange)="onSize($event)"
+      />
+    </fold-card>
+    <p class="doc-p">
+      Page {{ page() }} · {{ size() }}/page over {{ total }} items.
+    </p>
+  </div>
+
+  <!-- ── states ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">empty — "No items"</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 8px 18px">
+        <fold-paginator
+          [currentPage]="1"
+          [pageSize]="10"
+          [totalItems]="0"
+          [pageSizeOptions]="[]"
+        />
+      </fold-card>
+    </div>
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">disabled</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 8px 18px">
+        <fold-paginator
+          [currentPage]="3"
+          [pageSize]="10"
+          [totalItems]="100"
+          [pageSizeOptions]="[]"
+          disabled
+        />
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── playground ── -->
+  <dev-playground [code]="playgroundCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">siblings</span>
+      <div class="ss-seg">
+        @for (n of [0, 1, 2]; track n) {
+        <button
+          type="button"
+          [class.is-on]="pgSiblings() === n"
+          (click)="pgSiblings.set(n)"
+        >
+          {{ n }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">total items</span>
+      <div class="ss-seg">
+        @for (t of [8, 100, 237]; track t) {
+        <button
+          type="button"
+          [class.is-on]="pgTotal() === t"
+          (click)="pgTotal.set(t)"
+        >
+          {{ t }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">disabled</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgDisabled()"
+          (click)="pgDisabled.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgDisabled()"
+          (click)="pgDisabled.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+
+    <fold-card surface="sunken" style="--fold-card-padding: 8px 18px">
+      <fold-paginator
+        [currentPage]="pgPage()"
+        [pageSize]="pgSize()"
+        [totalItems]="pgTotal()"
+        [siblingCount]="pgSiblings()"
+        [disabled]="pgDisabled()"
+        (pageChange)="pgOnPage($event)"
+        (pageSizeChange)="pgSize.set($event)"
+      />
+    </fold-card>
+  </dev-playground>
+</fold-page-layout>

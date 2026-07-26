@@ -113,6 +113,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
         badge: "new",
         badgeTone: "info",
       },
+      {
+        id: "paginator",
+        label: "paginator",
+        badge: "new",
+        badgeTone: "info",
+      },
     ],
   },
   {

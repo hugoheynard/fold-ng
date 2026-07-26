@@ -20,7 +20,7 @@
     <fold-data-table
       caption="Team roster"
       [columns]="columns"
-      [rows]="rows()"
+      [rows]="pagedRows()"
       [rowKey]="rowKey"
       [rowTone]="rowTone"
       [sort]="sort()"
@@ -88,8 +88,19 @@
       </ng-template>
       <ng-template foldCell="tenure" let-row>{{ row.tenure }}</ng-template>
     </fold-data-table>
+
+    <!-- composing fold-paginator: the table renders the page, this pages the set -->
+    <fold-paginator
+      [currentPage]="rosterPage()"
+      [pageSize]="rosterSize()"
+      [totalItems]="rows().length"
+      [pageSizeOptions]="[3, 5]"
+      (pageChange)="rosterPage.set($event)"
+      (pageSizeChange)="onRosterSize($event)"
+    />
     <p class="doc-p">
-      {{ selectedCount() }} selected · last opened: “{{ clicked() ?? "—" }}”
+      {{ selectedCount() }} selected · last opened: “{{ clicked() ?? "—" }}” ·
+      selection persists across pages
     </p>
   </div>
 

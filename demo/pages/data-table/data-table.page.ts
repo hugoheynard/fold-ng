@@ -10,6 +10,7 @@ import {
   FoldDataTableComponent,
   FoldDataTableRowCardDirective,
   FoldPageLayoutComponent,
+  FoldPaginatorComponent,
   type FoldTableColumn,
   type FoldTableSort,
   type FoldTableTone,
@@ -88,6 +89,7 @@ const STATUS_META: Record<
     FoldDataTableComponent,
     FoldDataTableCellDirective,
     FoldDataTableRowCardDirective,
+    FoldPaginatorComponent,
     FoldAvatarComponent,
     FoldBadgeComponent,
   ],
@@ -130,6 +132,22 @@ export default class DataTablePage {
       return cmp * factor;
     });
   });
+
+  /* ── pagination (composing fold-paginator with the table) ── */
+  protected readonly rosterPage = signal(1);
+  protected readonly rosterSize = signal(3);
+  /** The rows for the current page — the table renders these, the paginator the total. */
+  protected readonly pagedRows = computed<readonly Member[]>(() => {
+    const start = (this.rosterPage() - 1) * this.rosterSize();
+    return this.rows().slice(start, start + this.rosterSize());
+  });
+  protected onRosterSize(size: number): void {
+    this.rosterSize.set(size);
+    const pages = Math.max(1, Math.ceil(this.rows().length / size));
+    if (this.rosterPage() > pages) {
+      this.rosterPage.set(pages);
+    }
+  }
 
   /** Toggle direction on the active column, else sort the new column ascending. */
   protected onSort(key: string): void {
