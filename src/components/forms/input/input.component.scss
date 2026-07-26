@@ -7,3 +7,38 @@
 }
 
 @include shell.field-input-shell;
+
+// Reveal (eye) toggle for a `revealable` password — a sibling of the <input>
+// (never nested), over the trailing edge; the input reserves room for it.
+.in-field {
+  position: relative;
+}
+
+:host input.has-reveal {
+  padding-inline-end: 2.1rem;
+}
+
+.in-reveal {
+  all: unset;
+  position: absolute;
+  inset-inline-end: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  padding: 0.2rem;
+  border-radius: var(--fold-radius-xs);
+  color: var(--fold-color-text-muted);
+  cursor: pointer;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    color: var(--fold-color-text);
+    background: var(--fold-color-surface-hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}

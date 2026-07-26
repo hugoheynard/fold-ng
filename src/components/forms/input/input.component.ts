@@ -5,9 +5,11 @@ import {
   inject,
   input,
   model,
+  signal,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { FoldIdService } from "../../../a11y/id.service";
+import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
@@ -42,7 +44,7 @@ import { readInputValue } from "./input-value";
 @Component({
   selector: "fold-input",
   standalone: true,
-  imports: [FoldInputBaseComponent],
+  imports: [FoldInputBaseComponent, FoldIconComponent],
   templateUrl: "./input.component.html",
   styleUrl: "./input.component.scss",
   host: {
@@ -65,6 +67,12 @@ export class FoldInputComponent implements FormValueControl<string> {
    * @default 'text'
    */
   readonly type = input<"text" | "email" | "password" | "tel" | "url">("text");
+  /** On a `password` input, offer a reveal (eye) toggle to show/hide the value. */
+  readonly revealable = input(false, { transform: booleanAttribute });
+  /** Accessible name of the reveal control while hidden. @default 'Show password' */
+  readonly revealLabel = input("Show password");
+  /** Accessible name of the reveal control while shown. @default 'Hide password' */
+  readonly hideLabel = input("Hide password");
 
   /**
    * Size preset controlling height, font-size, padding and border-radius.
@@ -153,6 +161,25 @@ export class FoldInputComponent implements FormValueControl<string> {
     }
     return this.hint() ? `${this.inputId}-hint` : null;
   });
+
+  /** Is the password currently revealed (shown as plain text)? */
+  protected readonly revealed = signal(false);
+  /** Whether to render the reveal toggle — a `revealable` password input. */
+  protected readonly showReveal = computed(
+    () => this.revealable() && this.type() === "password",
+  );
+  /** The native `type` to render — `text` while a password is revealed. */
+  protected readonly effectiveType = computed(() =>
+    this.showReveal() && this.revealed() ? "text" : this.type(),
+  );
+  /** The reveal control's accessible name, tracking its state. */
+  protected readonly revealAria = computed(() =>
+    this.revealed() ? this.hideLabel() : this.revealLabel(),
+  );
+
+  protected toggleReveal(): void {
+    this.revealed.update((shown) => !shown);
+  }
 
   /** Handles native input event. `value.set()` also fires the model's
    *  auto `valueChange` output for standalone `(valueChange)` consumers. */
