@@ -101,6 +101,12 @@ export { FoldSelectComponent } from "./components/forms/input/select.component";
 export { FoldListboxComponent } from "./components/forms/listbox/listbox.component";
 export { FoldMultiselectComponent } from "./components/forms/listbox/multiselect.component";
 export { FoldOptionComponent } from "./components/forms/listbox/option.component";
+export { FoldPasswordFieldComponent } from "./components/forms/password/password-field.component";
+export {
+  foldDefaultPasswordRules,
+  foldRegexRule,
+  type FoldPasswordRule,
+} from "./components/forms/password/password-rules";
 export { FoldCheckboxComponent } from "./components/forms/checkbox/checkbox.component";
 export { FoldSliderComponent } from "./components/forms/slider/slider.component";
 export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";
