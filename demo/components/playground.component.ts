@@ -15,6 +15,7 @@ import {
   FoldCardComponent,
   FoldElementTitleComponent,
   FoldPageSectionComponent,
+  FoldSliderComponent,
 } from "../../src/public-api";
 import { DevPreviewFrameDirective } from "./preview-frame.directive";
 
@@ -58,6 +59,7 @@ interface Viewport {
     FoldElementTitleComponent,
     FoldCardComponent,
     FoldPageSectionComponent,
+    FoldSliderComponent,
     DevPreviewFrameDirective,
   ],
   templateUrl: "./playground.component.html",

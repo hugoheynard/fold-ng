@@ -60,15 +60,14 @@
               }
             </div>
             <div class="pg-vp-slider">
-              <input
-                #slider
-                type="range"
+              <fold-slider
+                ariaLabel="Custom preview width"
                 [min]="VP_MIN"
                 [max]="VP_MAX"
-                step="1"
+                [step]="1"
+                [showValue]="false"
                 [value]="sliderValue()"
-                (input)="onSlider(slider.valueAsNumber)"
-                aria-label="Custom preview width"
+                (valueChange)="onSlider($event)"
               />
               <span class="pg-vp-readout">{{
                 vpWidth() === null ? "Fluid" : vpWidth() + " px"

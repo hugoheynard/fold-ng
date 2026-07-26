@@ -276,10 +276,8 @@
   align-items: center;
   gap: 10px;
 }
-.pg-vp-slider input[type="range"] {
+.pg-vp-slider fold-slider {
   width: 200px;
-  accent-color: var(--fold-color-primary);
-  cursor: ew-resize;
 }
 .pg-vp-readout {
   min-width: 58px;
@@ -302,7 +300,7 @@
   .pg-vp-btn {
     padding: 6px 8px;
   }
-  .pg-vp-slider input[type="range"] {
+  .pg-vp-slider fold-slider {
     width: 150px;
   }
 }
