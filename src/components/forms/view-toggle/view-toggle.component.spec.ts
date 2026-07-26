@@ -12,11 +12,13 @@ import {
   template: `<fold-view-toggle
     ariaLabel="View"
     [options]="options()"
+    [activeStyle]="active()"
     [(value)]="value"
   />`,
 })
 class HostComponent {
   readonly value = signal("cards");
+  readonly active = signal<"raised" | "accent">("raised");
   readonly options = signal<readonly FoldViewToggleOption[]>([
     { value: "cards", label: "Cards", icon: "grid" },
     { value: "table", label: "Table", icon: "list" },
@@ -34,6 +36,8 @@ function render() {
   return {
     fixture,
     value: fixture.componentInstance.value,
+    active: fixture.componentInstance.active,
+    toggle: () => host.querySelector<HTMLElement>("fold-view-toggle")!,
     group,
     radios,
     radio: (label: string) =>
@@ -90,6 +94,14 @@ describe("FoldViewToggleComponent", () => {
     r.key("End");
     r.fixture.detectChanges();
     expect(r.value()).toBe("table"); // map is disabled → last enabled
+  });
+
+  it("reflects the active style on the host", () => {
+    const r = render();
+    expect(r.toggle().classList).toContain("a-raised");
+    r.active.set("accent");
+    r.fixture.detectChanges();
+    expect(r.toggle().classList).toContain("a-accent");
   });
 
   it("does not select a disabled segment on click", () => {

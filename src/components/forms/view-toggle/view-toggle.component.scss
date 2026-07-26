@@ -52,6 +52,13 @@
   }
 }
 
+// ─── accent active style — the selected segment tints with the brand ───
+:host(.a-accent) .vt-btn.is-on {
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+  box-shadow: none;
+}
+
 // ─── sm ─────────────────────────────────────────────────
 :host(.sm) .vt-btn {
   padding: 0.2rem 0.5rem;

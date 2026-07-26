@@ -49,7 +49,7 @@ export interface FoldViewToggleOption {
   imports: [FoldIconComponent],
   templateUrl: "./view-toggle.component.html",
   styleUrl: "./view-toggle.component.scss",
-  host: { "[class]": "size()" },
+  host: { "[class]": "size() + ' a-' + activeStyle()" },
 })
 export class FoldViewToggleComponent {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -62,6 +62,9 @@ export class FoldViewToggleComponent {
   readonly ariaLabel = input<string>();
   /** Size preset. @default 'md' */
   readonly size = input<"sm" | "md">("md");
+  /** How the selected segment reads: a neutral `raised` chip, or an `accent`
+   *  brand tint. @default 'raised' */
+  readonly activeStyle = input<"raised" | "accent">("raised");
   /** Hide visible labels, keeping icons only (labels stay as accessible names). */
   readonly iconOnly = input(false, { transform: booleanAttribute });
 

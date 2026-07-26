@@ -13,7 +13,8 @@ All notable changes to **fold-ng** are documented here. The format follows
   (`{ value, icon?, label?, ariaLabel?, disabled? }`) and bind `[(value)]`. It's a
   real `role="radiogroup"` of `role="radio"` segments — roving tabindex, arrow-key
   selection, `Home`/`End`, disabled-skip — not two independent toggles. `size`
-  (`sm`/`md`), `iconOnly`, `forced-colors`-aware. New gallery `/view-toggle` page.
+  (`sm`/`md`), `iconOnly`, `activeStyle` (`raised` chip or `accent` brand tint),
+  `forced-colors`-aware. New gallery `/view-toggle` page.
 
 - **`fold-password-field` + `revealable` on `fold-input`.** A password input with
   a **live requirements checklist** — a dot per rule that turns on as the value

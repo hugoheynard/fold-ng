@@ -9,6 +9,7 @@ import {
 } from "../../../src/public-api";
 
 type Size = "sm" | "md";
+type Active = "raised" | "accent";
 
 /** `/view-toggle` — the `fold-view-toggle` segmented single-select gallery page. */
 @Component({
@@ -28,7 +29,9 @@ export default class ViewTogglePage {
   protected readonly view = signal("cards");
   protected readonly size = signal<Size>("md");
   protected readonly iconOnly = signal(false);
+  protected readonly active = signal<Active>("raised");
   protected readonly sizes: Size[] = ["sm", "md"];
+  protected readonly actives: Active[] = ["raised", "accent"];
 
   protected readonly options: readonly FoldViewToggleOption[] = [
     { value: "cards", label: "Cards", icon: "grid", ariaLabel: "Cards" },
@@ -39,6 +42,9 @@ export default class ViewTogglePage {
     const attrs = ['ariaLabel="View"', '[options]="options"'];
     if (this.size() !== "md") {
       attrs.push(`size="${this.size()}"`);
+    }
+    if (this.active() !== "raised") {
+      attrs.push(`activeStyle="${this.active()}"`);
     }
     if (this.iconOnly()) {
       attrs.push("iconOnly");

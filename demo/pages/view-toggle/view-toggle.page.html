@@ -27,6 +27,20 @@
         </div>
       </div>
       <div class="vtp-field">
+        <span class="gal-tag">activeStyle</span>
+        <div class="vtp-seg">
+          @for (a of actives; track a) {
+          <button
+            type="button"
+            [class.is-on]="active() === a"
+            (click)="active.set(a)"
+          >
+            {{ a }}
+          </button>
+          }
+        </div>
+      </div>
+      <div class="vtp-field">
         <span class="gal-tag">iconOnly</span>
         <div class="vtp-seg">
           <button
@@ -52,6 +66,7 @@
       ariaLabel="View"
       [options]="options"
       [size]="size()"
+      [activeStyle]="active()"
       [iconOnly]="iconOnly()"
       [(value)]="view"
     />
