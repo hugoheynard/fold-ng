@@ -16,7 +16,7 @@ the concrete work to reach ship-quality.
 Legend: 🟢 ship-ready · 🟡 minor work · 🔴 blocker.
 
 Scope audited: **33 components + the panel subsystem + 3 directives**, 96 public
-exports, **544 test blocks across 78 spec files**, **114 built-in icons**. No
+exports, **556 test blocks across 78 spec files**, **114 built-in icons**. No
 `any` / `as unknown` / `@ts-ignore` / `eslint-disable` / raw-colour violations in
 component _source_ (the token contract holds); the lone spec-side `as unknown`
 breach (P0-7) is now fixed too. Method: six parallel per-cluster audits, each reading every
@@ -63,22 +63,22 @@ and the gallery nav — **layout first**.
 
 **Content** — `src/components/content/`
 
-| Component                        | DX  | Tests | Docs | Verdict                                                  |
-| -------------------------------- | :-: | :---: | :--: | -------------------------------------------------------- |
-| `fold-card`                      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible `interactive` contract       |
-| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                  |
-| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                             |
-| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
-| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
-| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                        |
-| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`                    |
-| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | **Ship-ready** — max-contrast ink; AA proven per palette |
-| `fold-avatar-detail`             | 🟢  |  🟢   |  🟢  | **Ship-ready** — forwarding + `@example` covered         |
-| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
-| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                           |
-| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                             |
-| `fold-data-table`                | 🟢  |  🟢   |  🟢  | **Ship-ready** — top-tier pass + gallery + hardening     |
-| `fold-paginator`                 | 🟢  |  🟢   |  🟡  | **French aria/labels (portability); no gallery**         |
+| Component                        | DX  | Tests | Docs | Verdict                                                   |
+| -------------------------------- | :-: | :---: | :--: | --------------------------------------------------------- |
+| `fold-card`                      | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible `interactive` contract        |
+| `fold-hero-card`                 | 🟢  |  🟡   |  🟢  | Optional: assert `on-primary` text flip                   |
+| `fold-context-card`              | 🟢  |  🟡   |  🟡  | `iconTone` pass-through test                              |
+| `fold-element-title`             | 🟢  |  🟢   |  🟢  | **Ship-ready**                                            |
+| `fold-field` / `fold-field-list` | 🟢  |  🟢   |  🟢  | **Ship-ready**                                            |
+| `fold-badge`                     | 🟢  |  🟡   |  🟢  | Test `neutral`/`success` variants                         |
+| `fold-status-badge`              | 🟡  |  🟡   |  🟡  | Bakes a domain vocabulary; `@example`                     |
+| `fold-avatar`                    | 🟢  |  🟢   |  🟢  | **Ship-ready** — max-contrast ink; AA proven per palette  |
+| `fold-avatar-detail`             | 🟢  |  🟢   |  🟢  | **Ship-ready** — forwarding + `@example` covered          |
+| `fold-avatar-list`               | 🟢  |  🟢   |  🟢  | **Ship-ready**                                            |
+| `fold-timeline`                  | 🟢  |  🟢   |  🟢  | **Ship-ready**                                            |
+| `fold-choice-row`                | 🟢  |  🟢   |  🟡  | Gallery page; arrow-key a11y                              |
+| `fold-data-table`                | 🟢  |  🟢   |  🟢  | **Ship-ready** — top-tier pass + gallery + hardening      |
+| `fold-paginator`                 | 🟢  |  🟢   |  🟢  | **Ship-ready** — i18n labels (P0-2 fixed), focus, gallery |
 
 **Feedback** — `src/components/feedback/`
 
@@ -119,11 +119,11 @@ and the gallery nav — **layout first**.
 | `[foldStickyColumn]` | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery page                                 |
 | `[foldRepeatPress]`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — `@selector`, README, gallery demo                                 |
 
-**Ship-ready today (26):** app-shell, page-layout, page-section, hero-section,
+**Ship-ready today (27):** app-shell, page-layout, page-section, hero-section,
 aside-layout, nav-layout, view-nav, tabs, card, avatar-list, callout,
 element-title, field, field-list, nav-launcher, timeline, toast, surface, icon,
 repeat-press, sticky-column, button, button-icon, toggle-icon, **data-table**,
-**checkbox**. Everything else has scoped, mostly mechanical work below.
+**checkbox**, **paginator**. Everything else has scoped, mostly mechanical work below.
 
 > **TODO · `fold-app-shell` layout coverage** — ~~`footer` slot~~ ✅ done (self-collapsing `footer` row + `footerLayout: inset|full`) · ~~mobile drops both rails with no way back~~ ✅ done — two modes via `mobileNav`: `drawer` (`[(mobileNavOpen)]` off-canvas drawer for the primary rail — scrim, `Escape`, focus-trap, closes on widen; `--fold-color-scrim` token) or `none` + a standalone `fold-nav-launcher` (full-screen tile grid) · ~~no skip-to-content link~~ ✅ done (skip-link → focusable `<main>`, `skipLinkLabel`) · ~~optional `contentScroll`~~ ✅ done (`clip|auto`) · ~~width-observer duplicated with nav-layout~~ ✅ extracted to `observeElementWidth` (both consume it) · **remaining → Roadmap 1.0.1** (TODO.md, top): rails as named landmarks, secondary rail reachable on mobile, visual-regression snapshots, `foldElevated` named scale + `foldSurface` owns bg (trigger-gated), drawer mechanics → `FoldDrawer*` on a 2nd use, and the right-rail / tertiary-rail decisions. **8.5/10 today; the 1.0.1 gap to 9.5.**
 
@@ -142,12 +142,12 @@ the toggle contract (`[(active)]` + always-present `aria-pressed` true/false).
 The 5 app toggle sites were migrated (`toggled`), and both specs now assert their
 mode. (Was `button-icon.component.ts:90`.)
 
-**P0-2 · `fold-paginator` hard-codes French, non-overridable a11y strings.**
-`"Éléments par page"`, `"par page"`, `"… sur …"`, `"Aucun élément"`,
-`"Pagination"`, `"Page précédente"`, `"Page suivante"`, `"Page N"` — none are
-inputs (`paginator.component.html:12–67`). Violates rule 5.1 in a package that
-claims portability; this is ledger item #6. Extract each to an `input()` with an
-**English** default.
+**P0-2 · `fold-paginator` hard-codes French, non-overridable a11y strings. ✅ FIXED.**
+All strings (`Pagination`, prev/next, `Page N`, the size aria-label + `per page`,
+the `X–Y of Z` range, the empty text) now resolve from `FOLD_PAGINATOR_LABELS`
+(English default), overridable app-wide via `provideFoldPaginatorLabels(partial)`
+or per instance via the `labels` input. Parameterised strings (range, page) are
+functions so a locale can reword, not just translate. Ledger item #6.
 
 **P0-3 · Panel chrome hard-codes French "Fermer". ✅ FIXED.**
 `fold-panel-header` now reads `FOLD_PANEL_CLOSE_LABEL` (default `"Close"`) with a
@@ -214,13 +214,13 @@ row.) Add each row.
 **C-4 · Missing JSDoc `@selector`/`@example` tags.** The bar (rule 4.6) is
 `@selector` + one-liner + `@example`. Missing `@example` **tag** (a fenced block
 exists, the tag doesn't): `status-badge`, `avatar`, `avatar-detail`. Missing
-`@selector`: `paginator`, and the layout trio
+`@selector`: the layout trio
 (`page-layout`/`page-section`/`nav-layout` — verify). Mechanical.
 (`data-table` now carries both — done in the top-tier pass.)
 
 **C-5 · Gallery coverage holes.** Shipped components with **zero gallery
 presence** (fall back to the stub page — not among the Library nav entries):
-`fold-paginator`, `fold-empty-state` + `fold-loading` (a `state`
+`fold-empty-state` + `fold-loading` (a `state`
 page), and `[foldRepeatPress]`. (`fold-data-table` now has its own `/data-table`
 page, and `fold-checkbox` a `/checkbox` page.) `fold-choice-row` renders only incidentally inside
 other pages (its `chips` layout + `count` badge are never shown), and
@@ -415,9 +415,15 @@ title bar with a token-only `toolbarSurface` level (accent reuses the
 `aria-colcount`, loading + empty states. `@selector` + `@example` present; 27
 specs incl. the a11y/keyboard edges. Gallery `/data-table` shows every flag.
 
-**`fold-paginator`** 🟢🟢🟡 — Excellent controlled logic (discriminated
-`FoldPageItem`, clamp + dedupe, comprehensive logic tests). Actions: **P0-2**
-(French strings); (2) add `@selector`; (3) gallery page + a DOM-interaction test.
+**`fold-paginator`** 🟢🟢🟢 — **Ship-ready** (hardcore pass, 2026-07-26).
+Excellent controlled logic (discriminated `FoldPageItem`, clamp + dedupe) now
+hardened: full i18n (`FOLD_PAGINATOR_LABELS` + `provideFoldPaginatorLabels` +
+`labels` input, English default — P0-2 fixed), keyboard focus preserved after a
+page change (active page / prev-next arrow, never dropped to `<body>`),
+out-of-range `currentPage` clamped for a coherent range + active state, the
+current `pageSize` always present in the selector, `disabled` as
+`booleanAttribute`, floored `siblingCount`. `@selector` present; 19 specs incl.
+DOM clicks, i18n override, focus, and the edge cases. Gallery `/paginator`.
 
 **`fold-timeline`** 🟢🟢🟢 — **Ship-ready.** Exemplary: one primitive / two
 orientations, per-node interactivity decoupled from id, derived-or-override
@@ -576,7 +582,7 @@ remaining hardcoded aria strings → inputs.
 
 **Wave 3 — Docs & showcase.** C-2 README rows · C-3 stale facts (114 icons,
 loading spinner) · C-4 `@selector`/`@example` tags · C-5 gallery pages
-(paginator, state, repeat-press, choice-row variants, sliders). _(data-table +
+(state, repeat-press, choice-row variants, sliders). _(data-table +
 checkbox gallery pages ✅ done.)_
 
 **Wave 4 — Test depth.** avatar luminance-ink · avatar-detail forwarding · badge

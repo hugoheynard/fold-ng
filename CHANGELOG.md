@@ -8,6 +8,18 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-paginator` hardcore pass.** Fully i18n — every string
+  (`Pagination`/prev/next/page/size/range/empty) is now overridable via
+  `provideFoldPaginatorLabels()` (English default) or a per-instance `labels`
+  input, resolving the last hardcoded-French portability blocker. Plus:
+  keyboard focus is preserved after a page change (moves to the active page, or
+  the prev/next arrow while it stays enabled — never dropped to `<body>`); the
+  visible range + active button clamp an out-of-range `currentPage` (a lagging
+  parent can't render a garbage range); the current `pageSize` is always in the
+  selector's options (the `<select>` can't show a phantom value); `disabled` is a
+  `booleanAttribute`; `siblingCount` is floored + zero-bounded. `@selector` + a
+  gallery `/paginator` page; specs cover DOM clicks, i18n, focus and the edges.
+
 - **`fold-checkbox` — the boolean form control.** A native
   `<input type="checkbox">` (keyboard, focus, the `checkbox` role, form
   submission and `indeterminate` all native) visually replaced by a tokenised
