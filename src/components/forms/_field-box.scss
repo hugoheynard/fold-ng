@@ -1,0 +1,48 @@
+// The single source of truth for the *dimensions* of a form-control box —
+// heights, font-sizes, paddings, radii per size, plus the flat `panel` metrics.
+// Shared by the native-input controls (input-shell.scss) and the select-family
+// triggers (listbox/_listbox-shell.scss), so a metric redesign lands in one place.
+// Each caller keeps its own interaction frame (border/hover/focus), because an
+// <input> reacts on `:focus` + `:read-only` while a <button> uses `:focus-visible`.
+
+@use "sass:map";
+
+$sizes: (
+  sm: (
+    height: 1.75rem,
+    font: var(--fold-text-sm),
+    pad: 0.25rem 0.5rem,
+    radius: var(--fold-radius-xs),
+  ),
+  md: (
+    height: 2.25rem,
+    font: var(--fold-text-md),
+    pad: 0.4rem 0.65rem,
+    radius: var(--fold-radius-sm),
+  ),
+  lg: (
+    height: 2.75rem,
+    font: var(--fold-text-lg),
+    pad: 0.5rem 0.75rem,
+    radius: var(--fold-radius-sm),
+  ),
+);
+
+/** Box dimensions for one size preset (`sm` | `md` | `lg`). */
+@mixin size($key) {
+  $s: map.get($sizes, $key);
+
+  height: map.get($s, height);
+  font-size: map.get($s, font);
+  padding: map.get($s, pad);
+  border-radius: map.get($s, radius);
+}
+
+/** The flat side-panel variant metrics (content height, roomier padding, raised
+ *  ground). The caller adds its own focus-shadow reset. */
+@mixin panel {
+  height: auto;
+  padding: 7px 10px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-raised);
+}

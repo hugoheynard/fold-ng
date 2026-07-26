@@ -5,6 +5,8 @@
 // Included at the root of each component's SCSS via
 // `@include shell.field-input-shell;`, so `:host` resolves to that component.
 
+@use "../field-box" as box;
+
 @mixin field-input-shell {
   input,
   select {
@@ -56,29 +58,20 @@
     }
   }
 
-  // ─── Sizes ──────────────────────────────────────────
+  // ─── Sizes — shared metrics (see _field-box.scss) ───
   :host(.sm) input,
   :host(.sm) select {
-    height: 1.75rem;
-    font-size: var(--fold-text-sm);
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--fold-radius-xs);
+    @include box.size(sm);
   }
 
   :host(.md) input,
   :host(.md) select {
-    height: 2.25rem;
-    font-size: var(--fold-text-md);
-    padding: 0.4rem 0.65rem;
-    border-radius: var(--fold-radius-sm);
+    @include box.size(md);
   }
 
   :host(.lg) input,
   :host(.lg) select {
-    height: 2.75rem;
-    font-size: var(--fold-text-lg);
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--fold-radius-sm);
+    @include box.size(lg);
   }
 
   // ─── Alignment ──────────────────────────────────────
@@ -92,10 +85,7 @@
   // block so it wins; `size` on a panel input then only drives the font-size.
   :host(.panel) input,
   :host(.panel) select {
-    height: auto;
-    padding: 7px 10px;
-    border-radius: var(--fold-radius-sm);
-    background: var(--fold-color-surface-raised);
+    @include box.panel;
 
     &:focus {
       box-shadow: none;
