@@ -1,4 +1,4 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, computed, effect, signal, untracked } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
@@ -43,6 +43,28 @@ export default class SliderPage {
   protected readonly pgMax = signal(100);
   protected readonly pgStep = signal(5);
   protected readonly pgDisabled = signal(false);
+
+  constructor() {
+    // Keep the demo values inside the track when min/max change, so the thumbs
+    // never sit pinned outside the range.
+    effect(() => {
+      const lo = this.pgMin();
+      const hi = this.pgMax();
+      const clamp = (v: number): number => Math.min(Math.max(v, lo), hi);
+      untracked(() => {
+        this.pgValue.set(clamp(this.pgValue()));
+        const r = this.pgRange();
+        const min = clamp(r.min);
+        const max = clamp(r.max);
+        if (min !== r.min || max !== r.max) {
+          this.pgRange.set({
+            min: Math.min(min, max),
+            max: Math.max(min, max),
+          });
+        }
+      });
+    });
+  }
 
   protected readonly playgroundCode = computed(() => {
     const tag = this.pgMode() === "range" ? "fold-range-slider" : "fold-slider";
