@@ -8,6 +8,13 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-view-toggle` — a segmented single-select.** A compact Cards / Table
+  (or density, chart-mode…) switch, generic and zero-domain: pass `options`
+  (`{ value, icon?, label?, ariaLabel?, disabled? }`) and bind `[(value)]`. It's a
+  real `role="radiogroup"` of `role="radio"` segments — roving tabindex, arrow-key
+  selection, `Home`/`End`, disabled-skip — not two independent toggles. `size`
+  (`sm`/`md`), `iconOnly`, `forced-colors`-aware. New gallery `/view-toggle` page.
+
 - **`fold-password-field` + `revealable` on `fold-input`.** A password input with
   a **live requirements checklist** — a dot per rule that turns on as the value
   satisfies it — built in two layers. `fold-input` gains a reusable `revealable`

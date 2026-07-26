@@ -50,8 +50,11 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         (`role="combobox"` textbox, live `aria-activedescendant`, no-match state).
   - [ ] **Multiselect clear-all / select-all** — bulk affordances (the current
         `allowClear` is single-select only).
-- [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
-      switch; generic, zero domain. Cleanest extraction.
+- [x] **`fold-view-toggle`** (from `shared/view-toggle`, 2). ✅ Done (2026-07-26)
+      — generalised from the app's Cards/Table control to any `options` segmented
+      single-select. A real `role="radiogroup"` (roving tabindex, arrow keys,
+      Home/End, disabled-skip), `size`/`iconOnly`, forced-colors. Gallery
+      `/view-toggle`; 6 specs.
 - [x] **`fold-soft-warning` → reconcile with `fold-callout`.** ✅ Decided
       (2026-07-26): **no new component** — the app's `soft-warning` is a
       `fold-callout appearance="inset"` (same flex + icon + projected body, same
