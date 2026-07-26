@@ -6,6 +6,7 @@ import {
   ElementRef,
   inject,
   input,
+  model,
   output,
   signal,
   viewChild,
@@ -14,6 +15,7 @@ import { FoldButtonComponent } from "../button/button.component";
 import type { FoldButtonIntent, FoldButtonSize } from "../button/button.types";
 import { FoldButtonIconComponent } from "../button-icon/button-icon.component";
 import { FoldInputComponent } from "../../forms/input/input.component";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
 import {
   FOLD_INLINE_CONFIRM_LABELS,
@@ -27,7 +29,7 @@ import {
  * by a confirm/cancel row, so a destructive action is guarded without a modal
  * and without the layout jumping. Emits `confirmed` / `cancelled`.
  *
- * Two families, chosen by input:
+ * Three families, chosen by input:
  *
  * - **Simple** (default) — trigger → `Confirm` · `Cancel`. `confirmed` emits `""`.
  * - **Type-to-confirm** — set `match`: the confirm button stays disabled until
@@ -58,6 +60,17 @@ import {
  * <!-- password-gated -->
  * <fold-inline-confirm password (confirmed)="deleteAccount($event)">
  *   <button foldButton intent="danger">Delete account</button>
+ * </fold-inline-confirm>
+ *
+ * <!-- async: keep it open + show a spinner until the request settles -->
+ * <fold-inline-confirm
+ *   keepOpenOnConfirm
+ *   [loading]="pending()"
+ *   [(open)]="confirmOpen"
+ *   confirmIcon="bin"
+ *   cancelIcon="close"
+ *   (confirmed)="onDelete()">
+ *   <fold-button-icon icon="bin" tooltip="Delete" />
  * </fold-inline-confirm>
  * ```
  */
@@ -94,18 +107,34 @@ export class FoldInlineConfirmComponent {
   readonly loading = input(false, { transform: booleanAttribute });
   /** Control density. @default "sm" */
   readonly size = input<FoldButtonSize>("sm");
-  /** Show an icon-only `×` cancel instead of a labelled button (simple family). */
-  readonly cancelIcon = input(false, { transform: booleanAttribute });
+  /** Optional leading icon on the confirm button (e.g. `"bin"` on "Delete"). */
+  readonly confirmIcon = input<FoldIconName>();
+  /**
+   * Render the cancel as an icon-only button of the given icon (e.g. `"close"`)
+   * instead of a labelled button. Unset → a labelled cancel. The name is your
+   * choice from the icon registry.
+   */
+  readonly cancelIcon = input<FoldIconName>();
+  /**
+   * Keep the affordance open after `confirmed` fires, so an async handler can
+   * show `loading` and then close it via `[(open)]`. Default: close on confirm
+   * (the right behaviour for synchronous / optimistic actions).
+   */
+  readonly keepOpenOnConfirm = input(false, { transform: booleanAttribute });
   /** Per-instance label overrides, merged over the app-wide + English defaults. */
   readonly labels = input<Partial<FoldInlineConfirmLabels>>();
 
   /** Emitted when the user confirms — carries the typed text (or `""`). */
   readonly confirmed = output<string>();
-  /** Emitted when the user cancels (button, `Escape`, or blur-away is not auto). */
+  /** Emitted when the user cancels (button or `Escape`). */
   readonly cancelled = output();
 
-  /** Whether the confirm affordance (vs. the trigger) is showing. */
-  readonly open = signal(false);
+  /**
+   * Whether the confirm affordance (vs. the trigger) is showing. Two-way, so a
+   * parent can drive it — open it programmatically, or close it when an async
+   * `confirmed` handler settles (paired with `keepOpenOnConfirm`).
+   */
+  readonly open = model(false);
   /** The text currently typed in the field. */
   protected readonly typed = signal("");
 
@@ -154,21 +183,27 @@ export class FoldInlineConfirmComponent {
     return m.length > 0 ? this.l().typePrompt(m) : this.l().secret;
   });
 
+  /** Has the affordance ever opened? Gates focus-return so mount doesn't steal. */
+  private opened = false;
+
   constructor() {
-    // Move focus into the affordance when it opens: the field for a typed
-    // family, else the confirm button. Runs after render so the target exists.
+    // One place owns focus, after render (so the target has been (re)painted):
+    // opening → move focus into the affordance (the field, else the confirm
+    // button); closing after a prior open → return focus to the trigger. The
+    // `opened` gate stops the initial closed render from grabbing focus.
     afterRenderEffect(() => {
-      if (!this.open()) {
-        return;
+      if (this.open()) {
+        this.opened = true;
+        const root = this.groupEl()?.nativeElement;
+        const target = this.needsInput()
+          ? root?.querySelector<HTMLElement>("input")
+          : root?.querySelector<HTMLElement>("button");
+        target?.focus();
+      } else if (this.opened) {
+        this.triggerEl()
+          ?.nativeElement.querySelector<HTMLElement>("button, a")
+          ?.focus();
       }
-      const root = this.groupEl()?.nativeElement;
-      if (!root) {
-        return;
-      }
-      const target = this.needsInput()
-        ? root.querySelector<HTMLElement>("input")
-        : root.querySelector<HTMLElement>("button");
-      target?.focus();
     });
   }
 
@@ -184,18 +219,17 @@ export class FoldInlineConfirmComponent {
       return;
     }
     const value = this.typed();
-    this.open.set(false);
-    this.typed.set("");
+    if (!this.keepOpenOnConfirm()) {
+      this.open.set(false);
+      this.typed.set("");
+    }
     this.confirmed.emit(value);
   }
 
-  /** Abort and restore the trigger, returning focus to it. */
+  /** Abort and restore the trigger (focus returns via the render effect). */
   protected cancel(): void {
     this.open.set(false);
     this.typed.set("");
     this.cancelled.emit();
-    this.triggerEl()
-      ?.nativeElement.querySelector<HTMLElement>("button, a")
-      ?.focus();
   }
 }

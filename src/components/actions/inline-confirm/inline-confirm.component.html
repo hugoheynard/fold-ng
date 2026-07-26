@@ -1,13 +1,9 @@
 @if (!open()) {
   <!-- Idle: the host's projected trigger. A click anywhere in it starts the
        flow; the trigger itself stays a real focusable control (button / anchor),
-       so keyboard activation is native — no extra role/tabindex here. -->
-  <span
-    #triggerWrap
-    class="fic-trigger"
-    (click)="activate()"
-    (keydown.enter)="activate()"
-  >
+       so keyboard activation is native (Enter/Space → click) — no extra
+       role/tabindex, and no keydown handler that would double-fire. -->
+  <span #triggerWrap class="fic-trigger" (click)="activate()">
     <ng-content />
   </span>
 } @else {
@@ -16,7 +12,6 @@
     class="fic-confirm"
     role="group"
     [attr.aria-label]="l().group"
-    [attr.aria-describedby]="message() ? msgId : null"
     (keydown.escape)="cancel(); $event.stopPropagation()"
   >
     @if (message(); as text) {
@@ -24,35 +19,35 @@
     }
 
     @if (needsInput()) {
-      <div class="fic-field">
-        <p class="fic-prompt">{{ prompt() }}</p>
-        <fold-input
-          [type]="fieldType()"
-          [size]="size() === 'lg' ? 'lg' : 'sm'"
-          [placeholder]="placeholder() ?? (match() || l().secret)"
-          [autocomplete]="password() ? 'current-password' : 'off'"
-          [(value)]="typed"
-          (keydown.enter)="confirm()"
-        />
-      </div>
+      <fold-input
+        class="fic-field"
+        [label]="prompt()"
+        [type]="fieldType()"
+        [size]="size() === 'lg' ? 'lg' : 'sm'"
+        [placeholder]="placeholder() ?? ''"
+        [autocomplete]="password() ? 'current-password' : 'off'"
+        [(value)]="typed"
+        (keydown.enter)="confirm()"
+      />
     }
 
     <div class="fic-actions">
       <button
-        #confirmBtn
         foldButton
         emphasis="solid"
         [intent]="intent()"
         [size]="size()"
+        [icon]="confirmIcon()"
         [disabled]="!canConfirm()"
+        [attr.aria-describedby]="message() ? msgId : null"
         (click)="confirm()"
       >
         {{ loading() ? l().busy : l().confirm }}
       </button>
 
-      @if (cancelIcon() && !needsInput()) {
+      @if (cancelIcon(); as icon) {
         <fold-button-icon
-          icon="close"
+          [icon]="icon"
           tone="ghost"
           [size]="size()"
           [disabled]="loading()"

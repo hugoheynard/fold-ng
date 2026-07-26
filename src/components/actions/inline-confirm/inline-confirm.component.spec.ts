@@ -13,6 +13,8 @@ import { provideFoldInlineConfirmLabels } from "./inline-confirm-labels";
     [message]="message()"
     [loading]="loading()"
     [cancelIcon]="cancelIcon()"
+    [keepOpenOnConfirm]="keepOpen()"
+    [(open)]="open"
     (confirmed)="onConfirmed($event)"
     (cancelled)="onCancelled()"
   >
@@ -24,7 +26,9 @@ class HostComponent {
   readonly password = signal(false);
   readonly message = signal<string | undefined>(undefined);
   readonly loading = signal(false);
-  readonly cancelIcon = signal(false);
+  readonly cancelIcon = signal<string | undefined>(undefined);
+  readonly keepOpen = signal(false);
+  readonly open = signal(false);
   readonly confirmedWith: string[] = [];
   cancelledCount = 0;
   onConfirmed(value: string): void {
@@ -110,13 +114,13 @@ describe("FoldInlineConfirmComponent", () => {
     expect(r.trigger()).not.toBeNull();
   });
 
-  it("renders a masked field prompt in the type-to-confirm family", () => {
+  it("labels the field with the type-to-confirm prompt", () => {
     const r = render();
     r.fixture.componentInstance.match.set("prod");
     r.fixture.detectChanges();
     activate(r);
     expect(r.input()).not.toBeNull();
-    expect(r.el.querySelector(".fic-prompt")?.textContent).toContain("prod");
+    expect(r.el.querySelector("label")?.textContent).toContain("prod");
   });
 
   it("keeps confirm disabled until the typed value matches", () => {
@@ -174,14 +178,16 @@ describe("FoldInlineConfirmComponent", () => {
     expect(r.fixture.componentInstance.confirmedWith).toEqual(["hunter2"]);
   });
 
-  it("wires the message to the group via aria-describedby", () => {
+  it("describes the confirm button with the message so it is announced", () => {
     const r = render();
     r.fixture.componentInstance.message.set("This cannot be undone.");
     r.fixture.detectChanges();
     activate(r);
-    const group = r.el.querySelector(".fic-confirm")!;
+    const confirm = r
+      .buttons()
+      .find((b) => /confirm/i.test(b.textContent ?? ""))!;
     const msg = r.el.querySelector(".fic-message")!;
-    expect(group.getAttribute("aria-describedby")).toBe(msg.id);
+    expect(confirm.getAttribute("aria-describedby")).toBe(msg.id);
     expect(msg.id).toBeTruthy();
   });
 
@@ -195,12 +201,52 @@ describe("FoldInlineConfirmComponent", () => {
     expect(confirm.textContent?.toLowerCase()).toContain("working");
   });
 
-  it("uses an icon-only cancel when cancelIcon is set", () => {
+  it("uses an icon-only cancel of the chosen icon when cancelIcon is set", () => {
     const r = render();
-    r.fixture.componentInstance.cancelIcon.set(true);
+    r.fixture.componentInstance.cancelIcon.set("close");
     r.fixture.detectChanges();
     activate(r);
     expect(r.el.querySelector("fold-button-icon")).not.toBeNull();
+    // and no labelled cancel button remains
+    expect(r.buttons().some((b) => /cancel/i.test(b.textContent ?? ""))).toBe(
+      false,
+    );
+  });
+
+  it("returns focus to the trigger after cancel", async () => {
+    const r = render();
+    activate(r);
+    r.buttons()
+      .find((b) => /cancel/i.test(b.textContent ?? ""))!
+      .click();
+    r.fixture.detectChanges();
+    await r.fixture.whenStable();
+    expect(document.activeElement).toBe(r.trigger());
+  });
+
+  it("keepOpenOnConfirm keeps the affordance open and lets the parent close it", () => {
+    const r = render();
+    r.fixture.componentInstance.keepOpen.set(true);
+    r.fixture.detectChanges();
+    activate(r);
+    r.buttons()
+      .find((b) => /confirm/i.test(b.textContent ?? ""))!
+      .click();
+    r.fixture.detectChanges();
+    // still open after confirm (async pattern)
+    expect(r.el.querySelector(".fic-confirm")).not.toBeNull();
+    expect(r.fixture.componentInstance.confirmedWith).toEqual([""]);
+    // parent drives it closed via [(open)]
+    r.fixture.componentInstance.open.set(false);
+    r.fixture.detectChanges();
+    expect(r.trigger()).not.toBeNull();
+  });
+
+  it("supports a two-way open model (programmatic open)", () => {
+    const r = render();
+    r.fixture.componentInstance.open.set(true);
+    r.fixture.detectChanges();
+    expect(r.el.querySelector(".fic-confirm")).not.toBeNull();
   });
 
   it("respects per-instance label overrides via the provider", () => {
