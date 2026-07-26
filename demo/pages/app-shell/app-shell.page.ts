@@ -13,6 +13,7 @@ import {
 import { PanelScopeDirective } from "../../components/panel-scope.directive";
 import { TabPanelComponent } from "../../components/tab-panel.component";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/app-shell` — the `fold-app-shell` gallery page (live preview playground). */
@@ -21,6 +22,7 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldAppShellComponent,
     FoldMenuComponent,

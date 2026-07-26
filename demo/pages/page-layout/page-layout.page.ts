@@ -13,6 +13,7 @@ import {
 } from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 
 type HeaderMode = "title" | "custom";
 
@@ -23,6 +24,7 @@ type HeaderMode = "title" | "custom";
   imports: [
     RouterLink,
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldPageTitleDirective,
     FoldPageSectionComponent,

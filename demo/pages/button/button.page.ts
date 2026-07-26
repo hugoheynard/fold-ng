@@ -1,5 +1,6 @@
 import { Component, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import {
   FoldButtonComponent,
   FoldCalloutComponent,
@@ -25,6 +26,7 @@ interface ButtonFeature {
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
     FoldCardComponent,

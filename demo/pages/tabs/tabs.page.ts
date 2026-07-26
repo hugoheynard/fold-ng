@@ -1,6 +1,7 @@
 import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldBadgeComponent,
@@ -23,6 +24,7 @@ type TabDir = "horizontal" | "vertical";
   imports: [
     RouterLink,
     KindBadgeComponent,
+    ComposedOfComponent,
     DevPlaygroundComponent,
     FoldPageLayoutComponent,
     FoldCalloutComponent,

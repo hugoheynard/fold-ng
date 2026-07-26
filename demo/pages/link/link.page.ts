@@ -1,5 +1,6 @@
 import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldLinkComponent,
@@ -18,6 +19,7 @@ type LinkMode = "anchor" | "button";
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     DevPlaygroundComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,

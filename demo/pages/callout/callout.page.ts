@@ -8,6 +8,7 @@ import {
   type FoldCalloutVariant,
 } from "../../../src/public-api";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/callout` — the `fold-callout` gallery page. */
@@ -16,6 +17,7 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldCalloutComponent,
     FoldCardComponent,

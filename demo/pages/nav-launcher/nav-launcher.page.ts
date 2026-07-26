@@ -9,6 +9,7 @@ import {
 } from "../../../src/public-api";
 import type { FoldIconName } from "../../../src/public-api";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 
 interface LauncherDest {
   readonly id: string;
@@ -22,6 +23,7 @@ interface LauncherDest {
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
     FoldButtonComponent,

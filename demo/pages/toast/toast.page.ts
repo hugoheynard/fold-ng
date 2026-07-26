@@ -1,5 +1,6 @@
 import { Component, inject, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import {
   FoldNavLayoutComponent,
   FoldChoiceRowComponent,
@@ -20,6 +21,7 @@ import {
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldNavLayoutComponent,
     FoldPageSectionComponent,

@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldBadgeComponent,
@@ -34,6 +35,7 @@ type TabBackground = "transparent" | "surface";
   imports: [
     RouterLink,
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldCalloutComponent,
     FoldNavLayoutComponent,

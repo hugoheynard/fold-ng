@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import {
   FoldHeroCardComponent,
   FoldPageLayoutComponent,
@@ -9,7 +10,12 @@ import {
 @Component({
   selector: "gal-hero-card-page",
   standalone: true,
-  imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldHeroCardComponent],
+  imports: [
+    KindBadgeComponent,
+    ComposedOfComponent,
+    FoldPageLayoutComponent,
+    FoldHeroCardComponent,
+  ],
   templateUrl: "./hero-card.page.html",
 })
 export default class HeroCardPage {

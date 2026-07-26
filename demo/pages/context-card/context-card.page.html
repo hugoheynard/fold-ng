@@ -1,5 +1,6 @@
 <fold-page-layout title="context-card">
   <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['card', 'element-title']" />
   <div class="gal-row gal-row--wide">
     @for (tone of iconTones; track tone) {
     <fold-context-card

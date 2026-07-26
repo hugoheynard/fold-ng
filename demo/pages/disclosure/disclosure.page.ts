@@ -4,6 +4,7 @@ import {
   FoldPageLayoutComponent,
 } from "../../../src/public-api";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 
 /** `/disclosure` — the `fold-disclosure` gallery page. */
@@ -12,6 +13,7 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldDisclosureComponent,
     DevPlaygroundComponent,

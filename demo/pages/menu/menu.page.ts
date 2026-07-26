@@ -29,6 +29,7 @@ import {
   type PageTokenGroup,
 } from "../../components/token-sandbox";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { ComposedOfComponent } from "../../components/composed-of.component";
 
 /** A menu section in the live builder: a colored separator + N simulated items. */
 interface MenuSection {
@@ -44,6 +45,7 @@ interface MenuSection {
   standalone: true,
   imports: [
     KindBadgeComponent,
+    ComposedOfComponent,
     FoldPageLayoutComponent,
     FoldContextCardComponent,
     FoldMenuComponent,
