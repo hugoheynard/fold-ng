@@ -384,6 +384,28 @@ committed work; the point is to learn before we lock anything.
   `as unknown`" note in Road to 9.5 §2 — same theme (specs are outside the type
   gate today).
 
+- **[2026-07-26] A dev-only token/theme editor — as a framework-agnostic
+  overlay, not a lib component.** Tokens (`--fold-color-*`, space, radius) ARE
+  the public theming API; a live editor is their natural authoring tool (instant
+  feedback vs "edit var → reload → squint"), and the contract-tests
+  (accent-contrast, status-ring) already exist to validate a hand-tuned theme so
+  it can't silently break WCAG. **The hard constraint is "must not compile into
+  the consumer's build."** Ranked by how reliably that holds: (a) lib component
+  behind `isDevMode()` — ❌ still bundled (dead code present); (b) separate
+  dev-only entry / `@fold/dev-tools` imported in dev — ⚠️ relies on Angular
+  tree-shaking (a referenced component stays); (c) **framework-agnostic overlay**
+  that only reads/writes CSS custom properties on `document.documentElement` via
+  the CSSOM (`getComputedStyle` → swatches+inputs → `style.setProperty` live →
+  export the diff as a CSS block) — ✅ never imported, so structurally never in
+  the Angular build; works on ANY fold consumer; version-decoupled.
+  **Recommendation:** build it as (c) — a standalone overlay/DevTools-panel — and
+  embed the same engine as the gallery's built-in "theme designer" (the gallery
+  already renders every component × 5 themes = instant whole-system regression).
+  Validate exported themes against the existing contract-tests. Scope v1: read
+  all `--fold-color-*`, edit live, export diff; contrast warnings as a
+  fast-follow. **Decide overlay-vs-entry-point in a short design note before
+  coding** (a real architecture fork). Separate initiative from the components.
+
 - **DX sweep across the components.** AppShell now uses the house pattern —
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining
