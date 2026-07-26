@@ -52,9 +52,14 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         `allowClear` is single-select only).
 - [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
       switch; generic, zero domain. Cleanest extraction.
-- [ ] **`fold-soft-warning` → reconcile with `fold-callout`** (from `shared/soft-warning`,
-      6). A lighter inline warning (variant + icon) — decide: a `callout` variant
-      or a distinct component, not a duplicate.
+- [x] **`fold-soft-warning` → reconcile with `fold-callout`.** ✅ Decided
+      (2026-07-26): **no new component** — the app's `soft-warning` is a
+      `fold-callout appearance="inset"` (same flex + icon + projected body, same
+      status-token roles; callout is a superset — it also has `flat`, `[actions]`,
+      `announce`). Migration is a rename, not a rewrite: `warning`/`alert`/
+      `success`/`neutral` map 1:1 (pass `icon="shield"` to keep the success
+      shield); `primary` → `accent` + `icon="info"`. Handled in the SH3PHERD
+      migration phase; nothing to build here.
 - [ ] **`fold-sortable-row` — drag-reorder row frame** (from `shared/sortable-row-frame`,
       2). **Absorbs `shared/ui-frames/card-frame-horizontal`** (3, the program
       drag-cards) — that's how card-frame "disappears".
