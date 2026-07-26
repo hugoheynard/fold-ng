@@ -13,9 +13,16 @@ Priority: the popover primitive. Usage counts are current app call-sites.
 
 - [x] **`fold-popover` — anchored popover primitive** (from `shared/ui-frames/popover-frame`,
       **11 uses**, + `shared/popover-menu`, 3). ✅ Done: native top-layer +
-      dependency-free flip/shift (`computePlacement`), `[(open)]`, dismissal +
-      focus-return + auto aria; plus `fold-dropdown` (+ `-item`) — `role="menu"`,
-      roving / Home·End / type-ahead. Gallery `/popover`, 22 specs.
+      dependency-free **flip → size → shift** (`computePlacement`), `[(open)]`,
+      dismissal + focus-return + auto aria, `autoUpdate` (ResizeObserver),
+      optional `arrow`, native CSS enter/exit (`@starting-style` +
+      `allow-discrete`); plus `fold-dropdown` (+ `-item`) — `role="menu"`, roving
+      / Home·End / multi-letter type-ahead. Gallery `/popover`.
+  - [ ] **Sub-menus / nested menus** — `fold-dropdown-item` opening a child
+        menu (submenu trigger, `aria-haspopup`, right-arrow to open, safe
+        triangle). Deferred by decision (2026-07-26).
+  - [ ] **Context menu / cursor anchor** — open the popover at a point (a
+        virtual anchor rect) on right-click, not only against a trigger element.
 - [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
       switch; generic, zero domain. Cleanest extraction.
 - [ ] **`fold-soft-warning` → reconcile with `fold-callout`** (from `shared/soft-warning`,

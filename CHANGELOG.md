@@ -19,7 +19,18 @@ All notable changes to **fold-ng** are documented here. The format follows
   automatically. `fold-dropdown` (+ `fold-dropdown-item`) is the actions menu on
   top: `role="menu"`, ↑/↓ roving tabindex, `Home`/`End`, type-ahead, opens onto
   its first enabled item, closes returning focus to the trigger. New gallery
-  `/popover` page; 22 spec blocks (placement math + both components).
+  `/popover` page.
+
+  Hardened to a competitor benchmark (Floating UI / Radix): the placement engine
+  now does **flip → size → shift** — it picks the best-fitting side (preferred →
+  opposite → roomiest) and reports the available space so a tall panel gets a
+  `max-height` and **scrolls inside the viewport** instead of overflowing;
+  **autoUpdate** tracks the trigger + panel via `ResizeObserver` (not just
+  scroll/resize) so the anchor never drifts; an optional **`arrow`** points at
+  the trigger; **enter + exit transitions** are native CSS (`@starting-style` +
+  `transition-behavior: allow-discrete`, no JS timers); and the dropdown's
+  type-ahead is **multi-letter** (buffered). Nested/sub-menus and cursor-anchored
+  context menus are tracked for a later pass.
 
 - **`fold-inline-confirm` — in-place destructive-action guard.** Extracted from
   SH3PHERD's shared inline-confirm (which replaced four ad-hoc patterns) and

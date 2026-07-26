@@ -98,11 +98,11 @@ and the gallery nav — **layout first**.
 
 **Overlays** — `src/components/overlays/`
 
-| Component                     | DX  | Tests | Docs | Verdict                                                                                                         |
-| ----------------------------- | :-: | :---: | :--: | --------------------------------------------------------------------------------------------------------------- |
-| `fold-panel-host` / `-header` | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label                                       |
-| `fold-popover` (+ trigger)    | 🟢  |  🟢   |  🟢  | **Ship-ready** — native top-layer, dependency-free flip/shift, `[(open)]`, dismissal + focus-return + auto aria |
-| `fold-dropdown` (+ item)      | 🟢  |  🟢   |  🟢  | **Ship-ready** — `role="menu"`, roving/Home/End/type-ahead, focus-onto-first, closes to trigger                 |
+| Component                     | DX  | Tests | Docs | Verdict                                                                                                                                                                                       |
+| ----------------------------- | :-: | :---: | :--: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fold-panel-host` / `-header` | 🟢  |  🟢   |  🟢  | **Ship-ready** — accessible name, `inert` barrier, providable close label                                                                                                                     |
+| `fold-popover` (+ trigger)    | 🟢  |  🟢   |  🟢  | **Ship-ready** — native top-layer, flip → size (scroll) → shift, autoUpdate, arrow, native CSS enter/exit, `[(open)]`, dismissal + focus-return + auto aria (submenus + context-menu tracked) |
+| `fold-dropdown` (+ item)      | 🟢  |  🟢   |  🟢  | **Ship-ready** — `role="menu"`, roving/Home/End/type-ahead, focus-onto-first, closes to trigger                                                                                               |
 
 **Forms** — `src/components/forms/`
 
