@@ -4,6 +4,38 @@ Building this the same way we work everywhere: **small, confirmed steps**. Each
 row lands, gets read, then we move on. Tokens are the foundation — they get
 locked before a single component is extracted.
 
+## Milestone 0.5 — last extractions from SH3PHERD `shared/`
+
+The remaining generic UI still living in the app's `shared/`. Build these here,
+**one at a time, confirmed**, then cut **0.5** and migrate SH3PHERD in one pass
+(the app pins the published package, so nothing lands app-side until 0.5 ships).
+Priority: the popover primitive. Usage counts are current app call-sites.
+
+- [ ] **`fold-popover` — anchored popover primitive** (from `shared/ui-frames/popover-frame`,
+      **11 uses**, + `shared/popover-menu`, 3). The floating/positioning layer
+      `fold-menu` should sit on. **Highest priority.** The biggest piece — do it
+      first and deliberately.
+- [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
+      switch; generic, zero domain. Cleanest extraction.
+- [ ] **`fold-soft-warning` → reconcile with `fold-callout`** (from `shared/soft-warning`,
+      6). A lighter inline warning (variant + icon) — decide: a `callout` variant
+      or a distinct component, not a duplicate.
+- [ ] **`fold-sortable-row` — drag-reorder row frame** (from `shared/sortable-row-frame`,
+      2). **Absorbs `shared/ui-frames/card-frame-horizontal`** (3, the program
+      drag-cards) — that's how card-frame "disappears".
+- [ ] **password field** (from `shared/forms/password-field`, 3) — password input +
+      live validation-rule dots. Decide: a `fold-password-field`, or a
+      "revealable + rules" capability on `fold-input`.
+- [ ] **`fold-back-link`** (from `shared/back-link`, 3) — router back-link; generic
+      but Router-coupled.
+
+Then **0.5**, then the SH3PHERD migration phase: swap the app's shared duplicates
+to the published fold components (`fold-select` — a real rewrite, native+projected
+vs options-array + string vs number/null, 13 sites; `fold-inline-confirm` — recipe
+already validated, 13 sites), delete the app copies, bump the pin, gate. Kept
+app-side (domain, not extracted): target-bar, theme-toggle, rating-sparkline,
+leave-balance-display, configurable-tab-bar, etc.
+
 ## Roadmap 1.0.1 — `fold-app-shell` polish
 
 Post-1.0 the shell is **8.5/10**: structure + decoupling are big-lib grade
