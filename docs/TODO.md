@@ -34,8 +34,22 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         `readonly string[]`, toggle + keep-open, `aria-multiselectable`). ✅ Done.
         The keyboard/roving core + option↔owner contract are now shared between
         the two (a `FOLD_LISTBOX_OWNER` token; removed a circular import).
-  - [ ] **Option groups** (`fold-optgroup`, `role="group"` + label).
-  - [ ] **Filter / combobox variant** — a typed input that filters the list.
+  - [x] **Review-hardening pass** (2026-07-26). ✅ touched-on-dismiss (required
+        parity), Tab advances focus, `aria-controls`→listbox, forced-colors, Set
+        membership + `…, +N` summary, dev-warn on orphan value, `allowClear` +
+        closed-trigger type-ahead, box metrics single-sourced (`_field-box.scss`).
+        Took the family 7.5 → 9/10. The residual points below are **features**,
+        not defects.
+  - [ ] **Generic (non-`string`) value type** — the real 9→10 unblocker and what
+        the app's `SelectComponent` needs (number ids, `null`, objects). Make the
+        family generic over the option value (`fold-option [value]`,
+        `FormValueControl<T>`), keeping a string default. Until then a migrating
+        site maps its ids to strings.
+  - [ ] **Option groups** (`fold-optgroup`, `role="group"` + label + skip in nav).
+  - [ ] **Filter / combobox variant** — a typed input that filters the list
+        (`role="combobox"` textbox, live `aria-activedescendant`, no-match state).
+  - [ ] **Multiselect clear-all / select-all** — bulk affordances (the current
+        `allowClear` is single-select only).
 - [ ] **`fold-view-toggle`** (from `shared/view-toggle`, 2). Segmented Cards/Table
       switch; generic, zero domain. Cleanest extraction.
 - [ ] **`fold-soft-warning` → reconcile with `fold-callout`** (from `shared/soft-warning`,
