@@ -1,0 +1,50 @@
+:host {
+  display: contents;
+}
+
+.fpop-panel {
+  /* Reset the UA popover box; JS owns position/left/top (fixed). */
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  max-width: calc(100vw - 2 * var(--fold-space-md));
+
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text);
+  border-radius: var(--fold-radius-md);
+  box-shadow: var(--fold-shadow-lg);
+  outline: 1px solid var(--fold-color-border-subtle);
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 1px;
+  }
+
+  &:not(:popover-open) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fpop-panel:popover-open {
+    animation: fpop-in var(--fold-motion-fast);
+  }
+  @keyframes fpop-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .fpop-panel {
+    outline: 1px solid CanvasText;
+  }
+}

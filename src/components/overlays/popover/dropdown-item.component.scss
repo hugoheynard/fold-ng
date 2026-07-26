@@ -1,0 +1,54 @@
+:host {
+  display: contents;
+}
+
+.fdrop-item {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: var(--fold-radius-sm);
+  background: transparent;
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: var(--fold-text-sm);
+  text-align: left;
+  cursor: pointer;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    background: var(--fold-color-surface-hover);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: -2px;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &.is-danger {
+    color: var(--fold-color-alert-text);
+  }
+  &.is-danger:hover:not(:disabled),
+  &.is-danger:focus-visible {
+    background: var(--fold-color-alert-surface);
+  }
+}
+
+.fdrop-item-icon {
+  flex: none;
+  color: var(--fold-color-text-muted);
+}
+.is-danger .fdrop-item-icon {
+  color: var(--fold-color-alert-text);
+}
+
+.fdrop-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}

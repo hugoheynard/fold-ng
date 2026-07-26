@@ -1,0 +1,17 @@
+<fold-popover
+  [placement]="placement()"
+  [offset]="offset()"
+  [autoFocus]="false"
+  [(open)]="open"
+>
+  <ng-content select="[foldPopoverTrigger]" />
+  <div
+    class="fdrop-menu"
+    role="menu"
+    [attr.aria-label]="ariaLabel() ?? null"
+    (keydown)="onMenuKeydown($event)"
+    (click)="onMenuActivate($event)"
+  >
+    <ng-content />
+  </div>
+</fold-popover>
