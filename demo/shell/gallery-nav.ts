@@ -107,6 +107,12 @@ export const GALLERY_NAV: readonly GalleryNavGroup[] = [
       { id: "badges", label: "badge · status · icon" },
       { id: "avatar", label: "avatar", icon: "team" },
       { id: "timeline", label: "timeline", badge: "new", badgeTone: "info" },
+      {
+        id: "data-table",
+        label: "data-table",
+        badge: "new",
+        badgeTone: "info",
+      },
     ],
   },
   {

@@ -1,0 +1,334 @@
+<fold-page-layout title="data-table">
+  <p description>
+    fold-data-table — a controlled, presentational roster table. The parent
+    supplies already-sorted/paged <code>rows</code>, a
+    <code>columns</code> definition, and one
+    <code>&lt;ng-template foldCell&gt;</code> per column; the table owns the
+    chrome — sticky sortable header, per-row tone accents, click/focus, the
+    mobile card layout, and the loading + empty states. Accessible by
+    construction: the identity column is a <code>&lt;th scope="row"&gt;</code>,
+    sort rides on <code>aria-sort</code>, rows answer Enter <em>and</em> Space,
+    and <code>caption</code> names the table for assistive tech.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <!-- ── live roster: real client-side sort + row click ── -->
+  <div class="gal-cell" style="max-width: 640px">
+    <span class="gal-tag"
+      >live · sort · select rows · arrow-key between rows</span
+    >
+    <fold-data-table
+      caption="Team roster"
+      [columns]="columns"
+      [rows]="rows()"
+      [rowKey]="rowKey"
+      [rowTone]="rowTone"
+      [sort]="sort()"
+      clickable
+      selectable
+      [selected]="selected()"
+      [selectionLabel]="selectionLabel"
+      (selectionChange)="onSelection($event)"
+      (sortChange)="onSort($event)"
+      (rowClick)="clicked.set($event.name)"
+    >
+      <div
+        foldToolbar
+        style="
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+          width: 100%;
+        "
+      >
+        <strong style="font-size: var(--fold-text-md)">Team roster</strong>
+        <span style="color: var(--fold-color-text-muted)"
+          >{{ rows().length }} members</span
+        >
+        @if (selectedCount() > 0) {
+        <span
+          style="
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+          "
+        >
+          <span>{{ selectedCount() }} selected</span>
+          <button
+            type="button"
+            (click)="clearSelection()"
+            style="
+              border: 1px solid var(--fold-color-border);
+              background: var(--fold-color-surface-raised);
+              border-radius: var(--fold-radius-sm);
+              padding: 4px 10px;
+              cursor: pointer;
+              color: var(--fold-color-text);
+            "
+          >
+            Clear
+          </button>
+        </span>
+        }
+      </div>
+      <ng-template foldCell="name" let-row>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <fold-avatar [name]="row.name" size="sm" />
+          <span style="font-weight: 600">{{ row.name }}</span>
+        </div>
+      </ng-template>
+      <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
+      <ng-template foldCell="status" let-row>
+        <fold-badge
+          [content]="statusLabel(row.status)"
+          [variant]="statusBadge(row.status)"
+        />
+      </ng-template>
+      <ng-template foldCell="tenure" let-row>{{ row.tenure }}</ng-template>
+    </fold-data-table>
+    <p class="doc-p">
+      {{ selectedCount() }} selected · last opened: “{{ clicked() ?? "—" }}”
+    </p>
+  </div>
+
+  <!-- ── the two data-less states ── -->
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">loading — spinner, never “no data”</span>
+      <fold-data-table
+        caption="Loading roster"
+        [columns]="columns"
+        [rows]="[]"
+        loading
+      >
+        <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      </fold-data-table>
+    </div>
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">empty — a titled placeholder</span>
+      <fold-data-table
+        caption="Empty roster"
+        [columns]="columns"
+        [rows]="[]"
+        [empty]="stateEmpty"
+      >
+        <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      </fold-data-table>
+    </div>
+  </div>
+
+  <!-- ── playground ── -->
+  <dev-playground [code]="playgroundCode()">
+    <div class="np-field" params>
+      <span class="gal-tag">rows</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgLoading()"
+          (click)="pgLoading.set(false)"
+        >
+          loaded
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgLoading()"
+          (click)="pgLoading.set(true)"
+        >
+          loading
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">zebra</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgZebra()"
+          (click)="pgZebra.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgZebra()"
+          (click)="pgZebra.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">hover</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgHover()"
+          (click)="pgHover.set(true)"
+        >
+          on
+        </button>
+        <button
+          type="button"
+          [class.is-on]="!pgHover()"
+          (click)="pgHover.set(false)"
+        >
+          off
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">rows</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgClickable()"
+          (click)="pgClickable.set(false)"
+        >
+          static
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgClickable()"
+          (click)="pgClickable.set(true)"
+        >
+          clickable
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">select</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgSelectable()"
+          (click)="pgSelectable.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgSelectable()"
+          (click)="pgSelectable.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">mobile (resize ≤700px)</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgMobile() === 'scroll'"
+          (click)="pgMobile.set('scroll')"
+        >
+          scroll
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgMobile() === 'auto-cards'"
+          (click)="pgMobile.set('auto-cards')"
+        >
+          auto-cards
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgMobile() === 'custom'"
+          (click)="pgMobile.set('custom')"
+        >
+          custom
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">toolbar surface</span>
+      <div class="ss-seg">
+        @for (s of surfaces; track s) {
+        <button
+          type="button"
+          [class.is-on]="pgSurface() === s"
+          (click)="pgSurface.set(s)"
+        >
+          {{ s }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <fold-card surface="sunken" style="--fold-card-padding: 0">
+      <fold-data-table
+        caption="Team roster"
+        [columns]="columns"
+        [rows]="pgLoading() ? [] : rows()"
+        [rowKey]="rowKey"
+        [rowTone]="rowTone"
+        [sort]="sort()"
+        [zebra]="pgZebra()"
+        [hover]="pgHover()"
+        [clickable]="pgClickable()"
+        [loading]="pgLoading()"
+        [selectable]="pgSelectable()"
+        [selected]="selected()"
+        [selectionLabel]="selectionLabel"
+        [mobileLayout]="pgMobile()"
+        [toolbarSurface]="pgSurface()"
+        (selectionChange)="onSelection($event)"
+        (sortChange)="onSort($event)"
+        (rowClick)="clicked.set($event.name)"
+      >
+        <div
+          foldToolbar
+          style="display: flex; align-items: center; gap: 12px; width: 100%"
+        >
+          <strong>Team roster</strong>
+          <span style="margin-left: auto">{{ rows().length }} members</span>
+        </div>
+        <ng-template foldCell="name" let-row>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <fold-avatar [name]="row.name" size="sm" />
+            <span style="font-weight: 600">{{ row.name }}</span>
+          </div>
+        </ng-template>
+        <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
+        <ng-template foldCell="status" let-row>
+          <fold-badge
+            [content]="statusLabel(row.status)"
+            [variant]="statusBadge(row.status)"
+          />
+        </ng-template>
+        <ng-template foldCell="tenure" let-row>{{ row.tenure }}</ng-template>
+
+        <!-- custom mobile card: the parent owns the layout, not the table -->
+        <ng-template foldRowCard let-row>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              padding: 12px 14px;
+              border: 1px solid var(--fold-color-border-subtle);
+              border-radius: var(--fold-radius-md);
+              background: var(--fold-color-surface-sunken);
+            "
+          >
+            <fold-avatar [name]="row.name" size="md" />
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-weight: 600">{{ row.name }}</span>
+              <span style="color: var(--fold-color-text-muted)"
+                >{{ row.role }} · {{ row.tenure }} mo</span
+              >
+            </div>
+            <div style="margin-left: auto">
+              <fold-badge
+                [content]="statusLabel(row.status)"
+                [variant]="statusBadge(row.status)"
+              />
+            </div>
+          </div>
+        </ng-template>
+      </fold-data-table>
+    </fold-card>
+  </dev-playground>
+</fold-page-layout>
