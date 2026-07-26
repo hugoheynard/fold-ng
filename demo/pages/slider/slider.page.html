@@ -97,6 +97,34 @@
       </div>
     </div>
     <div class="np-field" params>
+      <span class="gal-tag">min</span>
+      <div class="ss-seg">
+        @for (m of [0, 10, 60]; track m) {
+        <button
+          type="button"
+          [class.is-on]="pgMin() === m"
+          (click)="pgMin.set(m)"
+        >
+          {{ m }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">max</span>
+      <div class="ss-seg">
+        @for (m of [100, 220, 240]; track m) {
+        <button
+          type="button"
+          [class.is-on]="pgMax() === m"
+          (click)="pgMax.set(m)"
+        >
+          {{ m }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
       <span class="gal-tag">step</span>
       <div class="ss-seg">
         @for (s of [1, 5, 10, 25]; track s) {
