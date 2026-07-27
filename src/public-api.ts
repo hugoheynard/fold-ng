@@ -107,6 +107,7 @@ export { FoldSelectComponent } from "./components/forms/input/select.component";
 export { FoldListboxComponent } from "./components/forms/listbox/listbox.component";
 export { FoldMultiselectComponent } from "./components/forms/listbox/multiselect.component";
 export { FoldOptionComponent } from "./components/forms/listbox/option.component";
+export type { FoldSelectOption } from "./components/forms/listbox/select-option";
 export { FoldPasswordFieldComponent } from "./components/forms/password/password-field.component";
 export {
   foldDefaultPasswordRules,

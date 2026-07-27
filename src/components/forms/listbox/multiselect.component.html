@@ -51,7 +51,22 @@
       (click)="onListClick($event)"
       (pointermove)="onListPointermove($event)"
     >
-      <ng-content />
+      @if (options(); as opts) {
+        @for (o of opts; track o.value) {
+          <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
+            @if (optionTemplate(); as tpl) {
+              <ng-container
+                [ngTemplateOutlet]="tpl"
+                [ngTemplateOutletContext]="{ $implicit: o }"
+              />
+            } @else {
+              {{ o.label }}
+            }
+          </fold-option>
+        }
+      } @else {
+        <ng-content />
+      }
     </div>
   </fold-popover>
 </fold-input-base>

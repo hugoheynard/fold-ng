@@ -3,13 +3,18 @@ import {
   booleanAttribute,
   Component,
   computed,
+  contentChild,
   contentChildren,
   ElementRef,
   inject,
   input,
+  isDevMode,
   model,
+  type TemplateRef,
   viewChild,
+  viewChildren,
 } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
@@ -18,6 +23,7 @@ import { FoldPopoverTriggerDirective } from "../../overlays/popover/popover-trig
 import type { FoldPopoverPlacement } from "../../overlays/popover/placement";
 import { FoldInputBaseComponent } from "../input/input-base.component";
 import { FoldOptionComponent } from "./option.component";
+import type { FoldSelectOption } from "./select-option";
 import { FoldListboxNav } from "./listbox-nav";
 import {
   FOLD_LISTBOX_OWNER,
@@ -55,8 +61,10 @@ const SUMMARY_MAX = 3;
   imports: [
     FoldInputBaseComponent,
     FoldIconComponent,
+    FoldOptionComponent,
     FoldPopoverComponent,
     FoldPopoverTriggerDirective,
+    NgTemplateOutlet,
   ],
   templateUrl: "./multiselect.component.html",
   styleUrl: "./multiselect.component.scss",
@@ -75,6 +83,10 @@ export class FoldMultiselectComponent<T>
   /** How two values are compared for membership — supply it for **object**
    *  values; primitives don't need it. @default `Object.is` */
   readonly compareWith = input<(a: T, b: T) => boolean>();
+  /** Data-driven options — the alternative to projecting `<fold-option>`. When
+   *  set, the value type is linked to the options at compile time. For rich rows,
+   *  project `<ng-template #option let-o>`. */
+  readonly options = input<readonly FoldSelectOption<T>[]>();
   /** Disabled state — bound automatically by `FormField`. */
   readonly disabled = input<boolean>(false);
   /** Two-way touched state — set on the first toggle, kept in sync with the field. */
@@ -108,8 +120,17 @@ export class FoldMultiselectComponent<T>
   /** Id of the `role="listbox"` element (own, distinct from the popover panel). */
   protected readonly listId = `${this.inputId}-list`;
 
-  private readonly options =
+  /** Rich per-row template for the `[options]` array API (`<ng-template #option>`). */
+  protected readonly optionTemplate =
+    contentChild<TemplateRef<{ $implicit: FoldSelectOption<T> }>>("option");
+  private readonly projectedOptions =
     contentChildren<FoldOptionComponent<T>>(FoldOptionComponent);
+  private readonly renderedOptions =
+    viewChildren<FoldOptionComponent<T>>(FoldOptionComponent);
+  /** The live option instances, from whichever API is in use. */
+  private readonly allOptions = computed(() =>
+    this.options() ? this.renderedOptions() : this.projectedOptions(),
+  );
   private readonly list = viewChild<ElementRef<HTMLElement>>("list");
 
   /** Compare two values — the injected `compareWith`, else `Object.is`. */
@@ -119,7 +140,7 @@ export class FoldMultiselectComponent<T>
   }
 
   /** Shared roving/keyboard core; multi-select toggles + stays open on activation. */
-  private readonly nav = new FoldListboxNav(() => this.options(), {
+  private readonly nav = new FoldListboxNav(() => this.allOptions(), {
     select: (index) => this.toggle(index),
     close: () => this.open.set(false),
   });
@@ -139,7 +160,7 @@ export class FoldMultiselectComponent<T>
     if (this.value().length === 0) {
       return undefined;
     }
-    const labels = this.options()
+    const labels = this.allOptions()
       .filter((o) => this.isSelected(o.value()))
       .map((o) => o.label);
     if (labels.length === 0) {
@@ -192,10 +213,19 @@ export class FoldMultiselectComponent<T>
     });
     warnOnOrphanValue(
       () => this.value(),
-      () => this.options(),
+      () => this.allOptions(),
       (a, b) => this.eq(a, b),
       "fold-multiselect",
     );
+    if (isDevMode()) {
+      afterRenderEffect(() => {
+        if (this.options() && this.projectedOptions().length > 0) {
+          console.warn(
+            "[fold-multiselect] both `[options]` and projected <fold-option> given — the array wins, the projected ones are ignored.",
+          );
+        }
+      });
+    }
   }
 
   /** A value is selected when it's in the current set (via `compareWith`). */
@@ -238,7 +268,7 @@ export class FoldMultiselectComponent<T>
 
   /** Index of the first selected option (or -1) — where the keyboard arms on open. */
   private firstSelectedIndex(): number {
-    return this.options().findIndex(
+    return this.allOptions().findIndex(
       (o) => this.isSelected(o.value()) && !o.disabled(),
     );
   }
@@ -249,14 +279,14 @@ export class FoldMultiselectComponent<T>
       return -1;
     }
     const el = target.closest("[role='option']");
-    const opts = this.options();
+    const opts = this.allOptions();
     const index = opts.findIndex((o) => o.id === el?.id);
     return index >= 0 && !opts[index]?.disabled() ? index : -1;
   }
 
   /** Add or remove the option's value from the set; the panel stays open. */
   private toggle(index: number): void {
-    const o = this.options()[index];
+    const o = this.allOptions()[index];
     if (!o || o.disabled()) {
       return;
     }

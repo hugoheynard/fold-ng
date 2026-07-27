@@ -243,3 +243,39 @@ describe("FoldListboxComponent — generic value", () => {
     expect(trigger(host).textContent).toContain("Beta");
   });
 });
+
+@Component({
+  standalone: true,
+  imports: [FoldListboxComponent],
+  template: `<fold-listbox [(value)]="value" [options]="opts">
+    <ng-template #option let-o>
+      <span class="rich">★ {{ o.label }}</span>
+    </ng-template>
+  </fold-listbox>`,
+})
+class ArrayHost {
+  readonly value = signal<number | null>(null);
+  readonly opts = [
+    { value: 1, label: "One" },
+    { value: 2, label: "Two", disabled: true },
+  ];
+}
+
+describe("FoldListboxComponent — [options] array API", () => {
+  it("renders the array as options (with the rich #option template) and selects", async () => {
+    const fixture = TestBed.createComponent(ArrayHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    host.querySelector<HTMLButtonElement>(".lb-trigger")!.click();
+    fixture.detectChanges();
+    await Promise.resolve();
+    fixture.detectChanges();
+    const rows = host.querySelectorAll<HTMLElement>("[role='option']");
+    expect(rows.length).toBe(2);
+    expect(host.querySelector(".rich")?.textContent).toContain("★ One");
+    expect(rows[1].getAttribute("aria-disabled")).toBe("true");
+    rows[0].dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe(1);
+  });
+});

@@ -3,13 +3,18 @@ import {
   booleanAttribute,
   Component,
   computed,
+  contentChild,
   contentChildren,
   ElementRef,
   inject,
   input,
+  isDevMode,
   model,
+  type TemplateRef,
   viewChild,
+  viewChildren,
 } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
@@ -18,6 +23,7 @@ import { FoldPopoverTriggerDirective } from "../../overlays/popover/popover-trig
 import type { FoldPopoverPlacement } from "../../overlays/popover/placement";
 import { FoldInputBaseComponent } from "../input/input-base.component";
 import { FoldOptionComponent } from "./option.component";
+import type { FoldSelectOption } from "./select-option";
 import { FoldListboxNav } from "./listbox-nav";
 import {
   FOLD_LISTBOX_OWNER,
@@ -54,8 +60,10 @@ import {
   imports: [
     FoldInputBaseComponent,
     FoldIconComponent,
+    FoldOptionComponent,
     FoldPopoverComponent,
     FoldPopoverTriggerDirective,
+    NgTemplateOutlet,
   ],
   templateUrl: "./listbox.component.html",
   styleUrl: "./listbox.component.scss",
@@ -76,6 +84,10 @@ export class FoldListboxComponent<T>
    *  (reference equality won't match); primitives (string/number/enum) don't need
    *  it. @default `Object.is` */
   readonly compareWith = input<(a: T, b: T) => boolean>();
+  /** Data-driven options — the alternative to projecting `<fold-option>`. When
+   *  set, the value type is linked to the options at compile time (no projection
+   *  seam). For rich rows, project `<ng-template #option let-o>`. */
+  readonly options = input<readonly FoldSelectOption<T>[]>();
   /** Disabled state — bound automatically by `FormField`. */
   readonly disabled = input<boolean>(false);
   /** Two-way touched state — set on selection / blur, kept in sync with the field. */
@@ -113,8 +125,18 @@ export class FoldListboxComponent<T>
   /** Id of the `role="listbox"` element (own, distinct from the popover panel). */
   protected readonly listId = `${this.inputId}-list`;
 
-  private readonly options =
+  /** Rich per-row template for the `[options]` array API (`<ng-template #option>`). */
+  protected readonly optionTemplate =
+    contentChild<TemplateRef<{ $implicit: FoldSelectOption<T> }>>("option");
+  private readonly projectedOptions =
     contentChildren<FoldOptionComponent<T>>(FoldOptionComponent);
+  private readonly renderedOptions =
+    viewChildren<FoldOptionComponent<T>>(FoldOptionComponent);
+  /** The live option instances, from whichever API is in use — the `[options]`
+   *  array (rendered in the view) when set, else the projected `<fold-option>`s. */
+  private readonly allOptions = computed(() =>
+    this.options() ? this.renderedOptions() : this.projectedOptions(),
+  );
   private readonly list = viewChild<ElementRef<HTMLElement>>("list");
 
   /** Compare two values — the injected `compareWith`, else `Object.is`. Called
@@ -125,7 +147,7 @@ export class FoldListboxComponent<T>
   }
 
   /** Shared roving/keyboard core; single-select commits + closes on activation. */
-  private readonly nav = new FoldListboxNav(() => this.options(), {
+  private readonly nav = new FoldListboxNav(() => this.allOptions(), {
     select: (index) => this.selectAt(index),
     close: () => this.open.set(false),
   });
@@ -137,7 +159,7 @@ export class FoldListboxComponent<T>
     const v = this.value();
     return v === null
       ? undefined
-      : this.options().find((o) => this.eq(o.value(), v))?.label;
+      : this.allOptions().find((o) => this.eq(o.value(), v))?.label;
   });
   /** Whether the clear affordance is currently offered. */
   protected readonly showClear = computed(
@@ -191,10 +213,19 @@ export class FoldListboxComponent<T>
         const v = this.value();
         return v === null ? [] : [v];
       },
-      () => this.options(),
+      () => this.allOptions(),
       (a, b) => this.eq(a, b),
       "fold-listbox",
     );
+    if (isDevMode()) {
+      afterRenderEffect(() => {
+        if (this.options() && this.projectedOptions().length > 0) {
+          console.warn(
+            "[fold-listbox] both `[options]` and projected <fold-option> given — the array wins, the projected ones are ignored.",
+          );
+        }
+      });
+    }
   }
 
   /** A value is selected when it equals the current one (via `compareWith`). */
@@ -241,7 +272,7 @@ export class FoldListboxComponent<T>
   protected onListPointermove(event: PointerEvent): void {
     const o = this.enabledOptionFrom(event.target);
     if (o) {
-      this.nav.point(this.options().indexOf(o));
+      this.nav.point(this.allOptions().indexOf(o));
     }
   }
 
@@ -251,7 +282,7 @@ export class FoldListboxComponent<T>
     if (v === null) {
       return -1;
     }
-    return this.options().findIndex(
+    return this.allOptions().findIndex(
       (o) => this.eq(o.value(), v) && !o.disabled(),
     );
   }
@@ -264,12 +295,12 @@ export class FoldListboxComponent<T>
       return null;
     }
     const el = target.closest("[role='option']");
-    const o = this.options().find((opt) => opt.id === el?.id);
+    const o = this.allOptions().find((opt) => opt.id === el?.id);
     return o && !o.disabled() ? o : null;
   }
 
   private selectAt(index: number): void {
-    const o = this.options()[index];
+    const o = this.allOptions()[index];
     if (o && !o.disabled()) {
       this.commit(o);
     }
