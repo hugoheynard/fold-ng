@@ -188,6 +188,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 - **`data-table` gallery page.** Added `/data-table` to the demo (live sort, row
   select, keyboard nav, the loading + empty states, a custom mobile card, and a
   playground for every flag).
+- **`/changelog` — the CHANGELOG as a designed timeline.** A new gallery page
+  renders `CHANGELOG.md` as a vertical `fold-timeline` (one card per release,
+  category-count badges, breaking flagged) — parsed at build into a typed,
+  SSR-safe data file (runs pre-tokenised, no runtime markdown, no `innerHTML`).
+- **`/lab` — an "in dev" index.** A dedicated menu of exactly the components not
+  yet on npm, each linking to its page with the version it ships in. Both the
+  list and the `dev` rail badges are derived from each nav item's `since` vs the
+  published version, so they clear themselves the moment a release is cut.
+- **`pnpm eta` — a read-only release preview.** Prints the next version, the
+  derived bump level, and the reasons, straight from the CHANGELOG's
+  `[Unreleased]` section — no side effects.
 
 ### Fixed
 
@@ -234,6 +245,13 @@ All notable changes to **fold-ng** are documented here. The format follows
   suite (native popover top layer, focus, positioning — behaviour jsdom can't
   reach) is wired into both `ci.yml` (inside the single required `ci` job) and
   `release.yml`, so a PR or a tag can't go green on a broken overlay.
+
+- **The release bump is derived from the CHANGELOG.** `pnpm release` with no
+  argument now reads `[Unreleased]` and derives patch/minor/major (0.x-aware:
+  breaking → minor, features → minor, else patch) — the changelog you curate
+  defines the version. An explicit level still overrides. Parser + derivation
+  live in a shared `scripts/lib/changelog.mjs`, reused by the release flow, the
+  `pnpm eta` preview, and the `/changelog` page.
 
 - **`fold-data-table` — clickable rows are a roving-tabindex group.** They now
   answer Space as well as Enter (page-scroll suppressed) and Arrow Up/Down +

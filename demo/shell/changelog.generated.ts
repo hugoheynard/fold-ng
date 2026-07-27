@@ -38,9 +38,9 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Added: 17,
+      Added: 20,
       Fixed: 3,
-      Changed: 8,
+      Changed: 9,
     },
     breaking: 2,
     groups: [
@@ -2271,6 +2271,115 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
             ],
             breaking: false,
           },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "/changelog",
+              },
+              {
+                kind: "text",
+                value: " — the CHANGELOG as a designed timeline.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A new gallery page renders ",
+              },
+              {
+                kind: "code",
+                value: "CHANGELOG.md",
+              },
+              {
+                kind: "text",
+                value: " as a vertical ",
+              },
+              {
+                kind: "code",
+                value: "fold-timeline",
+              },
+              {
+                kind: "text",
+                value:
+                  " (one card per release, category-count badges, breaking flagged) — parsed at build into a typed, SSR-safe data file (runs pre-tokenised, no runtime markdown, no ",
+              },
+              {
+                kind: "code",
+                value: "innerHTML",
+              },
+              {
+                kind: "text",
+                value: ").",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "/lab",
+              },
+              {
+                kind: "text",
+                value: ' — an "in dev" index.',
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "A dedicated menu of exactly the components not yet on npm, each linking to its page with the version it ships in. Both the list and the ",
+              },
+              {
+                kind: "code",
+                value: "dev",
+              },
+              {
+                kind: "text",
+                value: " rail badges are derived from each nav item's ",
+              },
+              {
+                kind: "code",
+                value: "since",
+              },
+              {
+                kind: "text",
+                value:
+                  " vs the published version, so they clear themselves the moment a release is cut.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "pnpm eta",
+              },
+              {
+                kind: "text",
+                value: " — a read-only release preview.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Prints the next version, the derived bump level, and the reasons, straight from the CHANGELOG's ",
+              },
+              {
+                kind: "code",
+                value: "[Unreleased]",
+              },
+              {
+                kind: "text",
+                value: " section — no side effects.",
+              },
+            ],
+            breaking: false,
+          },
         ],
       },
       {
@@ -2729,6 +2838,58 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value: ", so a PR or a tag can't go green on a broken overlay.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The release bump is derived from the CHANGELOG.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "pnpm release",
+              },
+              {
+                kind: "text",
+                value: " with no argument now reads ",
+              },
+              {
+                kind: "code",
+                value: "[Unreleased]",
+              },
+              {
+                kind: "text",
+                value:
+                  " and derives patch/minor/major (0.x-aware: breaking → minor, features → minor, else patch) — the changelog you curate defines the version. An explicit level still overrides. Parser + derivation live in a shared ",
+              },
+              {
+                kind: "code",
+                value: "scripts/lib/changelog.mjs",
+              },
+              {
+                kind: "text",
+                value: ", reused by the release flow, the ",
+              },
+              {
+                kind: "code",
+                value: "pnpm eta",
+              },
+              {
+                kind: "text",
+                value: " preview, and the ",
+              },
+              {
+                kind: "code",
+                value: "/changelog",
+              },
+              {
+                kind: "text",
+                value: " page.",
               },
             ],
             breaking: false,

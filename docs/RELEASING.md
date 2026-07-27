@@ -30,12 +30,23 @@ short-lived publish credential; provenance is generated automatically.
 
 ## Cutting a release
 
-One command, from `main`:
+**The level is derived from the CHANGELOG** — you don't type it. Preview it
+first (read-only, no side effects), then cut it with one command from `main`:
 
 ```bash
-pnpm release:patch     # 0.1.0 → 0.1.1   a fix
-pnpm release:minor     # 0.1.0 → 0.2.0   a feature (back-compatible)
-pnpm release:major     # 0.1.0 → 1.0.0   a breaking change
+pnpm eta               # preview: next version + derived level + reasons
+pnpm release           # cut it — level derived from [Unreleased]
+```
+
+The bump is derived from `[Unreleased]` (see [`scripts/lib/changelog.mjs`](../scripts/lib/changelog.mjs)):
+a **BREAKING** line → `minor` in `0.x` (`major` once ≥ 1.0); otherwise any
+`### Added` → `minor`; else `patch`. So the changelog you curate defines the
+version. An explicit level still overrides when you need it:
+
+```bash
+pnpm release:patch     # force 0.1.0 → 0.1.1
+pnpm release:minor     # force 0.1.0 → 0.2.0
+pnpm release:major     # force 0.1.0 → 1.0.0
 pnpm release:beta      # 0.1.0 → 0.1.1-beta.0   WIP cut → the `beta` dist-tag
 ```
 
@@ -44,7 +55,8 @@ The script ([`scripts/release.mjs`](../scripts/release.mjs)):
 1. **Guards** — refuses unless you're on `main`, the tree is clean, and local
    `main` is in sync with `origin/main`. (Releases come **only from `main`** —
    `release.yml` also rejects a tag whose commit isn't on `main`.)
-2. **Bumps** `package.json` to the next version.
+2. **Derives the level** from `[Unreleased]` (unless you passed one) and **bumps**
+   `package.json` to the next version.
 3. **Stamps the changelog** — moves `[Unreleased]` to `[x.y.z] - <today>` and
    resets `[Unreleased]`. If `[Unreleased]` was empty it asks for a one-line
    summary (blank → links to the GitHub release).
@@ -61,7 +73,8 @@ only if everything is green:
 - opens a GitHub Release with auto-generated notes.
 
 No manual `npm version`, tag, or `npm publish`. Just write your changelog notes
-under `[Unreleased]` as you work, then `pnpm release:<type>` when it's time.
+under `[Unreleased]` as you work, then `pnpm eta` to preview and `pnpm release`
+when it's time — the level follows the notes.
 
 ## Version & dist-tag policy
 
