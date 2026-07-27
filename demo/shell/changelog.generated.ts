@@ -38,13 +38,273 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Changed: 1,
+      Added: 2,
+      Changed: 2,
     },
     breaking: 0,
     groups: [
       {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: " gains a ",
+              },
+              {
+                kind: "code",
+                value: "selectionChange: T",
+              },
+              {
+                kind: "text",
+                value: " output",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— fires when the user picks an option, carrying the chosen value and ",
+              },
+              {
+                kind: "strong",
+                value: "never `null`",
+              },
+              {
+                kind: "text",
+                value:
+                  '. Use it for the common "do X on selection" case to skip the ',
+              },
+              {
+                kind: "code",
+                value: "T | null",
+              },
+              {
+                kind: "text",
+                value: " narrowing that ",
+              },
+              {
+                kind: "code",
+                value: "[(value)]",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "valueChange",
+              },
+              {
+                kind: "text",
+                value:
+                  " force on every handler. Clearing the value (the × affordance) does not fire it — observe ",
+              },
+              {
+                kind: "code",
+                value: "value",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "valueChange",
+              },
+              {
+                kind: "text",
+                value: " for that.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-range-slider",
+              },
+              {
+                kind: "text",
+                value: " gains a ",
+              },
+              {
+                kind: "code",
+                value: "rangeChange: FoldRangeValue",
+              },
+              {
+                kind: "text",
+                value: " output",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— the same ergonomics for ranges: fires on a thumb drag with the resolved ",
+              },
+              {
+                kind: "code",
+                value: "{ min, max }",
+              },
+              {
+                kind: "text",
+                value: ", never ",
+              },
+              {
+                kind: "code",
+                value: "undefined",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
         kind: "Changed",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-card",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "separators",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "raisedBands",
+              },
+              {
+                kind: "text",
+                value: " accept a boolean shorthand.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "On top of the ",
+              },
+              {
+                kind: "code",
+                value: "FoldCardBandChrome",
+              },
+              {
+                kind: "text",
+                value: " enum (",
+              },
+              {
+                kind: "code",
+                value: "none",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "header",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "footer",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "both",
+              },
+              {
+                kind: "text",
+                value: "), a bare attribute (",
+              },
+              {
+                kind: "code",
+                value: "<fold-card separators>",
+              },
+              {
+                kind: "text",
+                value: ") or ",
+              },
+              {
+                kind: "code",
+                value: '[separators]="true"',
+              },
+              {
+                kind: "text",
+                value: " now means ",
+              },
+              {
+                kind: "code",
+                value: "both",
+              },
+              {
+                kind: "text",
+                value: ", and ",
+              },
+              {
+                kind: "code",
+                value: "false",
+              },
+              {
+                kind: "text",
+                value: " means ",
+              },
+              {
+                kind: "code",
+                value: "none",
+              },
+              {
+                kind: "text",
+                value:
+                  " — the idiomatic Angular boolean-attribute ergonomics, while the enum stays for per-band control. Exposes ",
+              },
+              {
+                kind: "code",
+                value: "foldCardBandChrome",
+              },
+              {
+                kind: "text",
+                value: " (the coercion fn) and ",
+              },
+              {
+                kind: "code",
+                value: "FoldCardBandChromeInput",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

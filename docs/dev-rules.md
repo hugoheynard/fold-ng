@@ -230,6 +230,22 @@ carry `T` (a shared owner token, projected children), erase **that seam** to
 operands are actually `T` (see `fold-listbox`). Offer a data-driven `[options]`
 array API when the compile-time value↔option link matters.
 
+5.2.2 **When the value can be "empty" (`T | null`, `… | undefined`), also expose
+a non-null _pick_ output.** A `value` `model<T | null>` makes `[(value)]` /
+`valueChange` carry the empty state — correct, but it forces every "do X when the
+user picks something" handler to narrow `null` away, even when the control isn't
+clearable. Add an `output<T>()` (e.g. `selectionChange`, `rangeChange`) emitted
+only from the user-commit path (never on clear/reset), so the common case binds a
+handler that already has the concrete type. Keep `value`/`valueChange` for the
+empty transitions. See `fold-listbox.selectionChange`, `fold-range-slider.rangeChange`.
+
+5.2.3 **An enum input that has an obvious on/off reading should accept a boolean
+shorthand.** Wrap the enum in a `transform` so a bare attribute (`""`) or `true`
+maps to the "on" value and `false` to the "off" value, while explicit enum values
+pass through — the idiomatic Angular boolean-attribute ergonomics without losing
+the fine-grained enum. Export the coercion fn + the widened `…Input` type. See
+`fold-card` `separators`/`raisedBands` (`foldCardBandChrome`).
+
 5.3 **Categorical data may be hex — in TS, not in styles.** Auto-colour palettes
 (`palettes.ts`) and the avatar ink are qualitative data (theme-invariant hues),
 so they live as hex in TS and are exempt from 1.3. They must **not** appear in a

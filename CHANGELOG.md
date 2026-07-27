@@ -6,8 +6,25 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **`fold-listbox` gains a `selectionChange: T` output** — fires when the user
+  picks an option, carrying the chosen value and **never `null`**. Use it for
+  the common "do X on selection" case to skip the `T | null` narrowing that
+  `[(value)]` / `valueChange` force on every handler. Clearing the value (the ×
+  affordance) does not fire it — observe `value` / `valueChange` for that.
+- **`fold-range-slider` gains a `rangeChange: FoldRangeValue` output** — the same
+  ergonomics for ranges: fires on a thumb drag with the resolved `{ min, max }`,
+  never `undefined`.
+
 ### Changed
 
+- **`fold-card` `separators` / `raisedBands` accept a boolean shorthand.** On top
+  of the `FoldCardBandChrome` enum (`none`/`header`/`footer`/`both`), a bare
+  attribute (`<fold-card separators>`) or `[separators]="true"` now means `both`,
+  and `false` means `none` — the idiomatic Angular boolean-attribute ergonomics,
+  while the enum stays for per-band control. Exposes `foldCardBandChrome` (the
+  coercion fn) and `FoldCardBandChromeInput`.
 - **`pnpm release` gates the full suite (incl. `test:e2e`) locally before
   tagging.** Release tags are protected/immutable, so a tag pushed for a build
   that then fails CI burns that version number (how `0.5.0` was lost). The
