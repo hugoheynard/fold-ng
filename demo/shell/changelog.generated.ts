@@ -38,8 +38,8 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Added: 20,
-      Fixed: 3,
+      Added: 21,
+      Fixed: 4,
       Changed: 9,
     },
     breaking: 2,
@@ -2275,6 +2275,46 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
             lead: [
               {
                 kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " — i18n label token.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "provideFoldDataTableLabels",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "FoldDataTableLabels",
+              },
+              {
+                kind: "text",
+                value: " + a ",
+              },
+              {
+                kind: "code",
+                value: "labels",
+              },
+              {
+                kind: "text",
+                value:
+                  " input (same shape as the paginator), so the select-all/select-row/sort/loading accessible strings are overridable per locale instead of hardcoded English.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
                 value: "/changelog",
               },
               {
@@ -2385,6 +2425,145 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Fixed",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "0.5 review-hardening pass",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(multi-agent review of the release). ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value:
+                  " accessible strings are now i18n-overridable (were hardcoded); ",
+              },
+              {
+                kind: "code",
+                value: "fold-password-field",
+              },
+              {
+                kind: "text",
+                value: "'s requirements checklist actually ",
+              },
+              {
+                kind: "strong",
+                value: "announces",
+              },
+              {
+                kind: "text",
+                value: " rule flips (the ",
+              },
+              {
+                kind: "code",
+                value: "aria-live",
+              },
+              {
+                kind: "text",
+                value:
+                  " region now carries the met/not-met word as text, not just an attribute) and forwards the reveal labels; a ",
+              },
+              {
+                kind: "code",
+                value: "forced-colors",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "prefers-reduced-motion",
+              },
+              {
+                kind: "text",
+                value: " sweep across ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-paginator",
+              },
+              {
+                kind: "text",
+                value: ", the ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: " reveal button, ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-toggle",
+              },
+              {
+                kind: "text",
+                value: " and the select-family trigger; ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-toggle",
+              },
+              {
+                kind: "text",
+                value:
+                  "'s roving tab stop never lands on a disabled segment (+ a dev warning for a missing ",
+              },
+              {
+                kind: "code",
+                value: "ariaLabel",
+              },
+              {
+                kind: "text",
+                value: "); ",
+              },
+              {
+                kind: "code",
+                value: "fold-inline-confirm",
+              },
+              {
+                kind: "text",
+                value: "'s Escape is guarded while ",
+              },
+              {
+                kind: "code",
+                value: "loading",
+              },
+              {
+                kind: "text",
+                value: "; ",
+              },
+              {
+                kind: "code",
+                value: "fold-dropdown",
+              },
+              {
+                kind: "text",
+                value:
+                  " excludes Space from type-ahead; slider spacing tokenised.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

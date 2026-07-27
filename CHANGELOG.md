@@ -188,6 +188,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 - **`data-table` gallery page.** Added `/data-table` to the demo (live sort, row
   select, keyboard nav, the loading + empty states, a custom mobile card, and a
   playground for every flag).
+- **`fold-data-table` — i18n label token.** `provideFoldDataTableLabels` +
+  `FoldDataTableLabels` + a `labels` input (same shape as the paginator), so the
+  select-all/select-row/sort/loading accessible strings are overridable per
+  locale instead of hardcoded English.
 - **`/changelog` — the CHANGELOG as a designed timeline.** A new gallery page
   renders `CHANGELOG.md` as a vertical `fold-timeline` (one card per release,
   category-count badges, breaking flagged) — parsed at build into a typed,
@@ -201,6 +205,17 @@ All notable changes to **fold-ng** are documented here. The format follows
   `[Unreleased]` section — no side effects.
 
 ### Fixed
+
+- **0.5 review-hardening pass** (multi-agent review of the release). `fold-data-table`
+  accessible strings are now i18n-overridable (were hardcoded); `fold-password-field`'s
+  requirements checklist actually **announces** rule flips (the `aria-live` region
+  now carries the met/not-met word as text, not just an attribute) and forwards
+  the reveal labels; a `forced-colors` + `prefers-reduced-motion` sweep across
+  `fold-data-table`, `fold-paginator`, the `fold-input` reveal button, `fold-view-toggle`
+  and the select-family trigger; `fold-view-toggle`'s roving tab stop never lands
+  on a disabled segment (+ a dev warning for a missing `ariaLabel`);
+  `fold-inline-confirm`'s Escape is guarded while `loading`; `fold-dropdown`
+  excludes Space from type-ahead; slider spacing tokenised.
 
 - **Select family — a review-driven hardening pass** (`fold-listbox` /
   `fold-multiselect` / `fold-popover`). Closing focus no longer traps: the

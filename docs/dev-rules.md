@@ -198,13 +198,23 @@ into `emphasis` × `intent` reached the Radix-tier model (benchmark lever #3).
 ## 5 · Portability (no app leaks)
 
 5.1 **No hard-coded UI strings.** A reusable component must not bake in a
-language. User-facing + `aria-label` text is an `input()` with a sensible
-**English** default; the app overrides per-locale (once, at the call site or
-host).
-⚠️ _Known debt:_ `fold-paginator` and the panel host/header hard-code **French**
-aria/labels (`"Fermer"`, `"Page précédente"`, `"Éléments par page"`…) while
-`fold-loading` defaults to English — mixed and non-overridable. Extract to inputs;
-tracked in `TODO.md`.
+language. Every user-facing + `aria-label` string is overridable with a sensible
+**English** default. This includes strings on _composed_ inner components: a
+wrapper forwards the inner component's label inputs (e.g. `fold-password-field`
+→ `fold-input`'s `revealLabel`/`hideLabel`), it doesn't relock them.
+
+5.1.1 **The label-token pattern** (the canonical shape — copy `fold-paginator` /
+`fold-data-table`): a `FoldXxxLabels` interface + an `InjectionToken` with an
+English-default factory + `provideFoldXxxLabels(partial)` + a per-instance
+`labels` input, merged `computed(() => ({ ...injected, ...labels() }))`. A
+parameterised string is a **function** (`(n) => \`Page ${n}\``) so a locale can
+reorder, not just substitute. One or two strings → a plain `input()` with an
+English default is enough; a cluster of them → the token.
+
+5.1.2 **A live region announces TEXT, not attributes.** `aria-live` fires on
+text-content mutations; flipping an `aria-label`/class alone is silent. Put the
+changing state in a (visually-hidden) **text node** inside the region — see
+`fold-password-field`'s per-rule met/not-met word.
 
 5.2 **No app-domain types.** The package knows nothing of `programs`, `shows`,
 `contracts`. A generic mechanism is parameterised (`<T>` / opaque payload); the
@@ -244,6 +254,24 @@ unreadable text.
 
 6.4 **Icons inherit colour** via `currentColor` and are sized with a `size`
 input — never a hard-coded fill.
+
+6.5 **State conveyed by colour needs a `forced-colors` fallback.** Windows
+high-contrast strips `background` and `box-shadow` and overrides `color`, so any
+cue riding on them (a selected row, an active page, a tone bar) vanishes.
+Re-express it under `@media (forced-colors: active)` with something the pass
+keeps — a `border`/`outline` in a system colour (`Highlight`, `CanvasText`) —
+and keep the non-visual carrier (`aria-current`, `aria-selected`) regardless.
+Applies even to a `all: unset` control: restore a real `:focus-visible` outline
+(the reset dropped the UA one).
+
+6.6 **Every transition/animation is gated by `prefers-reduced-motion`.** Any
+`transition`/`animation` ships with a `@media (prefers-reduced-motion: reduce)`
+branch that turns it off. No exceptions for "it's just a colour fade".
+
+6.7 **Roving tabindex must land on an _enabled_ control.** The single `tabindex="0"`
+tab stop is the selected item **only when it's enabled** — otherwise it falls
+back to the first enabled one. Putting the tab stop on a disabled (unfocusable)
+item makes the whole widget unreachable by keyboard (`fold-view-toggle`).
 
 ---
 
