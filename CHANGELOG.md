@@ -8,6 +8,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 _Nothing yet._
 
+## [0.5.1] - 2026-07-27
+
+First published 0.5.x — same tree as the (unpublished, e2e-gated) v0.5.0 tag with the release e2e locator scoped to the first control.
+
 ## [0.5.0] - 2026-07-27
 
 ### Added
@@ -501,7 +505,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1
 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0
 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0
 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0
