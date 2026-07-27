@@ -180,6 +180,63 @@
           <gal-select-schema kind="select" />
         </fold-page-section>
       </fold-tab-panel>
+
+      <fold-tab-panel [tabs]="t" key="typed">
+        <p class="sel-prose">
+          The value is <strong>generic</strong> — <code>string</code> by
+          inference, but <code>number</code>, an <code>enum</code> or an
+          <strong>object</strong> all work with the type preserved end-to-end.
+          Two entry points: a data-driven <code>[options]</code> array (value
+          type linked at compile time) or projected
+          <code>&lt;fold-option&gt;</code>. Objects match via
+          <code>compareWith</code> (default <code>Object.is</code>); primitives
+          need nothing.
+        </p>
+
+        <dev-playground [code]="typedCode" [responsive]="false">
+          <div class="sel-typed">
+            <fold-listbox
+              label="Plan (number, [options])"
+              placeholder="Pick a plan…"
+              [size]="size()"
+              [variant]="variant()"
+              [options]="plans"
+              [(value)]="planId"
+            />
+            <p class="sel-readout">
+              planId = <code>{{ planId() ?? "null" }}</code>
+            </p>
+
+            <fold-listbox
+              label="Team (object, compareWith)"
+              placeholder="Pick a team…"
+              [size]="size()"
+              [variant]="variant()"
+              [compareWith]="sameId"
+              [(value)]="team"
+            >
+              @for (t of teams; track t.id) {
+              <fold-option [value]="t">{{ t.name }}</fold-option>
+              }
+            </fold-listbox>
+            <p class="sel-readout">
+              team = <code>{{ team()?.name ?? "null" }}</code>
+            </p>
+          </div>
+        </dev-playground>
+
+        <fold-page-section title="Tech — how it works" icon="code">
+          <p class="sel-prose">
+            <code>T</code> is inferred from <code>[(value)]</code>. The
+            option↔value link the compiler can't see through projection is the
+            one seam erased to <code>unknown</code> (the owner token);
+            everywhere the operands are actually <code>T</code> stays typed, and
+            a dev-mode warning fires if a held value matches no option. The
+            <code>[options]</code> array closes even that seam — value and
+            options are checked together at build time.
+          </p>
+        </fold-page-section>
+      </fold-tab-panel>
     </div>
   </div>
 </fold-page-layout>

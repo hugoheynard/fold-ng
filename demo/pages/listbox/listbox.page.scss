@@ -74,3 +74,15 @@
     }
   }
 }
+
+.sel-typed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-md);
+  max-width: 22rem;
+}
+.sel-readout {
+  margin: 0 0 var(--fold-space-sm);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}
