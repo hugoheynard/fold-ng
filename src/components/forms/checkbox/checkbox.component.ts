@@ -21,9 +21,10 @@ import { FoldIdService } from "../../../a11y/id.service";
  * box + check/dash mark: best-in-class semantics with full visual control.
  *
  * Drive it standalone with `[(checked)]` / `(checkedChange)`, or bind a signal
- * form field with `[formField]` (it implements `FormValueControl<boolean>`, so
- * the field's value **is** the checked state — `disabled`, `touched` and
- * `errors` are wired by `FormField`). `indeterminate` renders the mixed state
+ * form field with `[formField]` (it implements `FormCheckboxControl`, whose
+ * value member is `checked` — not `value` — so the field's value **is** the
+ * checked state; `disabled`, `touched` and `errors` are wired by `FormField`).
+ * `indeterminate` renders the mixed state
  * (e.g. a "select all" over a partial selection); it is a visual cue only —
  * clicking a mixed box checks it, as natively.
  *

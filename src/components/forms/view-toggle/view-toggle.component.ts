@@ -1,9 +1,12 @@
 import {
   booleanAttribute,
   Component,
+  computed,
+  effect,
   ElementRef,
   inject,
   input,
+  isDevMode,
   model,
 } from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
@@ -67,6 +70,30 @@ export class FoldViewToggleComponent {
   readonly activeStyle = input<"raised" | "accent">("raised");
   /** Hide visible labels, keeping icons only (labels stay as accessible names). */
   readonly iconOnly = input(false, { transform: booleanAttribute });
+
+  constructor() {
+    if (isDevMode()) {
+      effect(() => {
+        if (!this.ariaLabel()) {
+          console.warn(
+            "[fold-view-toggle] no `ariaLabel` — a radiogroup needs an accessible name.",
+          );
+        }
+      });
+    }
+  }
+
+  /** The segment holding the tab stop: the selected one when enabled, else the
+   *  first enabled — never a disabled (unfocusable) segment, so Tab always
+   *  reaches the group even if the selected value is disabled. */
+  protected readonly rovingValue = computed<string | null>(() => {
+    const options = this.options();
+    const selected = options.find((o) => o.value === this.value());
+    if (selected && !selected.disabled) {
+      return selected.value;
+    }
+    return options.find((o) => !o.disabled)?.value ?? null;
+  });
 
   /** Pick a segment (no-op if disabled or already selected). */
   protected select(option: FoldViewToggleOption): void {

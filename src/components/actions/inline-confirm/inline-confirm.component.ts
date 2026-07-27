@@ -228,6 +228,11 @@ export class FoldInlineConfirmComponent {
 
   /** Abort and restore the trigger (focus returns via the render effect). */
   protected cancel(): void {
+    // Both cancel buttons are disabled while loading; Escape must match, or a
+    // mid-flight (async) action could be cancelled out from under the parent.
+    if (this.loading()) {
+      return;
+    }
     this.open.set(false);
     this.typed.set("");
     this.cancelled.emit();

@@ -13,7 +13,7 @@
       [class.icon-only]="iconOnly() || !option.label"
       [attr.aria-checked]="value() === option.value"
       [attr.aria-label]="option.ariaLabel ?? option.label ?? null"
-      [attr.tabindex]="value() === option.value ? 0 : -1"
+      [attr.tabindex]="rovingValue() === option.value ? 0 : -1"
       [disabled]="option.disabled || null"
       [attr.title]="iconOnly() ? (option.label ?? option.ariaLabel) : null"
       (click)="select(option)"

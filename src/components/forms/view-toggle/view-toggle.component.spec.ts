@@ -64,6 +64,14 @@ describe("FoldViewToggleComponent", () => {
     expect(r.radio("Table").getAttribute("tabindex")).toBe("-1");
   });
 
+  it("puts the tab stop on the first enabled segment when the selected one is disabled", () => {
+    const r = render();
+    r.value.set("map"); // map is disabled → tab stop must not land on it
+    r.fixture.detectChanges();
+    expect(r.radio("Map").getAttribute("tabindex")).toBe("-1");
+    expect(r.radio("Cards").getAttribute("tabindex")).toBe("0");
+  });
+
   it("selects on click", () => {
     const r = render();
     r.radio("Table").click();

@@ -139,6 +139,7 @@ export class FoldDropdownComponent {
   ): void {
     if (
       event.key.length !== 1 ||
+      event.key === " " || // Space activates the focused item, never type-ahead
       event.ctrlKey ||
       event.metaKey ||
       event.altKey
