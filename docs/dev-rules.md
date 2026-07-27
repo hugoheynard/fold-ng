@@ -220,6 +220,16 @@ changing state in a (visually-hidden) **text node** inside the region — see
 `contracts`. A generic mechanism is parameterised (`<T>` / opaque payload); the
 app supplies the concrete type on top.
 
+5.2.1 **A value-carrying control is generic over its value.** Don't hardcode
+`string`. Make it `Component<T>` with `value` a `model<T | …>`, and compare
+values through a `compareWith` input (default `Object.is`) — never a baked-in
+`===` on the value, which silently fails for objects (this is exactly what
+Angular's native `<select>` does). Where a DI/content-projection boundary can't
+carry `T` (a shared owner token, projected children), erase **that seam** to
+`unknown` — never `any` — and keep `T` on the public surface and everywhere the
+operands are actually `T` (see `fold-listbox`). Offer a data-driven `[options]`
+array API when the compile-time value↔option link matters.
+
 5.3 **Categorical data may be hex — in TS, not in styles.** Auto-colour palettes
 (`palettes.ts`) and the avatar ink are qualitative data (theme-invariant hues),
 so they live as hex in TS and are exempt from 1.3. They must **not** appear in a

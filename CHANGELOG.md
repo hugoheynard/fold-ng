@@ -188,6 +188,15 @@ All notable changes to **fold-ng** are documented here. The format follows
 - **`data-table` gallery page.** Added `/data-table` to the demo (live sort, row
   select, keyboard nav, the loading + empty states, a custom mobile card, and a
   playground for every flag).
+- **Select family — generic value + a data-driven `[options]` API.**
+  `fold-listbox` / `fold-multiselect` / `fold-option` are now generic over the
+  option value `T` (was `string`-only): `value` is `T | null` (single) /
+  `readonly T[]` (multi), and a `compareWith` input (default `Object.is`) matches
+  **object** values by identity — string/number/enum need nothing. On top of
+  projected `<fold-option>`, a `[options]="FoldSelectOption<T>[]"` array API links
+  the value type to the options at compile time (rich rows via a projected
+  `<ng-template #option let-o>`). The type stays honest end-to-end (`T` public,
+  the owner token erased to `unknown`, no `any`/`as`).
 - **`fold-data-table` — i18n label token.** `provideFoldDataTableLabels` +
   `FoldDataTableLabels` + a `labels` input (same shape as the paginator), so the
   select-all/select-row/sort/loading accessible strings are overridable per

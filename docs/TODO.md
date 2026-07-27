@@ -40,11 +40,20 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         closed-trigger type-ahead, box metrics single-sourced (`_field-box.scss`).
         Took the family 7.5 → 9/10. The residual points below are **features**,
         not defects.
-  - [ ] **Generic (non-`string`) value type** — the real 9→10 unblocker and what
-        the app's `SelectComponent` needs (number ids, `null`, objects). Make the
-        family generic over the option value (`fold-option [value]`,
-        `FormValueControl<T>`), keeping a string default. Until then a migrating
-        site maps its ids to strings.
+  - [x] **Generic (non-`string`) value type** ✅ (2026-07-27) — the family is now
+        generic over `T` (`fold-option<T>`, `value: T | null` single /
+        `readonly T[]` multi, `FormValueControl<T | null>`). `compareWith` input
+        (default `Object.is`) matches object values by identity, mirroring
+        Angular's native `<select>`. Type is honest end-to-end: `T` public, the
+        owner token erased to `unknown` (the projection seam), compared only where
+        both operands are `T` — no `any`/`as`. **This unblocks the app's
+        `SelectComponent` migration** (number/`null` ids map directly, no string
+        workaround).
+  - [x] **Data-driven `[options]` array API** ✅ (2026-07-27) — alongside projected
+        `<fold-option>`: `[options]="FoldSelectOption<T>[]"` links the value type
+        to the options at **compile time** (no projection seam), rich rows via a
+        projected `<ng-template #option let-o>`. Both APIs share one option core;
+        dev-warns if both are given (array wins).
   - [ ] **Option groups** (`fold-optgroup`, `role="group"` + label + skip in nav).
   - [ ] **Filter / combobox variant** — a typed input that filters the list
         (`role="combobox"` textbox, live `aria-activedescendant`, no-match state).

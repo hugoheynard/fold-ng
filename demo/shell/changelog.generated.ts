@@ -38,7 +38,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Added: 21,
+      Added: 22,
       Fixed: 4,
       Changed: 9,
     },
@@ -2267,6 +2267,171 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
                 kind: "text",
                 value:
                   " to the demo (live sort, row select, keyboard nav, the loading + empty states, a custom mobile card, and a playground for every flag).",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Select family — generic value + a data-driven ",
+              },
+              {
+                kind: "code",
+                value: "[options]",
+              },
+              {
+                kind: "text",
+                value: " API.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-option",
+              },
+              {
+                kind: "text",
+                value: " are now generic over the option value ",
+              },
+              {
+                kind: "code",
+                value: "T",
+              },
+              {
+                kind: "text",
+                value: " (was ",
+              },
+              {
+                kind: "code",
+                value: "string",
+              },
+              {
+                kind: "text",
+                value: "-only): ",
+              },
+              {
+                kind: "code",
+                value: "value",
+              },
+              {
+                kind: "text",
+                value: " is ",
+              },
+              {
+                kind: "code",
+                value: "T | null",
+              },
+              {
+                kind: "text",
+                value: " (single) / ",
+              },
+              {
+                kind: "code",
+                value: "readonly T[]",
+              },
+              {
+                kind: "text",
+                value: " (multi), and a ",
+              },
+              {
+                kind: "code",
+                value: "compareWith",
+              },
+              {
+                kind: "text",
+                value: " input (default ",
+              },
+              {
+                kind: "code",
+                value: "Object.is",
+              },
+              {
+                kind: "text",
+                value: ") matches ",
+              },
+              {
+                kind: "strong",
+                value: "object",
+              },
+              {
+                kind: "text",
+                value:
+                  " values by identity — string/number/enum need nothing. On top of projected ",
+              },
+              {
+                kind: "code",
+                value: "<fold-option>",
+              },
+              {
+                kind: "text",
+                value: ", a ",
+              },
+              {
+                kind: "code",
+                value: '[options]="FoldSelectOption<T>[]"',
+              },
+              {
+                kind: "text",
+                value:
+                  " array API links the value type to the options at compile time (rich rows via a projected ",
+              },
+              {
+                kind: "code",
+                value: "<ng-template #option let-o>",
+              },
+              {
+                kind: "text",
+                value: "). The type stays honest end-to-end (",
+              },
+              {
+                kind: "code",
+                value: "T",
+              },
+              {
+                kind: "text",
+                value: " public, the owner token erased to ",
+              },
+              {
+                kind: "code",
+                value: "unknown",
+              },
+              {
+                kind: "text",
+                value: ", no ",
+              },
+              {
+                kind: "code",
+                value: "any",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "as",
+              },
+              {
+                kind: "text",
+                value: ").",
               },
             ],
             breaking: false,
