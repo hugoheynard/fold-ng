@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.5.2] - 2026-07-27
+
 ### Added
 
 - **`fold-listbox` gains a `selectionChange: T` output** — fires when the user
@@ -529,7 +533,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.1...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.2...HEAD
+[0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2
 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1
 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0
 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0
