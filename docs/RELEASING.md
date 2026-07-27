@@ -55,13 +55,20 @@ The script ([`scripts/release.mjs`](../scripts/release.mjs)):
 1. **Guards** — refuses unless you're on `main`, the tree is clean, and local
    `main` is in sync with `origin/main`. (Releases come **only from `main`** —
    `release.yml` also rejects a tag whose commit isn't on `main`.)
-2. **Derives the level** from `[Unreleased]` (unless you passed one) and **bumps**
+2. **Gates the full suite locally** — `lint` · `tsc` · `strictTemplates` ·
+   `vitest` · **`test:e2e`** (installs Chromium first) — the same checks CI gates
+   publish on, but **before any bump or tag**. A red build aborts here with
+   nothing mutated. This exists because release tags are **protected /
+   immutable**: a tag pushed for a build that then fails CI burns that version
+   number for good (how `0.5.0` was lost — the e2e gate failed only in CI, after
+   the tag already existed). Never skip it.
+3. **Derives the level** from `[Unreleased]` (unless you passed one) and **bumps**
    `package.json` to the next version.
-3. **Stamps the changelog** — moves `[Unreleased]` to `[x.y.z] - <today>` and
+4. **Stamps the changelog** — moves `[Unreleased]` to `[x.y.z] - <today>` and
    resets `[Unreleased]`. If `[Unreleased]` was empty it asks for a one-line
    summary (blank → links to the GitHub release).
-4. **Shows a preview and asks to confirm** (a published version is immutable).
-5. On yes: **commits, tags `vx.y.z`, and pushes `main` + the tag.**
+5. **Shows a preview and asks to confirm** (a published version is immutable).
+6. On yes: **commits, tags `vx.y.z`, and pushes `main` + the tag.**
 
 Pushing the tag fires [`release.yml`](../.github/workflows/release.yml), which —
 only if everything is green:

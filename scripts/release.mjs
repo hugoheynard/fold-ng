@@ -72,6 +72,29 @@ if (sh("git rev-parse HEAD") !== sh("git rev-parse origin/main")) {
   die("local main is out of sync with origin/main — pull/push first.");
 }
 
+// ── Full local gate — a red build must NEVER create a tag. Release tags are
+//    protected (immutable), so a tag pushed for a build that then fails CI
+//    burns that version number for good (this is how 0.5.0 was lost). Run the
+//    exact checks CI gates publish on, here, BEFORE any bump/tag/push. ──
+console.log("\n  Gating locally (lint · tsc · templates · unit · e2e)…\n");
+const GATE = [
+  "pnpm run lint",
+  "pnpm exec tsc --noEmit -p tsconfig.app.json",
+  "pnpm run lint:templates",
+  "pnpm test",
+  "pnpm exec playwright install chromium",
+  "pnpm run test:e2e",
+];
+for (const cmd of GATE) {
+  try {
+    run(cmd);
+  } catch {
+    die(
+      `gate failed at: ${cmd}\n  Nothing was bumped, tagged or pushed. Fix, then retry.`,
+    );
+  }
+}
+
 // ── Bump the version (package.json only; we tag ourselves). ──
 const before = version();
 run(`npm version ${TYPES[type]} --no-git-tag-version`);

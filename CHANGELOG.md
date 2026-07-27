@@ -6,7 +6,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **`pnpm release` gates the full suite (incl. `test:e2e`) locally before
+  tagging.** Release tags are protected/immutable, so a tag pushed for a build
+  that then fails CI burns that version number (how `0.5.0` was lost). The
+  release script now runs `lint · tsc · strictTemplates · vitest · test:e2e`
+  (installing Chromium first) up front — a red build aborts with nothing bumped
+  or tagged.
 
 ## [0.5.1] - 2026-07-27
 

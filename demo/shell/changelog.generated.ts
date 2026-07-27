@@ -38,6 +38,75 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
+      Changed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "pnpm release",
+              },
+              {
+                kind: "text",
+                value: " gates the full suite (incl. ",
+              },
+              {
+                kind: "code",
+                value: "test:e2e",
+              },
+              {
+                kind: "text",
+                value: ") locally before tagging.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Release tags are protected/immutable, so a tag pushed for a build that then fails CI burns that version number (how ",
+              },
+              {
+                kind: "code",
+                value: "0.5.0",
+              },
+              {
+                kind: "text",
+                value: " was lost). The release script now runs ",
+              },
+              {
+                kind: "code",
+                value: "lint · tsc · strictTemplates · vitest · test:e2e",
+              },
+              {
+                kind: "text",
+                value:
+                  " (installing Chromium first) up front — a red build aborts with nothing bumped or tagged.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    version: "0.5.1",
+    date: "2026-07-27",
+    unreleased: false,
+    counts: {},
+    breaking: 0,
+    groups: [],
+  },
+  {
+    version: "0.5.0",
+    date: "2026-07-27",
+    unreleased: false,
+    counts: {
       Added: 22,
       Fixed: 4,
       Changed: 9,
@@ -5574,7 +5643,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.4.0...HEAD [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.1...HEAD [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -5586,4 +5655,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.4.0";
+export const PUBLISHED_VERSION = "0.5.1";
