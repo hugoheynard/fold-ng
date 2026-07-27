@@ -11,7 +11,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 function listbox(page: Page) {
-  const root = page.locator("fold-listbox");
+  // The default "listbox" tab's control — first in DOM order (the "typed value"
+  // tab adds more `fold-listbox` instances further down the page).
+  const root = page.locator("fold-listbox").first();
   return {
     root,
     trigger: root.locator(".lb-trigger"),
