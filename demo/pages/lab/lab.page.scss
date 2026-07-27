@@ -1,0 +1,61 @@
+.lab-banner {
+  margin-bottom: var(--fold-space-lg);
+}
+
+.lab-menu {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--fold-space-xs);
+    max-width: 32rem;
+  }
+}
+
+.lab-link {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  border: 1px solid var(--fold-color-border-subtle);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  text-decoration: none;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+    border-color: var(--fold-color-border);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.lab-label {
+  font-weight: 600;
+}
+
+.lab-since {
+  margin-left: auto;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-empty {
+  color: var(--fold-color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-link {
+    transition: none;
+  }
+}

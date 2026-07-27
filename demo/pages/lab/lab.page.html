@@ -1,0 +1,34 @@
+<fold-page-layout title="in dev">
+  <p description>
+    Components built on the <strong>dev</strong> branch that aren't on npm yet —
+    they ship in <code>{{ next }}</code>. The published release is
+    <code>{{ published }}</code>; everything here is subject to change until
+    it's cut.
+  </p>
+
+  <fold-callout variant="warning" class="lab-banner">
+    Previews of unreleased work. Installing <code>fold-ng</code> today gives you
+    <code>{{ published }}</code> — the items below arrive with the next release.
+  </fold-callout>
+
+  @if (items.length > 0) {
+  <nav class="lab-menu" aria-label="Components in development">
+    <ul>
+      @for (item of items; track item.id) {
+      <li>
+        <a class="lab-link" [routerLink]="'/' + item.id">
+          <fold-icon [name]="item.icon ?? 'grid'" size="sm" />
+          <span class="lab-label">{{ item.label }}</span>
+          <span class="lab-since">ships in {{ item.since }}</span>
+          <fold-badge content="dev" variant="warning" />
+        </a>
+      </li>
+      }
+    </ul>
+  </nav>
+  } @else {
+  <p class="lab-empty">
+    Nothing in dev — everything on this branch is published.
+  </p>
+  }
+</fold-page-layout>
