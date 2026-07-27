@@ -65,11 +65,16 @@ const SUMMARY_MAX = 3;
     { provide: FOLD_LISTBOX_OWNER, useExisting: FoldMultiselectComponent },
   ],
 })
-export class FoldMultiselectComponent
-  implements FormValueControl<readonly string[]>, FoldListboxOwner
+export class FoldMultiselectComponent<T>
+  implements FormValueControl<readonly T[]>, FoldListboxOwner<T>
 {
-  /** Selected values. A `model()` so `FormField` and `[(value)]` stay in sync. */
-  readonly value = model<readonly string[]>([]);
+  /** Selected values. A `model()` so `FormField` and `[(value)]` stay in sync.
+   *  Generic over the option value (string by inference; number/enum/object all
+   *  work — objects need {@link compareWith}). */
+  readonly value = model<readonly T[]>([]);
+  /** How two values are compared for membership — supply it for **object**
+   *  values; primitives don't need it. @default `Object.is` */
+  readonly compareWith = input<(a: T, b: T) => boolean>();
   /** Disabled state — bound automatically by `FormField`. */
   readonly disabled = input<boolean>(false);
   /** Two-way touched state — set on the first toggle, kept in sync with the field. */
@@ -103,8 +108,15 @@ export class FoldMultiselectComponent
   /** Id of the `role="listbox"` element (own, distinct from the popover panel). */
   protected readonly listId = `${this.inputId}-list`;
 
-  private readonly options = contentChildren(FoldOptionComponent);
+  private readonly options =
+    contentChildren<FoldOptionComponent<T>>(FoldOptionComponent);
   private readonly list = viewChild<ElementRef<HTMLElement>>("list");
+
+  /** Compare two values — the injected `compareWith`, else `Object.is`. */
+  private eq(a: T, b: T): boolean {
+    const cmp = this.compareWith();
+    return cmp ? cmp(a, b) : Object.is(a, b);
+  }
 
   /** Shared roving/keyboard core; multi-select toggles + stays open on activation. */
   private readonly nav = new FoldListboxNav(() => this.options(), {
@@ -114,9 +126,12 @@ export class FoldMultiselectComponent
   /** `aria-activedescendant`, read by each `fold-option` for its `is-active`. */
   readonly activeId = this.nav.activeId;
 
-  /** The selection as a Set — O(1) membership per option (vs. O(n) `includes`,
-   *  which is O(n²) across a long list on every change detection). */
-  private readonly selectedSet = computed(() => new Set(this.value()));
+  /** Fast-path membership: a `Set` when values compare by identity (the default,
+   *  O(1) per option), or `null` when a `compareWith` is supplied — then
+   *  membership falls back to a linear `eq` scan (correct for object values). */
+  private readonly selectedSet = computed(() =>
+    this.compareWith() ? null : new Set(this.value()),
+  );
 
   /** The chosen labels (in option order) — joined, collapsing to "…, +N" past
    *  {@link SUMMARY_MAX} so the trigger can't grow unbounded. */
@@ -124,9 +139,8 @@ export class FoldMultiselectComponent
     if (this.value().length === 0) {
       return undefined;
     }
-    const set = this.selectedSet();
     const labels = this.options()
-      .filter((o) => set.has(o.value()))
+      .filter((o) => this.isSelected(o.value()))
       .map((o) => o.label);
     if (labels.length === 0) {
       return undefined;
@@ -179,13 +193,15 @@ export class FoldMultiselectComponent
     warnOnOrphanValue(
       () => this.value(),
       () => this.options(),
+      (a, b) => this.eq(a, b),
       "fold-multiselect",
     );
   }
 
-  /** A value is selected when it's in the set. */
-  isSelected(value: string): boolean {
-    return this.selectedSet().has(value);
+  /** A value is selected when it's in the current set (via `compareWith`). */
+  isSelected(value: T): boolean {
+    const set = this.selectedSet();
+    return set ? set.has(value) : this.value().some((v) => this.eq(v, value));
   }
 
   /** Open with the keys a native select opens on. */
@@ -223,7 +239,7 @@ export class FoldMultiselectComponent
   /** Index of the first selected option (or -1) — where the keyboard arms on open. */
   private firstSelectedIndex(): number {
     return this.options().findIndex(
-      (o) => this.value().includes(o.value()) && !o.disabled(),
+      (o) => this.isSelected(o.value()) && !o.disabled(),
     );
   }
 
@@ -247,7 +263,9 @@ export class FoldMultiselectComponent
     const v = o.value();
     const current = this.value();
     this.value.set(
-      current.includes(v) ? current.filter((x) => x !== v) : [...current, v],
+      this.isSelected(v)
+        ? current.filter((x) => !this.eq(x, v))
+        : [...current, v],
     );
     this.touched.set(true);
   }

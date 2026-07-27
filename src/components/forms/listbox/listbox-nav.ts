@@ -1,8 +1,9 @@
 import { computed, signal, type Signal } from "@angular/core";
 
-/** The slice of a `fold-option` the keyboard core needs. */
+/** The slice of a `fold-option` the keyboard core needs. The value is unused by
+ *  the core (it navigates by id/label/disabled), so it stays erased. */
 export interface FoldNavOption {
-  value(): string;
+  value(): unknown;
   disabled(): boolean;
   readonly label: string;
   readonly id: string;

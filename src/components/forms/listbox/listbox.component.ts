@@ -64,12 +64,18 @@ import {
     { provide: FOLD_LISTBOX_OWNER, useExisting: FoldListboxComponent },
   ],
 })
-export class FoldListboxComponent
-  implements FormValueControl<string>, FoldListboxOwner
+export class FoldListboxComponent<T>
+  implements FormValueControl<T | null>, FoldListboxOwner<T>
 {
-  /** Selected value (the chosen option's `value`). A `model()` so `FormField`
-   *  and `[(value)]` stay in sync. */
-  readonly value = model<string>("");
+  /** Selected value (the chosen option's `value`), or `null` when nothing is
+   *  picked. A `model()` so `FormField` and `[(value)]` stay in sync. Generic
+   *  over the option value — `string` by inference, but `number`, an `enum` or
+   *  an object all work (objects need {@link compareWith}). */
+  readonly value = model<T | null>(null);
+  /** How two values are compared for selection — supply it for **object** values
+   *  (reference equality won't match); primitives (string/number/enum) don't need
+   *  it. @default `Object.is` */
+  readonly compareWith = input<(a: T, b: T) => boolean>();
   /** Disabled state — bound automatically by `FormField`. */
   readonly disabled = input<boolean>(false);
   /** Two-way touched state — set on selection / blur, kept in sync with the field. */
@@ -107,8 +113,16 @@ export class FoldListboxComponent
   /** Id of the `role="listbox"` element (own, distinct from the popover panel). */
   protected readonly listId = `${this.inputId}-list`;
 
-  private readonly options = contentChildren(FoldOptionComponent);
+  private readonly options =
+    contentChildren<FoldOptionComponent<T>>(FoldOptionComponent);
   private readonly list = viewChild<ElementRef<HTMLElement>>("list");
+
+  /** Compare two values — the injected `compareWith`, else `Object.is`. Called
+   *  only where both operands are `T`, so no erasure leaks in. */
+  private eq(a: T, b: T): boolean {
+    const cmp = this.compareWith();
+    return cmp ? cmp(a, b) : Object.is(a, b);
+  }
 
   /** Shared roving/keyboard core; single-select commits + closes on activation. */
   private readonly nav = new FoldListboxNav(() => this.options(), {
@@ -119,12 +133,15 @@ export class FoldListboxComponent
   readonly activeId = this.nav.activeId;
 
   /** The selected option's label, for the trigger. */
-  protected readonly selectedLabel = computed<string | undefined>(
-    () => this.options().find((o) => o.value() === this.value())?.label,
-  );
+  protected readonly selectedLabel = computed<string | undefined>(() => {
+    const v = this.value();
+    return v === null
+      ? undefined
+      : this.options().find((o) => this.eq(o.value(), v))?.label;
+  });
   /** Whether the clear affordance is currently offered. */
   protected readonly showClear = computed(
-    () => this.allowClear() && this.value() !== "" && !this.disabled(),
+    () => this.allowClear() && this.value() !== null && !this.disabled(),
   );
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {
@@ -170,21 +187,26 @@ export class FoldListboxComponent
       }
     });
     warnOnOrphanValue(
-      () => this.value(),
+      () => {
+        const v = this.value();
+        return v === null ? [] : [v];
+      },
       () => this.options(),
+      (a, b) => this.eq(a, b),
       "fold-listbox",
     );
   }
 
-  /** A value is selected when it equals the current one. */
-  isSelected(value: string): boolean {
-    return this.value() === value;
+  /** A value is selected when it equals the current one (via `compareWith`). */
+  isSelected(value: T): boolean {
+    const v = this.value();
+    return v !== null && this.eq(v, value);
   }
 
   /** Clear the selection (the `allowClear` ×). */
   protected clear(event: Event): void {
     event.stopPropagation(); // don't let the trigger open
-    this.value.set("");
+    this.value.set(null);
     this.touched.set(true);
   }
 
@@ -225,15 +247,19 @@ export class FoldListboxComponent
 
   /** Index of the selected option (or -1) — where the keyboard arms on open. */
   private selectedIndex(): number {
+    const v = this.value();
+    if (v === null) {
+      return -1;
+    }
     return this.options().findIndex(
-      (o) => o.value() === this.value() && !o.disabled(),
+      (o) => this.eq(o.value(), v) && !o.disabled(),
     );
   }
 
   /** The enabled option under an event target, or null. */
   private enabledOptionFrom(
     target: EventTarget | null,
-  ): FoldOptionComponent | null {
+  ): FoldOptionComponent<T> | null {
     if (!(target instanceof Element)) {
       return null;
     }
@@ -249,7 +275,7 @@ export class FoldListboxComponent
     }
   }
 
-  private commit(option: FoldOptionComponent): void {
+  private commit(option: FoldOptionComponent<T>): void {
     this.value.set(option.value());
     this.touched.set(true);
     this.open.set(false);

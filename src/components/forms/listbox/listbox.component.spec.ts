@@ -23,7 +23,7 @@ import { FoldOptionComponent } from "./option.component";
   </fold-listbox>`,
 })
 class HostComponent {
-  readonly value = signal("");
+  readonly value = signal<string | null>(null);
   readonly open = signal(false);
   readonly touched = signal(false);
 }
@@ -99,7 +99,7 @@ describe("FoldListboxComponent", () => {
     await r.openMenu();
     r.option("o-usd").click();
     r.fixture.detectChanges();
-    expect(r.value()).toBe("");
+    expect(r.value()).toBeNull();
     expect(r.open()).toBe(true);
   });
 
@@ -165,7 +165,7 @@ describe("FoldListboxComponent", () => {
     expect(clear).not.toBeNull();
     clear?.click();
     r.fixture.detectChanges();
-    expect(r.value()).toBe("");
+    expect(r.value()).toBeNull();
     expect(r.touched()).toBe(true);
   });
 
@@ -177,5 +177,69 @@ describe("FoldListboxComponent", () => {
     r.fixture.detectChanges();
     expect(r.value()).toBe("GBP"); // "Pound sterling"
     expect(r.open()).toBe(false);
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [FoldListboxComponent, FoldOptionComponent],
+  template: `<fold-listbox [(value)]="value">
+    <fold-option [value]="1">One</fold-option>
+    <fold-option [value]="2">Two</fold-option>
+  </fold-listbox>`,
+})
+class NumberHost {
+  readonly value = signal<number | null>(null);
+}
+
+interface Team {
+  id: number;
+  name: string;
+}
+
+@Component({
+  standalone: true,
+  imports: [FoldListboxComponent, FoldOptionComponent],
+  template: `<fold-listbox [(value)]="value" [compareWith]="sameId">
+    @for (t of teams; track t.id) {
+      <fold-option [value]="t">{{ t.name }}</fold-option>
+    }
+  </fold-listbox>`,
+})
+class ObjectHost {
+  readonly teams: Team[] = [
+    { id: 1, name: "Alpha" },
+    { id: 2, name: "Beta" },
+  ];
+  readonly value = signal<Team | null>(null);
+  readonly sameId = (a: Team, b: Team): boolean => a.id === b.id;
+}
+
+describe("FoldListboxComponent — generic value", () => {
+  const trigger = (host: HTMLElement): HTMLButtonElement =>
+    host.querySelector<HTMLButtonElement>(".lb-trigger")!;
+
+  it("carries a number value (T inferred, no compareWith needed)", async () => {
+    const fixture = TestBed.createComponent(NumberHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    trigger(host).click();
+    fixture.detectChanges();
+    await Promise.resolve();
+    fixture.detectChanges();
+    host
+      .querySelectorAll<HTMLElement>("[role='option']")[1]
+      .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe(2);
+  });
+
+  it("matches an object value by compareWith, not reference", () => {
+    const fixture = TestBed.createComponent(ObjectHost);
+    // A DIFFERENT object instance, equal by id — reference equality would miss it.
+    fixture.componentInstance.value.set({ id: 2, name: "Beta" });
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(trigger(host).textContent).toContain("Beta");
   });
 });

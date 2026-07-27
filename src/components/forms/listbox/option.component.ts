@@ -41,12 +41,12 @@ import { FOLD_LISTBOX_OWNER } from "./listbox-owner";
     "[class.is-disabled]": "disabled()",
   },
 })
-export class FoldOptionComponent {
+export class FoldOptionComponent<T> {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly owner = inject(FOLD_LISTBOX_OWNER);
 
   /** The value written back to the listbox when this option is chosen. */
-  readonly value = input.required<string>();
+  readonly value = input.required<T>();
   /** Disabled options are skipped by keyboard nav and can't be selected. */
   readonly disabled = input(false, { transform: booleanAttribute });
 
