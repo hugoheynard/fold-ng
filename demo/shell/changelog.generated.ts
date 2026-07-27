@@ -38,6 +38,50 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
+      Changed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "pnpm release",
+              },
+              {
+                kind: "text",
+                value: " now regenerates the demo's generated changelog",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "after stamping ",
+              },
+              {
+                kind: "code",
+                value: "CHANGELOG.md",
+              },
+              {
+                kind: "text",
+                value:
+                  ', so the gallery no longer shows a just-cut version under "Unreleased" in local dev (Pages already regenerated on deploy).',
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    version: "0.5.2",
+    date: "2026-07-27",
+    unreleased: false,
+    counts: {
       Added: 2,
       Changed: 2,
     },
@@ -5903,7 +5947,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.1...HEAD [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.2...HEAD [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -5915,4 +5959,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.5.1";
+export const PUBLISHED_VERSION = "0.5.2";

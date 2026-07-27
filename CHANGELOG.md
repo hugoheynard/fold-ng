@@ -6,7 +6,11 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **`pnpm release` now regenerates the demo's generated changelog** after
+  stamping `CHANGELOG.md`, so the gallery no longer shows a just-cut version
+  under "Unreleased" in local dev (Pages already regenerated on deploy).
 
 ## [0.5.2] - 2026-07-27
 

@@ -159,6 +159,12 @@ if (go !== "y" && go !== "yes") {
   die("aborted — package.json and CHANGELOG reverted, nothing pushed.");
 }
 
+// ── Sync the demo's generated changelog with the freshly stamped CHANGELOG +
+//    bumped version, so the gallery doesn't show the new release under
+//    "Unreleased" until the next stats run. (Pages regenerates on deploy, but
+//    the committed file would otherwise be stale for local dev.) ──
+run("node scripts/gen-changelog.mjs");
+
 // ── Ship it. One push for both refs → pre-push gate runs once. ──
 run("git add -A");
 run(`git commit -m "release: ${next}"`);
