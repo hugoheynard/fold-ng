@@ -20,6 +20,7 @@ import {
     [maxLabel]="maxLabel()"
     [(value)]="value"
     (valueChange)="onChange($event)"
+    (rangeChange)="lastPick.set($event)"
   />`,
 })
 class HostComponent {
@@ -32,6 +33,7 @@ class HostComponent {
   readonly maxLabel = signal("maximum");
   readonly value = signal<FoldRangeValue | undefined>(undefined);
   readonly last = signal<FoldRangeValue | undefined>(undefined);
+  readonly lastPick = signal<FoldRangeValue | undefined>(undefined);
   onChange(v: FoldRangeValue): void {
     this.last.set(v);
   }
@@ -71,6 +73,15 @@ describe("FoldRangeSliderComponent", () => {
     min.value = "40";
     min.dispatchEvent(new Event("input"));
     expect(fixture.componentInstance.last()).toEqual({ min: 40, max: 80 });
+  });
+
+  it("fires rangeChange with the resolved (never undefined) window on a drag", () => {
+    const { fixture, max } = render();
+    fixture.componentInstance.value.set({ min: 20, max: 80 });
+    fixture.detectChanges();
+    max.value = "60";
+    max.dispatchEvent(new Event("input"));
+    expect(fixture.componentInstance.lastPick()).toEqual({ min: 20, max: 60 });
   });
 
   it("never lets min exceed max", () => {

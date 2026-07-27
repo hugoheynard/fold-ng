@@ -10,6 +10,7 @@ import {
   input,
   isDevMode,
   model,
+  output,
   type TemplateRef,
   viewChild,
   viewChildren,
@@ -96,6 +97,12 @@ export class FoldListboxComponent<T>
   readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
   /** Two-way open state of the popup. */
   readonly open = model(false);
+  /** Fires when the **user picks an option** — carries the chosen value, never
+   *  `null`. Use it for the common "do X on selection" case to skip the
+   *  `T | null` narrowing that `[(value)]` / `valueChange` require. Clearing the
+   *  value (the × button) does **not** fire this; observe `value`/`valueChange`
+   *  for that. */
+  readonly selectionChange = output<T>();
 
   /** Size preset — see {@link FoldInputComponent.size}. @default 'md' */
   readonly size = input<"sm" | "md" | "lg">("md");
@@ -307,7 +314,9 @@ export class FoldListboxComponent<T>
   }
 
   private commit(option: FoldOptionComponent<T>): void {
-    this.value.set(option.value());
+    const picked = option.value();
+    this.value.set(picked);
+    this.selectionChange.emit(picked);
     this.touched.set(true);
     this.open.set(false);
   }

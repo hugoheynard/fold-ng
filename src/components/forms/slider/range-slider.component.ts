@@ -5,6 +5,7 @@ import {
   inject,
   input,
   model,
+  output,
 } from "@angular/core";
 import { FoldIdService } from "../../../a11y/id.service";
 import { readInputValue } from "../../forms/input/input-value";
@@ -48,6 +49,11 @@ export class FoldRangeSliderComponent {
   /** The current `{ min, max }` window; falls back to the full range when unset.
    *  A `model()`, so `[(value)]` and `(valueChange)` both work. */
   readonly value = model<FoldRangeValue | undefined>(undefined);
+  /** Fires when the **user drags a thumb** — carries the resolved `{ min, max }`,
+   *  never `undefined`. Use it for the common "filter on change" case to skip the
+   *  `FoldRangeValue | undefined` narrowing that `[(value)]` / `valueChange`
+   *  require. */
+  readonly rangeChange = output<FoldRangeValue>();
   /** How the values are formatted for display + `aria-valuetext`. @default 'number' */
   readonly unit = input<"number" | "duration">("number");
   /** Disable both thumbs. */
@@ -91,7 +97,7 @@ export class FoldRangeSliderComponent {
 
   protected onMinChange(event: Event): void {
     const val = Number(readInputValue(event));
-    this.value.set({
+    this.commit({
       min: Math.min(val, this.currentMax()),
       max: this.currentMax(),
     });
@@ -99,9 +105,14 @@ export class FoldRangeSliderComponent {
 
   protected onMaxChange(event: Event): void {
     const val = Number(readInputValue(event));
-    this.value.set({
+    this.commit({
       min: this.currentMin(),
       max: Math.max(val, this.currentMin()),
     });
+  }
+
+  private commit(next: FoldRangeValue): void {
+    this.value.set(next);
+    this.rangeChange.emit(next);
   }
 }

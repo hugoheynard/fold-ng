@@ -14,6 +14,7 @@ import { FoldOptionComponent } from "./option.component";
     [(value)]="value"
     [(open)]="open"
     [(touched)]="touched"
+    (selectionChange)="picked.set($event)"
   >
     <fold-option class="o-eur" value="EUR">Euro</fold-option>
     <fold-option class="o-usd" value="USD" [disabled]="true"
@@ -26,6 +27,7 @@ class HostComponent {
   readonly value = signal<string | null>(null);
   readonly open = signal(false);
   readonly touched = signal(false);
+  readonly picked = signal<string | null>(null);
 }
 
 function render() {
@@ -45,6 +47,7 @@ function render() {
     value: fixture.componentInstance.value,
     open: fixture.componentInstance.open,
     touched: fixture.componentInstance.touched,
+    picked: fixture.componentInstance.picked,
     trigger: () => q<HTMLButtonElement>(".lb-trigger"),
     clear: () => host.querySelector<HTMLButtonElement>(".lb-clear"),
     list: () => q<HTMLElement>("[role='listbox']"),
@@ -92,6 +95,20 @@ describe("FoldListboxComponent", () => {
     r.fixture.detectChanges();
     expect(r.value()).toBe("GBP");
     expect(r.open()).toBe(false);
+  });
+
+  it("emits selectionChange with the picked value, but not on clear", async () => {
+    const r = render();
+    await r.openMenu();
+    r.option("o-gbp").click();
+    r.fixture.detectChanges();
+    expect(r.picked()).toBe("GBP");
+
+    // Clearing the value resets `value` but must NOT fire selectionChange.
+    r.clear()!.click();
+    r.fixture.detectChanges();
+    expect(r.value()).toBeNull();
+    expect(r.picked()).toBe("GBP");
   });
 
   it("does not select a disabled row", async () => {
