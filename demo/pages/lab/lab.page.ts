@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
   FoldBadgeComponent,
-  FoldCalloutComponent,
+  FoldHeroSectionComponent,
   FoldIconComponent,
   FoldPageLayoutComponent,
 } from "../../../src/public-api";
@@ -22,7 +22,7 @@ import { PUBLISHED_VERSION } from "../../shell/gallery-release";
   imports: [
     RouterLink,
     FoldBadgeComponent,
-    FoldCalloutComponent,
+    FoldHeroSectionComponent,
     FoldIconComponent,
     FoldPageLayoutComponent,
   ],

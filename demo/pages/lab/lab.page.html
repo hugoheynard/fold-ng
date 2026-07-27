@@ -1,15 +1,24 @@
-<fold-page-layout title="in dev">
-  <p description>
-    Components built on the <strong>dev</strong> branch that aren't on npm yet —
-    they ship in <code>{{ next }}</code>. The published release is
-    <code>{{ published }}</code>; everything here is subject to change until
-    it's cut.
-  </p>
-
-  <fold-callout variant="warning" class="lab-banner">
-    Previews of unreleased work. Installing <code>fold-ng</code> today gives you
-    <code>{{ published }}</code> — the items below arrive with the next release.
-  </fold-callout>
+<fold-page-layout class="lab">
+  <!-- Full-bleed page splash carrying the <h1> + the explanation. -->
+  <fold-hero-section [wash]="false">
+    <span heroBackdrop class="lab-glow" aria-hidden="true"></span>
+    <div class="lab-mark">
+      <fold-icon name="wrench" [size]="40" title="In dev" />
+    </div>
+    <fold-badge
+      class="lab-eyebrow"
+      [content]="'ships in ' + next"
+      variant="warning"
+      radius="pill"
+    />
+    <h1 class="lab-title">In dev</h1>
+    <p class="lab-lede">
+      Components built on the <strong>dev</strong> branch that aren't on npm
+      yet. Installing <code>fold-ng</code> today gives you
+      <code>{{ published }}</code> — the ones below arrive with the next release
+      and may still change until it's cut.
+    </p>
+  </fold-hero-section>
 
   @if (items.length > 0) {
   <nav class="lab-menu" aria-label="Components in development">

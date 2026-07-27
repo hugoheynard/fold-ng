@@ -1,8 +1,41 @@
-.lab-banner {
-  margin-bottom: var(--fold-space-lg);
+// ── Hero splash — a blue bleed band (Project accent #0ea5e9). ──
+.lab-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    58% 130% at 50% -12%,
+    color-mix(in srgb, #0ea5e9 45%, transparent),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.lab-mark {
+  display: inline-flex;
+  color: #0ea5e9;
+}
+
+.lab-eyebrow {
+  margin-top: var(--fold-space-sm);
+}
+
+.lab-title {
+  margin: var(--fold-space-sm) 0 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lab-lede {
+  margin: var(--fold-space-sm) auto 0;
+  max-width: 46ch;
+  color: var(--fold-color-text-muted);
+  line-height: 1.6;
 }
 
 .lab-menu {
+  margin-top: var(--fold-space-xl);
+
   ul {
     list-style: none;
     margin: 0;

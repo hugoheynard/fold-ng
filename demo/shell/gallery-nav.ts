@@ -15,9 +15,13 @@ export interface GalleryNavItem {
    * component is unreleased, and omit it once shipped. Never badge by hand.
    */
   readonly since?: string;
-  /** DERIVED (never authored) — the rail badge, `"dev"` for unreleased items. */
+  /**
+   * The rail badge. **Derived** for components (`"dev"` when `since` is above the
+   * published version — never author it there); may be authored directly on a
+   * meta entry like `/lab` that is permanently a dev surface.
+   */
   readonly badge?: string | number;
-  /** DERIVED (never authored) — the badge tone. */
+  /** Badge tone — authored alongside {@link badge} on meta entries; else derived. */
   readonly badgeTone?: "follow" | "info" | "accent" | "warning" | "alert";
 }
 
@@ -118,7 +122,13 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     color: "#0ea5e9",
     items: [
       { id: "changelog", label: "changelog", icon: "timeline" },
-      { id: "lab", label: "in dev", icon: "wrench" },
+      {
+        id: "lab",
+        label: "in dev",
+        icon: "wrench",
+        badge: "dev",
+        badgeTone: "warning",
+      },
     ],
   },
   {
