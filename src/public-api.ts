@@ -68,6 +68,12 @@ export { FoldDataTableComponent } from "./components/content/data-table/data-tab
 export { FoldDataTableCellDirective } from "./components/content/data-table/data-table-cell.directive";
 export { FoldDataTableRowCardDirective } from "./components/content/data-table/data-table-row-card.directive";
 export {
+  provideFoldDataTableLabels,
+  FOLD_DATA_TABLE_LABELS,
+  FOLD_DATA_TABLE_DEFAULT_LABELS,
+} from "./components/content/data-table/data-table-labels";
+export type { FoldDataTableLabels } from "./components/content/data-table/data-table-labels";
+export {
   FoldStickyColumnDirective,
   type FoldStickyColumnAnchor,
 } from "./directives/sticky-column.directive";

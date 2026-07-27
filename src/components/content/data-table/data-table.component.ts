@@ -27,6 +27,10 @@ import type {
   FoldTableSort,
   FoldTableTone,
 } from "./data-table.types";
+import {
+  FOLD_DATA_TABLE_LABELS,
+  type FoldDataTableLabels,
+} from "./data-table-labels";
 
 /**
  * `fold-data-table` — a controlled, presentational roster table. The parent
@@ -107,6 +111,8 @@ export class FoldDataTableComponent<T> {
   readonly selected = input<ReadonlySet<string | number>>(new Set());
   /** Accessible label for a row's checkbox, e.g. `(row) => row.name`. */
   readonly selectionLabel = input<(row: T) => string>();
+  /** Per-instance label overrides (merged over the app-wide / English defaults). */
+  readonly labels = input<Partial<FoldDataTableLabels>>();
 
   /** Emits the next selection set on any checkbox toggle (never mutates input). */
   readonly selectionChange = output<Set<string | number>>();
@@ -120,6 +126,13 @@ export class FoldDataTableComponent<T> {
    *  desktop never instantiates the (CSS-hidden) per-row cards. */
   protected readonly isNarrow = signal(false);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injectedLabels = inject(FOLD_DATA_TABLE_LABELS);
+
+  /** Effective labels — the app-wide (or English) set, with the `labels` input on top. */
+  protected readonly l = computed<FoldDataTableLabels>(() => ({
+    ...this.injectedLabels,
+    ...this.labels(),
+  }));
 
   constructor() {
     // Track the same 700px breakpoint the mobile CSS uses, so `mobileLayout=
@@ -298,7 +311,7 @@ export class FoldDataTableComponent<T> {
   }
 
   labelFor(row: T): string {
-    return this.selectionLabel()?.(row) ?? "Select row";
+    return this.selectionLabel()?.(row) ?? this.l().selectRow;
   }
 
   /* ── roving-tabindex keyboard navigation over clickable rows ── */

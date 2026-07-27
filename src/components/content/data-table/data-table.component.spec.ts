@@ -592,3 +592,42 @@ describe("FoldDataTableComponent — truncate dev guard", () => {
     warn.mockRestore();
   });
 });
+
+@Component({
+  standalone: true,
+  imports: [FoldDataTableComponent],
+  template: `
+    <fold-data-table
+      [columns]="columns"
+      [rows]="rows"
+      [rowKey]="rowKey"
+      [selectable]="true"
+      [labels]="labels"
+    />
+  `,
+})
+class LabelsHostComponent {
+  readonly columns: FoldTableColumn[] = [
+    { key: "name", label: "Name", sortable: true },
+  ];
+  readonly rows = [{ id: "a", name: "Alice" }];
+  readonly rowKey = (r: { id: string }): string => r.id;
+  readonly labels = {
+    selectAll: "Tout sélectionner",
+    sortBy: (c: string): string => `Trier par ${c}`,
+  };
+}
+
+describe("FoldDataTableComponent i18n labels", () => {
+  it("overrides accessible strings via the labels input", () => {
+    const fixture = TestBed.createComponent(LabelsHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(
+      el.querySelector(".folddt-select-h input")?.getAttribute("aria-label"),
+    ).toBe("Tout sélectionner");
+    expect(
+      el.querySelector(".folddt-th-sort")?.getAttribute("aria-label"),
+    ).toBe("Trier par Name");
+  });
+});

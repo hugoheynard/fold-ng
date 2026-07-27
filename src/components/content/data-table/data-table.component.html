@@ -32,7 +32,7 @@
             <th scope="col" class="folddt-select-h">
               <fold-checkbox
                 size="sm"
-                ariaLabel="Select all rows"
+                [ariaLabel]="l().selectAll"
                 [checked]="allSelected()"
                 [indeterminate]="someSelected()"
                 (checkedChange)="toggleAll()"
@@ -52,7 +52,7 @@
                   class="folddt-th-sort"
                   [class.right]="col.align === 'right'"
                   [class.center]="col.align === 'center'"
-                  [attr.aria-label]="'Sort by ' + col.label"
+                  [attr.aria-label]="l().sortBy(col.label)"
                   (click)="sortChange.emit(col.key)"
                 >
                   <span>{{ col.label }}</span>
@@ -155,7 +155,7 @@
 
   @if (loading()) {
     <div class="folddt-loading">
-      <fold-spinner label="Loading…" />
+      <fold-spinner [label]="l().loading" />
     </div>
   } @else if (rows().length === 0 && empty(); as e) {
     <div class="folddt-empty">
