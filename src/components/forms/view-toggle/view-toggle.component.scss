@@ -71,3 +71,9 @@
     color: Highlight;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .vt-btn {
+    transition: none;
+  }
+}

@@ -14,11 +14,11 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--fold-space-sm);
 }
 
 .sl-label {
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -26,7 +26,7 @@
 }
 
 .sl-value {
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   font-weight: 600;
   color: var(--fold-color-text);
   font-variant-numeric: tabular-nums;

@@ -37,8 +37,23 @@
     background: var(--fold-color-surface-hover);
   }
 
+  // `all: unset` dropped the UA outline — restore a real focus ring (also the
+  // forced-colors carrier, since colour/background are system-overridden there).
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: 1px;
+  }
+
   &:disabled {
     cursor: not-allowed;
     opacity: 0.4;
+  }
+}
+
+// Forced-colors: the reveal toggle's hover/focus is otherwise conveyed only via
+// colour/background, which the high-contrast pass overrides — pin the ring.
+@media (forced-colors: active) {
+  .in-reveal:focus-visible {
+    outline-color: Highlight;
   }
 }

@@ -149,3 +149,22 @@
     display: none;
   }
 }
+
+/* Motion-reduced users get no button/select transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .page-btn,
+  .page-size__select {
+    transition: none;
+  }
+}
+
+/* Forced-colors: the active page is signalled by background/border/colour, all
+   overridden by the high-contrast pass — pin it to a system colour so the
+   current page stays visible (aria-current carries it for AT regardless). */
+@media (forced-colors: active) {
+  .page-btn.is-active,
+  .page-btn.is-active:hover {
+    border-color: Highlight;
+    color: Highlight;
+  }
+}

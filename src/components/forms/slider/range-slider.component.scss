@@ -7,9 +7,12 @@
 .rs {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--fold-space-xs);
 }
 
+// Sub-scale micro-labels: 9/10px sit below the type scale's floor (--fold-text-xs
+// = 11px) — an accepted deviation (see docs/TODO.md "reconsider the px type
+// scale"), not a value that maps to a token.
 .rs-label {
   font-size: 9px;
   font-weight: 700;

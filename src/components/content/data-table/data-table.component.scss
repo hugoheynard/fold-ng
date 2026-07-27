@@ -350,6 +350,21 @@
   }
 }
 
+/* Forced-colors: tone bars + the selected row use inset box-shadow, which the
+   high-contrast pass strips — re-express both as a left border (kept, mapped to
+   a system colour) so the row status stays perceivable. */
+@media (forced-colors: active) {
+  .folddt-row.is-selected .folddt-cell:first-child,
+  .folddt-row.tone-warning .folddt-cell:first-child,
+  .folddt-row.tone-alert .folddt-cell:first-child,
+  .folddt-row.tone-success .folddt-cell:first-child {
+    border-inline-start: 3px solid Highlight;
+  }
+  .folddt-row:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
 /* ── Mobile: table → stacked cards (≤700px) ── */
 @media (max-width: 700px) {
   .folddt--cards {
