@@ -246,6 +246,19 @@ pass through — the idiomatic Angular boolean-attribute ergonomics without losi
 the fine-grained enum. Export the coercion fn + the widened `…Input` type. See
 `fold-card` `separators`/`raisedBands` (`foldCardBandChrome`).
 
+5.2.4 **A reveal/toggle affordance must be usable on its own — default to the
+shown state.** When a boolean input turns _on_ an affordance (a collapse chevron,
+an expandable panel, a "show more"), the component must not also require the
+author to bind the paired state just to be usable. Adding the affordance is the
+intent; make the sensible default follow from it. Concretely: a `collapsible`
+(or `expandable`, `revealable`…) input, present without an explicit paired state
+(`[(expanded)]`/`[(open)]`), should default the content to **shown/expanded** —
+you added a way to _collapse_, so the natural start is _open_. Same spirit as the
+bare-boolean shorthand (5.2.3): the ergonomic short form Just Works, the explicit
+binding still wins when set. Don't ship an affordance whose zero-config state is
+useless (a `collapsible` menu that starts collapsed with no labels) or that
+dev-warns to nag for a binding — encode the default instead.
+
 5.3 **Categorical data may be hex — in TS, not in styles.** Auto-colour palettes
 (`palettes.ts`) and the avatar ink are qualitative data (theme-invariant hues),
 so they live as hex in TS and are exempt from 1.3. They must **not** appear in a

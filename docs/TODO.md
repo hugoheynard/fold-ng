@@ -114,6 +114,23 @@ leave-balance-display, configurable-tab-bar, etc.
       (in-place guard); `fold-dialog` is for when the choice must **block**. - Not from SH3PHERD `shared/` — a net-new component; sequence after the
       0.5 extractions unless a real use-case pulls it forward.
 
+## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4)
+
+`collapsible` adds the chevron toggle but `expanded` still defaults to `false`,
+so `<fold-menu collapsible>` with no `[(expanded)]` boots **collapsed** — an
+icon rail with a toggle, no labels. Surprising: you added a way to _collapse_,
+so the natural start is _open_. Consumers hit this immediately (lfc-PIM had to
+add `[(expanded)]="signal(true)"` just to get the expected expanded-by-default
+rail).
+
+Fix (encode the default, don't warn): when `collapsible` is set and `expanded`
+was **not** explicitly bound, default `expanded` to `true`. Keep the explicit
+binding authoritative when present. Mirrors the `fold-card` bare-boolean
+shorthand (5.2.3) — the short form Just Works. One approach: an `effect`/init
+that seeds `expanded` from `collapsible` only when the model is still at its
+untouched default. Add a spec: `<fold-menu collapsible>` → expanded; `<fold-menu
+collapsible [expanded]="false">` → collapsed.
+
 ## Roadmap 1.0.1 — `fold-app-shell` polish
 
 Post-1.0 the shell is **8.5/10**: structure + decoupling are big-lib grade
