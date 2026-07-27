@@ -70,6 +70,10 @@ export class FoldPasswordFieldComponent implements FormValueControl<string> {
   readonly autocomplete = input<string | null>("new-password");
   /** Offer the reveal (eye) toggle. @default true */
   readonly revealable = input(true, { transform: booleanAttribute });
+  /** `aria-label` of the reveal toggle when hidden — forwarded to the input. */
+  readonly revealLabel = input("Show password");
+  /** `aria-label` of the reveal toggle when shown — forwarded to the input. */
+  readonly hideLabel = input("Hide password");
 
   /** The requirements to display and validate against. @default the built-ins. */
   readonly rules = input<readonly FoldPasswordRule[]>(

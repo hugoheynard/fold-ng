@@ -72,18 +72,21 @@ describe("FoldPasswordFieldComponent", () => {
     expect(r.valid()).toBe(true);
   });
 
-  it("labels each row met / not met for screen readers", () => {
+  it("carries the met / not-met word as real text for the aria-live region", () => {
     const r = render();
     r.value.set("abc"); // lowercase rule met, others not
     r.fixture.detectChanges();
-    const lower = r
-      .ruleRows()
-      .find((li) => li.getAttribute("aria-label")?.includes("lowercase"));
-    expect(lower?.getAttribute("aria-label")).toContain("met:");
-    const digit = r
-      .ruleRows()
-      .find((li) => li.getAttribute("aria-label")?.includes("number"));
-    expect(digit?.getAttribute("aria-label")).toContain("not met:");
+    const stateOf = (needle: string): string | undefined =>
+      r
+        .ruleRows()
+        .find((li) =>
+          li.querySelector(".pw-rule-label")?.textContent?.includes(needle),
+        )
+        ?.querySelector(".pw-sr")
+        ?.textContent?.trim();
+    // A real text node (not just an attribute) flips, so the live region announces it.
+    expect(stateOf("lowercase")).toBe("— met");
+    expect(stateOf("number")).toBe("— not met");
   });
 
   it("honours injected custom rules", () => {
