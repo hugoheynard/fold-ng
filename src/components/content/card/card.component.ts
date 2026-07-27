@@ -4,6 +4,25 @@ import { booleanAttribute, Component, input, output } from "@angular/core";
  *  tint): neither, just the header, just the footer, or both. */
 export type FoldCardBandChrome = "none" | "header" | "footer" | "both";
 
+/** What the `separators` / `raisedBands` inputs accept: the {@link FoldCardBandChrome}
+ *  enum, or a boolean shorthand — a bare attribute (`separators`, i.e. `""`) or
+ *  `true` means **both** bands; `false` means **none**. */
+export type FoldCardBandChromeInput = FoldCardBandChrome | boolean | "";
+
+/** Coerce the band-chrome shorthand: bare attribute / `true` → `"both"`,
+ *  `false` → `"none"`, an explicit enum value passes through unchanged. */
+export function foldCardBandChrome(
+  value: FoldCardBandChromeInput,
+): FoldCardBandChrome {
+  if (value === "" || value === true) {
+    return "both";
+  }
+  if (value === false) {
+    return "none";
+  }
+  return value;
+}
+
 /**
  * `<fold-card>` — the canonical raised content surface: a solid
  * `surface-card` background, a hairline border and a consistent radius. Use it
@@ -113,11 +132,19 @@ export class FoldCardComponent {
   /** Accessible name for the interactive card, when its content isn't enough. */
   readonly ariaLabel = input<string>();
   /** Which bands get a hairline against the body — `none` (default), `header`,
-   *  `footer`, or `both`. */
-  readonly separators = input<FoldCardBandChrome>("none");
+   *  `footer`, or `both`. Accepts a boolean shorthand: a bare `separators` (or
+   *  `[separators]="true"`) means `both`; `false` means `none`. */
+  readonly separators = input<FoldCardBandChrome, FoldCardBandChromeInput>(
+    "none",
+    { transform: foldCardBandChrome },
+  );
   /** Which bands are lifted with a subtle raised tint over the card surface
-   *  (fainter on `sunken`) — `none` (default), `header`, `footer`, or `both`. */
-  readonly raisedBands = input<FoldCardBandChrome>("none");
+   *  (fainter on `sunken`) — `none` (default), `header`, `footer`, or `both`.
+   *  Accepts the same boolean shorthand as {@link separators}. */
+  readonly raisedBands = input<FoldCardBandChrome, FoldCardBandChromeInput>(
+    "none",
+    { transform: foldCardBandChrome },
+  );
 
   /** Fires when an `interactive` card is activated (click, Enter, or Space). */
   readonly activated = output<Event>();

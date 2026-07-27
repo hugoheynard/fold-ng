@@ -279,3 +279,55 @@ describe("FoldCardComponent · interactive attribute coercion", () => {
     expect(card.getAttribute("role")).toBeNull();
   });
 });
+
+@Component({
+  standalone: true,
+  imports: [FoldCardComponent],
+  template: `<fold-card separators raisedBands>bare shorthand</fold-card>`,
+})
+class BareBandsHost {}
+
+@Component({
+  standalone: true,
+  imports: [FoldCardComponent],
+  template: `<fold-card separators="header">explicit enum</fold-card>`,
+})
+class HeaderSeparatorHost {}
+
+@Component({
+  standalone: true,
+  imports: [FoldCardComponent],
+  template: `<fold-card [separators]="false">explicit false</fold-card>`,
+})
+class FalseSeparatorHost {}
+
+// `separators` / `raisedBands` accept a boolean shorthand on top of the
+// FoldCardBandChrome enum: a bare attribute (or `true`) → "both", `false` →
+// "none", an explicit enum value passes through.
+describe("FoldCardComponent · band-chrome boolean shorthand", () => {
+  function cardOf(host: typeof BareBandsHost): HTMLElement {
+    const fixture = TestBed.createComponent(host);
+    fixture.detectChanges();
+    return fixture.nativeElement.querySelector("fold-card") as HTMLElement;
+  }
+
+  it('treats a bare `separators`/`raisedBands` as "both"', () => {
+    const card = cardOf(BareBandsHost);
+    expect(card.classList.contains("sep-header")).toBe(true);
+    expect(card.classList.contains("sep-footer")).toBe(true);
+    expect(card.classList.contains("raise-header")).toBe(true);
+    expect(card.classList.contains("raise-footer")).toBe(true);
+  });
+
+  it("still honours an explicit enum value", () => {
+    const card = cardOf(HeaderSeparatorHost);
+    expect(card.classList.contains("sep-header")).toBe(true);
+    expect(card.classList.contains("sep-footer")).toBe(false);
+  });
+
+  it('treats `[separators]="false"` as "none"', () => {
+    const card = cardOf(FalseSeparatorHost);
+    expect(card.classList.contains("sep-header")).toBe(false);
+    expect(card.classList.contains("sep-footer")).toBe(false);
+  });
+});
