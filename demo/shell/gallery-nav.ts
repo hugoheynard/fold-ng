@@ -118,20 +118,6 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     ],
   },
   {
-    label: "Project",
-    color: "#0ea5e9",
-    items: [
-      { id: "changelog", label: "changelog", icon: "timeline" },
-      {
-        id: "lab",
-        label: "in dev",
-        icon: "wrench",
-        badge: "dev",
-        badgeTone: "warning",
-      },
-    ],
-  },
-  {
     label: "Foundations",
     color: "#64748b",
     items: [
@@ -169,7 +155,24 @@ export const GALLERY_NAV_ITEMS: readonly GalleryNavItem[] = GALLERY_NAV.flatMap(
 export const GALLERY_DEV_ITEMS: readonly GalleryNavItem[] =
   GALLERY_NAV_ITEMS.filter((i) => isInDev(i.since));
 
+/**
+ * Meta pages — project-level, **not** library components. They live in the
+ * primary app rail (next to Home / Library), never under the Library list, but
+ * they still generate routes. `/lab` carries an authored `dev` badge.
+ */
+export const GALLERY_META_ITEMS: readonly GalleryNavItem[] = [
+  { id: "changelog", label: "changelog", icon: "timeline" },
+  {
+    id: "lab",
+    label: "in dev",
+    icon: "wrench",
+    badge: "dev",
+    badgeTone: "warning",
+  },
+];
+
 /** The rail label for a nav id (falls back to the id itself). */
 export function galleryLabel(id: string): string {
-  return GALLERY_NAV_ITEMS.find((i) => i.id === id)?.label ?? id;
+  const items = [...GALLERY_NAV_ITEMS, ...GALLERY_META_ITEMS];
+  return items.find((i) => i.id === id)?.label ?? id;
 }

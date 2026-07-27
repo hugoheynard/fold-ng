@@ -32,7 +32,29 @@
       icon="library"
       label="Library"
       [routerLink]="'/' + firstComponent"
-      [active]="!homeRla.isActive"
+      [active]="!homeRla.isActive && !clRla.isActive && !labRla.isActive"
+      (click)="mobileNavOpen.set(false)"
+    ></a>
+    <a
+      fold-menu-item
+      icon="timeline"
+      label="Changelog"
+      routerLink="/changelog"
+      routerLinkActive
+      #clRla="routerLinkActive"
+      [active]="clRla.isActive"
+      (click)="mobileNavOpen.set(false)"
+    ></a>
+    <a
+      fold-menu-item
+      icon="wrench"
+      label="In dev"
+      badge="dev"
+      badgeTone="warning"
+      routerLink="/lab"
+      routerLinkActive
+      #labRla="routerLinkActive"
+      [active]="labRla.isActive"
       (click)="mobileNavOpen.set(false)"
     ></a>
     <button footer fold-menu-item icon="settings" label="Settings"></button>

@@ -1,6 +1,6 @@
 import type { Type } from "@angular/core";
 import type { Route, Routes } from "@angular/router";
-import { GALLERY_NAV_ITEMS } from "./shell/gallery-nav";
+import { GALLERY_NAV_ITEMS, GALLERY_META_ITEMS } from "./shell/gallery-nav";
 import { StubPage } from "./pages/_shared/stub.page";
 
 /**
@@ -64,7 +64,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
  * `withComponentInputBinding`). Default path → the first entry.
  */
 export const GALLERY_ROUTES: Routes = [
-  ...GALLERY_NAV_ITEMS.map((item): Route => {
+  ...[...GALLERY_NAV_ITEMS, ...GALLERY_META_ITEMS].map((item): Route => {
     const data = { title: item.label, icon: item.icon };
     const load = PORTED[item.id];
     return load
