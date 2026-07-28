@@ -3,18 +3,18 @@
 }
 /* Header — the whole icon + title + subtitle block is fold-element-title. */
 .cc-head {
-  padding: 16px;
+  padding: var(--fold-space-lg);
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
 /* Body — the projected content. */
 .cc-body {
-  padding: 2px 16px;
+  padding: 2px var(--fold-space-lg);
 }
 /* Footer — a centred action, divider above; gone when empty. */
 .cc-foot {
   display: flex;
   justify-content: center;
-  padding: 14px 16px;
+  padding: 14px var(--fold-space-lg);
   border-top: 1px solid var(--fold-color-border-subtle);
 }
 .cc-foot:empty {

@@ -7,7 +7,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--fold-space-xs);
 }
 
 /* ── Vertical: a static connecting rail behind the dots ── */
@@ -199,7 +199,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
+    gap: var(--fold-space-md);
     padding: 6px 0;
     text-align: left;
   }

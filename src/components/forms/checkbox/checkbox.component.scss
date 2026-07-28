@@ -2,7 +2,7 @@
   --cb-size: 18px;
   display: inline-flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--fold-space-xs);
 }
 :host(.sm) {
   --cb-size: 15px;
@@ -12,7 +12,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--fold-space-sm);
   cursor: pointer;
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text);

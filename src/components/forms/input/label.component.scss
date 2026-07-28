@@ -14,7 +14,7 @@ label {
 }
 
 .opt {
-  margin-left: 4px;
+  margin-left: var(--fold-space-xs);
   font-weight: 500;
   color: var(--fold-color-text-faded);
 }

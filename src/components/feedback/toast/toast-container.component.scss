@@ -5,6 +5,6 @@
   z-index: 9999;
   display: flex;
   flex-direction: column-reverse;
-  gap: 8px;
+  gap: var(--fold-space-sm);
   pointer-events: none; /* the stack ignores clicks; each toast re-enables them */
 }

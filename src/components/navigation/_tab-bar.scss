@@ -27,10 +27,10 @@
    third navigation rail (app menu · workspace · section). */
 .bg-surface {
   background: var(--fold-color-bg-rail-tertiary);
-  padding: 4px 8px 0;
+  padding: var(--fold-space-xs) var(--fold-space-sm) 0;
 }
 .bg-surface.dir-vertical {
-  padding: 12px 8px;
+  padding: var(--fold-space-md) var(--fold-space-sm);
 }
 .tab-bar-item {
   flex: 1;
@@ -38,7 +38,7 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 6px 8px;
+  padding: 6px var(--fold-space-sm);
   background: none;
   border: none;
   color: var(--fold-color-text-muted);
@@ -68,14 +68,14 @@
 .size-comfortable .tab-bar-item {
   flex: 0 1 auto;
   gap: 10px;
-  padding: 11px 16px;
+  padding: 11px var(--fold-space-lg);
   font-size: var(--fold-text-sm);
 }
 /* Vertical needs its own comfortable step: the `.dir-vertical .tab-bar-item`
    rule below resets padding/font at equal specificity, so without this a
    comfortable rail would look identical to a compact one. */
 .dir-vertical.size-comfortable .tab-bar-item {
-  padding: 12px 14px;
+  padding: var(--fold-space-md) 14px;
   font-size: var(--fold-text-md);
 }
 
@@ -115,7 +115,7 @@
   flex: none;
   justify-content: flex-start;
   text-align: left;
-  padding: 9px 12px;
+  padding: 9px var(--fold-space-md);
   gap: 10px;
   border-radius: var(--fold-radius-sm);
   font-size: var(--fold-text-sm);
@@ -174,7 +174,7 @@
   .tab-bar-icon
   ~ .tab-bar-label {
   position: absolute;
-  padding: 4px 8px;
+  padding: var(--fold-space-xs) var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-glass);
   border: 1px solid var(--fold-color-glass-border);
@@ -258,7 +258,7 @@
     flex: 0 0 auto;
     justify-content: center;
     text-align: center;
-    padding: 8px;
+    padding: var(--fold-space-sm);
     gap: 0;
     font-size: var(--fold-text-xs);
     font-weight: 600;
@@ -270,7 +270,7 @@
     flex: 1 1 auto;
     min-width: 0;
     gap: 6px;
-    padding: 8px 12px;
+    padding: var(--fold-space-sm) var(--fold-space-md);
   }
   .dir-vertical .tab-bar-item.is-active .tab-bar-label {
     display: inline;

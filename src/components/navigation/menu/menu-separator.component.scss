@@ -5,7 +5,7 @@
   justify-content: center;
   width: 100%;
   height: 12px;
-  margin: 4px 0 2px;
+  margin: var(--fold-space-xs) 0 2px;
 }
 .sep-mark {
   flex-shrink: 0;
@@ -24,7 +24,7 @@
   justify-content: flex-start;
   gap: 7px;
   height: auto;
-  padding: 12px 12px 4px;
+  padding: var(--fold-space-md) var(--fold-space-md) var(--fold-space-xs);
 }
 :host-context(fold-menu.expanded) .sep-mark {
   width: 6px;

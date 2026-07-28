@@ -3,7 +3,7 @@
 }
 .choice-row {
   display: flex;
-  gap: 4px;
+  gap: var(--fold-space-xs);
   user-select: none;
 }
 .choice-row.chips {
@@ -52,7 +52,7 @@
 
 /* Chips — auto-width pills that wrap. */
 .choice-row.chips .choice {
-  padding: 4px 12px;
+  padding: var(--fold-space-xs) var(--fold-space-md);
   background: transparent;
   border-radius: var(--fold-radius-pill);
   color: var(--fold-color-text-secondary);

@@ -12,8 +12,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: var(--fold-space-md);
+  padding: 14px var(--fold-space-lg);
   border: none;
   background: var(--fold-disclosure-summary-bg, transparent);
   color: var(--fold-disclosure-summary-color, var(--fold-color-text));
@@ -53,7 +53,7 @@
   overflow: hidden;
 }
 .disc-panel-content {
-  padding: 16px;
+  padding: var(--fold-space-lg);
   border-top: 1px solid var(--fold-color-border-subtle);
 }
 

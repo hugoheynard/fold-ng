@@ -35,7 +35,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--fold-space-lg);
 }
 .page-head-text {
   display: flex;
@@ -91,7 +91,7 @@
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--fold-space-sm);
 }
 /* Nothing projected → no empty slot pushing the layout. */
 .page-actions:empty {

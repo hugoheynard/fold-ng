@@ -9,11 +9,11 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 40px 24px;
+  padding: var(--fold-space-4xl) var(--fold-space-2xl);
 }
 .empty-icon {
   color: var(--fold-color-text-faded);
-  margin-bottom: 4px;
+  margin-bottom: var(--fold-space-xs);
 }
 .empty-icon:empty {
   display: none;
@@ -33,7 +33,7 @@
   line-height: 1.6;
 }
 .empty-action {
-  margin-top: 4px;
+  margin-top: var(--fold-space-xs);
 }
 .empty-action:empty {
   display: none;

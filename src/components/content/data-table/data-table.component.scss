@@ -39,7 +39,7 @@
    the inner layout; the band only supplies the chrome. Like `fold-card`'s
    header/footer, it collapses to nothing when the parent projects nothing. */
 .folddt-toolbar {
-  padding: 12px 16px;
+  padding: var(--fold-space-md) var(--fold-space-lg);
   border-bottom: 1px solid var(--fold-color-border);
   color: var(--fold-color-text);
   /* default — a subtle header lift between the sunken body and the card tint. */
@@ -108,7 +108,7 @@
 .folddt-th-plain {
   display: inline-flex;
   align-items: center;
-  padding: 12px 18px;
+  padding: var(--fold-space-md) 18px;
   color: var(--fold-color-text-muted);
   font-size: 10.5px;
   font-weight: 700;
@@ -230,11 +230,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: var(--fold-space-5xl) var(--fold-space-2xl);
 }
 
 .folddt-empty {
-  padding: 48px 24px;
+  padding: var(--fold-space-5xl) var(--fold-space-2xl);
   text-align: center;
 }
 .folddt-empty-t {
@@ -245,7 +245,7 @@
 .folddt-empty-s {
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text-muted);
-  margin-top: 4px;
+  margin-top: var(--fold-space-xs);
 }
 
 /* The custom mobile-card list is desktop-hidden; it takes over on narrow
@@ -258,7 +258,7 @@
 .folddt-select-h,
 .folddt-cell--select {
   width: var(--folddt-sel-w);
-  padding-left: 16px;
+  padding-left: var(--fold-space-lg);
   padding-right: 0;
   text-align: left;
   white-space: nowrap;
@@ -280,10 +280,10 @@
 }
 .folddt--compact .folddt-th-sort,
 .folddt--compact .folddt-th-plain {
-  padding: 8px 14px;
+  padding: var(--fold-space-sm) 14px;
 }
 .folddt--compact .folddt-cell--select {
-  padding-left: 12px;
+  padding-left: var(--fold-space-md);
   padding-right: 0;
 }
 
@@ -399,7 +399,7 @@
     border: 1px solid var(--fold-color-border-subtle);
     border-radius: var(--fold-radius-md);
     background: var(--fold-color-surface-sunken);
-    padding: 4px 14px 8px;
+    padding: var(--fold-space-xs) 14px var(--fold-space-sm);
     box-shadow: var(--fold-shadow-sm);
   }
   .folddt--cards .folddt-row.tone-warning {
@@ -418,8 +418,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 8px 0;
+    gap: var(--fold-space-md);
+    padding: var(--fold-space-sm) 0;
     white-space: normal;
     border-bottom: 1px solid var(--fold-color-border-subtle);
   }
@@ -440,7 +440,7 @@
   }
   .folddt--cards .folddt-cell.is-primary {
     justify-content: flex-start;
-    padding: 8px 0 10px;
+    padding: var(--fold-space-sm) 0 10px;
     border-bottom: 1px solid var(--fold-color-border);
   }
   .folddt--cards .folddt-cell.is-primary::before {
@@ -450,7 +450,7 @@
   .folddt--cards .folddt-cell--select {
     width: auto;
     justify-content: flex-start;
-    padding: 8px 0;
+    padding: var(--fold-space-sm) 0;
   }
   .folddt--cards .folddt-cell--select::before {
     display: none;

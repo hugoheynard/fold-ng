@@ -11,7 +11,7 @@
      overflowing the bottom (which the shell cell clips → footer looks flush). */
   box-sizing: border-box;
   padding: 10px 0;
-  gap: 4px;
+  gap: var(--fold-space-xs);
   /* Background follows the rail's depth (`level`): a primary rail and a
      secondary (workspace) rail read as distinct layers. */
   background: var(--fold-color-bg-rail-primary);
@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--fold-space-xs);
   width: 100%;
 }
 .menu-head:empty,
@@ -64,11 +64,11 @@
   display: none;
 }
 .menu-head {
-  padding-bottom: 8px;
+  padding-bottom: var(--fold-space-sm);
   border-bottom: 1px solid var(--fold-color-border-subtle);
 }
 .menu-foot {
-  padding-top: 8px;
+  padding-top: var(--fold-space-sm);
   border-top: 1px solid var(--fold-color-border-subtle);
 }
 /* Expanded: head/foot items align left like the body (not centered). Horizontal
@@ -78,8 +78,8 @@
 :host(.expanded) .menu-foot {
   align-items: stretch;
   width: auto;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: var(--fold-space-sm);
+  padding-right: var(--fold-space-sm);
 }
 
 /* The body grows to fill, pinning the footer to the bottom; items sit at top. */
@@ -88,7 +88,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--fold-space-xs);
   width: 100%;
 }
 :host(.expanded) .menu-body {
@@ -97,7 +97,7 @@
      menu's max-content — a percentage width breaks that and the rail collapses
      to min-width, overflowing the labels. */
   width: auto;
-  padding: 0 8px;
+  padding: 0 var(--fold-space-sm);
   /* A nav taller than the rail scrolls instead of overflowing off the bottom.
      `min-height: 0` lets this flex item shrink below its content so the scroll
      can engage; `overflow-y` does the scrolling. Expanded only — collapsed
@@ -131,7 +131,7 @@
 }
 :host(.expanded) .menu-toggle {
   align-self: flex-end;
-  margin-right: 8px;
+  margin-right: var(--fold-space-sm);
 }
 
 /* Expanded + toggle in a band: the band's content still STACKS in rows (a
@@ -144,7 +144,7 @@
 :host(.expanded) .menu-head.head-has-toggle,
 :host(.expanded) .menu-foot.foot-has-toggle {
   position: relative;
-  padding-right: 40px;
+  padding-right: var(--fold-space-4xl);
 }
 :host(.expanded) .menu-head.head-has-toggle .menu-toggle,
 :host(.expanded) .menu-foot.foot-has-toggle .menu-toggle {

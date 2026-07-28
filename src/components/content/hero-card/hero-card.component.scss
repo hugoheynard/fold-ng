@@ -9,13 +9,13 @@
   background: var(--fold-color-surface-card);
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-lg);
-  padding: 20px;
+  padding: var(--fold-space-xl);
 }
 :host(.p-sm) {
   padding: 10px;
 }
 :host(.p-md) {
-  padding: 16px;
+  padding: var(--fold-space-lg);
 }
 
 /* ── Base surface ── */

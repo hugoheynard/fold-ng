@@ -110,7 +110,7 @@
   width: auto;
   min-width: 16px;
   height: 16px;
-  padding: 0 4px;
+  padding: 0 var(--fold-space-xs);
   display: grid;
   place-items: center;
   border-radius: var(--fold-radius-pill);
@@ -154,7 +154,7 @@
   left: calc(100% + 8px);
   top: 50%;
   transform: translateY(-50%);
-  padding: 4px 8px;
+  padding: var(--fold-space-xs) var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-glass);
   border: 1px solid var(--fold-color-glass-border);
@@ -182,8 +182,8 @@
   height: 36px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 12px;
+  gap: var(--fold-space-md);
+  padding: 0 var(--fold-space-md);
 }
 :host-context(fold-menu.expanded) .mi-tip {
   position: static;

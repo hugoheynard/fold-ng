@@ -23,7 +23,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: var(--fold-space-2xl);
 }
 
 .nl-close {
@@ -55,7 +55,7 @@
 .nl-grid {
   display: grid;
   grid-template-columns: repeat(var(--nav-cols, 3), 1fr);
-  gap: 12px;
+  gap: var(--fold-space-md);
   width: 100%;
   max-width: 360px;
 }

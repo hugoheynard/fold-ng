@@ -1,7 +1,7 @@
 :host {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--fold-space-md);
   margin: 0;
 }
 .et-main {

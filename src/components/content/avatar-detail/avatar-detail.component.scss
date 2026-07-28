@@ -1,7 +1,7 @@
 :host {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--fold-space-sm);
   min-width: 0;
 }
 .lines {
