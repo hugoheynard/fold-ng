@@ -12,7 +12,7 @@ import type { FoldTabsContext } from "./tabs.component";
  * content) and still coordinate.
  *
  * ```html
- * <fold-tabs #t="foldTabs" [tabs]="tabs" [activeKey]="tab()" (tabChange)="tab.set($event)" />
+ * <fold-tabs #t="foldTabs" [tabs]="tabs" [(activeKey)]="tab" />
  * <fold-tab-panel [tabs]="t" key="overview">…</fold-tab-panel>
  * ```
  *
@@ -28,6 +28,11 @@ import type { FoldTabsContext } from "./tabs.component";
     "[attr.tabindex]": "isActive() ? 0 : null",
     "[hidden]": "!isActive()",
   },
+  // A custom element is `display: inline` by default — an inline panel wrapping
+  // block content breaks height propagation inside a bounded flex column (e.g. a
+  // scrolling `fold-page-layout`), so the page stops scrolling. Make it a block;
+  // re-assert `[hidden]` since an author `display` overrides the UA hidden rule.
+  styles: ":host{display:block}:host([hidden]){display:none}",
   template: "<ng-content />",
 })
 export class FoldTabPanelComponent {
