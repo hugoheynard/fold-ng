@@ -2,11 +2,12 @@
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['element-title']" />
   <p description>
-    A titled, semantic <code>&lt;section&gt;</code> grouping of page content —
-    an eyebrow title + description + actions, plus the <code>stack</code> and
-    <code>bleed</code> helpers. It is <strong>not a box</strong>: the title is a
-    real heading and the region is a <code>&lt;section&gt;</code>. For a card,
-    wrap the content in a <code>fold-card</code>.
+    A titled, semantic <code>&lt;section&gt;</code> grouping of page content — a
+    real <code>&lt;h2&gt;</code> title + description + actions, plus the
+    <code>stack</code> and <code>bleed</code> helpers. It is
+    <strong>not a box</strong>: the title is a genuine heading and the region is
+    a <code>&lt;section&gt;</code>. For a card, wrap the content in a
+    <code>fold-card</code>.
   </p>
 
   <dev-playground [code]="code()">
@@ -86,8 +87,33 @@
         >
           bleed
         </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="showGaps()"
+          (click)="showGaps.set(!showGaps())"
+        >
+          gap bands
+        </button>
       </div>
+      <p class="ps-hint">
+        <strong>stack</strong> — lay the body out as evenly-spaced fields on the
+        section gap (a form); off, the body is free-flow content that keeps its
+        own spacing. <strong>bleed</strong> — break the section out of the page
+        gutter to span edge-to-edge; watch it reach past the two padded siblings
+        (it cancels <code>--fold-page-gutter</code> exactly).
+      </p>
     </div>
+
+    <fold-slider
+      params
+      label="--fold-page-section-gap"
+      [min]="0"
+      [max]="48"
+      [step]="4"
+      [valueText]="sectionGap() + 'px'"
+      [(value)]="sectionGap"
+    />
 
     <fold-slider
       params
@@ -112,6 +138,7 @@
 
         <fold-page-section
           class="ps-demo"
+          [class.ps-show-gaps]="showGaps()"
           [title]="showTitle() ? 'Payment methods' : undefined"
           [icon]="showIcon() ? 'briefcase' : undefined"
           [iconTone]="iconTone()"
@@ -119,6 +146,9 @@
           [stack]="stack()"
           [bleed]="bleed()"
           [headingLevel]="headingLevel()"
+          [style.--fold-page-section-gap.px]="sectionGap()"
+          [style.--ps-gap-num]="sectionGap()"
+          [style.--ps-gap-num-first]="sectionGap() + 12"
         >
           @if (showActions()) {
           <button

@@ -45,9 +45,14 @@ export default class PageSectionPage {
   ] as const satisfies readonly FoldIconTone[];
   protected readonly showDesc = signal(true);
   protected readonly showActions = signal(true);
-  /** The two orthogonal body helpers. */
-  protected readonly stack = signal(false);
+  /** The two orthogonal body helpers. `stack` defaults on so the section shows
+   *  more than one gap out of the box — the bigger head↔body gap plus the even
+   *  gaps between fields. */
+  protected readonly stack = signal(true);
   protected readonly bleed = signal(false);
+  /** The `--fold-page-section-gap` token, and its band overlay. */
+  protected readonly sectionGap = signal(20);
+  protected readonly showGaps = signal(true);
   /** Heading depth exposed to assistive tech (`aria-level`). */
   protected readonly headingLevel = signal(2);
 

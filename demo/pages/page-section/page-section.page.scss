@@ -22,6 +22,65 @@
   border-radius: var(--fold-radius-sm);
 }
 
+/* ── Section-gap visualiser ────────────────────────────────────────────────
+   Bands the height of --fold-page-section-gap laid in the section's OWN gaps:
+   the head↔body gap and (in stack) the gaps between fields. Success-tinted with
+   a live px label, like the page-layout gutter/gap bands. The FIRST gap (head↔
+   body) is a touch bigger — the heading breathes before the content (the
+   page-layout mechanic). */
+.ps-show-gaps .ps-root:has(.section-head) > .section-body {
+  position: relative;
+  margin-top: 12px; /* the extra that makes the first gap bigger */
+}
+.ps-show-gaps.stack .section-body .gal-field {
+  position: relative;
+}
+
+/* Shared band look. */
+.ps-show-gaps .ps-root:has(.section-head) > .section-body::before,
+.ps-show-gaps.stack .section-body .gal-field:not(:first-child)::before {
+  content: counter(psgap) "px";
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--fold-color-success-surface);
+  border-block: 1px dashed var(--fold-color-success);
+  color: var(--fold-color-success-text);
+  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* The head↔body band — the bigger first gap (its label reads gap + 12). */
+.ps-show-gaps .ps-root:has(.section-head) > .section-body::before {
+  counter-reset: psgap var(--ps-gap-num-first, 32);
+  top: calc(-1 * (var(--fold-page-section-gap, 20px) + 12px));
+  height: calc(var(--fold-page-section-gap, 20px) + 12px);
+}
+
+/* Stack-item bands — the plain section gap. */
+.ps-show-gaps.stack .section-body .gal-field:not(:first-child)::before {
+  counter-reset: psgap var(--ps-gap-num, 20);
+  top: calc(-1 * var(--fold-page-section-gap, 20px));
+  height: var(--fold-page-section-gap, 20px);
+}
+
+/* Explanatory caption under the body toggles. */
+.ps-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--fold-color-text-muted);
+}
+
 /* Control chips — on/off pills (mirrors the other playground pages). */
 .ps-toggles {
   display: flex;
