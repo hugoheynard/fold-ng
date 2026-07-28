@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.6.0] - 2026-07-28
+
 ### Added
 
 - **Larger spacing tokens: `--fold-space-{2xl,3xl,4xl,5xl}`** (24 · 32 · 40 ·
@@ -617,7 +621,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.5.2...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0
 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2
 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1
 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0
