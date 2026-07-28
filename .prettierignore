@@ -1,0 +1,3 @@
+# Generated artifacts — the generator owns the exact bytes (a spec asserts an
+# exact match), so Prettier must not reformat them.
+API-SURFACE.md

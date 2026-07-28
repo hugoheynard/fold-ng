@@ -84,6 +84,8 @@
     "docs:api": "typedoc",
     "lint": "eslint src demo",
     "lint:templates": "tsx scripts/check-templates.ts",
+    "api:surface": "tsx scripts/gen-api-surface.ts",
+    "api:check": "tsx scripts/gen-api-surface.ts --check",
     "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo",
     "test:e2e": "playwright test"
   },
