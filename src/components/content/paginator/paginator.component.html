@@ -7,13 +7,13 @@
       <select
         #pageSizeSelect
         class="page-size__select"
-        [value]="pageSize()"
+        [value]="effectivePageSize()"
         [disabled]="disabled()"
         (change)="onPageSizeChange(pageSizeSelect.value)"
         [attr.aria-label]="labels.pageSize"
       >
         @for (opt of sizes; track opt) {
-          <option [value]="opt" [selected]="opt === pageSize()">
+          <option [value]="opt" [selected]="opt === effectivePageSize()">
             {{ opt }}
           </option>
         }

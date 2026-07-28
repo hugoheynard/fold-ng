@@ -68,11 +68,25 @@ export class FoldPaginatorComponent {
   /** Total number of items across all pages (drives `totalPages` + range label). */
   readonly totalItems = input.required<number>();
 
-  /** Number of items per page. Must be > 0. */
-  readonly pageSize = input.required<number>();
+  /**
+   * Number of items per page (must be > 0). Optional: when omitted, the first
+   * of {@link pageSizeOptions} is used, so the common case only needs
+   * `currentPage` + `totalItems`. Everything visible derives from the effective
+   * size, so a control-it-later parent stays consistent.
+   */
+  readonly pageSize = input<number>();
 
   /** Selectable page sizes. Set `[]` to hide the size selector entirely. */
   readonly pageSizeOptions = input<readonly number[]>([10, 25, 50, 100]);
+
+  /** The size actually in effect: the `pageSize` input, else the first option. */
+  readonly effectivePageSize = computed<number>(() => {
+    const size = this.pageSize();
+    if (size !== undefined && size > 0) {
+      return size;
+    }
+    return this.pageSizeOptions()[0] ?? 10;
+  });
 
   /**
    * How many page buttons to render on each side of the current page
@@ -107,7 +121,7 @@ export class FoldPaginatorComponent {
 
   /** Total pages, minimum 1 so the UI always shows at least "1 of 1". */
   readonly totalPages = computed<number>(() => {
-    const size = this.pageSize();
+    const size = this.effectivePageSize();
     const total = this.totalItems();
     if (size <= 0 || total <= 0) {
       return 1;
@@ -131,7 +145,7 @@ export class FoldPaginatorComponent {
    *  `<select>` can never silently show a value the parent isn't using). */
   readonly sizeOptions = computed<readonly number[]>(() => {
     const opts = this.pageSizeOptions();
-    const size = this.pageSize();
+    const size = this.effectivePageSize();
     if (opts.includes(size)) {
       return opts;
     }
@@ -143,11 +157,11 @@ export class FoldPaginatorComponent {
     if (this.totalItems() === 0) {
       return 0;
     }
-    return (this.page() - 1) * this.pageSize() + 1;
+    return (this.page() - 1) * this.effectivePageSize() + 1;
   });
 
   readonly rangeEnd = computed<number>(() =>
-    Math.min(this.page() * this.pageSize(), this.totalItems()),
+    Math.min(this.page() * this.effectivePageSize(), this.totalItems()),
   );
 
   readonly canGoPrev = computed<boolean>(
@@ -261,7 +275,11 @@ export class FoldPaginatorComponent {
 
   onPageSizeChange(raw: string): void {
     const size = Number(raw);
-    if (Number.isFinite(size) && size > 0 && size !== this.pageSize()) {
+    if (
+      Number.isFinite(size) &&
+      size > 0 &&
+      size !== this.effectivePageSize()
+    ) {
       this.pageSizeChange.emit(size);
     }
   }

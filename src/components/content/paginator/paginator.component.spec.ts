@@ -59,6 +59,20 @@ describe("FoldPaginatorComponent", () => {
     ).toBe(1);
   });
 
+  it("defaults an omitted pageSize to the first of pageSizeOptions", () => {
+    const fixture = TestBed.createComponent(FoldPaginatorComponent);
+    const ref = fixture.componentRef;
+    ref.setInput("currentPage", 1);
+    ref.setInput("totalItems", 90);
+    ref.setInput("pageSizeOptions", [25, 50, 100]);
+    // pageSize deliberately not set.
+    fixture.detectChanges();
+    const c = fixture.componentInstance;
+    expect(c.effectivePageSize()).toBe(25);
+    expect(c.totalPages()).toBe(4); // ceil(90 / 25)
+    expect(c.rangeEnd()).toBe(25);
+  });
+
   it("computes the visible item range, clamped on the last page + zeroed when empty", () => {
     const mid = create({
       currentPage: 3,
