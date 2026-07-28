@@ -6,8 +6,10 @@
     <code>&lt;router-outlet&gt;</code> renders the matching view. The active
     item is derived from the URL (so deep links, back and forward all stay in
     sync) and marked with <code>aria-current="page"</code>. Horizontal for a
-    page-level bar, vertical for a sidebar rail (which auto-collapses to a
-    horizontal icon row on mobile).
+    page-level bar, vertical for a sidebar rail — which folds back to a bar
+    <strong>on top</strong> once its container gets too narrow to hold a rail
+    beside the content (the wrapping <code>fold-nav-layout</code>'s job, on its
+    own width).
   </p>
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['badges', 'icons']" />
@@ -172,14 +174,14 @@
         >
       </div>
 
-      <!-- foldAt kept low so the side rail holds across the preview widths (the
-         default 720 would auto-fold it back to a horizontal bar); drag the
-         device below it to watch it fold. A collapsed rail is icon-only, so
-         narrow its track to match. direction="auto" makes the bar follow this
-         layout — no tl.stacked() wiring. -->
+      <!-- Default foldAt (720): the side rail holds at Desktop and Tablet, and
+         folds back to a bar on top at Mobile (375) — the responsive behaviour
+         itself. Pick Mobile, or drag the device below 720, to watch it fold. A
+         collapsed rail is icon-only, so narrow its track to match.
+         direction="auto" makes the bar follow this layout — no tl.stacked()
+         wiring. -->
       <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
-        [foldAt]="320"
         [style.--fold-nav-layout-rail-width]="
           tnCollapsed() && tnDirection() === 'vertical' ? '56px' : null
         "
