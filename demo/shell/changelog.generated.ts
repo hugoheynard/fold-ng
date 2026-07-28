@@ -40,9 +40,9 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     counts: {
       Added: 3,
       Fixed: 1,
-      Changed: 7,
+      Changed: 8,
     },
-    breaking: 3,
+    breaking: 4,
     groups: [
       {
         kind: "Added",
@@ -325,6 +325,116 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Changed",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-menu",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "expanded",
+              },
+              {
+                kind: "text",
+                value: " defaults to ",
+              },
+              {
+                kind: "code",
+                value: "undefined",
+              },
+              {
+                kind: "text",
+                value: " (unset) and now follows ",
+              },
+              {
+                kind: "code",
+                value: "collapsible",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "<fold-menu collapsible>",
+              },
+              {
+                kind: "text",
+                value: " boots ",
+              },
+              {
+                kind: "strong",
+                value: "expanded",
+              },
+              {
+                kind: "text",
+                value:
+                  " (you added a way to collapse, so open is the natural start) and a bare ",
+              },
+              {
+                kind: "code",
+                value: "<fold-menu>",
+              },
+              {
+                kind: "text",
+                value: " boots the icon rail — no ",
+              },
+              {
+                kind: "code",
+                value: "[(expanded)]",
+              },
+              {
+                kind: "text",
+                value:
+                  " needed for the common case. A bound value still wins. The model type widened to ",
+              },
+              {
+                kind: "code",
+                value: "boolean | undefined",
+              },
+              {
+                kind: "text",
+                value: ", so a two-way ",
+              },
+              {
+                kind: "code",
+                value: '[(expanded)]="sig"',
+              },
+              {
+                kind: "text",
+                value: " needs ",
+              },
+              {
+                kind: "code",
+                value: "sig: WritableSignal<boolean | undefined>",
+              },
+              {
+                kind: "text",
+                value:
+                  " (or drop the binding and lean on the default). Fixes the DX trap where ",
+              },
+              {
+                kind: "code",
+                value: "collapsible",
+              },
+              {
+                kind: "text",
+                value: " booted collapsed (dev-rule 5.2.4).",
+              },
+            ],
+            breaking: true,
+          },
           {
             lead: [
               {

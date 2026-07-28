@@ -33,6 +33,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING — `fold-menu`: `expanded` defaults to `undefined` (unset) and now
+  follows `collapsible`.** `<fold-menu collapsible>` boots **expanded** (you
+  added a way to collapse, so open is the natural start) and a bare `<fold-menu>`
+  boots the icon rail — no `[(expanded)]` needed for the common case. A bound
+  value still wins. The model type widened to `boolean | undefined`, so a
+  two-way `[(expanded)]="sig"` needs `sig: WritableSignal<boolean | undefined>`
+  (or drop the binding and lean on the default). Fixes the DX trap where
+  `collapsible` booted collapsed (dev-rule 5.2.4).
 - **BREAKING — `fold-tabs`: `activeKey` is now a two-way `model`; the `tabChange`
   output is removed.** Migrate `[activeKey]="k()" (tabChange)="k.set($event)"` →
   `[(activeKey)]="k"` (or keep one-way `[activeKey]` and listen to the model's

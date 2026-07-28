@@ -31,11 +31,11 @@
   <button
     type="button"
     class="menu-toggle"
-    [attr.aria-label]="expanded() ? 'Collapse menu' : 'Expand menu'"
+    [attr.aria-label]="isExpanded() ? 'Collapse menu' : 'Expand menu'"
     (click)="toggle()"
   >
     <fold-icon
-      [name]="expanded() ? 'chevron-left' : 'chevron-right'"
+      [name]="isExpanded() ? 'chevron-left' : 'chevron-right'"
       [size]="14"
     />
   </button>

@@ -60,7 +60,7 @@ interface MenuSection {
 export default class MenuPage {
   /* ── fold-menu preview — a live, editable menu built from a list of sections ── */
   protected readonly menuActive = signal<string>("");
-  protected readonly menuExpanded = signal(false);
+  protected readonly menuExpanded = signal<boolean | undefined>(false);
   protected readonly menuCollapsible = signal(true);
   /** Structural slots — toggled so the design can be seen with/without each. */
   protected readonly menuHeader = signal(true);

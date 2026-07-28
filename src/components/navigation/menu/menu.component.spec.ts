@@ -19,7 +19,7 @@ import { FoldMenuComponent } from "./menu.component";
 })
 class HostComponent {
   readonly collapsible = signal(false);
-  readonly expanded = signal(false);
+  readonly expanded = signal<boolean | undefined>(false);
   readonly tint = signal<"follow" | "neutral" | "primary">("follow");
   readonly level = signal<"primary" | "secondary" | "tertiary">("primary");
 }
@@ -77,11 +77,63 @@ describe("FoldMenuComponent", () => {
     const { fixture, menu } = render();
     fixture.componentInstance.collapsible.set(true);
     fixture.detectChanges();
+    // expanded is bound to false here → explicit wins, so it starts collapsed.
     expect(menu.classList.contains("expanded")).toBe(false);
 
     menu.querySelector<HTMLButtonElement>(".menu-toggle")?.click();
     fixture.detectChanges();
     expect(menu.classList.contains("expanded")).toBe(true);
     expect(fixture.componentInstance.expanded()).toBe(true);
+  });
+
+  it("unbound expanded follows collapsible (collapsible → boots open)", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldMenuComponent],
+      // No expanded binding — the effective state must follow collapsible.
+      template: `<fold-menu [collapsible]="c">
+        <a class="item">Item</a>
+      </fold-menu>`,
+    })
+    class BareHost {
+      c = true;
+    }
+
+    const open = TestBed.createComponent(BareHost);
+    open.detectChanges();
+    expect(
+      (
+        open.nativeElement.querySelector("fold-menu") as HTMLElement
+      ).classList.contains("expanded"),
+    ).toBe(true);
+
+    // …and a bare (non-collapsible) menu boots as the icon rail.
+    const plain = TestBed.createComponent(BareHost);
+    plain.componentInstance.c = false;
+    plain.detectChanges();
+    expect(
+      (
+        plain.nativeElement.querySelector("fold-menu") as HTMLElement
+      ).classList.contains("expanded"),
+    ).toBe(false);
+  });
+
+  it("an explicit [expanded]=false wins over the collapsible default", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldMenuComponent],
+      template: `<fold-menu collapsible [expanded]="false">
+        <a class="item">Item</a>
+      </fold-menu>`,
+    })
+    class ForcedHost {}
+
+    const fixture = TestBed.createComponent(ForcedHost);
+    fixture.detectChanges();
+    expect(
+      (
+        fixture.nativeElement.querySelector("fold-menu") as HTMLElement
+      ).classList.contains("expanded"),
+    ).toBe(false);
   });
 });

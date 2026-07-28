@@ -306,7 +306,7 @@
 
 ### FoldMenuComponent
 - collapsible: InputSignalWithTransform<boolean, unknown>
-- expanded: ModelSignal<boolean>
+- expanded: ModelSignal<boolean | undefined>
 - level: InputSignal<FoldMenuLevel>
 - tint: InputSignal<FoldMenuTint>
 - togglePlacement: InputSignal<FoldMenuTogglePlacement>

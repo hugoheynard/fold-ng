@@ -46,9 +46,12 @@ export type FoldMenuTogglePlacement = "auto" | "footer" | "header" | "body";
  *
  * ## Options
  * - `collapsible` — render a chevron toggle that flips `expanded`.
- * - `expanded` (two-way) — `false` (default) is the icon rail: items are
- *   icon-only with hover tooltips. `true` widens the rail and items + separators
- *   show their labels inline. Drive it yourself (`[expanded]`) or let the toggle.
+ * - `expanded` (two-way) — `true` widens the rail and reveals inline labels;
+ *   `false` is the icon rail (icon-only, hover tooltips). **Left unbound it
+ *   follows `collapsible`:** `<fold-menu collapsible>` boots **expanded** (you
+ *   added a way to collapse, so open is the natural start), a bare `<fold-menu>`
+ *   boots the icon rail. Bind it (`[expanded]` / `[(expanded)]`) to be
+ *   authoritative — an explicit value always wins.
  *
  * ## Slots
  * | Attribute   | Band                                                        |
@@ -78,7 +81,7 @@ export type FoldMenuTogglePlacement = "auto" | "footer" | "header" | "body";
   templateUrl: "./menu.component.html",
   styleUrl: "./menu.component.scss",
   host: {
-    "[class.expanded]": "expanded()",
+    "[class.expanded]": "isExpanded()",
     "[attr.data-tint]": "tint()",
     "[attr.data-level]": "level()",
   },
@@ -87,11 +90,13 @@ export class FoldMenuComponent {
   /** Show a chevron toggle that flips `expanded`. */
   readonly collapsible = input(false, { transform: booleanAttribute });
   /**
-   * Two-way: `true` widens the rail and reveals inline labels. A standalone
-   * state — a menu can be statically expanded (a labelled sidebar) without
-   * `collapsible`; `collapsible` only adds the toggle that flips it.
+   * Two-way. `true` widens the rail and reveals inline labels; `false` is the
+   * icon rail. **`undefined` (the default) means "unset"** — the effective state
+   * then follows `collapsible` (see {@link isExpanded}), so a bare `collapsible`
+   * menu opens without the consumer having to bind it. A bound value is always
+   * authoritative.
    */
-  readonly expanded = model(false);
+  readonly expanded = model<boolean | undefined>(undefined);
   /** How items tint on hover / when active (`follow` = section colour). */
   readonly tint = input<FoldMenuTint>("follow");
   /** Rail depth → background tint (`primary` default / `secondary` / `tertiary`). */
@@ -105,6 +110,16 @@ export class FoldMenuComponent {
     viewChild.required<ElementRef<HTMLElement>>("foot");
   private readonly hasHeader = signal(false);
   private readonly hasFooter = signal(false);
+
+  /**
+   * The effective expanded state everything renders from: the bound `expanded`
+   * when set, else it follows `collapsible` (a collapsible rail boots open, a
+   * plain one boots as the icon rail). Encodes the sensible default without a
+   * warning — the short `<fold-menu collapsible>` Just Works.
+   */
+  protected readonly isExpanded = computed<boolean>(
+    () => this.expanded() ?? this.collapsible(),
+  );
 
   /**
    * The band the toggle renders into: the `togglePlacement` override when set,
@@ -148,6 +163,6 @@ export class FoldMenuComponent {
   }
 
   protected toggle(): void {
-    this.expanded.update((v) => !v);
+    this.expanded.set(!this.isExpanded());
   }
 }

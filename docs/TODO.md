@@ -114,7 +114,15 @@ leave-balance-display, configurable-tab-bar, etc.
       (in-place guard); `fold-dialog` is for when the choice must **block**. - Not from SH3PHERD `shared/` — a net-new component; sequence after the
       0.5 extractions unless a real use-case pulls it forward.
 
-## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4)
+## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4) ✅ DONE
+
+✅ Done: `expanded` now defaults to `undefined` (unset) and the effective state
+follows `collapsible` — `<fold-menu collapsible>` boots expanded, a bare menu
+boots the icon rail, an explicit `[expanded]` still wins. The model type widened
+to `boolean | undefined` (BREAKING; a two-way `[(expanded)]` signal must widen).
+Specs cover unbound-follows-collapsible + explicit-wins.
+
+<details><summary>Original note</summary>
 
 `collapsible` adds the chevron toggle but `expanded` still defaults to `false`,
 so `<fold-menu collapsible>` with no `[(expanded)]` boots **collapsed** — an
@@ -130,6 +138,8 @@ shorthand (5.2.3) — the short form Just Works. One approach: an `effect`/init
 that seeds `expanded` from `collapsible` only when the model is still at its
 untouched default. Add a spec: `<fold-menu collapsible>` → expanded; `<fold-menu
 collapsible [expanded]="false">` → collapsed.
+
+</details>
 
 ## Roadmap 1.0.1 — `fold-app-shell` polish
 
