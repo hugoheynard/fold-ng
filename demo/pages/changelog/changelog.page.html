@@ -12,10 +12,52 @@
     are not on npm yet (latest published: <code>{{ published }}</code>).
   </fold-callout>
 
+  <div class="cl-filters" role="group" aria-label="Filter changelog by section">
+    <button
+      foldButton
+      size="sm"
+      shape="pill"
+      [emphasis]="breakingActive() ? 'soft' : 'outline'"
+      [intent]="breakingActive() ? 'danger' : 'neutral'"
+      [attr.aria-pressed]="breakingActive()"
+      (click)="toggleBreaking()"
+    >
+      Breaking <span class="cl-fcount">{{ breakingTotal }}</span>
+    </button>
+    @for (chip of kindChips; track chip.key) {
+    <button
+      foldButton
+      size="sm"
+      shape="pill"
+      [emphasis]="isKindActive(chip.key) ? 'soft' : 'outline'"
+      [intent]="isKindActive(chip.key) ? 'primary' : 'neutral'"
+      [attr.aria-pressed]="isKindActive(chip.key)"
+      (click)="toggleKind(chip.key)"
+    >
+      {{ chip.key }} <span class="cl-fcount">{{ chip.total }}</span>
+    </button>
+    } @if (anyFilter()) {
+    <button
+      foldButton
+      size="sm"
+      shape="pill"
+      emphasis="outline"
+      intent="neutral"
+      class="cl-clear"
+      (click)="clear()"
+    >
+      Clear
+    </button>
+    }
+  </div>
+
+  @if (isEmpty()) {
+  <fold-callout variant="neutral"> No changes match this filter. </fold-callout>
+  } @else {
   <fold-timeline
     ariaLabel="Release history"
     datePlacement="hidden"
-    [nodes]="nodes"
+    [nodes]="nodes()"
   >
     <ng-template #node let-n>
       @let release = releaseFor(n.key); @if (release) {
@@ -34,19 +76,15 @@
           <div class="cl-tags">
             @if (release.unreleased) {
             <fold-badge content="dev · not on npm" variant="warning" />
-            } @if (release.breaking > 0) {
-            <fold-badge
-              [content]="release.breaking + ' breaking'"
-              variant="alert"
-            />
-            } @for (c of countsOf(release); track c.kind) {
+            } @if (breakingShown(release.shownGroups); as bk) { @if (bk > 0) {
+            <fold-badge [content]="bk + ' breaking'" variant="alert" />
+            } } @for (c of countsOf(release.shownGroups); track c.kind) {
             <fold-badge [content]="c.count + ' ' + c.kind" [variant]="c.tone" />
             }
           </div>
         </header>
 
-        @for (group of release.groups; track group.kind) { @if
-        (group.items.length > 0) {
+        @for (group of release.shownGroups; track group.kind) {
         <section class="cl-group">
           <h3 class="cl-group-title">
             <fold-badge
@@ -72,9 +110,10 @@
             }
           </ul>
         </section>
-        } }
+        }
       </fold-card>
       }
     </ng-template>
   </fold-timeline>
+  }
 </fold-page-layout>

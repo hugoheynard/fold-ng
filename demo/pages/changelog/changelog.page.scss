@@ -2,6 +2,33 @@
   margin-bottom: var(--fold-space-lg);
 }
 
+// Filter bar — one pill per section (+ the orthogonal Breaking flag). Sticky so
+// it stays reachable while scrolling a long history.
+.cl-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-xs);
+  margin-bottom: var(--fold-space-lg);
+}
+
+// The count rides inside the pill as a dimmed superscript-ish tally.
+.cl-fcount {
+  margin-left: var(--fold-space-xs);
+  color: var(--fold-color-text-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+// A pressed pill owns its count colour, so let it inherit rather than stay muted.
+.cl-filters [aria-pressed="true"] .cl-fcount {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.cl-clear {
+  margin-left: auto;
+}
+
 fold-timeline {
   display: block;
 }
