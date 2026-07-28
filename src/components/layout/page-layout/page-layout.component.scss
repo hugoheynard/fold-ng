@@ -91,11 +91,38 @@
   flex: none;
   display: inline-flex;
   align-items: center;
+  /* Several wide buttons wrap among themselves rather than force the row to
+     overflow — the header never pushes past the page gutter. */
+  flex-wrap: wrap;
   gap: var(--fold-space-sm);
 }
 /* Nothing projected → no empty slot pushing the layout. */
 .page-actions:empty {
   display: none;
+}
+
+/* Narrow: the actions can no longer sit *beside* the title without starving the
+   text column (min-width:0) down to its longest word — the description would
+   read one word per line. Stack them instead: title/description take the full
+   width, actions drop onto their own row below. Keyed to BOTH the viewport
+   (@media, the running app) and an ancestor container (@container, the gallery's
+   responsive preview) — same rationale as app-shell. */
+@mixin page-head-stack {
+  .page-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--fold-space-md);
+  }
+  /* Left-aligned on their own row rather than clinging to the far edge. */
+  .page-actions {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 640px) {
+  @include page-head-stack;
+}
+@container (max-width: 640px) {
+  @include page-head-stack;
 }
 .page-body {
   display: flex;

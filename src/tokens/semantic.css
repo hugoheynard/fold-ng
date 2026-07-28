@@ -37,6 +37,11 @@
     3vw,
     2rem
   ); /* 20 → 32px  (fluid ~665–1065px) */
+  /* One notch tighter than the page gap — the vertical rhythm *inside* a content
+     panel (`fold-tab-panel`), where stacked sections read as one screen rather
+     than distinct page bands. Stays fluidly below `--fold-page-gap` at every
+     width (16 → 24px vs 20 → 32px). Override to retune a panel's inner rhythm. */
+  --fold-panel-gap: clamp(1rem, 2.4vw, 1.5rem); /* 16 → 24px */
 
   /* Surfaces (bg- = a fill role, darkest chrome → lightest page) */
   --fold-color-bg-page: var(--fold-ref-ink-850); /* page background        */

@@ -37,9 +37,230 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     version: "Unreleased",
     date: null,
     unreleased: true,
-    counts: {},
+    counts: {
+      Changed: 1,
+      Fixed: 1,
+    },
     breaking: 0,
-    groups: [],
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-tab-panel",
+              },
+              {
+                kind: "text",
+                value: " now owns the vertical rhythm between its children.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "It was a neutral ",
+              },
+              {
+                kind: "code",
+                value: "display: block",
+              },
+              {
+                kind: "text",
+                value: " with no spacing, so stacked ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value:
+                  "s (or cards) inside a panel sat flush against each other — the page gap only reaches the *direct* children of ",
+              },
+              {
+                kind: "code",
+                value: ".page-body",
+              },
+              {
+                kind: "text",
+                value:
+                  ", and a tab panel isn't one. A panel is a content region, like ",
+              },
+              {
+                kind: "code",
+                value: ".page-body",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so it now lays its children out as a flex column with a ",
+              },
+              {
+                kind: "code",
+                value: "gap",
+              },
+              {
+                kind: "text",
+                value: ". The gap is the new ",
+              },
+              {
+                kind: "strong",
+                value: "`--fold-panel-gap`",
+              },
+              {
+                kind: "text",
+                value: " token — fluid ",
+              },
+              {
+                kind: "code",
+                value: "16 → 24px",
+              },
+              {
+                kind: "text",
+                value: ", deliberately one notch tighter than ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-gap",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "20 → 32px",
+              },
+              {
+                kind: "text",
+                value:
+                  ") so panel content reads as one screen rather than distinct page bands. Escape hatch unchanged from ",
+              },
+              {
+                kind: "code",
+                value: ".page-body",
+              },
+              {
+                kind: "text",
+                value:
+                  ": wrap two elements in a container to tighten them (a single child gets no gap at all). Consumers that re-established this spacing by hand on the panel can drop it.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value:
+                  " header no longer starves the title/description on narrow screens.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The head was a permanent ",
+              },
+              {
+                kind: "code",
+                value: "space-between",
+              },
+              {
+                kind: "text",
+                value: " row: the actions slot held its intrinsic width (",
+              },
+              {
+                kind: "code",
+                value: "flex: none",
+              },
+              {
+                kind: "text",
+                value: ") while the text column carried ",
+              },
+              {
+                kind: "code",
+                value: "min-width: 0",
+              },
+              {
+                kind: "text",
+                value: ", so wide ",
+              },
+              {
+                kind: "code",
+                value: "[pageActions]",
+              },
+              {
+                kind: "text",
+                value:
+                  " (e.g. two full-label buttons) squeezed the description down to its longest word — one word per line, stacked vertically. Below ",
+              },
+              {
+                kind: "code",
+                value: "640px",
+              },
+              {
+                kind: "text",
+                value:
+                  " the head now stacks: title/description take the full width and the actions drop onto their own row beneath. Keyed to ",
+              },
+              {
+                kind: "strong",
+                value: "both",
+              },
+              {
+                kind: "text",
+                value: " the viewport (",
+              },
+              {
+                kind: "code",
+                value: "@media",
+              },
+              {
+                kind: "text",
+                value: ") and an ancestor container (",
+              },
+              {
+                kind: "code",
+                value: "@container",
+              },
+              {
+                kind: "text",
+                value: ", for the gallery's responsive preview), mirroring ",
+              },
+              {
+                kind: "code",
+                value: "app-shell",
+              },
+              {
+                kind: "text",
+                value: ". The actions slot also gained ",
+              },
+              {
+                kind: "code",
+                value: "flex-wrap",
+              },
+              {
+                kind: "text",
+                value:
+                  " so several wide buttons wrap among themselves instead of overflowing the gutter.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
   },
   {
     version: "0.6.0",

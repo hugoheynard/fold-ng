@@ -6,7 +6,32 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **`fold-tab-panel` now owns the vertical rhythm between its children.** It was
+  a neutral `display: block` with no spacing, so stacked `fold-page-section`s (or
+  cards) inside a panel sat flush against each other — the page gap only reaches
+  the _direct_ children of `.page-body`, and a tab panel isn't one. A panel is a
+  content region, like `.page-body`, so it now lays its children out as a flex
+  column with a `gap`. The gap is the new **`--fold-panel-gap`** token — fluid
+  `16 → 24px`, deliberately one notch tighter than `--fold-page-gap` (`20 → 32px`)
+  so panel content reads as one screen rather than distinct page bands. Escape
+  hatch unchanged from `.page-body`: wrap two elements in a container to tighten
+  them (a single child gets no gap at all). Consumers that re-established this
+  spacing by hand on the panel can drop it.
+
+### Fixed
+
+- **`fold-page-layout` header no longer starves the title/description on narrow
+  screens.** The head was a permanent `space-between` row: the actions slot held
+  its intrinsic width (`flex: none`) while the text column carried `min-width: 0`,
+  so wide `[pageActions]` (e.g. two full-label buttons) squeezed the description
+  down to its longest word — one word per line, stacked vertically. Below `640px`
+  the head now stacks: title/description take the full width and the actions drop
+  onto their own row beneath. Keyed to **both** the viewport (`@media`) and an
+  ancestor container (`@container`, for the gallery's responsive preview), mirroring
+  `app-shell`. The actions slot also gained `flex-wrap` so several wide buttons
+  wrap among themselves instead of overflowing the gutter.
 
 ## [0.6.0] - 2026-07-28
 

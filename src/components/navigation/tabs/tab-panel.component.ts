@@ -30,9 +30,16 @@ import type { FoldTabsContext } from "./tabs.component";
   },
   // A custom element is `display: inline` by default — an inline panel wrapping
   // block content breaks height propagation inside a bounded flex column (e.g. a
-  // scrolling `fold-page-layout`), so the page stops scrolling. Make it a block;
-  // re-assert `[hidden]` since an author `display` overrides the UA hidden rule.
-  styles: ":host{display:block}:host([hidden]){display:none}",
+  // scrolling `fold-page-layout`), so the page stops scrolling. Make it a
+  // block-level flex column instead: same height propagation as a plain block,
+  // but it now owns the vertical rhythm between its stacked children (sections)
+  // — the panel *is* a content region, like `.page-body`. `--fold-panel-gap` sits
+  // one notch below the page gap; group two children in a wrapper to tighten them
+  // (a single child means no gap at all). Re-assert `[hidden]` since an author
+  // `display` overrides the UA hidden rule.
+  styles:
+    ":host{display:flex;flex-direction:column;gap:var(--fold-panel-gap)}" +
+    ":host([hidden]){display:none}",
   template: "<ng-content />",
 })
 export class FoldTabPanelComponent {
