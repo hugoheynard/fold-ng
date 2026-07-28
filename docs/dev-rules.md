@@ -193,6 +193,24 @@ a different value set — rule 4.9). _Why:_ `fold-button` grew a 5-value `varian
 (primary/solid/ghost/recommended/critical) that was Bootstrap-tier; splitting it
 into `emphasis` × `intent` reached the Radix-tier model (benchmark lever #3).
 
+4.12 **Controlled state is ONE `model` — never an `input` + twin `output`.** When
+a parent owns a piece of state the component also changes (the active tab, the
+selected set, an open flag), expose it as a single **two-way `model`**, not an
+`input` paired with a `somethingChange` output. The model already gives both
+directions: `[(x)]` for writeback, or one-way `[x]` + its built-in `(xChange)` to
+stay controlled — so a second output is a redundant _second way to do the same
+thing_. One binding = one source of truth, one thing to learn, one thing to keep
+in sync. _Why:_ `fold-tabs` shipped `activeKey` (input) + `tabChange` (output),
+`fold-view-nav` `activeKey` + `activeChange`, `fold-data-table` `selected` +
+`selectionChange` — three copies of the same controlled-pair shape. All three
+collapsed to a `model` (`[(activeKey)]`, `[(selected)]`); the twin outputs were
+removed (0.6.0, `BREAKING`). **Exception — a genuinely different payload:** keep a
+distinct output only when it carries information the model's `*Change` cannot,
+e.g. `fold-listbox`'s `selectionChange: T` fires on a _pick_ with a **non-null**
+value where `valueChange: T | null` would force a narrow (§ documented in 0.5.2).
+That is not a second way to read the same value — it is a narrower event. A raw
+`MouseEvent` echo of a model write is **not** such a case: drop it.
+
 ---
 
 ## 5 · Portability (no app leaks)
@@ -342,6 +360,22 @@ exercise the component the way a caller uses it.
 8.4 **Explicit Vitest imports.** `import { describe, it, expect, vi } from
 "vitest"` — the package doesn't use globals. Zoneless `setupTestBed()` runs from
 `src/test-setup.ts`.
+
+8.5 **The public surface is snapshotted — a binding change must be intentional.**
+`scripts/gen-api-surface.ts` writes `API-SURFACE.md`: every exported symbol, and
+for each exported class its `input` / `model` / `output` members with resolved
+type + required-ness. `api-surface.spec.ts` fails the moment the live surface
+drifts from the committed file. This closes the gap that `tsc` leaves: **plain
+`tsc --noEmit` does not type-check Angular templates**, so a removed/renamed/
+retyped binding is invisible to a consumer's `tsc` and only bites at their AOT
+build or the next version bump (the same blind spot `check-templates.ts` guards
+_inside_ this repo — 8.x pairs with it). When the guard trips: run
+`pnpm run api:surface`, review the diff (it _is_ the API-change review), and add
+the CHANGELOG line (§10) — in 0.x a binding removal/rename/retype is `BREAKING`
+(minor bump). Never hand-edit `API-SURFACE.md`. _Why:_ three controlled-pair
+outputs (§4.12) were removed and a `pageSize` retyped with nothing forcing the
+maintainer to notice or the log to record it — the snapshot makes every such move
+loud at author time.
 
 ---
 

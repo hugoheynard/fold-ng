@@ -38,13 +38,522 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Changed: 1,
+      Added: 2,
+      Fixed: 1,
+      Changed: 5,
     },
-    breaking: 0,
+    breaking: 3,
     groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Two new UI icons: ",
+              },
+              {
+                kind: "code",
+                value: "archive",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "filter",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— stroke glyphs (",
+              },
+              {
+                kind: "code",
+                value: "currentColor",
+              },
+              {
+                kind: "text",
+                value:
+                  "), the primitives a back-office table toolbar reaches for. Note the existing ",
+              },
+              {
+                kind: "code",
+                value: "more-vertical",
+              },
+              {
+                kind: "text",
+                value: ' already covers the "kebab" ⋮ menu trigger.',
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Public-API surface guard",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "scripts/gen-api-surface.ts",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "API-SURFACE.md",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "api-surface.spec.ts",
+              },
+              {
+                kind: "text",
+                value: ", scripts ",
+              },
+              {
+                kind: "code",
+                value: "api:surface",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "api:check",
+              },
+              {
+                kind: "text",
+                value: "). Snapshots every exported symbol and every ",
+              },
+              {
+                kind: "code",
+                value: "input",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "output",
+              },
+              {
+                kind: "text",
+                value:
+                  " of every exported class; the spec fails when the live surface drifts. This catches the binding breaks a consumer's plain ",
+              },
+              {
+                kind: "code",
+                value: "tsc",
+              },
+              {
+                kind: "text",
+                value:
+                  " cannot see — Angular templates aren't type-checked by ",
+              },
+              {
+                kind: "code",
+                value: "tsc",
+              },
+              {
+                kind: "text",
+                value: " — forcing an intentional CHANGELOG entry + bump.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-tab-panel",
+              },
+              {
+                kind: "text",
+                value: " now defaults to ",
+              },
+              {
+                kind: "code",
+                value: "display: block",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(was the custom-element default ",
+              },
+              {
+                kind: "code",
+                value: "inline",
+              },
+              {
+                kind: "text",
+                value:
+                  "). An inline panel wrapping block content broke height propagation inside a bounded, scrolling ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value:
+                  " — a tall tabbed page (e.g. a form split across tabs) stopped scrolling. The ",
+              },
+              {
+                kind: "code",
+                value: "[hidden]",
+              },
+              {
+                kind: "text",
+                value:
+                  " state is re-asserted so inactive panels still collapse.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
       {
         kind: "Changed",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "activeKey",
+              },
+              {
+                kind: "text",
+                value: " is now a two-way ",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value: "; the ",
+              },
+              {
+                kind: "code",
+                value: "tabChange",
+              },
+              {
+                kind: "text",
+                value: " output is removed.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Migrate ",
+              },
+              {
+                kind: "code",
+                value: '[activeKey]="k()" (tabChange)="k.set($event)"',
+              },
+              {
+                kind: "text",
+                value: " → ",
+              },
+              {
+                kind: "code",
+                value: '[(activeKey)]="k"',
+              },
+              {
+                kind: "text",
+                value: " (or keep one-way ",
+              },
+              {
+                kind: "code",
+                value: "[activeKey]",
+              },
+              {
+                kind: "text",
+                value: " and listen to the model's built-in ",
+              },
+              {
+                kind: "code",
+                value: "(activeKeyChange)",
+              },
+              {
+                kind: "text",
+                value:
+                  "). One source of selection, no twin output (dev-rule 4.12).",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "activeKey",
+              },
+              {
+                kind: "text",
+                value: " is now a two-way ",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value: "; the ",
+              },
+              {
+                kind: "code",
+                value: "activeChange",
+              },
+              {
+                kind: "text",
+                value: " output is removed.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Same migration as ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "[(activeKey)]",
+              },
+              {
+                kind: "text",
+                value: ", or ",
+              },
+              {
+                kind: "code",
+                value: "(activeKeyChange)",
+              },
+              {
+                kind: "text",
+                value:
+                  "). Link items are unaffected (their active state comes from the router).",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "selected",
+              },
+              {
+                kind: "text",
+                value: " is now a two-way ",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value: "; the ",
+              },
+              {
+                kind: "code",
+                value: "selectionChange",
+              },
+              {
+                kind: "text",
+                value: " output is removed.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Migrate ",
+              },
+              {
+                kind: "code",
+                value: '[selected]="s()" (selectionChange)="onSel($event)"',
+              },
+              {
+                kind: "text",
+                value: " → ",
+              },
+              {
+                kind: "code",
+                value: '[(selected)]="s"',
+              },
+              {
+                kind: "text",
+                value: " (or one-way ",
+              },
+              {
+                kind: "code",
+                value: "[selected]",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "(selectedChange)",
+              },
+              {
+                kind: "text",
+                value: "). The change payload is now ",
+              },
+              {
+                kind: "code",
+                value: "ReadonlySet<string | number>",
+              },
+              {
+                kind: "text",
+                value: " (was ",
+              },
+              {
+                kind: "code",
+                value: "Set",
+              },
+              {
+                kind: "text",
+                value: ") — widen your handler's parameter type.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-paginator",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "pageSize",
+              },
+              {
+                kind: "text",
+                value: " is now optional",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— when omitted it defaults to the first of ",
+              },
+              {
+                kind: "code",
+                value: "pageSizeOptions",
+              },
+              {
+                kind: "text",
+                value: ", so the common case needs only ",
+              },
+              {
+                kind: "code",
+                value: "currentPage",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "totalItems",
+              },
+              {
+                kind: "text",
+                value: ". Non-breaking (a passed ",
+              },
+              {
+                kind: "code",
+                value: "pageSize",
+              },
+              {
+                kind: "text",
+                value: " behaves as before).",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

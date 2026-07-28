@@ -20,9 +20,33 @@ from primitives). This doc is about **`accent`**, which does something harder.
 
 ## The accent surface (auto-inversion)
 
-`[data-surface="accent"]` fills with the brand accent and flips its whole content
-sub-tree to a compatible **on-accent** palette: text, borders, band gradation,
-badges, links, buttons, even a filled icon tile — all read on the accent.
+`[data-surface="accent"]` flips its whole content sub-tree to a compatible
+**on-accent** palette: text, borders, band gradation, badges, links, buttons,
+even a filled icon tile — all read on the accent.
+
+### The attribute inverts the palette; a component paints the fill
+
+Stamping `[data-surface="accent"]` does **not** paint a background — it only sets
+the on-accent `color` and captures the accent + its ink into `--_accent-*` (below).
+The accent **fill** is painted by the component that owns the surface:
+`fold-card` (`.s-accent { background: var(--fold-color-primary) }`) and
+`fold-data-table` (the `toolbarSurface="accent"` bar) do it. So:
+
+- **`fold-card surface="accent"`** (and `fold-hero-card`, the data-table toolbar) —
+  inverted **and** painted. This is the supported way to get an accent region.
+- **bare `foldSurface="accent"` on a plain element** — inverts the ink but leaves
+  the background transparent. On its own it reads as light text on whatever is
+  behind it (usually wrong). Use it only to _extend_ an accent context onto extra
+  markup **inside** a painted surface, or paint that element yourself with
+  `background: var(--fold-color-primary)` (valid: on the surface element itself
+  `--fold-color-primary` is still the accent — only its **descendants** get the
+  inverted value; see the capture/invert split below).
+
+Corollary (a common trap): **don't colour your own text/icon with
+`var(--fold-color-primary)` inside an accent surface expecting it to stay the
+brand navy** — under `[data-surface="accent"] *` that token _is_ the light ink, so
+you'd paint invisible-on-navy. Use the semantic `--fold-color-text` /
+`-secondary` roles, which invert correctly.
 
 ### Why it can't be a flat token override
 

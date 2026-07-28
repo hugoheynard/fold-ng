@@ -6,8 +6,53 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Two new UI icons: `archive` and `filter`** — stroke glyphs (`currentColor`),
+  the primitives a back-office table toolbar reaches for. Note the existing
+  `more-vertical` already covers the "kebab" ⋮ menu trigger.
+- **Public-API surface guard** (`scripts/gen-api-surface.ts` +
+  `API-SURFACE.md` + `api-surface.spec.ts`, scripts `api:surface` / `api:check`).
+  Snapshots every exported symbol and every `input`/`model`/`output` of every
+  exported class; the spec fails when the live surface drifts. This catches the
+  binding breaks a consumer's plain `tsc` cannot see — Angular templates aren't
+  type-checked by `tsc` — forcing an intentional CHANGELOG entry + bump.
+
+### Fixed
+
+- **`fold-tab-panel` now defaults to `display: block`** (was the custom-element
+  default `inline`). An inline panel wrapping block content broke height
+  propagation inside a bounded, scrolling `fold-page-layout` — a tall tabbed page
+  (e.g. a form split across tabs) stopped scrolling. The `[hidden]` state is
+  re-asserted so inactive panels still collapse.
+
 ### Changed
 
+- **BREAKING — `fold-tabs`: `activeKey` is now a two-way `model`; the `tabChange`
+  output is removed.** Migrate `[activeKey]="k()" (tabChange)="k.set($event)"` →
+  `[(activeKey)]="k"` (or keep one-way `[activeKey]` and listen to the model's
+  built-in `(activeKeyChange)`). One source of selection, no twin output (dev-rule
+  4.12).
+- **BREAKING — `fold-view-nav`: `activeKey` is now a two-way `model`; the
+  `activeChange` output is removed.** Same migration as `fold-tabs`
+  (`[(activeKey)]`, or `(activeKeyChange)`). Link items are unaffected (their
+  active state comes from the router).
+- **BREAKING — `fold-data-table`: `selected` is now a two-way `model`; the
+  `selectionChange` output is removed.** Migrate `[selected]="s()"
+(selectionChange)="onSel($event)"` → `[(selected)]="s"` (or one-way `[selected]`
+  - `(selectedChange)`). The change payload is now `ReadonlySet<string | number>`
+    (was `Set`) — widen your handler's parameter type.
+- **`fold-paginator`: `pageSize` is now optional** — when omitted it defaults to
+  the first of `pageSizeOptions`, so the common case needs only `currentPage` +
+  `totalItems`. Non-breaking (a passed `pageSize` behaves as before).
+- **`fold-page-layout` gutter & gap defaults are now fluid.** They gain a real
+  home in `:root` (they were fixed inline fallbacks of `32px`):
+  `--fold-page-gutter: clamp(1rem, 4vw, 2rem)` (16→32px) and
+  `--fold-page-gap: clamp(1.25rem, 3vw, 2rem)` (20→32px) — the gutter scales more
+  than the gap (horizontal room is tighter on small screens). Override on any
+  ancestor (or the element) to retune; set `--fold-page-gutter: 32px` to restore
+  the old fixed value. Requires `fold-ng/tokens.css` (components fall back to
+  `32px` without it).
 - **`pnpm release` now regenerates the demo's generated changelog** after
   stamping `CHANGELOG.md`, so the gallery no longer shows a just-cut version
   under "Unreleased" in local dev (Pages already regenerated on deploy).
