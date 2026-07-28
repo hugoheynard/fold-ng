@@ -9,59 +9,172 @@
     wrap the content in a <code>fold-card</code>.
   </p>
 
-  <span class="gal-tag">a titled section — transparent, sits on the page</span>
-  <fold-page-section
-    title="Moyens de paiement"
-    description="Le moyen par défaut est débité au renouvellement."
+  <dev-playground [code]="code()">
+    <!-- header anatomy -->
+    <div class="np-field" params>
+      <span class="gal-tag">header</span>
+      <div class="ps-toggles">
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="showTitle()"
+          (click)="showTitle.set(!showTitle())"
+        >
+          title
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="showIcon()"
+          (click)="showIcon.set(!showIcon())"
+        >
+          icon
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="showDesc()"
+          (click)="showDesc.set(!showDesc())"
+        >
+          description
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="showActions()"
+          (click)="showActions.set(!showActions())"
+        >
+          sectionActions
+        </button>
+      </div>
+    </div>
+
+    @if (showIcon()) {
+    <div class="np-field" params>
+      <span class="gal-tag">iconTone</span>
+      <div class="ss-seg">
+        @for (t of tones; track t) {
+        <button
+          type="button"
+          [class.is-on]="iconTone() === t"
+          (click)="iconTone.set(t)"
+        >
+          {{ t }}
+        </button>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- body helpers -->
+    <div class="np-field" params>
+      <span class="gal-tag">body</span>
+      <div class="ps-toggles">
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="stack()"
+          (click)="stack.set(!stack())"
+        >
+          stack
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="bleed()"
+          (click)="bleed.set(!bleed())"
+        >
+          bleed
+        </button>
+      </div>
+    </div>
+
+    <fold-slider
+      params
+      label="headingLevel (aria-level)"
+      [min]="1"
+      [max]="6"
+      [step]="1"
+      [valueText]="'h' + headingLevel()"
+      [(value)]="headingLevel"
+    />
+
+    <!-- Preview: a real fold-page-layout frame so the gutter reads and `bleed`
+         visibly breaks the configured section out past its padded siblings. -->
+    <div class="ps-window">
+      <fold-page-layout title="Billing">
+        <fold-page-section
+          title="Overview"
+          description="A neighbour section, for context."
+        >
+          <p class="gal-body">A padded sibling — sits in the page gutter.</p>
+        </fold-page-section>
+
+        <fold-page-section
+          class="ps-demo"
+          [title]="showTitle() ? 'Payment methods' : undefined"
+          [icon]="showIcon() ? 'briefcase' : undefined"
+          [iconTone]="iconTone()"
+          [description]="showDesc() ? 'Charged on renewal.' : undefined"
+          [stack]="stack()"
+          [bleed]="bleed()"
+          [headingLevel]="headingLevel()"
+        >
+          @if (showActions()) {
+          <button
+            foldButton
+            sectionActions
+            size="sm"
+            emphasis="outline"
+            intent="neutral"
+          >
+            Add
+          </button>
+          } @if (stack()) {
+          <div class="gal-field">Cardholder name</div>
+          <div class="gal-field">Card number</div>
+          <div class="gal-field">Expiry</div>
+          } @else {
+          <p class="gal-body">
+            The content sits directly on the page — no box, no radius. Need a
+            box? wrap it in a <code>fold-card</code>.
+          </p>
+          }
+        </fold-page-section>
+
+        <fold-page-section title="Invoices">
+          <p class="gal-body">Another padded sibling.</p>
+        </fold-page-section>
+      </fold-page-layout>
+    </div>
+  </dev-playground>
+
+  <span class="gal-tag"
+    >custom header via [sectionHeader] — project a fold-element-title</span
   >
-    <button
-      foldButton
-      sectionActions
-      size="sm"
-      emphasis="outline"
-      intent="neutral"
-    >
-      Ajouter
-    </button>
+  <fold-page-section>
+    <fold-element-title
+      sectionHeader
+      variant="title"
+      icon="company"
+      title="Espace de travail"
+      subtitle="Réglages avancés"
+    />
     <p class="gal-body">
-      The content sits directly on the page — no box, no radius. The title is
-      the region's heading.
+      When the default <code>&lt;h2&gt;</code> isn't enough, project your own
+      header instead of <code>title</code> — the section stays a semantic
+      region, the header markup is yours.
     </p>
   </fold-page-section>
 
-  <span class="gal-tag">stack — form fields, evenly spaced</span>
-  <fold-page-section stack title="Réglages">
-    <div class="gal-field">Field A</div>
-    <div class="gal-field">Field B</div>
-    <div class="gal-field">Field C</div>
-  </fold-page-section>
-
-  <span class="gal-tag">need a box? compose with fold-card</span>
+  <span class="gal-tag">need a box? compose with fold-card (orthogonal)</span>
   <fold-page-section title="Documents">
     <fold-card surface="sunken" separators="both">
-      <fold-element-title variant="bar" title="Fichiers" cardHeader />
       <p class="gal-body">
         page-section gives the semantic section + heading; fold-card gives the
-        visual box. Orthogonal, composable — the section can hold a card, the
-        card never needs to know about the page.
+        visual box. The section can hold a card; the card never needs to know
+        about the page.
       </p>
     </fold-card>
-  </fold-page-section>
-
-  <span class="gal-tag">bleed — a full-width band amid padded sections</span>
-  <fold-page-section title="Padded section">
-    <p class="gal-body">Sits in the page gutter, like everything else.</p>
-  </fold-page-section>
-  <fold-page-section bleed>
-    <fold-card surface="sunken" radius="sm">
-      <p class="gal-body">
-        Spans the layout edge-to-edge — <code>bleed</code> cancels
-        <code>--fold-page-gutter</code> exactly (the same token the page pads
-        with), so it stays flush at every width and never overflows.
-      </p>
-    </fold-card>
-  </fold-page-section>
-  <fold-page-section title="Padded section">
-    <p class="gal-body">Back in the gutter.</p>
   </fold-page-section>
 </fold-page-layout>

@@ -4,3 +4,43 @@
   background: var(--fold-color-surface-sunken);
   font-size: 13px;
 }
+
+/* Preview frame — a real page backdrop so the fold-page-layout inside paints its
+   gutter and a `bleed` section visibly breaks out past its padded siblings. */
+.ps-window {
+  overflow: hidden;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-bg-page);
+}
+
+/* The section currently being configured — ringed so it's obvious which of the
+   three the controls drive. */
+.ps-demo {
+  outline: 1px dashed var(--fold-color-primary);
+  outline-offset: 3px;
+  border-radius: var(--fold-radius-sm);
+}
+
+/* Control chips — on/off pills (mirrors the other playground pages). */
+.ps-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ps-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-pill, 999px);
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ps-chip.is-on {
+  border-color: var(--fold-color-primary-border);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+}

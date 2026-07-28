@@ -1,29 +1,98 @@
-import { Component, ViewEncapsulation } from "@angular/core";
+import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { ComposedOfComponent } from "../../components/composed-of.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldButtonComponent,
   FoldCardComponent,
   FoldElementTitleComponent,
+  type FoldIconTone,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
+  FoldSliderComponent,
 } from "../../../src/public-api";
 
-/** `/page-section` — the `fold-page-section` gallery page. */
+/** `/page-section` — the `fold-page-section` gallery playground. */
 @Component({
   selector: "gal-page-section-page",
   standalone: true,
   imports: [
     KindBadgeComponent,
     ComposedOfComponent,
+    DevPlaygroundComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
     FoldCardComponent,
-    FoldElementTitleComponent,
     FoldButtonComponent,
+    FoldSliderComponent,
+    FoldElementTitleComponent,
   ],
   templateUrl: "./page-section.page.html",
   styleUrl: "./page-section.page.scss",
   encapsulation: ViewEncapsulation.None,
 })
-export default class PageSectionPage {}
+export default class PageSectionPage {
+  /** Header anatomy — each slot toggled so the section is explorable. */
+  protected readonly showTitle = signal(true);
+  protected readonly showIcon = signal(true);
+  /** Icon tint — drives the component's `iconTone` (fold-icon's `tone`). */
+  protected readonly iconTone = signal<FoldIconTone>("primary");
+  protected readonly tones = [
+    "secondary",
+    "primary",
+    "muted",
+    "faded",
+  ] as const satisfies readonly FoldIconTone[];
+  protected readonly showDesc = signal(true);
+  protected readonly showActions = signal(true);
+  /** The two orthogonal body helpers. */
+  protected readonly stack = signal(false);
+  protected readonly bleed = signal(false);
+  /** Heading depth exposed to assistive tech (`aria-level`). */
+  protected readonly headingLevel = signal(2);
+
+  /** The live snippet, rebuilt from the chosen inputs. */
+  protected readonly code = computed(() => {
+    const attrs: string[] = [];
+    if (this.showTitle()) {
+      attrs.push('title="Payment methods"');
+    }
+    if (this.showIcon()) {
+      attrs.push('icon="briefcase"');
+      if (this.iconTone() !== "secondary") {
+        attrs.push(`iconTone="${this.iconTone()}"`);
+      }
+    }
+    if (this.showDesc()) {
+      attrs.push('description="Charged on renewal."');
+    }
+    if (this.stack()) {
+      attrs.push("stack");
+    }
+    if (this.bleed()) {
+      attrs.push("bleed");
+    }
+    if (this.headingLevel() !== 2) {
+      attrs.push(`[headingLevel]="${this.headingLevel()}"`);
+    }
+
+    const open = attrs.length
+      ? ["<fold-page-section", ...attrs.map((a) => `  ${a}`), ">"]
+      : ["<fold-page-section>"];
+
+    const body: string[] = [];
+    if (this.showActions()) {
+      body.push("  <button sectionActions>Add</button>");
+    }
+    if (this.stack()) {
+      body.push(
+        '  <fold-input label="Cardholder" />',
+        '  <fold-input label="Card number" />',
+      );
+    } else {
+      body.push("  <p>… content sits on the page (no box) …</p>");
+    }
+
+    return [...open, ...body, "</fold-page-section>"].join("\n");
+  });
+}
