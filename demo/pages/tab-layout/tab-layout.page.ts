@@ -62,7 +62,7 @@ export default class TabLayoutPage {
       "    tabNav",
       '    [items]="items"',
       '    [activeKey]="tab()"',
-      '    (activeChange)="tab.set($event)"',
+      '    (activeKeyChange)="tab.set($event)"',
       "  />",
       "  <!-- untagged content → the panel the active tab drives -->",
       "  <app-tab-content />",

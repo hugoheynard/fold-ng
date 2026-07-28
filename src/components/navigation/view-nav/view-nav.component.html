@@ -54,7 +54,7 @@
         class="tab-bar-item"
         [class.is-active]="activeKey() === item.key"
         [attr.aria-current]="activeKey() === item.key ? 'page' : null"
-        (click)="activeChange.emit(item.key)"
+        (click)="activeKey.set(item.key)"
       >
         <ng-container
           [ngTemplateOutlet]="body"

@@ -5,7 +5,7 @@ import {
   computed,
   inject,
   input,
-  output,
+  model,
 } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
@@ -14,7 +14,7 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
 
 export type FoldViewNavItem = {
-  /** Unique key — identifies the item and is emitted by `activeChange`. */
+  /** Unique key — identifies the item; a button item writes it to `activeKey`. */
   key: string;
   /** Display label. */
   label: string;
@@ -40,9 +40,9 @@ export type FoldViewNavItem = {
  * *go somewhere*. Give each item a `link` (or `href`) and it renders a real
  * `<a>` — so cmd/middle-click opens a new tab, the URL is a deep link, and the
  * active item is driven automatically by `routerLinkActive` +
- * `aria-current="page"`. Without a link an item is a `<button>` that emits
- * `activeChange` and reads its active state from `activeKey` (view switching
- * with no route).
+ * `aria-current="page"`. Without a link an item is a `<button>` that drives the
+ * `activeKey` **two-way model** — bind `[(activeKey)]` for view switching with
+ * no route.
  *
  * **Navigation, not the tabs widget.** Reach for this when a tab routes / switches
  * views. When tabs toggle **layered panels in place** (same URL), use
@@ -86,10 +86,12 @@ export class FoldViewNavComponent {
   readonly items = input.required<FoldViewNavItem[]>();
 
   /**
-   * The active item's `key` — for **button** items (no `link`). Link items ignore
-   * it: their active state comes from the URL via `routerLinkActive`.
+   * The active item's `key`, as a **two-way model** — for **button** items (no
+   * `link`). Bind `[(activeKey)]` and a click writes the new key back; there is
+   * no separate change output (the model is the one way). Link items ignore it:
+   * their active state comes from the URL via `routerLinkActive`.
    */
-  readonly activeKey = input<string>("");
+  readonly activeKey = model<string>("");
 
   /** How the active item reads: accent underline, or accent fill. */
   readonly activeStyle = input<"underline" | "fill">("underline");
@@ -127,9 +129,6 @@ export class FoldViewNavComponent {
    * `surface` (a filled bar that carries its own rail background).
    */
   readonly background = input<"transparent" | "surface">("transparent");
-
-  /** Emits the `key` of a clicked **button** item (link items just navigate). */
-  readonly activeChange = output<string>();
 
   /** The nearest layout, if any — lets `direction="auto"` follow it. */
   private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });

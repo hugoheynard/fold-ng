@@ -59,7 +59,7 @@
         direction="auto"
         [items]="tabs"
         [activeKey]="active()"
-        (activeChange)="active.set($event)"
+        (activeKeyChange)="active.set($event)"
       />
       <div class="tl-demo-body">
         <span class="gal-tag">content for “{{ active() }}”</span>
@@ -84,7 +84,7 @@
         direction="auto"
         [items]="sectionTabs"
         [activeKey]="sectionActive()"
-        (activeChange)="sectionActive.set($event)"
+        (activeKeyChange)="sectionActive.set($event)"
       />
       <div class="tl-demo-body">
         <span class="gal-tag">section content for “{{ sectionActive() }}”</span>

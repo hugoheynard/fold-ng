@@ -18,7 +18,7 @@ import {
     [size]="size"
     [collapsed]="collapsed"
     [background]="background"
-    (activeChange)="picked = $event"
+    (activeKeyChange)="picked = $event"
   />`,
 })
 class HostComponent {

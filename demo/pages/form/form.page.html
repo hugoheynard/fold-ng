@@ -11,7 +11,7 @@
       activeStyle="fill"
       [items]="inputTabs"
       [activeKey]="inputTab()"
-      (activeChange)="inputTab.set($event)"
+      (activeKeyChange)="inputTab.set($event)"
     />
     @switch (inputTab()) { @case ("text") {
     <div class="gal-stack">

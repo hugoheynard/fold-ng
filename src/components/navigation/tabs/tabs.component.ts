@@ -5,7 +5,7 @@ import {
   ElementRef,
   inject,
   input,
-  output,
+  model,
   viewChildren,
 } from "@angular/core";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
@@ -53,15 +53,12 @@ export interface FoldTabsContext {
  * difference is **semantics** — use `fold-tabs` for in-page panel switching, and
  * `fold-view-nav` when the tabs actually navigate (route) between views.
  *
+ * `activeKey` is a two-way model — the single way to drive selection. Bind
+ * `[(activeKey)]` and the bar writes the new key back on click / arrow keys:
+ *
  * ```html
  * <fold-nav-layout>
- *   <fold-tabs
- *     nav
- *     #t="foldTabs"
- *     [tabs]="tabs"
- *     [activeKey]="tab()"
- *     (tabChange)="tab.set($event)"
- *   />
+ *   <fold-tabs nav #t="foldTabs" [tabs]="tabs" [(activeKey)]="tab" />
  *   <fold-tab-panel [tabs]="t" key="overview">…</fold-tab-panel>
  *   <fold-tab-panel [tabs]="t" key="settings">…</fold-tab-panel>
  * </fold-nav-layout>
@@ -83,8 +80,14 @@ export interface FoldTabsContext {
 export class FoldTabsComponent implements FoldTabsContext {
   /** The tabs to render, in order. */
   readonly tabs = input.required<FoldTabItem[]>();
-  /** The `key` of the active tab (the shown panel). */
-  readonly activeKey = input.required<string>();
+  /**
+   * The `key` of the active tab (the shown panel), as a **two-way model** — the
+   * single source of selection. Bind `[(activeKey)]` and the bar writes the new
+   * key back on click / arrow keys; to *react* to a change without a writeback,
+   * listen to the model's `(activeKeyChange)`. There is no separate change
+   * output — the model is the one way.
+   */
+  readonly activeKey = model.required<string>();
   /** How the active tab reads: accent underline, or accent fill. */
   readonly activeStyle = input<"underline" | "fill">("underline");
   /**
@@ -98,8 +101,6 @@ export class FoldTabsComponent implements FoldTabsContext {
   readonly collapsed = input(false, { transform: booleanAttribute });
   /** `surface` (filled bar, default) or `transparent`. */
   readonly background = input<"transparent" | "surface">("surface");
-  /** Emits the newly-selected tab's `key`. */
-  readonly tabChange = output<string>();
 
   /** The nearest layout, if any — lets `direction="auto"` follow it. */
   private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });
@@ -128,7 +129,13 @@ export class FoldTabsComponent implements FoldTabsContext {
   }
 
   protected select(key: string): void {
-    this.tabChange.emit(key);
+    this.commit(key);
+  }
+
+  /** Records a new selection by writing the `activeKey` model — the two-way
+   *  binding (or its `activeKeyChange`) carries it to the parent. */
+  private commit(key: string): void {
+    this.activeKey.set(key);
   }
 
   /**
@@ -167,7 +174,7 @@ export class FoldTabsComponent implements FoldTabsContext {
     if (key === undefined) {
       return;
     }
-    this.tabChange.emit(key);
+    this.commit(key);
     this.tabButtons()[target]?.nativeElement.focus();
   }
 }

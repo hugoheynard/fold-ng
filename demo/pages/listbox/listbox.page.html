@@ -50,8 +50,7 @@
       activeStyle="fill"
       background="transparent"
       [tabs]="tabs"
-      [activeKey]="tab()"
-      (tabChange)="tab.set($event)"
+      [(activeKey)]="tab"
     />
 
     <div class="sel-panels">

@@ -12,7 +12,7 @@
       activeStyle="fill"
       [items]="toastTabs"
       [activeKey]="toastTab()"
-      (activeChange)="toastTab.set($event)"
+      (activeKeyChange)="toastTab.set($event)"
     />
     <div class="gal-stack">
       @switch (toastTab()) { @case ("variants") {

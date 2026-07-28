@@ -52,14 +52,13 @@ export default class TabsPage {
   /* ── The generated snippet — the whole point: bar + one panel per key,
    *    coordinated by the #t ref. ─────────────────────────────────────────── */
   protected readonly code = computed(() => {
-    const attrs = ['#t="foldTabs"', '[tabs]="tabs"', '[activeKey]="active()"'];
+    const attrs = ['#t="foldTabs"', '[tabs]="tabs"', '[(activeKey)]="active"'];
     if (this.style() !== "underline") {
       attrs.push(`activeStyle="${this.style()}"`);
     }
     if (this.dir() !== "horizontal") {
       attrs.push(`direction="${this.dir()}"`);
     }
-    attrs.push('(tabChange)="active.set($event)"');
     return [
       "<!-- one tablist + one panel per key; the #t ref pairs them -->",
       "<fold-tabs",

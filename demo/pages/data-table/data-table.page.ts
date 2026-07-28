@@ -168,7 +168,7 @@ export default class DataTablePage {
   protected readonly selected = signal<ReadonlySet<string | number>>(new Set());
   protected readonly selectionLabel = (row: Member): string =>
     `Select ${row.name}`;
-  protected onSelection(next: Set<string | number>): void {
+  protected onSelection(next: ReadonlySet<string | number>): void {
     this.selected.set(next);
   }
   protected readonly selectedCount = computed(() => this.selected().size);
@@ -220,7 +220,7 @@ export default class DataTablePage {
       lines.push(
         "  selectable",
         '  [selected]="selected()"',
-        '  (selectionChange)="onSelection($event)"',
+        '  (selectedChange)="onSelection($event)"',
       );
     }
     if (this.pgZebra()) {

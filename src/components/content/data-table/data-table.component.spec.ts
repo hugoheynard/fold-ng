@@ -266,7 +266,7 @@ const SEL_COLUMNS: FoldTableColumn[] = [
       [selectionLabel]="selLabel"
       [density]="density()"
       [stickyFirst]="true"
-      (selectionChange)="onSelection($event)"
+      (selectedChange)="onSelection($event)"
     >
       <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
       <ng-template foldCell="note" let-row>note-{{ row.id }}</ng-template>
@@ -283,7 +283,7 @@ class SelectHostComponent {
   readonly density = signal<"comfortable" | "compact">("comfortable");
   readonly rowKey = (row: Person): string => row.id;
   readonly selLabel = (row: Person): string => `Select ${row.name}`;
-  onSelection(next: Set<string | number>): void {
+  onSelection(next: ReadonlySet<string | number>): void {
     this.selected.set(next);
   }
 }

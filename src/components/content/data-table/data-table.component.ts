@@ -10,6 +10,7 @@ import {
   inject,
   input,
   isDevMode,
+  model,
   output,
   signal,
 } from "@angular/core";
@@ -39,10 +40,11 @@ import {
  * owns the chrome (sticky sortable header, row tone accents, focus/click, the
  * mobile card layout, the loading + empty states).
  *
- * Selection stays controlled too: pass a `selected` set of row keys and handle
- * `selectionChange` — the table renders the checkbox column, the header
- * select-all (with an indeterminate state over the current rows), and the
- * selected-row tint, but never owns the set.
+ * Selection is a two-way model: bind `[(selected)]` with a set of row keys and
+ * the table writes the next set back on any checkbox toggle — it renders the
+ * checkbox column, the header select-all (with an indeterminate state over the
+ * current rows), and the selected-row tint. Bind it one-way (`[selected]`) to
+ * stay fully controlled.
  *
  * The narrow-screen behaviour is the parent's choice, not an imposed one, via
  * `mobileLayout`: `scroll` (default — stay tabular, scroll horizontally),
@@ -107,15 +109,18 @@ export class FoldDataTableComponent<T> {
 
   /** Renders the checkbox column + header select-all. */
   readonly selectable = input(false, { transform: booleanAttribute });
-  /** Controlled selection — the set of selected row keys. The parent owns it. */
-  readonly selected = input<ReadonlySet<string | number>>(new Set());
+  /**
+   * Selected row keys, as a **two-way model** — bind `[(selected)]` and the
+   * table writes the next set back on any toggle (it never mutates the set in
+   * place). One-way `[selected]` stays fully controlled. The one source of
+   * selection: there is no separate change output.
+   */
+  readonly selected = model<ReadonlySet<string | number>>(new Set());
   /** Accessible label for a row's checkbox, e.g. `(row) => row.name`. */
   readonly selectionLabel = input<(row: T) => string>();
   /** Per-instance label overrides (merged over the app-wide / English defaults). */
   readonly labels = input<Partial<FoldDataTableLabels>>();
 
-  /** Emits the next selection set on any checkbox toggle (never mutates input). */
-  readonly selectionChange = output<Set<string | number>>();
   /** Emits the clicked sortable column's `key`. */
   readonly sortChange = output<string>();
   readonly rowClick = output<T>();
@@ -292,7 +297,7 @@ export class FoldDataTableComponent<T> {
     } else {
       next.add(key);
     }
-    this.selectionChange.emit(next);
+    this.selected.set(next);
   }
 
   /** Select-all toggles every current row; if all are already in, clears them. */
@@ -307,7 +312,7 @@ export class FoldDataTableComponent<T> {
         next.delete(key);
       }
     });
-    this.selectionChange.emit(next);
+    this.selected.set(next);
   }
 
   labelFor(row: T): string {

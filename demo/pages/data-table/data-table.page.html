@@ -29,7 +29,7 @@
       selectable
       [selected]="selected()"
       [selectionLabel]="selectionLabel"
-      (selectionChange)="onSelection($event)"
+      (selectedChange)="onSelection($event)"
       (sortChange)="onSort($event)"
       (rowClick)="clicked.set($event.name)"
     >
@@ -286,7 +286,7 @@
         [selectionLabel]="selectionLabel"
         [mobileLayout]="pgMobile()"
         [toolbarSurface]="pgSurface()"
-        (selectionChange)="onSelection($event)"
+        (selectedChange)="onSelection($event)"
         (sortChange)="onSort($event)"
         (rowClick)="clicked.set($event.name)"
       >

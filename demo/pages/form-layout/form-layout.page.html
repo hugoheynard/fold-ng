@@ -12,7 +12,7 @@
       activeStyle="fill"
       [items]="formTabs"
       [activeKey]="formTab()"
-      (activeChange)="formTab.set($event)"
+      (activeKeyChange)="formTab.set($event)"
     />
     <div class="gal-stack">
       @switch (formTab()) { @case ("profile") {

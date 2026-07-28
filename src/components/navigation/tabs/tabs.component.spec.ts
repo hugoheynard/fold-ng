@@ -10,9 +10,8 @@ import { FoldTabPanelComponent } from "./tab-panel.component";
   template: `<fold-tabs
       #t="foldTabs"
       [tabs]="tabs"
-      [activeKey]="active()"
+      [(activeKey)]="active"
       [direction]="dir()"
-      (tabChange)="active.set($event)"
     />
     <fold-tab-panel [tabs]="t" key="a" data-p="a">Panel A</fold-tab-panel>
     <fold-tab-panel [tabs]="t" key="b" data-p="b">Panel B</fold-tab-panel>

@@ -9,7 +9,7 @@
     direction="horizontal"
     background="surface"
     activeStyle="underline"
-    (activeChange)="active.set($event)"
+    (activeKeyChange)="active.set($event)"
   />
   <div class="pnl-content">
     Active tab: <strong>{{ active() }}</strong>

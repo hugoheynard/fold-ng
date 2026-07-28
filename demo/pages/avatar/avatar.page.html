@@ -8,7 +8,7 @@
       background="transparent"
       size="comfortable"
       [activeStyle]="'fill'"
-      (activeChange)="avatarTab.set($event)"
+      (activeKeyChange)="avatarTab.set($event)"
     />
     @switch (avatarTab()) { @case ("avatar") {
     <fold-page-section

@@ -78,10 +78,9 @@
           tabNav
           #t="foldTabs"
           [tabs]="tabs"
-          [activeKey]="active()"
+          [(activeKey)]="active"
           [activeStyle]="style()"
           direction="auto"
-          (tabChange)="active.set($event)"
         />
 
         <fold-tab-panel [tabs]="t" key="overview" class="tp-panel">
