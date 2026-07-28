@@ -128,6 +128,18 @@ leave-balance-display, configurable-tab-bar, etc.
       from a **real use-case** (the PIM), so it earns its place. Composes inside
       `fold-panel-host` / a future `fold-dialog`.
 
+- [ ] **Explore `fold-panel-footer` — the action bar for panels/dialogs.** Pairs
+      with `fold-panel-header` the way a footer pairs with a header: today every
+      panel hand-rolls a `<footer class="foot">` with a right-aligned
+      Annuler/Confirmer button pair (e.g. LaFolieDouce PIM's
+      `tva-regime-form-panel`). A primitive would carry the tokenised top border,
+      padding, sticky-to-panel-bottom behaviour, and button alignment
+      (`align="end" | "between" | "start"`), with a projected slot for the
+      buttons. **Probe first:** is it a component, or just a `fold-panel-footer`
+      layout/utility class? Count the real footers across consumers before
+      locking. If it lands, it composes inside `fold-panel-host` and the future
+      `fold-dialog`, and `fold-danger-zone` drops its danger button into it.
+
 ## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4) ✅ DONE
 
 ✅ Done: `expanded` now defaults to `undefined` (unset) and the effective state
@@ -557,6 +569,22 @@ committed work; the point is to learn before we lock anything.
   fast-follow. **Decide overlay-vs-entry-point in a short design note before
   coding** (a real architecture fork). Separate initiative from the components.
 
+- **[2026-07-28] Tokenised scrollbar styling — including thumb radius.** Fold
+  themes everything else via tokens, but scrollbars are still browser-default,
+  which reads as un-designed inside the glass shell/panels. Want a house
+  scrollbar (track/thumb colour, thumb width, and **radius**) driven by tokens
+  (`--fold-scrollbar-*`), opt-in on the scroll containers we own (panel body,
+  data-table, shell rails). **The catch to probe:** the standard
+  `scrollbar-width` / `scrollbar-color` props (Firefox + Chromium) give colour
+  and thin/auto **but no radius** — a rounded thumb only exists via the
+  non-standard `::-webkit-scrollbar*` pseudo-elements (WebKit/Blink), and the
+  two can't be mixed on the same element cleanly. Decide the strategy:
+  (a) standard props only (colour + thin, no radius, universal), or
+  (b) a `@supports selector(::-webkit-scrollbar)` layer that adds the radius
+  on Blink/WebKit and degrades to the standard props elsewhere. Also decide
+  **global vs opt-in** (styling every scroller vs a `.fold-scroll` utility /
+  per-component flag) — global risks fighting consumer apps. Ship the tokens
+  first; wire the owned scroll containers once the strategy is picked.
 - **DX sweep across the components.** AppShell now uses the house pattern —
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining
