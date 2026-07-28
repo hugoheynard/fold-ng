@@ -16,7 +16,7 @@
 .ni-field.ni-outside {
   display: flex;
   align-items: stretch;
-  gap: 6px;
+  gap: var(--fold-space-sm);
 }
 .ni-box {
   position: relative;

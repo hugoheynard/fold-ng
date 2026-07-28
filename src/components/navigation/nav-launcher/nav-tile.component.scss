@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: var(--fold-space-sm);
   aspect-ratio: 1;
   padding: var(--fold-space-md);
   border-radius: var(--fold-radius-lg);

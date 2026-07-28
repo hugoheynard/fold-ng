@@ -115,7 +115,7 @@
 }
 
 .cb-msg {
-  padding-left: calc(var(--cb-size) + 8px);
+  padding-left: calc(var(--cb-size) + var(--fold-space-sm));
   font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
 }

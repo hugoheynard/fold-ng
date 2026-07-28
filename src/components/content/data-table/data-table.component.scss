@@ -108,7 +108,7 @@
 .folddt-th-plain {
   display: inline-flex;
   align-items: center;
-  padding: var(--fold-space-md) 18px;
+  padding: var(--fold-space-md) var(--fold-space-lg);
   color: var(--fold-color-text-muted);
   font-size: 10.5px;
   font-weight: 700;
@@ -117,7 +117,7 @@
 }
 
 .folddt-th-sort {
-  gap: 6px;
+  gap: var(--fold-space-sm);
   width: 100%;
   border: 0;
   background: transparent;
@@ -184,7 +184,7 @@
 /* Cells — the primary column is a `<th scope="row">`, so neutralise the UA's
    bold + centre and let it read exactly like a `<td>`. */
 .folddt-cell {
-  padding: 11px 18px;
+  padding: var(--fold-space-md) var(--fold-space-lg);
   color: var(--fold-color-text);
   font-weight: inherit;
   text-align: left;
@@ -276,11 +276,11 @@
 
 /* ── Density ── */
 .folddt--compact .folddt-cell {
-  padding: 6px 14px;
+  padding: var(--fold-space-sm) var(--fold-space-md);
 }
 .folddt--compact .folddt-th-sort,
 .folddt--compact .folddt-th-plain {
-  padding: var(--fold-space-sm) 14px;
+  padding: var(--fold-space-sm) var(--fold-space-md);
 }
 .folddt--compact .folddt-cell--select {
   padding-left: var(--fold-space-md);
@@ -392,14 +392,14 @@
   .folddt--cards tbody {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--fold-space-sm);
   }
   .folddt--cards .folddt-row {
     display: block;
     border: 1px solid var(--fold-color-border-subtle);
     border-radius: var(--fold-radius-md);
     background: var(--fold-color-surface-sunken);
-    padding: var(--fold-space-xs) 14px var(--fold-space-sm);
+    padding: var(--fold-space-xs) var(--fold-space-md) var(--fold-space-sm);
     box-shadow: var(--fold-shadow-sm);
   }
   .folddt--cards .folddt-row.tone-warning {
@@ -440,7 +440,7 @@
   }
   .folddt--cards .folddt-cell.is-primary {
     justify-content: flex-start;
-    padding: var(--fold-space-sm) 0 10px;
+    padding: var(--fold-space-sm) 0 var(--fold-space-sm);
     border-bottom: 1px solid var(--fold-color-border);
   }
   .folddt--cards .folddt-cell.is-primary::before {
@@ -476,6 +476,6 @@
   .folddt--custom .folddt-cardlist {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--fold-space-sm);
   }
 }

@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: var(--fold-space-sm);
   padding: var(--fold-space-4xl) var(--fold-space-2xl);
 }
 .empty-icon {

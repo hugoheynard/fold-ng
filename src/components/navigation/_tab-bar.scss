@@ -37,8 +37,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 6px var(--fold-space-sm);
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-sm) var(--fold-space-sm);
   background: none;
   border: none;
   color: var(--fold-color-text-muted);
@@ -67,15 +67,15 @@
 /* Comfortable — a prominent, page-level bar (vs the compact default). */
 .size-comfortable .tab-bar-item {
   flex: 0 1 auto;
-  gap: 10px;
-  padding: 11px var(--fold-space-lg);
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-md) var(--fold-space-lg);
   font-size: var(--fold-text-sm);
 }
 /* Vertical needs its own comfortable step: the `.dir-vertical .tab-bar-item`
    rule below resets padding/font at equal specificity, so without this a
    comfortable rail would look identical to a compact one. */
 .dir-vertical.size-comfortable .tab-bar-item {
-  padding: var(--fold-space-md) 14px;
+  padding: var(--fold-space-md) var(--fold-space-md);
   font-size: var(--fold-text-md);
 }
 
@@ -115,8 +115,8 @@
   flex: none;
   justify-content: flex-start;
   text-align: left;
-  padding: 9px var(--fold-space-md);
-  gap: 10px;
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  gap: var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
   font-size: var(--fold-text-sm);
   font-weight: 500;
@@ -159,7 +159,7 @@
 .is-collapsed .tab-bar-item.is-active {
   flex: 1 1 auto;
   min-width: 0;
-  gap: 7px;
+  gap: var(--fold-space-sm);
 }
 .is-collapsed .tab-bar-item.is-active .tab-bar-label {
   overflow: hidden;
@@ -269,7 +269,7 @@
   .dir-vertical .tab-bar-item.is-active {
     flex: 1 1 auto;
     min-width: 0;
-    gap: 6px;
+    gap: var(--fold-space-sm);
     padding: var(--fold-space-sm) var(--fold-space-md);
   }
   .dir-vertical .tab-bar-item.is-active .tab-bar-label {

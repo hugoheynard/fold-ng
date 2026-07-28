@@ -36,7 +36,7 @@
   left: 0;
   z-index: 60;
   margin: var(--fold-space-sm, 8px);
-  padding: var(--fold-space-sm) 14px;
+  padding: var(--fold-space-sm) var(--fold-space-md);
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-md);
   background: var(--fold-color-surface-card);

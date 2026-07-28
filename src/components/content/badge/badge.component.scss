@@ -5,7 +5,7 @@
   font-size: var(--fold-text-xs);
   font-weight: 500;
   white-space: nowrap;
-  padding: 1px 7px;
+  padding: 1px var(--fold-space-sm);
 }
 :host(.pill) {
   border-radius: var(--fold-radius-pill);

@@ -13,7 +13,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: var(--fold-space-sm);
   cursor: pointer;
   border: 1px solid var(--fold-color-border);
   color: var(--fold-color-text-muted);
@@ -33,7 +33,7 @@
 /* Segmented — equal-width rounded rectangles. */
 .choice-row.segmented .choice {
   flex: 1;
-  padding: 5px 0;
+  padding: var(--fold-space-xs) 0;
   text-align: center;
   text-transform: capitalize;
   background: var(--fold-color-surface-subtle);

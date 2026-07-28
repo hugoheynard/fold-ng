@@ -27,8 +27,8 @@
   z-index: 1;
   display: flex;
   align-items: flex-start;
-  gap: 11px;
-  padding: 7px 6px;
+  gap: var(--fold-space-md);
+  padding: var(--fold-space-sm) var(--fold-space-sm);
   border: 0;
   background: none;
   border-radius: var(--fold-radius-sm);
@@ -132,7 +132,7 @@
 .tlv.date-inline .txt {
   flex-direction: row;
   align-items: baseline;
-  gap: 6px;
+  gap: var(--fold-space-sm);
 }
 
 /* ── Horizontal: a progress stepper (dots on a filled line) ── */
@@ -165,7 +165,7 @@
   flex: 1;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: var(--fold-space-sm);
   padding: 0;
   text-align: center;
 }
@@ -200,7 +200,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: var(--fold-space-md);
-    padding: 6px 0;
+    padding: var(--fold-space-sm) 0;
     text-align: left;
   }
   .tlv.h .txt {

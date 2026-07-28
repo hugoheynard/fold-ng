@@ -5,7 +5,7 @@
 .lnk {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--fold-space-sm);
   min-width: 0;
   padding: 0;
   border: 0;

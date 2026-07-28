@@ -14,7 +14,7 @@
 .cc-foot {
   display: flex;
   justify-content: center;
-  padding: 14px var(--fold-space-lg);
+  padding: var(--fold-space-md) var(--fold-space-lg);
   border-top: 1px solid var(--fold-color-border-subtle);
 }
 .cc-foot:empty {

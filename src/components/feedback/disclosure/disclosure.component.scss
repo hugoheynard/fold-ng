@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--fold-space-md);
-  padding: 14px var(--fold-space-lg);
+  padding: var(--fold-space-md) var(--fold-space-lg);
   border: none;
   background: var(--fold-disclosure-summary-bg, transparent);
   color: var(--fold-disclosure-summary-color, var(--fold-color-text));

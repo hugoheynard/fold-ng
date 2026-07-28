@@ -42,7 +42,7 @@ $sizes: (
  *  ground). The caller adds its own focus-shadow reset. */
 @mixin panel {
   height: auto;
-  padding: 7px 10px;
+  padding: var(--fold-space-sm) var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-raised);
 }

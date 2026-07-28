@@ -12,7 +12,7 @@
      button sitting mid-row. */
   align-items: center;
   gap: var(--fold-space-sm);
-  padding: 10px var(--fold-space-md);
+  padding: var(--fold-space-sm) var(--fold-space-md);
   border: 1px solid var(--_border);
   border-radius: var(--fold-radius-md);
   background: var(--_surface);

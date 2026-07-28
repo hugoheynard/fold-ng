@@ -12,7 +12,7 @@
   padding: var(--fold-space-xl);
 }
 :host(.p-sm) {
-  padding: 10px;
+  padding: var(--fold-space-sm);
 }
 :host(.p-md) {
   padding: var(--fold-space-lg);

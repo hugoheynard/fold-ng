@@ -7,8 +7,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 18px 14px;
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-lg) var(--fold-space-md);
   background: var(--fold-color-surface-hover);
   border: 1px dashed var(--fold-color-border);
   border-radius: var(--fold-radius-md);

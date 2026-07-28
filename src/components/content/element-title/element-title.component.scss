@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--fold-space-sm);
 }
 .et-label {
   min-width: 0;
@@ -43,7 +43,7 @@
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--fold-space-sm);
 }
 .et-action:empty {
   display: none;

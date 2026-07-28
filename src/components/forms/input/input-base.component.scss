@@ -3,7 +3,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--fold-space-xs);
   min-width: 0;
 }
 

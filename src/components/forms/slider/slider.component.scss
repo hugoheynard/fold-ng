@@ -7,7 +7,7 @@
 .sl {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--fold-space-sm);
 }
 
 .sl-head {

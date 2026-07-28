@@ -127,7 +127,7 @@
 /* `follow` pill: mirror fold-badge's shape/type, tinted from the item's accent
    with the same soft surface/border/text mix the item uses for its hovers. */
 .mi-badge-follow {
-  padding: 1px 7px;
+  padding: 1px var(--fold-space-sm);
   border-radius: var(--fold-radius-pill);
   font-size: var(--fold-text-xs);
   font-weight: 500;

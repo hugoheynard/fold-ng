@@ -10,7 +10,7 @@
   /* border-box so the vertical padding stays inside the rail height instead of
      overflowing the bottom (which the shell cell clips → footer looks flush). */
   box-sizing: border-box;
-  padding: 10px 0;
+  padding: var(--fold-space-sm) 0;
   gap: var(--fold-space-xs);
   /* Background follows the rail's depth (`level`): a primary rail and a
      secondary (workspace) rail read as distinct layers. */

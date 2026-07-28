@@ -41,7 +41,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-left: 6px;
+  margin-left: var(--fold-space-sm);
   border-radius: var(--fold-radius-round);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);

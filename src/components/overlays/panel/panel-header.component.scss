@@ -18,7 +18,7 @@
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--fold-space-xs);
   min-width: 0;
 }
 .ph__titleRow {
@@ -48,7 +48,7 @@
   font-variant-numeric: tabular-nums;
 }
 .ph__desc {
-  margin-top: 6px;
+  margin-top: var(--fold-space-sm);
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
   line-height: 1.5;

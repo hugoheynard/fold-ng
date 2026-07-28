@@ -22,7 +22,7 @@
 /* Expanded: a section header — colour dot + uppercase label. */
 :host-context(fold-menu.expanded) {
   justify-content: flex-start;
-  gap: 7px;
+  gap: var(--fold-space-sm);
   height: auto;
   padding: var(--fold-space-md) var(--fold-space-md) var(--fold-space-xs);
 }
