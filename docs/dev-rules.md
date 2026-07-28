@@ -211,6 +211,26 @@ value where `valueChange: T | null` would force a narrow (§ documented in 0.5.2
 That is not a second way to read the same value — it is a narrower event. A raw
 `MouseEvent` echo of a model write is **not** such a case: drop it.
 
+4.13 **A functional gap belongs in the primitive — expose an input, don't reach
+in with CSS.** When a consumer needs to change how a primitive looks (an icon's
+tint, a control's density), that capability goes on the **primitive** as a typed
+input, offered once to every consumer — not worked around by each consumer with a
+class that colours / sizes the primitive's internals from outside. Reaching in
+couples the consumer to the child's DOM and reinvents the same hack everywhere.
+_Why:_ `fold-page-section` tinted its heading icon with a reach-in
+`.section-title-icon { color }`; the fix was to give `fold-icon` a `tone` input
+and **forward** it (`[tone]="iconTone()"`). **Not every style is such a gap —
+leave it in the consumer's CSS when:** the primitive should **inherit its
+context** (an icon in a button / callout takes `currentColor` — the correct
+default; don't pin a tone), the value is **state- or variant-driven** (a menu
+item's active icon, a danger row), or it's a **composite** the primitive can't
+express (an icon _tile_ with a background, a button surface). The tell: a
+**static, semantic** style of a bare primitive that the parent would hardcode →
+promote it to an input; anything contextual, stateful, or composite stays in the
+consumer. Layout that positions the primitive in _its own_ flow (a flex-shrink
+guard on a projected icon) also stays with the consumer — that is the consumer's
+concern, not the primitive's look.
+
 ---
 
 ## 5 · Portability (no app leaks)
