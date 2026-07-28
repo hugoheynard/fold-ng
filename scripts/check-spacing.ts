@@ -12,11 +12,11 @@ import { fileURLToPath } from "node:url";
  * 3xl 32 · 4xl 40 · 5xl 48`); a raw px there is either an exact match to snap to
  * a token, or off-grid drift to snap to the nearest step.
  *
- * Advisory by design: unlike colour (a finite, fully-migrated set), spacing has
- * a long tail of legitimate one-offs, so this **warns and exits 0** — a burn-down
- * list, not a blocker. Pass `--strict` to exit non-zero (for a future CI gate,
- * once the list is drained). Positioning offsets (`top`/`left`/`inset`…) and
- * hairlines (≤2px) are intentionally out of scope.
+ * Hard gate: the burn-down is drained, so any bare px reintroduced into the
+ * rhythm **fails** (exit 1). A component's public theming default — a px inside
+ * a `var(--fold-<c>-*, …)` fallback — is its spacing API, not a bare literal, so
+ * it is stripped before the check. Positioning offsets (`top`/`left`/`inset`…)
+ * and hairlines (≤2px) are intentionally out of scope.
  */
 
 const PKG_ROOT = resolve(import.meta.dirname, "..");
@@ -58,7 +58,9 @@ export function findRawSpacing(): Finding[] {
       if (!m) {
         return;
       }
-      const value = m[4] ?? "";
+      // Strip `var(...)` first: a px inside a component-token fallback is that
+      // component's public theming default (its spacing API), not a bare literal.
+      const value = (m[4] ?? "").replace(/var\([^)]*\)/g, "");
       // A value fully delegated to a token is fine, even mixed with a hairline.
       if (RAW_PX.test(value)) {
         findings.push({
@@ -90,11 +92,9 @@ function main(): void {
     console.warn(`    ${f.line}: ${f.text}`);
   }
   console.warn(
-    "\n  Advisory (a burn-down list, not a blocker). Off-grid values (6/10/14…) snap to the nearest step; a genuine one-off stays an explicit literal.",
+    "\n  Snap each to a --fold-space-* token (off-grid → nearest step). A themeable\n  default belongs in a var(--fold-<component>-*, …) fallback, not a bare literal.",
   );
-  if (argv.includes("--strict")) {
-    process.exitCode = 1;
-  }
+  process.exitCode = 1;
 }
 
 // Run only when invoked directly, not when a spec imports findRawSpacing.

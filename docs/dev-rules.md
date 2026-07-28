@@ -39,13 +39,14 @@ does not write its own `box-shadow` geometry. Shadows are theme-invariant
 grid** (`xs 4 · sm 8 · md 12 · lg 16 · xl 20 · 2xl 24 · 3xl 32 · 4xl 40 · 5xl
 48`) — tight, no half-steps: the constraint is the point. `--fold-motion-*` for
 duration. New styles use the scale; an off-grid one-off (6/10/14…) snaps to the
-nearest step unless it holds a real alignment, then it stays an explicit literal.
-_Measured (advisory):_ `pnpm run lint:spacing` lists every raw-px `padding` /
-`margin` / `gap` under `src/components` — a **burn-down list, not a blocker**
-(unlike colour, spacing has a legitimate long tail). Retokenise on touch; `--strict`
-flips it to a hard gate once the list is drained.
-⚠️ _Known debt:_ many older styles still hard-code px spacing and `0.18s ease`
-motion — see `lint:spacing`. Motion is not yet measured.
+nearest step. A value meant to be _themeable_ belongs in a
+`var(--fold-<component>-*, …)` fallback (its default), not a bare literal.
+_Enforced:_ `pnpm run lint:spacing` **fails** on any bare raw-px `padding` /
+`margin` / `gap` under `src/components` (var() theming defaults and ≤2px
+hairlines are out of scope). Wired into pre-push + CI. The burn-down is drained
+— all rhythm px are tokenised.
+⚠️ _Known debt:_ `0.18s ease` motion is still hard-coded in many styles and is
+**not yet measured** (no `lint:motion` gate). Spacing is done.
 
 1.6 **The type scale is absolute px (`--fold-text-*`), on purpose.** The app root
 is 14px, so `rem` would render the ref ~12% small. This is a **deliberate
@@ -456,7 +457,7 @@ accepted-with-rationale.
 | 4   | No elevation/shadow tokens → per-component `rgba` shadows                     | 1.4     | ✅     |
 | 5   | TS exports half `Fold`-prefixed                                               | 3.3     | ✅     |
 | 6   | Hard-coded French aria/labels in a "reusable" package                         | 5.1     | ⏳     |
-| 7   | `--fold-space/motion` scales exist but ~unused                                | 1.5     | ⏳     |
+| 7   | `--fold-space` scale enforced (`lint:spacing`); motion still ~unused          | 1.5     | 🟡     |
 | 8   | Focus-trap doesn't `inert` the background                                     | 6.2     | ⏳     |
 | 9   | Panel close hand-rolls an `<svg>`                                             | 4.7     | ⏳     |
 | 10  | px type scale hurts user-zoom a11y                                            | 1.6     | 📌     |

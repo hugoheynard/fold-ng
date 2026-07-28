@@ -11,8 +11,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 - **Larger spacing tokens: `--fold-space-{2xl,3xl,4xl,5xl}`** (24 · 32 · 40 ·
   48px) — the 4px-grid scale extended upward for section padding, page gaps and
   hero bands (it capped at `xl` 20px). Catalogued (`FoldSpaceToken`) + contract-
-  tested. A new **advisory** `pnpm run lint:spacing` lists raw-px
-  `padding`/`margin`/`gap` under `src/components` to burn down toward the scale.
+  tested. A new `pnpm run lint:spacing` gate **fails** on any bare raw-px
+  `padding`/`margin`/`gap` under `src/components` (var() theming defaults and
+  ≤2px hairlines excepted); wired into pre-push + CI, alongside the now-enforced
+  `api:check`.
 - **`fold-icon` gains a `tone` input** (`primary` · `secondary` · `muted` ·
   `faded`) — a semantic tint for the icon. Unset (default) keeps the current
   behaviour: the icon inherits `currentColor`, matching its context. Set it to
@@ -60,6 +62,12 @@ All notable changes to **fold-ng** are documented here. The format follows
 (selectionChange)="onSel($event)"` → `[(selected)]="s"` (or one-way `[selected]`
   - `(selectedChange)`). The change payload is now `ReadonlySet<string | number>`
     (was `Set`) — widen your handler's parameter type.
+- **Spacing rhythm fully tokenised** — every bare raw-px `padding`/`margin`/`gap`
+  in `src/components` (136 declarations) now resolves through a `--fold-space-*`
+  token. Exact-grid values are renamed 1:1 (no visual change); off-grid drift
+  (6/10/14/18/26…) is snapped to the nearest step (max ±2px). Computed pixels are
+  unchanged except for the snapped off-grid handful. Themeable component defaults
+  keep their px inside `var(--fold-<component>-*, …)` fallbacks.
 - **`fold-paginator`: `pageSize` is now optional** — when omitted it defaults to
   the first of `pageSizeOptions`, so the common case needs only `currentPage` +
   `totalItems`. Non-breaking (a passed `pageSize` behaves as before).

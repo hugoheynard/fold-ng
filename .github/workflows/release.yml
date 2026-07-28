@@ -63,6 +63,8 @@ jobs:
       - run: pnpm run lint
       - run: pnpm exec tsc --noEmit -p tsconfig.app.json
       - run: pnpm run lint:templates
+      - run: pnpm run lint:spacing
+      - run: pnpm run api:check
       - run: pnpm test
 
       # Browser tier (native popover / focus / positioning) — same as ci.yml, so

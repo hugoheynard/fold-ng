@@ -9,6 +9,9 @@ echo "→ eslint (src dev)"
 pnpm run lint
 echo "→ strictTemplates gate"
 pnpm run lint:templates   # provided once check-ui-templates is vendored (§3.5)
+echo "→ spacing + api-surface gates"
+pnpm run lint:spacing
+pnpm run api:check
 echo "→ vitest"
 pnpm test
 echo "✓ Local quality gate passed — pushing"

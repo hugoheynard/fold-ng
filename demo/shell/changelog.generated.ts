@@ -40,7 +40,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     counts: {
       Added: 4,
       Fixed: 1,
-      Changed: 8,
+      Changed: 9,
     },
     breaking: 4,
     groups: [
@@ -81,20 +81,20 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
                 value: ") + contract- tested. A new ",
               },
               {
-                kind: "strong",
-                value: "advisory",
-              },
-              {
-                kind: "text",
-                value: " ",
-              },
-              {
                 kind: "code",
                 value: "pnpm run lint:spacing",
               },
               {
                 kind: "text",
-                value: " lists raw-px ",
+                value: " gate ",
+              },
+              {
+                kind: "strong",
+                value: "fails",
+              },
+              {
+                kind: "text",
+                value: " on any bare raw-px ",
               },
               {
                 kind: "code",
@@ -126,7 +126,16 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               },
               {
                 kind: "text",
-                value: " to burn down toward the scale.",
+                value:
+                  " (var() theming defaults and ≤2px hairlines excepted); wired into pre-push + CI, alongside the now-enforced ",
+              },
+              {
+                kind: "code",
+                value: "api:check",
+              },
+              {
+                kind: "text",
+                value: ".",
               },
             ],
             breaking: false,
@@ -765,6 +774,70 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               },
             ],
             breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Spacing rhythm fully tokenised",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— every bare raw-px ",
+              },
+              {
+                kind: "code",
+                value: "padding",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "margin",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "gap",
+              },
+              {
+                kind: "text",
+                value: " in ",
+              },
+              {
+                kind: "code",
+                value: "src/components",
+              },
+              {
+                kind: "text",
+                value: " (136 declarations) now resolves through a ",
+              },
+              {
+                kind: "code",
+                value: "--fold-space-*",
+              },
+              {
+                kind: "text",
+                value:
+                  " token. Exact-grid values are renamed 1:1 (no visual change); off-grid drift (6/10/14/18/26…) is snapped to the nearest step (max ±2px). Computed pixels are unchanged except for the snapped off-grid handful. Themeable component defaults keep their px inside ",
+              },
+              {
+                kind: "code",
+                value: "var(--fold-<component>-*, …)",
+              },
+              {
+                kind: "text",
+                value: " fallbacks.",
+              },
+            ],
+            breaking: false,
           },
           {
             lead: [
