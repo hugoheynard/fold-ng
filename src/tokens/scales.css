@@ -54,6 +54,13 @@
   --fold-space-md: 12px;
   --fold-space-lg: 16px;
   --fold-space-xl: 20px;
+  /* Larger steps on the 4px grid — section padding, page-level gaps, hero bands.
+     The scale stays tight (no half-steps): a 4px-grid rhythm is the constraint;
+     rare off-grid needs stay explicit literals, not tokens. */
+  --fold-space-2xl: 24px;
+  --fold-space-3xl: 32px;
+  --fold-space-4xl: 40px;
+  --fold-space-5xl: 48px;
 
   /* Rail-width scale — the shared widths for the nav-rail hierarchy, named to
      pair 1:1 with the `--fold-color-bg-rail-*` colour tokens (primary app menu →

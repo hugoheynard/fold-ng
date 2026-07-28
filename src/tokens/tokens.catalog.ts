@@ -125,7 +125,17 @@ export const FOLD_ICON_SIZE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
 export type FoldIconSizeToken = (typeof FOLD_ICON_SIZE_TOKENS)[number];
 
 /** Space (gap / padding / margin) scale. */
-export const FOLD_SPACE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
+export const FOLD_SPACE_TOKENS = [
+  "xs",
+  "sm",
+  "md",
+  "lg",
+  "xl",
+  "2xl",
+  "3xl",
+  "4xl",
+  "5xl",
+] as const;
 
 export type FoldSpaceToken = (typeof FOLD_SPACE_TOKENS)[number];
 

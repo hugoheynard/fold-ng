@@ -917,9 +917,14 @@ The blocker to the "reusable across projects" promise (rule 5.1).
 
 **4 · Discipline still aspirational (Good practices 8.5→9).**
 
-- [ ] Retokenise the hard-coded px spacing + `0.18s ease` motion to
-      `--fold-space-*` / `--fold-motion-*`, then a lint guard (rule 1.5) so it's
-      enforced like colour — no new debt.
+- [~] Retokenise the hard-coded px spacing + `0.18s ease` motion to
+  `--fold-space-*` / `--fold-motion-*`, then a lint guard (rule 1.5) so it's
+  enforced like colour — no new debt. **Started:** the space scale gained
+  `2xl/3xl/4xl/5xl` (24–48px, was capped at 20) and an **advisory**
+  `lint:spacing` guard lists the raw-px `padding`/`margin`/`gap` burn-down
+  (~130). **Remaining:** drain the list (exact matches snap safely; off-grid
+  6/10/14 snap to nearest per-case), then `--strict` the guard. Motion not yet
+  measured.
 
 **5 · Proof + release (DX 8.5→9.5, Modernité 8.5→9).**
 

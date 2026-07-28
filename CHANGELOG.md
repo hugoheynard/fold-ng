@@ -8,6 +8,11 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **Larger spacing tokens: `--fold-space-{2xl,3xl,4xl,5xl}`** (24 · 32 · 40 ·
+  48px) — the 4px-grid scale extended upward for section padding, page gaps and
+  hero bands (it capped at `xl` 20px). Catalogued (`FoldSpaceToken`) + contract-
+  tested. A new **advisory** `pnpm run lint:spacing` lists raw-px
+  `padding`/`margin`/`gap` under `src/components` to burn down toward the scale.
 - **`fold-icon` gains a `tone` input** (`primary` · `secondary` · `muted` ·
   `faded`) — a semantic tint for the icon. Unset (default) keeps the current
   behaviour: the icon inherits `currentColor`, matching its context. Set it to

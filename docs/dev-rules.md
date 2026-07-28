@@ -35,12 +35,17 @@ _Enforced:_ `tokens.contract.spec.ts › components consume tokens only`.
 does not write its own `box-shadow` geometry. Shadows are theme-invariant
 (black-ink via `color-mix`, legible on both themes).
 
-1.5 **Spacing + motion have scales — prefer them.** `--fold-space-*`,
-`--fold-motion-*`. New styles use the scale; a one-off px/duration is allowed only
-when nothing on the scale fits, and should be rare.
-⚠️ _Known debt:_ many older component styles still hard-code px spacing and
-`0.18s ease` motion. Retokenise on touch. (Not yet test-enforced — colour is;
-spacing/motion is aspirational until a lint lands.)
+1.5 **Spacing + motion have scales — prefer them.** `--fold-space-*` is a **4px
+grid** (`xs 4 · sm 8 · md 12 · lg 16 · xl 20 · 2xl 24 · 3xl 32 · 4xl 40 · 5xl
+48`) — tight, no half-steps: the constraint is the point. `--fold-motion-*` for
+duration. New styles use the scale; an off-grid one-off (6/10/14…) snaps to the
+nearest step unless it holds a real alignment, then it stays an explicit literal.
+_Measured (advisory):_ `pnpm run lint:spacing` lists every raw-px `padding` /
+`margin` / `gap` under `src/components` — a **burn-down list, not a blocker**
+(unlike colour, spacing has a legitimate long tail). Retokenise on touch; `--strict`
+flips it to a hard gate once the list is drained.
+⚠️ _Known debt:_ many older styles still hard-code px spacing and `0.18s ease`
+motion — see `lint:spacing`. Motion is not yet measured.
 
 1.6 **The type scale is absolute px (`--fold-text-*`), on purpose.** The app root
 is 14px, so `rem` would render the ref ~12% small. This is a **deliberate

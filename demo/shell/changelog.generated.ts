@@ -38,7 +38,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Added: 3,
+      Added: 4,
       Fixed: 1,
       Changed: 8,
     },
@@ -47,6 +47,90 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Larger spacing tokens: ",
+              },
+              {
+                kind: "code",
+                value: "--fold-space-{2xl,3xl,4xl,5xl}",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "(24 · 32 · 40 · 48px) — the 4px-grid scale extended upward for section padding, page gaps and hero bands (it capped at ",
+              },
+              {
+                kind: "code",
+                value: "xl",
+              },
+              {
+                kind: "text",
+                value: " 20px). Catalogued (",
+              },
+              {
+                kind: "code",
+                value: "FoldSpaceToken",
+              },
+              {
+                kind: "text",
+                value: ") + contract- tested. A new ",
+              },
+              {
+                kind: "strong",
+                value: "advisory",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "pnpm run lint:spacing",
+              },
+              {
+                kind: "text",
+                value: " lists raw-px ",
+              },
+              {
+                kind: "code",
+                value: "padding",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "margin",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "gap",
+              },
+              {
+                kind: "text",
+                value: " under ",
+              },
+              {
+                kind: "code",
+                value: "src/components",
+              },
+              {
+                kind: "text",
+                value: " to burn down toward the scale.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {
