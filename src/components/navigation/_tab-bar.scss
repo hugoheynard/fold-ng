@@ -248,55 +248,14 @@
   overflow: visible;
 }
 
-/* Vertical collapses to a horizontal icon-accordion on mobile. */
-@media (max-width: 768px) {
-  .dir-vertical {
-    flex-direction: row;
-    align-items: center;
-  }
-  .dir-vertical .tab-bar-item {
-    flex: 0 0 auto;
-    justify-content: center;
-    text-align: center;
-    padding: var(--fold-space-sm);
-    gap: 0;
-    font-size: var(--fold-text-xs);
-    font-weight: 600;
-  }
-  .dir-vertical .tab-bar-item .tab-bar-label {
-    display: none;
-  }
-  .dir-vertical .tab-bar-item.is-active {
-    flex: 1 1 auto;
-    min-width: 0;
-    gap: var(--fold-space-sm);
-    padding: var(--fold-space-sm) var(--fold-space-md);
-  }
-  .dir-vertical .tab-bar-item.is-active .tab-bar-label {
-    display: inline;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .dir-vertical .tab-bar-badge {
-    display: none;
-  }
-  .dir-vertical.style-underline {
-    border-right: none;
-    border-bottom: 1px solid var(--fold-color-border);
-  }
-  .dir-vertical.style-underline .tab-bar-item {
-    border-left: none;
-    border-bottom: 2px solid transparent;
-    margin-right: 0;
-    margin-bottom: -1px;
-  }
-  .dir-vertical.style-underline .tab-bar-item.is-active {
-    border-bottom-color: var(--fold-color-primary);
-  }
-  .dir-vertical.style-fill {
-    border-right: none;
-  }
-}
+/* No viewport `@media` rotates the bar. Orientation is owned entirely by
+   `resolvedDirection` — the explicit `direction`, or, inside a `fold-nav-layout`,
+   the layout folding the rail on top on its OWN width. A viewport breakpoint
+   here fought that: it flipped a vertical rail's items to a row on a narrow
+   *window* while the layout kept the rail on the *side* (its width unchanged),
+   leaving a horizontal bar crammed into a vertical rail instead of moving on
+   top. Container width is the only axis; a standalone vertical nav that must
+   collapse belongs in a `fold-nav-layout`. */
 
 .tab-bar-icon {
   flex-shrink: 0;

@@ -6,7 +6,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **A vertical `fold-view-nav` / `fold-tabs` rail no longer flips to a crammed
+  horizontal bar on a narrow _window_ while its layout keeps it on the side.**
+  The shared tab-bar carried a leftover `@media (max-width: 768px)` block that
+  rotated `.dir-vertical` items to a row on the **viewport** width. Since the nav
+  redesign, orientation is owned entirely by `resolvedDirection` — an explicit
+  `direction`, or, inside a `fold-nav-layout`, the layout folding the rail on top
+  on its **own** width. The viewport query fought that: when the window dropped
+  below `768px` but the nav-layout's own width stayed above `foldAt` (so it kept
+  the rail on the side, `is-row`), the items turned horizontal _inside_ the
+  vertical rail instead of moving above the content. The block is removed;
+  orientation is now purely container-driven, honouring fold's "responsive on its
+  own width, never the viewport" contract. A standalone vertical nav that must
+  collapse belongs in a `fold-nav-layout` (the container-driven tool).
 
 ## [0.6.1] - 2026-07-28
 
