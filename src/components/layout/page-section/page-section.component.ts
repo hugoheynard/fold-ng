@@ -28,6 +28,10 @@ import { FoldIdService } from "../../../a11y/id.service";
  *   with an icon tile + subtitle). The projected header owns its own heading
  *   semantics.
  *
+ * The section's vertical rhythm — the head↔body gap, and the `stack` body's
+ * item gap — is a single token, `--fold-page-section-gap` (default the `lg`
+ * space); retune it per section or theme.
+ *
  * Two orthogonal helpers, both independent of the title:
  * - `stack` — lay the body out as an evenly-spaced vertical stack (form fields).
  * - `bleed` — break the section out of the page gutter to span the layout

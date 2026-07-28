@@ -56,7 +56,9 @@ All notable changes to **fold-ng** are documented here. The format follows
   default 2). New `[sectionHeader]` slot projects a bespoke header (e.g. a
   `fold-element-title` with an icon tile) _instead of_ `title`, and a new
   `iconTone` input (forwarded to `fold-icon`'s `tone`; defaults to `secondary`)
-  tints the leading icon. Visual change to every section header.
+  tints the leading icon. The section's vertical rhythm (head↔body gap + the
+  `stack` body's item gap) is now a single token, `--fold-page-section-gap`
+  (default the `lg` space). Visual change to every section header.
 - **`fold-page-layout` gutter & gap defaults are now fluid.** They gain a real
   home in `:root` (they were fixed inline fallbacks of `32px`):
   `--fold-page-gutter: clamp(1rem, 4vw, 2rem)` (16→32px) and

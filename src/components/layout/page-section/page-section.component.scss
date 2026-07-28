@@ -22,11 +22,13 @@
   margin-bottom: calc(-1 * var(--fold-page-pad-bottom, 40px));
 }
 
-/* The <section>: the head (title + description) then the body, stacked. */
+/* The <section>: the head (title + description) then the body, stacked. The
+   vertical rhythm is a single token (`--fold-page-section-gap`, default the `lg`
+   space) — retune it per section/theme; the `stack` body reuses it. */
 .ps-root {
   display: flex;
   flex-direction: column;
-  gap: var(--fold-space-lg);
+  gap: var(--fold-page-section-gap, var(--fold-space-lg));
 }
 /* Column: the title row (the h2 + the actions slot) then the optional
    description below it. */
@@ -83,9 +85,9 @@
 .section-body {
   min-width: 0;
 }
-/* Stack: body is a vertical flow of form fields with even spacing. */
+/* Stack: body is a vertical flow of form fields on the same section rhythm. */
 :host(.stack) .section-body {
   display: flex;
   flex-direction: column;
-  gap: var(--fold-space-lg);
+  gap: var(--fold-page-section-gap, var(--fold-space-lg));
 }

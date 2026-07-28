@@ -754,7 +754,31 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  ") tints the leading icon. Visual change to every section header.",
+                  ") tints the leading icon. The section's vertical rhythm (head↔body gap + the ",
+              },
+              {
+                kind: "code",
+                value: "stack",
+              },
+              {
+                kind: "text",
+                value: " body's item gap) is now a single token, ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-section-gap",
+              },
+              {
+                kind: "text",
+                value: " (default the ",
+              },
+              {
+                kind: "code",
+                value: "lg",
+              },
+              {
+                kind: "text",
+                value: " space). Visual change to every section header.",
               },
             ],
             breaking: false,
