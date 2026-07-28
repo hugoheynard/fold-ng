@@ -1,4 +1,15 @@
-import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
+import {
+  afterNextRender,
+  afterRenderEffect,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+  ViewEncapsulation,
+} from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
   FoldAvatarComponent,
@@ -50,8 +61,64 @@ export default class PageLayoutPage {
   protected readonly showActions = signal(true);
   /** The full-bleed band section — cancels the gutter to span edge-to-edge. */
   protected readonly showBleed = signal(true);
+  /** Overlay the vertical `--fold-page-gap` as a band in each stack gap. */
+  protected readonly showGap = signal(true);
+  /** Master switch — hide every visualiser band (gutter + gap) for a clean read. */
+  protected readonly hideBands = signal(false);
   /** The horizontal page gutter — the single `--fold-page-gutter` token. */
   protected readonly gutter = signal(32);
+  /** The vertical page rhythm — the single `--fold-page-gap` token. */
+  protected readonly gap = signal(32);
+  /**
+   * Fluid mode: don't pin the tokens inline, so the `:root` clamp defaults apply
+   * and you can watch them scale with the viewport toggle. Off = the sliders
+   * drive explicit px.
+   */
+  protected readonly fluid = signal(true);
+
+  /** The live layout element, so we can read the RESOLVED gutter/gap px (the
+   *  clamp is vw-based, so the effective value is only knowable at runtime). */
+  private readonly liveLayout = viewChild("liveLayout", {
+    read: ElementRef<HTMLElement>,
+  });
+  /** Resolved px, measured from the layout — drives the visualiser labels so
+   *  they stay honest in fluid mode and update as the viewport changes. */
+  protected readonly measuredGutter = signal(32);
+  protected readonly measuredGap = signal(32);
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    // Re-measure after every render the mode / sliders trigger.
+    afterRenderEffect(() => {
+      this.fluid();
+      this.gutter();
+      this.gap();
+      this.measure();
+    });
+    // The clamp is viewport-driven, so also re-measure on size changes no signal
+    // drives (the Fluid/Desktop/Tablet toggle, a window resize).
+    afterNextRender(() => {
+      const el = this.liveLayout()?.nativeElement;
+      if (!el || typeof ResizeObserver === "undefined") {
+        return;
+      }
+      const ro = new ResizeObserver(() => this.measure());
+      ro.observe(el);
+      this.destroyRef.onDestroy(() => ro.disconnect());
+    });
+  }
+
+  /** Read the resolved gutter (padding-inline) + gap (row-gap) off the layout. */
+  private measure(): void {
+    const el = this.liveLayout()?.nativeElement;
+    const view = el?.ownerDocument?.defaultView;
+    if (!el || !view) {
+      return;
+    }
+    const cs = view.getComputedStyle(el);
+    this.measuredGutter.set(Math.round(parseFloat(cs.paddingInlineStart) || 0));
+    this.measuredGap.set(Math.round(parseFloat(cs.rowGap) || 0));
+  }
 
   /** The live snippet, rebuilt from the chosen inputs. */
   protected readonly code = computed(() => {

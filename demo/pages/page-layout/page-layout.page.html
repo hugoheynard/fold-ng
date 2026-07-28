@@ -91,9 +91,43 @@
         >
           bleed section
         </button>
+        <button
+          type="button"
+          class="pl-chip"
+          [class.is-on]="showGap()"
+          (click)="showGap.set(!showGap())"
+        >
+          gap bands
+        </button>
+        <button
+          type="button"
+          class="pl-chip"
+          [class.is-on]="hideBands()"
+          (click)="hideBands.set(!hideBands())"
+        >
+          hide bands
+        </button>
+        <button
+          type="button"
+          class="pl-chip"
+          [class.is-on]="fluid()"
+          (click)="fluid.set(!fluid())"
+        >
+          fluid default
+        </button>
       </div>
     </div>
 
+    <!-- One projectable node per @if/@else branch (NG8011): the two sliders live
+         in their own blocks rather than a shared @else. -->
+    @if (fluid()) {
+    <p params class="pl-hint">
+      Fluid <code>clamp()</code> defaults are live — switch the viewport (Fluid
+      / Tablet / Desktop) and watch the gutter &amp; gap bands scale. The band
+      labels show the resolved px. Turn off <strong>fluid default</strong>
+      to pin explicit values.
+    </p>
+    } @if (!fluid()) {
     <fold-slider
       params
       label="--fold-page-gutter"
@@ -103,28 +137,54 @@
       [valueText]="gutter() + 'px'"
       [(value)]="gutter"
     />
+    } @if (!fluid()) {
+    <fold-slider
+      params
+      label="--fold-page-gap"
+      [min]="0"
+      [max]="64"
+      [step]="4"
+      [valueText]="gap() + 'px'"
+      [(value)]="gap"
+    />
+    }
 
     <!-- A real fold-page-layout, filling the preview box. The gutter slider
          drives its themed margins live; the bleed band inside cancels exactly
          that same token, so it stays flush as you drag. -->
-    <div class="pl-window-wrap" [style.--pl-gutter.px]="gutter()">
+    <!-- The tokens live on the wrap so BOTH the ruler bands and the nested
+         layout read the same value. In fluid mode we set nothing → the :root
+         clamp applies (and scales with the viewport); otherwise the sliders pin
+         explicit px. The band labels show the RESOLVED px, measured off the live
+         layout, so they stay truthful either way. -->
+    <div
+      class="pl-window-wrap"
+      [style.--fold-page-gutter.px]="fluid() ? null : gutter()"
+      [style.--fold-page-gap.px]="fluid() ? null : gap()"
+      [style.--pl-gap-num]="measuredGap()"
+      [style.--pl-gap-num-first]="measuredGap() + 16"
+    >
       <!-- Gutter visualiser: a dashed rule at each content edge, the band
-           between it and the frame edge labelled with the gutter width. It sits
-           over the (scrolling) window and stays put as the slider moves. -->
+           between it and the frame edge labelled with the RESOLVED gutter px. It
+           sits over the (scrolling) window and stays put as the layout scrolls. -->
+      @if (!hideBands()) {
       <div class="pl-ruler" aria-hidden="true">
         <span class="pl-gutter-band pl-gutter-band-left">
-          <span class="pl-gutter-label">{{ gutter() }}px</span>
+          <span class="pl-gutter-label">{{ measuredGutter() }}px</span>
         </span>
         <span class="pl-gutter-band pl-gutter-band-right">
-          <span class="pl-gutter-label">{{ gutter() }}px</span>
+          <span class="pl-gutter-label">{{ measuredGutter() }}px</span>
         </span>
       </div>
+      }
 
       <div class="pl-window">
         <fold-page-layout
+          #liveLayout
+          class="pl-live"
+          [class.pl-show-gap]="showGap() && !hideBands()"
           [icon]="headerMode() === 'title' && showIcon() ? 'grid' : undefined"
           [title]="headerMode() === 'title' ? 'Billing' : undefined"
-          [style.--fold-page-gutter.px]="gutter()"
         >
           @if (headerMode() === "custom") {
           <span pageTitle class="pl-custom-title">
@@ -148,28 +208,89 @@
                 The default method is charged on renewal. Add a backup so a
                 declined card never interrupts service.
               </p>
+              <div class="pl-rows">
+                <div class="pl-row">
+                  <fold-avatar name="Visa" size="sm" square />
+                  <span class="pl-row-main">
+                    <span class="pl-row-title">Visa •••• 4242</span>
+                    <span class="pl-row-sub">Expires 08 / 27</span>
+                  </span>
+                  <fold-badge content="Default" variant="success" />
+                  <button type="button" class="pl-btn">Edit</button>
+                </div>
+                <div class="pl-row">
+                  <fold-avatar name="Mastercard" size="sm" square />
+                  <span class="pl-row-main">
+                    <span class="pl-row-title">Mastercard •••• 5556</span>
+                    <span class="pl-row-sub">Expires 03 / 26</span>
+                  </span>
+                  <fold-badge content="Backup" variant="neutral" />
+                  <button type="button" class="pl-btn">Edit</button>
+                </div>
+              </div>
             </fold-card>
           </fold-page-section>
 
           @if (showBleed()) {
           <fold-page-section bleed>
-            <fold-card surface="sunken" radius="sm">
+            <fold-card surface="accent" radius="sm">
               <p class="gal-body">
-                Bleed band — spans the layout edge-to-edge. It cancels
-                <code>--fold-page-gutter</code> exactly (the same token the page
-                pads with), so it stays flush against the dashed guides as you
-                drag the slider.
+                <strong>Bleed band</strong> — spans the layout edge-to-edge. It
+                cancels <code>--fold-page-gutter</code> exactly (the same token
+                the page pads with), so it stays flush against the dashed guides
+                as you drag the gutter slider. A darker surface makes the
+                edge-to-edge reach unmistakable.
               </p>
             </fold-card>
           </fold-page-section>
           }
 
+          <fold-page-section title="Usage this month">
+            <fold-card>
+              <p class="gal-body">
+                A deliberately tall section so the window scrolls — the gutter
+                bands stay pinned to the frame while the gap bands scroll with
+                the content, and the header stays put above.
+              </p>
+              <div class="pl-tall">Scroll region</div>
+            </fold-card>
+          </fold-page-section>
+
           <fold-page-section title="Invoices">
             <fold-card>
               <p class="gal-body">
-                Back in the gutter. The body keeps its steady vertical rhythm at
-                any width.
+                Back in the gutter. The body keeps its steady vertical rhythm —
+                the <code>--fold-page-gap</code> band above — at any width.
               </p>
+              <div class="pl-rows">
+                <div class="pl-row">
+                  <span class="pl-row-main">
+                    <span class="pl-row-title">March 2026</span>
+                    <span class="pl-row-sub">INV-2026-0312</span>
+                  </span>
+                  <span class="pl-row-amount">€49.00</span>
+                  <fold-badge content="Paid" variant="success" />
+                  <button type="button" class="pl-btn">PDF</button>
+                </div>
+                <div class="pl-row">
+                  <span class="pl-row-main">
+                    <span class="pl-row-title">February 2026</span>
+                    <span class="pl-row-sub">INV-2026-0212</span>
+                  </span>
+                  <span class="pl-row-amount">€49.00</span>
+                  <fold-badge content="Paid" variant="success" />
+                  <button type="button" class="pl-btn">PDF</button>
+                </div>
+                <div class="pl-row">
+                  <span class="pl-row-main">
+                    <span class="pl-row-title">January 2026</span>
+                    <span class="pl-row-sub">INV-2026-0112</span>
+                  </span>
+                  <span class="pl-row-amount">€49.00</span>
+                  <fold-badge content="Due" variant="warning" />
+                  <button type="button" class="pl-btn">Pay</button>
+                </div>
+              </div>
             </fold-card>
           </fold-page-section>
         </fold-page-layout>

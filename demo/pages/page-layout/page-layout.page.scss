@@ -8,10 +8,16 @@
   position: relative;
 }
 
+/* A bounded flex column that CLIPS — so the fold-page-layout inside is the
+   single scroll box (its real role), filling the frame and scrolling its own
+   overflow. NOT `overflow:auto` here: two nested scroll containers + the
+   page-layout's `overscroll-behavior:contain` would let the (dead) inner
+   container swallow the wheel and the frame would never scroll. */
 .pl-window {
   max-height: 460px;
-  overflow: auto;
-  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-md);
   background: var(--fold-color-bg-page);
@@ -29,7 +35,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: var(--pl-gutter, 32px);
+  width: var(--fold-page-gutter, 32px);
   display: flex;
   justify-content: center;
   background: var(--fold-color-primary-surface);
@@ -56,6 +62,110 @@
   white-space: nowrap;
 }
 
+/* Gap visualiser — a band the exact height of --fold-page-gap laid in each
+   vertical stack gap (header ↔ body, section ↔ section). A different hue from
+   the gutter (success/green vs the gutter's primary) so the two tokens read as
+   two distinct axes. It scrolls WITH the content (unlike the fixed gutter bands)
+   because the gaps move as the page scrolls. */
+.pl-show-gap .page-body > fold-page-section {
+  position: relative;
+}
+/* Open the page with a clearer breath: the first section sits a touch further
+   from the header than the inter-section rhythm. */
+.pl-live .page-body > fold-page-section:first-child {
+  margin-top: 16px;
+}
+
+.pl-show-gap .page-body > fold-page-section::before {
+  /* The live px value, rendered in CSS content via a counter fed the unitless
+     `--pl-gap-num` the template sets from the gap signal. */
+  counter-reset: plgap var(--pl-gap-num, 32);
+  content: counter(plgap) "px";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--fold-page-gap, 32px));
+  height: var(--fold-page-gap, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--fold-color-success-surface);
+  border-block: 1px dashed var(--fold-color-success);
+  color: var(--fold-color-success-text);
+  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
+}
+/* The first section's band grows to match its extra breath, so the visualiser
+   stays honest — you see the header ↔ first-section gap is larger, and its
+   label reflects the larger px (gap + 16). */
+.pl-show-gap .page-body > fold-page-section:first-child::before {
+  counter-reset: plgap var(--pl-gap-num-first, 48);
+  top: calc(-1 * (var(--fold-page-gap, 32px) + 16px));
+  height: calc(var(--fold-page-gap, 32px) + 16px);
+}
+
+/* Realistic section content — stacked rows (payment methods, invoices) so the
+   preview reads like a real billing page, not a lorem block. */
+.pl-rows {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pl-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-sunken);
+}
+.pl-row-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.pl-row-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fold-color-text);
+}
+.pl-row-sub {
+  font-size: 11px;
+  color: var(--fold-color-text-muted);
+}
+.pl-row-amount {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fold-color-text);
+}
+
+/* A tall block to force the window to scroll (exercises the pinned gutter bands
+   vs the scrolling gap bands, and the sticky header). */
+.pl-tall {
+  margin-top: 12px;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* A projected [pageTitle] — an avatar + a two-tone name, inside the page <h1>. */
 .pl-custom-title {
   display: inline-flex;
@@ -70,6 +180,14 @@
 .pl-custom-title-sub {
   font-weight: 500;
   font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}
+
+/* Inline hint shown in the params column while fluid mode is on. */
+.pl-hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
   color: var(--fold-color-text-muted);
 }
 
