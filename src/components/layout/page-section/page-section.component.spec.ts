@@ -37,15 +37,12 @@ function render() {
 }
 
 describe("FoldPageSectionComponent", () => {
-  it("renders the title and projects content + actions", () => {
+  it("renders the title as a real <h2> and projects content + actions", () => {
     const { root } = render();
-    expect(
-      root.querySelector("fold-element-title .et-label")?.textContent?.trim(),
-    ).toBe("Moyens de paiement");
+    const h2 = root.querySelector("h2.section-title");
+    expect(h2?.textContent?.trim()).toBe("Moyens de paiement");
     expect(root.querySelector(".body-item")).not.toBeNull();
-    expect(
-      root.querySelector("fold-element-title .et-action .act"),
-    ).not.toBeNull();
+    expect(root.querySelector(".section-actions .act")).not.toBeNull();
   });
 
   it("omits the description when not provided", () => {
@@ -74,9 +71,19 @@ describe("FoldPageSectionComponent", () => {
     expect(section).not.toBeNull();
     const labelledBy = section.getAttribute("aria-labelledby");
     expect(labelledBy).toBeTruthy();
-    // the heading carries exactly that id — so the region is named by its title
-    const heading = root.querySelector(".et-label") as HTMLElement;
+    // the h2 carries exactly that id — so the region is named by its title
+    const heading = root.querySelector("h2.section-title") as HTMLElement;
     expect(heading.getAttribute("id")).toBe(labelledBy);
+  });
+
+  it("overrides aria-level only when headingLevel differs from 2 (native h2)", () => {
+    const fixture = TestBed.createComponent(ModifierHostComponent);
+    fixture.detectChanges();
+    const h2 = fixture.nativeElement.querySelector(
+      "h2.section-title",
+    ) as HTMLElement;
+    // default level 2 = a native <h2>, so no aria-level override
+    expect(h2.getAttribute("aria-level")).toBeNull();
   });
 
   it("drops aria-labelledby when untitled — no anonymously-named region", () => {
@@ -111,5 +118,25 @@ describe("FoldPageSectionComponent", () => {
     fixture.componentInstance.bleed.set(true);
     fixture.detectChanges();
     expect(section.classList.contains("is-bleed")).toBe(true);
+  });
+
+  it("projects a bespoke [sectionHeader] instead of the default h2", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPageSectionComponent],
+      // No `title` → the default h2 is suppressed; the custom header stands.
+      template: `<fold-page-section>
+        <h3 sectionHeader class="custom-head">Bespoke</h3>
+        <div class="body-item">Rows</div>
+      </fold-page-section>`,
+    })
+    class ProjectedHost {}
+
+    const fixture = TestBed.createComponent(ProjectedHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector(".custom-head")?.textContent).toBe("Bespoke");
+    expect(root.querySelector("h2.section-title")).toBeNull();
+    expect(root.querySelector(".body-item")).not.toBeNull();
   });
 });

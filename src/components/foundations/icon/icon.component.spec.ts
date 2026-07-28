@@ -53,6 +53,17 @@ describe("FoldIconComponent", () => {
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
   });
+
+  it("paints a tone colour on the host, and inherits (no override) when unset", () => {
+    const host = (name: string, extra = {}) =>
+      mount(name, extra).fixture.nativeElement as HTMLElement;
+    // unset → no inline colour, so it inherits its context
+    expect(host("search").style.color).toBe("");
+    // set → the tone's role token lands on the host (flows in via currentColor)
+    expect(host("search", { tone: "primary" }).style.color).toBe(
+      "var(--fold-color-primary-text)",
+    );
+  });
 });
 
 describe("FoldIconRegistry (consumer extensibility)", () => {

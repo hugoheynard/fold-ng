@@ -1,24 +1,32 @@
 import { booleanAttribute, Component, inject, input } from "@angular/core";
-import { FoldElementTitleComponent } from "../../content/element-title/element-title.component";
+import {
+  FoldIconComponent,
+  type FoldIconTone,
+} from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
 
 /**
  * `<fold-page-section>` — a titled, semantic **`<section>`** grouping of page
- * content inside a {@link FoldPageLayoutComponent}: an eyebrow `title` + optional
+ * content inside a {@link FoldPageLayoutComponent}: a `title` + optional
  * `description`, a right-aligned actions slot, and the content below.
  *
- * **It is structure, not a box.** The title is a real heading and the region is
- * a `<section>` named by that heading (`aria-labelledby`) — so a page reads as
- * an outline to assistive tech, and the DOM is self-documenting. It paints
- * nothing: transparent, no border, no radius. For a **visual box**, wrap the
- * content in a {@link FoldCardComponent} — the two are orthogonal and compose (a
- * section can hold a card; a card never needs to know about the page).
+ * **It is structure, not a box.** The `title` renders a real **`<h2>`** (a
+ * genuine section heading under the page's `<h1>`, not a decorative eyebrow) and
+ * the region is a `<section>` named by it (`aria-labelledby`) — so a page reads
+ * as an outline to assistive tech. Set `headingLevel` to correct the `aria-level`
+ * where a section nests deeper. It paints nothing: transparent, no border, no
+ * radius. For a **visual box**, wrap the content in a {@link FoldCardComponent} —
+ * the two are orthogonal and compose (a section can hold a card; a card never
+ * needs to know about the page).
  *
  * Content projection:
  * - default slot → the section content.
- * - `[sectionActions]` → the right-aligned header slot (re-projected into the
- *   heading row).
+ * - `[sectionActions]` → the right-aligned header slot, beside the `title`.
+ * - `[sectionHeader]` → a **bespoke** header, used *instead of* `title` when the
+ *   default `<h2>` isn't enough (e.g. project a {@link FoldElementTitleComponent}
+ *   with an icon tile + subtitle). The projected header owns its own heading
+ *   semantics.
  *
  * Two orthogonal helpers, both independent of the title:
  * - `stack` — lay the body out as an evenly-spaced vertical stack (form fields).
@@ -36,6 +44,12 @@ import { FoldIdService } from "../../../a11y/id.service";
  *   …
  * </fold-page-section>
  *
+ * <!-- bespoke header instead of the default h2 -->
+ * <fold-page-section>
+ *   <fold-element-title sectionHeader variant="title" icon="company" title="Contexte" />
+ *   …
+ * </fold-page-section>
+ *
  * <!-- need a box? compose with fold-card -->
  * <fold-page-section title="Documents">
  *   <fold-card surface="sunken">…</fold-card>
@@ -47,7 +61,7 @@ import { FoldIdService } from "../../../a11y/id.service";
 @Component({
   selector: "fold-page-section",
   standalone: true,
-  imports: [FoldElementTitleComponent],
+  imports: [FoldIconComponent],
   host: {
     "[class.stack]": "stack()",
     "[class.is-bleed]": "bleed()",
@@ -63,6 +77,9 @@ export class FoldPageSectionComponent {
   readonly title = input<string>();
   /** An optional leading icon beside the title. */
   readonly icon = input<FoldIconName>();
+  /** Tint of the leading icon — forwarded to `fold-icon`'s `tone`. Defaults to
+   *  `secondary` (a muted ink, a step below the title). */
+  readonly iconTone = input<FoldIconTone>("secondary");
   /** A one-line description under the title. */
   readonly description = input<string>();
   /** Heading depth exposed to assistive tech (`aria-level`) — set it so sections

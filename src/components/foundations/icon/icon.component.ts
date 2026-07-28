@@ -7,6 +7,18 @@ import type { FoldIconName } from "./builtin-icons";
 /** Size presets map to an icon-size token; a number is interpreted as pixels. */
 export type FoldIconSize = "xs" | "sm" | "md" | "lg" | "xl" | number;
 
+/** Semantic tint. Unset = inherit the context's `currentColor` (the default —
+ *  an icon matches whatever it sits in); set it to override with a role colour. */
+export type FoldIconTone = "primary" | "secondary" | "muted" | "faded";
+
+/** Tone → the semantic text/role colour token it paints with. */
+const TONE_COLOR: Record<FoldIconTone, string> = {
+  primary: "var(--fold-color-primary-text)",
+  secondary: "var(--fold-color-text-secondary)",
+  muted: "var(--fold-color-text-muted)",
+  faded: "var(--fold-color-text-faded)",
+};
+
 /** Preset → `--fold-icon-size-*` token, with a px fallback so an icon still
  *  renders if a consumer loads the component without the token layer. */
 const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
@@ -36,12 +48,18 @@ const SIZE_VAR: Record<Exclude<FoldIconSize, number>, string> = {
  * <fold-icon name="search" />
  * <fold-icon name="bin" size="lg" />
  * <fold-icon name="heart" [size]="18" />
+ * <fold-icon name="star" tone="primary" />  <!-- accent tint, ignores context -->
  * <fold-icon name="edit" title="Edit track" />  <!-- a11y label -->
  * ```
  */
 @Component({
   selector: "fold-icon",
   standalone: true,
+  host: {
+    // Paint the tone colour on the host so it flows into the SVG via
+    // currentColor; unset → no inline colour, the icon inherits its context.
+    "[style.color]": "toneColor()",
+  },
   templateUrl: "./icon.component.html",
   styleUrl: "./icon.component.scss",
 })
@@ -51,6 +69,10 @@ export class FoldIconComponent {
 
   /** Size — token (`xs…xl`) or explicit pixel number. Defaults to `md`. */
   readonly size = input<FoldIconSize>("md");
+
+  /** Semantic tint — `primary` · `secondary` · `muted` · `faded`. Unset (default)
+   *  inherits `currentColor`, so the icon matches whatever it sits in. */
+  readonly tone = input<FoldIconTone>();
 
   /** Optional accessible label. Set → `aria-label`; unset → `aria-hidden`. */
   readonly title = input<string>();
@@ -68,6 +90,12 @@ export class FoldIconComponent {
   readonly sizeVar = computed<string>(() => {
     const s = this.size();
     return typeof s === "number" ? `${s}px` : SIZE_VAR[s];
+  });
+
+  /** The tone's colour token, or null to inherit `currentColor` (no override). */
+  readonly toneColor = computed<string | null>(() => {
+    const t = this.tone();
+    return t ? TONE_COLOR[t] : null;
   });
 
   constructor() {

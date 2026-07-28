@@ -2,19 +2,30 @@
   @if (title() || description()) {
     <div class="section-head">
       @if (title(); as t) {
-        <fold-element-title
-          [title]="t"
-          [icon]="icon()"
-          [headingId]="headingId"
-          [level]="headingLevel()"
-        >
-          <ng-content select="[sectionActions]" titleAction />
-        </fold-element-title>
+        <div class="section-head-row">
+          <h2
+            class="section-title"
+            [id]="headingId"
+            [attr.aria-level]="headingLevel() === 2 ? null : headingLevel()"
+          >
+            @if (icon(); as ic) {
+              <fold-icon [name]="ic" size="sm" [tone]="iconTone()" />
+            }
+            <span class="section-title-text">{{ t }}</span>
+          </h2>
+          <div class="section-actions">
+            <ng-content select="[sectionActions]" />
+          </div>
+        </div>
       }
       @if (description()) {
         <p class="section-desc">{{ description() }}</p>
       }
     </div>
   }
+  <!-- A bespoke header — project [sectionHeader] (e.g. a fold-element-title with
+       an icon tile) INSTEAD of `title` when the default h2 isn't enough. The
+       parent owns its heading semantics. -->
+  <ng-content select="[sectionHeader]" />
   <div class="section-body"><ng-content /></div>
 </section>

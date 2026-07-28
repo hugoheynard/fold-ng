@@ -38,15 +38,92 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Added: 2,
+      Added: 3,
       Fixed: 1,
-      Changed: 5,
+      Changed: 7,
     },
     breaking: 3,
     groups: [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-icon",
+              },
+              {
+                kind: "text",
+                value: " gains a ",
+              },
+              {
+                kind: "code",
+                value: "tone",
+              },
+              {
+                kind: "text",
+                value: " input",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "primary",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "secondary",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "muted",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "faded",
+              },
+              {
+                kind: "text",
+                value:
+                  ") — a semantic tint for the icon. Unset (default) keeps the current behaviour: the icon inherits ",
+              },
+              {
+                kind: "code",
+                value: "currentColor",
+              },
+              {
+                kind: "text",
+                value:
+                  ", matching its context. Set it to override, so a consumer tints an icon through the primitive's own input instead of reaching in with a colour class. Exposes the ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconTone",
+              },
+              {
+                kind: "text",
+                value: " type.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {
@@ -466,7 +543,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               },
               {
                 kind: "text",
-                value: " + ",
+                value: " - ",
               },
               {
                 kind: "code",
@@ -550,6 +627,210 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value: " behaves as before).",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "title",
+              },
+              {
+                kind: "text",
+                value: " now renders a real ",
+              },
+              {
+                kind: "code",
+                value: "<h2>",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— a genuine section heading under the page's ",
+              },
+              {
+                kind: "code",
+                value: "<h1>",
+              },
+              {
+                kind: "text",
+                value: ", replacing the decorative ",
+              },
+              {
+                kind: "code",
+                value: "fold-element-title",
+              },
+              {
+                kind: "text",
+                value: " eyebrow. ",
+              },
+              {
+                kind: "code",
+                value: "headingLevel",
+              },
+              {
+                kind: "text",
+                value: " still drives ",
+              },
+              {
+                kind: "code",
+                value: "aria-level",
+              },
+              {
+                kind: "text",
+                value: " (a native ",
+              },
+              {
+                kind: "code",
+                value: "<h2>",
+              },
+              {
+                kind: "text",
+                value: " at the default 2). New ",
+              },
+              {
+                kind: "code",
+                value: "[sectionHeader]",
+              },
+              {
+                kind: "text",
+                value: " slot projects a bespoke header (e.g. a ",
+              },
+              {
+                kind: "code",
+                value: "fold-element-title",
+              },
+              {
+                kind: "text",
+                value: " with an icon tile) _instead of_ ",
+              },
+              {
+                kind: "code",
+                value: "title",
+              },
+              {
+                kind: "text",
+                value: ", and a new ",
+              },
+              {
+                kind: "code",
+                value: "iconTone",
+              },
+              {
+                kind: "text",
+                value: " input (forwarded to ",
+              },
+              {
+                kind: "code",
+                value: "fold-icon",
+              },
+              {
+                kind: "text",
+                value: "'s ",
+              },
+              {
+                kind: "code",
+                value: "tone",
+              },
+              {
+                kind: "text",
+                value: "; defaults to ",
+              },
+              {
+                kind: "code",
+                value: "secondary",
+              },
+              {
+                kind: "text",
+                value:
+                  ") tints the leading icon. Visual change to every section header.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " gutter & gap defaults are now fluid.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "They gain a real home in ",
+              },
+              {
+                kind: "code",
+                value: ":root",
+              },
+              {
+                kind: "text",
+                value: " (they were fixed inline fallbacks of ",
+              },
+              {
+                kind: "code",
+                value: "32px",
+              },
+              {
+                kind: "text",
+                value: "): ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-gutter: clamp(1rem, 4vw, 2rem)",
+              },
+              {
+                kind: "text",
+                value: " (16→32px) and ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-gap: clamp(1.25rem, 3vw, 2rem)",
+              },
+              {
+                kind: "text",
+                value:
+                  " (20→32px) — the gutter scales more than the gap (horizontal room is tighter on small screens). Override on any ancestor (or the element) to retune; set ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-gutter: 32px",
+              },
+              {
+                kind: "text",
+                value: " to restore the old fixed value. Requires ",
+              },
+              {
+                kind: "code",
+                value: "fold-ng/tokens.css",
+              },
+              {
+                kind: "text",
+                value: " (components fall back to ",
+              },
+              {
+                kind: "code",
+                value: "32px",
+              },
+              {
+                kind: "text",
+                value: " without it).",
               },
             ],
             breaking: false,

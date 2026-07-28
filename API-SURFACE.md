@@ -223,6 +223,7 @@
 - name: InputSignal<FoldIconName> — required
 - size: InputSignal<FoldIconSize>
 - title: InputSignal<string | undefined>
+- tone: InputSignal<FoldIconTone | undefined>
 
 ### FoldIconRegistry
 - (no input·model·output bindings)
@@ -398,6 +399,7 @@
 - description: InputSignal<string | undefined>
 - headingLevel: InputSignal<number>
 - icon: InputSignal<FoldIconName | undefined>
+- iconTone: InputSignal<FoldIconTone>
 - stack: InputSignalWithTransform<boolean, unknown>
 - title: InputSignal<string | undefined>
 
@@ -662,6 +664,7 @@
 - FoldIconName (type)
 - FoldIconSet (type)
 - FoldIconSize (type)
+- FoldIconTone (type)
 - FoldInlineConfirmLabels (interface)
 - FoldMenuItemBadgeTone (type)
 - FoldMenuLevel (type)

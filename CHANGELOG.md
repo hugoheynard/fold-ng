@@ -8,6 +8,11 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-icon` gains a `tone` input** (`primary` · `secondary` · `muted` ·
+  `faded`) — a semantic tint for the icon. Unset (default) keeps the current
+  behaviour: the icon inherits `currentColor`, matching its context. Set it to
+  override, so a consumer tints an icon through the primitive's own input instead
+  of reaching in with a colour class. Exposes the `FoldIconTone` type.
 - **Two new UI icons: `archive` and `filter`** — stroke glyphs (`currentColor`),
   the primitives a back-office table toolbar reaches for. Note the existing
   `more-vertical` already covers the "kebab" ⋮ menu trigger.
@@ -45,6 +50,13 @@ All notable changes to **fold-ng** are documented here. The format follows
 - **`fold-paginator`: `pageSize` is now optional** — when omitted it defaults to
   the first of `pageSizeOptions`, so the common case needs only `currentPage` +
   `totalItems`. Non-breaking (a passed `pageSize` behaves as before).
+- **`fold-page-section`: `title` now renders a real `<h2>`** — a genuine section
+  heading under the page's `<h1>`, replacing the decorative `fold-element-title`
+  eyebrow. `headingLevel` still drives `aria-level` (a native `<h2>` at the
+  default 2). New `[sectionHeader]` slot projects a bespoke header (e.g. a
+  `fold-element-title` with an icon tile) _instead of_ `title`, and a new
+  `iconTone` input (forwarded to `fold-icon`'s `tone`; defaults to `secondary`)
+  tints the leading icon. Visual change to every section header.
 - **`fold-page-layout` gutter & gap defaults are now fluid.** They gain a real
   home in `:root` (they were fixed inline fallbacks of `32px`):
   `--fold-page-gutter: clamp(1rem, 4vw, 2rem)` (16→32px) and

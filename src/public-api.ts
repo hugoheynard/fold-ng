@@ -140,7 +140,10 @@ export type {
 } from "./components/content/timeline/timeline.component";
 export { FoldLoadingStateComponent } from "./components/feedback/state/loading-state.component";
 export { FoldEmptyStateComponent } from "./components/feedback/state/empty-state.component";
-export type { FoldIconSize } from "./components/foundations/icon/icon.component";
+export type {
+  FoldIconSize,
+  FoldIconTone,
+} from "./components/foundations/icon/icon.component";
 export {
   FoldIconRegistry,
   provideFoldIcons,
