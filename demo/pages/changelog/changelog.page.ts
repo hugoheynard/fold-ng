@@ -9,6 +9,7 @@ import {
   FoldButtonComponent,
   FoldCalloutComponent,
   FoldCardComponent,
+  FoldIconComponent,
   FoldPageLayoutComponent,
   FoldTimelineComponent,
   type FoldBadgeVariant,
@@ -22,11 +23,14 @@ import {
 } from "../../shell/changelog.generated";
 import { ChangelogRunsComponent } from "./changelog-runs.component";
 
+/** The published package — powers the per-version npm + tarball links. */
+const NPM_PKG = "fold-ng";
+
 /** Badge tint per changelog section — Added reads as the "new" accent, etc. */
 const KIND_TONE: Readonly<Record<string, FoldBadgeVariant>> = {
-  Added: "success",
+  Added: "accent",
   Changed: "info",
-  Fixed: "accent",
+  Fixed: "success",
   Removed: "alert",
   Deprecated: "warning",
   Docs: "neutral",
@@ -71,6 +75,7 @@ interface FilterChip {
     FoldButtonComponent,
     FoldCalloutComponent,
     FoldCardComponent,
+    FoldIconComponent,
     FoldPageLayoutComponent,
     FoldTimelineComponent,
     ChangelogRunsComponent,
@@ -80,14 +85,25 @@ interface FilterChip {
 })
 export default class ChangelogPage {
   protected readonly published = PUBLISHED_VERSION;
+  protected readonly pkg = NPM_PKG;
 
-  /** `Breaking` is orthogonal (an item flag); the rest are section kinds. */
+  /** `Breaking` and `Unreleased` are orthogonal flags; the rest are section
+   *  kinds. All start **off** — the page opens on the full history. */
   protected readonly breakingActive = signal(false);
+  protected readonly unreleasedActive = signal(false);
   protected readonly activeKinds = signal<ReadonlySet<string>>(new Set());
 
   protected readonly anyFilter = computed(
-    () => this.breakingActive() || this.activeKinds().size > 0,
+    () =>
+      this.breakingActive() ||
+      this.unreleasedActive() ||
+      this.activeKinds().size > 0,
   );
+
+  /** Total bullets sitting under `[Unreleased]` — the `Unreleased` chip count. */
+  protected readonly unreleasedTotal = CHANGELOG.filter(
+    (r) => r.unreleased,
+  ).reduce((n, r) => n + r.groups.reduce((m, g) => m + g.items.length, 0), 0);
 
   /** Section chips actually present in the log, in canonical order + totals. */
   protected readonly kindChips: readonly FilterChip[] = KIND_ORDER.map(
@@ -111,17 +127,20 @@ export default class ChangelogPage {
   protected readonly shown = computed<readonly ShownRelease[]>(() => {
     const kinds = this.activeKinds();
     const breakingOnly = this.breakingActive();
-    return CHANGELOG.map((release) => {
-      const shownGroups = release.groups
-        .filter((g) => g.items.length > 0)
-        .filter((g) => kinds.size === 0 || kinds.has(g.kind))
-        .map((g) => ({
-          kind: g.kind,
-          items: breakingOnly ? g.items.filter((i) => i.breaking) : g.items,
-        }))
-        .filter((g) => g.items.length > 0);
-      return { ...release, shownGroups };
-    }).filter((r) => r.shownGroups.length > 0);
+    const unreleasedOnly = this.unreleasedActive();
+    return CHANGELOG.filter((r) => !unreleasedOnly || r.unreleased)
+      .map((release) => {
+        const shownGroups = release.groups
+          .filter((g) => g.items.length > 0)
+          .filter((g) => kinds.size === 0 || kinds.has(g.kind))
+          .map((g) => ({
+            kind: g.kind,
+            items: breakingOnly ? g.items.filter((i) => i.breaking) : g.items,
+          }))
+          .filter((g) => g.items.length > 0);
+        return { ...release, shownGroups };
+      })
+      .filter((r) => r.shownGroups.length > 0);
   });
 
   protected readonly isEmpty = computed(() => this.shown().length === 0);
@@ -143,6 +162,46 @@ export default class ChangelogPage {
     return this.shown().find((r) => r.version === key);
   }
 
+  /** Versions expanded to their full descriptions — the rest read collapsed.
+   *  The latest published version opens expanded; every other card is compact. */
+  protected readonly expanded = signal<ReadonlySet<string>>(
+    new Set([PUBLISHED_VERSION]),
+  );
+
+  /** The current npm `latest` — signified and expanded on load. */
+  protected isLatest(release: ShownRelease): boolean {
+    return !release.unreleased && release.version === this.published;
+  }
+
+  protected isExpanded(version: string): boolean {
+    return this.expanded().has(version);
+  }
+
+  protected toggleExpanded(version: string): void {
+    const next = new Set(this.expanded());
+    if (next.has(version)) {
+      next.delete(version);
+    } else {
+      next.add(version);
+    }
+    this.expanded.set(next);
+  }
+
+  /** Any collapsible prose to reveal? No description anywhere → no See-more. */
+  protected hasDetails(groups: readonly ChangelogGroup[]): boolean {
+    return groups.some((g) => g.items.some((i) => i.rest.length > 0));
+  }
+
+  /** npm page for a published version (`…/package/fold-ng/v/0.6.0`). */
+  protected npmUrl(version: string): string {
+    return `https://www.npmjs.com/package/${NPM_PKG}/v/${version}`;
+  }
+
+  /** Direct tarball download for a published version, from the registry. */
+  protected tarballUrl(version: string): string {
+    return `https://registry.npmjs.org/${NPM_PKG}/-/${NPM_PKG}-${version}.tgz`;
+  }
+
   protected toggleKind(kind: string): void {
     const next = new Set(this.activeKinds());
     if (next.has(kind)) {
@@ -161,9 +220,14 @@ export default class ChangelogPage {
     this.breakingActive.update((v) => !v);
   }
 
+  protected toggleUnreleased(): void {
+    this.unreleasedActive.update((v) => !v);
+  }
+
   protected clear(): void {
     this.activeKinds.set(new Set());
     this.breakingActive.set(false);
+    this.unreleasedActive.set(false);
   }
 
   /** Category-count badges for a release header, over the *shown* groups. */

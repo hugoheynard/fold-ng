@@ -48,6 +48,17 @@ fold-timeline {
   outline-offset: -1px;
 }
 
+// The current npm `latest` — a solid brand edge; it also opens expanded and
+// carries a callout linking npm.
+.cl-release--latest {
+  outline: 1px solid var(--fold-color-primary-border);
+  outline-offset: -1px;
+}
+
+.cl-latest {
+  margin-bottom: var(--fold-space-md);
+}
+
 .cl-head {
   display: flex;
   flex-wrap: wrap;
@@ -107,8 +118,17 @@ fold-timeline {
   border-left: 2px solid var(--fold-color-border-subtle);
   line-height: 1.55;
 
+  /* A breaking item reads red — the alert accent, matching its `alert` badge. */
   &.is-breaking {
-    border-left-color: var(--fold-color-primary);
+    border-left-color: var(--fold-color-alert);
+  }
+
+  /* Collapsed (compact card): each point is a one-line title — the lead trimmed
+     with an ellipsis. See-more expands to the full wrapped text + descriptions. */
+  &.is-collapsed {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -120,8 +140,8 @@ fold-timeline {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--fold-color-primary-text);
-  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-alert-text);
+  background: var(--fold-color-alert-surface);
   border-radius: var(--fold-radius-xs);
   vertical-align: middle;
 }
@@ -136,4 +156,39 @@ fold-timeline {
   margin-top: 2px;
   color: var(--fold-color-text-muted);
   font-size: var(--fold-text-sm);
+}
+
+// Footer: See-more toggle on the left, the npm / download links on the right.
+.cl-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fold-space-sm) var(--fold-space-md);
+  margin-top: var(--fold-space-md);
+}
+
+.cl-more {
+  margin-right: auto;
+}
+
+.cl-links {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-md);
+}
+
+.cl-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--fold-motion-fast);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--fold-color-primary-text);
+  }
 }

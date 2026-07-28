@@ -13,6 +13,19 @@
   </fold-callout>
 
   <div class="cl-filters" role="group" aria-label="Filter changelog by section">
+    @if (unreleasedTotal > 0) {
+    <button
+      foldButton
+      size="sm"
+      shape="pill"
+      [emphasis]="unreleasedActive() ? 'soft' : 'outline'"
+      [intent]="unreleasedActive() ? 'primary' : 'neutral'"
+      [attr.aria-pressed]="unreleasedActive()"
+      (click)="toggleUnreleased()"
+    >
+      Unreleased <span class="cl-fcount">{{ unreleasedTotal }}</span>
+    </button>
+    }
     <button
       foldButton
       size="sm"
@@ -65,6 +78,7 @@
         surface="sunken"
         class="cl-release"
         [class.cl-release--dev]="release.unreleased"
+        [class.cl-release--latest]="isLatest(release)"
       >
         <header class="cl-head">
           <div class="cl-ver">
@@ -84,7 +98,21 @@
           </div>
         </header>
 
-        @for (group of release.shownGroups; track group.kind) {
+        <!-- The current npm `latest` — signified with a callout linking npm. -->
+        @if (isLatest(release)) {
+        <fold-callout variant="success" class="cl-latest">
+          Latest published on npm.
+          <a
+            class="cl-link"
+            [href]="npmUrl(release.version)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <fold-icon name="globe" [size]="13" /> {{ pkg }}@{{ release.version
+            }}
+          </a>
+        </fold-callout>
+        } @for (group of release.shownGroups; track group.kind) {
         <section class="cl-group">
           <h3 class="cl-group-title">
             <fold-badge
@@ -94,14 +122,19 @@
           </h3>
           <ul class="cl-items">
             @for (item of group.items; track $index) {
-            <li class="cl-item" [class.is-breaking]="item.breaking">
+            <li
+              class="cl-item"
+              [class.is-breaking]="item.breaking"
+              [class.is-collapsed]="!isExpanded(release.version)"
+            >
               @if (item.breaking) {
               <span class="cl-break">Breaking</span>
               }
               <span class="cl-lead">
                 <gal-changelog-runs [runs]="item.lead" />
               </span>
-              @if (item.rest.length > 0) {
+              <!-- Titles always; descriptions only in the expanded (full) view. -->
+              @if (isExpanded(release.version) && item.rest.length > 0) {
               <span class="cl-rest">
                 <gal-changelog-runs [runs]="item.rest" />
               </span>
@@ -110,6 +143,51 @@
             }
           </ul>
         </section>
+        }
+
+        <!-- Footer: See-more toggles the full view (descriptions + download);
+             npm link is always there for a published version, download only in
+             the expanded view. Hidden entirely when there's nothing to add. -->
+        @if (!release.unreleased || hasDetails(release.shownGroups)) {
+        <footer class="cl-foot">
+          <button
+            foldButton
+            size="sm"
+            emphasis="soft"
+            intent="neutral"
+            class="cl-more"
+            [attr.aria-expanded]="isExpanded(release.version)"
+            (click)="toggleExpanded(release.version)"
+          >
+            {{ isExpanded(release.version) ? "See less" : "See more" }}
+            <fold-icon
+              [name]="isExpanded(release.version) ? 'chevron-up' : 'chevron-down'"
+              [size]="14"
+            />
+          </button>
+          @if (!release.unreleased) {
+          <span class="cl-links">
+            <a
+              class="cl-link"
+              [href]="npmUrl(release.version)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <fold-icon name="globe" [size]="13" /> npm
+            </a>
+            @if (isExpanded(release.version)) {
+            <a
+              class="cl-link"
+              [href]="tarballUrl(release.version)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <fold-icon name="download" [size]="13" /> .tgz
+            </a>
+            }
+          </span>
+          }
+        </footer>
         }
       </fold-card>
       }
