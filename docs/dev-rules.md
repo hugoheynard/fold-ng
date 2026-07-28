@@ -128,9 +128,12 @@ push a component toward the limit — `number-input` sits at 299.)
 an `@example`. The README table stays in sync.
 
 4.7 **Reuse the icon component.** Draw glyphs with `<fold-icon>`, don't hand-roll
-inline `<svg>` in a component template.
-⚠️ _Known debt:_ the panel close button still inlines an `<svg>`; fold into
-`<fold-icon name="close">` on touch.
+inline `<svg>` in a component template. **Legitimate exceptions** (not icons):
+an **animated control glyph** whose stroke it animates itself (the `fold-checkbox`
+tick + indeterminate dash, the `fold-spinner`), the `fold-icon` primitive's own
+`<use>`, and a **projected illustration slot** where the consumer supplies the
+art (`fold-empty-state`'s `[empty-icon]`). A static, single-colour glyph is an
+icon — register it and use `<fold-icon>`.
 
 4.8 **Tag-qualify an attribute projection selector.** A bare
 `<ng-content select="[foo]">` matches _any_ direct child carrying a `foo`
