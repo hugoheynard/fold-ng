@@ -26,6 +26,18 @@
 
 /* ── Base theme: UMBRA (dark) ─────────────────────────────── */
 :root {
+  /* Page scaffold rhythm — FLUID defaults, read by `fold-page-layout` via
+     `var()`. A page/theme overrides on any ancestor (or the element) to retune;
+     the playground sets them inline. The gutter scales more than the gap:
+     horizontal room is precious on small screens, vertical rhythm less so — so
+     the two carry deliberately different responsive curves. */
+  --fold-page-gutter: clamp(1rem, 4vw, 2rem); /* 16 → 32px  (fluid 400–800px) */
+  --fold-page-gap: clamp(
+    1.25rem,
+    3vw,
+    2rem
+  ); /* 20 → 32px  (fluid ~665–1065px) */
+
   /* Surfaces (bg- = a fill role, darkest chrome → lightest page) */
   --fold-color-bg-page: var(--fold-ref-ink-850); /* page background        */
   --fold-color-bg-header: var(--fold-ref-ink-950); /* top header bar        */

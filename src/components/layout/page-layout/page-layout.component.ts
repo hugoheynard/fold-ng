@@ -31,12 +31,14 @@ export class FoldPageTitleDirective {}
  * given**. It does *not* cap the column — narrowing a block to a readable measure
  * is the content's job (wrap that block in your own max-width container), never
  * the page scaffold's. The *horizontal* gutter is a single token,
- * `--fold-page-gutter` (default `32px`) — retune it per page/theme, or set it to
- * `0` for a bleeding dashboard. A {@link FoldPageSectionComponent} with `bleed`
- * cancels exactly that token to span the page edge-to-edge (a full-width band
- * amid padded content), so the two never desync — including on a responsive gutter.
- * The *vertical* rhythm between stacked elements is its own token,
- * `--fold-page-gap` (default `32px`), retunable the same way.
+ * `--fold-page-gutter` (fluid default `clamp(1rem, 4vw, 2rem)` — 16→32px) —
+ * retune it per page/theme, or set it to `0` for a bleeding dashboard. A
+ * {@link FoldPageSectionComponent} with `bleed` cancels exactly that token to
+ * span the page edge-to-edge (a full-width band amid padded content), so the two
+ * never desync — including on the fluid gutter. The *vertical* rhythm between
+ * stacked elements is its own token, `--fold-page-gap` (fluid default
+ * `clamp(1.25rem, 3vw, 2rem)` — 20→32px, a gentler curve than the gutter),
+ * retunable the same way.
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
