@@ -42,6 +42,657 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.7.0",
+    date: "2026-07-29",
+    unreleased: false,
+    counts: {
+      Added: 4,
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-panel-host",
+              },
+              {
+                kind: "text",
+                value: " gains two per-panel options: ",
+              },
+              {
+                kind: "code",
+                value: "modal",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "surface",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Passed through ",
+              },
+              {
+                kind: "code",
+                value:
+                  "FoldPanelHostService.open(component, { modal, surface })",
+              },
+              {
+                kind: "text",
+                value: " (and available on template-panel descriptors). - ",
+              },
+              {
+                kind: "strong",
+                value: "`modal`",
+              },
+              {
+                kind: "text",
+                value: " (default ",
+              },
+              {
+                kind: "code",
+                value: "true",
+              },
+              {
+                kind: "text",
+                value:
+                  ") — the existing modal barrier: page scroll frozen, background ",
+              },
+              {
+                kind: "code",
+                value: "inert",
+              },
+              {
+                kind: "text",
+                value: ", focus trapped, backdrop click dismisses. ",
+              },
+              {
+                kind: "strong",
+                value: "`modal: false`",
+              },
+              {
+                kind: "text",
+                value: " makes a ",
+              },
+              {
+                kind: "strong",
+                value: "non-modal",
+              },
+              {
+                kind: "text",
+                value:
+                  " panel: the page keeps scrolling and stays interactive behind it, focus is not trapped, and clicking outside no longer closes it (only the header / ",
+              },
+              {
+                kind: "code",
+                value: "Escape",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "close()",
+              },
+              {
+                kind: "text",
+                value:
+                  " do). The barrier is now gated on _whether any open panel is modal_, so a lone non-modal panel never freezes the page; ",
+              },
+              {
+                kind: "code",
+                value: "aria-modal",
+              },
+              {
+                kind: "text",
+                value: " reflects the real modality. - ",
+              },
+              {
+                kind: "strong",
+                value: "`surface`",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: '"glass"',
+              },
+              {
+                kind: "text",
+                value: " default · ",
+              },
+              {
+                kind: "code",
+                value: '"solid"',
+              },
+              {
+                kind: "text",
+                value: ") — ",
+              },
+              {
+                kind: "code",
+                value: "solid",
+              },
+              {
+                kind: "text",
+                value: " renders an ",
+              },
+              {
+                kind: "strong",
+                value: "opaque",
+              },
+              {
+                kind: "text",
+                value: " sheet (",
+              },
+              {
+                kind: "code",
+                value: "--fold-color-surface-card",
+              },
+              {
+                kind: "text",
+                value: ", no ",
+              },
+              {
+                kind: "code",
+                value: "backdrop-filter",
+              },
+              {
+                kind: "text",
+                value:
+                  ") for content that must stay legible over any background or a plain white-sheet design; ",
+              },
+              {
+                kind: "code",
+                value: "glass",
+              },
+              {
+                kind: "text",
+                value:
+                  " keeps the frosted translucent look. Both default to today's behaviour, so existing panels are unchanged. Specs cover barrier-gating, scroll-lock, pass-through dock, surface + ",
+              },
+              {
+                kind: "code",
+                value: "aria-modal",
+              },
+              {
+                kind: "text",
+                value: " reflection, and focus-trap gating.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "Panel config now cascades through three layers instead of only the call site.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A panel's shape (",
+              },
+              {
+                kind: "code",
+                value: "side",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "width",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "modal",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "surface",
+              },
+              {
+                kind: "text",
+                value: ") is resolved highest-priority-first: the per-call ",
+              },
+              {
+                kind: "code",
+                value: "open()",
+              },
+              {
+                kind: "text",
+                value: " option → the component's own ",
+              },
+              {
+                kind: "code",
+                value: "static readonly foldPanel: FoldPanelDefaults",
+              },
+              {
+                kind: "text",
+                value: " → an app-wide ",
+              },
+              {
+                kind: "code",
+                value: "FOLD_PANEL_DEFAULTS",
+              },
+              {
+                kind: "text",
+                value: " token. So a panel declares its ",
+              },
+              {
+                kind: "strong",
+                value: "intrinsic",
+              },
+              {
+                kind: "text",
+                value:
+                  " nature once on the class (a cart _is_ non-modal + solid → ",
+              },
+              {
+                kind: "code",
+                value: "open(CartPanel)",
+              },
+              {
+                kind: "text",
+                value: " with no options), an app sets its ",
+              },
+              {
+                kind: "strong",
+                value: "identity",
+              },
+              {
+                kind: "text",
+                value: " once at bootstrap (",
+              },
+              {
+                kind: "code",
+                value: 'provideFoldPanelDefaults({ surface: "solid" })',
+              },
+              {
+                kind: "text",
+                value: "), and the call site is left for genuine one-offs. ",
+              },
+              {
+                kind: "code",
+                value: "data",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "providers",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "stack",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "ariaLabel",
+              },
+              {
+                kind: "text",
+                value:
+                  " stay per-call. Fully backward-compatible: with no token and no static, every panel keeps today's literal defaults (",
+              },
+              {
+                kind: "code",
+                value: "right",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "490",
+              },
+              {
+                kind: "text",
+                value: " / modal / ",
+              },
+              {
+                kind: "code",
+                value: "glass",
+              },
+              {
+                kind: "text",
+                value: "). New exports: ",
+              },
+              {
+                kind: "code",
+                value: "FOLD_PANEL_DEFAULTS",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "provideFoldPanelDefaults",
+              },
+              {
+                kind: "text",
+                value: ", and the ",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelDefaults",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelDefaultsProvider",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelSurface",
+              },
+              {
+                kind: "text",
+                value: " types. Specs cover each layer and their precedence.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Named panel widths — ",
+              },
+              {
+                kind: "code",
+                value: "width: 'sm' | 'md' | 'lg' | 'xl'",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A token scale (",
+              },
+              {
+                kind: "code",
+                value: "360 · 490 · 640 · 820px",
+              },
+              {
+                kind: "text",
+                value: ") replaces the magic pixel number at the call site; ",
+              },
+              {
+                kind: "code",
+                value: "md",
+              },
+              {
+                kind: "text",
+                value: " is the historical default, and a raw ",
+              },
+              {
+                kind: "code",
+                value: "number",
+              },
+              {
+                kind: "text",
+                value:
+                  " still works for a bespoke case. Cascades like the rest (",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelDefaults.width",
+              },
+              {
+                kind: "text",
+                value: "). New ",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelSize",
+              },
+              {
+                kind: "text",
+                value: " type.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "disableClose",
+              },
+              {
+                kind: "text",
+                value: " — guard the casual close.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Set it (per-call, on the component static, or app-wide) to suppress the host's _implicit_ dismiss gestures — ",
+              },
+              {
+                kind: "code",
+                value: "Escape",
+              },
+              {
+                kind: "text",
+                value:
+                  " and a backdrop click — for a panel with unsaved edits. The header close button and ",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelRef.close()",
+              },
+              {
+                kind: "text",
+                value:
+                  " are unaffected, so the panel stays closeable on purpose. Default ",
+              },
+              {
+                kind: "code",
+                value: "false",
+              },
+              {
+                kind: "text",
+                value: "; orthogonal to ",
+              },
+              {
+                kind: "code",
+                value: "modal",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Specs cover Escape + backdrop suppression and that an ordinary panel still dismisses.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A vertical ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value:
+                  " rail no longer flips to a crammed horizontal bar on a narrow _window_ while its layout keeps it on the side.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The shared tab-bar carried a leftover ",
+              },
+              {
+                kind: "code",
+                value: "@media (max-width: 768px)",
+              },
+              {
+                kind: "text",
+                value: " block that rotated ",
+              },
+              {
+                kind: "code",
+                value: ".dir-vertical",
+              },
+              {
+                kind: "text",
+                value: " items to a row on the ",
+              },
+              {
+                kind: "strong",
+                value: "viewport",
+              },
+              {
+                kind: "text",
+                value:
+                  " width. Since the nav redesign, orientation is owned entirely by ",
+              },
+              {
+                kind: "code",
+                value: "resolvedDirection",
+              },
+              {
+                kind: "text",
+                value: " — an explicit ",
+              },
+              {
+                kind: "code",
+                value: "direction",
+              },
+              {
+                kind: "text",
+                value: ", or, inside a ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: ", the layout folding the rail on top on its ",
+              },
+              {
+                kind: "strong",
+                value: "own",
+              },
+              {
+                kind: "text",
+                value:
+                  " width. The viewport query fought that: when the window dropped below ",
+              },
+              {
+                kind: "code",
+                value: "768px",
+              },
+              {
+                kind: "text",
+                value: " but the nav-layout's own width stayed above ",
+              },
+              {
+                kind: "code",
+                value: "foldAt",
+              },
+              {
+                kind: "text",
+                value: " (so it kept the rail on the side, ",
+              },
+              {
+                kind: "code",
+                value: "is-row",
+              },
+              {
+                kind: "text",
+                value:
+                  '), the items turned horizontal _inside_ the vertical rail instead of moving above the content. The block is removed; orientation is now purely container-driven, honouring fold\'s "responsive on its own width, never the viewport" contract. A standalone vertical nav that must collapse belongs in a ',
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: " (the container-driven tool).",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.6.1",
     date: "2026-07-28",
     unreleased: false,
@@ -7265,7 +7916,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.6.1...HEAD [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.7.0...HEAD [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -7277,4 +7928,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.6.1";
+export const PUBLISHED_VERSION = "0.7.0";
