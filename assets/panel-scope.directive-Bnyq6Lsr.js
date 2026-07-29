@@ -1,0 +1,1 @@
+import{a2 as r,a9 as a,V as s,aH as c}from"./index-y55LNMx1.js";class e{service=r(a);static ɵfac=function(t){return new(t||e)};static ɵdir=s({type:e,selectors:[["","panelScope",""]],exportAs:["panelScope"],features:[c([a])]})}export{e as P};
