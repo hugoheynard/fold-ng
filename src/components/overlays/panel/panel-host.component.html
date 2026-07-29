@@ -2,18 +2,20 @@
   <div
     class="panel-dock"
     [class.panel-dock--left]="panel.side === 'left'"
+    [class.panel-dock--passthrough]="!isModal(panel)"
     (click)="onBackdrop($event, panel)"
   >
     <aside
       class="panel"
       [class.panel--left]="panel.side === 'left'"
+      [attr.data-surface]="panelSurface(panel)"
       [style.--panel-width.px]="panel.width()"
       role="dialog"
-      aria-modal="true"
+      [attr.aria-modal]="isModal(panel)"
       [attr.aria-label]="ariaLabel(panel)"
       [attr.aria-labelledby]="ariaLabelledby(panel)"
       tabindex="-1"
-      [foldFocusTrap]="isTopMost(panel)"
+      [foldFocusTrap]="shouldTrap(panel)"
       (click)="$event.stopPropagation()"
     >
       @if (panel.kind === "template") {

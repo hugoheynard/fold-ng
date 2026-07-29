@@ -24,6 +24,11 @@ describe("FoldPanelHostComponent", () => {
     title: string,
     side: FoldPanelSide,
     onClose: () => void = () => undefined,
+    opts: {
+      modal?: boolean;
+      surface?: "glass" | "solid";
+      disableClose?: boolean;
+    } = {},
   ): void {
     const descriptor: Omit<FoldTemplatePanelDescriptor, "id" | "kind"> = {
       templateRef: tpl,
@@ -32,6 +37,11 @@ describe("FoldPanelHostComponent", () => {
       subtitle: signal(""),
       width: signal(480),
       onClose,
+      ...(opts.modal !== undefined ? { modal: opts.modal } : {}),
+      ...(opts.surface !== undefined ? { surface: opts.surface } : {}),
+      ...(opts.disableClose !== undefined
+        ? { disableClose: opts.disableClose }
+        : {}),
     };
     host.present(descriptor);
   }
@@ -83,6 +93,38 @@ describe("FoldPanelHostComponent", () => {
     expect(closedA).toBe(0);
   });
 
+  it("Escape does NOT close a panel that guards close (disableClose)", () => {
+    let closed = 0;
+    present("Guarded", "right", () => (closed += 1), { disableClose: true });
+    const { fixture } = render();
+
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(closed).toBe(0);
+  });
+
+  it("a backdrop click does NOT close a disableClose panel", () => {
+    let closed = 0;
+    present("Guarded", "right", () => (closed += 1), { disableClose: true });
+    const { root } = render();
+
+    const dock = root.querySelector<HTMLElement>(".panel-dock")!;
+    dock.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(closed).toBe(0);
+  });
+
+  it("a backdrop click DOES close an ordinary modal panel", () => {
+    let closed = 0;
+    present("Plain", "right", () => (closed += 1));
+    const { root } = render();
+
+    const dock = root.querySelector<HTMLElement>(".panel-dock")!;
+    dock.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(closed).toBe(1);
+  });
+
   it("renders nothing when there are no panels", () => {
     const { root } = render();
     expect(root.querySelector(".panel-dock")).toBeNull();
@@ -130,5 +172,106 @@ describe("FoldPanelHostComponent", () => {
 
     fixture.nativeElement.remove();
     sibling.remove();
+  });
+
+  it("does NOT inert the background for a non-modal panel", () => {
+    const { fixture } = render();
+    document.body.appendChild(fixture.nativeElement);
+    const sibling = document.createElement("div");
+    document.body.appendChild(sibling);
+
+    present("A", "right", () => undefined, { modal: false });
+    fixture.detectChanges();
+    expect(sibling.hasAttribute("inert")).toBe(false);
+
+    fixture.nativeElement.remove();
+    sibling.remove();
+  });
+
+  it("still inerts when a modal panel is open alongside a non-modal one", () => {
+    const { fixture } = render();
+    document.body.appendChild(fixture.nativeElement);
+    const sibling = document.createElement("div");
+    document.body.appendChild(sibling);
+
+    present("non-modal", "right", () => undefined, { modal: false });
+    present("modal", "right");
+    fixture.detectChanges();
+    expect(sibling.hasAttribute("inert")).toBe(true);
+
+    fixture.nativeElement.remove();
+    sibling.remove();
+  });
+
+  it("locks body scroll for a modal panel and releases it on close", () => {
+    present("A", "right");
+    const { fixture } = render();
+    expect(document.body.style.overflow).toBe("hidden");
+
+    host.dismissAll();
+    fixture.detectChanges();
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("does NOT lock body scroll for a non-modal panel", () => {
+    present("A", "right", () => undefined, { modal: false });
+    const { fixture } = render();
+    fixture.detectChanges();
+    expect(document.body.style.overflow).not.toBe("hidden");
+  });
+
+  it("adds the pass-through modifier to a non-modal dock only", () => {
+    present("A", "right", () => undefined, { modal: false });
+    const { root } = render();
+    expect(
+      root
+        .querySelector(".panel-dock")
+        ?.classList.contains("panel-dock--passthrough"),
+    ).toBe(true);
+  });
+
+  it("a modal dock keeps capturing clicks (no pass-through modifier)", () => {
+    present("A", "right");
+    const { root } = render();
+    expect(
+      root
+        .querySelector(".panel-dock")
+        ?.classList.contains("panel-dock--passthrough"),
+    ).toBe(false);
+  });
+
+  it("reflects the surface on the panel (solid vs default glass)", () => {
+    present("Solid", "right", () => undefined, { surface: "solid" });
+    present("Default", "right");
+    const { root } = render();
+    const asides = root.querySelectorAll(".panel");
+    expect(asides[0]?.getAttribute("data-surface")).toBe("solid");
+    expect(asides[1]?.getAttribute("data-surface")).toBe("glass");
+  });
+
+  it("reflects modality on aria-modal", () => {
+    present("Modal", "right");
+    present("NonModal", "right", () => undefined, { modal: false });
+    const { root } = render();
+    const asides = root.querySelectorAll(".panel");
+    expect(asides[0]?.getAttribute("aria-modal")).toBe("true");
+    expect(asides[1]?.getAttribute("aria-modal")).toBe("false");
+  });
+
+  it("traps focus only for the top-most modal panel", () => {
+    present("A", "right", () => undefined, { modal: false });
+    const { fixture } = render();
+    const cmp = fixture.componentInstance;
+    const panel = host.panels()[0]!;
+    expect(cmp.isModal(panel)).toBe(false);
+    expect(cmp.shouldTrap(panel)).toBe(false);
+  });
+
+  it("traps focus for a modal top-most panel", () => {
+    present("A", "right");
+    const { fixture } = render();
+    const cmp = fixture.componentInstance;
+    const panel = host.panels()[0]!;
+    expect(cmp.shouldTrap(panel)).toBe(true);
   });
 });

@@ -6,6 +6,53 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **`fold-panel-host` gains two per-panel options: `modal` and `surface`.**
+  Passed through `FoldPanelHostService.open(component, { modal, surface })` (and
+  available on template-panel descriptors).
+  - **`modal`** (default `true`) — the existing modal barrier: page scroll frozen,
+    background `inert`, focus trapped, backdrop click dismisses. **`modal: false`**
+    makes a **non-modal** panel: the page keeps scrolling and stays interactive
+    behind it, focus is not trapped, and clicking outside no longer closes it
+    (only the header / `Escape` / `close()` do). The barrier is now gated on
+    _whether any open panel is modal_, so a lone non-modal panel never freezes the
+    page; `aria-modal` reflects the real modality.
+  - **`surface`** (`"glass"` default · `"solid"`) — `solid` renders an **opaque**
+    sheet (`--fold-color-surface-card`, no `backdrop-filter`) for content that must
+    stay legible over any background or a plain white-sheet design; `glass` keeps
+    the frosted translucent look. Both default to today's behaviour, so existing
+    panels are unchanged. Specs cover barrier-gating, scroll-lock, pass-through
+    dock, surface + `aria-modal` reflection, and focus-trap gating.
+
+- **Panel config now cascades through three layers instead of only the call
+  site.** A panel's shape (`side`, `width`, `modal`, `surface`) is resolved
+  highest-priority-first: the per-call `open()` option → the component's own
+  `static readonly foldPanel: FoldPanelDefaults` → an app-wide
+  `FOLD_PANEL_DEFAULTS` token. So a panel declares its **intrinsic** nature once
+  on the class (a cart _is_ non-modal + solid → `open(CartPanel)` with no
+  options), an app sets its **identity** once at bootstrap
+  (`provideFoldPanelDefaults({ surface: "solid" })`), and the call site is left
+  for genuine one-offs. `data` / `providers` / `stack` / `ariaLabel` stay
+  per-call. Fully backward-compatible: with no token and no static, every panel
+  keeps today's literal defaults (`right` / `490` / modal / `glass`). New
+  exports: `FOLD_PANEL_DEFAULTS`, `provideFoldPanelDefaults`, and the
+  `FoldPanelDefaults` / `FoldPanelDefaultsProvider` / `FoldPanelSurface` types.
+  Specs cover each layer and their precedence.
+
+- **Named panel widths — `width: 'sm' | 'md' | 'lg' | 'xl'`.** A token scale
+  (`360 · 490 · 640 · 820px`) replaces the magic pixel number at the call site;
+  `md` is the historical default, and a raw `number` still works for a bespoke
+  case. Cascades like the rest (`FoldPanelDefaults.width`). New `FoldPanelSize`
+  type.
+
+- **`disableClose` — guard the casual close.** Set it (per-call, on the
+  component static, or app-wide) to suppress the host's _implicit_ dismiss
+  gestures — `Escape` and a backdrop click — for a panel with unsaved edits. The
+  header close button and `FoldPanelRef.close()` are unaffected, so the panel
+  stays closeable on purpose. Default `false`; orthogonal to `modal`. Specs cover
+  Escape + backdrop suppression and that an ordinary panel still dismisses.
+
 ### Fixed
 
 - **A vertical `fold-view-nav` / `fold-tabs` rail no longer flips to a crammed

@@ -203,6 +203,10 @@ export {
   FOLD_PANEL_CLOSE_LABEL,
 } from "./components/overlays/panel/panel-labels";
 export type { FoldPanelLabels } from "./components/overlays/panel/panel-labels";
+export {
+  FOLD_PANEL_DEFAULTS,
+  provideFoldPanelDefaults,
+} from "./components/overlays/panel/panel-defaults";
 export { FoldPopoverComponent } from "./components/overlays/popover/popover.component";
 export { FoldPopoverTriggerDirective } from "./components/overlays/popover/popover-trigger.directive";
 export { FoldDropdownComponent } from "./components/overlays/popover/dropdown.component";
@@ -219,6 +223,10 @@ export type {
 } from "./components/overlays/popover/placement";
 export type {
   FoldPanelSide,
+  FoldPanelSize,
+  FoldPanelSurface,
+  FoldPanelDefaults,
+  FoldPanelDefaultsProvider,
   FoldPanelContent,
   FoldPanelConfig,
   FoldPanelHandle,

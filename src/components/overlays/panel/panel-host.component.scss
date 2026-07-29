@@ -17,6 +17,15 @@
 .panel-dock--left {
   justify-content: flex-start;
 }
+/* Non-modal panel: the dock must not capture pointer events, so the page behind
+   stays fully interactive and an outside click never reaches `onBackdrop`
+   (no dismiss). Only the panel itself takes clicks. */
+.panel-dock--passthrough {
+  pointer-events: none;
+}
+.panel-dock--passthrough .panel {
+  pointer-events: auto;
+}
 
 .panel {
   --panel-width: 490px;
@@ -40,6 +49,15 @@
   border-right: 1px solid var(--fold-color-glass-border);
   box-shadow: var(--fold-shadow-panel-left);
   animation-name: panel-slide-in-left;
+}
+
+/* Solid surface: an opaque sheet (no frosted glass). For content that must stay
+   legible over any background, or a plain white-sheet design. */
+.panel[data-surface="solid"] {
+  background: var(--fold-color-surface-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: var(--fold-color-border);
 }
 @media (max-width: 768px) {
   .panel {

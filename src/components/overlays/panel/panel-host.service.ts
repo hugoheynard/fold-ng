@@ -1,13 +1,38 @@
 import { Injector, Service, type Type, inject, signal } from "@angular/core";
 import { FoldPanelRef } from "./panel-ref";
+import {
+  FOLD_PANEL_DEFAULTS,
+  panelWidthPx,
+  readComponentPanelDefaults,
+} from "./panel-defaults";
 import type {
   FoldComponentPanelDescriptor,
   FoldPanelConfig,
   FoldPanelContent,
   FoldPanelDescriptor,
   FoldPanelHandle,
+  FoldPanelSide,
+  FoldPanelSize,
+  FoldPanelSurface,
   FoldTemplatePanelDescriptor,
 } from "./panel.types";
+
+/**
+ * The per-call config with the cascadable fields resolved. They widen to
+ * `| undefined` because a layer may leave them unset — `open()` applies the
+ * literal floor (`right`/`md`/modal/`glass`/closeable) when building the
+ * descriptor.
+ */
+type ResolvedPanelConfig = Omit<
+  FoldPanelConfig<unknown>,
+  "side" | "width" | "modal" | "surface" | "disableClose"
+> & {
+  readonly side: FoldPanelSide | undefined;
+  readonly width: number | FoldPanelSize | undefined;
+  readonly modal: boolean | undefined;
+  readonly surface: FoldPanelSurface | undefined;
+  readonly disableClose: boolean | undefined;
+};
 
 /**
  * Single source of truth for the layout-owned side-panel region.
@@ -23,6 +48,9 @@ import type {
 @Service()
 export class FoldPanelHostService {
   private readonly rootInjector = inject(Injector);
+  private readonly hostDefaults = inject(FOLD_PANEL_DEFAULTS, {
+    optional: true,
+  });
   private nextId = 1;
   private readonly _panels = signal<readonly FoldPanelDescriptor[]>([]);
 
@@ -45,30 +73,59 @@ export class FoldPanelHostService {
     config: FoldPanelConfig<unknown> = {},
   ): FoldPanelRef<TResult> {
     const id = this.takeId();
+    const resolved = this.resolveConfig(component, config);
     const ref = new FoldPanelRef<TResult>(id, () => this.dismiss(id));
     const injector = Injector.create({
       parent: this.rootInjector,
       providers: [
         { provide: FoldPanelRef, useValue: ref },
-        ...(config.providers ?? []),
+        ...(resolved.providers ?? []),
       ],
     });
     const descriptor: FoldComponentPanelDescriptor = {
       kind: "component",
       id,
       component,
-      data: config.data,
-      side: config.side ?? "right",
-      width: signal(config.width ?? 490),
+      data: resolved.data,
+      side: resolved.side ?? "right",
+      width: signal(panelWidthPx(resolved.width)),
       injector,
-      ariaLabel: config.ariaLabel,
+      ariaLabel: resolved.ariaLabel,
+      modal: resolved.modal ?? true,
+      surface: resolved.surface ?? "glass",
+      disableClose: resolved.disableClose ?? false,
       onClose: () => ref.close(),
     };
-    if (!config.stack) {
+    if (!resolved.stack) {
       this.closeExisting();
     }
     this.add(descriptor);
     return ref;
+  }
+
+  /**
+   * Merge the three default layers into the effective config, highest priority
+   * first: the per-call `config`, then the component's static `foldPanel`, then
+   * the app-wide `FOLD_PANEL_DEFAULTS`. Only the defaultable fields cascade —
+   * `data`/`providers`/`stack`/`ariaLabel` pass straight through from `config`.
+   */
+  private resolveConfig(
+    component: Type<unknown>,
+    config: FoldPanelConfig<unknown>,
+  ): ResolvedPanelConfig {
+    const fromComponent = readComponentPanelDefaults(component);
+    const fromHost = this.hostDefaults ?? {};
+    return {
+      ...config,
+      side: config.side ?? fromComponent.side ?? fromHost.side,
+      width: config.width ?? fromComponent.width ?? fromHost.width,
+      modal: config.modal ?? fromComponent.modal ?? fromHost.modal,
+      surface: config.surface ?? fromComponent.surface ?? fromHost.surface,
+      disableClose:
+        config.disableClose ??
+        fromComponent.disableClose ??
+        fromHost.disableClose,
+    };
   }
 
   /**

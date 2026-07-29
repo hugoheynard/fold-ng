@@ -10,6 +10,69 @@ import type {
 /** Which layout edge the panel slides in from. */
 export type FoldPanelSide = "left" | "right";
 
+/**
+ * Panel surface treatment.
+ * - `glass` (default) — frosted, translucent; the page shows through.
+ * - `solid` — opaque surface (`--fold-color-surface-card`), no `backdrop-filter`.
+ *   Prefer it for content that must stay legible over any background (a cart,
+ *   a long form) or when a design wants a plain white sheet.
+ */
+export type FoldPanelSurface = "glass" | "solid";
+
+/**
+ * Named panel widths — a token scale instead of a magic pixel number.
+ * `sm` 360 · `md` 490 (the default) · `lg` 640 · `xl` 820. `width` still accepts
+ * a raw `number` for the rare bespoke case.
+ */
+export type FoldPanelSize = "sm" | "md" | "lg" | "xl";
+
+/**
+ * The defaultable slice of a panel's configuration — the options that describe
+ * *how a panel behaves and looks* (not *what* it carries). Every field is
+ * resolved through a three-layer cascade, highest priority first:
+ *
+ * 1. the per-call `open()` config — an explicit one-off,
+ * 2. the component's own {@link FoldPanelDefaultsProvider.foldPanel} static —
+ *    the panel's **intrinsic** shape (a cart *is* non-modal + solid),
+ * 3. the app-wide `FOLD_PANEL_DEFAULTS` token — the product's **identity**
+ *    (e.g. "every panel here is solid").
+ *
+ * `data`, `providers`, `stack` and `ariaLabel` are deliberately absent: they are
+ * per-call concerns, never a default.
+ */
+export interface FoldPanelDefaults {
+  readonly side?: FoldPanelSide;
+  /** A `number` (px) or a named {@link FoldPanelSize}. */
+  readonly width?: number | FoldPanelSize;
+  readonly modal?: boolean;
+  readonly surface?: FoldPanelSurface;
+  /**
+   * Suppress the host's *implicit* dismiss gestures — `Escape` and a backdrop
+   * click. The header close button and `FoldPanelRef.close()` still work, so a
+   * panel with unsaved edits can guard the casual close yet stay closeable on
+   * purpose. Default `false`.
+   */
+  readonly disableClose?: boolean;
+}
+
+/**
+ * The static-side contract a panel component may implement to declare its
+ * intrinsic shape once, on the class, instead of at every call site. `open()`
+ * reads it automatically.
+ *
+ * @example
+ * ```ts
+ * export class CartPanel implements FoldPanelContent<CartData> {
+ *   static readonly foldPanel: FoldPanelDefaults = { modal: false, surface: "solid" };
+ * }
+ * // call site is now just the *what*:
+ * host.open(CartPanel, { data });
+ * ```
+ */
+export interface FoldPanelDefaultsProvider {
+  readonly foldPanel: FoldPanelDefaults;
+}
+
 /** Fields common to every panel the host renders. */
 interface PanelBase {
   readonly id: number;
@@ -17,6 +80,18 @@ interface PanelBase {
   readonly width: Signal<number>;
   /** Invoked on Escape, backdrop click, or the header close button. */
   readonly onClose: () => void;
+  /**
+   * Modal (default `true`): the host freezes page scroll, marks the background
+   * `inert`, traps focus, and a backdrop click dismisses the panel. `false` for
+   * a **non-modal** panel — the page keeps scrolling and stays interactive
+   * behind it, focus is not trapped, and clicking outside does **not** close it
+   * (only the header/`Escape`/`close()` do). `undefined` is treated as modal.
+   */
+  readonly modal?: boolean;
+  /** Surface treatment; defaults to `glass`. See {@link FoldPanelSurface}. */
+  readonly surface?: FoldPanelSurface;
+  /** Suppress Escape + backdrop dismissal. See {@link FoldPanelDefaults.disableClose}. */
+  readonly disableClose?: boolean;
 }
 
 /**
@@ -69,7 +144,8 @@ export interface FoldPanelConfig<TData> {
   /** Type-checked against the component's `data` input; omit for data-less panels. */
   readonly data?: TData;
   readonly side?: FoldPanelSide;
-  readonly width?: number;
+  /** A `number` (px) or a named {@link FoldPanelSize}; defaults to `md` (490). */
+  readonly width?: number | FoldPanelSize;
   /** Extra providers added to the panel's injector (panel-scoped data bus, etc.). */
   readonly providers?: Provider[];
   /**
@@ -82,6 +158,21 @@ export interface FoldPanelConfig<TData> {
    * **not** render `fold-panel-header` (which names the dialog automatically).
    */
   readonly ariaLabel?: string;
+  /**
+   * Modal barrier. Default `true` (scroll-lock + `inert` background + focus-trap
+   * + backdrop-click dismiss). Set `false` for a non-modal panel: the page keeps
+   * scrolling and stays interactive, focus isn't trapped, and an outside click
+   * does not dismiss it.
+   */
+  readonly modal?: boolean;
+  /** Surface treatment ({@link FoldPanelSurface}); defaults to `glass`. */
+  readonly surface?: FoldPanelSurface;
+  /**
+   * Suppress the host's implicit dismiss gestures (`Escape` + backdrop click).
+   * The header close button and `FoldPanelRef.close()` still close the panel.
+   * Defaults to `false`. See {@link FoldPanelDefaults.disableClose}.
+   */
+  readonly disableClose?: boolean;
 }
 
 /** The DOM `id` of a panel's title, referenced by the dialog's `aria-labelledby`. */

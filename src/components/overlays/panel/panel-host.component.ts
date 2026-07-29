@@ -13,7 +13,7 @@ import { FoldPanelComponentOutletDirective } from "./panel-component-outlet.dire
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelHostService } from "./panel-host.service";
 import { foldPanelTitleId } from "./panel.types";
-import type { FoldPanelDescriptor } from "./panel.types";
+import type { FoldPanelDescriptor, FoldPanelSurface } from "./panel.types";
 
 /**
  * `<fold-panel-host>` — the single, layout-owned chrome for every side panel.
@@ -62,15 +62,16 @@ export class FoldPanelHostComponent {
   private inerted: HTMLElement[] = [];
 
   constructor() {
-    // Freeze page scroll + inert the background while any panel is open — once,
-    // driven by whether the panel list is non-empty.
+    // Freeze page scroll + inert the background while a **modal** panel is open
+    // — once, driven by whether any open panel is modal. A purely non-modal
+    // panel leaves the page scrollable and interactive.
     effect(() => {
-      const open = this.panels().length > 0;
-      if (open && !this.locked) {
+      const barrier = this.panels().some((p) => p.modal !== false);
+      if (barrier && !this.locked) {
         this.scrollLock.lock();
         this.applyBackgroundBarrier();
         this.locked = true;
-      } else if (!open && this.locked) {
+      } else if (!barrier && this.locked) {
         this.scrollLock.unlock();
         this.removeBackgroundBarrier();
         this.locked = false;
@@ -113,15 +114,44 @@ export class FoldPanelHostComponent {
     return top?.id === panel.id;
   }
 
-  /** Escape closes the top-most (last-opened) panel. */
+  /** A panel is modal unless it explicitly opts out (`modal: false`). */
+  isModal(panel: FoldPanelDescriptor): boolean {
+    return panel.modal !== false;
+  }
+
+  /** Trap focus only for the top-most **modal** panel. */
+  shouldTrap(panel: FoldPanelDescriptor): boolean {
+    return this.isModal(panel) && this.isTopMost(panel);
+  }
+
+  /** Surface treatment for the panel shell; defaults to `glass`. */
+  panelSurface(panel: FoldPanelDescriptor): FoldPanelSurface {
+    return panel.surface ?? "glass";
+  }
+
+  /**
+   * The implicit dismiss gestures (Escape, backdrop) are suppressed when a panel
+   * sets `disableClose` — the header close button and `FoldPanelRef.close()`
+   * bypass this, so the panel stays intentionally closeable.
+   */
+  private allowsImplicitClose(panel: FoldPanelDescriptor): boolean {
+    return panel.disableClose !== true;
+  }
+
+  /** Escape closes the top-most (last-opened) panel, unless it guards close. */
   @HostListener("document:keydown.escape")
   onEscape(): void {
     const top = this.panels().at(-1);
-    top?.onClose();
+    if (top && this.allowsImplicitClose(top)) {
+      top.onClose();
+    }
   }
 
   onBackdrop(event: MouseEvent, panel: FoldPanelDescriptor): void {
-    if (event.target === event.currentTarget) {
+    if (
+      event.target === event.currentTarget &&
+      this.allowsImplicitClose(panel)
+    ) {
       panel.onClose();
     }
   }
