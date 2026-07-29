@@ -17,3 +17,6 @@ docs-api/
 # Playwright
 test-results/
 playwright-report/
+
+# Claude Code local agent state
+.claude/
