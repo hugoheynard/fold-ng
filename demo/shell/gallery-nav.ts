@@ -48,6 +48,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     color: "#06a4a4",
     items: [
       { id: "app-shell", label: "app-shell", icon: "grid" },
+      { id: "panel", label: "panel" },
       { id: "page-layout", label: "page-layout" },
       { id: "page-section", label: "page-section" },
       { id: "hero-section", label: "hero-section" },

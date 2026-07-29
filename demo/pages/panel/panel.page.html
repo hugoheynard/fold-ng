@@ -1,0 +1,153 @@
+<fold-page-layout title="panel">
+  <p description>
+    The layout-owned <strong>side-panel</strong> region — a
+    <code>fold-panel-host</code> placed once in the shell, driven imperatively
+    by <code>FoldPanelHostService.open()</code>. A panel owns its own
+    header/body/footer; the host provides the sliding shell, focus, and (for
+    modal panels) the barrier. It's a <em>layout</em> concern, not a catalogued
+    element — you never write <code>&lt;fold-panel&gt;</code>.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['app-shell']" />
+
+  <fold-page-section
+    title="Live"
+    description="Triggers open the demo panel inside this bounded stage. The counter proves the background stays interactive under a non-modal panel."
+  >
+    <div class="panel-stage" panelScope #stage="panelScope">
+      <div class="stage-bg">
+        <div class="stage-toolbar">
+          <button foldButton size="sm" (click)="open(stage.service, {})">
+            Modal · glass
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { modal: false })"
+          >
+            Non-modal
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { surface: 'solid' })"
+          >
+            Solid
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { side: 'left' })"
+          >
+            Left
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { width: 'lg' })"
+          >
+            Large (lg)
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { disableClose: true })"
+          >
+            Guarded
+          </button>
+        </div>
+
+        <p class="stage-hint">
+          Clicking the button below increments a counter. Under a
+          <strong>non-modal</strong> panel it still works and the click does
+          <strong>not</strong> close the panel; under a
+          <strong>modal</strong> one the background is <code>inert</code> and an
+          outside click dismisses.
+        </p>
+        <button type="button" class="stage-counter" (click)="bump()">
+          Background clicks: {{ count() }}
+        </button>
+      </div>
+
+      <!-- The stage's own scoped host — panels slide within this box. -->
+      <fold-panel-host />
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Open"
+    description="Imperative API. side (default right) + width tune the shell."
+  >
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">typescript</span></div>
+      <pre class="code-pre"><code>{{ openCode }}</code></pre>
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Modal &amp; surface"
+    description="Two per-panel options. Both default to today's behaviour (modal, glass)."
+  >
+    <ul class="api-notes">
+      <li>
+        <code>modal</code> <em>(default <code>true</code>)</em> — freezes page
+        scroll, inerts the background, traps focus, and a backdrop click
+        dismisses. <code>modal: false</code> makes it
+        <strong>non-modal</strong>: the page keeps scrolling &amp; stays
+        interactive, focus isn't trapped, and an outside click no longer closes
+        it (header / <kbd>Esc</kbd> / <code>close()</code> do).
+      </li>
+      <li>
+        <code>surface</code> <em>(default <code>'glass'</code>)</em> —
+        <code>'solid'</code> renders an <strong>opaque</strong> sheet (no
+        <code>backdrop-filter</code>) for content that must stay legible over
+        any background, or a plain white-sheet design.
+      </li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">typescript</span></div>
+      <pre class="code-pre"><code>{{ behaviorCode }}</code></pre>
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Config cascade"
+    description="Where a panel's shape is declared. Resolved highest-priority-first — a per-call option, then the component's own static, then the app-wide token."
+  >
+    <ul class="api-notes">
+      <li>
+        <strong>Call site</strong> —
+        <code>open(Cmp, {{ "{" }} … {{ "}" }})</code>
+        wins over everything. For genuine one-offs, not for a panel's nature.
+      </li>
+      <li>
+        <strong>Component static</strong> —
+        <code>static readonly foldPanel: FoldPanelDefaults</code> declares the
+        panel's <em>intrinsic</em> shape once on the class (a cart <em>is</em>
+        non-modal + solid), so the call site stops repeating it.
+      </li>
+      <li>
+        <strong>App token</strong> —
+        <code>provideFoldPanelDefaults(&hellip;)</code> at bootstrap sets the
+        product's <em>identity</em> (e.g. every panel is solid). The base layer.
+      </li>
+      <li>
+        Only <code>side</code> / <code>width</code> / <code>modal</code> /
+        <code>surface</code> cascade. <code>data</code> /
+        <code>providers</code> / <code>stack</code> /
+        <code>ariaLabel</code> stay per-call.
+      </li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">typescript</span></div>
+      <pre class="code-pre"><code>{{ cascadeCode }}</code></pre>
+    </div>
+  </fold-page-section>
+</fold-page-layout>

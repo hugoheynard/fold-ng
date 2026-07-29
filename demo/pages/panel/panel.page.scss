@@ -1,0 +1,53 @@
+/* Bounded stage: a positioned box so the panel-host dock (position:absolute)
+   anchors here and the panel slides *within* the demo, not the gallery. */
+.panel-stage {
+  position: relative;
+  overflow: hidden;
+  height: 420px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
+  background: var(--fold-color-bg-page);
+}
+.stage-bg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-md);
+  height: 100%;
+  padding: var(--fold-space-lg);
+  overflow: auto;
+}
+.stage-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-sm);
+}
+.stage-hint {
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}
+.stage-counter {
+  align-self: flex-start;
+  padding: var(--fold-space-sm) var(--fold-space-lg);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+.stage-counter:hover {
+  border-color: var(--fold-color-primary);
+}
+
+.api-notes {
+  margin: 0 0 var(--fold-space-lg);
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  max-width: 70ch;
+  line-height: 1.5;
+  color: var(--fold-color-text-secondary);
+}

@@ -140,6 +140,52 @@ leave-balance-display, configurable-tab-bar, etc.
       locking. If it lands, it composes inside `fold-panel-host` and the future
       `fold-dialog`, and `fold-danger-zone` drops its danger button into it.
 
+- [ ] **`fold-panel-host` — bottom-sheet edge (`side: 'bottom'`) + responsive
+      auto-switch.** The last real gap in the panel system (config cascade,
+      `modal`/`surface`, size presets, `disableClose` all landed 2026-07-29). A
+      side sheet is the wrong shape on a phone: the dominant mobile pattern is a
+      sheet that slides up from the **bottom**, full-width, with a drag/tap-to-
+      dismiss handle. Scope:
+  - **`side: 'bottom'`** — a new edge alongside `left`/`right`. Full-width, height
+    driven by content up to a `max-height` with internal scroll; slides on the
+    Y axis. The scss `.panel--bottom` + a bottom `.panel-dock` variant; the
+    surface/glass/solid, focus-trap, `inert`, scroll-lock and `disableClose`
+    machinery all **reuse** as-is (they're edge-agnostic).
+  - **Responsive auto-switch** — a panel opened `side: 'right'` should become a
+    bottom-sheet under a breakpoint, container-driven (fold's "responsive on
+    its own width, never the viewport" contract — key off the host/shell
+    width, likely a `@container`, not a media query). Decide the API: an
+    explicit `side: 'auto'` (right on wide, bottom on narrow) vs. an implicit
+    fold at a token width. Lean `side: 'auto'` so it's opt-in and legible.
+  - **Grabber affordance** — a top drag-handle on the sheet; tap dismisses (honours
+    `disableClose`). Pointer-drag-to-dismiss is a **nice-to-have**, sequence
+    after the static breakpoint switch — don't block the edge on gesture work.
+  - Pulled by a real use-case: the LaFolieDouce storefront cart panel on mobile.
+    Its own commit + responsive specs — kept out of the 2026-07-29 panel lot to
+    keep that lot clean. This is the 9.5 → 10 lever for the panel system.
+
+- [ ] **Better `/panel` gallery demo.** The dedicated page landed (2026-07-29:
+      bounded stage, 5+ triggers, background click-counter, cascade docs), but the
+      demo undersells the system. Raise it to `/app-shell`'s `dev-playground`
+      quality:
+  - **A real panel body, not the generic `TabPanelComponent` stub** — mount a demo
+    panel with a `fold-panel-header` + form fields + a `fold-panel-footer` (once it
+    exists) so surface (glass vs solid) and `disableClose` are actually legible; an
+    empty stub reads the same modal or not.
+  - **Live toggles, not one-shot trigger buttons** — segmented controls for `side`
+    / `width` (sm·md·lg·xl) / `modal` / `surface` / `disableClose`, so a single open
+    panel updates as you flip options (mirror app-shell's `np-field` + `ss-seg`),
+    instead of 6 buttons each opening a fixed combo.
+  - **Show the cascade resolving, not just prose** — a panel with a component
+    `static foldPanel` under an active `FOLD_PANEL_DEFAULTS`, printing the resolved
+    config so the three layers → final value is visible on screen.
+  - **`data` round-trip** — a trigger that passes `data` in and shows the typed
+    `FoldPanelRef` result coming back on close (the typed-result DX is the headline
+    advantage over MatDialog and the demo never shows it).
+  - Keep the background counter (proves non-modal pass-through) + the bounded
+    `panelScope` stage. Sequences with bottom-sheet: add a mobile preview width to
+    the same demo once `side: 'bottom'` lands.
+
 ## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4) ✅ DONE
 
 ✅ Done: `expanded` now defaults to `undefined` (unset) and the effective state
@@ -585,6 +631,26 @@ committed work; the point is to learn before we lock anything.
   **global vs opt-in** (styling every scroller vs a `.fold-scroll` utility /
   per-component flag) — global risks fighting consumer apps. Ship the tokens
   first; wire the owned scroll containers once the strategy is picked.
+- **[2026-07-29] Preserve reading position when content above resizes / reflows.**
+  When a consumer resizes the window (or an upper element reflows) while reading a
+  long list — e.g. LaFolieDouce B2B scrolling the product catalogue — the viewport
+  must **stay on the row they were reading**, not jump. Browser **scroll anchoring**
+  (`overflow-anchor: auto`, the default) handles _content mutations_ (an item added
+  above shifts scroll to compensate) but does **not** cover **window/viewport
+  resize** — a narrower window reflows the fluid grid into more rows, the total
+  height changes, and the anchor is lost. So this is a real gap, not "just leave the
+  default on". **Probe the strategy before locking:** (a) opt-in on the scroll
+  containers fold owns (shell `<main>`, panel body, data-table) — capture the
+  top-most fully-visible anchor element before a resize, restore its offset after
+  (a `ResizeObserver` + `scrollIntoView`/delta-correct, reduced-motion-safe); vs
+  (b) a `[foldScrollAnchor]` directive apps put on the scroll container of any long
+  list. Also verify we're not **breaking** the native anchoring we already get:
+  `transform`/`overflow-anchor: none`/certain sticky headers suppress it — audit
+  the shell + data-table for those. Cross-refs the scrollbar Explore item (same
+  "scroll containers fold owns" surface). Motivating case: the B2B catalogue
+  (`aspect-ratio` cards in an `auto-fill minmax` grid — resize changes the column
+  count, so it reflows hard). Ship the owned-container version first; the directive
+  only if a 2nd consumer needs it on a non-fold scroller.
 - **DX sweep across the components.** AppShell now uses the house pattern —
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining

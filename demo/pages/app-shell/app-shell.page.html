@@ -197,6 +197,20 @@
               <fold-icon name="contracts" size="sm" />
               Open panel
             </button>
+            <button
+              type="button"
+              (click)="openPreviewPanel(sph.service, { modal: false })"
+            >
+              <fold-icon name="contracts" size="sm" />
+              Non-modal
+            </button>
+            <button
+              type="button"
+              (click)="openPreviewPanel(sph.service, { surface: 'solid' })"
+            >
+              <fold-icon name="contracts" size="sm" />
+              Solid
+            </button>
             <button type="button" (click)="toggleTheme()">
               <fold-icon
                 [name]="theme() === 'dark' ? 'theme-light' : 'theme-dark'"

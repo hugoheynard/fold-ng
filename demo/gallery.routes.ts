@@ -53,6 +53,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   "view-toggle": () => import("./pages/view-toggle/view-toggle.page"),
   avatar: () => import("./pages/avatar/avatar.page"),
   "app-shell": () => import("./pages/app-shell/app-shell.page"),
+  panel: () => import("./pages/panel/panel.page"),
   menu: () => import("./pages/menu/menu.page"),
   popover: () => import("./pages/popover/popover.page"),
   "nav-launcher": () => import("./pages/nav-launcher/nav-launcher.page"),

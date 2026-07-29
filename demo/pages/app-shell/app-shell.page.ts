@@ -98,9 +98,15 @@ export default class AppShellPage {
   }
 
   /** Open a panel in the preview's own host (a scoped service instance), so it
-   *  slides in inside the preview shell rather than the gallery. */
-  protected openPreviewPanel(host: FoldPanelHostService): void {
-    host.open(TabPanelComponent, { side: "right", width: 260 });
+   *  slides in inside the preview shell rather than the gallery. `config` demos
+   *  the per-panel options: `{ modal: false }` (non-modal — the preview stays
+   *  scrollable/interactive, no outside-close) and `{ surface: 'solid' }`
+   *  (opaque sheet instead of frosted glass). */
+  protected openPreviewPanel(
+    host: FoldPanelHostService,
+    config: { modal?: boolean; surface?: "glass" | "solid" } = {},
+  ): void {
+    host.open(TabPanelComponent, { side: "right", width: 260, ...config });
   }
 
   /* ── railPrimary: a stable static nav, decoupled from the settings ── */
