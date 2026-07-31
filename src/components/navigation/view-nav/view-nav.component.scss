@@ -1,3 +1,13 @@
 /* fold-view-nav is a routed navigation bar; its look is the shared tab-bar
    visual (same as fold-tabs). Semantics differ in the template, not the CSS. */
 @use "../tab-bar";
+@use "../../layout/nav-gap";
+
+/* Standalone + horizontal: separate the bar from the content it heads, by the
+   SAME gap a fold-nav-layout would apply (shared source). Only this conjunction —
+   inside a layout the layout owns the gap, and a vertical bar is a side rail, not
+   a header. `fold-tabs` doesn't get this: it's an in-place widget whose panels
+   own their own spacing, not a bar that introduces following content. */
+:host(.is-standalone.is-horizontal) {
+  @include nav-gap.nav-content-gap(margin-block-end);
+}

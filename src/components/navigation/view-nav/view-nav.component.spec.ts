@@ -167,4 +167,29 @@ describe("FoldViewNavComponent", () => {
     expect(buttons[0]!.hasAttribute("disabled")).toBe(true);
     expect(buttons[0]!.getAttribute("aria-disabled")).toBe("true");
   });
+
+  // The standalone content-gap: the host carries `is-standalone` + `is-horizontal`
+  // only when it should own the margin toward the content below it (the SCSS keys
+  // the gap on their conjunction). No wrapping fold-nav-layout is provided here,
+  // so the bar is always standalone; direction drives `is-horizontal`.
+  function hostEl(patch: Partial<HostComponent> = {}): HTMLElement {
+    const fixture = TestBed.createComponent(HostComponent);
+    Object.assign(fixture.componentInstance, patch);
+    fixture.detectChanges();
+    return (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-view-nav",
+    ) as HTMLElement;
+  }
+
+  it("flags a standalone horizontal bar for the content gap", () => {
+    const el = hostEl({ direction: "horizontal" });
+    expect(el.classList.contains("is-standalone")).toBe(true);
+    expect(el.classList.contains("is-horizontal")).toBe(true);
+  });
+
+  it("does not flag horizontal on a vertical bar (a side rail, not a header)", () => {
+    const el = hostEl({ direction: "vertical" });
+    expect(el.classList.contains("is-standalone")).toBe(true);
+    expect(el.classList.contains("is-horizontal")).toBe(false);
+  });
 });

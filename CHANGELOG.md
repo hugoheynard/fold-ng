@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **A standalone `fold-view-nav` now separates itself from the content it heads
+  by the same gap a `fold-nav-layout` applies.** A horizontal bar used on its own
+  (outside a layout) gained a `margin-block-end` equal to `--fold-nav-layout-gap`
+  (default `--fold-space-lg`, 16px) — the value is now shared through a
+  `nav-content-gap` mixin (`layout/_nav-gap.scss`) that both the layout and the
+  bar `@use`, so the two can't drift and consumers stop hand-rolling a margin.
+  Applied only to a **standalone horizontal** bar: inside a `fold-nav-layout` the
+  layout still owns the gap (no double space), and a vertical bar is a side rail,
+  not a header. `fold-tabs` is unaffected (an in-place widget, not a bar that
+  introduces following content). Purely additive spacing — the layout's own
+  rendering is unchanged.
 
 ## [0.7.0] - 2026-07-29
 

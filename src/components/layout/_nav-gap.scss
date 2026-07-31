@@ -1,0 +1,18 @@
+/* The gap between a navigation bar and the content it introduces.
+ *
+ * One source of that value, so a standalone `fold-view-nav` and a
+ * `fold-nav-layout` separate their content by the SAME amount. Before this, only
+ * the layout owned the gap (`--fold-nav-layout-gap` on its flex `gap`); a
+ * standalone bar had none, and consumers hand-rolled a margin that could drift.
+ *
+ * `--fold-nav-layout-gap` stays the public override knob (documented on
+ * `fold-nav-layout`); `--fold-space-lg` (16px) is the default — the same value
+ * the layout used as its hard-coded fallback.
+ *
+ * Parameterised by the property because the two consumers express the gap
+ * differently: the layout as flex `gap` (works stacked or as a side rail), a
+ * standalone horizontal bar as `margin-block-end` toward the content below it.
+ */
+@mixin nav-content-gap($property) {
+  #{$property}: var(--fold-nav-layout-gap, var(--fold-space-lg, 16px));
+}

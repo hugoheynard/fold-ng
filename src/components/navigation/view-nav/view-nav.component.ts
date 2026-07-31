@@ -80,6 +80,14 @@ export type FoldViewNavItem = {
   // -surface-raised so they flip correctly in light mode (the app original
   // hard-coded white-alpha, which would vanish on a light background).
   styleUrl: "./view-nav.component.scss",
+  host: {
+    // A standalone horizontal bar owns the gap to the content it heads, matching
+    // fold-nav-layout. Inside a layout, the layout owns that gap (these two
+    // classes never both apply there); the SCSS keys the margin on their
+    // conjunction. Vertical is a side rail, not a header — no block-end margin.
+    "[class.is-standalone]": "isStandalone()",
+    "[class.is-horizontal]": "resolvedDirection() === 'horizontal'",
+  },
 })
 export class FoldViewNavComponent {
   /** The items to render, in order. */
@@ -132,6 +140,13 @@ export class FoldViewNavComponent {
 
   /** The nearest layout, if any — lets `direction="auto"` follow it. */
   private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });
+
+  /**
+   * No wrapping `fold-nav-layout`. Standalone, the bar owns its gap to the
+   * following content; inside a layout, the layout owns it (avoiding a double
+   * gap).
+   */
+  protected readonly isStandalone = computed(() => this.layout === null);
 
   /** `direction` with `auto` resolved against the wrapping layout. */
   protected readonly resolvedDirection = computed<"horizontal" | "vertical">(

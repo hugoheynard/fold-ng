@@ -1,9 +1,13 @@
+@use "../nav-gap";
+
 /* Nav above the content by default; `is-row` (a side placement that has not
    folded) turns it into a rail beside the content. */
 :host {
   display: flex;
   flex-direction: column;
-  gap: var(--fold-nav-layout-gap, 16px);
+  /* Shared with a standalone `fold-view-nav` — same gap to the content, one
+     source (see `_nav-gap.scss`). Value unchanged: --fold-nav-layout-gap → 16px. */
+  @include nav-gap.nav-content-gap(gap);
   min-width: 0;
 }
 /* No align-items: the rail stretches to the row's height on purpose. A tab bar
