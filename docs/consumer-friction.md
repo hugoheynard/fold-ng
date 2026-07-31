@@ -49,6 +49,35 @@ overlay. Scanning for the remaining **controlled `input` + twin `output`** shape
 Pure event outputs (`clicked`, `activated`, `rowClick`, `nodeClick`,
 `filesPicked`, `validChange`, `confirmed`) are correctly outputs — no state to own.
 
+## Round 3 — `fold-page-layout` owns its scroll, with no opt-out (⏳ open, P0)
+
+Surfaced building **LaFolieDouce B2B**: an **app-level footer** (in the shell's
+`[footer]` slot) that should sit **at the end of scrolled content**.
+
+**Ground truth.** `fold-page-layout`'s `:host` is `overflow-y:auto;
+overscroll-behavior:contain; flex:1 1 auto; min-height:0` — it is a
+**self-scrolling box by construction**, made for `contentScroll="clip"` (the page
+owns its scroll, the shell content is clipped). There is **no input** to make it
+flow instead. The shell _does_ support the sticky footer — `footerBehavior="scroll"`
+stamps the footer inside `.content` with `.footer-inflow { margin-top:auto }`, a
+correct sticky-footer — but that model needs the **shell** to own the scroll and
+the page to be **flow content**. With `fold-page-layout` those two collide: the
+page keeps scrolling internally, and `overscroll-behavior:contain` **severs the
+chain** to `.content`, so the footer at the end of `.content` is **unreachable** —
+you hit the bottom of the page and simply cannot get to the footer.
+
+**Verdict.** Real gap, not a misconfiguration. The combo "pages built with
+`fold-page-layout`" + "shell-owned scroll + in-flow footer" is unreachable today.
+Consumer workaround is a global `!important` override neutralising the internal
+scroll (`fold-page-layout { overflow:visible; overscroll-behavior:auto;
+flex-shrink:0 }`) — it works, but a `!important` against a lib `:host` is exactly
+the smell that flags a missing knob.
+
+**Fix (queued P0, TODO.md → Roadmap 1.0.1 `fold-app-shell` polish):** a `scroll`
+input on `fold-page-layout` (`'own' | 'flow'`, default `'own'`); `'flow'` drops
+`overflow`/`overscroll`/`min-height` so the page flows and the scroll — and footer
+reach — returns to the shell. ⏳
+
 ## The systemic fix — surfacing breaking changes
 
 The sharpest lesson: three of these were **controlled-pair twins nobody flagged**,

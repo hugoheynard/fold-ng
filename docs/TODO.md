@@ -228,6 +228,26 @@ its a11y items feed §3, its snapshots feed §2. Raising the shell to 9.5 lifts 
 average, but the average also needs the P0 blockers (RELEASE-READINESS §2) and the
 lib-wide levers there cleared._
 
+**Priority (P0) — `fold-page-layout` can't cede its scroll (breaks shell-owned scroll + in-flow footer):**
+
+- [ ] **Add a `scroll` opt-out to `fold-page-layout` (`'own' | 'flow'`, default `'own'`).**
+      Its `:host` hardcodes `overflow-y:auto; overscroll-behavior:contain;
+    flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
+      for the `contentScroll="clip"` model, with **no input to turn it off**. So a
+      page built on `fold-page-layout` is structurally incompatible with the shell
+      owning the scroll (`footerBehavior="scroll"`): the page scrolls internally,
+      and `overscroll-behavior:contain` **stops the scroll from chaining to
+      `.content`** — so the in-flow footer stamped at the end of `.content` becomes
+      **unreachable** (you reach the bottom of the page and cannot get to the
+      footer). Surfaced building **LaFolieDouce B2B** (an app-level footer that
+      should sit at the end of scrolled content). Consumer workaround today is a
+      global `!important` override
+      (`fold-page-layout { overflow:visible; overscroll-behavior:auto; flex-shrink:0 }`),
+      a smell that points straight at this gap. **Fix:** `scroll="flow"` drops
+      `overflow`/`overscroll`/`min-height` so the page flows and the scroll — and
+      footer reach — returns to the shell. Pairs with the footer-scroll snapshot
+      coverage below. Ground truth in `consumer-friction.md` Round 3.
+
 **Do — the a11y promise (the component advertises accessibility):**
 
 - [ ] **Rails as named landmarks.** `.rail-primary` / `.rail-secondary` are bare
