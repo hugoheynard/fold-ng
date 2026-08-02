@@ -472,10 +472,23 @@ The central charge of all three reviews: _“the family projects the smallest un
 Gaps the benchmark identified whose absence is **defensible** but must be an
 explicit choice rather than an oversight. In estimated order of value:
 
-- [ ] **Range selection / drag-to-create** — the benchmark's sharpest point: this
-      family is built for the leave/scheduling domain and can **display** a leave
-      request without being able to **originate** one. That is the missing half
-      of the flow.
+- [x] **Range selection / drag-to-create — DECIDED AGAINST (2026-08-02).** The
+      benchmark called this "the missing half of the flow", reading the family
+      as a leave/scheduling widget. It is not one: it is a **pure display**,
+      agnostic of what the events mean and of which layer produced them.
+      Originating a record is the consumer's flow, with the consumer's
+      validation and the consumer's write path — a calendar that opened a
+      "create" affordance would be guessing at all three.
+
+      The second consumer settles it. In LFC the first calendar is a sales rep's
+          — appointments, plus how long a client has been between **register** and
+          **activation**. That is one open-ended band whose tone crosses a threshold
+          the app owns (warning, then alert), and it renders today with no library
+          change: `openEnd: true`, `end` clamped to the loaded window, `tone`
+          computed by the caller. Nothing about it looks like SH3PHERD's leave
+          requests, which is the point — the family should keep working for both
+          without learning about either.
+
 - [ ] **“See more” popover on the `+N`** (FullCalendar `moreLinkClick: 'popover'`).
 - [ ] **`dayMaxEvents` auto-fitted to the real cell height** rather than a fixed
       `maxLanes`.

@@ -353,8 +353,14 @@ Calendar dates are plain `YYYY-MM-DD` **strings**, never `Date` — see
 `foldToday` / `foldFromNativeDate` / `foldAddDays` and the reasoning in
 [`/calendar-dates`](https://hugoheynard.github.io/fold-ng/calendar-dates). The
 family plots **whole days only** (there is no time field), on the **Gregorian**
-calendar, **read-only** (no drag, resize or range-select), and has no resource
-(staff × day) view. Everything drawn around an event is a projectable template:
+calendar, and has no resource (staff × day) view.
+
+It is a **pure display**, by decision and not by omission: it knows nothing
+about what an event means or which layer produced it, so it never originates
+one — no drag-to-create, no range-select. Tone is the caller's to compute,
+which is what lets the same component paint a leave request and an account
+sitting open between registration and activation, its band crossing into
+`warning` then `alert` on a threshold the app owns. Everything drawn around an event is a projectable template:
 `foldCalendarEvent`, `foldCalendarDay`, `foldCalendarHeading`,
 `foldCalendarTitle`, `foldCalendarOverflow`.
 

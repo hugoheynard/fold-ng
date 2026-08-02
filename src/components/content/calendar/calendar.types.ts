@@ -5,6 +5,13 @@ import type { FoldCalendarDate } from "./calendar-date";
  * Public data model for the calendar family. The calendar knows nothing of the
  * domain it plots — an app maps its own records onto {@link FoldCalendarEvent}
  * and gets them back, still typed, on every output.
+ *
+ * That ignorance is the design, not a stage it will grow out of. The family
+ * **displays**; it never originates a record, because the validation and the
+ * write path both belong to the consumer. Which is also why `tone` is an input
+ * rather than something derived here: a band that turns amber and then red as
+ * an account sits unactivated, and a band that is amber because a leave request
+ * is pending, are the same component being told two different things.
  */
 
 /**
