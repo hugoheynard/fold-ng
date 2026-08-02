@@ -87,6 +87,7 @@
     "api:surface": "tsx scripts/gen-api-surface.ts",
     "api:check": "tsx scripts/gen-api-surface.ts --check",
     "lint:spacing": "tsx scripts/check-spacing.ts",
+    "bench:calendar": "tsx scripts/bench-calendar.ts",
     "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo",
     "test:e2e": "playwright test"
   },

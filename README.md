@@ -360,6 +360,13 @@ edge on the side that continues — is already solved and already tested. The
 filters (`foldEventsOnDay`, `foldEventsInRange`, `foldFilterBySource`) are the
 tier every page uses whichever rendering it picks.
 
+**Measured, and kept measured.** Laying out a month (mean of 20 runs,
+`pnpm bench:calendar`, committed with a budget so it cannot regress quietly):
+
+| events in the window | 50   | 200  | 1 000 | 5 000 | 20 000 |
+| -------------------- | ---- | ---- | ----- | ----- | ------ |
+| ms per layout        | 0.14 | 0.41 | 0.99  | 5.0   | 22     |
+
 Calendar dates are plain `YYYY-MM-DD` **strings**, never `Date` — see
 `foldToday` / `foldFromNativeDate` / `foldAddDays` and the reasoning in
 [`/calendar-dates`](https://hugoheynard.github.io/fold-ng/calendar-dates). The

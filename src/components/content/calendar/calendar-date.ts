@@ -146,6 +146,27 @@ function fromUtcMs(ms: number): FoldCalendarDate {
 }
 
 /**
+ * `date` as a whole number of days since the epoch.
+ *
+ * The internal currency of anything that sorts, compares or clips a lot of
+ * dates. Strings are the right **model** — they are the wire format and they
+ * cannot carry a zone — but they are the wrong thing to compare a hundred
+ * thousand times: every `foldDaysBetween` in a sort comparator re-parses two
+ * strings and builds two `Date`s. Converting once at the door and working on
+ * integers is 6× faster on the month grid's hot path, with the same output.
+ *
+ * Not on the public surface: it is a representation, not a model.
+ */
+export function foldToEpochDay(date: FoldCalendarDate): number {
+  return Math.round(toUtcMs(date) / MS_PER_DAY);
+}
+
+/** The inverse of {@link foldToEpochDay}. */
+export function foldFromEpochDay(day: number): FoldCalendarDate {
+  return fromUtcMs(day * MS_PER_DAY);
+}
+
+/**
  * Today, read from the **local** clock — the day the user believes it is,
  * which is what a calendar highlights. Pass `now` to pin it (tests, a
  * workspace clock).

@@ -5,8 +5,8 @@ import {
   foldWeekendOr,
 } from "./calendar-cell";
 import {
-  foldAddDays,
   foldStartOfWeek,
+  foldToEpochDay,
   type FoldCalendarDate,
   type FoldWeekday,
 } from "./calendar-date";
@@ -42,21 +42,19 @@ const DAYS_PER_WEEK = 7;
 /** One day cell plus the events covering it. */
 function dayWithEvents<T>(
   events: readonly FoldCalendarEvent<T>[],
-  date: FoldCalendarDate,
+  epochDay: number,
   month: string,
   options: FoldDayColumnsOptions,
-  counts: ReadonlyMap<FoldCalendarDate, number>,
+  counts: ReadonlyMap<number, number>,
 ): FoldCalendarDayEvents<T> {
-  return {
-    day: foldMakeDay(date, {
-      month,
-      today: options.today,
-      weekendDays: foldWeekendOr(options.weekendDays),
-      counts,
-      hidden: FOLD_NO_HIDDEN_DAYS,
-    }),
-    events: foldEventsOnDay(events, date),
-  };
+  const day = foldMakeDay(epochDay, {
+    month,
+    today: options.today,
+    weekendDays: foldWeekendOr(options.weekendDays),
+    counts,
+    hidden: FOLD_NO_HIDDEN_DAYS,
+  });
+  return { day, events: foldEventsOnDay(events, day.date) };
 }
 
 /**
@@ -67,15 +65,13 @@ export function foldBuildWeek<T>(
   events: readonly FoldCalendarEvent<T>[],
   options: FoldDayColumnsOptions,
 ): readonly FoldCalendarDayEvents<T>[] {
-  const start = foldStartOfWeek(options.date, options.weekStartsOn ?? "mon");
-  const month = options.date.slice(0, 7);
-  const counts = foldCountByDay(
-    events,
-    start,
-    foldAddDays(start, DAYS_PER_WEEK - 1),
+  const startDay = foldToEpochDay(
+    foldStartOfWeek(options.date, options.weekStartsOn ?? "mon"),
   );
+  const month = options.date.slice(0, 7);
+  const counts = foldCountByDay(events, startDay, startDay + DAYS_PER_WEEK - 1);
   return Array.from({ length: DAYS_PER_WEEK }, (_unused, offset) =>
-    dayWithEvents(events, foldAddDays(start, offset), month, options, counts),
+    dayWithEvents(events, startDay + offset, month, options, counts),
   );
 }
 
@@ -84,11 +80,12 @@ export function foldBuildDay<T>(
   events: readonly FoldCalendarEvent<T>[],
   options: FoldDayColumnsOptions,
 ): FoldCalendarDayEvents<T> {
+  const day = foldToEpochDay(options.date);
   return dayWithEvents(
     events,
-    options.date,
+    day,
     options.date.slice(0, 7),
     options,
-    foldCountByDay(events, options.date, options.date),
+    foldCountByDay(events, day, day),
   );
 }

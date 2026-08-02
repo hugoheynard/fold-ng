@@ -1,6 +1,7 @@
 import {
-  foldAddDays,
+  foldFromEpochDay,
   foldIsWeekend,
+  foldToEpochDay,
   FOLD_DEFAULT_WEEKEND_DAYS,
   type FoldCalendarDate,
   type FoldWeekday,
@@ -10,6 +11,10 @@ import type { FoldCalendarDay, FoldCalendarEvent } from "./calendar.types";
 /**
  * The one place a {@link FoldCalendarDay} is built, shared by the month grid and
  * the column views so a cell means exactly the same thing in every view.
+ *
+ * Counts are keyed on the **epoch day**, not the date string: a grid builds
+ * 35–42 of these per render and every string key would be parsed again to be
+ * compared. The dates on the way out are still strings — that is the model.
  *
  * Internal — not part of the public surface.
  */
@@ -23,24 +28,25 @@ export interface FoldDayContext {
   /** Days shaded as the weekend. */
   readonly weekendDays: readonly FoldWeekday[];
   /** Events covering each day, counted once for the whole grid. */
-  readonly counts: ReadonlyMap<FoldCalendarDate, number>;
+  readonly counts: ReadonlyMap<number, number>;
   /** Events no lane could take, per day. Empty for views that never drop any. */
-  readonly hidden: ReadonlyMap<FoldCalendarDate, number>;
+  readonly hidden: ReadonlyMap<number, number>;
 }
 
 /** A day cell, with every flag a view needs to style it already resolved. */
 export function foldMakeDay(
-  date: FoldCalendarDate,
+  epochDay: number,
   context: FoldDayContext,
 ): FoldCalendarDay {
+  const date = foldFromEpochDay(epochDay);
   return {
     date,
     dayOfMonth: Number(date.slice(8, 10)),
     inMonth: date.slice(0, 7) === context.month,
     isToday: date === context.today,
     isWeekend: foldIsWeekend(date, context.weekendDays),
-    eventCount: context.counts.get(date) ?? 0,
-    hiddenCount: context.hidden.get(date) ?? 0,
+    eventCount: context.counts.get(epochDay) ?? 0,
+    hiddenCount: context.hidden.get(epochDay) ?? 0,
   };
 }
 
@@ -54,14 +60,18 @@ export function foldMakeDay(
  */
 export function foldCountByDay<T>(
   events: readonly FoldCalendarEvent<T>[],
-  from: FoldCalendarDate,
-  to: FoldCalendarDate,
-): ReadonlyMap<FoldCalendarDate, number> {
-  const counts = new Map<FoldCalendarDate, number>();
+  fromDay: number,
+  toDay: number,
+): ReadonlyMap<number, number> {
+  const counts = new Map<number, number>();
   for (const event of events) {
-    const start = event.start >= from ? event.start : from;
-    const end = event.end <= to ? event.end : to;
-    for (let day = start; day <= end; day = foldAddDays(day, 1)) {
+    const a = foldToEpochDay(event.start);
+    const b = foldToEpochDay(event.end);
+    // Reversed ranges are normalised by the layout, so they are counted the
+    // same way here — otherwise a band would render on days reporting zero.
+    const start = Math.max(fromDay, Math.min(a, b));
+    const end = Math.min(toDay, Math.max(a, b));
+    for (let day = start; day <= end; day += 1) {
       counts.set(day, (counts.get(day) ?? 0) + 1);
     }
   }
@@ -69,8 +79,7 @@ export function foldCountByDay<T>(
 }
 
 /** No days dropped — the column views' `hidden` map. */
-export const FOLD_NO_HIDDEN_DAYS: ReadonlyMap<FoldCalendarDate, number> =
-  new Map();
+export const FOLD_NO_HIDDEN_DAYS: ReadonlyMap<number, number> = new Map();
 
 /** The weekend a caller left unset. */
 export function foldWeekendOr(

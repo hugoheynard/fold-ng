@@ -113,6 +113,16 @@ All notable changes to **fold-ng** are documented here. The format follows
   with `[data-fold-day-modifiers~="holiday"]` — so nobody has to write CSS
   against an internal class name. `foldCalendarEvent` is now generic too, so
   `event.data` comes back as the app's own record.
+- **The month layout is ~5× faster, and the benchmark ships with it.** The cost
+  was never the algorithm — it was the representation: every comparison in the
+  candidate sort called `foldDaysBetween`, which re-parsed two strings and built
+  two `Date`s, and the whole feed was re-filtered once per week row. Spans now
+  carry epoch-day bounds computed once, rows are bucketed in a single pass
+  (`O(rows × N)` → `O(N)`), and clipping is integer arithmetic. The public model
+  is unchanged — this is internal only. Measured on a month layout, mean of 20:
+  1 000 events 4.8 ms → **0.99 ms**, 5 000 28.9 → **5.0**, 20 000 124 → **22**.
+  `pnpm bench:calendar` re-runs it against a committed budget and exits non-zero
+  when a size blows it.
 - **`foldCalendarNextFocus` is public — the geometry tier is now complete.**
   The pure builders (`foldBuildMonthGrid`, `foldBuildWeek`, `foldBuildDay`,
   `foldBuildAgenda`) and the period functions (`foldShiftDate`,

@@ -1,6 +1,6 @@
 import { isDevMode } from "@angular/core";
 
-import type { FoldCalendarDate } from "./calendar-date";
+import { foldToEpochDay, type FoldCalendarDate } from "./calendar-date";
 import type { FoldCalendarEvent, FoldCalendarTone } from "./calendar.types";
 
 /**
@@ -18,6 +18,10 @@ export interface FoldLogicalSpan<T> {
   readonly event: FoldCalendarEvent<T>;
   readonly start: FoldCalendarDate;
   readonly end: FoldCalendarDate;
+  /** {@link start} as an epoch day — what the grid sorts and clips on. */
+  readonly startDay: number;
+  /** {@link end} as an epoch day, inclusive. */
+  readonly endDay: number;
   readonly groupSize: number;
   readonly openStart: boolean;
   readonly openEnd: boolean;
@@ -61,11 +65,15 @@ function spanOf<T>(
       `[fold-calendar] event "${event.id}" ends (${event.end}) before it starts (${event.start}); treating the range as reversed.`,
     );
   }
+  const start = reversed ? event.end : event.start;
+  const end = reversed ? event.start : event.end;
   return {
     key,
     event,
-    start: reversed ? event.end : event.start,
-    end: reversed ? event.start : event.end,
+    start,
+    end,
+    startDay: foldToEpochDay(start),
+    endDay: foldToEpochDay(end),
     groupSize: 1,
     openStart: event.openStart === true,
     openEnd: event.openEnd === true,
@@ -98,11 +106,15 @@ function mergeMember<T>(
   member: FoldLogicalSpan<T>,
 ): FoldLogicalSpan<T> {
   const takeover = severityOf(member.event) > severityOf(span.event);
+  const opensFirst = span.startDay <= member.startDay;
+  const endsLast = span.endDay >= member.endDay;
   return {
     key: span.key,
     event: takeover ? member.event : span.event,
-    start: span.start <= member.start ? span.start : member.start,
-    end: span.end >= member.end ? span.end : member.end,
+    start: opensFirst ? span.start : member.start,
+    end: endsLast ? span.end : member.end,
+    startDay: opensFirst ? span.startDay : member.startDay,
+    endDay: endsLast ? span.endDay : member.endDay,
     groupSize: span.groupSize + 1,
     openStart: span.openStart || member.openStart,
     openEnd: span.openEnd || member.openEnd,
