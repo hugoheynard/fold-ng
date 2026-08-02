@@ -95,6 +95,7 @@ export { FoldCalendarMonthComponent } from "./components/content/calendar/calend
 export { FoldCalendarWeekComponent } from "./components/content/calendar/calendar-week.component";
 export { FoldCalendarDayComponent } from "./components/content/calendar/calendar-day.component";
 export { FoldCalendarListComponent } from "./components/content/calendar/calendar-list.component";
+export { FoldCalendarTimegridComponent } from "./components/content/calendar/calendar-timegrid.component";
 // Applied through `hostDirectives` by every calendar view, so ng-packagr needs
 // it on the surface. It is not meant to be used by hand — `locale` and `labels`
 // are already inputs on the views themselves.
@@ -167,6 +168,29 @@ export {
   foldEventsOnDay,
   foldFilterBySource,
 } from "./components/content/calendar/calendar-filters";
+export {
+  foldBuildTimeGrid,
+  foldIsTimed,
+} from "./components/content/calendar/calendar-timegrid";
+export type {
+  FoldCalendarBlock,
+  FoldTimeGrid,
+  FoldTimeGridColumn,
+  FoldTimeGridOptions,
+} from "./components/content/calendar/calendar-timegrid";
+export {
+  foldAddMinutes,
+  foldFromMinutes,
+  foldIsCalendarTime,
+  foldToMinutes,
+  FOLD_MINUTES_PER_DAY,
+} from "./components/content/calendar/calendar-time";
+export type { FoldCalendarTime } from "./components/content/calendar/calendar-time";
+export { foldLayOutOverlaps } from "./components/content/calendar/calendar-overlap";
+export type {
+  FoldOverlapInput,
+  FoldOverlapSlot,
+} from "./components/content/calendar/calendar-overlap";
 export type {
   FoldCalendarBand,
   FoldCalendarDay,

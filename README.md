@@ -345,6 +345,7 @@ the package root.
 | `FoldCalendarWeekComponent` | `fold-calendar-week` | Seven day columns of stacked chips — nothing spans, so nothing is clipped and every chip is a real button in the tab order. Container-queried: labels and icons drop out before they truncate. |
 | `FoldCalendarDayComponent` | `fold-calendar-day` | One day in full, with room for the subline — where a `dayClick` drill-down lands. Empty state takes a projected action (`button[empty]`). |
 | `FoldCalendarListComponent` | `fold-calendar-list` | The flat reading of the same feed, in date order, each row leading with the span `Intl` formats. Nothing is ever hidden behind a lane budget. |
+| `FoldCalendarTimegridComponent` | `fold-calendar-timegrid` | Hour columns for a week or a day, with the all-day strip on top. Timed events are placed on the clock and share their width only with what they actually collide with (exclusive boundaries, per-cluster widening); a span crossing midnight becomes one block per day. Times are wall-clock `HH:mm`, never instants; `now` is an input, not a clock. |
 | `FoldCalendarAgendaComponent` | `fold-calendar-agenda` | "What's next" rail grouped by day, with a **to-handle** slice (the `warning`/`alert` tones — the same scale the chips paint with) and a live badge. Collapses to a spine; `mode`/`collapsed` are models, so the app owns persistence. |
 | `FoldCalendarToolbarComponent` | `fold-calendar-toolbar` | Today / prev / next / period title / view switch. Owns no data — `date` and `view` are two-way, and the step matches the reading. `views` takes `{ value, label }` for an app's own view. |
 | `FoldCalendarSourceFilterComponent` | `fold-calendar-source-filter` | Chips switching each feed of a merged calendar on and off. Owns the **selection** only; the caller runs the pure `foldFilterBySource()`. |
@@ -375,8 +376,11 @@ compiles on a runtime that has none of them), and going the other way needs no
 helper — `Temporal.PlainDate.from(foldDate)` already takes one of ours. See
 `foldToday` / `foldFromNativeDate` / `foldAddDays` and the reasoning in
 [`/calendar-dates`](https://hugoheynard.github.io/fold-ng/calendar-dates). The
-family plots **whole days only** (there is no time field), on the **Gregorian**
-calendar, and has no resource (staff × day) view.
+family plots on the **Gregorian** calendar and has no resource (staff × day)
+view. Whole-day spans are the month, week, day, list and agenda views; the
+**time grid** adds the hours, with time as wall-clock `HH:mm` rather than an
+instant — the app converts at its own boundary, and no zone can move a meeting
+after that.
 
 It is a **pure display**, by decision and not by omission: it knows nothing
 about what an event means or which layer produced it, so it never originates

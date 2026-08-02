@@ -35,6 +35,8 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   "data-table": () => import("./pages/data-table/data-table.page"),
   "calendar-month": () => import("./pages/calendar-month/calendar-month.page"),
   "calendar-views": () => import("./pages/calendar-views/calendar-views.page"),
+  "calendar-timegrid": () =>
+    import("./pages/calendar-timegrid/calendar-timegrid.page"),
   "calendar-dates": () => import("./pages/calendar-dates/calendar-dates.page"),
   checkbox: () => import("./pages/checkbox/checkbox.page"),
   paginator: () => import("./pages/paginator/paginator.page"),

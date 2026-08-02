@@ -1,4 +1,5 @@
 import { foldToNativeDate, type FoldCalendarDate } from "./calendar-date";
+import { foldToMinutes, type FoldCalendarTime } from "./calendar-time";
 
 /**
  * Every date format the calendar family renders, in one table.
@@ -32,6 +33,8 @@ export const FOLD_CALENDAR_FORMATS = {
   monthYear: { month: "long", year: "numeric" },
   /** `18 May` — a span's ends, which `formatRange` then joins. */
   dayMonthShort: { day: "numeric", month: "short" },
+  /** `09:00` in France, `9:00 AM` in the US — an hour down the grid's gutter. */
+  hourMark: { hour: "numeric", minute: "2-digit" },
 } as const satisfies Record<string, Intl.DateTimeFormatOptions>;
 
 /** A key of {@link FOLD_CALENDAR_FORMATS}. */
@@ -94,4 +97,21 @@ export function foldFormatRange(
     foldToNativeDate(from),
     foldToNativeDate(to),
   );
+}
+
+/** A day with no meaning of its own, used only to hang a wall-clock time on. */
+const TIME_ANCHOR = Date.UTC(2026, 0, 1);
+
+/**
+ * A wall-clock time in the locale's own convention — `14:00` in France, `2 PM`
+ * in the United States. Formatted at UTC on a throwaway date, because the time
+ * has no zone and no day: only its hours and minutes are real.
+ */
+export function foldFormatTime(
+  time: FoldCalendarTime,
+  locale: string | undefined,
+  override?: Intl.DateTimeFormatOptions,
+): string {
+  const at = new Date(TIME_ANCHOR + foldToMinutes(time) * 60_000);
+  return foldCalendarFormatter(locale, "hourMark", override).format(at);
 }

@@ -1,5 +1,6 @@
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import type { FoldCalendarDate } from "./calendar-date";
+import type { FoldCalendarTime } from "./calendar-time";
 
 /**
  * Public data model for the calendar family. The calendar knows nothing of the
@@ -47,6 +48,18 @@ export interface FoldCalendarEvent<T = unknown> {
   readonly tone?: FoldCalendarTone;
   /** Leading glyph, drawn with `fold-icon`. */
   readonly icon?: FoldIconName;
+  /**
+   * Wall-clock start, `HH:mm`. An event carrying **both** times is placed on
+   * the time grid's clock; anything else — neither, or only one — is an all-day
+   * span, which is what the month, week, day and list views plot. Half a time
+   * is a data bug, and reading it as all-day loses the least.
+   *
+   * No zone, by the same decision as the date: 09:00 is the hour on the wall,
+   * and the app converts once at its own boundary.
+   */
+  readonly startTime?: FoldCalendarTime;
+  /** Wall-clock end, `HH:mm`. `24:00` is midnight at the end of {@link end}. */
+  readonly endTime?: FoldCalendarTime;
   /** Which half of {@link start} the event opens on. */
   readonly startHalfDay?: FoldCalendarHalfDay;
   /** Which half of {@link end} the event closes on. */

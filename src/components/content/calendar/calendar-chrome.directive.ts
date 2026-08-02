@@ -11,6 +11,7 @@ import { FoldCalendarEventDirective } from "./calendar-event.directive";
 import {
   foldFormatDate,
   foldFormatRange,
+  foldFormatTime,
   type FoldCalendarFormat,
 } from "./calendar-format";
 import type { FoldCalendarDate } from "./calendar-date";
@@ -98,6 +99,11 @@ export class FoldCalendarChromeDirective {
       format,
       this.formats()?.[format],
     );
+  }
+
+  /** A wall-clock time, in this view's locale (24-hour, or AM/PM). */
+  formatTime(time: string): string {
+    return foldFormatTime(time, this.locale(), this.formats()?.hourMark);
   }
 
   /** A span, in this view's locale and its format overrides. */

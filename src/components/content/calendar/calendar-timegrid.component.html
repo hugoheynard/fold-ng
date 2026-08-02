@@ -1,0 +1,156 @@
+<div class="foldcaltg" [attr.aria-label]="chrome.l().grid" role="group">
+  <div class="foldcaltg-head">
+    <span class="foldcaltg-corner" aria-hidden="true"></span>
+    @for (column of grid().columns; track column.day.date) {
+      <button
+        type="button"
+        class="foldcaltg-dayhead"
+        [class.is-today]="column.day.isToday"
+        [class.is-weekend]="column.day.isWeekend"
+        [attr.aria-label]="columnLabel(column)"
+        [attr.aria-current]="column.day.isToday ? 'date' : null"
+        (click)="dayClick.emit(column.day.date)"
+      >
+        <span class="foldcaltg-weekday">{{ weekdayName(column) }}</span>
+        <span class="foldcaltg-daynum">{{ column.day.dayOfMonth }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- The all-day strip: the same spanning bands the month grid draws. -->
+  @if (grid().allDay.length > 0) {
+    <div class="foldcaltg-allday">
+      <span class="foldcaltg-gutter-label">{{ chrome.l().allDay }}</span>
+      <div
+        class="foldcaltg-strip"
+        [style.gridTemplateColumns]="
+          'repeat(' + grid().columns.length + ', 1fr)'
+        "
+        [style.gridTemplateRows]="stripRows()"
+      >
+        @for (band of grid().allDay; track band.key) {
+          <button
+            type="button"
+            class="foldcal-chip foldcaltg-band"
+            [attr.data-tone]="band.event.tone ?? 'neutral'"
+            [class.continues-before]="band.continuesBefore"
+            [class.continues-after]="band.continuesAfter"
+            [style.gridColumn]="
+              band.startColumn + 1 + ' / ' + (band.endColumn + 2)
+            "
+            [style.gridRow]="band.lane + 1"
+            (click)="eventClick.emit(band.event)"
+          >
+            @if (chrome.eventContent(); as projected) {
+              <ng-container
+                [ngTemplateOutlet]="projected"
+                [ngTemplateOutletContext]="{
+                  $implicit: band.event,
+                  band: band,
+                }"
+              />
+            } @else {
+              <span class="foldcal-chip-bar"></span>
+              <span class="foldcal-chip-body">
+                <span class="foldcal-chip-label">{{ bandLabel(band) }}</span>
+              </span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="foldcaltg-body">
+    <!--
+      Positioned, not flowed: the label has to land on the same line as the rule
+      it names, and a flex column only gets there by coincidence.
+    -->
+    <div class="foldcaltg-gutter" aria-hidden="true">
+      @for (hour of grid().hours; track hour; let index = $index) {
+        <span
+          class="foldcaltg-hour"
+          [class.is-first]="index === 0"
+          [style.top.%]="(index / grid().hours.length) * 100"
+          >{{ hourLabel(hour) }}</span
+        >
+      }
+    </div>
+
+    <div
+      class="foldcaltg-cols"
+      [style.gridTemplateColumns]="'repeat(' + grid().columns.length + ', 1fr)'"
+    >
+      @for (column of grid().columns; track column.day.date) {
+        <section
+          class="foldcaltg-col"
+          [class.is-weekend]="column.day.isWeekend"
+          [attr.aria-label]="columnLabel(column)"
+        >
+          <!-- Hour rules, drawn per column so a column can be styled alone. -->
+          <span class="foldcaltg-rules" aria-hidden="true">
+            @for (hour of grid().hours; track hour) {
+              <span class="foldcaltg-rule"></span>
+            }
+          </span>
+
+          @if (column.day.isToday && nowOffset() !== null) {
+            <span
+              class="foldcaltg-now"
+              aria-hidden="true"
+              [style.top.%]="(nowOffset() ?? 0) * 100"
+            ></span>
+          }
+
+          @for (block of column.blocks; track block.key) {
+            <button
+              type="button"
+              class="foldcaltg-block"
+              [attr.data-tone]="block.event.tone ?? 'neutral'"
+              [class.continues-before]="block.continuesBefore"
+              [class.continues-after]="block.continuesAfter"
+              [attr.aria-label]="blockLabel(block)"
+              [style.top.%]="block.top * 100"
+              [style.height.%]="block.height * 100"
+              [style.insetInlineStart.%]="(block.column / block.columns) * 100"
+              [style.width.%]="(1 / block.columns) * 100"
+              (click)="eventClick.emit(block.event)"
+            >
+              @if (chrome.eventContent(); as projected) {
+                <ng-container
+                  [ngTemplateOutlet]="projected"
+                  [ngTemplateOutletContext]="{
+                    $implicit: block.event,
+                    band: null,
+                  }"
+                />
+              } @else {
+                <span class="foldcaltg-block-bar"></span>
+                <!-- The glyph sits beside the label, never above it: a
+                     half-hour block is one line tall and the icon would take
+                     it. -->
+                @if (block.event.icon; as icon) {
+                  <fold-icon
+                    class="foldcaltg-block-icon"
+                    [name]="icon"
+                    size="sm"
+                  />
+                }
+                <span class="foldcaltg-block-body">
+                  <span class="foldcaltg-block-label">{{
+                    block.event.label
+                  }}</span>
+                  @if (block.event.subline) {
+                    <span class="foldcaltg-block-sub">{{
+                      block.event.subline
+                    }}</span>
+                  }
+                </span>
+              }
+            </button>
+          }
+        </section>
+      }
+    </div>
+  </div>
+</div>

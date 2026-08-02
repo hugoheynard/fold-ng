@@ -1,0 +1,128 @@
+<fold-page-layout title="calendar-timegrid">
+  <p description>
+    The reading the other four cannot give: <strong>when inside a day</strong>.
+    A meeting is a block whose height is its duration and whose width is shared
+    with whatever it collides with; an absence is a band across the strip on
+    top, spanning days exactly as it does in the month view — the same packer
+    draws both. Times are wall-clock <code>HH:mm</code>, never instants.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell gal-cell--full">
+      <span class="gal-tag">
+        a week · overlapping meetings, a night shift crossing midnight, an
+        absence on the strip
+      </span>
+      <fold-card surface="sunken" style="--fold-card-padding: 0">
+        <fold-calendar-timegrid
+          [date]="week()"
+          [events]="events"
+          [today]="today"
+          [now]="now"
+          dayStart="08:00"
+          dayEnd="20:00"
+          locale="en-GB"
+          (eventClick)="lastEvent.set($event.label)"
+        />
+      </fold-card>
+      <p class="doc-p">
+        Three meetings collide on Monday morning, so that cluster — and only
+        that cluster — splits its width; Tuesday's demo keeps the full column.
+        The night shift runs 18:00 Wednesday to 08:00 Thursday and is drawn as
+        <strong>two blocks</strong> with open edges, not one impossible one.
+        Last event: “{{ lastEvent() ?? "—" }}”.
+      </p>
+      <p class="doc-p">
+        The red line is <code>now</code> — an input, never a clock the package
+        reads: a server render that invented one would hydrate to a different
+        position. Every block is a real <code>&lt;button&gt;</code> inside its
+        day, so the tab order follows the week and its accessible name carries
+        the <strong>times</strong>, which the position on the clock only shows.
+      </p>
+    </div>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell gal-cell--full">
+      <span class="gal-tag">one day · the same component, dayCount 1</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 0">
+        <fold-calendar-timegrid
+          [date]="day()"
+          [events]="events"
+          [today]="today"
+          [now]="now"
+          dayCount="1"
+          dayStart="08:00"
+          dayEnd="13:00"
+          locale="en-GB"
+          (eventClick)="lastEvent.set($event.label)"
+        />
+      </fold-card>
+      <p class="doc-p">
+        A day view is not a second component — it is
+        <code>dayCount="1"</code>, anchored on the date itself rather than
+        snapped to its week. Narrowing the window to 08:00–13:00 clips the audit
+        at the bottom edge and says so, instead of letting it run off.
+      </p>
+    </div>
+  </div>
+
+  <dev-playground [code]="playgroundCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">dayCount</span>
+      <div class="ss-seg">
+        @for (count of [1, 3, 7]; track count) {
+        <button
+          type="button"
+          [class.is-on]="pgDayCount() === count"
+          (click)="pgDayCount.set(count)"
+        >
+          {{ count }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">window</span>
+      <div class="ss-seg">
+        @for (pair of windows; track pair[0]) {
+        <button
+          type="button"
+          [class.is-on]="pgStart() === pair[0] && pgEnd() === pair[1]"
+          (click)="setWindow(pair)"
+        >
+          {{ pair[0] }}–{{ pair[1] }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">locale</span>
+      <div class="ss-seg">
+        @for (tag of locales; track tag) {
+        <button
+          type="button"
+          [class.is-on]="pgLocale() === tag"
+          (click)="pgLocale.set(tag)"
+        >
+          {{ tag }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <fold-calendar-timegrid
+      [date]="pgDate()"
+      [events]="events"
+      [today]="today"
+      [now]="now"
+      [dayCount]="pgDayCount()"
+      [dayStart]="pgStart()"
+      [dayEnd]="pgEnd()"
+      [locale]="pgLocale()"
+    />
+  </dev-playground>
+</fold-page-layout>

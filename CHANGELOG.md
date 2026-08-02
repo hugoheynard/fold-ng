@@ -113,6 +113,33 @@ All notable changes to **fold-ng** are documented here. The format follows
   with `[data-fold-day-modifiers~="holiday"]` — so nobody has to write CSS
   against an internal class name. `foldCalendarEvent` is now generic too, so
   `event.data` comes back as the app's own record.
+- **`fold-calendar-timegrid` — the reading the other four cannot give: when
+  _inside_ a day.** Hour columns for a week or a single day (`dayCount`), with
+  the all-day strip on top. A meeting is a block whose height is its duration
+  and whose width is shared with whatever it collides with; an absence is a band
+  across the strip, spanning days through **the same packer the month grid
+  uses** — extracted rather than copied, so a three-day leave request reads
+  identically in both.
+
+  Time is modelled as wall-clock `HH:mm` (`FoldCalendarTime`), **not an
+  instant** — the same decision as the date, for the same reason: 09:00 is the
+  hour on the wall, and an instant re-derives that from a zone every render,
+  which is one wrong default away from drawing the wrong hour. The app converts
+  once at its own boundary.
+
+  Two details that are the difference between a real time grid and a demo: the
+  overlap test is **exclusive** at the boundary, so back-to-back meetings keep
+  the full width instead of each taking half; and events are grouped into
+  **clusters**, so one triple-booked morning does not narrow an unrelated
+  afternoon. A span crossing midnight becomes one block per day, each with the
+  right open edge, rather than one impossible block running off the bottom.
+
+  `now` is an input, never a clock the package reads — `today` already works
+  that way, and a server render that invented one would hydrate to a different
+  position. Positions are **fractions of the visible window**, so `dayStart` /
+  `dayEnd` and the CSS height stay independent. Backed by pure
+  `foldBuildTimeGrid` and `foldLayOutOverlaps`.
+
 - **`foldFromTemporal` — the family is Temporal-native without depending on
   it.** `Temporal.PlainDate.toString()` **is** `YYYY-MM-DD`: the primitive
   chosen for correctness turns out to be exactly Temporal-shaped, which no

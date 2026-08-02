@@ -111,6 +111,12 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
         since: NEXT,
       },
       {
+        id: "calendar-timegrid",
+        label: "time grid",
+        icon: "clock",
+        since: NEXT,
+      },
+      {
         id: "calendar-dates",
         label: "plain dates",
         icon: "clock",

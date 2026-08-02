@@ -97,7 +97,7 @@
 - mode: ModelSignal<FoldCalendarAgendaMode>
 
 ### FoldCalendarChromeDirective
-- formats: InputSignal<Partial<Record<"dateFull" | "dateFullWeekday" | "dayMonthYear" | "weekdayShort" | "weekdayLong" | "monthLong" | "monthShort" | "monthYear" | "dayMonthShort", Intl.DateTimeFormatOptions>> | undefined>
+- formats: InputSignal<Partial<Record<"dateFull" | "dateFullWeekday" | "dayMonthYear" | "weekdayShort" | "weekdayLong" | "monthLong" | "monthShort" | "monthYear" | "dayMonthShort" | "hourMark", Intl.DateTimeFormatOptions>> | undefined>
 - labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
 - locale: InputSignal<string | undefined>
 
@@ -144,6 +144,20 @@
 - events: InputSignal<readonly FoldCalendarEvent<unknown>[]>
 - selectionChange: OutputEmitterRef<ReadonlySet<string>>
 - sources: InputSignal<readonly FoldCalendarSource[]>
+
+### FoldCalendarTimegridComponent
+- date: InputSignal<string> — required
+- dayClick: OutputEmitterRef<string>
+- dayCount: InputSignalWithTransform<number, unknown>
+- dayEnd: InputSignal<string>
+- dayStart: InputSignal<string>
+- eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- maxAllDayLanes: InputSignalWithTransform<number, unknown>
+- now: InputSignal<string | undefined>
+- today: InputSignal<string | undefined>
+- weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
+- weekStartsOn: InputSignal<FoldWeekday | undefined>
 
 ### FoldCalendarTitleDirective
 - (no input·model·output bindings)
@@ -705,6 +719,7 @@
 - FOLD_FALLBACK_WEEK_INFO (value)
 - FOLD_INLINE_CONFIRM_DEFAULT_LABELS (value)
 - FOLD_INLINE_CONFIRM_LABELS (value)
+- FOLD_MINUTES_PER_DAY (value)
 - FOLD_MOTION_TOKENS (value)
 - FOLD_PAGINATOR_DEFAULT_LABELS (value)
 - FOLD_PAGINATOR_LABELS (value)
@@ -718,6 +733,7 @@
 - FOLD_TEXT_TOKENS (value)
 - FOLD_TOAST_CONFIG (value)
 - foldAddDays (function)
+- foldAddMinutes (function)
 - foldAddMonths (function)
 - FoldAgendaOptions (interface)
 - FoldAutoPaletteName (type)
@@ -731,6 +747,7 @@
 - foldBuildAgenda (function)
 - foldBuildDay (function)
 - foldBuildMonthGrid (function)
+- foldBuildTimeGrid (function)
 - foldBuildWeek (function)
 - FoldBuiltinIconName (type)
 - FoldButtonEmphasis (type)
@@ -745,6 +762,7 @@
 - FoldCalendarAgendaGroup (interface)
 - FoldCalendarAgendaMode (type)
 - FoldCalendarBand (interface)
+- FoldCalendarBlock (interface)
 - FoldCalendarBuiltInView (type)
 - FoldCalendarDate (type)
 - FoldCalendarDay (interface)
@@ -761,6 +779,7 @@
 - FoldCalendarOverflowContext (interface)
 - FoldCalendarRange (interface)
 - FoldCalendarSource (interface)
+- FoldCalendarTime (type)
 - FoldCalendarTitleContext (interface)
 - FoldCalendarTone (type)
 - FoldCalendarView (type)
@@ -784,6 +803,7 @@
 - foldEventsInRange (function)
 - foldEventsOnDay (function)
 - foldFilterBySource (function)
+- foldFromMinutes (function)
 - foldFromNativeDate (function)
 - foldFromTemporal (function)
 - foldHashSeed (function)
@@ -794,10 +814,13 @@
 - FoldInlineConfirmLabels (interface)
 - foldIsActionable (function)
 - foldIsCalendarDate (function)
+- foldIsCalendarTime (function)
 - FoldIsoDateLike (interface)
 - foldIsoWeek (function)
 - foldIsoWeekYear (function)
+- foldIsTimed (function)
 - foldIsWeekend (function)
+- foldLayOutOverlaps (function)
 - foldLocaleWeekInfo (function)
 - FoldMenuItemBadgeTone (type)
 - FoldMenuLevel (type)
@@ -808,6 +831,8 @@
 - foldMotionVar (function)
 - FoldNumberControls (type)
 - FoldNumberSpinner (type)
+- FoldOverlapInput (interface)
+- FoldOverlapSlot (interface)
 - FoldPageItem (type)
 - FoldPaginatorLabels (interface)
 - FoldPaletteInput (type)
@@ -856,12 +881,16 @@
 - FoldTemplatePanelDescriptor (interface)
 - FoldTextToken (type)
 - foldTextVar (function)
+- FoldTimeGrid (interface)
+- FoldTimeGridColumn (interface)
+- FoldTimeGridOptions (interface)
 - FoldTimelineDatePlacement (type)
 - FoldTimelineNode (interface)
 - FoldToast (type)
 - FoldToastConfig (type)
 - FoldToastVariant (type)
 - foldToday (function)
+- foldToMinutes (function)
 - foldToNativeDate (function)
 - FoldViewNavItem (type)
 - foldViewTitle (function)
