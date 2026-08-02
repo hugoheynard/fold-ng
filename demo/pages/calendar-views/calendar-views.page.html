@@ -1,0 +1,120 @@
+<fold-page-layout title="calendar views">
+  <p description>
+    The same events read four ways, under one toolbar. `fold-calendar-toolbar`
+    owns no data: it binds the same <code>date</code> and <code>view</code>
+    models the views do, so paging steps in whatever unit the current view reads
+    in — a month, a week, a day. Click any day to drill into it.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 100%">
+      <span class="gal-tag">toolbar + the four views, wired together</span>
+      <fold-card surface="sunken">
+        <fold-calendar-toolbar
+          [(date)]="date"
+          [(view)]="view"
+          [today]="today"
+          locale="en-GB"
+        />
+
+        <div style="margin-top: 16px">
+          @switch (view()) { @case ("month") {
+          <fold-calendar-month
+            [(month)]="date"
+            [events]="events"
+            [today]="today"
+            locale="en-GB"
+            (dayClick)="openDay($event)"
+            (eventClick)="lastEvent.set($event.label)"
+          />
+          } @case ("week") {
+          <fold-calendar-week
+            [(date)]="date"
+            [events]="events"
+            [today]="today"
+            locale="en-GB"
+            (dayClick)="openDay($event)"
+            (eventClick)="lastEvent.set($event.label)"
+          />
+          } @case ("day") {
+          <fold-calendar-day
+            [date]="date()"
+            [events]="events"
+            [today]="today"
+            locale="en-GB"
+            (eventClick)="lastEvent.set($event.label)"
+          />
+          } @case ("list") {
+          <fold-calendar-list
+            [events]="events"
+            [from]="range().from"
+            [to]="range().to"
+            locale="en-GB"
+            (eventClick)="lastEvent.set($event.label)"
+          />
+          } }
+        </div>
+      </fold-card>
+      <p class="doc-p">
+        Showing <code>{{ range().from }}</code> →
+        <code>{{ range().to }}</code> — the window
+        <code>foldRangeForView()</code> reports, which is exactly what a page
+        would hand to its data source. Last event: “{{ lastEvent() ?? "—" }}”.
+      </p>
+    </div>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 460px">
+      <span class="gal-tag"
+        >week · a span repeats under every day it covers</span
+      >
+      <fold-calendar-week
+        [(date)]="weekDate"
+        [events]="events"
+        [today]="today"
+        locale="en-GB"
+      />
+      <p class="doc-p">
+        No packing here, so nothing is clipped: the residency and the leave both
+        appear under each of their days. Every chip is a real button in the tab
+        order — this view needs none of the month grid's roving tabindex.
+      </p>
+    </div>
+
+    <div class="gal-cell" style="flex: 1 1 460px">
+      <span class="gal-tag"
+        >day · the empty state and its projected action</span
+      >
+      <fold-calendar-day
+        [date]="emptyDay()"
+        [events]="events"
+        [today]="today"
+        locale="en-GB"
+      >
+        <button empty type="button" class="gal-tag">+ New request</button>
+      </fold-calendar-day>
+      <p class="doc-p">
+        The residency ends on the 29th, so 30 May really is clear — and the day
+        view offers its <code>[empty]</code> slot, the place for the action that
+        fills it.
+      </p>
+    </div>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 100%">
+      <span class="gal-tag"
+        >list · the flat reading, each row led by its span</span
+      >
+      <fold-calendar-list [events]="events" locale="en-GB" />
+      <p class="doc-p">
+        <code>Intl</code>'s range formatter collapses a single day to one date
+        and factors out a shared month (“20 – 21 May”). For a sortable,
+        column-configurable table instead, feed
+        <code>foldEventsInRange()</code> into <code>fold-data-table</code>.
+      </p>
+    </div>
+  </div>
+</fold-page-layout>

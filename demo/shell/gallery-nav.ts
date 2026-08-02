@@ -105,6 +105,12 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
         since: NEXT,
       },
       {
+        id: "calendar-views",
+        label: "week · day · list",
+        icon: "calendar",
+        since: NEXT,
+      },
+      {
         id: "calendar-dates",
         label: "plain dates",
         icon: "clock",

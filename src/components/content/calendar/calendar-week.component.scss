@@ -16,7 +16,12 @@
   overflow: clip;
 }
 
+// Each column is its own container: a seven-column week gets narrow fast, and
+// a chip that keeps its glyph and subline there truncates its label to a
+// single letter. The label is the one part that must survive, so below the
+// thresholds the decoration goes first.
 .foldcalw-col {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: var(--fold-space-sm);
@@ -89,6 +94,25 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+// Below ~150px the subline is the first thing to go, then the glyph — the
+// label keeps the width either buys back.
+@container (max-width: 150px) {
+  .foldcal-chip-sub {
+    display: none;
+  }
+}
+
+@container (max-width: 110px) {
+  .foldcal-chip-icon {
+    display: none;
+  }
+
+  .foldcal-chip {
+    gap: var(--fold-space-xs);
+    padding-right: var(--fold-space-xs);
+  }
 }
 
 @media (forced-colors: active) {

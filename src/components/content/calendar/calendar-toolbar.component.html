@@ -1,0 +1,41 @@
+<div class="foldcalt">
+  <div class="foldcalt-lead">
+    <button type="button" class="foldcalt-today" (click)="goToday()">
+      {{ l().todayAction }}
+    </button>
+
+    <div class="foldcalt-steps">
+      <button
+        type="button"
+        class="foldcalt-step"
+        [attr.aria-label]="l().previousPeriod"
+        (click)="shift(-1)"
+      >
+        <fold-icon name="chevron-left" size="sm" />
+      </button>
+      <button
+        type="button"
+        class="foldcalt-step"
+        [attr.aria-label]="l().nextPeriod"
+        (click)="shift(1)"
+      >
+        <fold-icon name="chevron-right" size="sm" />
+      </button>
+    </div>
+
+    <h2 class="foldcalt-title" aria-live="polite">{{ title() }}</h2>
+  </div>
+
+  <div class="foldcalt-trail">
+    @if (options().length > 1) {
+      <fold-view-toggle
+        size="sm"
+        [ariaLabel]="l().viewSwitch"
+        [options]="options()"
+        [value]="view()"
+        (valueChange)="onViewChange($event)"
+      />
+    }
+    <ng-content select="[actions]" />
+  </div>
+</div>

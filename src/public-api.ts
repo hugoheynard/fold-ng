@@ -326,3 +326,14 @@ export type {
   FoldBlurToken,
   FoldShadowToken,
 } from "./tokens/tokens.catalog";
+
+export { FoldCalendarToolbarComponent } from "./components/content/calendar/calendar-toolbar.component";
+export {
+  foldRangeForView,
+  foldShiftDate,
+  foldViewTitle,
+} from "./components/content/calendar/calendar-navigation";
+export type {
+  FoldCalendarRange,
+  FoldCalendarView,
+} from "./components/content/calendar/calendar-navigation";

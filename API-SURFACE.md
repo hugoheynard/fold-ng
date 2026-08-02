@@ -118,6 +118,15 @@
 - today: InputSignal<string | undefined>
 - weekStartsOn: InputSignal<FoldWeekday>
 
+### FoldCalendarToolbarComponent
+- date: ModelSignal<string> — required
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- locale: InputSignal<string | undefined>
+- today: InputSignal<string | undefined>
+- view: ModelSignal<FoldCalendarView>
+- views: InputSignal<readonly FoldCalendarView[]>
+- weekStartsOn: InputSignal<FoldWeekday>
+
 ### FoldCalendarWeekComponent
 - date: ModelSignal<string> — required
 - dayClick: OutputEmitterRef<string>
@@ -706,7 +715,9 @@
 - FoldCalendarEvent (interface)
 - FoldCalendarHalfDay (type)
 - FoldCalendarLabels (interface)
+- FoldCalendarRange (interface)
 - FoldCalendarTone (type)
+- FoldCalendarView (type)
 - FoldCalendarWeek (interface)
 - FoldCalloutAppearance (type)
 - FoldCalloutVariant (type)
@@ -762,6 +773,7 @@
 - FoldPopoverSide (type)
 - FoldRadiusToken (type)
 - foldRadiusVar (function)
+- foldRangeForView (function)
 - FoldRangeValue (type)
 - FoldRect (interface)
 - foldRegexRule (function)
@@ -770,6 +782,7 @@
 - FoldSemanticColorToken (type)
 - FoldShadowToken (type)
 - foldShadowVar (function)
+- foldShiftDate (function)
 - FoldSpaceToken (type)
 - foldSpaceVar (function)
 - FoldSpinnerSize (type)
@@ -795,6 +808,7 @@
 - foldToday (function)
 - foldToNativeDate (function)
 - FoldViewNavItem (type)
+- foldViewTitle (function)
 - FoldViewToggleOption (interface)
 - FoldWeekday (type)
 - foldWeekdayIndex (function)

@@ -1,0 +1,115 @@
+// Responsive on its own width: the toolbar is as likely to sit in a narrow
+// panel as across a page.
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
+.foldcalt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fold-space-md);
+}
+
+.foldcalt-lead,
+.foldcalt-trail {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  min-width: 0;
+}
+
+.foldcalt-today {
+  padding: var(--fold-space-xs) var(--fold-space-md);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: var(--fold-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--fold-motion-fast, 120ms) ease;
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.foldcalt-steps {
+  display: inline-flex;
+  gap: 1px;
+}
+
+.foldcalt-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fold-calendar-step-size, 28px);
+  height: var(--fold-calendar-step-size, 28px);
+  padding: 0;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--fold-motion-fast, 120ms) ease,
+    color var(--fold-motion-fast, 120ms) ease;
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+    color: var(--fold-color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.foldcalt-title {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+// Narrow: the title takes its own line so it never squeezes the controls.
+@container (max-width: 560px) {
+  .foldcalt-lead {
+    flex-wrap: wrap;
+  }
+
+  .foldcalt-title {
+    order: -1;
+    flex: 1 0 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .foldcalt-today:focus-visible,
+  .foldcalt-step:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foldcalt-today,
+  .foldcalt-step {
+    transition: none;
+  }
+}

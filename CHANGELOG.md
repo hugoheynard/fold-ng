@@ -24,6 +24,16 @@ All notable changes to **fold-ng** are documented here. The format follows
   back. Project an `<ng-template foldCalendarEvent>` to replace the built-in
   chip. Generic over `T`, so an event's `data` survives the round trip to
   `eventClick` without a cast.
+- **`fold-calendar-toolbar` — the chrome that makes the views one calendar.**
+  Jump to today, page back and forward, the period's name, and the view switch.
+  It owns no data: both pieces of state are two-way `model`s, so a page binds
+  the same `date` and `view` it hands the view on screen and paging works with
+  no output handler. The step matches the reading — a month under the month
+  view, a week under the week view, a day under the day view. The title carries
+  `aria-live="polite"`, so paging announces where a keyboard user landed instead
+  of changing silently. Backed by pure `foldShiftDate`, `foldRangeForView` (the
+  window a caller fetches — the whole painted grid for a month, not just its
+  days) and `foldViewTitle`.
 - **The three column views that complete the drill-down: `fold-calendar-week`,
   `fold-calendar-day` and `fold-calendar-list`.** Where the month grid packs
   spans into lanes, these simply list what covers each day — so nothing is

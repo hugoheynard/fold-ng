@@ -26,6 +26,19 @@ export interface FoldCalendarLabels {
   readonly emptyDay: string;
   /** Shown by the list view when the range holds nothing. */
   readonly emptyRange: string;
+  /** The toolbar's jump-to-today button. */
+  readonly todayAction: string;
+  /** Accessible name of the toolbar's back control. */
+  readonly previousPeriod: string;
+  /** Accessible name of the toolbar's forward control. */
+  readonly nextPeriod: string;
+  /** Accessible name of the view switch. */
+  readonly viewSwitch: string;
+  /** The four view names, in the switch. */
+  readonly viewMonth: string;
+  readonly viewWeek: string;
+  readonly viewDay: string;
+  readonly viewList: string;
 }
 
 /** The English defaults — the base every override merges onto. */
@@ -37,6 +50,14 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   dateRange: (start, end) => `${start} to ${end}`,
   emptyDay: "Nothing on this day.",
   emptyRange: "Nothing in this range.",
+  todayAction: "Today",
+  previousPeriod: "Previous",
+  nextPeriod: "Next",
+  viewSwitch: "Calendar view",
+  viewMonth: "Month",
+  viewWeek: "Week",
+  viewDay: "Day",
+  viewList: "List",
 };
 
 /** App-wide calendar labels; defaults to English. */
