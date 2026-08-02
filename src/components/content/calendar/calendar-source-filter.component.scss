@@ -16,7 +16,7 @@
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-pill);
   background: var(--fold-color-surface-subtle);
-  color: var(--fold-color-text-muted);
+  color: var(--fold-color-text-secondary);
   font: inherit;
   font-size: var(--fold-text-sm);
   font-weight: 500;
@@ -85,7 +85,7 @@
 }
 
 .foldcalsf-count {
-  color: var(--fold-color-text-muted);
+  color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
   font-variant-numeric: tabular-nums;
 }

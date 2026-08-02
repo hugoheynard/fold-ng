@@ -125,7 +125,7 @@
     border: 0;
     border-radius: var(--fold-radius-xs);
     background: transparent;
-    color: var(--fold-color-text-muted);
+    color: var(--fold-color-text-secondary);
     font: inherit;
     font-size: var(--fold-text-xs);
     font-weight: 500;
@@ -153,7 +153,7 @@
   border: 1px solid var(--fold-color-border-subtle);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-subtle);
-  color: var(--fold-color-text-muted);
+  color: var(--fold-color-text-secondary);
   cursor: pointer;
 
   &:hover {
@@ -227,7 +227,7 @@
 }
 
 .foldcala-dmonth {
-  color: var(--fold-color-text-faded);
+  color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
   text-transform: uppercase;
 }
@@ -244,7 +244,7 @@
 .foldcala-empty {
   margin: 0;
   padding: var(--fold-space-xl) var(--fold-space-md);
-  color: var(--fold-color-text-muted);
+  color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-sm);
   text-align: center;
 }

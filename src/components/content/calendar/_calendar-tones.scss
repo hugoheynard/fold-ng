@@ -30,7 +30,7 @@
   #{$root}[data-tone="muted"] {
     @if $fill {
       background: transparent;
-      color: var(--fold-color-text-muted);
+      color: var(--fold-color-text-secondary);
     }
 
     #{$bar} {
@@ -38,7 +38,7 @@
     }
 
     #{$label} {
-      color: var(--fold-color-text-muted);
+      color: var(--fold-color-text-secondary);
       text-decoration: line-through;
       text-decoration-thickness: 1px;
     }

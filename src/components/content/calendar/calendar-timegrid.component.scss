@@ -70,7 +70,7 @@
 }
 
 .foldcaltg-weekday {
-  color: var(--fold-color-text-muted);
+  color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -104,7 +104,7 @@
 .foldcaltg-gutter-label {
   padding-inline: var(--fold-space-xs);
   border-inline-end: 1px solid var(--fold-color-border-subtle);
-  color: var(--fold-color-text-faded);
+  color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
   text-align: end;
 }
@@ -137,6 +137,12 @@
 
 .foldcaltg-body {
   display: grid;
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: -2px;
+  }
+
   grid-template-columns: var(--fold-calendar-timegrid-gutter, 56px) 1fr;
   height: var(--fold-calendar-timegrid-height, 640px);
   overflow-y: auto;
@@ -151,7 +157,7 @@
   position: absolute;
   inset-inline: 0;
   padding-inline-end: var(--fold-space-xs);
-  color: var(--fold-color-text-faded);
+  color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
   font-variant-numeric: tabular-nums;
   text-align: end;
@@ -289,7 +295,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--fold-color-text-muted);
+  color: var(--fold-color-text-secondary);
 }
 
 @include tones.calendar-tones(

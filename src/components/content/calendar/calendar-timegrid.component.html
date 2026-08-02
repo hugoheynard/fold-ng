@@ -61,7 +61,17 @@
     </div>
   }
 
-  <div class="foldcaltg-body">
+  <!--
+    The hours scroll, so the region is a tab stop with a name: a scrollable
+    area a keyboard cannot reach is a scrollable area a keyboard user cannot
+    read (WCAG 2.1.1). Found by axe, not by looking at it.
+  -->
+  <div
+    class="foldcaltg-body"
+    tabindex="0"
+    role="group"
+    [attr.aria-label]="chrome.l().hours"
+  >
     <!--
       Positioned, not flowed: the label has to land on the same line as the rule
       it names, and a flex column only gets there by coincidence.

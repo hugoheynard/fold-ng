@@ -112,6 +112,7 @@
     "@angular/platform-browser": "^22.0.7",
     "@angular/router": "^22.0.7",
     "@arethetypeswrong/cli": "^0.18.5",
+    "@axe-core/playwright": "^4.12.1",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@eslint/js": "^9.28.0",
     "@playwright/test": "^1.62.0",

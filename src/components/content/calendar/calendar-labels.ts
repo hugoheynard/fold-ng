@@ -28,6 +28,8 @@ export interface FoldCalendarLabels {
   readonly hiddenCount: (count: number) => string;
   /** Label of the time grid's all-day strip. */
   readonly allDay: string;
+  /** Accessible name of the time grid's scrollable hour area. */
+  readonly hours: string;
   /** Header of the ISO week-number column — a symbol, not a sentence. */
   readonly weekNumberShort: string;
   /** Accessible reading of a week number, since the column header is a glyph. */
@@ -81,6 +83,7 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   eventCount: (count) => (count === 1 ? "1 event" : `${count} events`),
   hiddenCount: (count) => `${count} not shown`,
   allDay: "All day",
+  hours: "Hours",
   weekNumberShort: "Wk",
   weekNumber: (week) => `Week ${week}`,
   emptyDay: "Nothing on this day.",
