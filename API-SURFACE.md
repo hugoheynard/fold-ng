@@ -86,6 +86,22 @@
 - tooltip: InputSignal<string | undefined>
 - type: InputSignal<"button" | "submit">
 
+### FoldCalendarEventDirective
+- (no input·model·output bindings)
+
+### FoldCalendarMonthComponent
+- dayClick: OutputEmitterRef<string>
+- eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- fixedWeeks: InputSignalWithTransform<boolean, unknown>
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- locale: InputSignal<string | undefined>
+- maxLanes: InputSignal<number>
+- month: ModelSignal<string> — required
+- overflowClick: OutputEmitterRef<FoldCalendarWeek<T>>
+- today: InputSignal<string | undefined>
+- weekStartsOn: InputSignal<FoldWeekday>
+
 ### FoldCalloutComponent
 - announce: InputSignalWithTransform<boolean, unknown>
 - appearance: InputSignal<FoldCalloutAppearance>
@@ -618,6 +634,8 @@
 - FOLD_AUTO_PALETTES (value)
 - FOLD_BLUR_TOKENS (value)
 - FOLD_BUILTIN_ICONS (value)
+- FOLD_CALENDAR_DEFAULT_LABELS (value)
+- FOLD_CALENDAR_LABELS (value)
 - FOLD_DATA_TABLE_DEFAULT_LABELS (value)
 - FOLD_DATA_TABLE_LABELS (value)
 - FOLD_INLINE_CONFIRM_DEFAULT_LABELS (value)
@@ -634,6 +652,8 @@
 - FOLD_SPACE_TOKENS (value)
 - FOLD_TEXT_TOKENS (value)
 - FOLD_TOAST_CONFIG (value)
+- foldAddDays (function)
+- foldAddMonths (function)
 - FoldAutoPaletteName (type)
 - FoldAvatarListItem (interface)
 - FoldAvatarRing (type)
@@ -642,6 +662,7 @@
 - FoldBadgeVariant (type)
 - FoldBlurToken (type)
 - foldBlurVar (function)
+- foldBuildMonthGrid (function)
 - FoldBuiltinIconName (type)
 - FoldButtonEmphasis (type)
 - FoldButtonIconShape (type)
@@ -650,6 +671,14 @@
 - FoldButtonIntent (type)
 - FoldButtonShape (type)
 - FoldButtonSize (type)
+- FoldCalendarBand (interface)
+- FoldCalendarDate (type)
+- FoldCalendarDay (interface)
+- FoldCalendarEvent (interface)
+- FoldCalendarHalfDay (type)
+- FoldCalendarLabels (interface)
+- FoldCalendarTone (type)
+- FoldCalendarWeek (interface)
 - FoldCalloutAppearance (type)
 - FoldCalloutVariant (type)
 - foldCardBandChrome (function)
@@ -660,17 +689,24 @@
 - foldColorVar (function)
 - FoldComponentPanelDescriptor (interface)
 - FoldDataTableLabels (interface)
+- foldDaysBetween (function)
 - foldDefaultPasswordRules (function)
+- foldEndOfMonth (function)
+- foldEventsInRange (function)
+- foldEventsOnDay (function)
 - foldHashSeed (function)
 - FoldIconName (type)
 - FoldIconSet (type)
 - FoldIconSize (type)
 - FoldIconTone (type)
 - FoldInlineConfirmLabels (interface)
+- foldIsCalendarDate (function)
+- foldIsWeekEnd (function)
 - FoldMenuItemBadgeTone (type)
 - FoldMenuLevel (type)
 - FoldMenuTint (type)
 - FoldMenuTogglePlacement (type)
+- FoldMonthGridOptions (interface)
 - FoldMotionToken (type)
 - foldMotionVar (function)
 - FoldNumberControls (type)
@@ -707,6 +743,8 @@
 - FoldSpaceToken (type)
 - foldSpaceVar (function)
 - FoldSpinnerSize (type)
+- foldStartOfMonth (function)
+- foldStartOfWeek (function)
 - FoldStickyColumnAnchor (type)
 - FoldSurfaceName (type)
 - FoldTabItem (type)
@@ -724,9 +762,14 @@
 - FoldToast (type)
 - FoldToastConfig (type)
 - FoldToastVariant (type)
+- foldToday (function)
+- foldToNativeDate (function)
 - FoldViewNavItem (type)
 - FoldViewToggleOption (interface)
+- FoldWeekday (type)
+- foldWeekdayIndex (function)
 - observeElementWidth (function)
+- provideFoldCalendarLabels (function)
 - provideFoldDataTableLabels (function)
 - provideFoldIcons (function)
 - provideFoldInlineConfirmLabels (function)

@@ -34,7 +34,7 @@ export interface GalleryNavGroup {
 }
 
 /** The next version — unreleased components carry this as their `since`. */
-const NEXT = "0.5.0";
+const NEXT = "0.8.0";
 
 /**
  * The single source of truth for the gallery's nav **and** its routes: the rail
@@ -62,7 +62,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     color: "#8b5cf6",
     items: [
       { id: "menu", label: "menu" },
-      { id: "popover", label: "popover · dropdown", since: NEXT },
+      { id: "popover", label: "popover · dropdown" },
       { id: "nav-launcher", label: "nav-launcher" },
       { id: "tab-nav", label: "view-nav" },
       { id: "tabs", label: "tabs" },
@@ -75,7 +75,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "button", label: "button" },
       { id: "button-icon", label: "button-icon" },
       { id: "link", label: "link" },
-      { id: "inline-confirm", label: "inline-confirm", since: NEXT },
+      { id: "inline-confirm", label: "inline-confirm" },
     ],
   },
   {
@@ -90,8 +90,26 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "badges", label: "badge · status · icon" },
       { id: "avatar", label: "avatar", icon: "team" },
       { id: "timeline", label: "timeline" },
-      { id: "data-table", label: "data-table", since: NEXT },
-      { id: "paginator", label: "paginator", since: NEXT },
+      { id: "data-table", label: "data-table" },
+      { id: "paginator", label: "paginator" },
+    ],
+  },
+  {
+    label: "Calendar",
+    color: "#0ea5e9",
+    items: [
+      {
+        id: "calendar-month",
+        label: "calendar-month",
+        icon: "calendar",
+        since: NEXT,
+      },
+      {
+        id: "calendar-dates",
+        label: "plain dates",
+        icon: "clock",
+        since: NEXT,
+      },
     ],
   },
   {
@@ -109,11 +127,11 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     color: "#10b981",
     items: [
       { id: "form", label: "input", icon: "edit" },
-      { id: "listbox", label: "listbox (select)", since: NEXT },
-      { id: "password", label: "password field", since: NEXT },
-      { id: "view-toggle", label: "view-toggle", since: NEXT },
-      { id: "checkbox", label: "checkbox", since: NEXT },
-      { id: "slider", label: "slider · range", since: NEXT },
+      { id: "listbox", label: "listbox (select)" },
+      { id: "password", label: "password field" },
+      { id: "view-toggle", label: "view-toggle" },
+      { id: "checkbox", label: "checkbox" },
+      { id: "slider", label: "slider · range" },
       { id: "form-layout", label: "form layout" },
       { id: "dropzone", label: "file dropzone" },
     ],

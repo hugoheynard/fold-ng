@@ -1,0 +1,150 @@
+<fold-page-layout title="calendar-month">
+  <p description>
+    fold-calendar-month — a month grid on a date axis, where an event is a
+    <strong>band</strong> stretching from the column it starts on to the column
+    it ends on. A span crossing a week is drawn once per week with an open edge
+    on the side that continues, so a three-week holiday reads as one thing
+    rather than twenty-one chips. Dates are plain
+    <code>YYYY-MM-DD</code> strings, never <code>Date</code> — see “plain
+    dates”.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 720px">
+      <span class="gal-tag">
+        multi-day bands · tones · half-day edge · open-ended contract
+      </span>
+      <fold-card surface="sunken" style="--fold-card-padding: 0">
+        <fold-calendar-month
+          [(month)]="month"
+          [events]="events"
+          [today]="today"
+          locale="en-GB"
+          (dayClick)="lastDay.set($event)"
+          (eventClick)="lastEvent.set($event.label)"
+        />
+      </fold-card>
+      <p class="doc-p">
+        Last day clicked: “{{ lastDay() ?? "—" }}” · last event: “{{ lastEvent()
+        ?? "—" }}”
+      </p>
+    </div>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 460px">
+      <span class="gal-tag"
+        >lane budget · the rest collapse into “+N more”</span
+      >
+      <fold-card surface="sunken" style="--fold-card-padding: 0">
+        <fold-calendar-month
+          [(month)]="crowdedMonth"
+          [events]="crowded"
+          [today]="today"
+          [maxLanes]="2"
+          locale="en-GB"
+          (overflowClick)="onOverflow($event)"
+        />
+      </fold-card>
+      <p class="doc-p">
+        Overflow chip reported {{ lastOverflow() ?? "—" }} hidden event(s) — it
+        hands the whole week over, so a caller can open what was cut.
+      </p>
+    </div>
+
+    <div class="gal-cell" style="flex: 1 1 460px">
+      <span class="gal-tag">grouping · one chip, the union of its members</span>
+      <fold-card surface="sunken" style="--fold-card-padding: 0">
+        <fold-calendar-month
+          [(month)]="groupedMonth"
+          [events]="grouped"
+          [today]="today"
+          locale="en-GB"
+        />
+      </fold-card>
+      <p class="doc-p">
+        Four people, four different ranges, one band: events sharing a
+        <code>groupId</code> collapse and the chip spans everything it stands
+        for.
+      </p>
+    </div>
+  </div>
+
+  <dev-playground [code]="playgroundCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">weekStartsOn</span>
+      <div class="ss-seg">
+        @for (day of weekStarts; track day) {
+        <button
+          type="button"
+          [class.is-on]="pgWeekStart() === day"
+          (click)="pgWeekStart.set(day)"
+        >
+          {{ day }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">maxLanes</span>
+      <div class="ss-seg">
+        @for (lanes of [1, 2, 3, 5]; track lanes) {
+        <button
+          type="button"
+          [class.is-on]="pgLanes() === lanes"
+          (click)="pgLanes.set(lanes)"
+        >
+          {{ lanes }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">fixedWeeks</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgFixed()"
+          (click)="pgFixed.set(false)"
+        >
+          natural
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgFixed()"
+          (click)="pgFixed.set(true)"
+        >
+          six rows
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">locale</span>
+      <div class="ss-seg">
+        @for (tag of locales; track tag) {
+        <button
+          type="button"
+          [class.is-on]="pgLocale() === tag"
+          (click)="pgLocale.set(tag)"
+        >
+          {{ tag }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <fold-calendar-month
+      [(month)]="pgMonth"
+      [events]="events"
+      [today]="today"
+      [weekStartsOn]="pgWeekStart()"
+      [maxLanes]="pgLanes()"
+      [fixedWeeks]="pgFixed()"
+      [locale]="pgLocale()"
+    />
+  </dev-playground>
+</fold-page-layout>

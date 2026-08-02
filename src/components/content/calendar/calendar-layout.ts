@@ -30,7 +30,7 @@ export interface FoldMonthGridOptions {
   /** Day the weeks start on. @default 'mon' */
   readonly weekStartsOn?: FoldWeekday;
   /** The day to flag as today; omit to flag none (an SSR-stable default). */
-  readonly today?: FoldCalendarDate;
+  readonly today?: FoldCalendarDate | undefined;
   /** Lanes a week row can stack before events spill into the overflow count. @default 3 */
   readonly maxLanes?: number;
   /**

@@ -90,6 +90,46 @@ export type {
   FoldTableSortDir,
   FoldTableTone,
 } from "./components/content/data-table/data-table.types";
+
+export { FoldCalendarMonthComponent } from "./components/content/calendar/calendar-month.component";
+export { FoldCalendarEventDirective } from "./components/content/calendar/calendar-event.directive";
+export {
+  provideFoldCalendarLabels,
+  FOLD_CALENDAR_LABELS,
+  FOLD_CALENDAR_DEFAULT_LABELS,
+} from "./components/content/calendar/calendar-labels";
+export type { FoldCalendarLabels } from "./components/content/calendar/calendar-labels";
+export {
+  foldAddDays,
+  foldAddMonths,
+  foldDaysBetween,
+  foldEndOfMonth,
+  foldIsCalendarDate,
+  foldIsWeekEnd,
+  foldStartOfMonth,
+  foldStartOfWeek,
+  foldToNativeDate,
+  foldToday,
+  foldWeekdayIndex,
+} from "./components/content/calendar/calendar-date";
+export type {
+  FoldCalendarDate,
+  FoldWeekday,
+} from "./components/content/calendar/calendar-date";
+export {
+  foldBuildMonthGrid,
+  foldEventsInRange,
+  foldEventsOnDay,
+} from "./components/content/calendar/calendar-layout";
+export type { FoldMonthGridOptions } from "./components/content/calendar/calendar-layout";
+export type {
+  FoldCalendarBand,
+  FoldCalendarDay,
+  FoldCalendarEvent,
+  FoldCalendarHalfDay,
+  FoldCalendarTone,
+  FoldCalendarWeek,
+} from "./components/content/calendar/calendar.types";
 export { FoldChoiceRowComponent } from "./components/content/choice-row/choice-row.component";
 export type { FoldChoiceOption } from "./components/content/choice-row/choice-row.component";
 export { FoldIconComponent } from "./components/foundations/icon/icon.component";

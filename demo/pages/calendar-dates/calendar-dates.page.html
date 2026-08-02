@@ -1,0 +1,128 @@
+<fold-page-layout title="plain dates">
+  <p description>
+    The date model the calendar family is built on: a
+    <code>FoldCalendarDate</code> is a plain <code>YYYY-MM-DD</code> string, not
+    a <code>Date</code>. Everything here is pure — the only function that reads
+    a clock is <code>foldToday()</code>.
+  </p>
+  <gal-kind-badge titleBadge kind="foundation" />
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 420px">
+      <span class="gal-tag">why not a Date</span>
+      <fold-card surface="sunken">
+        <p class="doc-p">
+          A calendar of all-day spans deals in <strong>dates</strong>, not
+          instants. <code>new Date("2026-05-18")</code> is UTC midnight — which
+          is the <strong>17th</strong> anywhere west of Greenwich, so the same
+          span lands on a different cell depending on where the browser is. A
+          string removes that whole bug class by construction.
+        </p>
+        <p class="doc-p">It buys three things on top:</p>
+        <ul class="doc-p">
+          <li>
+            values compare <strong>lexicographically</strong> —
+            <code>a &lt;= b</code> <em>is</em> “on or before”, so a range test
+            is a string comparison;
+          </li>
+          <li>
+            two dates meaning the same day are <code>===</code> equal (two
+            <code>Date</code>s never are);
+          </li>
+          <li>it is already the wire format a backend sends.</li>
+        </ul>
+        <p class="doc-p">
+          Arithmetic runs through <code>Date.UTC</code>, never local time: UTC
+          has no DST, so a day is always exactly 86 400 000&nbsp;ms.
+          <code>fold-timeline</code> keeps a native <code>Date</code> on purpose
+          — it plots dated <em>instants</em>, which is the other domain.
+        </p>
+      </fold-card>
+    </div>
+
+    <div class="gal-cell" style="flex: 1 1 420px">
+      <span class="gal-tag">localisation</span>
+      <fold-card surface="sunken">
+        <p class="doc-p">
+          Month and weekday names are <strong>not</strong> in the label token:
+          the calendar reads them from <code>Intl.DateTimeFormat</code>, driven
+          by its <code>locale</code> input, so every locale comes for free
+          instead of twelve hand-translated month names.
+        </p>
+        <p class="doc-p">
+          Bridge a plain date to <code>Intl</code> with
+          <code>foldToNativeDate()</code>, which lands on UTC midnight — format
+          it with <code>timeZone: "UTC"</code> or the local zone shifts the
+          label back a day.
+        </p>
+        <p class="doc-p">
+          <code>FoldCalendarLabels</code> covers only what
+          <code>Intl</code> cannot supply: the today marker, the “+N more” chip
+          and the event count.
+        </p>
+      </fold-card>
+    </div>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell" style="flex: 1 1 720px">
+      <span class="gal-tag">try it · every result is live</span>
+      <fold-card surface="sunken">
+        <div class="np-field">
+          <label class="gal-tag" for="cal-probe">date</label>
+          <input
+            id="cal-probe"
+            type="date"
+            [value]="probe()"
+            (input)="onProbe($any($event.target).value)"
+          />
+          <span class="gal-tag">week starts on</span>
+          <div class="ss-seg">
+            @for (day of anchors; track day) {
+            <button
+              type="button"
+              [class.is-on]="anchor() === day"
+              (click)="anchor.set(day)"
+            >
+              {{ day }}
+            </button>
+            }
+          </div>
+        </div>
+
+        @if (!probeValid()) {
+        <p class="doc-p">
+          “{{ probe() }}” is not a plain date —
+          <code>foldIsCalendarDate()</code> rejects both a malformed shape and
+          an impossible day such as <code>2026-02-30</code>.
+        </p>
+        } @else {
+        <table class="gal-table">
+          <thead>
+            <tr>
+              <th>call</th>
+              <th>result</th>
+              <th>note</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.call) {
+            <tr>
+              <td><code>{{ row.call }}</code></td>
+              <td><code>{{ row.result }}</code></td>
+              <td>{{ row.note }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+        }
+        <p class="doc-p">
+          <code>foldToday()</code> reads the <strong>local</strong> clock — the
+          day the user believes it is — and returns <code>{{ today }}</code>.
+          Pass it a <code>Date</code> to pin it in a test or against a workspace
+          clock.
+        </p>
+      </fold-card>
+    </div>
+  </div>
+</fold-page-layout>

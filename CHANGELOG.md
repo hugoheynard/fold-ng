@@ -6,6 +6,44 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **A calendar family, starting with `fold-calendar-month` and the plain-date
+  model it stands on.** The grid is a date axis: seven columns of whole days,
+  and over them a layer of **bands**, each stretching from the column its event
+  starts on to the column it ends on. A span crossing a week is drawn once per
+  week with an open edge on the side that continues, so a three-week holiday
+  reads as one thing rather than twenty-one chips. Bands pack into lanes
+  (earliest start, then longest) under a `maxLanes` budget, and whatever will
+  not fit becomes an overflow chip that hands the **whole week** to
+  `overflowClick` rather than being dropped silently. Events sharing a `groupId`
+  collapse into one chip spanning the union of their ranges and carrying the
+  count; a half-day edge is kept only on the segment holding the event's real
+  edge. Inputs cover `weekStartsOn` (any anchor, not just Monday), `fixedWeeks`,
+  `locale` and `labels`; `month` is a two-way `model`, so keyboard paging writes
+  back. Project an `<ng-template foldCalendarEvent>` to replace the built-in
+  chip. Generic over `T`, so an event's `data` survives the round trip to
+  `eventClick` without a cast.
+- **`FoldCalendarDate` — the package's date primitive is a plain
+  `YYYY-MM-DD` string, not a `Date`.** A calendar of all-day spans deals in
+  dates, not instants: `new Date("2026-05-18")` is UTC midnight, i.e. the 17th
+  anywhere west of Greenwich, and that off-by-one is the most common calendar
+  bug there is. Strings remove the class by construction, compare
+  lexicographically (`a <= b` _is_ "on or before"), are `===`-equal when they
+  mean the same day, and are already the wire format. Arithmetic runs through
+  `Date.UTC`, so no DST boundary can repeat or skip a day. Ships with
+  `foldToday`, `foldAddDays`, `foldAddMonths`, `foldStartOfWeek`,
+  `foldStartOfMonth`, `foldEndOfMonth`, `foldDaysBetween`, `foldWeekdayIndex`,
+  `foldIsWeekEnd`, `foldIsCalendarDate` and `foldToNativeDate`, plus the layout
+  entry points `foldBuildMonthGrid`, `foldEventsOnDay` and `foldEventsInRange`.
+  `fold-timeline` keeps a native `Date` on purpose — it plots dated _instants_,
+  which is the other domain.
+- **Month and weekday names come from `Intl`, not from a label token.** The
+  `locale` input drives `Intl.DateTimeFormat`, so every locale works without
+  hand-translating twelve month names; `FoldCalendarLabels` (with
+  `provideFoldCalendarLabels`) covers only what `Intl` cannot supply — the today
+  marker, the overflow chip and the event count.
+
 ### Changed
 
 - **A standalone `fold-view-nav` now separates itself from the content it heads
