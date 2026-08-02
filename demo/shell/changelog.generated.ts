@@ -42,6 +42,2753 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.8.0",
+    date: "2026-08-02",
+    unreleased: false,
+    counts: {
+      Added: 18,
+      Changed: 10,
+      Fixed: 13,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A calendar family, starting with ",
+              },
+              {
+                kind: "code",
+                value: "fold-calendar-month",
+              },
+              {
+                kind: "text",
+                value: " and the plain-date model it stands on.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The grid is a date axis: seven columns of whole days, and over them a layer of ",
+              },
+              {
+                kind: "strong",
+                value: "bands",
+              },
+              {
+                kind: "text",
+                value:
+                  ", each stretching from the column its event starts on to the column it ends on. A span crossing a week is drawn once per week with an open edge on the side that continues, so a three-week holiday reads as one thing rather than twenty-one chips. Bands pack into lanes (earliest start, then longest) under a ",
+              },
+              {
+                kind: "code",
+                value: "maxLanes",
+              },
+              {
+                kind: "text",
+                value:
+                  " budget, and whatever will not fit becomes an overflow chip ",
+              },
+              {
+                kind: "strong",
+                value: "in the column of each day that lost something",
+              },
+              {
+                kind: "text",
+                value:
+                  " — a hidden span counts against every day it would have covered, so the chip says _which_ day to open rather than only that the week is crowded, and ",
+              },
+              {
+                kind: "code",
+                value: "overflowClick",
+              },
+              {
+                kind: "text",
+                value: " emits that day. Events sharing a ",
+              },
+              {
+                kind: "code",
+                value: "groupId",
+              },
+              {
+                kind: "text",
+                value:
+                  " collapse into one chip spanning the union of their ranges and carrying the count; a half-day edge is kept only on the segment holding the event's real edge. Inputs cover ",
+              },
+              {
+                kind: "code",
+                value: "weekStartsOn",
+              },
+              {
+                kind: "text",
+                value: " (any anchor, not just Monday), ",
+              },
+              {
+                kind: "code",
+                value: "fixedWeeks",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "locale",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "labels",
+              },
+              {
+                kind: "text",
+                value: "; ",
+              },
+              {
+                kind: "code",
+                value: "month",
+              },
+              {
+                kind: "text",
+                value: " is a two-way ",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value: ", so keyboard paging writes back. Project an ",
+              },
+              {
+                kind: "code",
+                value: "<ng-template foldCalendarEvent>",
+              },
+              {
+                kind: "text",
+                value: " to replace the built-in chip. Generic over ",
+              },
+              {
+                kind: "code",
+                value: "T",
+              },
+              {
+                kind: "text",
+                value: ", so an event's ",
+              },
+              {
+                kind: "code",
+                value: "data",
+              },
+              {
+                kind: "text",
+                value: " survives the round trip to ",
+              },
+              {
+                kind: "code",
+                value: "eventClick",
+              },
+              {
+                kind: "text",
+                value: " without a cast.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-calendar-agenda",
+              },
+              {
+                kind: "text",
+                value: " — a rail of what is still ahead, grouped by day.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  'The counterpart to the grids: they answer "what does this month look like", it answers "what do I do next". Its ',
+              },
+              {
+                kind: "code",
+                value: "todo",
+              },
+              {
+                kind: "text",
+                value:
+                  " slice keeps only the events asking for attention — the ",
+              },
+              {
+                kind: "code",
+                value: "warning",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "alert",
+              },
+              {
+                kind: "text",
+                value: " tones, the ",
+              },
+              {
+                kind: "strong",
+                value: "same scale the chips paint with",
+              },
+              {
+                kind: "text",
+                value:
+                  ', so the rail needs no second notion of urgency — and carries the count as a badge. An event already running is filed under the boundary rather than its real start, so a three-week absence that began last week sits at the top of what\'s next instead of in a past day the rail never shows. Days inside the next week are named relatively ("Today", "Tomorrow", then the weekday), which reads faster than a date at that distance. ',
+              },
+              {
+                kind: "code",
+                value: "mode",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "collapsed",
+              },
+              {
+                kind: "text",
+                value: " are two-way ",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value:
+                  "s — persist the collapse if you want it to stick; the package stores nothing. Pure ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildAgenda",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "foldCountActionable",
+              },
+              {
+                kind: "text",
+                value: " behind it.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-calendar-source-filter",
+              },
+              {
+                kind: "text",
+                value:
+                  " — chips that switch each feed of a merged calendar on and off.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "A calendar usually merges several feeds (a programme, staff leave, contracts); an event names its own with ",
+              },
+              {
+                kind: "code",
+                value: "sourceKey",
+              },
+              {
+                kind: "text",
+                value: ", a ",
+              },
+              {
+                kind: "code",
+                value: "FoldCalendarSource",
+              },
+              {
+                kind: "text",
+                value:
+                  " declares the label and dot, and the chips count what each contributes. They own the ",
+              },
+              {
+                kind: "strong",
+                value: "selection only",
+              },
+              {
+                kind: "text",
+                value: " — the caller runs the pure ",
+              },
+              {
+                kind: "code",
+                value: "foldFilterBySource()",
+              },
+              {
+                kind: "text",
+                value:
+                  " over its own events, so the chips never learn how anything is fetched. An event with no ",
+              },
+              {
+                kind: "code",
+                value: "sourceKey",
+              },
+              {
+                kind: "text",
+                value:
+                  " belongs to no feed and no chip can hide it. Each chip is a real toggle (",
+              },
+              {
+                kind: "code",
+                value: "aria-pressed",
+              },
+              {
+                kind: "text",
+                value:
+                  " in both states) whose accessible name says which feed and whether it is showing, because the tick and the dot are colour and colour cannot be the only carrier.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-calendar-toolbar",
+              },
+              {
+                kind: "text",
+                value: " — the chrome that makes the views one calendar.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Jump to today, page back and forward, the period's name, and the view switch. It owns no data: both pieces of state are two-way ",
+              },
+              {
+                kind: "code",
+                value: "model",
+              },
+              {
+                kind: "text",
+                value: "s, so a page binds the same ",
+              },
+              {
+                kind: "code",
+                value: "date",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "view",
+              },
+              {
+                kind: "text",
+                value:
+                  " it hands the view on screen and paging works with no output handler. The step matches the reading — a month under the month view, a week under the week view, a day under the day view. The title carries ",
+              },
+              {
+                kind: "code",
+                value: 'aria-live="polite"',
+              },
+              {
+                kind: "text",
+                value:
+                  ", so paging announces where a keyboard user landed instead of changing silently. Backed by pure ",
+              },
+              {
+                kind: "code",
+                value: "foldShiftDate",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldRangeForView",
+              },
+              {
+                kind: "text",
+                value:
+                  " (the window a caller fetches — the whole painted grid for a month, not just its days) and ",
+              },
+              {
+                kind: "code",
+                value: "foldViewTitle",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The three column views that complete the drill-down: ",
+              },
+              {
+                kind: "code",
+                value: "fold-calendar-week",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-calendar-day",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "fold-calendar-list",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Where the month grid packs spans into lanes, these simply list what covers each day — so nothing is clipped and no lane budget can hide anything. ",
+              },
+              {
+                kind: "code",
+                value: "week",
+              },
+              {
+                kind: "text",
+                value: " is seven day columns; ",
+              },
+              {
+                kind: "code",
+                value: "day",
+              },
+              {
+                kind: "text",
+                value: " is one day in full, with a tag-qualified ",
+              },
+              {
+                kind: "code",
+                value: "button[empty]",
+              },
+              {
+                kind: "text",
+                value:
+                  ' slot for a "new request" action when nothing sits on it; ',
+              },
+              {
+                kind: "code",
+                value: "list",
+              },
+              {
+                kind: "text",
+                value:
+                  " is the flat chronological reading, each row led by its span (formatted with ",
+              },
+              {
+                kind: "code",
+                value: "Intl",
+              },
+              {
+                kind: "text",
+                value:
+                  "'s own range formatter, which collapses a single day to one date and factors out a shared month). All three take the same ",
+              },
+              {
+                kind: "code",
+                value: "foldCalendarEvent",
+              },
+              {
+                kind: "text",
+                value: " template, labels and ",
+              },
+              {
+                kind: "code",
+                value: "locale",
+              },
+              {
+                kind: "text",
+                value: " as the month view. Their a11y is ",
+              },
+              {
+                kind: "strong",
+                value: "simpler than the month's on purpose",
+              },
+              {
+                kind: "text",
+                value:
+                  ": because a chip nests inside the day it belongs to rather than spanning columns, every control is a real child in the natural tab order — no roving tabindex, no ",
+              },
+              {
+                kind: "code",
+                value: "aria-hidden",
+              },
+              {
+                kind: "text",
+                value:
+                  ", every event reachable by keyboard. New pure builders ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildWeek",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildDay",
+              },
+              {
+                kind: "text",
+                value: " back them.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "FoldCalendarDate",
+              },
+              {
+                kind: "text",
+                value: " — the package's date primitive is a plain ",
+              },
+              {
+                kind: "code",
+                value: "YYYY-MM-DD",
+              },
+              {
+                kind: "text",
+                value: " string, not a ",
+              },
+              {
+                kind: "code",
+                value: "Date",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "A calendar of all-day spans deals in dates, not instants: ",
+              },
+              {
+                kind: "code",
+                value: 'new Date("2026-05-18")',
+              },
+              {
+                kind: "text",
+                value:
+                  " is UTC midnight, i.e. the 17th anywhere west of Greenwich, and that off-by-one is the most common calendar bug there is. Strings remove the class by construction, compare lexicographically (",
+              },
+              {
+                kind: "code",
+                value: "a <= b",
+              },
+              {
+                kind: "text",
+                value: ' _is_ "on or before"), are ',
+              },
+              {
+                kind: "code",
+                value: "===",
+              },
+              {
+                kind: "text",
+                value:
+                  "-equal when they mean the same day, and are already the wire format. Arithmetic runs through ",
+              },
+              {
+                kind: "code",
+                value: "Date.UTC",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so no DST boundary can repeat or skip a day. Ships with ",
+              },
+              {
+                kind: "code",
+                value: "foldToday",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldAddDays",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldAddMonths",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldStartOfWeek",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldStartOfMonth",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldEndOfMonth",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldDaysBetween",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldWeekdayIndex",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldWeekdayOf",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldIsWeekend",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldIsCalendarDate",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldToNativeDate",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "foldFromNativeDate",
+              },
+              {
+                kind: "text",
+                value:
+                  " (the inbound bridge — the conversion every consumer would otherwise write as ",
+              },
+              {
+                kind: "code",
+                value: "toISOString().slice(0, 10)",
+              },
+              {
+                kind: "text",
+                value:
+                  ", which is the very timezone bug this design exists to remove), plus the layout entry points ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildMonthGrid",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildWeek",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildDay",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldEventsOnDay",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldEventsInRange",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "foldFilterBySource",
+              },
+              {
+                kind: "text",
+                value: ". Supported range is ",
+              },
+              {
+                kind: "code",
+                value: "0001-01-01",
+              },
+              {
+                kind: "text",
+                value: "–",
+              },
+              {
+                kind: "code",
+                value: "9999-12-31",
+              },
+              {
+                kind: "text",
+                value:
+                  ": the four-digit year is what makes the lexicographic guarantee hold, so it is enforced rather than assumed. ",
+              },
+              {
+                kind: "code",
+                value: "fold-timeline",
+              },
+              {
+                kind: "text",
+                value: " keeps a native ",
+              },
+              {
+                kind: "code",
+                value: "Date",
+              },
+              {
+                kind: "text",
+                value:
+                  " on purpose — it plots dated _instants_, which is the other domain.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Month and weekday names come from ",
+              },
+              {
+                kind: "code",
+                value: "Intl",
+              },
+              {
+                kind: "text",
+                value: ", not from a label token.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The ",
+              },
+              {
+                kind: "code",
+                value: "locale",
+              },
+              {
+                kind: "text",
+                value: " input drives ",
+              },
+              {
+                kind: "code",
+                value: "Intl.DateTimeFormat",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so every locale works without hand-translating twelve month names; ",
+              },
+              {
+                kind: "code",
+                value: "FoldCalendarLabels",
+              },
+              {
+                kind: "text",
+                value: " (with ",
+              },
+              {
+                kind: "code",
+                value: "provideFoldCalendarLabels",
+              },
+              {
+                kind: "text",
+                value: ") covers only what ",
+              },
+              {
+                kind: "code",
+                value: "Intl",
+              },
+              {
+                kind: "text",
+                value:
+                  " cannot supply — the today marker, the overflow chip and the event count.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "Everything the calendar draws _around_ an event is a projectable template.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The chip was replaceable from day one; the containers were not, which had it backwards — an app could restyle the smallest unit and not the cell behind it. Four more ",
+              },
+              {
+                kind: "code",
+                value: "<ng-template>",
+              },
+              {
+                kind: "text",
+                value: " seams, each with a typed context and an ",
+              },
+              {
+                kind: "code",
+                value: "ngTemplateContextGuard",
+              },
+              {
+                kind: "text",
+                value: " (so ",
+              },
+              {
+                kind: "code",
+                value: "let-",
+              },
+              {
+                kind: "text",
+                value: " variables are real types under ",
+              },
+              {
+                kind: "code",
+                value: "strictTemplates",
+              },
+              {
+                kind: "text",
+                value: ", not ",
+              },
+              {
+                kind: "code",
+                value: "any",
+              },
+              {
+                kind: "text",
+                value: "): ",
+              },
+              {
+                kind: "strong",
+                value: "`foldCalendarDay`",
+              },
+              {
+                kind: "text",
+                value:
+                  ' replaces the inside of a month cell — the hook for a public holiday, a closure, "3/8 staffed"; ',
+              },
+              {
+                kind: "strong",
+                value: "`foldCalendarHeading`",
+              },
+              {
+                kind: "text",
+                value: " replaces the agenda's day heading; ",
+              },
+              {
+                kind: "strong",
+                value: "`foldCalendarTitle`",
+              },
+              {
+                kind: "text",
+                value: " replaces the toolbar's ",
+              },
+              {
+                kind: "code",
+                value: "<h2>",
+              },
+              {
+                kind: "text",
+                value:
+                  ", which also lets a page give the title the heading level its outline needs; ",
+              },
+              {
+                kind: "strong",
+                value: "`foldCalendarOverflow`",
+              },
+              {
+                kind: "text",
+                value: " replaces the ",
+              },
+              {
+                kind: "code",
+                value: "+N",
+              },
+              {
+                kind: "text",
+                value: " chip. Alongside them, ",
+              },
+              {
+                kind: "code",
+                value: "dayModifiers: (day) => string[]",
+              },
+              {
+                kind: "text",
+                value: " emits an app's own names as one ",
+              },
+              {
+                kind: "code",
+                value: "data-fold-day-modifiers",
+              },
+              {
+                kind: "text",
+                value: " attribute, matchable with ",
+              },
+              {
+                kind: "code",
+                value: '[data-fold-day-modifiers~="holiday"]',
+              },
+              {
+                kind: "text",
+                value:
+                  " — so nobody has to write CSS against an internal class name. ",
+              },
+              {
+                kind: "code",
+                value: "foldCalendarEvent",
+              },
+              {
+                kind: "text",
+                value: " is now generic too, so ",
+              },
+              {
+                kind: "code",
+                value: "event.data",
+              },
+              {
+                kind: "text",
+                value: " comes back as the app's own record.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-calendar-timegrid",
+              },
+              {
+                kind: "text",
+                value:
+                  " — the reading the other four cannot give: when _inside_ a day.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Hour columns for a week or a single day (",
+              },
+              {
+                kind: "code",
+                value: "dayCount",
+              },
+              {
+                kind: "text",
+                value:
+                  "), with the all-day strip on top. A meeting is a block whose height is its duration and whose width is shared with whatever it collides with; an absence is a band across the strip, spanning days through ",
+              },
+              {
+                kind: "strong",
+                value: "the same packer the month grid uses",
+              },
+              {
+                kind: "text",
+                value:
+                  " — extracted rather than copied, so a three-day leave request reads identically in both. Time is modelled as wall-clock ",
+              },
+              {
+                kind: "code",
+                value: "HH:mm",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "FoldCalendarTime",
+              },
+              {
+                kind: "text",
+                value: "), ",
+              },
+              {
+                kind: "strong",
+                value: "not an instant",
+              },
+              {
+                kind: "text",
+                value:
+                  " — the same decision as the date, for the same reason: 09:00 is the hour on the wall, and an instant re-derives that from a zone every render, which is one wrong default away from drawing the wrong hour. The app converts once at its own boundary. Two details that are the difference between a real time grid and a demo: the overlap test is ",
+              },
+              {
+                kind: "strong",
+                value: "exclusive",
+              },
+              {
+                kind: "text",
+                value:
+                  " at the boundary, so back-to-back meetings keep the full width instead of each taking half; and events are grouped into ",
+              },
+              {
+                kind: "strong",
+                value: "clusters",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so one triple-booked morning does not narrow an unrelated afternoon. A span crossing midnight becomes one block per day, each with the right open edge, rather than one impossible block running off the bottom. ",
+              },
+              {
+                kind: "code",
+                value: "now",
+              },
+              {
+                kind: "text",
+                value: " is an input, never a clock the package reads — ",
+              },
+              {
+                kind: "code",
+                value: "today",
+              },
+              {
+                kind: "text",
+                value:
+                  " already works that way, and a server render that invented one would hydrate to a different position. Positions are ",
+              },
+              {
+                kind: "strong",
+                value: "fractions of the visible window",
+              },
+              {
+                kind: "text",
+                value: ", so ",
+              },
+              {
+                kind: "code",
+                value: "dayStart",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "dayEnd",
+              },
+              {
+                kind: "text",
+                value: " and the CSS height stay independent. Backed by pure ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildTimeGrid",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "foldLayOutOverlaps",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "foldFromTemporal",
+              },
+              {
+                kind: "text",
+                value:
+                  " — the family is Temporal-native without depending on it.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "Temporal.PlainDate.toString()",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "strong",
+                value: "is",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "YYYY-MM-DD",
+              },
+              {
+                kind: "text",
+                value:
+                  ": the primitive chosen for correctness turns out to be exactly Temporal-shaped, which no ",
+              },
+              {
+                kind: "code",
+                value: "Date",
+              },
+              {
+                kind: "text",
+                value: "-based calendar can say. The bridge accepts a ",
+              },
+              {
+                kind: "code",
+                value: "PlainDate",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "PlainDateTime",
+              },
+              {
+                kind: "text",
+                value: " or ",
+              },
+              {
+                kind: "code",
+                value: "ZonedDateTime",
+              },
+              {
+                kind: "text",
+                value:
+                  " — typed structurally, so it compiles and runs on an engine that has none of them — and drops the time, which is what a whole-day calendar wants ",
+              },
+              {
+                kind: "strong",
+                value: "and",
+              },
+              {
+                kind: "text",
+                value:
+                  " keeps the day the value itself means rather than the one UTC would have picked. The other direction needs no helper: ",
+              },
+              {
+                kind: "code",
+                value: "Temporal.PlainDate.from(foldDate)",
+              },
+              {
+                kind: "text",
+                value: " already accepts one of ours.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The week now comes from the locale, not from a guess.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "Intl.Locale",
+              },
+              {
+                kind: "text",
+                value:
+                  " knows which day a locale's week opens on and which days it rests — most calendars stop at the month names and hard-code Monday, which is right in Paris and wrong in Chicago, Cairo and Malé. ",
+              },
+              {
+                kind: "code",
+                value: "weekStartsOn",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "weekendDays",
+              },
+              {
+                kind: "text",
+                value: " default to ",
+              },
+              {
+                kind: "code",
+                value: "foldLocaleWeekInfo(locale)",
+              },
+              {
+                kind: "text",
+                value:
+                  " and stay overridable, so the common case needs no input at all. Both ",
+              },
+              {
+                kind: "code",
+                value: "getWeekInfo()",
+              },
+              {
+                kind: "text",
+                value: " and the older ",
+              },
+              {
+                kind: "code",
+                value: "weekInfo",
+              },
+              {
+                kind: "text",
+                value:
+                  " getter are probed, and a runtime with neither falls back to Monday + Sat/Sun.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "ISO week numbers, as an optional leading column.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "showWeekNumbers",
+              },
+              {
+                kind: "text",
+                value: " on ",
+              },
+              {
+                kind: "code",
+                value: "fold-calendar-month",
+              },
+              {
+                kind: "text",
+                value: ", backed by ",
+              },
+              {
+                kind: "code",
+                value: "foldIsoWeek",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "foldIsoWeekYear",
+              },
+              {
+                kind: "text",
+                value:
+                  ". ISO weeks start on Monday and belong to the year holding their ",
+              },
+              {
+                kind: "strong",
+                value: "Thursday",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so they are deliberately _not_ derived from the calendar's own anchor — 1 January is sometimes week 53 of the year before, which is the whole point of the rule and the reason European B2B reporting asks for it. The column is a real grid track, so every placed element — cells, bands, overflow chips — shifts with it.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: "formats",
+              },
+              {
+                kind: "text",
+                value: " input beside ",
+              },
+              {
+                kind: "code",
+                value: "labels",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Labels let a locale translate; this lets it ",
+              },
+              {
+                kind: "strong",
+                value: "reformat",
+              },
+              {
+                kind: "text",
+                value: ". Every ",
+              },
+              {
+                kind: "code",
+                value: "Intl",
+              },
+              {
+                kind: "text",
+                value: " option bag the family uses lives in one table (",
+              },
+              {
+                kind: "code",
+                value: "FOLD_CALENDAR_FORMATS",
+              },
+              {
+                kind: "text",
+                value: ", now exported); ",
+              },
+              {
+                kind: "code",
+                value: "formats",
+              },
+              {
+                kind: "text",
+                value:
+                  " merges over it per instance — a narrow weekday header, a numeric month, a four-digit year.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A print stylesheet for the month.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Browsers drop backgrounds but keep text colour, so a dark theme printed as-is is light-on-white — unreadable. The print block re-expresses everything in system colours (",
+              },
+              {
+                kind: "code",
+                value: "Canvas",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "CanvasText",
+              },
+              {
+                kind: "text",
+                value: "/ ",
+              },
+              {
+                kind: "code",
+                value: "GrayText",
+              },
+              {
+                kind: "text",
+                value:
+                  "), which are neither theme tokens nor hard-coded values, and asks for ink on exactly one thing: the tone bar, the last cue telling two bands apart on paper.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "The month layout is ~5× faster, and the benchmark ships with it.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The cost was never the algorithm — it was the representation: every comparison in the candidate sort called ",
+              },
+              {
+                kind: "code",
+                value: "foldDaysBetween",
+              },
+              {
+                kind: "text",
+                value: ", which re-parsed two strings and built two ",
+              },
+              {
+                kind: "code",
+                value: "Date",
+              },
+              {
+                kind: "text",
+                value:
+                  "s, and the whole feed was re-filtered once per week row. Spans now carry epoch-day bounds computed once, rows are bucketed in a single pass (",
+              },
+              {
+                kind: "code",
+                value: "O(rows × N)",
+              },
+              {
+                kind: "text",
+                value: " → ",
+              },
+              {
+                kind: "code",
+                value: "O(N)",
+              },
+              {
+                kind: "text",
+                value:
+                  "), and clipping is integer arithmetic. The public model is unchanged — this is internal only. Measured on a month layout, mean of 20: 1 000 events 4.8 ms → ",
+              },
+              {
+                kind: "strong",
+                value: "0.99 ms",
+              },
+              {
+                kind: "text",
+                value: ", 5 000 28.9 → ",
+              },
+              {
+                kind: "strong",
+                value: "5.0",
+              },
+              {
+                kind: "text",
+                value: ", 20 000 124 → ",
+              },
+              {
+                kind: "strong",
+                value: "22",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "pnpm bench:calendar",
+              },
+              {
+                kind: "text",
+                value:
+                  " re-runs it against a committed budget and exits non-zero when a size blows it.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "foldCalendarNextFocus",
+              },
+              {
+                kind: "text",
+                value: " is public — the geometry tier is now complete.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The pure builders (",
+              },
+              {
+                kind: "code",
+                value: "foldBuildMonthGrid",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildWeek",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildDay",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldBuildAgenda",
+              },
+              {
+                kind: "text",
+                value: ") and the period functions (",
+              },
+              {
+                kind: "code",
+                value: "foldShiftDate",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldRangeForView",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "foldViewTitle",
+              },
+              {
+                kind: "text",
+                value:
+                  ") let an app lay a calendar out and draw it its own way; the arrow-key map was the one piece missing, and a hand-rolled date grid owes its users the same keyboard as the built-in one. Documented as a ",
+              },
+              {
+                kind: "strong",
+                value: "tier",
+              },
+              {
+                kind: "text",
+                value:
+                  " in the README rather than left as an accident of what happened to be exported. ",
+              },
+              {
+                kind: "code",
+                value: "foldFocusDayCell",
+              },
+              {
+                kind: "text",
+                value: " deliberately stays internal: it reads a ",
+              },
+              {
+                kind: "code",
+                value: "data-fold-day",
+              },
+              {
+                kind: "text",
+                value:
+                  " attribute this package writes, and exporting it would freeze that attribute into the public contract.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The view switch is open.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "FoldCalendarView",
+              },
+              {
+                kind: "text",
+                value:
+                  " keeps the four built-ins as autocompleting literals but accepts any string, and ",
+              },
+              {
+                kind: "code",
+                value: "views",
+              },
+              {
+                kind: "text",
+                value: " takes ",
+              },
+              {
+                kind: "code",
+                value: "{ value, label }",
+              },
+              {
+                kind: "text",
+                value:
+                  " — so an app's own reading (a resource grid, a timeline) can sit in the same toolbar without the library knowing about it. Paging and titling an unrecognised view fall back to month semantics, which always lands on a real date.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: "FoldCalendarDay",
+              },
+              {
+                kind: "text",
+                value: " now carries its own ",
+              },
+              {
+                kind: "code",
+                value: "eventCount",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "hiddenCount",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Both were previously recomputed per cell per change-detection cycle (an O(N) filter, with an allocation, 35 times a tick) or exposed as a positional ",
+              },
+              {
+                kind: "code",
+                value: "hiddenByDay",
+              },
+              {
+                kind: "text",
+                value:
+                  ' array only readable when crossed with the row\'s dates. Counting once while the grid is built is both cheaper and self-describing, and it is what lets a day cell announce "5 events, 2 not shown".',
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A standalone ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value:
+                  " now separates itself from the content it heads by the same gap a ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: " applies.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "A horizontal bar used on its own (outside a layout) gained a ",
+              },
+              {
+                kind: "code",
+                value: "margin-block-end",
+              },
+              {
+                kind: "text",
+                value: " equal to ",
+              },
+              {
+                kind: "code",
+                value: "--fold-nav-layout-gap",
+              },
+              {
+                kind: "text",
+                value: " (default ",
+              },
+              {
+                kind: "code",
+                value: "--fold-space-lg",
+              },
+              {
+                kind: "text",
+                value: ", 16px) — the value is now shared through a ",
+              },
+              {
+                kind: "code",
+                value: "nav-content-gap",
+              },
+              {
+                kind: "text",
+                value: " mixin (",
+              },
+              {
+                kind: "code",
+                value: "layout/_nav-gap.scss",
+              },
+              {
+                kind: "text",
+                value: ") that both the layout and the bar ",
+              },
+              {
+                kind: "code",
+                value: "@use",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so the two can't drift and consumers stop hand-rolling a margin. Applied only to a ",
+              },
+              {
+                kind: "strong",
+                value: "standalone horizontal",
+              },
+              {
+                kind: "text",
+                value: " bar: inside a ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value:
+                  " the layout still owns the gap (no double space), and a vertical bar is a side rail, not a header. ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value:
+                  " is unaffected (an in-place widget, not a bar that introduces following content). Purely additive spacing — the layout's own rendering is unchanged.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "The weekend is its own input, because it is its own fact.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "foldIsWeekEnd(date, weekStartsOn)",
+              },
+              {
+                kind: "text",
+                value:
+                  ' defined the weekend as "the last two columns", which shades ',
+              },
+              {
+                kind: "strong",
+                value: "Friday and Saturday",
+              },
+              {
+                kind: "text",
+                value:
+                  " on a Sunday-first calendar and calls Sunday a working day. Replaced by ",
+              },
+              {
+                kind: "code",
+                value: "foldIsWeekend(date, weekendDays)",
+              },
+              {
+                kind: "text",
+                value: " with a ",
+              },
+              {
+                kind: "code",
+                value: "weekendDays",
+              },
+              {
+                kind: "text",
+                value: " input (default ",
+              },
+              {
+                kind: "code",
+                value: "['sat', 'sun']",
+              },
+              {
+                kind: "text",
+                value:
+                  ") on the month and week views — the anchor moves the columns, it does not move the days people rest on, and a Saturday-first calendar resting Fri+Sat is now expressible.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "foldRangeForView('list')",
+              },
+              {
+                kind: "text",
+                value: " returns the month, not the painted grid.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "It shared the month branch, so a May list showed late-April events: a month view paints padding days and needs their events, a list has none.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "A projected template replaces a list row's whole inside",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  ", as it already did in the other four views. The bar and the date used to render outside the branch, so the same template rendered differently depending on which view hosted it, and a one-element template landed in a four-column grid.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The month day cell is a ",
+              },
+              {
+                kind: "code",
+                value: "gridcell",
+              },
+              {
+                kind: "text",
+                value: ", not a ",
+              },
+              {
+                kind: "code",
+                value: "<button>",
+              },
+              {
+                kind: "text",
+                value: " wearing the role.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: 'role="gridcell"',
+              },
+              {
+                kind: "text",
+                value:
+                  " on a button replaces its native role, so activation is now wired explicitly (",
+              },
+              {
+                kind: "code",
+                value: "Enter",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "Space",
+              },
+              {
+                kind: "text",
+                value:
+                  ") and the cell is the focusable widget the ARIA grid pattern asks for. ",
+              },
+              {
+                kind: "code",
+                value: 'role="grid"',
+              },
+              {
+                kind: "text",
+                value:
+                  " and its accessible name moved onto the host, which also removes the second root the keyboard helper had to find.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-calendar-week",
+              },
+              {
+                kind: "text",
+                value: "'s ",
+              },
+              {
+                kind: "code",
+                value: "date",
+              },
+              {
+                kind: "text",
+                value: " is a plain input.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "It was a ",
+              },
+              {
+                kind: "code",
+                value: "model.required",
+              },
+              {
+                kind: "text",
+                value:
+                  " that the component never wrote to — a two-way binding promising something it does not do. Pair it with the toolbar, which does own the paging.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "The five views share one host directive for their chrome.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Labels, locale and the projected chip template were eight identical lines copied five times, and the ",
+              },
+              {
+                kind: "code",
+                value: "Intl.DateTimeFormat",
+              },
+              {
+                kind: "text",
+                value:
+                  " option bags were duplicated with small divergences — which is how the day view came to ask for ",
+              },
+              {
+                kind: "code",
+                value: "{ weekday: 'long', month: 'long' }",
+              },
+              {
+                kind: "text",
+                value:
+                  ' and print "Saturday May", a phrase in no locale. There is now one table of formats (',
+              },
+              {
+                kind: "code",
+                value: "FOLD_CALENDAR_FORMATS",
+              },
+              {
+                kind: "text",
+                value: ") and one cache keyed by locale.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Tones are written once.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The four roles were reimplemented in three places (the month's bands, the shared chip, the list's rows, which had drifted into its own copy); they are now one mixin parameterised by selector.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "RTL decorations follow the reading direction.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Continuation edges, the chevrons, the cell separators and the chip padding were physical properties, so a right-to-left calendar squared off the wrong side. All logical now.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The label token drops ",
+              },
+              {
+                kind: "code",
+                value: "dateRange",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(declared, translated by consumers, used nowhere — ",
+              },
+              {
+                kind: "code",
+                value: "Intl.formatRange",
+              },
+              {
+                kind: "text",
+                value: " already orders a span per locale) and gains ",
+              },
+              {
+                kind: "code",
+                value: "hiddenCount",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "agendaModes",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "agendaMore",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Two events sharing an ",
+              },
+              {
+                kind: "code",
+                value: "id",
+              },
+              {
+                kind: "text",
+                value: " no longer merge into one.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The layout keyed its identity map on the id alone, so a duplicate was indistinguishable from an explicit ",
+              },
+              {
+                kind: "code",
+                value: "groupId",
+              },
+              {
+                kind: "text",
+                value: ": the second event was ",
+              },
+              {
+                kind: "strong",
+                value: "never rendered",
+              },
+              {
+                kind: "text",
+                value:
+                  ", both bands showed the first one's label, a bogus group counter appeared, and the four column views threw ",
+              },
+              {
+                kind: "code",
+                value: "NG0955",
+              },
+              {
+                kind: "text",
+                value: " on their ",
+              },
+              {
+                kind: "code",
+                value: "track event.id",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Duplicates now stay separate, with a dev-mode warning naming the id.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "maxLanes",
+              },
+              {
+                kind: "text",
+                value:
+                  " is clamped in one place, and coerced from an attribute.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The invariant lived in two and only one enforced it: ",
+              },
+              {
+                kind: "code",
+                value: 'maxLanes="2"',
+              },
+              {
+                kind: "text",
+                value: " as a string built an overflow row of ",
+              },
+              {
+                kind: "code",
+                value: '"22"',
+              },
+              {
+                kind: "text",
+                value: ", a negative value made ",
+              },
+              {
+                kind: "code",
+                value: "repeat(-5, …)",
+              },
+              {
+                kind: "text",
+                value: " and the CSS parser dropped the whole ",
+              },
+              {
+                kind: "code",
+                value: "grid-template-rows",
+              },
+              {
+                kind: "text",
+                value: " rule, and ",
+              },
+              {
+                kind: "code",
+                value: "NaN",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "strong",
+                value: "disabled the lane budget entirely",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "lane >= NaN",
+              },
+              {
+                kind: "text",
+                value: " is never true) so nothing was ever counted as hidden.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A reversed range (",
+              },
+              {
+                kind: "code",
+                value: "end < start",
+              },
+              {
+                kind: "text",
+                value: ") is put back in order.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Left alone it rendered _twice, wrongly_: ",
+              },
+              {
+                kind: "code",
+                value: "grid-column: 5 / 2",
+              },
+              {
+                kind: "text",
+                value:
+                  ", which CSS Grid silently swaps, so a band covered four days that every other view — asking ",
+              },
+              {
+                kind: "code",
+                value: "start <= day && end >= day",
+              },
+              {
+                kind: "text",
+                value:
+                  " — reported as empty. Same input, two contradictory renders, no error.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "A month that is not a date yields no grid, and says so.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "foldIsCalendarDate",
+              },
+              {
+                kind: "text",
+                value: " existed, was tested, and was called by nothing: ",
+              },
+              {
+                kind: "code",
+                value: 'month="not-a-date"',
+              },
+              {
+                kind: "text",
+                value: " produced a ",
+              },
+              {
+                kind: "code",
+                value: 'role="grid"',
+              },
+              {
+                kind: "text",
+                value: " with headers and zero rows, and ",
+              },
+              {
+                kind: "code",
+                value: 'month="2026-13-45"',
+              },
+              {
+                kind: "text",
+                value:
+                  " produced a December calendar displayed with total confidence.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A collapsed group shows its most severe member.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "It kept the first event in document order and merged only the dates, so a cancelled first member greyed out a whole group containing an alert, and an open-ended member inside a closed group had its open edge dropped — a contract with no end drawn as finished. Open edges are now the OR of the members, and the representative is the most severe by tone (ties to document order), so tone, icon, label and source all come from one event that really exists.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The agenda's ",
+              },
+              {
+                kind: "code",
+                value: "limit",
+              },
+              {
+                kind: "text",
+                value: " can no longer empty the rail.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "limit: 0",
+              },
+              {
+                kind: "text",
+                value:
+                  ' printed "Nothing to handle — all up to date." directly under a badge saying otherwise, and ',
+              },
+              {
+                kind: "code",
+                value: "NaN",
+              },
+              {
+                kind: "text",
+                value: " did the same (",
+              },
+              {
+                kind: "code",
+                value: "slice(0, NaN)",
+              },
+              {
+                kind: "text",
+                value:
+                  ' returns nothing). It now clamps to at least one day and reports what it cut off, so "there is more" stops rendering as "there is nothing".',
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "Paging with the keyboard twice in a row keeps the focus.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The deferred focus target was a signal that was never reset, so repeating the _same_ transition wrote the same value, the effect did not re-run, and focus fell onto ",
+              },
+              {
+                kind: "code",
+                value: "<body>",
+              },
+              {
+                kind: "text",
+                value: ". The request is now consumed, and applied in an ",
+              },
+              {
+                kind: "code",
+                value: "afterNextRender",
+              },
+              {
+                kind: "text",
+                value: " rather than an ",
+              },
+              {
+                kind: "code",
+                value: "effect",
+              },
+              {
+                kind: "text",
+                value:
+                  " — the ordering of an effect against the DOM it wants to touch is not contracted, and has already changed between Angular versions.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The day view's ",
+              },
+              {
+                kind: "code",
+                value: "[empty]",
+              },
+              {
+                kind: "text",
+                value: " slot no longer swallows a child.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "empty",
+              },
+              {
+                kind: "text",
+                value: " is also an input on ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "fold-field",
+              },
+              {
+                kind: "text",
+                value:
+                  "; an unqualified selector captured either of them, and with no default slot the child simply vanished (rule 4.8). Tag-qualified, with a default slot behind it and a projection test.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Years below 100 no longer jump 1900 years.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "Date.UTC(99, …)",
+              },
+              {
+                kind: "text",
+                value: " means 1999, so ",
+              },
+              {
+                kind: "code",
+                value: 'foldAddDays("0099-12-31", 1)',
+              },
+              {
+                kind: "text",
+                value: " returned ",
+              },
+              {
+                kind: "code",
+                value: '"2000-01-01"',
+              },
+              {
+                kind: "text",
+                value:
+                  ". Years are also zero-padded to four digits, without which they sort before every other date.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "foldFilterBySource",
+              },
+              {
+                kind: "text",
+                value: " accepts ",
+              },
+              {
+                kind: "code",
+                value: "null",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— the initial value of the very model it exists to consume. Every caller was writing the same ternary; the gallery did too.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The band icon takes the tone's colour",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  ", and the collapsed agenda spine names the slice it will open into rather than always saying \"To handle\". The agenda's slice switch has its own accessible name instead of repeating the rail's, and its badge honours a caller's ",
+              },
+              {
+                kind: "code",
+                value: "isActionable",
+              },
+              {
+                kind: "text",
+                value: ", so it can no longer disagree with the list under it.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "The calendar is now honestly Gregorian in every locale.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Names were formatted in the locale's _own_ calendar system, so ",
+              },
+              {
+                kind: "code",
+                value: 'locale="ar-SA"',
+              },
+              {
+                kind: "text",
+                value:
+                  " printed Hijri month names over the Gregorian day numbers the grid counts, on rows that break on Gregorian months — a calendar contradicting itself. The ",
+              },
+              {
+                kind: "code",
+                value: "Intl",
+              },
+              {
+                kind: "text",
+                value: " formatters are pinned to ",
+              },
+              {
+                kind: "code",
+                value: "calendar: 'gregory'",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so a locale now localises the _language_ of the names, not the calendar behind them. A true non-Gregorian layout is a separate widget this family does not pretend to be.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "foldIsCalendarTime",
+              },
+              {
+                kind: "text",
+                value: " rejects an impossible minute field.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: '"10:75"',
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: '"23:60"',
+              },
+              {
+                kind: "text",
+                value: " are ",
+              },
+              {
+                kind: "code",
+                value: "HH:mm",
+              },
+              {
+                kind: "text",
+                value:
+                  "-shaped and under 1440 minutes, so a range check on the total waved them through; the hour and minute fields are now validated separately (",
+              },
+              {
+                kind: "code",
+                value: "00:00",
+              },
+              {
+                kind: "text",
+                value: "–",
+              },
+              {
+                kind: "code",
+                value: "23:59",
+              },
+              {
+                kind: "text",
+                value: ", plus ",
+              },
+              {
+                kind: "code",
+                value: "24:00",
+              },
+              {
+                kind: "text",
+                value: "), the same rigour the date guard applies to ",
+              },
+              {
+                kind: "code",
+                value: "2026-02-30",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.7.0",
     date: "2026-07-29",
     unreleased: false,
@@ -7916,7 +10663,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.7.0...HEAD [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.8.0...HEAD [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -7928,4 +10675,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.7.0";
+export const PUBLISHED_VERSION = "0.8.0";
