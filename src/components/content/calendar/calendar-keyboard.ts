@@ -11,6 +11,12 @@ import {
  * Where a key press moves the focused day. Split out of the component because
  * "what does ArrowDown mean on a calendar" is a pure question about dates, and
  * answering it here means it can be tested without a grid, a DOM or a TestBed.
+ *
+ * {@link foldCalendarNextFocus} is public: it is the other half of the geometry
+ * tier, and a hand-rolled date grid owes its users the same arrow keys as the
+ * built-in one. {@link foldFocusDayCell} stays internal — it reads a
+ * `data-fold-day` attribute this package writes, and exporting it would freeze
+ * that attribute into the public contract.
  */
 
 /**

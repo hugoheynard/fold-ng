@@ -752,6 +752,7 @@
 - FoldCalendarHalfDay (type)
 - FoldCalendarHeadingContext (interface)
 - FoldCalendarLabels (interface)
+- foldCalendarNextFocus (function)
 - FoldCalendarOverflowContext (interface)
 - FoldCalendarRange (interface)
 - FoldCalendarSource (interface)

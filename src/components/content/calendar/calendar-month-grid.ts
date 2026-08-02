@@ -25,6 +25,13 @@ import type {
  * Packing spans into lanes is the one genuinely algorithmic part of a calendar,
  * so it lives on its own, framework-free apart from a dev-mode warning, and is
  * tested exhaustively without rendering anything.
+ *
+ * **Public on purpose.** `fold-calendar-month` is one consumer of this, not its
+ * owner: an app that needs a month laid out but drawn its own way calls
+ * `foldBuildMonthGrid` and renders the rows itself, and gets the packing, the
+ * week-boundary clipping and the open edges for free. Pair it with
+ * `foldCalendarNextFocus` for the keyboard, and with `FoldCalendarLabels` for
+ * the strings.
  */
 
 /** How to build a month grid. */

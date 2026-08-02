@@ -139,6 +139,11 @@ export type {
   FoldCalendarDate,
   FoldWeekday,
 } from "./components/content/calendar/calendar-date";
+// The geometry tier: everything a consumer needs to lay a calendar out
+// *without* rendering it with these components. Kept public deliberately — see
+// the README's "Two tiers" note — which is why the keyboard map ships with it:
+// a hand-rolled date grid needs the same arrow keys as the built-in one.
+export { foldCalendarNextFocus } from "./components/content/calendar/calendar-keyboard";
 export { foldBuildMonthGrid } from "./components/content/calendar/calendar-month-grid";
 export type { FoldMonthGridOptions } from "./components/content/calendar/calendar-month-grid";
 export {

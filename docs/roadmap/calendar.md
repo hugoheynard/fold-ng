@@ -218,17 +218,27 @@ places, which is worse than no doc.
       `fold-calendar-week` declares `date = model.required` and **never writes to
       it** (verified: no `this.date.set`) → forcing a writable signal for
       nothing; move to `input.required`. Month and toolbar genuinely write theirs.
-- [ ] **V2/2c · Arbitrate the public surface BEFORE 0.8.0** — _a decision, not an
-      obvious fix._ The audit counts 55 exported symbols, ~14 with no consumer
-      (the pure builders `foldBuildMonthGrid`/`Week`/`Day`/`Agenda`,
-      `foldCountActionable`, `foldEventsOnDay`, `foldShiftDate`, `foldViewTitle`
-      and their satellite types) and invokes rule 2.4 (_“not exported until there
-      is a second consumer”_). **But** I exported them deliberately as the “reuse
-      my geometry without my components” escape hatch — and the SRP review argues
-      the opposite way, that `foldCalendarNextFocus` (keyboard, currently _not_
-      exported) is “the highest-value missing export”, and that `isActionable`
-      should be one too. Settle both directions in a single pass. Timing is
-      critical: after 0.8.0 every removal is `BREAKING`.
+- [x] **V2/2c · Public surface — DECIDED (2026-08-02): keep the geometry, and
+      complete it.** The audit counted ~14 exports with no consumer and invoked
+      rule 2.4; the SRP review argued the opposite way, that
+      `foldCalendarNextFocus` was "the highest-value missing export". Both were
+      right on their own axis, and the decision settles the axis rather than the
+      symbols: **fold-ng ships a calendar toolkit, not only calendar
+      components.** The pure builders stay public, `foldCalendarNextFocus` is
+      added (a hand-rolled date grid owes its users the same arrow keys), and
+      the README now presents the two tiers as a position instead of leaving
+      them as an accident of what happened to be exported.
+
+      `foldFocusDayCell` stays internal on purpose: it reads a `data-fold-day`
+          attribute this package writes, so exporting it would freeze that attribute
+          into the contract. Same for `foldClampLanes` — the builder clamps for you.
+
+          The counter-argument, recorded so it does not have to be rediscovered: in
+          0.x a removal is `BREAKING` and an addition is not, so this is the
+          expensive direction to be wrong in. It was taken with two consumers known
+          (SH3PHERD and LFC) and the precedent of `computePlacement`, which the
+          package already exports with no second consumer.
+
 - [x] **P6/3d · Move `eventCount` and `hiddenCount` onto `FoldCalendarDay`** —
       kills two findings at once. (a) _Perf_: `dayLabel()`
       (`calendar-month.component.ts:256-266`) calls `foldEventsOnDay(…).length` —
@@ -481,13 +491,13 @@ explicit choice rather than an oversight. In estimated order of value:
       "create" affordance would be guessing at all three.
 
       The second consumer settles it. In LFC the first calendar is a sales rep's
-          — appointments, plus how long a client has been between **register** and
-          **activation**. That is one open-ended band whose tone crosses a threshold
-          the app owns (warning, then alert), and it renders today with no library
-          change: `openEnd: true`, `end` clamped to the loaded window, `tone`
-          computed by the caller. Nothing about it looks like SH3PHERD's leave
-          requests, which is the point — the family should keep working for both
-          without learning about either.
+              — appointments, plus how long a client has been between **register** and
+              **activation**. That is one open-ended band whose tone crosses a threshold
+              the app owns (warning, then alert), and it renders today with no library
+              change: `openEnd: true`, `end` clamped to the loaded window, `tone`
+              computed by the caller. Nothing about it looks like SH3PHERD's leave
+              requests, which is the point — the family should keep working for both
+              without learning about either.
 
 - [ ] **“See more” popover on the `+N`** (FullCalendar `moreLinkClick: 'popover'`).
 - [ ] **`dayMaxEvents` auto-fitted to the real cell height** rather than a fixed

@@ -113,6 +113,16 @@ All notable changes to **fold-ng** are documented here. The format follows
   with `[data-fold-day-modifiers~="holiday"]` — so nobody has to write CSS
   against an internal class name. `foldCalendarEvent` is now generic too, so
   `event.data` comes back as the app's own record.
+- **`foldCalendarNextFocus` is public — the geometry tier is now complete.**
+  The pure builders (`foldBuildMonthGrid`, `foldBuildWeek`, `foldBuildDay`,
+  `foldBuildAgenda`) and the period functions (`foldShiftDate`,
+  `foldRangeForView`, `foldViewTitle`) let an app lay a calendar out and draw it
+  its own way; the arrow-key map was the one piece missing, and a hand-rolled
+  date grid owes its users the same keyboard as the built-in one. Documented as
+  a **tier** in the README rather than left as an accident of what happened to
+  be exported. `foldFocusDayCell` deliberately stays internal: it reads a
+  `data-fold-day` attribute this package writes, and exporting it would freeze
+  that attribute into the public contract.
 - **The view switch is open.** `FoldCalendarView` keeps the four built-ins as
   autocompleting literals but accepts any string, and `views` takes
   `{ value, label }` — so an app's own reading (a resource grid, a timeline) can

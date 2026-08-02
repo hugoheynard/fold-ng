@@ -349,6 +349,17 @@ the package root.
 | `FoldCalendarToolbarComponent` | `fold-calendar-toolbar` | Today / prev / next / period title / view switch. Owns no data — `date` and `view` are two-way, and the step matches the reading. `views` takes `{ value, label }` for an app's own view. |
 | `FoldCalendarSourceFilterComponent` | `fold-calendar-source-filter` | Chips switching each feed of a merged calendar on and off. Owns the **selection** only; the caller runs the pure `foldFilterBySource()`. |
 
+**Two tiers, on purpose.** The components are the first; under them, the same
+geometry is exported as pure functions — `foldBuildMonthGrid` (week rows with
+their events already packed into lanes), `foldBuildWeek` / `foldBuildDay`,
+`foldBuildAgenda`, plus `foldShiftDate` / `foldRangeForView` / `foldViewTitle`
+for paging and naming a period, and `foldCalendarNextFocus` for the arrow keys.
+Lay a calendar out without rendering it with these components, and the hard part
+— packing spans into lanes, clipping them at week boundaries, keeping an open
+edge on the side that continues — is already solved and already tested. The
+filters (`foldEventsOnDay`, `foldEventsInRange`, `foldFilterBySource`) are the
+tier every page uses whichever rendering it picks.
+
 Calendar dates are plain `YYYY-MM-DD` **strings**, never `Date` — see
 `foldToday` / `foldFromNativeDate` / `foldAddDays` and the reasoning in
 [`/calendar-dates`](https://hugoheynard.github.io/fold-ng/calendar-dates). The
