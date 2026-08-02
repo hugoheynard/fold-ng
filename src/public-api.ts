@@ -91,35 +91,35 @@ export type {
   FoldTableTone,
 } from "./components/content/data-table/data-table.types";
 
-export { FoldCalendarMonthComponent } from "./components/content/calendar/calendar-month.component";
-export { FoldCalendarWeekComponent } from "./components/content/calendar/calendar-week.component";
-export { FoldCalendarDayComponent } from "./components/content/calendar/calendar-day.component";
-export { FoldCalendarListComponent } from "./components/content/calendar/calendar-list.component";
-export { FoldCalendarTimegridComponent } from "./components/content/calendar/calendar-timegrid.component";
+export { FoldCalendarMonthComponent } from "./components/content/calendar/month/month.component";
+export { FoldCalendarWeekComponent } from "./components/content/calendar/week/week.component";
+export { FoldCalendarDayComponent } from "./components/content/calendar/day/day.component";
+export { FoldCalendarListComponent } from "./components/content/calendar/list/list.component";
+export { FoldCalendarTimegridComponent } from "./components/content/calendar/timegrid/timegrid.component";
 // Applied through `hostDirectives` by every calendar view, so ng-packagr needs
 // it on the surface. It is not meant to be used by hand — `locale` and `labels`
 // are already inputs on the views themselves.
-export { FoldCalendarChromeDirective } from "./components/content/calendar/calendar-chrome.directive";
-export { FoldCalendarEventDirective } from "./components/content/calendar/calendar-event.directive";
-export type { FoldCalendarEventContext } from "./components/content/calendar/calendar-event.directive";
+export { FoldCalendarChromeDirective } from "./components/content/calendar/core/chrome.directive";
+export { FoldCalendarEventDirective } from "./components/content/calendar/core/event.directive";
+export type { FoldCalendarEventContext } from "./components/content/calendar/core/event.directive";
 export {
   FoldCalendarDayDirective,
   FoldCalendarHeadingDirective,
   FoldCalendarOverflowDirective,
   FoldCalendarTitleDirective,
-} from "./components/content/calendar/calendar-slots.directive";
+} from "./components/content/calendar/core/slots.directive";
 export type {
   FoldCalendarDayContext,
   FoldCalendarHeadingContext,
   FoldCalendarOverflowContext,
   FoldCalendarTitleContext,
-} from "./components/content/calendar/calendar-slots.directive";
+} from "./components/content/calendar/core/slots.directive";
 export {
   provideFoldCalendarLabels,
   FOLD_CALENDAR_LABELS,
   FOLD_CALENDAR_DEFAULT_LABELS,
-} from "./components/content/calendar/calendar-labels";
-export type { FoldCalendarLabels } from "./components/content/calendar/calendar-labels";
+} from "./components/content/calendar/core/labels";
+export type { FoldCalendarLabels } from "./components/content/calendar/core/labels";
 export {
   foldAddDays,
   foldAddMonths,
@@ -138,59 +138,59 @@ export {
   foldWeekdayIndex,
   foldWeekdayOf,
   FOLD_DEFAULT_WEEKEND_DAYS,
-} from "./components/content/calendar/calendar-date";
+} from "./components/content/calendar/core/date";
 export type {
   FoldCalendarDate,
   FoldIsoDateLike,
   FoldWeekday,
-} from "./components/content/calendar/calendar-date";
+} from "./components/content/calendar/core/date";
 export {
   foldLocaleWeekInfo,
   FOLD_FALLBACK_WEEK_INFO,
-} from "./components/content/calendar/calendar-locale";
-export type { FoldWeekInfo } from "./components/content/calendar/calendar-locale";
-export { FOLD_CALENDAR_FORMATS } from "./components/content/calendar/calendar-format";
-export type { FoldCalendarFormat } from "./components/content/calendar/calendar-format";
+} from "./components/content/calendar/core/locale";
+export type { FoldWeekInfo } from "./components/content/calendar/core/locale";
+export { FOLD_CALENDAR_FORMATS } from "./components/content/calendar/core/format";
+export type { FoldCalendarFormat } from "./components/content/calendar/core/format";
 // The geometry tier: everything a consumer needs to lay a calendar out
 // *without* rendering it with these components. Kept public deliberately — see
 // the README's "Two tiers" note — which is why the keyboard map ships with it:
 // a hand-rolled date grid needs the same arrow keys as the built-in one.
-export { foldCalendarNextFocus } from "./components/content/calendar/calendar-keyboard";
-export { foldBuildMonthGrid } from "./components/content/calendar/calendar-month-grid";
-export type { FoldMonthGridOptions } from "./components/content/calendar/calendar-month-grid";
+export { foldCalendarNextFocus } from "./components/content/calendar/core/keyboard";
+export { foldBuildMonthGrid } from "./components/content/calendar/core/month-grid";
+export type { FoldMonthGridOptions } from "./components/content/calendar/core/month-grid";
 export {
   foldBuildDay,
   foldBuildWeek,
-} from "./components/content/calendar/calendar-columns";
-export type { FoldDayColumnsOptions } from "./components/content/calendar/calendar-columns";
+} from "./components/content/calendar/core/columns";
+export type { FoldDayColumnsOptions } from "./components/content/calendar/core/columns";
 export {
   foldEventsInRange,
   foldEventsOnDay,
   foldFilterBySource,
-} from "./components/content/calendar/calendar-filters";
+} from "./components/content/calendar/core/filters";
 export {
   foldBuildTimeGrid,
   foldIsTimed,
-} from "./components/content/calendar/calendar-timegrid";
+} from "./components/content/calendar/core/timegrid";
 export type {
   FoldCalendarBlock,
   FoldTimeGrid,
   FoldTimeGridColumn,
   FoldTimeGridOptions,
-} from "./components/content/calendar/calendar-timegrid";
+} from "./components/content/calendar/core/timegrid";
 export {
   foldAddMinutes,
   foldFromMinutes,
   foldIsCalendarTime,
   foldToMinutes,
   FOLD_MINUTES_PER_DAY,
-} from "./components/content/calendar/calendar-time";
-export type { FoldCalendarTime } from "./components/content/calendar/calendar-time";
-export { foldLayOutOverlaps } from "./components/content/calendar/calendar-overlap";
+} from "./components/content/calendar/core/time";
+export type { FoldCalendarTime } from "./components/content/calendar/core/time";
+export { foldLayOutOverlaps } from "./components/content/calendar/core/overlap";
 export type {
   FoldOverlapInput,
   FoldOverlapSlot,
-} from "./components/content/calendar/calendar-overlap";
+} from "./components/content/calendar/core/overlap";
 export type {
   FoldCalendarBand,
   FoldCalendarDay,
@@ -200,7 +200,7 @@ export type {
   FoldCalendarHalfDay,
   FoldCalendarTone,
   FoldCalendarWeek,
-} from "./components/content/calendar/calendar.types";
+} from "./components/content/calendar/core/types";
 export { FoldChoiceRowComponent } from "./components/content/choice-row/choice-row.component";
 export type { FoldChoiceOption } from "./components/content/choice-row/choice-row.component";
 export { FoldIconComponent } from "./components/foundations/icon/icon.component";
@@ -389,31 +389,31 @@ export type {
   FoldShadowToken,
 } from "./tokens/tokens.catalog";
 
-export { FoldCalendarToolbarComponent } from "./components/content/calendar/calendar-toolbar.component";
+export { FoldCalendarToolbarComponent } from "./components/content/calendar/toolbar/toolbar.component";
 export {
   foldRangeForView,
   foldShiftDate,
   foldViewTitle,
-} from "./components/content/calendar/calendar-navigation";
+} from "./components/content/calendar/core/navigation";
 export type {
   FoldCalendarBuiltInView,
   FoldCalendarRange,
   FoldCalendarView,
   FoldCalendarViewOption,
-} from "./components/content/calendar/calendar-navigation";
+} from "./components/content/calendar/core/navigation";
 
-export { FoldCalendarAgendaComponent } from "./components/content/calendar/calendar-agenda.component";
-export { FoldCalendarSourceFilterComponent } from "./components/content/calendar/calendar-source-filter.component";
+export { FoldCalendarAgendaComponent } from "./components/content/calendar/agenda/agenda.component";
+export { FoldCalendarSourceFilterComponent } from "./components/content/calendar/source-filter/source-filter.component";
 export {
   foldBuildAgenda,
   foldCountActionable,
   foldIsActionable,
-} from "./components/content/calendar/calendar-agenda";
+} from "./components/content/calendar/core/agenda";
 export type {
   FoldAgendaOptions,
   FoldCalendarActionable,
   FoldCalendarAgenda,
   FoldCalendarAgendaGroup,
   FoldCalendarAgendaMode,
-} from "./components/content/calendar/calendar-agenda";
-export type { FoldCalendarSource } from "./components/content/calendar/calendar.types";
+} from "./components/content/calendar/core/agenda";
+export type { FoldCalendarSource } from "./components/content/calendar/core/types";

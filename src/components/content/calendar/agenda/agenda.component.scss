@@ -1,0 +1,256 @@
+@use "../core/chip" as chip;
+
+:host {
+  display: block;
+}
+
+@include chip.calendar-chip;
+
+.foldcala {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  // Both are knobs: a rail beside a month grid wants to match its height, one
+  // in a playground or a narrow page wants to say its own. The gallery had to
+  // patch the width inline, which is how we found out.
+  width: var(--fold-calendar-agenda-width, 320px);
+  height: var(--fold-calendar-agenda-height, 100%);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
+  background: var(--fold-color-surface-card);
+  overflow: clip;
+}
+
+/* ── Collapsed spine ────────────────────────────────────────────── */
+
+.foldcala.is-collapsed {
+  width: var(--fold-calendar-agenda-spine-width, 44px);
+}
+
+.foldcala-spine {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fold-space-md);
+  padding: var(--fold-space-md) 0;
+  border: 0;
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+    color: var(--fold-color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: -2px;
+  }
+}
+
+// Upright, so the spine reads without turning the head twice.
+.foldcala-spine-label {
+  writing-mode: vertical-rl;
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.foldcala-spine-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--fold-calendar-agenda-badge-size, 20px);
+  padding: 0 var(--fold-space-xs);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-warning-surface);
+  color: var(--fold-color-warning-text);
+  font-size: var(--fold-text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+
+.foldcala-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-md);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+}
+
+.foldcala-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-sm);
+  font-weight: 700;
+}
+
+.foldcala-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--fold-calendar-agenda-badge-size, 20px);
+  padding: 0 var(--fold-space-xs);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-warning-surface);
+  color: var(--fold-color-warning-text);
+  font-size: var(--fold-text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.foldcala-head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+}
+
+.foldcala-modes {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-sunken);
+
+  button {
+    padding: 2px var(--fold-space-sm);
+    border: 0;
+    border-radius: var(--fold-radius-xs);
+    background: transparent;
+    color: var(--fold-color-text-secondary);
+    font: inherit;
+    font-size: var(--fold-text-xs);
+    font-weight: 500;
+    cursor: pointer;
+
+    &.is-on {
+      background: var(--fold-color-surface-raised);
+      color: var(--fold-color-text);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--fold-color-primary);
+      outline-offset: 1px;
+    }
+  }
+}
+
+.foldcala-collapse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fold-calendar-agenda-control-size, 26px);
+  height: var(--fold-calendar-agenda-control-size, 26px);
+  padding: 0;
+  border: 1px solid var(--fold-color-border-subtle);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-subtle);
+  color: var(--fold-color-text-secondary);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+    color: var(--fold-color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 1px;
+  }
+}
+
+/* ── Body ───────────────────────────────────────────────────────── */
+
+.foldcala-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--fold-space-sm);
+}
+
+.foldcala-group {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-sm) 0;
+
+  & + & {
+    border-top: 1px solid var(--fold-color-border-subtle);
+  }
+}
+
+.foldcala-date {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fold-space-xs);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.foldcala-daynum {
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.foldcala-dmeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.foldcala-dname {
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.foldcala-dmonth {
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-xs);
+  text-transform: uppercase;
+}
+
+.foldcala-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.foldcala-empty {
+  margin: 0;
+  padding: var(--fold-space-xl) var(--fold-space-md);
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-sm);
+  text-align: center;
+}
+
+@media (forced-colors: active) {
+  .foldcala-modes button.is-on {
+    outline: 1px solid Highlight;
+  }
+}

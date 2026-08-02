@@ -184,8 +184,7 @@ Two things worth internalising from this snippet:
 
 ## The data model
 
-One interface carries every event through every view.
-[`calendar.types.ts`]
+One interface carries every event through every view (`core/types.ts`).
 
 ```ts
 interface FoldCalendarEvent<T = unknown> {
@@ -899,7 +898,7 @@ a colour.
 
 **Proven, not asserted:** 26 Playwright e2e drive the real keyboard and pointer,
 axe-core runs over the pages, and a source-level contrast floor
-(`calendar-contrast.spec.ts`) keeps every faint string at `text-secondary`
+(`core/contrast.spec.ts`) keeps every faint string at `text-secondary`
 (≥ 4.86:1) so it cannot drift with a theme. The one open item is a human
 screen-reader pass (VoiceOver + NVDA), which no machine can stand in for.
 
@@ -957,19 +956,26 @@ _app_ owns.
 
 ## Where things live
 
+One folder per component, and a single `core/` for everything that is not a
+component — the primitives, the pure geometry, the shared directives and the
+localisation. The `calendar-` prefix is dropped: the folder already says it.
+
 ```
 src/components/content/calendar/
-├── calendar-date.ts / calendar-time.ts        the primitives
-├── calendar.types.ts                          the public data model
-├── calendar-span.ts / -row-pack.ts            group collapse + lane packing
-├── calendar-month-grid.ts / -columns.ts       month & column geometry
-├── calendar-timegrid.ts / -overlap.ts         time grid + interval colouring
-├── calendar-agenda.ts / -filters.ts / -navigation.ts   toolkit
-├── calendar-keyboard.ts / -roving-focus.ts    the ARIA grid keyboard
-├── calendar-locale.ts / -format.ts / -labels.ts   localisation
-├── calendar-chrome.directive.ts               shared locale/labels host directive
-├── calendar-slots.directive.ts / -event.directive.ts   projection points
-└── calendar-<view>.component.{ts,html,scss}   the eight components
+├── month/  week/  day/  list/                each: <name>.component.{ts,html,scss,spec.ts}
+├── timegrid/  toolbar/  agenda/  source-filter/
+└── core/                                     everything that is not a component
+    ├── date.ts / time.ts / types.ts          the primitives + data model
+    ├── span.ts / row-pack.ts                 group collapse + lane packing
+    ├── month-grid.ts / columns.ts / cell.ts  month & column geometry
+    ├── timegrid.ts / overlap.ts              time grid + interval colouring
+    ├── agenda.ts / filters.ts / navigation.ts   toolkit
+    ├── keyboard.ts / roving-focus.ts         the ARIA grid keyboard
+    ├── locale.ts / format.ts / labels.ts     localisation
+    ├── chrome.directive.ts                   shared locale/labels host directive
+    ├── slots.directive.ts / event.directive.ts   projection points
+    ├── _chip.scss / _tones.scss              shared style partials
+    └── *.spec.ts                             colocated unit tests
 ```
 
 Related: [`docs/roadmap/calendar.md`](./roadmap/calendar.md) (the hardening log)

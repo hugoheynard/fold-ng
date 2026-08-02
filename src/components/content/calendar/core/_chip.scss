@@ -1,0 +1,82 @@
+// The event chip shared by the week, day, list and agenda views — one accent
+// bar, an optional glyph, and a label over an optional subline. The month view
+// does NOT use this: its bands span columns and carry their own geometry.
+//
+// `@use`d by the sibling views so the chip cannot drift between them.
+
+@use "tones" as tones;
+
+@mixin calendar-chip {
+  .foldcal-chip {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: var(--fold-space-sm);
+    width: 100%;
+    padding: var(--fold-space-xs) var(--fold-space-sm);
+    padding-inline-start: 0;
+    border: 0;
+    border-radius: var(--fold-calendar-band-radius, var(--fold-radius-sm));
+    background: var(--fold-color-surface-raised);
+    color: var(--fold-color-text);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background-color var(--fold-motion-fast) ease;
+
+    &:hover {
+      background: var(--fold-color-surface-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--fold-color-primary);
+      outline-offset: -2px;
+    }
+  }
+
+  .foldcal-chip-bar {
+    flex: 0 0 var(--fold-calendar-bar-width, 3px);
+    align-self: stretch;
+    background: var(--fold-color-text-muted);
+  }
+
+  .foldcal-chip-icon {
+    flex: none;
+    align-self: center;
+    margin-inline-start: var(--fold-space-sm);
+    color: var(--fold-color-text-secondary);
+  }
+
+  .foldcal-chip-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .foldcal-chip-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--fold-text-sm);
+    font-weight: 500;
+  }
+
+  .foldcal-chip-sub {
+    color: var(--fold-color-text-secondary);
+    font-size: var(--fold-text-xs);
+  }
+
+  @include tones.calendar-tones(
+    ".foldcal-chip",
+    ".foldcal-chip-bar",
+    ".foldcal-chip-label"
+  );
+
+  @media (prefers-reduced-motion: reduce) {
+    .foldcal-chip {
+      transition: none;
+    }
+  }
+}

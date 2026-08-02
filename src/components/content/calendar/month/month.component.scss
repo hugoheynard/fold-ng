@@ -1,0 +1,387 @@
+// Surfaces: the grid sits on the page, day cells stay transparent so the row
+// reads as one plane, and bands are the only raised things on it.
+
+@use "../core/tones" as tones;
+
+// The host IS the grid: `role="grid"` and its accessible name live on it, so
+// there is no wrapper to carry them and no second root for the keyboard helper
+// to look for.
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+  overflow: clip;
+}
+
+/* ── Weekday header ─────────────────────────────────────────────── */
+
+// One shared track definition: the week-number column, when shown, has to line
+// the header up with every row, and a second copy would drift.
+.foldcal-weekdays,
+.foldcal-week {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+:host(.has-week-numbers) .foldcal-weekdays,
+:host(.has-week-numbers) .foldcal-week {
+  grid-template-columns:
+    var(--fold-calendar-month-week-number-width, 34px)
+    repeat(7, 1fr);
+}
+
+.foldcal-weekdays {
+  display: grid;
+  background: var(--fold-color-surface-subtle);
+  border-bottom: 1px solid var(--fold-color-border);
+}
+
+.foldcal-weekday {
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Week rows ──────────────────────────────────────────────────── */
+
+.foldcal-week {
+  display: grid;
+  flex: 1;
+  min-height: var(--fold-calendar-month-row-min-height, 112px);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.foldcal-weeknum {
+  grid-row: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--fold-space-sm);
+  border-inline-end: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-subtle);
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.foldcal-weeknum-head {
+  color: var(--fold-color-text-secondary);
+  text-align: center;
+}
+
+/* The cell spans every lane row: it is the row's background and hit area, and
+   the bands are painted over it. */
+.foldcal-day {
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--fold-calendar-month-cell-padding, var(--fold-space-sm))
+    var(--fold-calendar-month-cell-padding, var(--fold-space-sm))
+    var(--fold-space-xs);
+  border-inline-end: 1px solid var(--fold-color-border-subtle);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--fold-motion-fast) ease;
+
+  &:last-of-type {
+    border-inline-end: 0;
+  }
+
+  &:hover:not(.is-outside) {
+    background: var(--fold-color-surface-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: -2px;
+  }
+
+  &.is-weekend:not(.is-outside) {
+    background: var(--fold-color-surface-subtle);
+  }
+
+  &.is-outside {
+    background: var(--fold-color-surface-sunken);
+
+    .foldcal-daynum {
+      color: var(--fold-color-text-secondary);
+    }
+  }
+
+  // Today reads twice: a rule across the top of the cell and a filled number.
+  &.is-today {
+    background: linear-gradient(
+      180deg,
+      var(--fold-color-primary-surface) 0%,
+      transparent 64%
+    );
+    box-shadow: inset 0 2px 0 0 var(--fold-color-primary);
+  }
+
+  &.is-today .foldcal-daynum {
+    background: var(--fold-color-primary);
+    color: var(--fold-color-on-primary);
+    font-weight: 700;
+  }
+}
+
+.foldcal-daynum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--fold-calendar-month-daynum-size, 22px);
+  height: var(--fold-calendar-month-daynum-size, 22px);
+  padding: 0 var(--fold-space-xs);
+  border-radius: var(--fold-radius-sm);
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Bands ──────────────────────────────────────────────────────── */
+
+.foldcal-band {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+  margin-block: 1px;
+  margin-inline: var(--fold-calendar-band-gutter, var(--fold-space-xs));
+  padding: 0;
+  padding-inline-end: var(--fold-space-sm);
+  border: 0;
+  border-radius: var(--fold-calendar-band-radius, var(--fold-radius-sm));
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text);
+  font: inherit;
+  font-size: var(--fold-text-xs);
+  font-weight: 500;
+  line-height: var(--fold-calendar-month-lane, 22px);
+  text-align: start;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    filter var(--fold-motion-fast) ease,
+    box-shadow var(--fold-motion-fast) ease;
+
+  &:hover {
+    z-index: 2;
+    filter: brightness(1.08);
+    box-shadow: var(--fold-shadow-sm);
+  }
+
+  // A continuation has no real edge on that side: square it off, drop the
+  // accent bar, and let the chevron carry "this keeps going". Logical
+  // properties throughout, so an RTL calendar squares off the same *reading*
+  // edge rather than the same physical one.
+  &.continues-before {
+    margin-inline-start: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    padding-inline-start: var(--fold-space-xs);
+
+    .foldcal-band-bar {
+      display: none;
+    }
+
+    // Decorative: inside an aria-hidden band, and the open edge is also
+    // carried by the squared-off corner — so this one may stay faint.
+    &::before {
+      content: "\2039";
+      flex: none;
+      color: var(--fold-color-text-faded);
+    }
+  }
+
+  &.continues-after {
+    margin-inline-end: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+
+    &::after {
+      content: "\203A";
+      flex: none;
+      color: var(--fold-color-text-faded);
+    }
+  }
+
+  // A half-day edge notches the corner it starts or ends on.
+  &.half-start {
+    border-end-start-radius: var(--fold-radius-lg);
+  }
+
+  &.half-end {
+    border-start-end-radius: var(--fold-radius-lg);
+  }
+}
+
+// The chevrons point along the reading direction, so RTL swaps the glyphs.
+[dir="rtl"] .foldcal-band {
+  &.continues-before::before {
+    content: "\203A";
+  }
+
+  &.continues-after::after {
+    content: "\2039";
+  }
+}
+
+.foldcal-band-bar {
+  flex: 0 0 var(--fold-calendar-bar-width, 3px);
+  align-self: stretch;
+  background: var(--fold-color-text-muted);
+}
+
+// Inherits the band's colour, which is the tone's — pinning a colour here is
+// what made a warning band's glyph stay grey next to its amber label.
+.foldcal-band-icon {
+  flex: none;
+  margin-inline-start: 2px;
+  opacity: 0.9;
+}
+
+.foldcal-band-label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foldcal-band-count {
+  flex: none;
+  padding: 0 var(--fold-space-xs);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+@include tones.calendar-tones(
+  ".foldcal-band",
+  ".foldcal-band-bar",
+  ".foldcal-band-label",
+  $fill: true
+);
+
+/* ── Overflow chip ──────────────────────────────────────────────── */
+
+// One per crowded day, sitting in that day's own column under the last lane.
+.foldcal-overflow {
+  justify-self: start;
+  align-self: start;
+  z-index: 1;
+  margin-inline: var(--fold-calendar-band-gutter, var(--fold-space-xs));
+  padding: 0 var(--fold-space-xs);
+  border: 0;
+  border-radius: var(--fold-calendar-band-radius, var(--fold-radius-sm));
+  background: transparent;
+  color: var(--fold-color-text-secondary);
+  font: inherit;
+  font-size: var(--fold-text-xs);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fold-color-text);
+    background: var(--fold-color-surface-hover);
+  }
+}
+
+/* ── Forced colours ─────────────────────────────────────────────── */
+// High contrast strips backgrounds, so every cue riding on one is re-expressed
+// as a border or an outline the pass keeps.
+@media (forced-colors: active) {
+  .foldcal-day.is-today {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .foldcal-day:focus-visible {
+    outline-color: Highlight;
+  }
+
+  // Both of these were background-only, and "outside the month" is meaningful.
+  .foldcal-day.is-outside .foldcal-daynum {
+    opacity: 0.6;
+  }
+
+  .foldcal-day.is-weekend {
+    border-block-end: 2px solid GrayText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foldcal-day,
+  .foldcal-band {
+    transition: none;
+  }
+}
+
+/* ── Print ──────────────────────────────────────────────────────── */
+// A month calendar gets printed, and a dark theme printed as-is is unreadable:
+// browsers drop backgrounds but keep text colour, so light-on-dark becomes
+// light-on-white. System colours are the way to say "the page's own ink" —
+// they are not theme tokens and not hard-coded values, and the UA resolves
+// them against the paper.
+@media print {
+  :host {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .foldcal-weekdays,
+  .foldcal-weekday,
+  .foldcal-day,
+  .foldcal-daynum,
+  .foldcal-weeknum,
+  .foldcal-overflow {
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .foldcal-week,
+  .foldcal-day,
+  .foldcal-weeknum {
+    border-color: GrayText;
+  }
+
+  .foldcal-day.is-today {
+    background: Canvas;
+    box-shadow: inset 0 2px 0 0 CanvasText;
+  }
+
+  .foldcal-day.is-today .foldcal-daynum {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .foldcal-day.is-outside {
+    opacity: 0.55;
+  }
+
+  .foldcal-band {
+    border: 1px solid GrayText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+
+  // The tone bar is the only thing left telling two bands apart on paper, so
+  // it is the one place worth asking the printer for the ink.
+  .foldcal-band-bar {
+    print-color-adjust: exact;
+  }
+}
