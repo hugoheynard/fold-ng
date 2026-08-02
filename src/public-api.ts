@@ -125,6 +125,7 @@ export {
   foldDaysBetween,
   foldEndOfMonth,
   foldFromNativeDate,
+  foldFromTemporal,
   foldIsCalendarDate,
   foldIsoWeek,
   foldIsoWeekYear,
@@ -139,6 +140,7 @@ export {
 } from "./components/content/calendar/calendar-date";
 export type {
   FoldCalendarDate,
+  FoldIsoDateLike,
   FoldWeekday,
 } from "./components/content/calendar/calendar-date";
 export {

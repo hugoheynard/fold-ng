@@ -331,6 +331,37 @@ export function foldIsWeekend(
 }
 
 /**
+ * Anything whose `toString()` opens with an ISO date — `Temporal.PlainDate`,
+ * `PlainDateTime` and `ZonedDateTime` all do, and so does a plain string.
+ *
+ * Typed structurally on purpose: the package takes no dependency on `Temporal`
+ * and works whether or not the runtime has it.
+ */
+export interface FoldIsoDateLike {
+  toString(): string;
+}
+
+/**
+ * A `Temporal` value read as the plain date it starts with.
+ *
+ * `Temporal.PlainDate.toString()` **is** `YYYY-MM-DD` — the primitive this
+ * module chose for correctness turns out to be exactly Temporal-shaped, which
+ * no `Date`-based calendar can say. Going the other way needs no helper at all:
+ * `Temporal.PlainDate.from(foldDate)` already accepts one of ours.
+ *
+ * A `PlainDateTime` or a `ZonedDateTime` drops its time here, which is the
+ * point — this family plots whole days, and the day you mean is the one in the
+ * value's own calendar and zone, not the one UTC would have given you.
+ *
+ * Returns `""` for anything that is not an ISO date, so a bad value fails
+ * {@link foldIsCalendarDate} rather than silently rendering the wrong month.
+ */
+export function foldFromTemporal(value: FoldIsoDateLike): FoldCalendarDate {
+  const candidate = value.toString().slice(0, 10);
+  return foldIsCalendarDate(candidate) ? candidate : "";
+}
+
+/**
  * A `Date` at **UTC midnight** of `date` — the bridge to `Intl.DateTimeFormat`
  * for month and weekday names. Format it with `timeZone: "UTC"`, or the local
  * zone will shift the label back a day west of Greenwich.

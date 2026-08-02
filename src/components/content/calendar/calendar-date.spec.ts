@@ -6,6 +6,7 @@ import {
   foldDaysBetween,
   foldEndOfMonth,
   foldFromNativeDate,
+  foldFromTemporal,
   foldIsCalendarDate,
   foldIsoWeek,
   foldIsoWeekYear,
@@ -302,5 +303,40 @@ describe("foldIsoWeek", () => {
     // Sunday 2026-05-24 closes ISO week 21; Monday 2026-05-25 opens week 22.
     expect(foldIsoWeek("2026-05-24")).toBe(21);
     expect(foldIsoWeek("2026-05-25")).toBe(22);
+  });
+});
+
+describe("foldFromTemporal", () => {
+  /**
+   * Stand-ins for the three Temporal types, because the runtime may not have
+   * them yet — what is being asserted is the *contract* they all share: a
+   * `toString()` that opens with the ISO date.
+   */
+  const plainDate = { toString: (): string => "2026-05-18" };
+  const plainDateTime = { toString: (): string => "2026-05-18T14:30:00" };
+  const zoned = {
+    toString: (): string => "2026-05-18T14:30:00+02:00[Europe/Paris]",
+  };
+  const hebrew = { toString: (): string => "2026-05-18[u-ca=hebrew]" };
+
+  it("reads a PlainDate straight through — the formats are the same", () => {
+    expect(foldFromTemporal(plainDate)).toBe("2026-05-18");
+  });
+
+  it("drops the time, which is what a whole-day calendar wants", () => {
+    // And it keeps the day the *value* means: 14:30 in Paris is still the 18th,
+    // where `new Date(...)` at UTC would have been a coin toss.
+    expect(foldFromTemporal(plainDateTime)).toBe("2026-05-18");
+    expect(foldFromTemporal(zoned)).toBe("2026-05-18");
+  });
+
+  it("takes the ISO projection of a non-ISO calendar", () => {
+    expect(foldFromTemporal(hebrew)).toBe("2026-05-18");
+  });
+
+  it("returns a value its own guard rejects, rather than a wrong month", () => {
+    expect(
+      foldIsCalendarDate(foldFromTemporal({ toString: () => "nope" })),
+    ).toBe(false);
   });
 });

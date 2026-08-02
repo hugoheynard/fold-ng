@@ -113,6 +113,15 @@ All notable changes to **fold-ng** are documented here. The format follows
   with `[data-fold-day-modifiers~="holiday"]` — so nobody has to write CSS
   against an internal class name. `foldCalendarEvent` is now generic too, so
   `event.data` comes back as the app's own record.
+- **`foldFromTemporal` — the family is Temporal-native without depending on
+  it.** `Temporal.PlainDate.toString()` **is** `YYYY-MM-DD`: the primitive
+  chosen for correctness turns out to be exactly Temporal-shaped, which no
+  `Date`-based calendar can say. The bridge accepts a `PlainDate`,
+  `PlainDateTime` or `ZonedDateTime` — typed structurally, so it compiles and
+  runs on an engine that has none of them — and drops the time, which is what a
+  whole-day calendar wants **and** keeps the day the value itself means rather
+  than the one UTC would have picked. The other direction needs no helper:
+  `Temporal.PlainDate.from(foldDate)` already accepts one of ours.
 - **The week now comes from the locale, not from a guess.** `Intl.Locale`
   knows which day a locale's week opens on and which days it rests — most
   calendars stop at the month names and hard-code Monday, which is right in

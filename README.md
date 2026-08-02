@@ -367,7 +367,12 @@ tier every page uses whichever rendering it picks.
 | -------------------- | ---- | ---- | ----- | ----- | ------ |
 | ms per layout        | 0.14 | 0.41 | 0.99  | 5.0   | 22     |
 
-Calendar dates are plain `YYYY-MM-DD` **strings**, never `Date` — see
+Calendar dates are plain `YYYY-MM-DD` **strings**, never `Date`. That is also
+exactly what `Temporal.PlainDate.toString()` returns, so the family is
+**Temporal-native without depending on it**: `foldFromTemporal()` accepts a
+`PlainDate`, `PlainDateTime` or `ZonedDateTime` (structurally typed, so it
+compiles on a runtime that has none of them), and going the other way needs no
+helper — `Temporal.PlainDate.from(foldDate)` already takes one of ours. See
 `foldToday` / `foldFromNativeDate` / `foldAddDays` and the reasoning in
 [`/calendar-dates`](https://hugoheynard.github.io/fold-ng/calendar-dates). The
 family plots **whole days only** (there is no time field), on the **Gregorian**
