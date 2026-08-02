@@ -13,6 +13,15 @@ import { foldToMinutes, type FoldCalendarTime } from "./calendar-time";
  * `timeZone: 'UTC'` is not optional: a plain date is bridged to `Date` at UTC
  * midnight, so formatting it in the local zone would print the day before for
  * anyone west of Greenwich.
+ *
+ * `calendar: 'gregory'` is pinned for the same reason `timeZone` is: the grid
+ * counts days and groups months in the Gregorian calendar (that is what a
+ * `YYYY-MM-DD` string *is*), so the names beside those numbers must be Gregorian
+ * too. Left to the locale's own default, `ar-SA` would print Hijri month names
+ * over Gregorian day numbers on rows that break on Gregorian months — a
+ * calendar contradicting itself. The family is Gregorian, localised into the
+ * language of the locale, not into its calendar system; a non-Gregorian layout
+ * is a separate widget this one does not pretend to be.
  */
 export const FOLD_CALENDAR_FORMATS = {
   /** Whole date, spelled out — accessible names. */
@@ -65,6 +74,7 @@ export function foldCalendarFormatter(
   const built = new Intl.DateTimeFormat(locale, {
     ...options,
     timeZone: "UTC",
+    calendar: "gregory",
   });
   CACHE.set(cacheKey, built);
   return built;

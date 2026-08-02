@@ -28,13 +28,26 @@ export const FOLD_MINUTES_PER_DAY = 1440;
 /** `HH:mm`, structurally. Rejects `9:00`, `09:00:00`, junk suffixes. */
 const TIME_PATTERN = /^\d{2}:\d{2}$/;
 
-/** Whether `value` is a well-formed and real wall-clock time. */
+/**
+ * Whether `value` is a well-formed **and real** wall-clock time.
+ *
+ * The shape check is not enough on its own: `"10:75"` and `"23:60"` both match
+ * `HH:mm` and both sit under 1440 minutes, so a range check on the total would
+ * wave them through. The fields are validated separately — minutes `00`–`59`,
+ * hours `00`–`23`, plus the single `24:00` that means the end of the day — the
+ * same rigour {@link foldIsCalendarDate} applies to `2026-02-30`.
+ */
 export function foldIsCalendarTime(value: string): boolean {
   if (!TIME_PATTERN.test(value)) {
     return false;
   }
-  const minutes = foldToMinutes(value);
-  return minutes >= 0 && minutes <= FOLD_MINUTES_PER_DAY;
+  const hours = Number(value.slice(0, 2));
+  const minutes = Number(value.slice(3, 5));
+  if (minutes > 59 || hours > 24) {
+    return false;
+  }
+  // Hour 24 exists only as `24:00`, the exclusive end of the day.
+  return hours < 24 || minutes === 0;
 }
 
 /** Minutes since midnight — the number the grid positions on. */

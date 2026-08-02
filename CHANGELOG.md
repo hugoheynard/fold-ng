@@ -317,6 +317,18 @@ All notable changes to **fold-ng** are documented here. The format follows
   agenda's slice switch has its own accessible name instead of repeating the
   rail's, and its badge honours a caller's `isActionable`, so it can no longer
   disagree with the list under it.
+- **The calendar is now honestly Gregorian in every locale.** Names were
+  formatted in the locale's _own_ calendar system, so `locale="ar-SA"` printed
+  Hijri month names over the Gregorian day numbers the grid counts, on rows that
+  break on Gregorian months — a calendar contradicting itself. The `Intl`
+  formatters are pinned to `calendar: 'gregory'`, so a locale now localises the
+  _language_ of the names, not the calendar behind them. A true non-Gregorian
+  layout is a separate widget this family does not pretend to be.
+- **`foldIsCalendarTime` rejects an impossible minute field.** `"10:75"` and
+  `"23:60"` are `HH:mm`-shaped and under 1440 minutes, so a range check on the
+  total waved them through; the hour and minute fields are now validated
+  separately (`00:00`–`23:59`, plus `24:00`), the same rigour the date guard
+  applies to `2026-02-30`.
 
 ## [0.7.0] - 2026-07-29
 
