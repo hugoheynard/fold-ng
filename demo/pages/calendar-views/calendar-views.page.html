@@ -9,7 +9,10 @@
 
   <div class="gal-row gal-row--wide">
     <div class="gal-cell" style="flex: 1 1 100%">
-      <span class="gal-tag">toolbar + the four views, wired together</span>
+      <span class="gal-tag"
+        >the whole thing · toolbar, source chips, a view, and the agenda
+        rail</span
+      >
       <fold-card surface="sunken">
         <fold-calendar-toolbar
           [(date)]="date"
@@ -18,42 +21,70 @@
           locale="en-GB"
         />
 
-        <div style="margin-top: 16px">
-          @switch (view()) { @case ("month") {
-          <fold-calendar-month
-            [(month)]="date"
+        <div style="margin-top: 12px">
+          <fold-calendar-source-filter
+            [sources]="sources"
             [events]="events"
-            [today]="today"
+            [(active)]="activeSources"
+          />
+        </div>
+
+        <div
+          style="
+            display: flex;
+            gap: 16px;
+            align-items: stretch;
+            margin-top: 16px;
+          "
+        >
+          <div style="flex: 1 1 auto; min-width: 0">
+            @switch (view()) { @case ("month") {
+            <fold-calendar-month
+              [(month)]="date"
+              [events]="visibleEvents()"
+              [today]="today"
+              locale="en-GB"
+              (dayClick)="openDay($event)"
+              (eventClick)="lastEvent.set($event.label)"
+            />
+            } @case ("week") {
+            <fold-calendar-week
+              [(date)]="date"
+              [events]="visibleEvents()"
+              [today]="today"
+              locale="en-GB"
+              (dayClick)="openDay($event)"
+              (eventClick)="lastEvent.set($event.label)"
+            />
+            } @case ("day") {
+            <fold-calendar-day
+              [date]="date()"
+              [events]="visibleEvents()"
+              [today]="today"
+              locale="en-GB"
+              (eventClick)="lastEvent.set($event.label)"
+            />
+            } @case ("list") {
+            <fold-calendar-list
+              [events]="visibleEvents()"
+              [from]="range().from"
+              [to]="range().to"
+              locale="en-GB"
+              (eventClick)="lastEvent.set($event.label)"
+            />
+            } }
+          </div>
+
+          <fold-calendar-agenda
+            style="flex: 0 0 auto"
+            [from]="today"
+            [events]="visibleEvents()"
+            [(mode)]="agendaMode"
+            [(collapsed)]="agendaCollapsed"
             locale="en-GB"
             (dayClick)="openDay($event)"
             (eventClick)="lastEvent.set($event.label)"
           />
-          } @case ("week") {
-          <fold-calendar-week
-            [(date)]="date"
-            [events]="events"
-            [today]="today"
-            locale="en-GB"
-            (dayClick)="openDay($event)"
-            (eventClick)="lastEvent.set($event.label)"
-          />
-          } @case ("day") {
-          <fold-calendar-day
-            [date]="date()"
-            [events]="events"
-            [today]="today"
-            locale="en-GB"
-            (eventClick)="lastEvent.set($event.label)"
-          />
-          } @case ("list") {
-          <fold-calendar-list
-            [events]="events"
-            [from]="range().from"
-            [to]="range().to"
-            locale="en-GB"
-            (eventClick)="lastEvent.set($event.label)"
-          />
-          } }
         </div>
       </fold-card>
       <p class="doc-p">
@@ -61,6 +92,14 @@
         <code>{{ range().to }}</code> — the window
         <code>foldRangeForView()</code> reports, which is exactly what a page
         would hand to its data source. Last event: “{{ lastEvent() ?? "—" }}”.
+      </p>
+      <p class="doc-p">
+        The chips own the <strong>selection</strong> only; the page runs
+        <code>foldFilterBySource()</code> and every piece — grid, list and rail
+        — reads the filtered set. Switch “Leave” off and its pending request
+        leaves the agenda's <strong>To handle</strong> queue with it. That queue
+        is the <code>warning</code> and <code>alert</code> tones, the same scale
+        the chips paint with, so the rail needs no second notion of “urgent”.
       </p>
     </div>
   </div>

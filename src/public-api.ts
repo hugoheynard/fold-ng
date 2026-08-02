@@ -337,3 +337,17 @@ export type {
   FoldCalendarRange,
   FoldCalendarView,
 } from "./components/content/calendar/calendar-navigation";
+
+export { FoldCalendarAgendaComponent } from "./components/content/calendar/calendar-agenda.component";
+export { FoldCalendarSourceFilterComponent } from "./components/content/calendar/calendar-source-filter.component";
+export {
+  foldBuildAgenda,
+  foldCountActionable,
+} from "./components/content/calendar/calendar-agenda";
+export type {
+  FoldAgendaOptions,
+  FoldCalendarAgendaGroup,
+  FoldCalendarAgendaMode,
+} from "./components/content/calendar/calendar-agenda";
+export { foldFilterBySource } from "./components/content/calendar/calendar-layout";
+export type { FoldCalendarSource } from "./components/content/calendar/calendar.types";

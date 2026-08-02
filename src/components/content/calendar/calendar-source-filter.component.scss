@@ -1,0 +1,104 @@
+:host {
+  display: block;
+}
+
+.foldcalsf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-sm);
+}
+
+.foldcalsf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+  padding: var(--fold-space-xs) var(--fold-space-md);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-surface-subtle);
+  color: var(--fold-color-text-muted);
+  font: inherit;
+  font-size: var(--fold-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--fold-motion-fast, 120ms) ease,
+    color var(--fold-motion-fast, 120ms) ease,
+    border-color var(--fold-motion-fast, 120ms) ease;
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 2px;
+  }
+
+  // Switched off reads as drained, not merely darker: the dot loses its hue
+  // too, so the state survives at a glance across a row of chips.
+  &:not(.is-on) {
+    .foldcalsf-dot {
+      background: var(--fold-color-text-faded);
+    }
+
+    .foldcalsf-label {
+      text-decoration: line-through;
+      text-decoration-color: var(--fold-color-text-faded);
+    }
+  }
+
+  &.is-on {
+    background: var(--fold-color-surface-raised);
+    border-color: var(--fold-color-border);
+    color: var(--fold-color-text);
+  }
+}
+
+.foldcalsf-check {
+  flex: none;
+  color: var(--fold-color-primary-text);
+}
+
+.foldcalsf-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-text-muted);
+}
+
+.foldcalsf-chip[data-tone="success"].is-on .foldcalsf-dot {
+  background: var(--fold-color-success);
+}
+
+.foldcalsf-chip[data-tone="warning"].is-on .foldcalsf-dot {
+  background: var(--fold-color-warning);
+}
+
+.foldcalsf-chip[data-tone="alert"].is-on .foldcalsf-dot {
+  background: var(--fold-color-alert);
+}
+
+.foldcalsf-chip[data-tone="muted"].is-on .foldcalsf-dot {
+  background: var(--fold-color-text-faded);
+}
+
+.foldcalsf-count {
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+// Colour is stripped in high contrast, so the pressed state needs a shape.
+@media (forced-colors: active) {
+  .foldcalsf-chip.is-on {
+    border: 2px solid Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foldcalsf-chip {
+    transition: none;
+  }
+}

@@ -7,16 +7,20 @@ import {
 
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import {
+  FoldCalendarAgendaComponent,
   FoldCalendarDayComponent,
   FoldCalendarListComponent,
   FoldCalendarMonthComponent,
+  FoldCalendarSourceFilterComponent,
   FoldCalendarToolbarComponent,
   FoldCalendarWeekComponent,
   FoldCardComponent,
   FoldPageLayoutComponent,
+  foldFilterBySource,
   foldRangeForView,
   type FoldCalendarDate,
   type FoldCalendarEvent,
+  type FoldCalendarSource,
   type FoldCalendarView,
 } from "../../../src/public-api";
 
@@ -29,6 +33,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     start: "2026-05-18",
     end: "2026-05-18",
     label: "Festival opening",
+    sourceKey: "programme",
     subline: "19:00 · Main Stage",
     icon: "show",
   },
@@ -37,6 +42,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     start: "2026-05-19",
     end: "2026-05-23",
     label: "Léa M. — leave",
+    sourceKey: "leave",
     subline: "Pending · 5d",
     tone: "warning",
     icon: "calendar",
@@ -46,6 +52,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     start: "2026-05-20",
     end: "2026-05-20",
     label: "Contracts — signature",
+    sourceKey: "contracts",
     subline: "Due · 4 pending",
     tone: "alert",
     icon: "clock",
@@ -55,6 +62,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     start: "2026-05-20",
     end: "2026-05-21",
     label: "Stage build",
+    sourceKey: "programme",
     subline: "Crew · Main Stage",
     tone: "success",
     icon: "sliders",
@@ -64,6 +72,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     start: "2026-05-11",
     end: "2026-05-29",
     label: "Studio Lumière — residency",
+    sourceKey: "contracts",
     subline: "Engaged",
     tone: "success",
     icon: "contracts",
@@ -73,10 +82,18 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     start: "2026-05-09",
     end: "2026-05-09",
     label: "Off-season screening",
+    sourceKey: "programme",
     subline: "Cancelled",
     tone: "muted",
     icon: "show",
   },
+];
+
+/** The three feeds the demo calendar merges. */
+const SOURCES: readonly FoldCalendarSource[] = [
+  { key: "programme", label: "Programme" },
+  { key: "leave", label: "Leave", tone: "warning" },
+  { key: "contracts", label: "Contracts", tone: "success" },
 ];
 
 /** `/calendar-views` — the four views under one toolbar. */
@@ -86,6 +103,8 @@ const EVENTS: readonly FoldCalendarEvent[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     KindBadgeComponent,
+    FoldCalendarAgendaComponent,
+    FoldCalendarSourceFilterComponent,
     FoldPageLayoutComponent,
     FoldCardComponent,
     FoldCalendarToolbarComponent,
@@ -99,6 +118,18 @@ const EVENTS: readonly FoldCalendarEvent[] = [
 export default class CalendarViewsPage {
   protected readonly today = TODAY;
   protected readonly events = EVENTS;
+  protected readonly sources = SOURCES;
+
+  /* ── source filter + agenda ── */
+  protected readonly activeSources = signal<ReadonlySet<string> | null>(null);
+  protected readonly agendaMode = signal<"todo" | "all">("todo");
+  protected readonly agendaCollapsed = signal(false);
+
+  /** What survives the chips — the calendar renders this, not the raw feed. */
+  protected readonly visibleEvents = computed(() => {
+    const active = this.activeSources();
+    return active === null ? EVENTS : foldFilterBySource(EVENTS, active);
+  });
 
   /* ── the composed demo: one date, one view, four readings ── */
   protected readonly date = signal<FoldCalendarDate>(TODAY);

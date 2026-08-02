@@ -1,0 +1,20 @@
+<nav class="foldcalsf" [attr.aria-label]="l().sourceFilter">
+  @for (chip of chips(); track chip.source.key) {
+    <button
+      type="button"
+      class="foldcalsf-chip"
+      [class.is-on]="chip.shown"
+      [attr.data-tone]="chip.source.tone ?? 'neutral'"
+      [attr.aria-pressed]="chip.shown"
+      [attr.aria-label]="chipLabel(chip)"
+      (click)="toggle(chip)"
+    >
+      @if (chip.shown) {
+        <fold-icon class="foldcalsf-check" name="check" size="sm" />
+      }
+      <span class="foldcalsf-dot" aria-hidden="true"></span>
+      <span class="foldcalsf-label">{{ chip.source.label }}</span>
+      <span class="foldcalsf-count">{{ chip.count }}</span>
+    </button>
+  }
+</nav>

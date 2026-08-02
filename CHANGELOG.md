@@ -26,6 +26,28 @@ All notable changes to **fold-ng** are documented here. The format follows
   back. Project an `<ng-template foldCalendarEvent>` to replace the built-in
   chip. Generic over `T`, so an event's `data` survives the round trip to
   `eventClick` without a cast.
+- **`fold-calendar-agenda` — a rail of what is still ahead, grouped by day.**
+  The counterpart to the grids: they answer "what does this month look like",
+  it answers "what do I do next". Its `todo` slice keeps only the events asking
+  for attention — the `warning` and `alert` tones, the **same scale the chips
+  paint with**, so the rail needs no second notion of urgency — and carries the
+  count as a badge. An event already running is filed under the boundary rather
+  than its real start, so a three-week absence that began last week sits at the
+  top of what's next instead of in a past day the rail never shows. Days inside
+  the next week are named relatively ("Today", "Tomorrow", then the weekday),
+  which reads faster than a date at that distance. `mode` and `collapsed` are
+  two-way `model`s — persist the collapse if you want it to stick; the package
+  stores nothing. Pure `foldBuildAgenda` / `foldCountActionable` behind it.
+- **`fold-calendar-source-filter` — chips that switch each feed of a merged
+  calendar on and off.** A calendar usually merges several feeds (a programme,
+  staff leave, contracts); an event names its own with `sourceKey`, a
+  `FoldCalendarSource` declares the label and dot, and the chips count what each
+  contributes. They own the **selection only** — the caller runs the pure
+  `foldFilterBySource()` over its own events, so the chips never learn how
+  anything is fetched. An event with no `sourceKey` belongs to no feed and no
+  chip can hide it. Each chip is a real toggle (`aria-pressed` in both states)
+  whose accessible name says which feed and whether it is showing, because the
+  tick and the dot are colour and colour cannot be the only carrier.
 - **`fold-calendar-toolbar` — the chrome that makes the views one calendar.**
   Jump to today, page back and forward, the period's name, and the view switch.
   It owns no data: both pieces of state are two-way `model`s, so a page binds

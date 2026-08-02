@@ -1,0 +1,128 @@
+@if (collapsed()) {
+  <aside class="foldcala is-collapsed" [attr.aria-label]="l().agenda">
+    <button
+      type="button"
+      class="foldcala-spine"
+      [attr.aria-expanded]="false"
+      [attr.aria-label]="l().expand"
+      (click)="toggleCollapsed()"
+    >
+      <fold-icon name="inbox" size="sm" />
+      @if (todoCount() > 0) {
+        <span class="foldcala-spine-count">{{ todoCount() }}</span>
+      }
+      <span class="foldcala-spine-label">{{ l().agendaTodo }}</span>
+    </button>
+  </aside>
+} @else {
+  <aside class="foldcala" [attr.aria-label]="l().agenda">
+    <header class="foldcala-head">
+      <span class="foldcala-title">
+        {{ title() }}
+        @if (todoCount() > 0) {
+          <span class="foldcala-count">{{ todoCount() }}</span>
+        }
+      </span>
+
+      <span class="foldcala-head-right">
+        <span
+          class="foldcala-modes"
+          role="group"
+          [attr.aria-label]="l().agenda"
+        >
+          <button
+            type="button"
+            [class.is-on]="mode() === 'todo'"
+            [attr.aria-pressed]="mode() === 'todo'"
+            (click)="toggleMode('todo')"
+          >
+            {{ l().agendaTodo }}
+          </button>
+          <button
+            type="button"
+            [class.is-on]="mode() === 'all'"
+            [attr.aria-pressed]="mode() === 'all'"
+            (click)="toggleMode('all')"
+          >
+            {{ l().agendaUpcoming }}
+          </button>
+        </span>
+        <button
+          type="button"
+          class="foldcala-collapse"
+          [attr.aria-expanded]="true"
+          [attr.aria-label]="l().collapse"
+          (click)="toggleCollapsed()"
+        >
+          <fold-icon name="chevron-right" size="sm" />
+        </button>
+      </span>
+    </header>
+
+    <div class="foldcala-body">
+      @if (groups().length === 0) {
+        <p class="foldcala-empty">{{ emptyMessage() }}</p>
+      } @else {
+        @for (group of groups(); track group.date) {
+          <section class="foldcala-group">
+            <button
+              type="button"
+              class="foldcala-date"
+              (click)="dayClick.emit(group.date)"
+            >
+              <span class="foldcala-daynum">{{ dayNumber(group) }}</span>
+              <span class="foldcala-dmeta">
+                <span class="foldcala-dname">{{ relativeName(group) }}</span>
+                @if (monthName(group)) {
+                  <span class="foldcala-dmonth">{{ monthName(group) }}</span>
+                }
+              </span>
+            </button>
+
+            <ul class="foldcala-list">
+              @for (event of group.events; track event.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="foldcal-chip"
+                    [attr.data-tone]="event.tone ?? 'neutral'"
+                    (click)="eventClick.emit(event)"
+                  >
+                    @if (eventContent(); as projected) {
+                      <ng-container
+                        [ngTemplateOutlet]="projected"
+                        [ngTemplateOutletContext]="{
+                          $implicit: event,
+                          band: null,
+                        }"
+                      />
+                    } @else {
+                      <span class="foldcal-chip-bar"></span>
+                      @if (event.icon; as icon) {
+                        <fold-icon
+                          class="foldcal-chip-icon"
+                          [name]="icon"
+                          size="sm"
+                        />
+                      }
+                      <span class="foldcal-chip-body">
+                        <span class="foldcal-chip-label">{{
+                          event.label
+                        }}</span>
+                        @if (event.subline) {
+                          <span class="foldcal-chip-sub">{{
+                            event.subline
+                          }}</span>
+                        }
+                      </span>
+                    }
+                  </button>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      }
+    </div>
+  </aside>
+}

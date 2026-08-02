@@ -60,8 +60,25 @@ export interface FoldCalendarEvent<T = unknown> {
   readonly openStart?: boolean;
   /** As {@link openStart}, for an end with no known bound (an open contract). */
   readonly openEnd?: boolean;
+  /**
+   * Which feed this came from — the key a {@link FoldCalendarSource} declares.
+   * A calendar usually merges several (a programme, staff leave, contracts),
+   * and this is what lets one be counted and switched off without the calendar
+   * knowing what any of them mean.
+   */
+  readonly sourceKey?: string;
   /** The app's own record, handed back untouched on every output. */
   readonly data?: T;
+}
+
+/** One feed of events, as the source filter lists it. */
+export interface FoldCalendarSource {
+  /** Matches {@link FoldCalendarEvent.sourceKey}. */
+  readonly key: string;
+  /** Shown on the chip. */
+  readonly label: string;
+  /** Dot colour — the tone the feed reads as. @default 'neutral' */
+  readonly tone?: FoldCalendarTone;
 }
 
 /**

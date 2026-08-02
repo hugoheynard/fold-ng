@@ -86,6 +86,17 @@
 - tooltip: InputSignal<string | undefined>
 - type: InputSignal<"button" | "submit">
 
+### FoldCalendarAgendaComponent
+- collapsed: ModelSignal<boolean>
+- dayClick: OutputEmitterRef<string>
+- eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- from: InputSignal<string> — required
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- limit: InputSignal<number>
+- locale: InputSignal<string | undefined>
+- mode: ModelSignal<FoldCalendarAgendaMode>
+
 ### FoldCalendarDayComponent
 - date: InputSignal<string> — required
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
@@ -117,6 +128,12 @@
 - overflowClick: OutputEmitterRef<string>
 - today: InputSignal<string | undefined>
 - weekStartsOn: InputSignal<FoldWeekday>
+
+### FoldCalendarSourceFilterComponent
+- active: ModelSignal<ReadonlySet<string> | null>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- sources: InputSignal<readonly FoldCalendarSource[]>
 
 ### FoldCalendarToolbarComponent
 - date: ModelSignal<string> — required
@@ -689,6 +706,7 @@
 - FOLD_TOAST_CONFIG (value)
 - foldAddDays (function)
 - foldAddMonths (function)
+- FoldAgendaOptions (interface)
 - FoldAutoPaletteName (type)
 - FoldAvatarListItem (interface)
 - FoldAvatarRing (type)
@@ -697,6 +715,7 @@
 - FoldBadgeVariant (type)
 - FoldBlurToken (type)
 - foldBlurVar (function)
+- foldBuildAgenda (function)
 - foldBuildDay (function)
 - foldBuildMonthGrid (function)
 - foldBuildWeek (function)
@@ -708,6 +727,8 @@
 - FoldButtonIntent (type)
 - FoldButtonShape (type)
 - FoldButtonSize (type)
+- FoldCalendarAgendaGroup (interface)
+- FoldCalendarAgendaMode (type)
 - FoldCalendarBand (interface)
 - FoldCalendarDate (type)
 - FoldCalendarDay (interface)
@@ -716,6 +737,7 @@
 - FoldCalendarHalfDay (type)
 - FoldCalendarLabels (interface)
 - FoldCalendarRange (interface)
+- FoldCalendarSource (interface)
 - FoldCalendarTone (type)
 - FoldCalendarView (type)
 - FoldCalendarWeek (interface)
@@ -728,6 +750,7 @@
 - foldColorProperty (function)
 - foldColorVar (function)
 - FoldComponentPanelDescriptor (interface)
+- foldCountActionable (function)
 - FoldDataTableLabels (interface)
 - FoldDayColumnsOptions (interface)
 - foldDaysBetween (function)
@@ -735,6 +758,7 @@
 - foldEndOfMonth (function)
 - foldEventsInRange (function)
 - foldEventsOnDay (function)
+- foldFilterBySource (function)
 - foldHashSeed (function)
 - FoldIconName (type)
 - FoldIconSet (type)

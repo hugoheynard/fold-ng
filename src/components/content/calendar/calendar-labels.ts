@@ -39,6 +39,24 @@ export interface FoldCalendarLabels {
   readonly viewWeek: string;
   readonly viewDay: string;
   readonly viewList: string;
+  /** Accessible name of the agenda rail. */
+  readonly agenda: string;
+  /** The agenda's two slices, in its own switch. */
+  readonly agendaTodo: string;
+  readonly agendaUpcoming: string;
+  /** Shown when the agenda's current slice is clear. */
+  readonly agendaEmptyTodo: string;
+  readonly agendaEmptyUpcoming: string;
+  /** Relative day names the agenda prefers over a date. */
+  readonly relativeToday: string;
+  readonly relativeTomorrow: string;
+  /** Accessible names of the rail's collapse control, in each state. */
+  readonly collapse: string;
+  readonly expand: string;
+  /** Accessible name of the source filter. */
+  readonly sourceFilter: string;
+  /** Reading of a source's state, e.g. `("Absences", true) => "Absences, shown"`. */
+  readonly sourceState: (label: string, shown: boolean) => string;
 }
 
 /** The English defaults — the base every override merges onto. */
@@ -58,6 +76,17 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   viewWeek: "Week",
   viewDay: "Day",
   viewList: "List",
+  agenda: "Agenda",
+  agendaTodo: "To handle",
+  agendaUpcoming: "Upcoming",
+  agendaEmptyTodo: "Nothing to handle — all up to date.",
+  agendaEmptyUpcoming: "Nothing coming up.",
+  relativeToday: "Today",
+  relativeTomorrow: "Tomorrow",
+  collapse: "Collapse",
+  expand: "Expand",
+  sourceFilter: "Filter by source",
+  sourceState: (label, shown) => `${label}, ${shown ? "shown" : "hidden"}`,
 };
 
 /** App-wide calendar labels; defaults to English. */

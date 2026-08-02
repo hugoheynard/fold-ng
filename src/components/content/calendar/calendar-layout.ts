@@ -344,6 +344,22 @@ export function foldEventsOnDay<T>(
   return events.filter((event) => event.start <= date && event.end >= date);
 }
 
+/**
+ * Events from the feeds in `active`, in the caller's order — the other half of
+ * the source filter, which owns only the selection.
+ *
+ * An event with no `sourceKey` belongs to no feed, so no chip can hide it and
+ * it always passes.
+ */
+export function foldFilterBySource<T>(
+  events: readonly FoldCalendarEvent<T>[],
+  active: ReadonlySet<string>,
+): readonly FoldCalendarEvent<T>[] {
+  return events.filter(
+    (event) => event.sourceKey === undefined || active.has(event.sourceKey),
+  );
+}
+
 /** Events overlapping `[from, to]` at all, in the caller's order. */
 export function foldEventsInRange<T>(
   events: readonly FoldCalendarEvent<T>[],
