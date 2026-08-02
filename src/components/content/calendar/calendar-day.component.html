@@ -7,12 +7,17 @@
       [attr.aria-current]="isToday() ? 'date' : null"
       >{{ dayOfMonth() }}</span
     >
+    <span class="foldcald-month">{{ monthName() }}</span>
   </header>
 
   @if (dayEvents().length === 0) {
     <div class="foldcald-empty">
-      <p>{{ l().emptyDay }}</p>
-      <ng-content select="[empty]" />
+      <p>{{ chrome.l().emptyDay }}</p>
+      <!--
+        Tag-qualified (rule 4.8): `empty` is also an input on fold-field and
+        fold-data-table, and a bare [empty] selector would swallow either whole.
+      -->
+      <ng-content select="button[empty], a[empty], div[empty]" />
     </div>
   } @else {
     <ul class="foldcald-list">
@@ -24,7 +29,7 @@
             [attr.data-tone]="event.tone ?? 'neutral'"
             (click)="eventClick.emit(event)"
           >
-            @if (eventContent(); as projected) {
+            @if (chrome.eventContent(); as projected) {
               <ng-container
                 [ngTemplateOutlet]="projected"
                 [ngTemplateOutletContext]="{ $implicit: event, band: null }"
@@ -46,4 +51,8 @@
       }
     </ul>
   }
+
+  <!-- Default slot: anything the qualified selector above did not claim still
+       lands somewhere visible instead of disappearing. -->
+  <ng-content />
 </section>

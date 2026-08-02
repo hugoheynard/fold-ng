@@ -2,6 +2,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
 
+import { FoldCalendarEventDirective } from "./calendar-event.directive";
 import { FoldCalendarListComponent } from "./calendar-list.component";
 import type { FoldCalendarEvent } from "./calendar.types";
 
@@ -118,5 +119,38 @@ describe("FoldCalendarListComponent", () => {
     expect(row?.getAttribute("data-tone")).toBe("alert");
     row?.click();
     expect(host.clicked()?.id).toBe("e1");
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [FoldCalendarListComponent, FoldCalendarEventDirective],
+  template: `
+    <fold-calendar-list [events]="events">
+      <ng-template foldCalendarEvent let-event>
+        <span class="custom-row">only:{{ event.label }}</span>
+      </ng-template>
+    </fold-calendar-list>
+  `,
+})
+class ProjectedListHostComponent {
+  readonly events: readonly FoldCalendarEvent[] = [
+    { id: "e1", start: "2026-05-20", end: "2026-05-22", label: "Kickoff" },
+  ];
+}
+
+describe("FoldCalendarListComponent — projection contract", () => {
+  it("hands the whole row to the template, as every other view does", () => {
+    // The bar and the date used to render *outside* the @if, so the same
+    // template produced a different structure here than in the month view —
+    // and landed a one-element template in a four-column grid.
+    const fixture = TestBed.createComponent(ProjectedListHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(el.querySelector(".custom-row")?.textContent).toBe("only:Kickoff");
+    expect(el.querySelector(".foldcall-bar")).toBeNull();
+    expect(el.querySelector(".foldcall-when")).toBeNull();
+    expect(el.querySelector(".foldcall-row.is-custom")).not.toBeNull();
   });
 });

@@ -34,7 +34,7 @@
 
 .foldcald-daynum {
   color: var(--fold-color-text);
-  font-size: var(--fold-calendar-day-number, 32px);
+  font-size: var(--fold-calendar-day-number-size, 32px);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -42,6 +42,12 @@
   &.is-today {
     color: var(--fold-color-primary-text);
   }
+}
+
+.foldcald-month {
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-lg);
+  font-weight: 600;
 }
 
 .foldcald-list {
@@ -72,5 +78,19 @@
     margin: 0;
     color: var(--fold-color-text-secondary);
     font-size: var(--fold-text-sm);
+  }
+}
+
+/* ── Forced colours ─────────────────────────────────────────────── */
+// "Today" was colour-only here, which high contrast flattens away; the
+// aria-current carries it for AT, this carries it for everyone else.
+@media (forced-colors: active) {
+  .foldcald-daynum.is-today {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .foldcald-head {
+    border-block-end-color: CanvasText;
   }
 }

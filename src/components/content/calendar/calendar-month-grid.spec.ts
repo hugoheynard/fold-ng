@@ -1,13 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import {
-  foldBuildMonthGrid,
-  foldEventsInRange,
-  foldEventsOnDay,
-} from "./calendar-layout";
+import { foldBuildMonthGrid } from "./calendar-month-grid";
 import type { FoldCalendarEvent } from "./calendar.types";
 
-/** May 2026 starts on a Friday and ends on a Sunday — a 6-row natural grid. */
+/**
+ * May 2026 starts on a Friday and ends on a Sunday — five rows Monday-anchored.
+ * August 2026 is the natural six-row month, and February 2026 is the one whose
+ * row count changes with the anchor; both are exercised below.
+ */
 const MAY = "2026-05-18";
 
 function event(
@@ -69,15 +69,38 @@ describe("foldBuildMonthGrid — grid shape", () => {
     ).toBe(false);
   });
 
-  it("derives the closing weekend from the anchor", () => {
+  it("shades Sat+Sun whatever the anchor is", () => {
     const monday = foldBuildMonthGrid([], { month: MAY });
-    const weekEnds = at(monday, 0)
-      .days.filter((day) => day.isWeekEnd)
-      .map((day) => day.date);
-    expect(weekEnds).toEqual(["2026-05-02", "2026-05-03"]); // Sat + Sun
+    expect(
+      at(monday, 0)
+        .days.filter((day) => day.isWeekend)
+        .map((day) => day.date),
+    ).toEqual(["2026-05-02", "2026-05-03"]); // Sat + Sun
 
+    // The anchor moves the columns; it does not move the weekend. Deriving one
+    // from the other used to shade Fri+Sat here and call Sunday a working day.
     const sunday = foldBuildMonthGrid([], { month: MAY, weekStartsOn: "sun" });
     expect(at(at(sunday, 0).days, 0).date).toBe("2026-04-26");
+    // Row 1 runs Sun 3 → Sat 9, so the shaded pair sits at both *ends* of the
+    // row — which is exactly what "the last two columns" could never express.
+    expect(
+      at(sunday, 1)
+        .days.filter((day) => day.isWeekend)
+        .map((day) => day.date),
+    ).toEqual(["2026-05-03", "2026-05-09"]);
+  });
+
+  it("takes the weekend as data, for the locales that rest on Fri+Sat", () => {
+    const weeks = foldBuildMonthGrid([], {
+      month: MAY,
+      weekStartsOn: "sat",
+      weekendDays: ["fri", "sat"],
+    });
+    expect(
+      at(weeks, 1)
+        .days.filter((day) => day.isWeekend)
+        .map((day) => day.date),
+    ).toEqual(["2026-05-02", "2026-05-08"]);
   });
 
   it("pads to six rows only when asked", () => {
@@ -91,6 +114,36 @@ describe("foldBuildMonthGrid — grid shape", () => {
     });
     expect(fixed).toHaveLength(6);
     expect(at(fixed, 0).start).toBe(at(natural, 0).start);
+  });
+
+  it("emits six rows for a month that naturally needs them", () => {
+    // August 2026 opens on a Saturday and closes on a Monday: six rows without
+    // any padding, the case `fixedWeeks` exists for and the one never covered.
+    const weeks = foldBuildMonthGrid([], { month: "2026-08-10" });
+    expect(weeks).toHaveLength(6);
+    expect(at(weeks, 0).start).toBe("2026-07-27");
+    expect(at(weeks, 5).days.at(-1)?.date).toBe("2026-09-06");
+    expect(
+      foldBuildMonthGrid([], { month: "2026-08-10", fixedWeeks: true }),
+    ).toHaveLength(6);
+  });
+
+  it("lets the anchor change how many rows a month needs", () => {
+    // February 2026 runs Sun 1 → Sat 28: four rows Sunday-anchored, five
+    // Monday-anchored, because the 1st falls into the previous Monday week.
+    expect(foldBuildMonthGrid([], { month: "2026-02-10" })).toHaveLength(5);
+    expect(
+      foldBuildMonthGrid([], { month: "2026-02-10", weekStartsOn: "sun" }),
+    ).toHaveLength(4);
+  });
+
+  it("returns no rows at all for a month that is not a date", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    expect(foldBuildMonthGrid([], { month: "not-a-date" })).toEqual([]);
+    expect(foldBuildMonthGrid([], { month: "2026-13-45" })).toEqual([]);
+    expect(foldBuildMonthGrid([], { month: "2026-0" })).toEqual([]);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 });
 
@@ -271,7 +324,23 @@ describe("foldBuildMonthGrid — lane packing", () => {
       weeks.filter((candidate) => candidate.hiddenCount > 0),
       0,
     );
-    expect([...week.hiddenByDay]).toEqual([2, 2, 2, 2, 2, 0, 0]);
+    expect(week.days.map((day) => day.hiddenCount)).toEqual([
+      2, 2, 2, 2, 2, 0, 0,
+    ]);
+  });
+
+  it("charges every row a span crosses, not only the first", () => {
+    // Four three-week spans, three lanes: the fourth is lost on all 21 days,
+    // across three separate week rows.
+    const overlapping = Array.from({ length: 4 }, (_unused, index) =>
+      event(`e${index}`, "2026-05-11", "2026-05-31"),
+    );
+    const weeks = foldBuildMonthGrid(overlapping, { month: MAY, maxLanes: 3 });
+    const charged = weeks
+      .flatMap((week) => week.days)
+      .filter((day) => day.hiddenCount > 0);
+    expect(charged).toHaveLength(21);
+    expect(charged.every((day) => day.hiddenCount === 1)).toBe(true);
   });
 
   it("leaves every day at zero when nothing overflows", () => {
@@ -279,8 +348,23 @@ describe("foldBuildMonthGrid — lane packing", () => {
       month: MAY,
     });
     for (const week of weeks) {
-      expect([...week.hiddenByDay]).toEqual([0, 0, 0, 0, 0, 0, 0]);
+      expect(week.days.every((day) => day.hiddenCount === 0)).toBe(true);
     }
+  });
+
+  it("counts the events covering each day, without the caller refiltering", () => {
+    const weeks = foldBuildMonthGrid(
+      [
+        event("a", "2026-05-18", "2026-05-20"),
+        event("b", "2026-05-20", "2026-05-20"),
+      ],
+      { month: MAY },
+    );
+    const days = weeks.flatMap((week) => week.days);
+    const counts = new Map(days.map((day) => [day.date, day.eventCount]));
+    expect(counts.get("2026-05-18")).toBe(1);
+    expect(counts.get("2026-05-20")).toBe(2);
+    expect(counts.get("2026-05-21")).toBe(0);
   });
 
   it("charges only the days a clipped span reaches", () => {
@@ -300,7 +384,9 @@ describe("foldBuildMonthGrid — lane packing", () => {
       0,
     );
     expect(week.hiddenCount).toBe(1);
-    expect([...week.hiddenByDay]).toEqual([0, 0, 1, 0, 0, 0, 0]);
+    expect(week.days.map((day) => day.hiddenCount)).toEqual([
+      0, 0, 1, 0, 0, 0, 0,
+    ]);
   });
 
   it("honours a raised lane budget", () => {
@@ -432,50 +518,152 @@ describe("foldBuildMonthGrid — half days", () => {
   });
 });
 
-describe("foldEventsOnDay", () => {
-  const events = [
-    event("single", "2026-05-20", "2026-05-20"),
-    event("span", "2026-05-18", "2026-05-22"),
-    event("other", "2026-06-01", "2026-06-02"),
-  ];
+describe("foldBuildMonthGrid — lane budget", () => {
+  const overlapping = Array.from({ length: 4 }, (_unused, index) =>
+    event(`e${index}`, "2026-05-18", "2026-05-22"),
+  );
 
-  it("returns events covering the day, edges included", () => {
-    expect(foldEventsOnDay(events, "2026-05-20").map((e) => e.id)).toEqual([
-      "single",
-      "span",
-    ]);
-    expect(foldEventsOnDay(events, "2026-05-18").map((e) => e.id)).toEqual([
-      "span",
-    ]);
-    expect(foldEventsOnDay(events, "2026-05-22").map((e) => e.id)).toEqual([
-      "span",
-    ]);
+  it("falls back to the default when the budget is not a number", () => {
+    // `lane >= NaN` is never true, so an unclamped NaN disables the budget
+    // entirely and every span is placed.
+    const weeks = foldBuildMonthGrid(overlapping, {
+      month: MAY,
+      maxLanes: Number.NaN,
+    });
+    const week = at(
+      weeks.filter((candidate) => candidate.bands.length > 0),
+      0,
+    );
+    expect(week.bands).toHaveLength(3);
+    expect(week.hiddenCount).toBe(1);
   });
 
-  it("returns nothing outside every range", () => {
-    expect(foldEventsOnDay(events, "2026-05-23")).toHaveLength(0);
+  it("treats a negative budget as none", () => {
+    const weeks = foldBuildMonthGrid(overlapping, { month: MAY, maxLanes: -5 });
+    const week = at(
+      weeks.filter((candidate) => candidate.hiddenCount > 0),
+      0,
+    );
+    expect(week.bands).toHaveLength(0);
+    expect(week.hiddenCount).toBe(4);
+  });
+
+  it("truncates a fractional budget rather than half-placing a lane", () => {
+    const weeks = foldBuildMonthGrid(overlapping, {
+      month: MAY,
+      maxLanes: 2.7,
+    });
+    const week = at(
+      weeks.filter((candidate) => candidate.bands.length > 0),
+      0,
+    );
+    expect(week.bands).toHaveLength(2);
   });
 });
 
-describe("foldEventsInRange", () => {
-  const events = [
-    event("before", "2026-05-01", "2026-05-05"),
-    event("overlapping", "2026-05-05", "2026-05-12"),
-    event("after", "2026-05-20", "2026-05-25"),
-  ];
-
-  it("keeps anything touching the window", () => {
-    expect(
-      foldEventsInRange(events, "2026-05-06", "2026-05-19").map((e) => e.id),
-    ).toEqual(["overlapping"]);
-    expect(
-      foldEventsInRange(events, "2026-05-05", "2026-05-05").map((e) => e.id),
-    ).toEqual(["before", "overlapping"]);
+describe("foldBuildMonthGrid — malformed input", () => {
+  it("keeps two events with the same id apart instead of merging them", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const weeks = foldBuildMonthGrid(
+      [
+        event("dup", "2026-05-18", "2026-05-18", { label: "A" }),
+        event("dup", "2026-05-20", "2026-05-20", { label: "B" }),
+      ],
+      { month: MAY },
+    );
+    const bands = weeks.flatMap((week) => week.bands);
+    expect(bands.map((band) => band.event.label)).toEqual(["A", "B"]);
+    expect(bands.map((band) => band.groupSize)).toEqual([1, 1]);
+    expect(bands.map((band) => band.key)).toHaveLength(
+      new Set(bands.map((band) => band.key)).size,
+    );
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 
-  it("drops anything strictly outside", () => {
-    expect(foldEventsInRange(events, "2026-05-13", "2026-05-19")).toHaveLength(
+  it("puts a reversed range back in order rather than rendering it twice", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const weeks = foldBuildMonthGrid(
+      [event("back", "2026-05-22", "2026-05-18")],
+      { month: MAY },
+    );
+    const band = at(
+      weeks.flatMap((week) => week.bands),
       0,
     );
+    // Left alone, this is `grid-column: 5 / 2` — which CSS silently swaps, so
+    // the band covers four days that every other view reports as empty.
+    expect(band.startColumn).toBe(0);
+    expect(band.endColumn).toBe(4);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+});
+
+describe("foldBuildMonthGrid — group representative", () => {
+  it("shows the most severe member, not the first one", () => {
+    const weeks = foldBuildMonthGrid(
+      [
+        event("cancelled", "2026-05-18", "2026-05-19", {
+          groupId: "team",
+          tone: "muted",
+          icon: "users",
+        }),
+        event("due", "2026-05-18", "2026-05-19", {
+          groupId: "team",
+          tone: "alert",
+          icon: "clock",
+        }),
+      ],
+      { month: MAY },
+    );
+    const band = at(
+      weeks.flatMap((week) => week.bands),
+      0,
+    );
+    expect(band.event.tone).toBe("alert");
+    expect(band.event.icon).toBe("clock");
+    expect(band.groupSize).toBe(2);
+  });
+
+  it("keeps document order between members of equal severity", () => {
+    const weeks = foldBuildMonthGrid(
+      [
+        event("first", "2026-05-18", "2026-05-19", {
+          groupId: "team",
+          tone: "warning",
+        }),
+        event("second", "2026-05-18", "2026-05-19", {
+          groupId: "team",
+          tone: "warning",
+        }),
+      ],
+      { month: MAY },
+    );
+    expect(
+      at(
+        weeks.flatMap((week) => week.bands),
+        0,
+      ).event.id,
+    ).toBe("first");
+  });
+
+  it("stays open-ended when any member is", () => {
+    const weeks = foldBuildMonthGrid(
+      [
+        event("closed", "2026-05-18", "2026-05-20", { groupId: "team" }),
+        event("running", "2026-05-18", "2026-05-20", {
+          groupId: "team",
+          openEnd: true,
+        }),
+      ],
+      { month: MAY },
+    );
+    expect(
+      at(
+        weeks.flatMap((week) => week.bands),
+        0,
+      ).continuesAfter,
+    ).toBe(true);
   });
 });

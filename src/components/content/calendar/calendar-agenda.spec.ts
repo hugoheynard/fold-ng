@@ -26,7 +26,7 @@ function at<T>(list: readonly T[], index: number): T {
 
 describe("foldBuildAgenda", () => {
   it("drops what has already finished", () => {
-    const groups = foldBuildAgenda(
+    const { groups } = foldBuildAgenda(
       [
         event("past", "2026-05-10", "2026-05-12"),
         event("ahead", "2026-05-20", "2026-05-20"),
@@ -37,7 +37,7 @@ describe("foldBuildAgenda", () => {
   });
 
   it("keeps an event ending exactly on the boundary", () => {
-    const groups = foldBuildAgenda([event("edge", "2026-05-10", FROM)], {
+    const { groups } = foldBuildAgenda([event("edge", "2026-05-10", FROM)], {
       from: FROM,
     });
     expect(groups).toHaveLength(1);
@@ -46,7 +46,7 @@ describe("foldBuildAgenda", () => {
   it("files a running event under the boundary, not its real start", () => {
     // A three-week absence that began last week belongs at the top of what's
     // next, not in a past day the rail never shows.
-    const groups = foldBuildAgenda(
+    const { groups } = foldBuildAgenda(
       [event("running", "2026-05-04", "2026-05-25")],
       {
         from: FROM,
@@ -56,7 +56,7 @@ describe("foldBuildAgenda", () => {
   });
 
   it("groups by day, in date order", () => {
-    const groups = foldBuildAgenda(
+    const { groups } = foldBuildAgenda(
       [
         event("c", "2026-05-22", "2026-05-22"),
         event("a", "2026-05-19", "2026-05-19"),
@@ -76,13 +76,13 @@ describe("foldBuildAgenda", () => {
       event("done", "2026-05-22", "2026-05-22", "success"),
       event("dropped", "2026-05-23", "2026-05-23", "muted"),
     ];
-    const todo = foldBuildAgenda(events, { from: FROM, mode: "todo" });
+    const todo = foldBuildAgenda(events, { from: FROM, mode: "todo" }).groups;
     expect(todo.flatMap((g) => g.events).map((e) => e.id)).toEqual([
       "pending",
       "due",
     ]);
 
-    const all = foldBuildAgenda(events, { from: FROM, mode: "all" });
+    const all = foldBuildAgenda(events, { from: FROM, mode: "all" }).groups;
     expect(all.flatMap((g) => g.events)).toHaveLength(5);
   });
 
@@ -90,12 +90,14 @@ describe("foldBuildAgenda", () => {
     const events = Array.from({ length: 12 }, (_unused, index) =>
       event(`e${index}`, `2026-05-${19 + index}`, `2026-05-${19 + index}`),
     );
-    expect(foldBuildAgenda(events, { from: FROM })).toHaveLength(8);
-    expect(foldBuildAgenda(events, { from: FROM, limit: 3 })).toHaveLength(3);
+    expect(foldBuildAgenda(events, { from: FROM }).groups).toHaveLength(8);
+    expect(
+      foldBuildAgenda(events, { from: FROM, limit: 3 }).groups,
+    ).toHaveLength(3);
   });
 
   it("returns nothing when everything is behind", () => {
-    const groups = foldBuildAgenda(
+    const { groups } = foldBuildAgenda(
       [event("past", "2026-05-01", "2026-05-02")],
       {
         from: FROM,
@@ -118,5 +120,54 @@ describe("foldCountActionable", () => {
 
   it("is zero on an empty feed", () => {
     expect(foldCountActionable([], FROM)).toBe(0);
+  });
+});
+
+describe("foldBuildAgenda — limit", () => {
+  const events = Array.from({ length: 12 }, (_unused, index) =>
+    event(`e${index}`, `2026-05-${19 + index}`, `2026-05-${19 + index}`),
+  );
+
+  it("reports what it had to cut off", () => {
+    // "There is more" and "there is nothing" used to render identically.
+    expect(foldBuildAgenda(events, { from: FROM, limit: 3 }).truncated).toBe(9);
+    expect(foldBuildAgenda(events, { from: FROM, limit: 99 }).truncated).toBe(
+      0,
+    );
+  });
+
+  it("never returns an empty rail because the limit was zero or junk", () => {
+    // `limit: 0` printed "Nothing to handle" under a badge saying otherwise;
+    // `Math.max(0, NaN)` is NaN, and `slice(0, NaN)` returns nothing at all.
+    expect(
+      foldBuildAgenda(events, { from: FROM, limit: 0 }).groups,
+    ).toHaveLength(1);
+    expect(
+      foldBuildAgenda(events, { from: FROM, limit: -3 }).groups,
+    ).toHaveLength(1);
+    expect(
+      foldBuildAgenda(events, { from: FROM, limit: Number.NaN }).groups,
+    ).toHaveLength(8);
+  });
+});
+
+describe("foldBuildAgenda — a caller's own definition of actionable", () => {
+  const events = [
+    event("plain", "2026-05-19", "2026-05-19"),
+    event("pending", "2026-05-20", "2026-05-20", "warning"),
+  ];
+  const onlyPlain = (e: FoldCalendarEvent): boolean => e.id === "plain";
+
+  it("drives the todo slice", () => {
+    const todo = foldBuildAgenda(events, {
+      from: FROM,
+      mode: "todo",
+      isActionable: onlyPlain,
+    }).groups;
+    expect(todo.flatMap((g) => g.events).map((e) => e.id)).toEqual(["plain"]);
+  });
+
+  it("drives the badge from the same definition, so the two agree", () => {
+    expect(foldCountActionable(events, FROM, onlyPlain)).toBe(1);
   });
 });

@@ -2,42 +2,45 @@ import { NgTemplateOutlet } from "@angular/common";
 import {
   Component,
   ElementRef,
+  Injector,
   booleanAttribute,
   computed,
   contentChild,
-  effect,
   inject,
   input,
   model,
+  numberAttribute,
   output,
-  signal,
 } from "@angular/core";
 
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
 import {
   foldAddDays,
   foldStartOfWeek,
-  foldToNativeDate,
   type FoldCalendarDate,
   type FoldWeekday,
 } from "./calendar-date";
-import { FoldCalendarEventDirective } from "./calendar-event.directive";
-import { foldCalendarNextFocus, foldFocusDayCell } from "./calendar-keyboard";
+import { FoldCalendarRovingFocus } from "./calendar-roving-focus";
+import { foldBuildMonthGrid, foldClampLanes } from "./calendar-month-grid";
 import {
-  FOLD_CALENDAR_LABELS,
-  type FoldCalendarLabels,
-} from "./calendar-labels";
-import { foldBuildMonthGrid, foldEventsOnDay } from "./calendar-layout";
+  FoldCalendarDayDirective,
+  FoldCalendarOverflowDirective,
+} from "./calendar-slots.directive";
 import type {
   FoldCalendarBand,
   FoldCalendarDay,
+  FoldCalendarDayModifiers,
   FoldCalendarEvent,
   FoldCalendarWeek,
 } from "./calendar.types";
 
 /** A Monday, used only to walk seven weekday names out of `Intl`. */
 const WEEKDAY_SAMPLE = "2026-01-05";
+
+/** Keys that activate a day cell — the ones a `<button>` would have handled. */
+const ACTIVATION_KEYS = new Set(["Enter", " ", "Spacebar"]);
 
 /**
  * `<fold-calendar-month>` — a month grid where events span the days they cover.
@@ -52,41 +55,61 @@ const WEEKDAY_SAMPLE = "2026-01-05";
  * and not `Date`.
  *
  * ## Inputs
- * | Input          | Type                      | Default | Meaning |
- * |----------------|---------------------------|---------|---------|
- * | `month`        | `FoldCalendarDate`        | —       | **Two-way.** Any date in the month on display; keyboard paging writes back. |
- * | `events`       | `FoldCalendarEvent<T>[]`  | `[]`    | What to plot. Anything outside the grid is ignored. |
- * | `today`        | `FoldCalendarDate`        | —       | The day to mark. Omitted, nothing is marked — pass `foldToday()`. |
- * | `weekStartsOn` | `FoldWeekday`             | `'mon'` | Column order and which pair reads as the weekend. |
- * | `maxLanes`     | `number`                  | `3`     | Bands a week stacks before the rest collapse into an overflow chip. |
- * | `fixedWeeks`   | `boolean`                 | `false` | Always six rows, so the grid keeps one height across months. |
- * | `locale`       | `string`                  | runtime | Drives month/weekday names through `Intl`. |
- * | `labels`       | `Partial<FoldCalendarLabels>` | — | Per-instance overrides of the chrome strings. |
+ * | Input          | Type                          | Default       | Meaning |
+ * |----------------|-------------------------------|---------------|---------|
+ * | `month`        | `FoldCalendarDate`            | —             | **Two-way.** Any date in the month on display; keyboard paging writes back. |
+ * | `events`       | `FoldCalendarEvent<T>[]`      | `[]`          | What to plot. Anything outside the grid is ignored. |
+ * | `today`        | `FoldCalendarDate`            | —             | The day to mark. Omitted, nothing is marked — pass `foldToday()`. |
+ * | `weekStartsOn` | `FoldWeekday`                 | `'mon'`       | Which day opens the row. |
+ * | `weekendDays`  | `FoldWeekday[]`               | `['sat','sun']` | Which days are shaded — a separate fact from the anchor. |
+ * | `maxLanes`     | `number`                      | `3`           | Bands a week stacks before the rest collapse into overflow chips. |
+ * | `fixedWeeks`   | `boolean`                     | `false`       | Always six rows, so the grid keeps one height across months. |
+ * | `dayModifiers` | `(day) => string[]`           | —             | Extra names per cell, emitted as `data-fold-day-modifiers`. |
+ * | `locale`       | `string`                      | runtime       | Drives month/weekday names through `Intl`. |
+ * | `labels`       | `Partial<FoldCalendarLabels>` | —             | Per-instance overrides of the chrome strings. |
  *
  * ## Outputs
  * | Output          | Payload                | Fires on |
  * |-----------------|------------------------|----------|
  * | `dayClick`      | `FoldCalendarDate`     | A day cell activated by click, `Enter` or `Space`. |
  * | `eventClick`    | `FoldCalendarEvent<T>` | A band clicked. Grouped bands emit their representative. |
- * | `overflowClick` | `FoldCalendarWeek<T>`  | The `+N` chip — the week is handed over so the caller can show what was hidden. |
+ * | `overflowClick` | `FoldCalendarDate`     | A `+N` chip — the **day** whose events overflowed, so the caller knows which one to open. |
  *
- * ## Custom chips
- * Project an `<ng-template foldCalendarEvent let-event let-band="band">` to
- * replace the built-in icon + label + count row. See
- * {@link FoldCalendarEventDirective}.
+ * ## Templates
+ * | Directive              | Replaces |
+ * |------------------------|----------|
+ * | `foldCalendarEvent`    | The inside of a band — icon + label + count. |
+ * | `foldCalendarDay`      | The inside of a day cell — the day number. |
+ * | `foldCalendarOverflow` | The `+N` chip. |
+ *
+ * ## Theming
+ * | CSS variable                          | Default | Sets |
+ * |---------------------------------------|---------|------|
+ * | `--fold-calendar-month-header-row`    | `30px`  | Height of the day-number row. |
+ * | `--fold-calendar-month-lane`          | `22px`  | Height of one band lane. |
+ * | `--fold-calendar-month-row-min-height`| `112px` | Minimum height of a week row. |
+ * | `--fold-calendar-month-daynum-size`   | `22px`  | The day number's round box. |
+ * | `--fold-calendar-month-cell-padding`  | `--fold-space-sm` | Padding inside a day cell. |
+ * | `--fold-calendar-bar-width`           | `3px`   | The tone bar down a band's leading edge. |
+ * | `--fold-calendar-band-radius`         | `--fold-radius-sm` | Band and chip corners. |
+ * | `--fold-calendar-band-gutter`         | `--fold-space-xs` | Gap between a band and its cell edge. |
  *
  * ## Accessibility
  * The **date grid** is the ARIA structure: `role="grid"` over rows of
- * `gridcell` day buttons, with one roving tab stop (the focused day, else
- * today, else the 1st) and the grid pattern on the arrow keys — horizontal
- * steps a day, vertical steps a week, `Home`/`End` snap to the week, and
- * `PageUp`/`PageDown` page the month, writing back through `month`.
+ * `gridcell` days, with one roving tab stop (the focused day, else today, else
+ * the 1st) and the grid pattern on the arrow keys — horizontal steps a day,
+ * vertical steps a week, `Home`/`End` snap to the week, and `PageUp`/`PageDown`
+ * page the month, writing back through `month`.
  *
  * Bands cannot be `gridcell`s — they span columns, which is the whole point —
  * so they are **`aria-hidden` mouse affordances**, and each day cell instead
- * announces its date, the today marker and its **event count**. Nothing is
- * silent, and the grid stays a valid grid; the accessible path into an
- * individual event is `dayClick` into a day or list view.
+ * announces its date, the today marker, its **event count** and, when the lane
+ * budget hid some, **how many it is not showing**.
+ *
+ * That makes `dayClick` **load-bearing, not optional**: it is the accessible
+ * path into an individual event. A month that handles only `eventClick` is a
+ * view whose events no keyboard can reach — wire `dayClick` to a day or list
+ * view, as the gallery does.
  *
  * @selector `fold-calendar-month`
  *
@@ -107,8 +130,16 @@ const WEEKDAY_SAMPLE = "2026-01-05";
   imports: [NgTemplateOutlet, FoldIconComponent],
   templateUrl: "./calendar-month.component.html",
   styleUrl: "./calendar-month.component.scss",
+  hostDirectives: [
+    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+  ],
+  host: {
+    "data-fold-calendar": "",
+    role: "grid",
+    "[attr.aria-label]": "chrome.l().grid",
+  },
 })
-export class FoldCalendarMonthComponent<T> {
+export class FoldCalendarMonthComponent<T = unknown> {
   /** Any date inside the month on display. Two-way: keyboard paging writes back. */
   readonly month = model.required<FoldCalendarDate>();
   /** Events to plot; those missing the grid entirely are ignored. */
@@ -117,14 +148,14 @@ export class FoldCalendarMonthComponent<T> {
   readonly today = input<FoldCalendarDate>();
   /** Day the weeks start on. @default 'mon' */
   readonly weekStartsOn = input<FoldWeekday>("mon");
-  /** Bands a week stacks before the rest collapse into the overflow chip. @default 3 */
-  readonly maxLanes = input(3);
+  /** Days shaded as the weekend. @default ['sat', 'sun'] */
+  readonly weekendDays = input<readonly FoldWeekday[]>();
+  /** Bands a week stacks before the rest collapse into overflow chips. @default 3 */
+  readonly maxLanes = input(3, { transform: numberAttribute });
   /** Always emit six rows, so the grid keeps one height across months. */
   readonly fixedWeeks = input(false, { transform: booleanAttribute });
-  /** BCP-47 tag for the month and weekday names; omitted, the runtime default. */
-  readonly locale = input<string>();
-  /** Per-instance label overrides (merged over the app-wide / English defaults). */
-  readonly labels = input<Partial<FoldCalendarLabels>>();
+  /** Extra names for a cell, emitted as `data-fold-day-modifiers`. */
+  readonly dayModifiers = input<FoldCalendarDayModifiers>();
 
   /** A day cell was activated. */
   readonly dayClick = output<FoldCalendarDate>();
@@ -133,32 +164,38 @@ export class FoldCalendarMonthComponent<T> {
   /** A `+N` chip was clicked, with the day whose events overflowed. */
   readonly overflowClick = output<FoldCalendarDate>();
 
+  /** Labels, locale and the projected chip template — see the directive. */
+  protected readonly chrome = inject(FoldCalendarChromeDirective);
+
   private readonly host = inject(ElementRef);
-  private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
-  private readonly projectedEvent = contentChild(FoldCalendarEventDirective);
-
-  /** The day holding focus, once the user has moved it. */
-  private readonly focusedDate = signal<FoldCalendarDate | null>(null);
-  /** A day to focus once the grid has re-rendered around a new month. */
-  private readonly deferredFocus = signal<FoldCalendarDate | null>(null);
-
-  /** Effective labels — the app-wide (or English) set, with `labels` on top. */
-  protected readonly l = computed<FoldCalendarLabels>(() => ({
-    ...this.injectedLabels,
-    ...this.labels(),
-  }));
-
-  /** The custom chip template, when one is projected. */
-  protected readonly eventContent = computed(
-    () => this.projectedEvent()?.template ?? null,
+  private readonly projectedDay = contentChild(FoldCalendarDayDirective);
+  private readonly projectedOverflow = contentChild(
+    FoldCalendarOverflowDirective,
   );
+
+  /** The custom day-cell template, when one is projected. */
+  protected readonly dayContent = computed(
+    () => this.projectedDay()?.template ?? null,
+  );
+
+  /** The custom overflow-chip template, when one is projected. */
+  protected readonly overflowContent = computed(
+    () => this.projectedOverflow()?.template ?? null,
+  );
+
+  /**
+   * Lanes this grid stacks — clamped once, by the layout, and read back here so
+   * the geometry and the CSS row template can never disagree.
+   */
+  private readonly lanes = computed(() => foldClampLanes(this.maxLanes()));
 
   /** The laid-out grid: week rows, their days, and their packed bands. */
   protected readonly weeks = computed<readonly FoldCalendarWeek<T>[]>(() =>
     foldBuildMonthGrid(this.events(), {
       month: this.month(),
       weekStartsOn: this.weekStartsOn(),
-      maxLanes: this.maxLanes(),
+      weekendDays: this.weekendDays(),
+      maxLanes: this.lanes(),
       fixedWeeks: this.fixedWeeks(),
       today: this.today(),
     }),
@@ -166,36 +203,23 @@ export class FoldCalendarMonthComponent<T> {
 
   /** Column headers, walked out of `Intl` so every locale comes for free. */
   protected readonly weekdayNames = computed<readonly string[]>(() => {
-    const format = new Intl.DateTimeFormat(this.locale(), {
-      weekday: "short",
-      timeZone: "UTC",
-    });
     const anchor = foldStartOfWeek(WEEKDAY_SAMPLE, this.weekStartsOn());
     return Array.from({ length: 7 }, (_unused, offset) =>
-      format.format(foldToNativeDate(foldAddDays(anchor, offset))),
+      this.chrome.format(foldAddDays(anchor, offset), "weekdayShort"),
     );
   });
 
   /**
    * Row track sizes: the day-number row, one row per lane, then the overflow
-   * row. Both heights are themeable knobs, which is why they are `var()`s with
-   * a default rather than literals.
+   * row. Both heights are themeable knobs, which is why they are `var()`s.
    */
   protected readonly rowTemplate = computed(
     () =>
-      `var(--fold-calendar-header-row, 30px) repeat(${this.maxLanes()}, var(--fold-calendar-lane, 22px)) auto`,
+      `var(--fold-calendar-month-header-row, 30px) repeat(${this.lanes()}, var(--fold-calendar-month-lane, 22px)) auto`,
   );
 
-  /** The overflow chip's row — always the one after the last lane. */
-  protected readonly overflowRow = computed(() => this.maxLanes() + 2);
-
-  private readonly dayFormatter = computed(
-    () =>
-      new Intl.DateTimeFormat(this.locale(), {
-        dateStyle: "long",
-        timeZone: "UTC",
-      }),
-  );
+  /** The overflow chips' row — always the one after the last lane. */
+  protected readonly overflowRow = computed(() => this.lanes() + 2);
 
   /** Every date the grid currently shows — the bound focus may not leave. */
   private readonly gridDates = computed<ReadonlySet<FoldCalendarDate>>(
@@ -203,64 +227,54 @@ export class FoldCalendarMonthComponent<T> {
       new Set(this.weeks().flatMap((week) => week.days.map((day) => day.date))),
   );
 
-  /**
-   * The single tab stop: the focused day while it is on screen, else today
-   * while it is on screen, else the 1st of the month — so a month change never
-   * strands the grid without a tab stop.
-   */
-  private readonly activeDate = computed<FoldCalendarDate | null>(() => {
-    const dates = this.gridDates();
-    const focused = this.focusedDate();
-    if (focused !== null && dates.has(focused)) {
-      return focused;
-    }
+  /** Where the tab stop sits before the user moves it: today, else the 1st. */
+  private readonly defaultStop = computed<FoldCalendarDate | null>(() => {
     const today = this.today();
-    if (today !== undefined && dates.has(today)) {
+    if (today !== undefined && this.gridDates().has(today)) {
       return today;
     }
-    const firstOfMonth = this.weeks()
-      .flatMap((week) => week.days)
-      .find((day) => day.inMonth);
-    return firstOfMonth?.date ?? null;
+    return (
+      this.weeks()
+        .flatMap((week) => week.days)
+        .find((day) => day.inMonth)?.date ?? null
+    );
   });
 
-  constructor() {
-    // Paging the month replaces the cells, so the day to focus does not exist
-    // until the grid has re-rendered — hence the deferral.
-    effect(() => {
-      const target = this.deferredFocus();
-      if (target === null) {
-        return;
-      }
-      const root: unknown = this.host.nativeElement;
-      if (!(root instanceof HTMLElement)) {
-        return;
-      }
-      const cell = root.querySelector(`[data-fold-day="${target}"]`);
-      if (cell instanceof HTMLElement) {
-        cell.focus();
-      }
-    });
-  }
+  /** The grid's single tab stop and the arrow keys that move it. */
+  private readonly focus = new FoldCalendarRovingFocus({
+    dates: this.gridDates,
+    fallback: this.defaultStop,
+    weekStartsOn: this.weekStartsOn,
+    root: () => this.rootElement(),
+    page: (date) => this.month.set(date),
+    injector: inject(Injector),
+  });
 
   protected dayTabIndex(date: FoldCalendarDate): 0 | -1 {
-    return date === this.activeDate() ? 0 : -1;
+    return this.focus.tabIndexFor(date);
   }
 
-  /** Events `column` lost to the lane budget, or `0` — falsy, so `@if` skips it. */
-  protected hiddenOn(week: FoldCalendarWeek<T>, column: number): number {
-    return week.hiddenByDay[column] ?? 0;
+  /** A cell's caller-supplied names, as one `~=`-matchable attribute. */
+  protected dayModifierAttr(day: FoldCalendarDay): string | null {
+    const names = this.dayModifiers()?.(day) ?? [];
+    return names.length === 0 ? null : names.join(" ");
   }
 
-  /** A day's accessible name: its date, the today marker, and what sits on it. */
+  /**
+   * A day's accessible name: its date, the today marker, what sits on it, and
+   * what the lane budget is keeping from it.
+   */
   protected dayLabel(day: FoldCalendarDay): string {
-    const parts = [this.dayFormatter().format(foldToNativeDate(day.date))];
+    const labels = this.chrome.l();
+    const parts = [this.chrome.format(day.date, "dateFull")];
     if (day.isToday) {
-      parts.push(this.l().today);
+      parts.push(labels.today);
     }
-    const count = foldEventsOnDay(this.events(), day.date).length;
-    if (count > 0) {
-      parts.push(this.l().eventCount(count));
+    if (day.eventCount > 0) {
+      parts.push(labels.eventCount(day.eventCount));
+    }
+    if (day.hiddenCount > 0) {
+      parts.push(labels.hiddenCount(day.hiddenCount));
     }
     return parts.join(", ");
   }
@@ -282,27 +296,26 @@ export class FoldCalendarMonthComponent<T> {
   }
 
   protected onDayFocus(date: FoldCalendarDate): void {
-    this.focusedDate.set(date);
+    this.focus.onFocus(date);
   }
 
-  /**
-   * Arrow keys walk the date axis. The move is applied in place when the target
-   * is already on screen; when it falls outside, the month pages to it and the
-   * focus is handed to the effect above.
-   */
+  /** A cell is not a `<button>`, so activation is wired by hand. */
   protected onDayKeydown(event: KeyboardEvent, date: FoldCalendarDate): void {
     if (event.target !== event.currentTarget) {
       return;
     }
-    const next = foldCalendarNextFocus(event.key, date, this.weekStartsOn());
-    if (next === null) {
+    if (ACTIVATION_KEYS.has(event.key)) {
+      event.preventDefault();
+      this.dayClick.emit(date);
       return;
     }
-    event.preventDefault();
-    this.focusedDate.set(next);
-    if (!foldFocusDayCell(event.target, next)) {
-      this.month.set(next);
-      this.deferredFocus.set(next);
+    if (this.focus.move(event.key, date)) {
+      event.preventDefault();
     }
+  }
+
+  private rootElement(): HTMLElement | null {
+    const root: unknown = this.host.nativeElement;
+    return root instanceof HTMLElement ? root : null;
   }
 }

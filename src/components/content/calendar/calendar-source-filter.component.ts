@@ -1,10 +1,14 @@
-import { Component, computed, inject, input, model } from "@angular/core";
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  output,
+} from "@angular/core";
 
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import {
-  FOLD_CALENDAR_LABELS,
-  type FoldCalendarLabels,
-} from "./calendar-labels";
+import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
 import type { FoldCalendarEvent, FoldCalendarSource } from "./calendar.types";
 
 /** A source, with what it currently contributes and whether it is showing. */
@@ -28,9 +32,18 @@ interface SourceChip {
  * | Input     | Type                     | Default | Meaning |
  * |-----------|--------------------------|---------|---------|
  * | `sources` | `FoldCalendarSource[]`   | `[]`    | The feeds to offer. |
- * | `events`  | `FoldCalendarEvent<T>[]` | `[]`    | Counted per feed — pass the window on screen for live counts. |
- * | `active`  | `ReadonlySet<string>`    | all     | **Two-way.** The keys currently shown. |
+ * | `events`  | `FoldCalendarEvent[]`    | `[]`    | Counted per feed — pass the window on screen for live counts. |
+ * | `active`  | `ReadonlySet<string> \| null` | `null` | **Two-way.** The keys currently shown; `null` means "all". |
  * | `labels`  | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
+ *
+ * ## Outputs
+ * | Output            | Payload               | Fires on |
+ * |-------------------|-----------------------|----------|
+ * | `selectionChange` | `ReadonlySet<string>` | A chip toggled — never `null`. |
+ *
+ * `null` and an empty `Set` mean opposite things — "nothing switched off yet"
+ * versus "every feed switched off" — which is why they are not collapsed.
+ * `foldFilterBySource()` takes either.
  *
  * ## Accessibility
  * Each chip is a **toggle**, so it carries `aria-pressed` in both states, and
@@ -55,26 +68,30 @@ interface SourceChip {
   imports: [FoldIconComponent],
   templateUrl: "./calendar-source-filter.component.html",
   styleUrl: "./calendar-source-filter.component.scss",
+  hostDirectives: [
+    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+  ],
 })
-export class FoldCalendarSourceFilterComponent<T> {
+export class FoldCalendarSourceFilterComponent {
   /** The feeds to offer. */
   readonly sources = input<readonly FoldCalendarSource[]>([]);
   /** Events to count per feed; pass the window on screen for live counts. */
-  readonly events = input<readonly FoldCalendarEvent<T>[]>([]);
+  readonly events = input<readonly FoldCalendarEvent[]>([]);
   /**
    * The keys currently shown. Left unset every feed shows, so the filter is
    * useful before the caller has any selection state of its own.
    */
   readonly active = model<ReadonlySet<string> | null>(null);
-  /** Per-instance label overrides (merged over the app-wide / English defaults). */
-  readonly labels = input<Partial<FoldCalendarLabels>>();
 
-  private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
+  /**
+   * The selection after a chip was toggled — **never `null`**, unlike `active`,
+   * whose unset state exists only as a starting value. Handle this one and you
+   * never have to eliminate a case that cannot happen.
+   */
+  readonly selectionChange = output<ReadonlySet<string>>();
 
-  protected readonly l = computed<FoldCalendarLabels>(() => ({
-    ...this.injectedLabels,
-    ...this.labels(),
-  }));
+  /** Labels and locale — see the directive. */
+  protected readonly chrome = inject(FoldCalendarChromeDirective);
 
   /** The effective selection — every key while `active` is unset. */
   private readonly shownKeys = computed<ReadonlySet<string>>(() => {
@@ -96,7 +113,7 @@ export class FoldCalendarSourceFilterComponent<T> {
   });
 
   protected chipLabel(chip: SourceChip): string {
-    return this.l().sourceState(chip.source.label, chip.shown);
+    return this.chrome.l().sourceState(chip.source.label, chip.shown);
   }
 
   /** Writes the next selection rather than mutating the set in place. */
@@ -108,5 +125,6 @@ export class FoldCalendarSourceFilterComponent<T> {
       next.add(chip.source.key);
     }
     this.active.set(next);
+    this.selectionChange.emit(next);
   }
 }

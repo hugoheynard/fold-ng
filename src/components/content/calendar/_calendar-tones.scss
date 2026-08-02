@@ -1,0 +1,59 @@
+// The one place a calendar tone is written down.
+//
+// The same five roles paint three different shapes — the month's bands, the
+// shared chip, the list's rows — and they used to be spelled out three times,
+// so adding a tone meant editing three files and the list had already drifted
+// into its own `foldcall-*` copy. Parameterising by selector keeps one table.
+
+/// Paints `data-tone` on a block.
+///
+/// @param {String} $root  Selector of the toned element.
+/// @param {String} $bar   Selector of its accent bar.
+/// @param {String} $label Selector of the text `muted` strikes through.
+/// @param {Bool}   $fill  Whether the tone also fills the block's own surface
+///                        (the month's bands do; a chip on a card does not).
+@mixin calendar-tones($root, $bar, $label, $fill: false) {
+  @each $tone in (success, warning, alert) {
+    #{$root}[data-tone="#{$tone}"] {
+      @if $fill {
+        background: var(--fold-color-#{$tone}-surface);
+        color: var(--fold-color-#{$tone}-text);
+      }
+
+      #{$bar} {
+        background: var(--fold-color-#{$tone});
+      }
+    }
+  }
+
+  // `muted` is "this no longer counts" — struck through, not merely quieter.
+  #{$root}[data-tone="muted"] {
+    @if $fill {
+      background: transparent;
+      color: var(--fold-color-text-muted);
+    }
+
+    #{$bar} {
+      background: var(--fold-color-text-faded);
+    }
+
+    #{$label} {
+      color: var(--fold-color-text-muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    #{$root} {
+      border: 1px solid CanvasText;
+    }
+
+    // The one place opting out of the forced palette is right: the bar carries
+    // no text, and it is the only thing telling two rows apart once high
+    // contrast has flattened every surface to the same colour.
+    #{$bar} {
+      forced-color-adjust: none;
+    }
+  }
+}

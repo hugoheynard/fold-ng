@@ -1,3 +1,5 @@
+@use "calendar-tones" as tones;
+
 // Responsive on its own width, not the viewport's — the list is as likely to
 // sit in a narrow rail as across a page.
 :host {
@@ -25,18 +27,31 @@
 // trails. Below 640px the status wraps under rather than squeezing the label.
 .foldcall-row {
   display: grid;
-  grid-template-columns: 3px 7rem minmax(0, 1fr) auto;
+  grid-template-columns:
+    var(--fold-calendar-bar-width, 3px)
+    var(--fold-calendar-list-date-width, 7rem)
+    minmax(0, 1fr)
+    auto;
   align-items: center;
   gap: var(--fold-space-md);
   width: 100%;
-  padding: var(--fold-space-sm) var(--fold-space-md) var(--fold-space-sm) 0;
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  padding-inline-start: 0;
   border: 0;
   background: transparent;
   color: inherit;
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
-  transition: background-color var(--fold-motion-fast, 120ms) ease;
+  transition: background-color var(--fold-motion-fast) ease;
+
+  // A projected template owns the row: the four-column track would slice it up.
+  &.is-custom {
+    display: flex;
+    align-items: center;
+    gap: var(--fold-space-sm);
+    padding-inline-start: var(--fold-space-md);
+  }
 
   &:hover {
     background: var(--fold-color-surface-hover);
@@ -97,33 +112,18 @@
   text-align: center;
 }
 
-.foldcall-row[data-tone="success"] .foldcall-bar {
-  background: var(--fold-color-success);
-}
-
-.foldcall-row[data-tone="warning"] .foldcall-bar {
-  background: var(--fold-color-warning);
-}
-
-.foldcall-row[data-tone="alert"] .foldcall-bar {
-  background: var(--fold-color-alert);
-}
-
-.foldcall-row[data-tone="muted"] {
-  .foldcall-bar {
-    background: var(--fold-color-text-faded);
-  }
-
-  .foldcall-label {
-    color: var(--fold-color-text-muted);
-    text-decoration: line-through;
-    text-decoration-thickness: 1px;
-  }
-}
+@include tones.calendar-tones(
+  ".foldcall-row",
+  ".foldcall-bar",
+  ".foldcall-label"
+);
 
 @container (max-width: 640px) {
-  .foldcall-row {
-    grid-template-columns: 3px 7rem minmax(0, 1fr);
+  .foldcall-row:not(.is-custom) {
+    grid-template-columns:
+      var(--fold-calendar-bar-width, 3px)
+      var(--fold-calendar-list-date-width, 7rem)
+      minmax(0, 1fr);
   }
 
   .foldcall-sub {

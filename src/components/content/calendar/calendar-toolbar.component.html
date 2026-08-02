@@ -1,14 +1,14 @@
 <div class="foldcalt">
   <div class="foldcalt-lead">
     <button type="button" class="foldcalt-today" (click)="goToday()">
-      {{ l().todayAction }}
+      {{ chrome.l().todayAction }}
     </button>
 
     <div class="foldcalt-steps">
       <button
         type="button"
         class="foldcalt-step"
-        [attr.aria-label]="l().previousPeriod"
+        [attr.aria-label]="chrome.l().previousPeriod"
         (click)="shift(-1)"
       >
         <fold-icon name="chevron-left" size="sm" />
@@ -16,21 +16,35 @@
       <button
         type="button"
         class="foldcalt-step"
-        [attr.aria-label]="l().nextPeriod"
+        [attr.aria-label]="chrome.l().nextPeriod"
         (click)="shift(1)"
       >
         <fold-icon name="chevron-right" size="sm" />
       </button>
     </div>
 
-    <h2 class="foldcalt-title" aria-live="polite">{{ title() }}</h2>
+    @if (titleContent(); as projected) {
+      <div class="foldcalt-title" aria-live="polite">
+        <ng-container
+          [ngTemplateOutlet]="projected"
+          [ngTemplateOutletContext]="{
+            $implicit: title(),
+            from: range().from,
+            to: range().to,
+            view: view(),
+          }"
+        />
+      </div>
+    } @else {
+      <h2 class="foldcalt-title" aria-live="polite">{{ title() }}</h2>
+    }
   </div>
 
   <div class="foldcalt-trail">
     @if (options().length > 1) {
       <fold-view-toggle
         size="sm"
-        [ariaLabel]="l().viewSwitch"
+        [ariaLabel]="chrome.l().viewSwitch"
         [options]="options()"
         [value]="view()"
         (valueChange)="onViewChange($event)"

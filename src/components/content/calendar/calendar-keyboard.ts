@@ -1,6 +1,7 @@
 import {
   foldAddDays,
   foldAddMonths,
+  foldIsCalendarDate,
   foldStartOfWeek,
   type FoldCalendarDate,
   type FoldWeekday,
@@ -49,23 +50,26 @@ export function foldCalendarNextFocus(
 }
 
 /**
- * Focuses the cell for `date` inside the grid that owns `from`, reporting
- * whether it was there to focus.
+ * Focuses the cell for `date` inside `grid`, reporting whether it was there to
+ * focus.
  *
  * A `false` is the signal that the target lies outside the rendered grid — the
- * caller pages the month and defers the focus until the new cells exist.
- * Reaching for the DOM from the event's own target keeps this free of
- * `document`, so it degrades to a no-op under SSR.
+ * caller pages the calendar and defers the focus until the new cells exist.
+ * Taking the root as an argument keeps this free of `document` (so it is a
+ * no-op under SSR) and means there is exactly **one** answer to "which element
+ * is the grid" — looking it up from the event target as well gave two.
  */
 export function foldFocusDayCell(
-  from: EventTarget | null,
+  grid: Element | null,
   date: FoldCalendarDate,
 ): boolean {
-  if (!(from instanceof Element)) {
+  // A date can reach this from an input, and it is interpolated into a
+  // selector: anything that is not a plain date is a `SyntaxError` waiting to
+  // happen, so it is refused rather than escaped.
+  if (grid === null || !foldIsCalendarDate(date)) {
     return false;
   }
-  const grid = from.closest("[data-fold-calendar]");
-  const cell = grid?.querySelector(`[data-fold-day="${date}"]`);
+  const cell = grid.querySelector(`[data-fold-day="${date}"]`);
   if (cell instanceof HTMLElement) {
     cell.focus();
     return true;

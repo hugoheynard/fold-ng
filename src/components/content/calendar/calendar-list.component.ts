@@ -1,21 +1,10 @@
 import { NgTemplateOutlet } from "@angular/common";
-import {
-  Component,
-  computed,
-  contentChild,
-  inject,
-  input,
-  output,
-} from "@angular/core";
+import { Component, computed, inject, input, output } from "@angular/core";
 
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import { foldToNativeDate, type FoldCalendarDate } from "./calendar-date";
-import { FoldCalendarEventDirective } from "./calendar-event.directive";
-import {
-  FOLD_CALENDAR_LABELS,
-  type FoldCalendarLabels,
-} from "./calendar-labels";
-import { foldEventsInRange } from "./calendar-layout";
+import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
+import type { FoldCalendarDate } from "./calendar-date";
+import { foldEventsInRange } from "./calendar-filters";
 import type { FoldCalendarEvent } from "./calendar.types";
 
 /**
@@ -38,6 +27,21 @@ import type { FoldCalendarEvent } from "./calendar.types";
  * | `locale` | `string`                 | runtime | Drives the span labels through `Intl`. |
  * | `labels` | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
  *
+ * ## Outputs
+ * | Output       | Payload                | Fires on |
+ * |--------------|------------------------|----------|
+ * | `eventClick` | `FoldCalendarEvent<T>` | A row activated. |
+ *
+ * ## Theming
+ * | CSS variable                       | Default | Sets |
+ * |------------------------------------|---------|------|
+ * | `--fold-calendar-list-date-width`  | `7rem`  | The leading date column — widen it for verbose locales. |
+ * | `--fold-calendar-bar-width`        | `3px`   | The tone bar down a row's leading edge. |
+ *
+ * A projected `foldCalendarEvent` template replaces a row's **whole** inside,
+ * as in every other view: the built-in bar and date belong to the default
+ * rendering, not to the frame around it.
+ *
  * @selector `fold-calendar-list`
  *
  * @example
@@ -56,33 +60,22 @@ import type { FoldCalendarEvent } from "./calendar.types";
   imports: [NgTemplateOutlet, FoldIconComponent],
   templateUrl: "./calendar-list.component.html",
   styleUrl: "./calendar-list.component.scss",
+  hostDirectives: [
+    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+  ],
 })
-export class FoldCalendarListComponent<T> {
+export class FoldCalendarListComponent<T = unknown> {
   /** Source events. */
   readonly events = input<readonly FoldCalendarEvent<T>[]>([]);
   /** Range start, inclusive. Omit (with `to`) to list every event given. */
   readonly from = input<FoldCalendarDate>();
   /** Range end, inclusive. */
   readonly to = input<FoldCalendarDate>();
-  /** BCP-47 tag for the span labels. */
-  readonly locale = input<string>();
-  /** Per-instance label overrides (merged over the app-wide / English defaults). */
-  readonly labels = input<Partial<FoldCalendarLabels>>();
-
   /** A row was activated. */
   readonly eventClick = output<FoldCalendarEvent<T>>();
 
-  private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
-  private readonly projectedEvent = contentChild(FoldCalendarEventDirective);
-
-  protected readonly l = computed<FoldCalendarLabels>(() => ({
-    ...this.injectedLabels,
-    ...this.labels(),
-  }));
-
-  protected readonly eventContent = computed(
-    () => this.projectedEvent()?.template ?? null,
-  );
+  /** Labels, locale and the projected chip template — see the directive. */
+  protected readonly chrome = inject(FoldCalendarChromeDirective);
 
   /** In range (when one is given), earliest first. */
   protected readonly rows = computed<readonly FoldCalendarEvent<T>[]>(() => {
@@ -97,23 +90,12 @@ export class FoldCalendarListComponent<T> {
     );
   });
 
-  private readonly rangeFormatter = computed(
-    () =>
-      new Intl.DateTimeFormat(this.locale(), {
-        day: "numeric",
-        month: "short",
-        timeZone: "UTC",
-      }),
-  );
-
   /**
    * The span, collapsed to one date when it covers a single day — `Intl`'s
-   * own range formatter does that, and picks the locale's separator.
+   * own range formatter does that, and picks the locale's separator and its
+   * order, which is why this is not a translatable label.
    */
   protected rangeLabel(event: FoldCalendarEvent<T>): string {
-    return this.rangeFormatter().formatRange(
-      foldToNativeDate(event.start),
-      foldToNativeDate(event.end),
-    );
+    return this.chrome.formatRange(event.start, event.end, "dayMonthShort");
   }
 }

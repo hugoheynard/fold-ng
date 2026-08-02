@@ -1,11 +1,12 @@
 // Surfaces: the grid sits on the page, day cells stay transparent so the row
 // reads as one plane, and bands are the only raised things on it.
 
-:host {
-  display: block;
-}
+@use "calendar-tones" as tones;
 
-.foldcal {
+// The host IS the grid: `role="grid"` and its accessible name live on it, so
+// there is no wrapper to carry them and no second root for the keyboard helper
+// to look for.
+:host {
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -39,7 +40,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   flex: 1;
-  min-height: var(--fold-calendar-week-min-height, 112px);
+  min-height: var(--fold-calendar-month-row-min-height, 112px);
   border-bottom: 1px solid var(--fold-color-border-subtle);
 
   &:last-child {
@@ -54,18 +55,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: var(--fold-space-sm) var(--fold-space-sm) var(--fold-space-xs);
-  border: 0;
-  border-right: 1px solid var(--fold-color-border-subtle);
-  background: transparent;
+  padding: var(--fold-calendar-month-cell-padding, var(--fold-space-sm))
+    var(--fold-calendar-month-cell-padding, var(--fold-space-sm))
+    var(--fold-space-xs);
+  border-inline-end: 1px solid var(--fold-color-border-subtle);
   color: inherit;
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
-  transition: background-color var(--fold-motion-fast, 120ms) ease;
+  transition: background-color var(--fold-motion-fast) ease;
 
   &:last-of-type {
-    border-right: 0;
+    border-inline-end: 0;
   }
 
   &:hover:not(.is-outside) {
@@ -110,8 +111,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--fold-calendar-daynum-size, 22px);
-  height: var(--fold-calendar-daynum-size, 22px);
+  min-width: var(--fold-calendar-month-daynum-size, 22px);
+  height: var(--fold-calendar-month-daynum-size, 22px);
   padding: 0 var(--fold-space-xs);
   border-radius: var(--fold-radius-sm);
   color: var(--fold-color-text-secondary);
@@ -128,23 +129,23 @@
   align-items: center;
   gap: var(--fold-space-xs);
   margin-block: 1px;
-  margin-inline: var(--fold-space-xs);
+  margin-inline: var(--fold-calendar-band-gutter, var(--fold-space-xs));
   padding: 0;
-  padding-right: var(--fold-space-sm);
+  padding-inline-end: var(--fold-space-sm);
   border: 0;
-  border-radius: var(--fold-radius-sm);
+  border-radius: var(--fold-calendar-band-radius, var(--fold-radius-sm));
   background: var(--fold-color-surface-raised);
   color: var(--fold-color-text);
   font: inherit;
   font-size: var(--fold-text-xs);
   font-weight: 500;
-  line-height: var(--fold-calendar-lane, 22px);
-  text-align: left;
+  line-height: var(--fold-calendar-month-lane, 22px);
+  text-align: start;
   cursor: pointer;
   overflow: hidden;
   transition:
-    filter var(--fold-motion-fast, 120ms) ease,
-    box-shadow var(--fold-motion-fast, 120ms) ease;
+    filter var(--fold-motion-fast) ease,
+    box-shadow var(--fold-motion-fast) ease;
 
   &:hover {
     z-index: 2;
@@ -153,12 +154,14 @@
   }
 
   // A continuation has no real edge on that side: square it off, drop the
-  // accent bar, and let the chevron carry "this keeps going".
+  // accent bar, and let the chevron carry "this keeps going". Logical
+  // properties throughout, so an RTL calendar squares off the same *reading*
+  // edge rather than the same physical one.
   &.continues-before {
-    margin-left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    padding-left: var(--fold-space-xs);
+    margin-inline-start: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    padding-inline-start: var(--fold-space-xs);
 
     .foldcal-band-bar {
       display: none;
@@ -172,9 +175,9 @@
   }
 
   &.continues-after {
-    margin-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    margin-inline-end: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
 
     &::after {
       content: "\203A";
@@ -185,16 +188,27 @@
 
   // A half-day edge notches the corner it starts or ends on.
   &.half-start {
-    border-bottom-left-radius: var(--fold-radius-lg);
+    border-end-start-radius: var(--fold-radius-lg);
   }
 
   &.half-end {
-    border-top-right-radius: var(--fold-radius-lg);
+    border-start-end-radius: var(--fold-radius-lg);
+  }
+}
+
+// The chevrons point along the reading direction, so RTL swaps the glyphs.
+[dir="rtl"] .foldcal-band {
+  &.continues-before::before {
+    content: "\203A";
+  }
+
+  &.continues-after::after {
+    content: "\2039";
   }
 }
 
 .foldcal-band-bar {
-  flex: 0 0 3px;
+  flex: 0 0 var(--fold-calendar-bar-width, 3px);
   align-self: stretch;
   background: var(--fold-color-text-muted);
 }
@@ -203,7 +217,7 @@
 // what made a warning band's glyph stay grey next to its amber label.
 .foldcal-band-icon {
   flex: none;
-  margin-left: 2px;
+  margin-inline-start: 2px;
   opacity: 0.9;
 }
 
@@ -223,48 +237,12 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Tones. Each names roles only — the theme decides what they look like. */
-.foldcal-band[data-tone="success"] {
-  background: var(--fold-color-success-surface);
-  color: var(--fold-color-success-text);
-
-  .foldcal-band-bar {
-    background: var(--fold-color-success);
-  }
-}
-
-.foldcal-band[data-tone="warning"] {
-  background: var(--fold-color-warning-surface);
-  color: var(--fold-color-warning-text);
-
-  .foldcal-band-bar {
-    background: var(--fold-color-warning);
-  }
-}
-
-.foldcal-band[data-tone="alert"] {
-  background: var(--fold-color-alert-surface);
-  color: var(--fold-color-alert-text);
-
-  .foldcal-band-bar {
-    background: var(--fold-color-alert);
-  }
-}
-
-// `muted` is "this no longer counts" — struck through, not merely quieter.
-.foldcal-band[data-tone="muted"] {
-  background: transparent;
-  color: var(--fold-color-text-muted);
-
-  .foldcal-band-bar {
-    background: var(--fold-color-text-faded);
-  }
-
-  .foldcal-band-label {
-    text-decoration: line-through;
-    text-decoration-thickness: 1px;
-  }
-}
+@include tones.calendar-tones(
+  ".foldcal-band",
+  ".foldcal-band-bar",
+  ".foldcal-band-label",
+  $fill: true
+);
 
 /* ── Overflow chip ──────────────────────────────────────────────── */
 
@@ -273,10 +251,10 @@
   justify-self: start;
   align-self: start;
   z-index: 1;
-  margin-inline: var(--fold-space-xs);
+  margin-inline: var(--fold-calendar-band-gutter, var(--fold-space-xs));
   padding: 0 var(--fold-space-xs);
   border: 0;
-  border-radius: var(--fold-radius-sm);
+  border-radius: var(--fold-calendar-band-radius, var(--fold-radius-sm));
   background: transparent;
   color: var(--fold-color-text-muted);
   font: inherit;
@@ -292,12 +270,8 @@
 
 /* ── Forced colours ─────────────────────────────────────────────── */
 // High contrast strips backgrounds, so every cue riding on one is re-expressed
-// as a border the pass keeps.
+// as a border or an outline the pass keeps.
 @media (forced-colors: active) {
-  .foldcal-band {
-    border: 1px solid CanvasText;
-  }
-
   .foldcal-day.is-today {
     outline: 2px solid Highlight;
     outline-offset: -2px;
@@ -305,6 +279,15 @@
 
   .foldcal-day:focus-visible {
     outline-color: Highlight;
+  }
+
+  // Both of these were background-only, and "outside the month" is meaningful.
+  .foldcal-day.is-outside .foldcal-daynum {
+    opacity: 0.6;
+  }
+
+  .foldcal-day.is-weekend {
+    border-block-end: 2px solid GrayText;
   }
 }
 

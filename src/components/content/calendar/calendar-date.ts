@@ -20,11 +20,24 @@
  * Arithmetic runs through `Date.UTC`, never local time: UTC has no DST, so a
  * day is always exactly 86 400 000 ms and "add 1 day" can never silently
  * return the same date twice (or skip one) around a clock change.
+ *
+ * ## Supported range
+ * `0001-01-01` to `9999-12-31`. The four-digit year is what makes the
+ * lexicographic guarantee hold, so it is enforced rather than assumed: years
+ * below 1000 are zero-padded (`0099-12-31`, which still sorts correctly), and
+ * arithmetic that walks past `9999-12-31` returns a five-digit string that
+ * {@link foldIsCalendarDate} rejects — a value that fails the type's own
+ * predicate rather than one that silently sorts before every other date.
  */
 
 /**
  * A plain calendar date — an ISO-8601 **date**, `YYYY-MM-DD`, with no time and
  * no zone. Inclusive wherever it bounds a range.
+ *
+ * A plain `string` alias, deliberately: it is the wire format, so a value read
+ * from an API or a `<input type="date">` has to flow in without a cast.
+ * {@link foldIsCalendarDate} is the runtime guard, and every component that
+ * takes one runs it in dev mode.
  */
 export type FoldCalendarDate = string;
 
@@ -45,12 +58,49 @@ const WEEKDAY_INDEX = {
   sat: 6,
 } as const satisfies Record<FoldWeekday, number>;
 
+/** `getUTCDay()` index → the `FoldWeekday` it stands for. */
+const WEEKDAY_AT = [
+  "sun",
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+] as const satisfies readonly FoldWeekday[];
+
+/**
+ * The days a calendar shades as the weekend by default. A separate fact from
+ * the week's anchor day: a Sunday-first calendar still rests on Sat/Sun, and a
+ * Saturday-first one (much of the Middle East) rests on Fri/Sat while starting
+ * on Saturday — which is why the two are different inputs, not one derived
+ * from the other.
+ */
+export const FOLD_DEFAULT_WEEKEND_DAYS = [
+  "sat",
+  "sun",
+] as const satisfies readonly FoldWeekday[];
+
 /** `YYYY-MM-DD`, structurally. Rejects `2026-5-1`, `2026-05-1`, junk suffixes. */
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Left-pads a 1–2 digit date part to the two digits the format requires. */
 function pad2(value: number): string {
   return value < 10 ? `0${value}` : `${value}`;
+}
+
+/**
+ * Left-pads a year to four digits. Year 99 has to render as `0099`, not `99`,
+ * or it sorts before every other date and breaks the whole comparison model.
+ */
+function pad4(value: number): string {
+  if (value >= 1000) {
+    return `${value}`;
+  }
+  if (value >= 100) {
+    return `0${value}`;
+  }
+  return value >= 10 ? `00${value}` : `000${value}`;
 }
 
 /**
@@ -81,13 +131,18 @@ function toUtcMs(date: FoldCalendarDate): number {
   const year = Number(date.slice(0, 4));
   const month = Number(date.slice(5, 7));
   const day = Number(date.slice(8, 10));
-  return Date.UTC(year, month - 1, day);
+  const at = new Date(Date.UTC(year, month - 1, day));
+  // `Date.UTC` maps years 0–99 onto 1900–1999; only `setUTCFullYear` undoes it.
+  if (year < 100) {
+    at.setUTCFullYear(year, month - 1, day);
+  }
+  return at.getTime();
 }
 
 /** UTC midnight milliseconds back to `YYYY-MM-DD`. */
 function fromUtcMs(ms: number): FoldCalendarDate {
   const at = new Date(ms);
-  return `${at.getUTCFullYear()}-${pad2(at.getUTCMonth() + 1)}-${pad2(at.getUTCDate())}`;
+  return `${pad4(at.getUTCFullYear())}-${pad2(at.getUTCMonth() + 1)}-${pad2(at.getUTCDate())}`;
 }
 
 /**
@@ -96,7 +151,20 @@ function fromUtcMs(ms: number): FoldCalendarDate {
  * workspace clock).
  */
 export function foldToday(now: Date = new Date()): FoldCalendarDate {
-  return `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
+  return foldFromNativeDate(now);
+}
+
+/**
+ * A native `Date` read as the plain date it shows on a **local** clock — the
+ * inbound bridge, and the one conversion every consumer would otherwise write
+ * by hand as `date.toISOString().slice(0, 10)`, which is UTC and therefore off
+ * by a day for anyone west of Greenwich after 6pm. That is the exact bug this
+ * whole module exists to remove, so the correct form ships with it.
+ *
+ * Pair with {@link foldToNativeDate} for the way out.
+ */
+export function foldFromNativeDate(date: Date): FoldCalendarDate {
+  return `${pad4(date.getFullYear())}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
 }
 
 /** `date` shifted by `days` (negative moves back). */
@@ -126,14 +194,32 @@ export function foldAddMonths(
   date: FoldCalendarDate,
   months: number,
 ): FoldCalendarDate {
+  const day = Number(date.slice(8, 10));
+  const target = new Date(utcMonthMs(date, months));
+  const lastDay = new Date(
+    lastDayOfMonthMs(target.getUTCFullYear(), target.getUTCMonth()),
+  ).getUTCDate();
+  return `${pad4(target.getUTCFullYear())}-${pad2(target.getUTCMonth() + 1)}-${pad2(Math.min(day, lastDay))}`;
+}
+
+/** The 1st of `date`'s month shifted by `months`, in epoch ms. */
+function utcMonthMs(date: FoldCalendarDate, months: number): number {
   const year = Number(date.slice(0, 4));
   const month = Number(date.slice(5, 7));
-  const day = Number(date.slice(8, 10));
-  const target = new Date(Date.UTC(year, month - 1 + months, 1));
-  const lastDay = new Date(
-    Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0),
-  ).getUTCDate();
-  return `${target.getUTCFullYear()}-${pad2(target.getUTCMonth() + 1)}-${pad2(Math.min(day, lastDay))}`;
+  const at = new Date(Date.UTC(year, month - 1 + months, 1));
+  if (year < 100) {
+    at.setUTCFullYear(year, month - 1 + months, 1);
+  }
+  return at.getTime();
+}
+
+/** Day 0 of the following month — i.e. the last day of this one, in epoch ms. */
+function lastDayOfMonthMs(year: number, monthIndex: number): number {
+  const at = new Date(Date.UTC(year, monthIndex + 1, 0));
+  if (year < 100) {
+    at.setUTCFullYear(year, monthIndex + 1, 0);
+  }
+  return at.getTime();
 }
 
 /** The first day of `date`'s month. */
@@ -145,7 +231,7 @@ export function foldStartOfMonth(date: FoldCalendarDate): FoldCalendarDate {
 export function foldEndOfMonth(date: FoldCalendarDate): FoldCalendarDate {
   const year = Number(date.slice(0, 4));
   const month = Number(date.slice(5, 7));
-  return fromUtcMs(Date.UTC(year, month, 0));
+  return fromUtcMs(lastDayOfMonthMs(year, month - 1));
 }
 
 /**
@@ -176,15 +262,26 @@ export function foldWeekdayIndex(
   );
 }
 
+/** Which day of the week `date` falls on, anchor-independent. */
+export function foldWeekdayOf(date: FoldCalendarDate): FoldWeekday {
+  return WEEKDAY_AT[new Date(toUtcMs(date)).getUTCDay()] ?? "sun";
+}
+
 /**
- * Whether `date` falls on the two days that close the week — the pair a
- * calendar shades, derived from the anchor rather than hard-coded to Sat/Sun.
+ * Whether `date` is one of the days a calendar shades as the weekend.
+ *
+ * Takes the weekend **as data**, because it is not derivable from the week's
+ * anchor: the two are independent locale facts. Deriving it — "the last two
+ * columns" — shades Friday and Saturday on a Sunday-first calendar and calls
+ * Sunday a working day, which is wrong everywhere it is used.
+ *
+ * @default FOLD_DEFAULT_WEEKEND_DAYS (`['sat', 'sun']`)
  */
-export function foldIsWeekEnd(
+export function foldIsWeekend(
   date: FoldCalendarDate,
-  weekStartsOn: FoldWeekday = "mon",
+  weekendDays: readonly FoldWeekday[] = FOLD_DEFAULT_WEEKEND_DAYS,
 ): boolean {
-  return foldWeekdayIndex(date, weekStartsOn) >= 5;
+  return weekendDays.includes(foldWeekdayOf(date));
 }
 
 /**

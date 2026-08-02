@@ -17,7 +17,7 @@ import {
   foldDaysBetween,
   foldEndOfMonth,
   foldIsCalendarDate,
-  foldIsWeekEnd,
+  foldIsWeekend,
   foldStartOfMonth,
   foldStartOfWeek,
   foldToday,
@@ -96,9 +96,9 @@ export default class CalendarDatesPage {
         note: "0 on the anchor — the column the day occupies in a 7-wide grid",
       },
       {
-        call: `foldIsWeekEnd("${date}", "${anchor}")`,
-        result: String(foldIsWeekEnd(date, anchor)),
-        note: "the two closing days, derived from the anchor, not hard-coded",
+        call: `foldIsWeekend("${date}")`,
+        result: String(foldIsWeekend(date)),
+        note: 'the weekend is its own input — not "the last two columns", which shades Fri+Sat on a Sunday-first calendar',
       },
       {
         call: `foldStartOfMonth("${date}")`,

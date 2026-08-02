@@ -62,7 +62,7 @@ All notable changes to **fold-ng** are documented here. The format follows
   `fold-calendar-day` and `fold-calendar-list`.** Where the month grid packs
   spans into lanes, these simply list what covers each day — so nothing is
   clipped and no lane budget can hide anything. `week` is seven day columns;
-  `day` is one day in full, with an `[empty]` slot for a "new request" action
+  `day` is one day in full, with a tag-qualified `button[empty]` slot for a "new request" action
   when nothing sits on it; `list` is the flat chronological reading, each row
   led by its span (formatted with `Intl`'s own range formatter, which collapses
   a single day to one date and factors out a shared month). All three take the
@@ -82,8 +82,14 @@ All notable changes to **fold-ng** are documented here. The format follows
   `Date.UTC`, so no DST boundary can repeat or skip a day. Ships with
   `foldToday`, `foldAddDays`, `foldAddMonths`, `foldStartOfWeek`,
   `foldStartOfMonth`, `foldEndOfMonth`, `foldDaysBetween`, `foldWeekdayIndex`,
-  `foldIsWeekEnd`, `foldIsCalendarDate` and `foldToNativeDate`, plus the layout
-  entry points `foldBuildMonthGrid`, `foldEventsOnDay` and `foldEventsInRange`.
+  `foldWeekdayOf`, `foldIsWeekend`, `foldIsCalendarDate`, `foldToNativeDate` and
+  `foldFromNativeDate` (the inbound bridge — the conversion every consumer would
+  otherwise write as `toISOString().slice(0, 10)`, which is the very timezone bug
+  this design exists to remove), plus the layout entry points
+  `foldBuildMonthGrid`, `foldBuildWeek`, `foldBuildDay`, `foldEventsOnDay`,
+  `foldEventsInRange` and `foldFilterBySource`. Supported range is
+  `0001-01-01`–`9999-12-31`: the four-digit year is what makes the lexicographic
+  guarantee hold, so it is enforced rather than assumed.
   `fold-timeline` keeps a native `Date` on purpose — it plots dated _instants_,
   which is the other domain.
 - **Month and weekday names come from `Intl`, not from a label token.** The
@@ -91,6 +97,34 @@ All notable changes to **fold-ng** are documented here. The format follows
   hand-translating twelve month names; `FoldCalendarLabels` (with
   `provideFoldCalendarLabels`) covers only what `Intl` cannot supply — the today
   marker, the overflow chip and the event count.
+
+- **Everything the calendar draws _around_ an event is a projectable template.**
+  The chip was replaceable from day one; the containers were not, which had it
+  backwards — an app could restyle the smallest unit and not the cell behind it.
+  Four more `<ng-template>` seams, each with a typed context and an
+  `ngTemplateContextGuard` (so `let-` variables are real types under
+  `strictTemplates`, not `any`): **`foldCalendarDay`** replaces the inside of a
+  month cell — the hook for a public holiday, a closure, "3/8 staffed";
+  **`foldCalendarHeading`** replaces the agenda's day heading;
+  **`foldCalendarTitle`** replaces the toolbar's `<h2>`, which also lets a page
+  give the title the heading level its outline needs; **`foldCalendarOverflow`**
+  replaces the `+N` chip. Alongside them, `dayModifiers: (day) => string[]`
+  emits an app's own names as one `data-fold-day-modifiers` attribute, matchable
+  with `[data-fold-day-modifiers~="holiday"]` — so nobody has to write CSS
+  against an internal class name. `foldCalendarEvent` is now generic too, so
+  `event.data` comes back as the app's own record.
+- **The view switch is open.** `FoldCalendarView` keeps the four built-ins as
+  autocompleting literals but accepts any string, and `views` takes
+  `{ value, label }` — so an app's own reading (a resource grid, a timeline) can
+  sit in the same toolbar without the library knowing about it. Paging and
+  titling an unrecognised view fall back to month semantics, which always lands
+  on a real date.
+- **A `FoldCalendarDay` now carries its own `eventCount` and `hiddenCount`.**
+  Both were previously recomputed per cell per change-detection cycle (an O(N)
+  filter, with an allocation, 35 times a tick) or exposed as a positional
+  `hiddenByDay` array only readable when crossed with the row's dates. Counting
+  once while the grid is built is both cheaper and self-describing, and it is
+  what lets a day cell announce "5 events, 2 not shown".
 
 ### Changed
 
@@ -105,6 +139,104 @@ All notable changes to **fold-ng** are documented here. The format follows
   not a header. `fold-tabs` is unaffected (an in-place widget, not a bar that
   introduces following content). Purely additive spacing — the layout's own
   rendering is unchanged.
+
+- **The weekend is its own input, because it is its own fact.**
+  `foldIsWeekEnd(date, weekStartsOn)` defined the weekend as "the last two
+  columns", which shades **Friday and Saturday** on a Sunday-first calendar and
+  calls Sunday a working day. Replaced by `foldIsWeekend(date, weekendDays)`
+  with a `weekendDays` input (default `['sat', 'sun']`) on the month and week
+  views — the anchor moves the columns, it does not move the days people rest
+  on, and a Saturday-first calendar resting Fri+Sat is now expressible.
+- **`foldRangeForView('list')` returns the month, not the painted grid.** It
+  shared the month branch, so a May list showed late-April events: a month view
+  paints padding days and needs their events, a list has none.
+- **A projected template replaces a list row's whole inside**, as it already did
+  in the other four views. The bar and the date used to render outside the
+  branch, so the same template rendered differently depending on which view
+  hosted it, and a one-element template landed in a four-column grid.
+- **The month day cell is a `gridcell`, not a `<button>` wearing the role.**
+  `role="gridcell"` on a button replaces its native role, so activation is now
+  wired explicitly (`Enter`/`Space`) and the cell is the focusable widget the
+  ARIA grid pattern asks for. `role="grid"` and its accessible name moved onto
+  the host, which also removes the second root the keyboard helper had to find.
+- **`fold-calendar-week`'s `date` is a plain input.** It was a
+  `model.required` that the component never wrote to — a two-way binding
+  promising something it does not do. Pair it with the toolbar, which does own
+  the paging.
+- **The five views share one host directive for their chrome.** Labels, locale
+  and the projected chip template were eight identical lines copied five times,
+  and the `Intl.DateTimeFormat` option bags were duplicated with small
+  divergences — which is how the day view came to ask for
+  `{ weekday: 'long', month: 'long' }` and print "Saturday May", a phrase in no
+  locale. There is now one table of formats (`FOLD_CALENDAR_FORMATS`) and one
+  cache keyed by locale.
+- **Tones are written once.** The four roles were reimplemented in three places
+  (the month's bands, the shared chip, the list's rows, which had drifted into
+  its own copy); they are now one mixin parameterised by selector.
+- **RTL decorations follow the reading direction.** Continuation edges, the
+  chevrons, the cell separators and the chip padding were physical properties,
+  so a right-to-left calendar squared off the wrong side. All logical now.
+- **The label token drops `dateRange`** (declared, translated by consumers,
+  used nowhere — `Intl.formatRange` already orders a span per locale) and gains
+  `hiddenCount`, `agendaModes` and `agendaMore`.
+
+### Fixed
+
+- **Two events sharing an `id` no longer merge into one.** The layout keyed its
+  identity map on the id alone, so a duplicate was indistinguishable from an
+  explicit `groupId`: the second event was **never rendered**, both bands showed
+  the first one's label, a bogus group counter appeared, and the four column
+  views threw `NG0955` on their `track event.id`. Duplicates now stay separate,
+  with a dev-mode warning naming the id.
+- **`maxLanes` is clamped in one place, and coerced from an attribute.** The
+  invariant lived in two and only one enforced it: `maxLanes="2"` as a string
+  built an overflow row of `"22"`, a negative value made `repeat(-5, …)` and the
+  CSS parser dropped the whole `grid-template-rows` rule, and `NaN` **disabled
+  the lane budget entirely** (`lane >= NaN` is never true) so nothing was ever
+  counted as hidden.
+- **A reversed range (`end < start`) is put back in order.** Left alone it
+  rendered _twice, wrongly_: `grid-column: 5 / 2`, which CSS Grid silently
+  swaps, so a band covered four days that every other view — asking
+  `start <= day && end >= day` — reported as empty. Same input, two
+  contradictory renders, no error.
+- **A month that is not a date yields no grid, and says so.** `foldIsCalendarDate`
+  existed, was tested, and was called by nothing: `month="not-a-date"` produced
+  a `role="grid"` with headers and zero rows, and `month="2026-13-45"` produced
+  a December calendar displayed with total confidence.
+- **A collapsed group shows its most severe member.** It kept the first event in
+  document order and merged only the dates, so a cancelled first member greyed
+  out a whole group containing an alert, and an open-ended member inside a
+  closed group had its open edge dropped — a contract with no end drawn as
+  finished. Open edges are now the OR of the members, and the representative is
+  the most severe by tone (ties to document order), so tone, icon, label and
+  source all come from one event that really exists.
+- **The agenda's `limit` can no longer empty the rail.** `limit: 0` printed
+  "Nothing to handle — all up to date." directly under a badge saying otherwise,
+  and `NaN` did the same (`slice(0, NaN)` returns nothing). It now clamps to at
+  least one day and reports what it cut off, so "there is more" stops rendering
+  as "there is nothing".
+- **Paging with the keyboard twice in a row keeps the focus.** The deferred
+  focus target was a signal that was never reset, so repeating the _same_
+  transition wrote the same value, the effect did not re-run, and focus fell
+  onto `<body>`. The request is now consumed, and applied in an
+  `afterNextRender` rather than an `effect` — the ordering of an effect against
+  the DOM it wants to touch is not contracted, and has already changed between
+  Angular versions.
+- **The day view's `[empty]` slot no longer swallows a child.** `empty` is also
+  an input on `fold-data-table` and `fold-field`; an unqualified selector
+  captured either of them, and with no default slot the child simply vanished
+  (rule 4.8). Tag-qualified, with a default slot behind it and a projection test.
+- **Years below 100 no longer jump 1900 years.** `Date.UTC(99, …)` means 1999,
+  so `foldAddDays("0099-12-31", 1)` returned `"2000-01-01"`. Years are also
+  zero-padded to four digits, without which they sort before every other date.
+- **`foldFilterBySource` accepts `null`** — the initial value of the very model
+  it exists to consume. Every caller was writing the same ternary; the gallery
+  did too.
+- **The band icon takes the tone's colour**, and the collapsed agenda spine
+  names the slice it will open into rather than always saying "To handle". The
+  agenda's slice switch has its own accessible name instead of repeating the
+  rail's, and its badge honours a caller's `isActionable`, so it can no longer
+  disagree with the list under it.
 
 ## [0.7.0] - 2026-07-29
 

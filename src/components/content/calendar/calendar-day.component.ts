@@ -1,21 +1,10 @@
 import { NgTemplateOutlet } from "@angular/common";
-import {
-  Component,
-  computed,
-  contentChild,
-  inject,
-  input,
-  output,
-} from "@angular/core";
+import { Component, computed, inject, input, output } from "@angular/core";
 
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import { foldToNativeDate, type FoldCalendarDate } from "./calendar-date";
-import { FoldCalendarEventDirective } from "./calendar-event.directive";
-import {
-  FOLD_CALENDAR_LABELS,
-  type FoldCalendarLabels,
-} from "./calendar-labels";
-import { foldEventsOnDay } from "./calendar-layout";
+import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
+import type { FoldCalendarDate } from "./calendar-date";
+import { foldEventsOnDay } from "./calendar-filters";
 import type { FoldCalendarEvent } from "./calendar.types";
 
 /**
@@ -34,10 +23,27 @@ import type { FoldCalendarEvent } from "./calendar.types";
  * | `locale` | `string`                 | runtime | Drives the header through `Intl`. |
  * | `labels` | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
  *
+ * ## Outputs
+ * | Output       | Payload                | Fires on |
+ * |--------------|------------------------|----------|
+ * | `eventClick` | `FoldCalendarEvent<T>` | A chip activated. |
+ *
  * ## Slots
- * | Attribute | Region |
- * |-----------|--------|
- * | `empty`   | Rendered under the empty message — the place for a "new request" action. |
+ * | Selector                       | Region |
+ * |--------------------------------|--------|
+ * | `button[empty]`, `a[empty]`, `div[empty]` | Under the empty message — the place for a "new request" action. |
+ * | *(default)*                    | After the list. |
+ *
+ * The `empty` slot is **tag-qualified** (rule 4.8): `empty` is also an input on
+ * `fold-field` and `fold-data-table`, and a bare `[empty]` selector would
+ * capture either of them whole.
+ *
+ * ## Theming
+ * | CSS variable                       | Default | Sets |
+ * |------------------------------------|---------|------|
+ * | `--fold-calendar-day-number-size`  | `--fold-text-3xl` | The big day number. |
+ * | `--fold-calendar-bar-width`        | `3px`   | The tone bar down a chip's leading edge. |
+ * | `--fold-calendar-band-radius`      | `--fold-radius-sm` | Chip corners. |
  *
  * @selector `fold-calendar-day`
  *
@@ -54,33 +60,23 @@ import type { FoldCalendarEvent } from "./calendar.types";
   imports: [NgTemplateOutlet, FoldIconComponent],
   templateUrl: "./calendar-day.component.html",
   styleUrl: "./calendar-day.component.scss",
+  hostDirectives: [
+    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+  ],
 })
-export class FoldCalendarDayComponent<T> {
+export class FoldCalendarDayComponent<T = unknown> {
   /** The day on display. */
   readonly date = input.required<FoldCalendarDate>();
   /** Events to filter down to this day. */
   readonly events = input<readonly FoldCalendarEvent<T>[]>([]);
   /** The day to mark as today. */
   readonly today = input<FoldCalendarDate>();
-  /** BCP-47 tag for the header. */
-  readonly locale = input<string>();
-  /** Per-instance label overrides (merged over the app-wide / English defaults). */
-  readonly labels = input<Partial<FoldCalendarLabels>>();
 
   /** A chip was activated. */
   readonly eventClick = output<FoldCalendarEvent<T>>();
 
-  private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
-  private readonly projectedEvent = contentChild(FoldCalendarEventDirective);
-
-  protected readonly l = computed<FoldCalendarLabels>(() => ({
-    ...this.injectedLabels,
-    ...this.labels(),
-  }));
-
-  protected readonly eventContent = computed(
-    () => this.projectedEvent()?.template ?? null,
-  );
+  /** Labels, locale and the projected chip template — see the directive. */
+  protected readonly chrome = inject(FoldCalendarChromeDirective);
 
   protected readonly dayEvents = computed<readonly FoldCalendarEvent<T>[]>(() =>
     foldEventsOnDay(this.events(), this.date()),
@@ -88,12 +84,14 @@ export class FoldCalendarDayComponent<T> {
 
   protected readonly isToday = computed(() => this.date() === this.today());
 
+  /** `Saturday` — the weekday alone; the month sits beside the number. */
   protected readonly weekdayName = computed(() =>
-    new Intl.DateTimeFormat(this.locale(), {
-      weekday: "long",
-      month: "long",
-      timeZone: "UTC",
-    }).format(foldToNativeDate(this.date())),
+    this.chrome.format(this.date(), "weekdayLong"),
+  );
+
+  /** `May` — read with the day number, which is why it is not in the line above. */
+  protected readonly monthName = computed(() =>
+    this.chrome.format(this.date(), "monthLong"),
   );
 
   protected readonly dayOfMonth = computed(() =>
@@ -102,10 +100,7 @@ export class FoldCalendarDayComponent<T> {
 
   /** The header's accessible name: the full date, plus the today marker. */
   protected readonly headerLabel = computed(() => {
-    const full = new Intl.DateTimeFormat(this.locale(), {
-      dateStyle: "long",
-      timeZone: "UTC",
-    }).format(foldToNativeDate(this.date()));
-    return this.isToday() ? `${full}, ${this.l().today}` : full;
+    const full = this.chrome.format(this.date(), "dateFull");
+    return this.isToday() ? `${full}, ${this.chrome.l().today}` : full;
   });
 }

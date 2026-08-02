@@ -6,12 +6,14 @@ import {
   foldDaysBetween,
   foldEndOfMonth,
   foldIsCalendarDate,
-  foldIsWeekEnd,
+  foldFromNativeDate,
+  foldIsWeekend,
   foldStartOfMonth,
   foldStartOfWeek,
   foldToNativeDate,
   foldToday,
   foldWeekdayIndex,
+  foldWeekdayOf,
 } from "./calendar-date";
 
 describe("foldIsCalendarDate", () => {
@@ -164,18 +166,33 @@ describe("foldWeekdayIndex", () => {
   });
 });
 
-describe("foldIsWeekEnd", () => {
-  it("flags the two closing days of a Monday-anchored week", () => {
-    expect(foldIsWeekEnd("2026-05-23")).toBe(true); // Saturday
-    expect(foldIsWeekEnd("2026-05-24")).toBe(true); // Sunday
-    expect(foldIsWeekEnd("2026-05-22")).toBe(false); // Friday
+describe("foldWeekdayOf", () => {
+  it("names the day, whatever a calendar's anchor is", () => {
+    expect(foldWeekdayOf("2026-05-18")).toBe("mon");
+    expect(foldWeekdayOf("2026-05-23")).toBe("sat");
+    expect(foldWeekdayOf("2026-05-24")).toBe("sun");
+  });
+});
+
+describe("foldIsWeekend", () => {
+  it("defaults to Saturday and Sunday", () => {
+    expect(foldIsWeekend("2026-05-23")).toBe(true); // Saturday
+    expect(foldIsWeekend("2026-05-24")).toBe(true); // Sunday
+    expect(foldIsWeekend("2026-05-22")).toBe(false); // Friday
   });
 
-  it("follows the anchor rather than hard-coding Sat/Sun", () => {
-    // Anchored on Sunday, the closing pair becomes Friday + Saturday.
-    expect(foldIsWeekEnd("2026-05-22", "sun")).toBe(true);
-    expect(foldIsWeekEnd("2026-05-23", "sun")).toBe(true);
-    expect(foldIsWeekEnd("2026-05-24", "sun")).toBe(false);
+  it("does NOT move with the week's anchor — the two are separate facts", () => {
+    // The bug this replaced: "the last two columns" shaded Fri+Sat on a
+    // Sunday-anchored calendar and treated Sunday as a working day.
+    expect(foldIsWeekend("2026-05-22")).toBe(false); // still a Friday
+    expect(foldIsWeekend("2026-05-24")).toBe(true); // still a Sunday
+  });
+
+  it("takes the resting days as data", () => {
+    // Much of the Middle East rests Friday + Saturday.
+    expect(foldIsWeekend("2026-05-22", ["fri", "sat"])).toBe(true);
+    expect(foldIsWeekend("2026-05-24", ["fri", "sat"])).toBe(false);
+    expect(foldIsWeekend("2026-05-23", [])).toBe(false);
   });
 });
 
@@ -207,5 +224,50 @@ describe("foldToNativeDate", () => {
       timeZone: "UTC",
     }).format(foldToNativeDate("2026-05-18"));
     expect(label).toBe("Monday");
+  });
+});
+
+describe("foldFromNativeDate", () => {
+  it("reads the day the clock shows, not the UTC one", () => {
+    // `date.toISOString().slice(0, 10)` — the shape every consumer would
+    // otherwise write — returns the 19th here for anyone east of Greenwich,
+    // and the 17th for anyone far enough west. That is the whole bug class.
+    expect(foldFromNativeDate(new Date(2026, 4, 18, 23, 30, 0))).toBe(
+      "2026-05-18",
+    );
+    expect(foldFromNativeDate(new Date(2026, 4, 18, 0, 30, 0))).toBe(
+      "2026-05-18",
+    );
+  });
+
+  it("round-trips with foldToNativeDate", () => {
+    expect(foldFromNativeDate(foldToNativeDate("2026-05-18"))).not.toBe("");
+    expect(foldToday(new Date(2026, 0, 3))).toBe(
+      foldFromNativeDate(new Date(2026, 0, 3)),
+    );
+  });
+});
+
+describe("year bounds", () => {
+  it("does not shift a two-digit year into the 20th century", () => {
+    // `Date.UTC(99, …)` means 1999, so an unguarded add turned 0099-12-31 into
+    // 2000-01-01 — a 1901-year jump, silently.
+    expect(foldAddDays("0099-12-31", 1)).toBe("0100-01-01");
+    expect(foldAddDays("0001-01-01", 1)).toBe("0001-01-02");
+    expect(foldDaysBetween("0099-12-31", "0100-01-01")).toBe(1);
+  });
+
+  it("keeps four digits, which is what makes the ordering work", () => {
+    expect(foldAddDays("0100-01-01", -1) < "0100-01-01").toBe(true);
+    expect(foldStartOfMonth("0099-12-31")).toBe("0099-12-01");
+    expect(foldEndOfMonth("0099-02-01")).toBe("0099-02-28");
+  });
+
+  it("walks out of the supported range into a value its own guard rejects", () => {
+    // Past 9999 the string grows a fifth digit and would sort *before* every
+    // other date. Better to produce something `foldIsCalendarDate` refuses
+    // than something that silently reorders a calendar.
+    const overflow = foldAddDays("9999-12-31", 1);
+    expect(foldIsCalendarDate(overflow)).toBe(false);
   });
 });

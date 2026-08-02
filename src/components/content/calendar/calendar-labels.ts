@@ -20,8 +20,12 @@ export interface FoldCalendarLabels {
    * a group into one.
    */
   readonly eventCount: (count: number) => string;
-  /** Accessible reading of a span, so a locale can reorder the bounds. */
-  readonly dateRange: (start: string, end: string) => string;
+  /**
+   * Announced on a day cell that is showing fewer events than it holds — the
+   * lane budget is a visual limit, and a screen reader is told about it rather
+   * than silently given a smaller number.
+   */
+  readonly hiddenCount: (count: number) => string;
   /** Shown by the day view when nothing sits on the day. */
   readonly emptyDay: string;
   /** Shown by the list view when the range holds nothing. */
@@ -41,12 +45,16 @@ export interface FoldCalendarLabels {
   readonly viewList: string;
   /** Accessible name of the agenda rail. */
   readonly agenda: string;
+  /** Accessible name of the rail's slice switch — distinct from the rail itself. */
+  readonly agendaModes: string;
   /** The agenda's two slices, in its own switch. */
   readonly agendaTodo: string;
   readonly agendaUpcoming: string;
   /** Shown when the agenda's current slice is clear. */
   readonly agendaEmptyTodo: string;
   readonly agendaEmptyUpcoming: string;
+  /** Shown when `limit` stopped the rail short of what is actually ahead. */
+  readonly agendaMore: (days: number) => string;
   /** Relative day names the agenda prefers over a date. */
   readonly relativeToday: string;
   readonly relativeTomorrow: string;
@@ -65,7 +73,7 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   today: "today",
   moreEvents: (count) => `+${count} more`,
   eventCount: (count) => (count === 1 ? "1 event" : `${count} events`),
-  dateRange: (start, end) => `${start} to ${end}`,
+  hiddenCount: (count) => `${count} not shown`,
   emptyDay: "Nothing on this day.",
   emptyRange: "Nothing in this range.",
   todayAction: "Today",
@@ -77,10 +85,12 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   viewDay: "Day",
   viewList: "List",
   agenda: "Agenda",
+  agendaModes: "Agenda slice",
   agendaTodo: "To handle",
   agendaUpcoming: "Upcoming",
   agendaEmptyTodo: "Nothing to handle — all up to date.",
   agendaEmptyUpcoming: "Nothing coming up.",
+  agendaMore: (days) => (days === 1 ? "1 more day" : `${days} more days`),
   relativeToday: "Today",
   relativeTomorrow: "Tomorrow",
   collapse: "Collapse",

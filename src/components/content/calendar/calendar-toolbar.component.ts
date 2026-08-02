@@ -1,24 +1,32 @@
-import { Component, computed, inject, input, model } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
+import {
+  Component,
+  computed,
+  contentChild,
+  inject,
+  input,
+  model,
+} from "@angular/core";
 
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import {
   FoldViewToggleComponent,
   type FoldViewToggleOption,
 } from "../../forms/view-toggle/view-toggle.component";
+import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
 import {
   foldToday,
   type FoldCalendarDate,
   type FoldWeekday,
 } from "./calendar-date";
 import {
-  FOLD_CALENDAR_LABELS,
-  type FoldCalendarLabels,
-} from "./calendar-labels";
-import {
+  foldRangeForView,
   foldShiftDate,
   foldViewTitle,
   type FoldCalendarView,
+  type FoldCalendarViewOption,
 } from "./calendar-navigation";
+import { FoldCalendarTitleDirective } from "./calendar-slots.directive";
 
 /**
  * `<fold-calendar-toolbar>` — the chrome above a calendar: jump to today, page
@@ -36,15 +44,27 @@ import {
  * |----------------|--------------------------|---------|---------|
  * | `date`         | `FoldCalendarDate`       | —       | **Two-way.** The period on display. |
  * | `view`         | `FoldCalendarView`       | `'month'` | **Two-way.** Which reading is on screen. |
- * | `views`        | `FoldCalendarView[]`     | all four | Which switches to offer; pass fewer to drop one. |
+ * | `views`        | `(FoldCalendarView \| FoldCalendarViewOption)[]` | all four | Which switches to offer; pass fewer to drop one, or `{ value, label }` to add your own. |
+ * | `today`        | `FoldCalendarDate`       | local clock | Where the "today" button jumps to. |
  * | `weekStartsOn` | `FoldWeekday`            | `'mon'` | How the week view snaps and names itself. |
  * | `locale`       | `string`                 | runtime | Drives the title through `Intl`. |
  * | `labels`       | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
  *
- * ## Slots
- * | Attribute | Region |
- * |-----------|--------|
- * | `actions` | Trailing edge — the page's own buttons ("New event", filters). |
+ * ## Slots & templates
+ * | Selector               | Region |
+ * |------------------------|--------|
+ * | `[actions]`            | Trailing edge — the page's own buttons ("New event", filters). |
+ * | `ng-template[foldCalendarTitle]` | Replaces the `<h2>` title — reword it, or give it the heading level the page's outline needs. |
+ *
+ * ## Theming
+ * | CSS variable                       | Default | Sets |
+ * |------------------------------------|---------|------|
+ * | `--fold-calendar-toolbar-step-size`| `28px`  | The back/forward buttons. |
+ *
+ * ## Extending
+ * `views` accepts an app's own reading — `[views]="['month', {value: 'rooms', label: 'Rooms'}]"`.
+ * Paging and titling an unrecognised view fall back to month semantics, so a
+ * custom view still lands on real dates.
  *
  * ## Accessibility
  * The title is the toolbar's live heading: it carries `aria-live="polite"`, so
@@ -63,52 +83,68 @@ import {
 @Component({
   selector: "fold-calendar-toolbar",
   standalone: true,
-  imports: [FoldIconComponent, FoldViewToggleComponent],
+  imports: [NgTemplateOutlet, FoldIconComponent, FoldViewToggleComponent],
   templateUrl: "./calendar-toolbar.component.html",
   styleUrl: "./calendar-toolbar.component.scss",
+  hostDirectives: [
+    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+  ],
 })
 export class FoldCalendarToolbarComponent {
   /** The period on display. */
   readonly date = model.required<FoldCalendarDate>();
   /** Which reading is on screen. @default 'month' */
   readonly view = model<FoldCalendarView>("month");
-  /** Which switches to offer. @default every view */
-  readonly views = input<readonly FoldCalendarView[]>([
-    "month",
-    "week",
-    "day",
-    "list",
-  ]);
+  /**
+   * Which switches to offer — a built-in name, or `{ value, label }` for a view
+   * the app owns. @default every built-in view
+   */
+  readonly views = input<
+    readonly (FoldCalendarView | FoldCalendarViewOption)[]
+  >(["month", "week", "day", "list"]);
   /** The day the "today" button jumps to; defaults to the local clock. */
   readonly today = input<FoldCalendarDate>();
   /** Day the week starts on. @default 'mon' */
   readonly weekStartsOn = input<FoldWeekday>("mon");
-  /** BCP-47 tag for the title. */
-  readonly locale = input<string>();
-  /** Per-instance label overrides (merged over the app-wide / English defaults). */
-  readonly labels = input<Partial<FoldCalendarLabels>>();
 
-  private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
+  /** Labels and locale — see the directive. */
+  protected readonly chrome = inject(FoldCalendarChromeDirective);
 
-  protected readonly l = computed<FoldCalendarLabels>(() => ({
-    ...this.injectedLabels,
-    ...this.labels(),
-  }));
+  private readonly projectedTitle = contentChild(FoldCalendarTitleDirective);
+
+  /** The custom title template, when one is projected. */
+  protected readonly titleContent = computed(
+    () => this.projectedTitle()?.template ?? null,
+  );
 
   /** The period's name — "May 2026", "18–24 May 2026", "Wednesday 20 May 2026". */
   protected readonly title = computed(() =>
-    foldViewTitle(this.view(), this.date(), this.locale(), this.weekStartsOn()),
+    foldViewTitle(
+      this.view(),
+      this.date(),
+      this.chrome.locale(),
+      this.weekStartsOn(),
+    ),
+  );
+
+  /** The period the title stands for — handed to a projected title template. */
+  protected readonly range = computed(() =>
+    foldRangeForView(this.view(), this.date(), this.weekStartsOn()),
   );
 
   protected readonly options = computed<readonly FoldViewToggleOption[]>(() => {
-    const labels = this.l();
-    const named: Record<FoldCalendarView, string> = {
+    const labels = this.chrome.l();
+    const named: Record<string, string> = {
       month: labels.viewMonth,
       week: labels.viewWeek,
       day: labels.viewDay,
       list: labels.viewList,
     };
-    return this.views().map((view) => ({ value: view, label: named[view] }));
+    return this.views().map((view) =>
+      typeof view === "string"
+        ? { value: view, label: named[view] ?? view }
+        : { value: view.value, label: view.label },
+    );
   });
 
   /** Pages by one period in the units the current view reads in. */
@@ -122,11 +158,11 @@ export class FoldCalendarToolbarComponent {
     this.date.set(this.today() ?? foldToday());
   }
 
-  /** Guards the switch's untyped value before writing it to the model. */
+  /** The switch emits a bare `string`; only a view it actually offers is kept. */
   protected onViewChange(value: string): void {
-    const match = this.views().find((view) => view === value);
-    if (match !== undefined) {
-      this.view.set(match);
+    const offered = this.options().some((option) => option.value === value);
+    if (offered) {
+      this.view.set(value);
     }
   }
 }

@@ -9,7 +9,7 @@
 .foldcalw {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  min-height: var(--fold-calendar-week-height, 320px);
+  min-height: var(--fold-calendar-week-column-height, 320px);
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-md);
   background: var(--fold-color-surface-card);
@@ -27,10 +27,10 @@
   gap: var(--fold-space-sm);
   min-width: 0;
   padding: var(--fold-space-sm);
-  border-right: 1px solid var(--fold-color-border-subtle);
+  border-inline-end: 1px solid var(--fold-color-border-subtle);
 
   &:last-child {
-    border-right: 0;
+    border-inline-end: 0;
   }
 
   &.is-weekend {
@@ -58,7 +58,7 @@
   background: transparent;
   color: inherit;
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 
   &:focus-visible {
@@ -111,7 +111,7 @@
 
   .foldcal-chip {
     gap: var(--fold-space-xs);
-    padding-right: var(--fold-space-xs);
+    padding-inline-end: var(--fold-space-xs);
   }
 }
 

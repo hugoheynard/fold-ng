@@ -741,3 +741,90 @@ fold-app-shell > .content > *:not(router-outlet) {
   background: var(--fold-color-primary);
   color: var(--fold-color-on-primary);
 }
+
+/* Calendar demos: the composed layout belongs here, not inline on the page. */
+.cal-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-md);
+}
+
+.cal-split {
+  display: flex;
+  gap: var(--fold-space-lg);
+  align-items: stretch;
+}
+
+.cal-split > .cal-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* The rail sizes itself; without this the flex row would stretch it. */
+.cal-split > fold-calendar-agenda {
+  flex: 0 0 auto;
+}
+
+.gal-cell--half {
+  flex: 1 1 460px;
+}
+
+.gal-cell--full {
+  flex: 1 1 100%;
+}
+
+/* Calendar composability demo: a consumer's own cell and chip rendering. */
+.cal-daynum {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fold-color-text-secondary);
+}
+
+.cal-flag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fold-color-alert-text);
+}
+
+.cal-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding-inline: 6px;
+  font-size: 11px;
+  /* A lane is one line tall: a custom chip has to truncate, like the built-in. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fold-color-text-muted);
+}
+
+.cal-dot[data-tone="success"] {
+  background: var(--fold-color-success);
+}
+
+.cal-dot[data-tone="warning"] {
+  background: var(--fold-color-warning);
+}
+
+.cal-dot[data-tone="alert"] {
+  background: var(--fold-color-alert);
+}
+
+.cal-more {
+  color: var(--fold-color-text-faded);
+}
+
+/* The playground stage has no height of its own; the rail says what it needs. */
+.cal-pg-rail {
+  --fold-calendar-agenda-height: 340px;
+}

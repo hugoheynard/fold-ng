@@ -94,3 +94,26 @@ describe("foldViewTitle", () => {
     expect(foldViewTitle("month", WEDNESDAY, "fr-FR")).toBe("mai 2026");
   });
 });
+
+describe("foldRangeForView — list", () => {
+  it("scopes to the month itself, not the grid around it", () => {
+    // The month view paints the days either side and needs their events; a
+    // list has no padding days, so an April row in a May list is noise.
+    expect(foldRangeForView("list", "2026-05-18")).toEqual({
+      from: "2026-05-01",
+      to: "2026-05-31",
+    });
+    expect(foldRangeForView("month", "2026-05-18")).toEqual({
+      from: "2026-04-27",
+      to: "2026-05-31",
+    });
+  });
+});
+
+describe("an app's own view", () => {
+  it("pages and titles like a month, so it always lands on a real date", () => {
+    expect(foldShiftDate("rooms", "2026-05-18", 1)).toBe("2026-06-01");
+    expect(foldRangeForView("rooms", "2026-05-18").from).toBe("2026-04-27");
+    expect(foldViewTitle("rooms", "2026-05-18", "en-GB")).toBe("May 2026");
+  });
+});

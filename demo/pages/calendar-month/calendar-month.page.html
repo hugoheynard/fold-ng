@@ -11,7 +11,7 @@
   <gal-kind-badge titleBadge kind="component" />
 
   <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="flex: 1 1 720px">
+    <div class="gal-cell gal-cell--full">
       <span class="gal-tag">
         multi-day bands · tones · half-day edge · open-ended contract
       </span>
@@ -33,7 +33,7 @@
   </div>
 
   <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="flex: 1 1 460px">
+    <div class="gal-cell gal-cell--half">
       <span class="gal-tag"
         >lane budget · each crowded day says how much it lost</span
       >
@@ -54,7 +54,7 @@
       </p>
     </div>
 
-    <div class="gal-cell" style="flex: 1 1 460px">
+    <div class="gal-cell gal-cell--half">
       <span class="gal-tag">grouping · one chip, the union of its members</span>
       <fold-card surface="sunken" style="--fold-card-padding: 0">
         <fold-calendar-month
@@ -69,6 +69,78 @@
         <code>groupId</code> collapse and the chip spans everything it stands
         for.
       </p>
+    </div>
+  </div>
+
+  <div class="gal-row gal-row--wide">
+    <div class="gal-cell gal-cell--full">
+      <span class="gal-tag">
+        composability · every container is a template, not just the chip
+      </span>
+      <fold-card surface="sunken" style="--fold-card-padding: 0">
+        <fold-calendar-month
+          [(month)]="customMonth"
+          [events]="events"
+          [today]="today"
+          [maxLanes]="2"
+          [dayModifiers]="holidays"
+          locale="en-GB"
+          (dayClick)="drillInto($event)"
+          (overflowClick)="drillInto($event)"
+        >
+          <ng-template foldCalendarDay let-day>
+            <span class="cal-daynum">{{ day.dayOfMonth }}</span>
+            @if (isHoliday(day.date)) {
+            <span class="cal-flag">closed</span>
+            }
+          </ng-template>
+
+          <ng-template foldCalendarEvent let-event let-band="band">
+            <span class="cal-chip">
+              <span
+                class="cal-dot"
+                [attr.data-tone]="event.tone ?? 'neutral'"
+              ></span>
+              {{ event.label }} @if (band?.continuesAfter) {
+              <span class="cal-more">…</span>
+              }
+            </span>
+          </ng-template>
+
+          <ng-template foldCalendarOverflow let-count>
+            <span class="cal-flag">{{ count }} hidden</span>
+          </ng-template>
+        </fold-calendar-month>
+      </fold-card>
+      <p class="doc-p">
+        Three templates, no CSS override: <code>foldCalendarDay</code> replaces
+        the cell's inside (here a “closed” flag on two public holidays),
+        <code>foldCalendarEvent</code> replaces the chip — typed, so
+        <code>let-band</code> knows about <code>continuesAfter</code> — and
+        <code>foldCalendarOverflow</code> replaces the <code>+N</code>.
+        <code>dayModifiers</code> puts the app's own names on the cell as
+        <code>data-fold-day-modifiers</code>, matchable with
+        <code>[data-fold-day-modifiers~="holiday"]</code>.
+      </p>
+      <p class="doc-p">
+        Clicking a day drills into it — which is not decoration:
+        <strong>bands are <code>aria-hidden</code></strong> (they span columns,
+        so they cannot be grid cells), so <code>dayClick</code> is the keyboard
+        route to an event. Each cell announces its date, its event count and how
+        many the lane budget is hiding. @if (drilled(); as day) {
+        <span> Drilled into <code>{{ day }}</code>.</span>
+        }
+      </p>
+      @if (drilled(); as day) {
+      <fold-calendar-day
+        [date]="day"
+        [events]="events"
+        [today]="today"
+        locale="en-GB"
+      >
+        <button empty type="button" class="gal-tag">+ New request</button>
+      </fold-calendar-day>
+      }
     </div>
   </div>
 

@@ -8,10 +8,15 @@ import {
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
+  FoldCalendarDayComponent,
+  FoldCalendarDayDirective,
+  FoldCalendarEventDirective,
   FoldCalendarMonthComponent,
+  FoldCalendarOverflowDirective,
   FoldCardComponent,
   FoldPageLayoutComponent,
   type FoldCalendarDate,
+  type FoldCalendarDay,
   type FoldCalendarEvent,
   type FoldWeekday,
 } from "../../../src/public-api";
@@ -155,6 +160,10 @@ const GROUPED: readonly FoldCalendarEvent[] = [
     FoldPageLayoutComponent,
     FoldCardComponent,
     FoldCalendarMonthComponent,
+    FoldCalendarDayComponent,
+    FoldCalendarEventDirective,
+    FoldCalendarDayDirective,
+    FoldCalendarOverflowDirective,
   ],
   templateUrl: "./calendar-month.page.html",
 })
@@ -177,6 +186,28 @@ export default class CalendarMonthPage {
     this.lastOverflow.set(date);
   }
 
+  /* ── composability ── */
+  protected readonly customMonth = signal<FoldCalendarDate>(TODAY);
+  protected readonly drilled = signal<FoldCalendarDate | null>(null);
+
+  /** Two days the calendar cannot know about — the app's own fact. */
+  private readonly holidayDates: ReadonlySet<FoldCalendarDate> = new Set([
+    `${TODAY.slice(0, 7)}-01`,
+    `${TODAY.slice(0, 7)}-08`,
+  ]);
+
+  protected readonly holidays = (day: FoldCalendarDay): readonly string[] =>
+    this.holidayDates.has(day.date) ? ["holiday"] : [];
+
+  protected isHoliday(date: FoldCalendarDate): boolean {
+    return this.holidayDates.has(date);
+  }
+
+  /** The accessible route into a day's events — a real drill-down, not a log. */
+  protected drillInto(date: FoldCalendarDate): void {
+    this.drilled.set(date);
+  }
+
   /* ── playground ── */
   protected readonly pgMonth = signal<FoldCalendarDate>(TODAY);
   protected readonly pgWeekStart = signal<FoldWeekday>("mon");
@@ -192,16 +223,21 @@ export default class CalendarMonthPage {
     "ja-JP",
   ];
 
-  protected readonly playgroundCode = computed(
-    () => `<fold-calendar-month
-  [(month)]="month"
-  [events]="events()"
-  today="${TODAY}"
-  weekStartsOn="${this.pgWeekStart()}"
-  [maxLanes]="${this.pgLanes()}"${this.pgFixed() ? "\n  fixedWeeks" : ""}
-  locale="${this.pgLocale()}"
-  (dayClick)="openDay($event)"
-  (eventClick)="openEvent($event)"
-/>`,
-  );
+  /** Only what differs from the defaults — the snippet is meant to be copied. */
+  protected readonly playgroundCode = computed(() => {
+    const attrs = [
+      `  [(month)]="month"`,
+      `  [events]="events()"`,
+      `  today="${TODAY}"`,
+      ...(this.pgWeekStart() === "mon"
+        ? []
+        : [`  weekStartsOn="${this.pgWeekStart()}"`]),
+      ...(this.pgLanes() === 3 ? [] : [`  [maxLanes]="${this.pgLanes()}"`]),
+      ...(this.pgFixed() ? [`  fixedWeeks`] : []),
+      `  locale="${this.pgLocale()}"`,
+      `  (dayClick)="openDay($event)"`,
+      `  (eventClick)="openEvent($event)"`,
+    ];
+    return `<fold-calendar-month\n${attrs.join("\n")}\n/>`;
+  });
 }

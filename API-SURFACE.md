@@ -92,66 +92,74 @@
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
 - from: InputSignal<string> — required
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
-- limit: InputSignal<number>
-- locale: InputSignal<string | undefined>
+- isActionable: InputSignal<FoldCalendarActionable<T>>
+- limit: InputSignalWithTransform<number, unknown>
 - mode: ModelSignal<FoldCalendarAgendaMode>
+
+### FoldCalendarChromeDirective
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- locale: InputSignal<string | undefined>
 
 ### FoldCalendarDayComponent
 - date: InputSignal<string> — required
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
-- locale: InputSignal<string | undefined>
 - today: InputSignal<string | undefined>
 
+### FoldCalendarDayDirective
+- (no input·model·output bindings)
+
 ### FoldCalendarEventDirective
+- (no input·model·output bindings)
+
+### FoldCalendarHeadingDirective
 - (no input·model·output bindings)
 
 ### FoldCalendarListComponent
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
 - from: InputSignal<string | undefined>
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
-- locale: InputSignal<string | undefined>
 - to: InputSignal<string | undefined>
 
 ### FoldCalendarMonthComponent
 - dayClick: OutputEmitterRef<string>
+- dayModifiers: InputSignal<FoldCalendarDayModifiers | undefined>
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
 - fixedWeeks: InputSignalWithTransform<boolean, unknown>
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
-- locale: InputSignal<string | undefined>
-- maxLanes: InputSignal<number>
+- maxLanes: InputSignalWithTransform<number, unknown>
 - month: ModelSignal<string> — required
 - overflowClick: OutputEmitterRef<string>
 - today: InputSignal<string | undefined>
+- weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
 - weekStartsOn: InputSignal<FoldWeekday>
+
+### FoldCalendarOverflowDirective
+- (no input·model·output bindings)
 
 ### FoldCalendarSourceFilterComponent
 - active: ModelSignal<ReadonlySet<string> | null>
-- events: InputSignal<readonly FoldCalendarEvent<T>[]>
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- events: InputSignal<readonly FoldCalendarEvent<unknown>[]>
+- selectionChange: OutputEmitterRef<ReadonlySet<string>>
 - sources: InputSignal<readonly FoldCalendarSource[]>
+
+### FoldCalendarTitleDirective
+- (no input·model·output bindings)
 
 ### FoldCalendarToolbarComponent
 - date: ModelSignal<string> — required
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
-- locale: InputSignal<string | undefined>
 - today: InputSignal<string | undefined>
 - view: ModelSignal<FoldCalendarView>
-- views: InputSignal<readonly FoldCalendarView[]>
+- views: InputSignal<readonly (FoldCalendarView | FoldCalendarViewOption)[]>
 - weekStartsOn: InputSignal<FoldWeekday>
 
 ### FoldCalendarWeekComponent
-- date: ModelSignal<string> — required
+- date: InputSignal<string> — required
 - dayClick: OutputEmitterRef<string>
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
-- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
-- locale: InputSignal<string | undefined>
 - today: InputSignal<string | undefined>
+- weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
 - weekStartsOn: InputSignal<FoldWeekday>
 
 ### FoldCalloutComponent
@@ -690,6 +698,7 @@
 - FOLD_CALENDAR_LABELS (value)
 - FOLD_DATA_TABLE_DEFAULT_LABELS (value)
 - FOLD_DATA_TABLE_LABELS (value)
+- FOLD_DEFAULT_WEEKEND_DAYS (value)
 - FOLD_INLINE_CONFIRM_DEFAULT_LABELS (value)
 - FOLD_INLINE_CONFIRM_LABELS (value)
 - FOLD_MOTION_TOKENS (value)
@@ -727,19 +736,29 @@
 - FoldButtonIntent (type)
 - FoldButtonShape (type)
 - FoldButtonSize (type)
+- FoldCalendarActionable (type)
+- FoldCalendarAgenda (interface)
 - FoldCalendarAgendaGroup (interface)
 - FoldCalendarAgendaMode (type)
 - FoldCalendarBand (interface)
+- FoldCalendarBuiltInView (type)
 - FoldCalendarDate (type)
 - FoldCalendarDay (interface)
+- FoldCalendarDayContext (interface)
 - FoldCalendarDayEvents (interface)
+- FoldCalendarDayModifiers (type)
 - FoldCalendarEvent (interface)
+- FoldCalendarEventContext (interface)
 - FoldCalendarHalfDay (type)
+- FoldCalendarHeadingContext (interface)
 - FoldCalendarLabels (interface)
+- FoldCalendarOverflowContext (interface)
 - FoldCalendarRange (interface)
 - FoldCalendarSource (interface)
+- FoldCalendarTitleContext (interface)
 - FoldCalendarTone (type)
 - FoldCalendarView (type)
+- FoldCalendarViewOption (interface)
 - FoldCalendarWeek (interface)
 - FoldCalloutAppearance (type)
 - FoldCalloutVariant (type)
@@ -759,14 +778,16 @@
 - foldEventsInRange (function)
 - foldEventsOnDay (function)
 - foldFilterBySource (function)
+- foldFromNativeDate (function)
 - foldHashSeed (function)
 - FoldIconName (type)
 - FoldIconSet (type)
 - FoldIconSize (type)
 - FoldIconTone (type)
 - FoldInlineConfirmLabels (interface)
+- foldIsActionable (function)
 - foldIsCalendarDate (function)
-- foldIsWeekEnd (function)
+- foldIsWeekend (function)
 - FoldMenuItemBadgeTone (type)
 - FoldMenuLevel (type)
 - FoldMenuTint (type)
@@ -836,6 +857,7 @@
 - FoldViewToggleOption (interface)
 - FoldWeekday (type)
 - foldWeekdayIndex (function)
+- foldWeekdayOf (function)
 - observeElementWidth (function)
 - provideFoldCalendarLabels (function)
 - provideFoldDataTableLabels (function)

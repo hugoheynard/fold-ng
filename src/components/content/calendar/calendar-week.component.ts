@@ -1,26 +1,10 @@
 import { NgTemplateOutlet } from "@angular/common";
-import {
-  Component,
-  computed,
-  contentChild,
-  inject,
-  input,
-  model,
-  output,
-} from "@angular/core";
+import { Component, computed, inject, input, output } from "@angular/core";
 
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import {
-  foldToNativeDate,
-  type FoldCalendarDate,
-  type FoldWeekday,
-} from "./calendar-date";
-import { FoldCalendarEventDirective } from "./calendar-event.directive";
-import {
-  FOLD_CALENDAR_LABELS,
-  type FoldCalendarLabels,
-} from "./calendar-labels";
-import { foldBuildWeek } from "./calendar-layout";
+import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
+import { foldBuildWeek } from "./calendar-columns";
+import type { FoldCalendarDate, FoldWeekday } from "./calendar-date";
 import type {
   FoldCalendarDayEvents,
   FoldCalendarEvent,
@@ -36,12 +20,24 @@ import type {
  * ## Inputs
  * | Input          | Type                     | Default | Meaning |
  * |----------------|--------------------------|---------|---------|
- * | `date`         | `FoldCalendarDate`       | —       | **Two-way.** Any date in the week on display. |
+ * | `date`         | `FoldCalendarDate`       | —       | Any date in the week on display. |
  * | `events`       | `FoldCalendarEvent<T>[]` | `[]`    | What to list. |
  * | `today`        | `FoldCalendarDate`       | —       | The day to mark. |
  * | `weekStartsOn` | `FoldWeekday`            | `'mon'` | Which day opens the week. |
+ * | `weekendDays`  | `FoldWeekday[]`          | `['sat','sun']` | Which days are shaded. |
  * | `locale`       | `string`                 | runtime | Drives the column headers through `Intl`. |
  * | `labels`       | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
+ *
+ * `date` is a plain input, not a `model`: this view never pages itself, so
+ * writing back would be a promise it does not keep. Pair it with
+ * `<fold-calendar-toolbar>`, which does own the paging.
+ *
+ * ## Theming
+ * | CSS variable                          | Default | Sets |
+ * |---------------------------------------|---------|------|
+ * | `--fold-calendar-week-column-height`  | `320px` | Height of the day columns. |
+ * | `--fold-calendar-bar-width`           | `3px`   | The tone bar down a chip's leading edge. |
+ * | `--fold-calendar-band-radius`         | `--fold-radius-sm` | Chip corners. |
  *
  * ## Outputs
  * | Output       | Payload                | Fires on |
@@ -74,77 +70,53 @@ import type {
   imports: [NgTemplateOutlet, FoldIconComponent],
   templateUrl: "./calendar-week.component.html",
   styleUrl: "./calendar-week.component.scss",
+  hostDirectives: [
+    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+  ],
 })
-export class FoldCalendarWeekComponent<T> {
+export class FoldCalendarWeekComponent<T = unknown> {
   /** Any date inside the week on display. */
-  readonly date = model.required<FoldCalendarDate>();
+  readonly date = input.required<FoldCalendarDate>();
   /** Events to list under the days they cover. */
   readonly events = input<readonly FoldCalendarEvent<T>[]>([]);
   /** The day to mark as today. */
   readonly today = input<FoldCalendarDate>();
   /** Day the week starts on. @default 'mon' */
   readonly weekStartsOn = input<FoldWeekday>("mon");
-  /** BCP-47 tag for the column headers. */
-  readonly locale = input<string>();
-  /** Per-instance label overrides (merged over the app-wide / English defaults). */
-  readonly labels = input<Partial<FoldCalendarLabels>>();
+  /** Days shaded as the weekend. @default ['sat', 'sun'] */
+  readonly weekendDays = input<readonly FoldWeekday[]>();
 
   /** A column header was activated. */
   readonly dayClick = output<FoldCalendarDate>();
   /** A chip was activated. */
   readonly eventClick = output<FoldCalendarEvent<T>>();
 
-  private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
-  private readonly projectedEvent = contentChild(FoldCalendarEventDirective);
-
-  protected readonly l = computed<FoldCalendarLabels>(() => ({
-    ...this.injectedLabels,
-    ...this.labels(),
-  }));
-
-  protected readonly eventContent = computed(
-    () => this.projectedEvent()?.template ?? null,
-  );
+  /** Labels, locale and the projected chip template — see the directive. */
+  protected readonly chrome = inject(FoldCalendarChromeDirective);
 
   protected readonly columns = computed<readonly FoldCalendarDayEvents<T>[]>(
     () =>
       foldBuildWeek(this.events(), {
         date: this.date(),
         weekStartsOn: this.weekStartsOn(),
+        weekendDays: this.weekendDays(),
         today: this.today(),
       }),
   );
 
-  private readonly weekdayFormatter = computed(
-    () =>
-      new Intl.DateTimeFormat(this.locale(), {
-        weekday: "short",
-        timeZone: "UTC",
-      }),
-  );
-
-  private readonly fullFormatter = computed(
-    () =>
-      new Intl.DateTimeFormat(this.locale(), {
-        dateStyle: "long",
-        timeZone: "UTC",
-      }),
-  );
-
   protected weekdayName(column: FoldCalendarDayEvents<T>): string {
-    return this.weekdayFormatter().format(foldToNativeDate(column.day.date));
+    return this.chrome.format(column.day.date, "weekdayShort");
   }
 
   /** A column's accessible name: its date, the today marker, and what sits on it. */
   protected columnLabel(column: FoldCalendarDayEvents<T>): string {
-    const parts = [
-      this.fullFormatter().format(foldToNativeDate(column.day.date)),
-    ];
+    const labels = this.chrome.l();
+    const parts = [this.chrome.format(column.day.date, "dateFull")];
     if (column.day.isToday) {
-      parts.push(this.l().today);
+      parts.push(labels.today);
     }
-    if (column.events.length > 0) {
-      parts.push(this.l().eventCount(column.events.length));
+    if (column.day.eventCount > 0) {
+      parts.push(labels.eventCount(column.day.eventCount));
     }
     return parts.join(", ");
   }

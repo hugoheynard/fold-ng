@@ -1,21 +1,22 @@
 @if (collapsed()) {
-  <aside class="foldcala is-collapsed" [attr.aria-label]="l().agenda">
+  <aside class="foldcala is-collapsed" [attr.aria-label]="chrome.l().agenda">
     <button
       type="button"
       class="foldcala-spine"
       [attr.aria-expanded]="false"
-      [attr.aria-label]="l().expand"
+      [attr.aria-label]="chrome.l().expand"
       (click)="toggleCollapsed()"
     >
       <fold-icon name="inbox" size="sm" />
       @if (todoCount() > 0) {
         <span class="foldcala-spine-count">{{ todoCount() }}</span>
       }
-      <span class="foldcala-spine-label">{{ l().agendaTodo }}</span>
+      <!-- The spine names what opening the rail will show, not always "todo". -->
+      <span class="foldcala-spine-label">{{ title() }}</span>
     </button>
   </aside>
 } @else {
-  <aside class="foldcala" [attr.aria-label]="l().agenda">
+  <aside class="foldcala" [attr.aria-label]="chrome.l().agenda">
     <header class="foldcala-head">
       <span class="foldcala-title">
         {{ title() }}
@@ -25,10 +26,11 @@
       </span>
 
       <span class="foldcala-head-right">
+        <!-- Its own name: reusing the rail's would nest two regions under one. -->
         <span
           class="foldcala-modes"
           role="group"
-          [attr.aria-label]="l().agenda"
+          [attr.aria-label]="chrome.l().agendaModes"
         >
           <button
             type="button"
@@ -36,7 +38,7 @@
             [attr.aria-pressed]="mode() === 'todo'"
             (click)="toggleMode('todo')"
           >
-            {{ l().agendaTodo }}
+            {{ chrome.l().agendaTodo }}
           </button>
           <button
             type="button"
@@ -44,14 +46,14 @@
             [attr.aria-pressed]="mode() === 'all'"
             (click)="toggleMode('all')"
           >
-            {{ l().agendaUpcoming }}
+            {{ chrome.l().agendaUpcoming }}
           </button>
         </span>
         <button
           type="button"
           class="foldcala-collapse"
           [attr.aria-expanded]="true"
-          [attr.aria-label]="l().collapse"
+          [attr.aria-label]="chrome.l().collapse"
           (click)="toggleCollapsed()"
         >
           <fold-icon name="chevron-right" size="sm" />
@@ -70,13 +72,23 @@
               class="foldcala-date"
               (click)="dayClick.emit(group.date)"
             >
-              <span class="foldcala-daynum">{{ dayNumber(group) }}</span>
-              <span class="foldcala-dmeta">
-                <span class="foldcala-dname">{{ relativeName(group) }}</span>
-                @if (monthName(group)) {
-                  <span class="foldcala-dmonth">{{ monthName(group) }}</span>
-                }
-              </span>
+              @if (headingContent(); as projected) {
+                <ng-container
+                  [ngTemplateOutlet]="projected"
+                  [ngTemplateOutletContext]="{
+                    $implicit: group.date,
+                    events: group.events,
+                  }"
+                />
+              } @else {
+                <span class="foldcala-daynum">{{ dayNumber(group) }}</span>
+                <span class="foldcala-dmeta">
+                  <span class="foldcala-dname">{{ relativeName(group) }}</span>
+                  @if (monthName(group)) {
+                    <span class="foldcala-dmonth">{{ monthName(group) }}</span>
+                  }
+                </span>
+              }
             </button>
 
             <ul class="foldcala-list">
@@ -88,7 +100,7 @@
                     [attr.data-tone]="event.tone ?? 'neutral'"
                     (click)="eventClick.emit(event)"
                   >
-                    @if (eventContent(); as projected) {
+                    @if (chrome.eventContent(); as projected) {
                       <ng-container
                         [ngTemplateOutlet]="projected"
                         [ngTemplateOutletContext]="{
@@ -121,6 +133,12 @@
               }
             </ul>
           </section>
+        }
+
+        <!-- `limit` stopped short of what is ahead: say so, rather than
+             letting the rail look like the end of the story. -->
+        @if (truncated(); as more) {
+          <p class="foldcala-more">{{ chrome.l().agendaMore(more) }}</p>
         }
       }
     </div>

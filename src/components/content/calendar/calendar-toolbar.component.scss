@@ -53,8 +53,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--fold-calendar-step-size, 28px);
-  height: var(--fold-calendar-step-size, 28px);
+  width: var(--fold-calendar-toolbar-step-size, 28px);
+  height: var(--fold-calendar-toolbar-step-size, 28px);
   padding: 0;
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-sm);

@@ -341,6 +341,23 @@ the package root.
 | `FoldPopoverComponent`                                   | `fold-popover`                         | Anchored floating layer — projected content in the native top layer (escapes `overflow`/`z-index`), positioned by a dependency-free **flip → size → shift** engine (`computePlacement`): a tall panel gets a `max-height` and scrolls inside the viewport. `[(open)]`; `autoUpdate` (ResizeObserver); optional `arrow`; native CSS enter/exit (`@starting-style` + `allow-discrete`); outside-click + `Escape` dismissal, focus-return, auto-wired `aria-haspopup`/`expanded`/`controls`.                                                                                                                                                                                                                                                                   |
 | `FoldDropdownComponent`                                  | `fold-dropdown`                        | Actions menu on `fold-popover` — `role="menu"` with `<fold-dropdown-item>`s, ↑/↓ roving, `Home`/`End`, type-ahead; opens onto the first enabled item, closes returning focus to the trigger. Give the trigger `foldPopoverTrigger="menu"`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
+| `FoldCalendarMonthComponent` | `fold-calendar-month` | Month grid where events **span** the days they cover: a date-axis `role="grid"` with one roving tab stop, and over it a lane-packed layer of bands (one per week crossed, with open edges). `+N` chips sit on the crowded day, not at the end of the row. |
+| `FoldCalendarWeekComponent` | `fold-calendar-week` | Seven day columns of stacked chips — nothing spans, so nothing is clipped and every chip is a real button in the tab order. Container-queried: labels and icons drop out before they truncate. |
+| `FoldCalendarDayComponent` | `fold-calendar-day` | One day in full, with room for the subline — where a `dayClick` drill-down lands. Empty state takes a projected action (`button[empty]`). |
+| `FoldCalendarListComponent` | `fold-calendar-list` | The flat reading of the same feed, in date order, each row leading with the span `Intl` formats. Nothing is ever hidden behind a lane budget. |
+| `FoldCalendarAgendaComponent` | `fold-calendar-agenda` | "What's next" rail grouped by day, with a **to-handle** slice (the `warning`/`alert` tones — the same scale the chips paint with) and a live badge. Collapses to a spine; `mode`/`collapsed` are models, so the app owns persistence. |
+| `FoldCalendarToolbarComponent` | `fold-calendar-toolbar` | Today / prev / next / period title / view switch. Owns no data — `date` and `view` are two-way, and the step matches the reading. `views` takes `{ value, label }` for an app's own view. |
+| `FoldCalendarSourceFilterComponent` | `fold-calendar-source-filter` | Chips switching each feed of a merged calendar on and off. Owns the **selection** only; the caller runs the pure `foldFilterBySource()`. |
+
+Calendar dates are plain `YYYY-MM-DD` **strings**, never `Date` — see
+`foldToday` / `foldFromNativeDate` / `foldAddDays` and the reasoning in
+[`/calendar-dates`](https://hugoheynard.github.io/fold-ng/calendar-dates). The
+family plots **whole days only** (there is no time field), on the **Gregorian**
+calendar, **read-only** (no drag, resize or range-select), and has no resource
+(staff × day) view. Everything drawn around an event is a projectable template:
+`foldCalendarEvent`, `foldCalendarDay`, `foldCalendarHeading`,
+`foldCalendarTitle`, `foldCalendarOverflow`.
+
 Directives worth knowing: **`foldSurface`** (`page`·`chrome` — the seam a mixed
 theme re-colours across), **`foldElevated`** (raise any bg-owning element into
 an inset, rounded, shadowed card — the per-surface "floating" mechanism, driven

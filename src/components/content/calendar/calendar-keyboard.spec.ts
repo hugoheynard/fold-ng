@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { foldCalendarNextFocus } from "./calendar-keyboard";
+import { foldCalendarNextFocus, foldFocusDayCell } from "./calendar-keyboard";
 
 /** 2026-05-20 is a Wednesday, mid-week and mid-month — nothing snaps by luck. */
 const WEDNESDAY = "2026-05-20";
@@ -47,5 +47,40 @@ describe("foldCalendarNextFocus", () => {
     expect(foldCalendarNextFocus(" ", WEDNESDAY)).toBeNull();
     expect(foldCalendarNextFocus("a", WEDNESDAY)).toBeNull();
     expect(foldCalendarNextFocus("Tab", WEDNESDAY)).toBeNull();
+  });
+});
+
+describe("foldFocusDayCell", () => {
+  function grid(dates: readonly string[]): HTMLElement {
+    const root = document.createElement("div");
+    for (const date of dates) {
+      const cell = document.createElement("div");
+      cell.setAttribute("data-fold-day", date);
+      cell.tabIndex = -1;
+      root.append(cell);
+    }
+    document.body.append(root);
+    return root;
+  }
+
+  it("focuses a rendered cell and reports it", () => {
+    const root = grid(["2026-05-18", "2026-05-19"]);
+    expect(foldFocusDayCell(root, "2026-05-19")).toBe(true);
+    expect(
+      (document.activeElement as HTMLElement).getAttribute("data-fold-day"),
+    ).toBe("2026-05-19");
+  });
+
+  it("reports a miss when the day is off the grid — the signal to page", () => {
+    expect(foldFocusDayCell(grid(["2026-05-18"]), "2026-06-18")).toBe(false);
+  });
+
+  it("is a no-op with no grid, which is what SSR hands it", () => {
+    expect(foldFocusDayCell(null, "2026-05-18")).toBe(false);
+  });
+
+  it("refuses a value that is not a date rather than building a bad selector", () => {
+    // Interpolated raw, `"] , [x="` is a SyntaxError, not a miss.
+    expect(foldFocusDayCell(grid(["2026-05-18"]), '"] , [x="')).toBe(false);
   });
 });

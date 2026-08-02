@@ -1,98 +1,107 @@
-<div
-  class="foldcal"
-  data-fold-calendar
-  role="grid"
-  [attr.aria-label]="l().grid"
->
-  <div class="foldcal-weekdays" role="row">
-    @for (name of weekdayNames(); track $index) {
-      <span class="foldcal-weekday" role="columnheader">{{ name }}</span>
-    }
-  </div>
+<div class="foldcal-weekdays" role="row">
+  @for (name of weekdayNames(); track $index) {
+    <span class="foldcal-weekday" role="columnheader">{{ name }}</span>
+  }
+</div>
 
-  @for (week of weeks(); track week.start) {
-    <div
-      class="foldcal-week"
-      role="row"
-      [style.gridTemplateRows]="rowTemplate()"
-    >
-      @for (day of week.days; track day.date; let column = $index) {
-        <button
-          type="button"
-          class="foldcal-day"
-          role="gridcell"
-          [attr.data-fold-day]="day.date"
-          [class.is-outside]="!day.inMonth"
-          [class.is-today]="day.isToday"
-          [class.is-weekend]="day.isWeekEnd"
-          [style.gridColumn]="column + 1"
-          [attr.tabindex]="dayTabIndex(day.date)"
-          [attr.aria-label]="dayLabel(day)"
-          [attr.aria-current]="day.isToday ? 'date' : null"
-          (click)="dayClick.emit(day.date)"
-          (focus)="onDayFocus(day.date)"
-          (keydown)="onDayKeydown($event, day.date)"
-        >
+@for (week of weeks(); track week.start) {
+  <div class="foldcal-week" role="row" [style.gridTemplateRows]="rowTemplate()">
+    <!--
+      The cell is the focusable widget, as the ARIA grid pattern asks: a
+      <button> here would have its native role overwritten by role="gridcell",
+      so activation is wired by hand instead.
+    -->
+    @for (day of week.days; track day.date; let column = $index) {
+      <div
+        class="foldcal-day"
+        role="gridcell"
+        [attr.data-fold-day]="day.date"
+        [attr.data-fold-day-modifiers]="dayModifierAttr(day)"
+        [class.is-outside]="!day.inMonth"
+        [class.is-today]="day.isToday"
+        [class.is-weekend]="day.isWeekend"
+        [style.gridColumn]="column + 1"
+        [attr.tabindex]="dayTabIndex(day.date)"
+        [attr.aria-label]="dayLabel(day)"
+        [attr.aria-current]="day.isToday ? 'date' : null"
+        (click)="dayClick.emit(day.date)"
+        (focus)="onDayFocus(day.date)"
+        (keydown)="onDayKeydown($event, day.date)"
+      >
+        @if (dayContent(); as projected) {
+          <ng-container
+            [ngTemplateOutlet]="projected"
+            [ngTemplateOutletContext]="{ $implicit: day }"
+          />
+        } @else {
           <span class="foldcal-daynum">{{ day.dayOfMonth }}</span>
-        </button>
-      }
+        }
+      </div>
+    }
 
-      <!--
-        Bands span columns, so they cannot be gridcells; they are hidden from
-        the a11y tree and each day cell announces its own event count instead.
-      -->
-      @for (band of week.bands; track band.key) {
+    <!--
+      Bands span columns, so they cannot be gridcells; they are hidden from
+      the a11y tree and each day cell announces its own event count instead.
+    -->
+    @for (band of week.bands; track band.key) {
+      <button
+        type="button"
+        class="foldcal-band"
+        aria-hidden="true"
+        tabindex="-1"
+        [attr.data-tone]="band.event.tone ?? 'neutral'"
+        [class.continues-before]="band.continuesBefore"
+        [class.continues-after]="band.continuesAfter"
+        [class.half-start]="band.startHalfDay !== undefined"
+        [class.half-end]="band.endHalfDay !== undefined"
+        [style.gridColumn]="band.startColumn + 1 + ' / ' + (band.endColumn + 2)"
+        [style.gridRow]="band.lane + 2"
+        [attr.title]="bandLabel(band)"
+        (click)="eventClick.emit(band.event)"
+      >
+        @if (chrome.eventContent(); as projected) {
+          <ng-container
+            [ngTemplateOutlet]="projected"
+            [ngTemplateOutletContext]="{ $implicit: band.event, band: band }"
+          />
+        } @else {
+          <span class="foldcal-band-bar"></span>
+          @if (bandIcon(band); as icon) {
+            <fold-icon class="foldcal-band-icon" [name]="icon" size="sm" />
+          }
+          <span class="foldcal-band-label">{{ bandLabel(band) }}</span>
+          @if (band.groupSize > 1) {
+            <span class="foldcal-band-count">{{ band.groupSize }}</span>
+          }
+        }
+      </button>
+    }
+
+    <!-- One chip per crowded day, in that day's own column. -->
+    @for (day of week.days; track day.date; let column = $index) {
+      @if (day.hiddenCount > 0) {
         <button
           type="button"
-          class="foldcal-band"
+          class="foldcal-overflow"
           aria-hidden="true"
           tabindex="-1"
-          [attr.data-tone]="band.event.tone ?? 'neutral'"
-          [class.continues-before]="band.continuesBefore"
-          [class.continues-after]="band.continuesAfter"
-          [class.half-start]="band.startHalfDay !== undefined"
-          [class.half-end]="band.endHalfDay !== undefined"
-          [style.gridColumn]="
-            band.startColumn + 1 + ' / ' + (band.endColumn + 2)
-          "
-          [style.gridRow]="band.lane + 2"
-          [attr.title]="bandLabel(band)"
-          (click)="eventClick.emit(band.event)"
+          [style.gridColumn]="column + 1"
+          [style.gridRow]="overflowRow()"
+          (click)="overflowClick.emit(day.date)"
         >
-          @if (eventContent(); as projected) {
+          @if (overflowContent(); as projected) {
             <ng-container
               [ngTemplateOutlet]="projected"
-              [ngTemplateOutletContext]="{ $implicit: band.event, band: band }"
+              [ngTemplateOutletContext]="{
+                $implicit: day.hiddenCount,
+                date: day.date,
+              }"
             />
           } @else {
-            <span class="foldcal-band-bar"></span>
-            @if (bandIcon(band); as icon) {
-              <fold-icon class="foldcal-band-icon" [name]="icon" size="sm" />
-            }
-            <span class="foldcal-band-label">{{ bandLabel(band) }}</span>
-            @if (band.groupSize > 1) {
-              <span class="foldcal-band-count">{{ band.groupSize }}</span>
-            }
+            {{ chrome.l().moreEvents(day.hiddenCount) }}
           }
         </button>
       }
-
-      <!-- One chip per crowded day, in that day's own column. -->
-      @for (day of week.days; track day.date; let column = $index) {
-        @if (hiddenOn(week, column); as hidden) {
-          <button
-            type="button"
-            class="foldcal-overflow"
-            aria-hidden="true"
-            tabindex="-1"
-            [style.gridColumn]="column + 1"
-            [style.gridRow]="overflowRow()"
-            (click)="overflowClick.emit(day.date)"
-          >
-            {{ l().moreEvents(hidden) }}
-          </button>
-        }
-      }
-    </div>
-  }
-</div>
+    }
+  </div>
+}

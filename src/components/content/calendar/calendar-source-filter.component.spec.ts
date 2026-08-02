@@ -2,7 +2,6 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
 
-import { foldFilterBySource } from "./calendar-layout";
 import { FoldCalendarSourceFilterComponent } from "./calendar-source-filter.component";
 import type { FoldCalendarEvent, FoldCalendarSource } from "./calendar.types";
 
@@ -126,15 +125,34 @@ describe("FoldCalendarSourceFilterComponent", () => {
   });
 });
 
-describe("foldFilterBySource", () => {
-  it("keeps only the active feeds", () => {
-    const kept = foldFilterBySource(EVENTS, new Set(["programme"]));
-    expect(kept.map((e) => e.id)).toEqual(["p1", "p2", "x1"]);
-  });
+describe("FoldCalendarSourceFilterComponent — selectionChange", () => {
+  it("emits a selection that is never null", () => {
+    // `active` starts as null ("nothing off yet"); a handler on the model would
+    // have to eliminate a case that toggling can never produce.
+    @Component({
+      standalone: true,
+      imports: [FoldCalendarSourceFilterComponent],
+      template: `
+        <fold-calendar-source-filter
+          [sources]="sources"
+          [events]="events"
+          (selectionChange)="seen.set($event)"
+        />
+      `,
+    })
+    class EmitHost {
+      readonly sources = SOURCES;
+      readonly events = EVENTS;
+      readonly seen = signal<ReadonlySet<string> | null>(null);
+    }
 
-  it("always passes an event that belongs to no feed", () => {
-    // No chip can hide it, so hiding everything must still leave it through.
-    const kept = foldFilterBySource(EVENTS, new Set());
-    expect(kept.map((e) => e.id)).toEqual(["x1"]);
+    const fixture = TestBed.createComponent(EmitHost);
+    fixture.detectChanges();
+    chip(fixture.nativeElement as HTMLElement, 1).click();
+    fixture.detectChanges();
+
+    const seen = fixture.componentInstance.seen();
+    expect(seen?.has("leave")).toBe(false);
+    expect(seen?.has("programme")).toBe(true);
   });
 });

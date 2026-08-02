@@ -1,23 +1,30 @@
 @if (rows().length === 0) {
-  <p class="foldcall-empty">{{ l().emptyRange }}</p>
+  <p class="foldcall-empty">{{ chrome.l().emptyRange }}</p>
 } @else {
   <ul class="foldcall">
     @for (event of rows(); track event.id) {
       <li>
+        <!--
+          A projected template replaces the row's **whole** inside, exactly as
+          it does in the other four views. Rendering the bar and the date
+          outside the @if would make the same template mean something different
+          here, and drop a one-element template into a four-column grid.
+        -->
         <button
           type="button"
           class="foldcall-row"
+          [class.is-custom]="chrome.eventContent() !== null"
           [attr.data-tone]="event.tone ?? 'neutral'"
           (click)="eventClick.emit(event)"
         >
-          <span class="foldcall-bar"></span>
-          <span class="foldcall-when">{{ rangeLabel(event) }}</span>
-          @if (eventContent(); as projected) {
+          @if (chrome.eventContent(); as projected) {
             <ng-container
               [ngTemplateOutlet]="projected"
               [ngTemplateOutletContext]="{ $implicit: event, band: null }"
             />
           } @else {
+            <span class="foldcall-bar"></span>
+            <span class="foldcall-when">{{ rangeLabel(event) }}</span>
             <span class="foldcall-body">
               @if (event.icon; as icon) {
                 <fold-icon class="foldcall-icon" [name]="icon" size="sm" />

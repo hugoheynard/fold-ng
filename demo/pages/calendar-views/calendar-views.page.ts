@@ -6,6 +6,7 @@ import {
 } from "@angular/core";
 
 import { KindBadgeComponent } from "../../components/kind-badge.component";
+import { DevPlaygroundComponent } from "../../components/playground.component";
 import {
   FoldCalendarAgendaComponent,
   FoldCalendarDayComponent,
@@ -22,6 +23,7 @@ import {
   type FoldCalendarEvent,
   type FoldCalendarSource,
   type FoldCalendarView,
+  type FoldWeekday,
 } from "../../../src/public-api";
 
 /** Pinned so the page reads the same every day. */
@@ -103,6 +105,7 @@ const SOURCES: readonly FoldCalendarSource[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     KindBadgeComponent,
+    DevPlaygroundComponent,
     FoldCalendarAgendaComponent,
     FoldCalendarSourceFilterComponent,
     FoldPageLayoutComponent,
@@ -126,10 +129,9 @@ export default class CalendarViewsPage {
   protected readonly agendaCollapsed = signal(false);
 
   /** What survives the chips — the calendar renders this, not the raw feed. */
-  protected readonly visibleEvents = computed(() => {
-    const active = this.activeSources();
-    return active === null ? EVENTS : foldFilterBySource(EVENTS, active);
-  });
+  protected readonly visibleEvents = computed(() =>
+    foldFilterBySource(EVENTS, this.activeSources()),
+  );
 
   /* ── the composed demo: one date, one view, four readings ── */
   protected readonly date = signal<FoldCalendarDate>(TODAY);
@@ -151,4 +153,62 @@ export default class CalendarViewsPage {
   protected readonly weekDate = signal<FoldCalendarDate>(TODAY);
   // 30 May really is clear: the residency ends on the 29th.
   protected readonly emptyDay = signal<FoldCalendarDate>("2026-05-30");
+
+  /* ── toolbar playground ── */
+  protected readonly pgDate = signal<FoldCalendarDate>(TODAY);
+  protected readonly pgView = signal<FoldCalendarView>("month");
+  protected readonly pgWeekStart = signal<FoldWeekday>("mon");
+  protected readonly pgLocale = signal("en-GB");
+  protected readonly pgViews = signal<readonly FoldCalendarView[]>([
+    "month",
+    "week",
+    "day",
+    "list",
+  ]);
+
+  protected readonly viewSets: readonly (readonly FoldCalendarView[])[] = [
+    ["month", "week", "day", "list"],
+    ["month", "list"],
+    ["day"],
+  ];
+  protected readonly weekStarts: readonly FoldWeekday[] = ["mon", "sat", "sun"];
+  protected readonly locales: readonly string[] = ["en-GB", "fr-FR", "ja-JP"];
+
+  protected setViews(set: readonly FoldCalendarView[]): void {
+    this.pgViews.set(set);
+    if (!set.includes(this.pgView())) {
+      this.pgView.set(set[0] ?? "month");
+    }
+  }
+
+  protected readonly toolbarCode = computed(() => {
+    const attrs = [
+      `  [(date)]="date"`,
+      `  [(view)]="view"`,
+      ...(this.pgViews().length === 4
+        ? []
+        : [`  [views]="${JSON.stringify(this.pgViews())}"`]),
+      ...(this.pgWeekStart() === "mon"
+        ? []
+        : [`  weekStartsOn="${this.pgWeekStart()}"`]),
+      `  locale="${this.pgLocale()}"`,
+    ];
+    return `<fold-calendar-toolbar\n${attrs.join("\n")}\n/>`;
+  });
+
+  /* ── agenda playground ── */
+  protected readonly pgMode = signal<"todo" | "all">("todo");
+  protected readonly pgCollapsed = signal(false);
+  protected readonly pgLimit = signal(8);
+
+  protected readonly agendaCode = computed(() => {
+    const attrs = [
+      `  from="${TODAY}"`,
+      `  [events]="events()"`,
+      ...(this.pgMode() === "todo" ? [] : [`  [(mode)]="mode"`]),
+      ...(this.pgCollapsed() ? [`  [(collapsed)]="collapsed"`] : []),
+      ...(this.pgLimit() === 8 ? [] : [`  [limit]="${this.pgLimit()}"`]),
+    ];
+    return `<fold-calendar-agenda\n${attrs.join("\n")}\n/>`;
+  });
 }

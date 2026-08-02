@@ -47,7 +47,15 @@ export interface FoldCalendarEvent<T = unknown> {
   /**
    * Collapses events sharing this key into a single chip carrying a count —
    * for a bulk action that would otherwise flood the grid (a whole team off on
-   * the same days). The first event in document order represents the group.
+   * the same days).
+   *
+   * The chip covers the **union** of the members' ranges, and is open-ended if
+   * **any** member is. Everything else it renders (tone, icon, label, subline,
+   * `sourceKey`) comes from one real member: the most severe by tone
+   * (`alert` → `warning` → `success` → `neutral` → `muted`), ties going to
+   * document order. Picking one event rather than merging fields keeps the chip
+   * something that actually exists in the feed, and stops a first cancelled
+   * member from quietly greying out a group that contains an alert.
    */
   readonly groupId?: string;
   /** Label for the collapsed chip; falls back to the representative's `label`. */
@@ -94,9 +102,32 @@ export interface FoldCalendarDay {
   readonly inMonth: boolean;
   /** Matches the calendar's "today". */
   readonly isToday: boolean;
-  /** One of the two days closing the week, per the configured anchor. */
-  readonly isWeekEnd: boolean;
+  /** Falls on one of the configured weekend days. */
+  readonly isWeekend: boolean;
+  /** How many events cover this day — already counted, so a view never refilters. */
+  readonly eventCount: number;
+  /**
+   * How many of them no lane could take, so this cell is showing fewer events
+   * than it has. Always `0` in the column views, which never drop anything.
+   */
+  readonly hiddenCount: number;
 }
+
+/**
+ * Extra class names for one day cell — the hook for anything the calendar
+ * cannot know: a public holiday, a closure, a blackout, "fully staffed". Each
+ * name is emitted as `data-fold-day-<name>` on the cell, so an app styles it
+ * from its own sheet without reaching for an internal class.
+ *
+ * @example
+ * ```ts
+ * readonly holidays = (day: FoldCalendarDay) =>
+ *   HOLIDAYS.has(day.date) ? ['holiday'] : [];
+ * ```
+ */
+export type FoldCalendarDayModifiers = (
+  day: FoldCalendarDay,
+) => readonly string[];
 
 /**
  * A laid-out slice of one event inside one week row: which columns it covers,
@@ -146,13 +177,10 @@ export interface FoldCalendarWeek<T = unknown> {
   readonly days: readonly FoldCalendarDay[];
   /** Placed bands, ordered by lane then column. */
   readonly bands: readonly FoldCalendarBand<T>[];
-  /** Spans overlapping this week that no lane could take. */
-  readonly hiddenCount: number;
   /**
-   * How many of them each day lost, one entry per column — a hidden span
-   * counts against **every** day it would have covered. This is what the
-   * overflow chips read: a row-wide total says a week is crowded without
-   * saying which day to open.
+   * Spans overlapping this week that no lane could take. What each *day* lost
+   * is on the day itself ({@link FoldCalendarDay.hiddenCount}) — a row-wide
+   * total says a week is crowded without saying which day to open.
    */
-  readonly hiddenByDay: readonly number[];
+  readonly hiddenCount: number;
 }

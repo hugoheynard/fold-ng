@@ -3,8 +3,12 @@ import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
 
 import { FoldCalendarEventDirective } from "./calendar-event.directive";
+import {
+  FoldCalendarDayDirective,
+  FoldCalendarOverflowDirective,
+} from "./calendar-slots.directive";
 import { FoldCalendarMonthComponent } from "./calendar-month.component";
-import type { FoldCalendarEvent } from "./calendar.types";
+import type { FoldCalendarDay, FoldCalendarEvent } from "./calendar.types";
 
 /** May 2026: the 1st is a Friday, the 18th a Monday. */
 const MAY = "2026-05-18";
@@ -405,5 +409,218 @@ describe("FoldCalendarMonthComponent — projection", () => {
       "custom:Kickoff",
     );
     expect(el.querySelector(".foldcal-band-bar")).toBeNull();
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [FoldCalendarMonthComponent, FoldCalendarDayDirective],
+  template: `
+    <fold-calendar-month
+      [(month)]="month"
+      [events]="events()"
+      [dayModifiers]="modifiers"
+      locale="en-GB"
+    >
+      <ng-template foldCalendarDay let-day>
+        <span class="custom-day"
+          >{{ day.dayOfMonth }}·{{ day.eventCount }}</span
+        >
+      </ng-template>
+    </fold-calendar-month>
+  `,
+})
+class DayTemplateHostComponent {
+  readonly month = signal(MAY);
+  readonly events = signal<readonly FoldCalendarEvent[]>([
+    { id: "e1", start: "2026-05-20", end: "2026-05-20", label: "Kickoff" },
+  ]);
+  readonly modifiers = (day: FoldCalendarDay): readonly string[] =>
+    day.date === "2026-05-25" ? ["holiday", "closed"] : [];
+}
+
+@Component({
+  standalone: true,
+  imports: [FoldCalendarMonthComponent, FoldCalendarOverflowDirective],
+  template: `
+    <fold-calendar-month
+      [(month)]="month"
+      [events]="events()"
+      [maxLanes]="1"
+      locale="en-GB"
+    >
+      <ng-template foldCalendarOverflow let-count let-date="date">
+        <span class="custom-more">{{ count }}@{{ date }}</span>
+      </ng-template>
+    </fold-calendar-month>
+  `,
+})
+class OverflowTemplateHostComponent {
+  readonly month = signal(MAY);
+  readonly events = signal<readonly FoldCalendarEvent[]>([
+    { id: "a", start: "2026-05-20", end: "2026-05-20", label: "A" },
+    { id: "b", start: "2026-05-20", end: "2026-05-20", label: "B" },
+  ]);
+}
+
+describe("FoldCalendarMonthComponent — the cell is the widget", () => {
+  it("makes the day a gridcell rather than a button wearing the role", () => {
+    // `role="gridcell"` on a <button> replaces its native role, so the cell is
+    // the focusable widget instead — which is what the grid pattern asks for.
+    const { el } = setup();
+    const cell = dayCell(el, MAY);
+    expect(cell.getAttribute("role")).toBe("gridcell");
+    expect(cell.tagName).not.toBe("BUTTON");
+  });
+
+  it("activates on Enter and Space, as the button it replaced would have", () => {
+    const { fixture, host, el } = setup();
+    const cell = dayCell(el, MAY);
+
+    cell.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(host.clickedDay()).toBe(MAY);
+
+    host.clickedDay.set(null);
+    cell.dispatchEvent(
+      new KeyboardEvent("keydown", { key: " ", bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(host.clickedDay()).toBe(MAY);
+  });
+
+  it("puts the grid role on the host, not on a wrapper", () => {
+    const { el } = setup();
+    const grid = el.querySelector("fold-calendar-month");
+    expect(grid?.getAttribute("role")).toBe("grid");
+    expect(grid?.getAttribute("aria-label")).toBe("Calendar");
+  });
+});
+
+describe("FoldCalendarMonthComponent — accessible names", () => {
+  it("says how many events a day holds", () => {
+    const { fixture, host, el } = setup();
+    host.events.set([
+      { id: "a", start: "2026-05-20", end: "2026-05-20", label: "A" },
+      { id: "b", start: "2026-05-18", end: "2026-05-22", label: "B" },
+    ]);
+    fixture.detectChanges();
+    expect(dayCell(el, "2026-05-20").getAttribute("aria-label")).toContain(
+      "2 events",
+    );
+  });
+
+  it("says how many it is NOT showing, so the lane budget is not silent", () => {
+    const { fixture, host, el } = setup();
+    host.maxLanes.set(1);
+    host.events.set([
+      { id: "a", start: "2026-05-20", end: "2026-05-20", label: "A" },
+      { id: "b", start: "2026-05-20", end: "2026-05-20", label: "B" },
+      { id: "c", start: "2026-05-20", end: "2026-05-20", label: "C" },
+    ]);
+    fixture.detectChanges();
+    const label = dayCell(el, "2026-05-20").getAttribute("aria-label") ?? "";
+    expect(label).toContain("3 events");
+    expect(label).toContain("2 not shown");
+  });
+});
+
+describe("FoldCalendarMonthComponent — lane budget from an attribute", () => {
+  it("coerces a string attribute instead of concatenating it", () => {
+    // `maxLanes="2"` without a transform makes the overflow row `"22"`.
+    @Component({
+      standalone: true,
+      imports: [FoldCalendarMonthComponent],
+      template: `<fold-calendar-month month="2026-05-18" maxLanes="1" />`,
+    })
+    class AttrHost {}
+
+    const fixture = TestBed.createComponent(AttrHost);
+    fixture.detectChanges();
+    const row = (fixture.nativeElement as HTMLElement).querySelector(
+      ".foldcal-week",
+    );
+    expect(row?.getAttribute("style")).toContain("repeat(1,");
+  });
+});
+
+describe("FoldCalendarMonthComponent — day cell template", () => {
+  it("replaces the inside of the cell and hands it the resolved day", () => {
+    const fixture = TestBed.createComponent(DayTemplateHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(dayCell(el, "2026-05-20").textContent?.trim()).toBe("20·1");
+    expect(el.querySelector(".foldcal-daynum")).toBeNull();
+  });
+
+  it("emits the caller's modifiers as one matchable attribute", () => {
+    const fixture = TestBed.createComponent(DayTemplateHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(
+      dayCell(el, "2026-05-25").getAttribute("data-fold-day-modifiers"),
+    ).toBe("holiday closed");
+    expect(
+      dayCell(el, "2026-05-20").getAttribute("data-fold-day-modifiers"),
+    ).toBeNull();
+    // `~=` is what makes one attribute enough for a consumer's own CSS.
+    expect(
+      el.querySelectorAll('[data-fold-day-modifiers~="holiday"]'),
+    ).toHaveLength(1);
+  });
+});
+
+describe("FoldCalendarMonthComponent — overflow template", () => {
+  it("replaces the +N chip and hands it the count and the day", () => {
+    const fixture = TestBed.createComponent(OverflowTemplateHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector(".custom-more")?.textContent).toBe("1@2026-05-20");
+  });
+});
+
+describe("FoldCalendarMonthComponent — paging keeps the focus", () => {
+  async function pageDownFrom(
+    fixture: ComponentFixture<HostComponent>,
+    el: HTMLElement,
+    date: string,
+  ): Promise<void> {
+    const cell = dayCell(el, date);
+    cell.focus();
+    cell.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "PageDown", bubbles: true }),
+    );
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  it("moves focus onto the same day of the next month", async () => {
+    const { fixture, host, el } = setup();
+    await pageDownFrom(fixture, el, MAY);
+
+    expect(host.month()).toBe("2026-06-18");
+    expect(document.activeElement?.getAttribute("data-fold-day")).toBe(
+      "2026-06-18",
+    );
+  });
+
+  it("does it again after the month is put back — the latch is consumed", async () => {
+    // The deferred target used to be a signal that was never reset, so
+    // repeating the *same* transition wrote the same value, the effect did not
+    // re-run, and focus fell onto <body>.
+    const { fixture, host, el } = setup();
+    await pageDownFrom(fixture, el, MAY);
+
+    host.month.set(MAY);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await pageDownFrom(fixture, el, MAY);
+    expect(document.activeElement?.getAttribute("data-fold-day")).toBe(
+      "2026-06-18",
+    );
   });
 });

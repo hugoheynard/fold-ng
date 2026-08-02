@@ -10,7 +10,11 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  height: 100%;
+  // Both are knobs: a rail beside a month grid wants to match its height, one
+  // in a playground or a narrow page wants to say its own. The gallery had to
+  // patch the width inline, which is how we found out.
+  width: var(--fold-calendar-agenda-width, 320px);
+  height: var(--fold-calendar-agenda-height, 100%);
   border: 1px solid var(--fold-color-border);
   border-radius: var(--fold-radius-lg);
   background: var(--fold-color-surface-card);
@@ -20,7 +24,7 @@
 /* ── Collapsed spine ────────────────────────────────────────────── */
 
 .foldcala.is-collapsed {
-  width: var(--fold-calendar-agenda-spine, 44px);
+  width: var(--fold-calendar-agenda-spine-width, 44px);
 }
 
 .foldcala-spine {
@@ -60,7 +64,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--fold-calendar-agenda-badge, 20px);
+  min-width: var(--fold-calendar-agenda-badge-size, 20px);
   padding: 0 var(--fold-space-xs);
   border-radius: var(--fold-radius-pill);
   background: var(--fold-color-warning-surface);
@@ -94,7 +98,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--fold-calendar-agenda-badge, 20px);
+  min-width: var(--fold-calendar-agenda-badge-size, 20px);
   padding: 0 var(--fold-space-xs);
   border-radius: var(--fold-radius-pill);
   background: var(--fold-color-warning-surface);
@@ -143,8 +147,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--fold-calendar-agenda-control, 26px);
-  height: var(--fold-calendar-agenda-control, 26px);
+  width: var(--fold-calendar-agenda-control-size, 26px);
+  height: var(--fold-calendar-agenda-control-size, 26px);
   padding: 0;
   border: 1px solid var(--fold-color-border-subtle);
   border-radius: var(--fold-radius-sm);
@@ -192,7 +196,7 @@
   background: transparent;
   color: inherit;
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 
   &:focus-visible {

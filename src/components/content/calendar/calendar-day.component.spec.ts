@@ -2,6 +2,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
 
+import { FoldDataTableComponent } from "../data-table/data-table.component";
 import { FoldCalendarDayComponent } from "./calendar-day.component";
 import type { FoldCalendarEvent } from "./calendar.types";
 
@@ -101,5 +102,48 @@ describe("FoldCalendarDayComponent", () => {
 
     el.querySelector<HTMLElement>(".foldcal-chip")?.click();
     expect(host.clicked()?.id).toBe("e1");
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [FoldCalendarDayComponent, FoldDataTableComponent],
+  template: `
+    <fold-calendar-day [date]="date" [events]="events">
+      <fold-data-table
+        class="body-child"
+        empty="Nothing here"
+        [columns]="columns"
+        [rows]="rows"
+      />
+    </fold-calendar-day>
+  `,
+})
+class SlotCollisionHostComponent {
+  readonly date = DAY;
+  readonly events: readonly FoldCalendarEvent[] = [
+    { id: "e1", start: DAY, end: DAY, label: "Standup" },
+  ];
+  readonly columns = [{ key: "a", header: "A" }];
+  readonly rows: readonly Record<string, string>[] = [];
+}
+
+describe("FoldCalendarDayComponent — projection (rule 4.8)", () => {
+  it("does not swallow a child whose own input happens to be `empty`", () => {
+    // `empty` is an input on fold-data-table *and* on fold-field. A bare
+    // `[empty]` selector captured either of them into the empty slot — which,
+    // with no default slot, meant the child simply vanished.
+    const fixture = TestBed.createComponent(SlotCollisionHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(el.querySelector(".body-child")).not.toBeNull();
+    expect(el.querySelector(".foldcald-empty")).toBeNull();
+  });
+
+  it("still places a real empty-slot action under the empty message", () => {
+    const { el } = setup();
+    const empty = el.querySelector(".foldcald-empty");
+    expect(empty?.querySelector(".cta")).not.toBeNull();
   });
 });

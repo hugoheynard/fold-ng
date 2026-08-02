@@ -1,9 +1,9 @@
-<div class="foldcalw" [attr.aria-label]="l().grid" role="group">
+<div class="foldcalw" [attr.aria-label]="chrome.l().grid" role="group">
   @for (column of columns(); track column.day.date) {
     <section
       class="foldcalw-col"
       [class.is-today]="column.day.isToday"
-      [class.is-weekend]="column.day.isWeekEnd"
+      [class.is-weekend]="column.day.isWeekend"
       [attr.aria-label]="columnLabel(column)"
     >
       <button
@@ -25,7 +25,7 @@
               [attr.data-tone]="event.tone ?? 'neutral'"
               (click)="eventClick.emit(event)"
             >
-              @if (eventContent(); as projected) {
+              @if (chrome.eventContent(); as projected) {
                 <ng-container
                   [ngTemplateOutlet]="projected"
                   [ngTemplateOutletContext]="{ $implicit: event, band: null }"

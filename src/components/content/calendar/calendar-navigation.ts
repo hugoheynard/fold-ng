@@ -8,6 +8,7 @@ import {
   type FoldCalendarDate,
   type FoldWeekday,
 } from "./calendar-date";
+import { foldCalendarFormatter, foldFormatRange } from "./calendar-format";
 
 /**
  * What "next" means, and what the period on display is called — the two
@@ -15,8 +16,27 @@ import {
  * here as pure functions rather than as a switch inside a component.
  */
 
-/** Which reading of the data is on screen. */
-export type FoldCalendarView = "month" | "week" | "day" | "list";
+/** The four readings the family ships. */
+export type FoldCalendarBuiltInView = "month" | "week" | "day" | "list";
+
+/**
+ * Which reading is on screen.
+ *
+ * The four built-ins **autocomplete**, but the type is open: an app can put its
+ * own reading (a resource grid, a timeline) in the same switch without the
+ * library having to know about it. Paging and titling an unknown view falls
+ * back to month semantics — see {@link foldShiftDate}.
+ */
+export type FoldCalendarView =
+  FoldCalendarBuiltInView | (string & Record<never, never>);
+
+/** A view the toolbar offers, when its name is the app's own. */
+export interface FoldCalendarViewOption {
+  /** What `view` is set to when this one is picked. */
+  readonly value: string;
+  /** What the switch shows. */
+  readonly label: string;
+}
 
 /** An inclusive span of days. */
 export interface FoldCalendarRange {
@@ -28,6 +48,9 @@ export interface FoldCalendarRange {
  * `date` moved by `delta` periods **in the units the view reads in** — a month
  * at a time in the month view, a week in the week view, a day in the day view.
  * The list view follows the month, since that is the window it lists.
+ *
+ * An unrecognised view pages by month, the safest of the four to be wrong
+ * about: it always lands on a real date the other views can also show.
  */
 export function foldShiftDate(
   view: FoldCalendarView,
@@ -35,45 +58,45 @@ export function foldShiftDate(
   delta: number,
   weekStartsOn: FoldWeekday = "mon",
 ): FoldCalendarDate {
-  switch (view) {
-    case "day":
-      return foldAddDays(date, delta);
-    case "week":
-      return foldAddDays(foldStartOfWeek(date, weekStartsOn), delta * 7);
-    case "month":
-    case "list":
-      return foldAddMonths(foldStartOfMonth(date), delta);
+  if (view === "day") {
+    return foldAddDays(date, delta);
   }
+  if (view === "week") {
+    return foldAddDays(foldStartOfWeek(date, weekStartsOn), delta * 7);
+  }
+  return foldAddMonths(foldStartOfMonth(date), delta);
 }
 
 /**
  * The days `view` covers around `date` — what a caller passes to its data
  * source, and what the list view scopes itself to.
+ *
+ * The **month** view's range is wider than its month: the grid paints the days
+ * either side of it, and they carry their events too. The **list** view's is
+ * not, because a list has no padding days — an April row in a May list is an
+ * event the reader did not ask for.
  */
 export function foldRangeForView(
   view: FoldCalendarView,
   date: FoldCalendarDate,
   weekStartsOn: FoldWeekday = "mon",
 ): FoldCalendarRange {
-  switch (view) {
-    case "day":
-      return { from: date, to: date };
-    case "week": {
-      const start = foldStartOfWeek(date, weekStartsOn);
-      return { from: start, to: foldAddDays(start, 6) };
-    }
-    case "month":
-    case "list": {
-      // The whole grid, not just the month: the month view paints the days
-      // either side, and they must carry their events too.
-      const first = foldStartOfWeek(foldStartOfMonth(date), weekStartsOn);
-      const last = foldAddDays(
-        foldStartOfWeek(foldEndOfMonth(date), weekStartsOn),
-        6,
-      );
-      return { from: first, to: last };
-    }
+  if (view === "day") {
+    return { from: date, to: date };
   }
+  if (view === "week") {
+    const start = foldStartOfWeek(date, weekStartsOn);
+    return { from: start, to: foldAddDays(start, 6) };
+  }
+  if (view === "list") {
+    return { from: foldStartOfMonth(date), to: foldEndOfMonth(date) };
+  }
+  const first = foldStartOfWeek(foldStartOfMonth(date), weekStartsOn);
+  const last = foldAddDays(
+    foldStartOfWeek(foldEndOfMonth(date), weekStartsOn),
+    6,
+  );
+  return { from: first, to: last };
 }
 
 /**
@@ -88,26 +111,20 @@ export function foldViewTitle(
   weekStartsOn: FoldWeekday = "mon",
 ): string {
   if (view === "day") {
-    return new Intl.DateTimeFormat(locale, {
-      dateStyle: "full",
-      timeZone: "UTC",
-    }).format(foldToNativeDate(date));
+    return foldCalendarFormatter(locale, "dateFullWeekday").format(
+      foldToNativeDate(date),
+    );
   }
   if (view === "week") {
     const start = foldStartOfWeek(date, weekStartsOn);
-    return new Intl.DateTimeFormat(locale, {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    }).formatRange(
-      foldToNativeDate(start),
-      foldToNativeDate(foldAddDays(start, 6)),
+    return foldFormatRange(
+      start,
+      foldAddDays(start, 6),
+      locale,
+      "dayMonthYear",
     );
   }
-  return new Intl.DateTimeFormat(locale, {
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(foldToNativeDate(date));
+  return foldCalendarFormatter(locale, "monthYear").format(
+    foldToNativeDate(date),
+  );
 }

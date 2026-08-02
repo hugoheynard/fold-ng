@@ -3,6 +3,7 @@ import { TestBed } from "@angular/core/testing";
 import { describe, expect, it } from "vitest";
 
 import { FoldCalendarToolbarComponent } from "./calendar-toolbar.component";
+import { FoldCalendarTitleDirective } from "./calendar-slots.directive";
 import type { FoldCalendarView } from "./calendar-navigation";
 
 @Component({
@@ -116,5 +117,49 @@ describe("FoldCalendarToolbarComponent", () => {
   it("projects the caller's own actions", () => {
     const { el } = setup();
     expect(el.querySelector(".cta")?.textContent).toContain("New event");
+  });
+});
+
+@Component({
+  standalone: true,
+  imports: [FoldCalendarToolbarComponent, FoldCalendarTitleDirective],
+  template: `
+    <fold-calendar-toolbar
+      [(date)]="date"
+      [(view)]="view"
+      [views]="views"
+      locale="en-GB"
+    >
+      <ng-template foldCalendarTitle let-title let-from="from">
+        <h1 class="custom-title">{{ title }} — from {{ from }}</h1>
+      </ng-template>
+    </fold-calendar-toolbar>
+  `,
+})
+class ExtendedHostComponent {
+  readonly date = signal("2026-05-18");
+  readonly view = signal("month");
+  readonly views = ["month", { value: "rooms", label: "Rooms" }];
+}
+
+describe("FoldCalendarToolbarComponent — an app's own view", () => {
+  it("offers it in the switch alongside the built-ins", () => {
+    const fixture = TestBed.createComponent(ExtendedHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const labels = [...el.querySelectorAll("fold-view-toggle button")].map(
+      (n) => n.textContent?.trim(),
+    );
+    expect(labels).toEqual(["Month", "Rooms"]);
+  });
+
+  it("replaces the title, at the heading level the page needs", () => {
+    const fixture = TestBed.createComponent(ExtendedHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector("h2")).toBeNull();
+    expect(el.querySelector(".custom-title")?.textContent).toBe(
+      "May 2026 — from 2026-04-27",
+    );
   });
 });

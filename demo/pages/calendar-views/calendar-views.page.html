@@ -1,90 +1,85 @@
 <fold-page-layout title="calendar views">
   <p description>
-    The same events read four ways, under one toolbar. `fold-calendar-toolbar`
-    owns no data: it binds the same <code>date</code> and <code>view</code>
+    The same events read four ways, under one toolbar.
+    <code>fold-calendar-toolbar</code> owns no data: it binds the same
+    <code>date</code> and <code>view</code>
     models the views do, so paging steps in whatever unit the current view reads
     in — a month, a week, a day. Click any day to drill into it.
   </p>
   <gal-kind-badge titleBadge kind="component" />
 
   <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="flex: 1 1 100%">
+    <div class="gal-cell gal-cell--full">
       <span class="gal-tag"
         >the whole thing · toolbar, source chips, a view, and the agenda
         rail</span
       >
       <fold-card surface="sunken">
-        <fold-calendar-toolbar
-          [(date)]="date"
-          [(view)]="view"
-          [today]="today"
-          locale="en-GB"
-        />
-
-        <div style="margin-top: 12px">
-          <fold-calendar-source-filter
-            [sources]="sources"
-            [events]="events"
-            [(active)]="activeSources"
+        <div class="cal-stack">
+          <fold-calendar-toolbar
+            [(date)]="date"
+            [(view)]="view"
+            [today]="today"
+            locale="en-GB"
           />
-        </div>
 
-        <div
-          style="
-            display: flex;
-            gap: 16px;
-            align-items: stretch;
-            margin-top: 16px;
-          "
-        >
-          <div style="flex: 1 1 auto; min-width: 0">
-            @switch (view()) { @case ("month") {
-            <fold-calendar-month
-              [(month)]="date"
-              [events]="visibleEvents()"
-              [today]="today"
-              locale="en-GB"
-              (dayClick)="openDay($event)"
-              (eventClick)="lastEvent.set($event.label)"
+          <div>
+            <fold-calendar-source-filter
+              [sources]="sources"
+              [events]="events"
+              [(active)]="activeSources"
             />
-            } @case ("week") {
-            <fold-calendar-week
-              [(date)]="date"
-              [events]="visibleEvents()"
-              [today]="today"
-              locale="en-GB"
-              (dayClick)="openDay($event)"
-              (eventClick)="lastEvent.set($event.label)"
-            />
-            } @case ("day") {
-            <fold-calendar-day
-              [date]="date()"
-              [events]="visibleEvents()"
-              [today]="today"
-              locale="en-GB"
-              (eventClick)="lastEvent.set($event.label)"
-            />
-            } @case ("list") {
-            <fold-calendar-list
-              [events]="visibleEvents()"
-              [from]="range().from"
-              [to]="range().to"
-              locale="en-GB"
-              (eventClick)="lastEvent.set($event.label)"
-            />
-            } }
           </div>
 
-          <fold-calendar-agenda
-            style="flex: 0 0 auto"
-            [from]="today"
-            [events]="visibleEvents()"
-            [(mode)]="agendaMode"
-            [(collapsed)]="agendaCollapsed"
-            locale="en-GB"
-            (dayClick)="openDay($event)"
-            (eventClick)="lastEvent.set($event.label)"
-          />
+          <div class="cal-split">
+            <div class="cal-main">
+              @switch (view()) { @case ("month") {
+              <fold-calendar-month
+                [(month)]="date"
+                [events]="visibleEvents()"
+                [today]="today"
+                locale="en-GB"
+                (dayClick)="openDay($event)"
+                (eventClick)="lastEvent.set($event.label)"
+              />
+              } @case ("week") {
+              <fold-calendar-week
+                [date]="date()"
+                [events]="visibleEvents()"
+                [today]="today"
+                locale="en-GB"
+                (dayClick)="openDay($event)"
+                (eventClick)="lastEvent.set($event.label)"
+              />
+              } @case ("day") {
+              <fold-calendar-day
+                [date]="date()"
+                [events]="visibleEvents()"
+                [today]="today"
+                locale="en-GB"
+                (eventClick)="lastEvent.set($event.label)"
+              />
+              } @case ("list") {
+              <fold-calendar-list
+                [events]="visibleEvents()"
+                [from]="range().from"
+                [to]="range().to"
+                locale="en-GB"
+                (eventClick)="lastEvent.set($event.label)"
+              />
+              } }
+            </div>
+
+            <fold-calendar-agenda
+              [from]="today"
+              [events]="visibleEvents()"
+              [(mode)]="agendaMode"
+              [(collapsed)]="agendaCollapsed"
+              locale="en-GB"
+              (dayClick)="openDay($event)"
+              (eventClick)="lastEvent.set($event.label)"
+            />
+          </div>
         </div>
       </fold-card>
       <p class="doc-p">
@@ -105,12 +100,12 @@
   </div>
 
   <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="flex: 1 1 460px">
+    <div class="gal-cell gal-cell--half">
       <span class="gal-tag"
         >week · a span repeats under every day it covers</span
       >
       <fold-calendar-week
-        [(date)]="weekDate"
+        [date]="weekDate()"
         [events]="events"
         [today]="today"
         locale="en-GB"
@@ -122,7 +117,7 @@
       </p>
     </div>
 
-    <div class="gal-cell" style="flex: 1 1 460px">
+    <div class="gal-cell gal-cell--half">
       <span class="gal-tag"
         >day · the empty state and its projected action</span
       >
@@ -143,7 +138,7 @@
   </div>
 
   <div class="gal-row gal-row--wide">
-    <div class="gal-cell" style="flex: 1 1 100%">
+    <div class="gal-cell gal-cell--full">
       <span class="gal-tag"
         >list · the flat reading, each row led by its span</span
       >
@@ -156,4 +151,122 @@
       </p>
     </div>
   </div>
+
+  <dev-playground [code]="toolbarCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">views</span>
+      <div class="ss-seg">
+        @for (set of viewSets; track set.join()) {
+        <button
+          type="button"
+          [class.is-on]="pgViews().join() === set.join()"
+          (click)="setViews(set)"
+        >
+          {{ set.join(" · ") }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">weekStartsOn</span>
+      <div class="ss-seg">
+        @for (day of weekStarts; track day) {
+        <button
+          type="button"
+          [class.is-on]="pgWeekStart() === day"
+          (click)="pgWeekStart.set(day)"
+        >
+          {{ day }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">locale</span>
+      <div class="ss-seg">
+        @for (tag of locales; track tag) {
+        <button
+          type="button"
+          [class.is-on]="pgLocale() === tag"
+          (click)="pgLocale.set(tag)"
+        >
+          {{ tag }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <fold-calendar-toolbar
+      [(date)]="pgDate"
+      [(view)]="pgView"
+      [views]="pgViews()"
+      [today]="today"
+      [weekStartsOn]="pgWeekStart()"
+      [locale]="pgLocale()"
+    />
+  </dev-playground>
+
+  <dev-playground [code]="agendaCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">mode</span>
+      <div class="ss-seg">
+        @for (m of ["todo", "all"]; track m) {
+        <button
+          type="button"
+          [class.is-on]="pgMode() === m"
+          (click)="pgMode.set(m === 'all' ? 'all' : 'todo')"
+        >
+          {{ m }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">collapsed</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgCollapsed()"
+          (click)="pgCollapsed.set(false)"
+        >
+          open
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgCollapsed()"
+          (click)="pgCollapsed.set(true)"
+        >
+          spine
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">limit</span>
+      <div class="ss-seg">
+        @for (n of [1, 2, 8]; track n) {
+        <button
+          type="button"
+          [class.is-on]="pgLimit() === n"
+          (click)="pgLimit.set(n)"
+        >
+          {{ n }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <fold-calendar-agenda
+      class="cal-pg-rail"
+      [from]="today"
+      [events]="events"
+      [(mode)]="pgMode"
+      [(collapsed)]="pgCollapsed"
+      [limit]="pgLimit()"
+      locale="en-GB"
+    />
+  </dev-playground>
 </fold-page-layout>
