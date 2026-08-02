@@ -87,12 +87,20 @@ test("the month grid is a grid, all the way down", async ({ page }) => {
 test("a day that is hiding events says how many", async ({ page }) => {
   await page.goto("/#/calendar-month");
   const crowded = page.locator("fold-calendar-month").nth(1);
-  const names = await crowded
-    .getByRole("gridcell")
-    .evaluateAll((nodes) =>
-      nodes.map((node) => node.getAttribute("aria-label") ?? ""),
-    );
-  expect(names.some((name) => /not shown/.test(name))).toBe(true);
+  await expect(crowded.getByRole("gridcell").first()).toBeVisible();
+  // Poll rather than read once: under parallel load the crowded month can
+  // still be settling its lane budget when the labels are first read.
+  await expect
+    .poll(async () =>
+      crowded
+        .getByRole("gridcell")
+        .evaluateAll((nodes) =>
+          nodes.some((node) =>
+            /not shown/.test(node.getAttribute("aria-label") ?? ""),
+          ),
+        ),
+    )
+    .toBe(true);
 });
 
 test("bands are hidden from the a11y tree, and the day carries the count", async ({

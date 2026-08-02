@@ -17,7 +17,12 @@ export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
+  // One retry everywhere, not just in CI: the local run is the release gate
+  // (`pnpm release` runs this suite before tagging), so it must mirror the CI
+  // gate that actually decides the publish rather than being stricter than it.
+  // The individual flakes are fixed at the source (missing awaits); this only
+  // covers a latent race, and a genuinely broken test still fails both tries.
+  retries: 1,
   reporter: "list",
   use: {
     baseURL: RUNNING ?? "http://localhost:5199",

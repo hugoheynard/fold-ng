@@ -45,6 +45,7 @@ test("keyboard: Enter toggles the active row without closing", async ({
 }) => {
   const ms = multiselect(page);
   await ms.trigger.click();
+  await expect(ms.list).toBeVisible(); // wait for the open before typing into it
   await page.keyboard.press("End"); // last option
   await page.keyboard.press("Enter");
   await expect(ms.list).toBeVisible();

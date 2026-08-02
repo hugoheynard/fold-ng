@@ -39,6 +39,7 @@ test("keyboard: arrows move, Enter selects, focus returns to the trigger", async
 }) => {
   const lb = listbox(page);
   await lb.trigger.click(); // armed on the current value (Euro)
+  await expect(lb.list).toBeVisible(); // wait for the open before typing into it
   await page.keyboard.press("ArrowDown"); // → US Dollar
   await page.keyboard.press("Enter");
   await expect(lb.list).toBeHidden();
