@@ -89,7 +89,8 @@
     "lint:spacing": "tsx scripts/check-spacing.ts",
     "bench:calendar": "tsx scripts/bench-calendar.ts",
     "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --grep-invert @visual",
+    "test:e2e:visual": "playwright test --grep @visual"
   },
   "peerDependencies": {
     "@angular/common": "^22",

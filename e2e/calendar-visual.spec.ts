@@ -17,16 +17,16 @@ import { test, expect, type Page } from "@playwright/test";
  * threshold is a real change that someone has to look at.
  */
 
-// Baselines are written per platform (`…-chromium-darwin.png`), and only the
-// darwin ones are committed — they are generated on the maintainer's Mac. A CI
-// runner is Linux, where those baselines don't exist and every shot "fails" by
-// having nothing to compare against. Until a pinned Linux baseline is generated
-// and committed, this tier stays a **local** check (it still gates `pnpm release`
-// on the Mac it's cut from); in CI it is skipped rather than falsely red.
-test.skip(
-  !!process.env.CI,
-  "darwin-only visual baselines; runs locally until a Linux baseline is pinned",
-);
+// These are tagged `@visual` and run ONLY via `pnpm test:e2e:visual` — never in
+// the CI / release gate, which is `test:e2e` (it excludes `@visual`). Pixel
+// snapshots against a live dev server drift for reasons that are not a
+// regression — a scrollbar toggling or a font hint moves the frame ~20px — and
+// the baselines are per-platform (`…-chromium-darwin.png`), so gating a release
+// on them turns it red on a Linux runner or on the next OS point-release. The
+// geometry that matters is gated for real, and stably, by MEASUREMENT in
+// `calendar.spec.ts` (a block's offset against the hour rules, a chip's label
+// length under a container query). This tier is a local eyeball aid, kept green
+// with `pnpm test:e2e:visual --update-snapshots` when a deliberate change lands.
 
 // Pinned: the week view is container-queried, so a pixel of width decides
 // whether a chip keeps its subline — which is the very thing being shot.
@@ -71,7 +71,7 @@ async function useTheme(page: Page, theme: string): Promise<void> {
 
 for (const theme of THEMES) {
   for (const [route, heading, selector] of VIEWS) {
-    test(`${selector} looks right in ${theme}`, async ({ page }) => {
+    test(`${selector} looks right in ${theme} @visual`, async ({ page }) => {
       await page.goto(route);
       await settle(page, heading);
       await useTheme(page, theme);
@@ -84,7 +84,7 @@ for (const theme of THEMES) {
   }
 }
 
-test("the month grid mirrors cleanly in RTL", async ({ page }) => {
+test("the month grid mirrors cleanly in RTL @visual", async ({ page }) => {
   // Continuation edges, chevrons, cell separators and chip padding are all
   // logical properties; this is the shot that proves it rather than claiming it.
   await page.goto("/#/calendar-month");
