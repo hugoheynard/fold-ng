@@ -42,6 +42,96 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.8.1",
+    date: "2026-08-02",
+    unreleased: false,
+    counts: {
+      Changed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The visual-snapshot tier is no longer a release gate.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Pixel screenshots against a live dev server drift for reasons that are not a regression — a scrollbar toggling or a font hint moves the frame ~20px — and the baselines are per-platform, so gating on them turned the release red on Linux CI _and_ intermittently on the Mac it was cut from. The shots are now tagged ",
+              },
+              {
+                kind: "code",
+                value: "@visual",
+              },
+              {
+                kind: "text",
+                value: " and run only via ",
+              },
+              {
+                kind: "code",
+                value: "pnpm test:e2e:visual",
+              },
+              {
+                kind: "text",
+                value: " (a local eyeball aid); the gate (",
+              },
+              {
+                kind: "code",
+                value: "test:e2e",
+              },
+              {
+                kind: "text",
+                value: ", used by CI and ",
+              },
+              {
+                kind: "code",
+                value: "pnpm release",
+              },
+              {
+                kind: "text",
+                value:
+                  ") excludes them. The geometry that matters stays gated, and stably, by measurement in ",
+              },
+              {
+                kind: "code",
+                value: "calendar.spec.ts",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "0.8.0",
+              },
+              {
+                kind: "text",
+                value: " was tagged but never published because of this — ",
+              },
+              {
+                kind: "code",
+                value: "0.8.1",
+              },
+              {
+                kind: "text",
+                value:
+                  " is the first published cut of the 0.8 line, and carries the whole calendar family.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.8.0",
     date: "2026-08-02",
     unreleased: false,
@@ -10663,7 +10753,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.8.0...HEAD [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.8.1...HEAD [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -10675,4 +10765,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.8.0";
+export const PUBLISHED_VERSION = "0.8.1";
