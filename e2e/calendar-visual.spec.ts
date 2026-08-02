@@ -17,6 +17,17 @@ import { test, expect, type Page } from "@playwright/test";
  * threshold is a real change that someone has to look at.
  */
 
+// Baselines are written per platform (`…-chromium-darwin.png`), and only the
+// darwin ones are committed — they are generated on the maintainer's Mac. A CI
+// runner is Linux, where those baselines don't exist and every shot "fails" by
+// having nothing to compare against. Until a pinned Linux baseline is generated
+// and committed, this tier stays a **local** check (it still gates `pnpm release`
+// on the Mac it's cut from); in CI it is skipped rather than falsely red.
+test.skip(
+  !!process.env.CI,
+  "darwin-only visual baselines; runs locally until a Linux baseline is pinned",
+);
+
 // Pinned: the week view is container-queried, so a pixel of width decides
 // whether a chip keeps its subline — which is the very thing being shot.
 test.use({ viewport: { width: 1280, height: 900 } });

@@ -6,7 +6,15 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **The release no longer fails CI over darwin-only visual baselines.** The
+  calendar's visual-regression shots are generated on macOS and committed as
+  `…-chromium-darwin.png`; a CI runner is Linux, where those baselines don't
+  exist and every shot is falsely red. They now **skip in CI** (staying a local
+  gate, run on the Mac the release is cut from) until a pinned Linux baseline is
+  generated. `0.8.0` was tagged but never published for this reason — `0.8.1` is
+  the first published cut of the 0.8 line, and carries the whole calendar family.
 
 ## [0.8.0] - 2026-08-02
 
