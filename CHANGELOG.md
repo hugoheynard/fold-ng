@@ -24,6 +24,20 @@ All notable changes to **fold-ng** are documented here. The format follows
   back. Project an `<ng-template foldCalendarEvent>` to replace the built-in
   chip. Generic over `T`, so an event's `data` survives the round trip to
   `eventClick` without a cast.
+- **The three column views that complete the drill-down: `fold-calendar-week`,
+  `fold-calendar-day` and `fold-calendar-list`.** Where the month grid packs
+  spans into lanes, these simply list what covers each day — so nothing is
+  clipped and no lane budget can hide anything. `week` is seven day columns;
+  `day` is one day in full, with an `[empty]` slot for a "new request" action
+  when nothing sits on it; `list` is the flat chronological reading, each row
+  led by its span (formatted with `Intl`'s own range formatter, which collapses
+  a single day to one date and factors out a shared month). All three take the
+  same `foldCalendarEvent` template, labels and `locale` as the month view.
+  Their a11y is **simpler than the month's on purpose**: because a chip nests
+  inside the day it belongs to rather than spanning columns, every control is a
+  real child in the natural tab order — no roving tabindex, no `aria-hidden`,
+  every event reachable by keyboard. New pure builders `foldBuildWeek` and
+  `foldBuildDay` back them.
 - **`FoldCalendarDate` — the package's date primitive is a plain
   `YYYY-MM-DD` string, not a `Date`.** A calendar of all-day spans deals in
   dates, not instants: `new Date("2026-05-18")` is UTC midnight, i.e. the 17th

@@ -11,6 +11,7 @@ import {
 import type {
   FoldCalendarBand,
   FoldCalendarDay,
+  FoldCalendarDayEvents,
   FoldCalendarEvent,
   FoldCalendarWeek,
 } from "./calendar.types";
@@ -234,6 +235,60 @@ export function foldBuildMonthGrid<T>(
       hiddenCount,
     };
   });
+}
+
+/** How to build a column view. */
+export interface FoldDayColumnsOptions {
+  /** Any date inside the range to display. */
+  readonly date: FoldCalendarDate;
+  /** Day the week starts on — ignored when building a single day. @default 'mon' */
+  readonly weekStartsOn?: FoldWeekday;
+  /** The day to flag as today; omit to flag none. */
+  readonly today?: FoldCalendarDate | undefined;
+}
+
+/** One day cell plus the events covering it. */
+function dayWithEvents<T>(
+  events: readonly FoldCalendarEvent<T>[],
+  date: FoldCalendarDate,
+  month: string,
+  options: FoldDayColumnsOptions,
+): FoldCalendarDayEvents<T> {
+  return {
+    day: {
+      date,
+      dayOfMonth: Number(date.slice(8, 10)),
+      inMonth: date.slice(0, 7) === month,
+      isToday: date === options.today,
+      isWeekEnd: foldIsWeekEnd(date, options.weekStartsOn ?? "mon"),
+    },
+    events: foldEventsOnDay(events, date),
+  };
+}
+
+/**
+ * The seven days of `date`'s week, each with the events covering it — the
+ * render model of the week view. Unlike the month grid nothing is packed:
+ * chips stack in a column, so a multi-day event simply appears under every day
+ * it covers.
+ */
+export function foldBuildWeek<T>(
+  events: readonly FoldCalendarEvent<T>[],
+  options: FoldDayColumnsOptions,
+): readonly FoldCalendarDayEvents<T>[] {
+  const start = foldStartOfWeek(options.date, options.weekStartsOn ?? "mon");
+  const month = options.date.slice(0, 7);
+  return Array.from({ length: DAYS_PER_WEEK }, (_unused, offset) =>
+    dayWithEvents(events, foldAddDays(start, offset), month, options),
+  );
+}
+
+/** A single day with its events — the render model of the day view. */
+export function foldBuildDay<T>(
+  events: readonly FoldCalendarEvent<T>[],
+  options: FoldDayColumnsOptions,
+): FoldCalendarDayEvents<T> {
+  return dayWithEvents(events, options.date, options.date.slice(0, 7), options);
 }
 
 /**

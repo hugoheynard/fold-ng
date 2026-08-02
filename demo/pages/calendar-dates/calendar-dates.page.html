@@ -97,24 +97,21 @@
           an impossible day such as <code>2026-02-30</code>.
         </p>
         } @else {
-        <table class="gal-table">
-          <thead>
-            <tr>
-              <th>call</th>
-              <th>result</th>
-              <th>note</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (row of rows(); track row.call) {
-            <tr>
-              <td><code>{{ row.call }}</code></td>
-              <td><code>{{ row.result }}</code></td>
-              <td>{{ row.note }}</td>
-            </tr>
-            }
-          </tbody>
-        </table>
+        <fold-data-table
+          caption="Plain-date helpers, evaluated on the date above"
+          density="compact"
+          [columns]="columns"
+          [rows]="rows()"
+          [rowKey]="rowKey"
+        >
+          <ng-template foldCell="call" let-row>
+            <code>{{ row.call }}</code>
+          </ng-template>
+          <ng-template foldCell="result" let-row>
+            <code>{{ row.result }}</code>
+          </ng-template>
+          <ng-template foldCell="note" let-row> {{ row.note }} </ng-template>
+        </fold-data-table>
         }
         <p class="doc-p">
           <code>foldToday()</code> reads the <strong>local</strong> clock — the

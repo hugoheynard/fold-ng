@@ -86,8 +86,24 @@
 - tooltip: InputSignal<string | undefined>
 - type: InputSignal<"button" | "submit">
 
+### FoldCalendarDayComponent
+- date: InputSignal<string> — required
+- eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- locale: InputSignal<string | undefined>
+- today: InputSignal<string | undefined>
+
 ### FoldCalendarEventDirective
 - (no input·model·output bindings)
+
+### FoldCalendarListComponent
+- eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- from: InputSignal<string | undefined>
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- locale: InputSignal<string | undefined>
+- to: InputSignal<string | undefined>
 
 ### FoldCalendarMonthComponent
 - dayClick: OutputEmitterRef<string>
@@ -99,6 +115,16 @@
 - maxLanes: InputSignal<number>
 - month: ModelSignal<string> — required
 - overflowClick: OutputEmitterRef<FoldCalendarWeek<T>>
+- today: InputSignal<string | undefined>
+- weekStartsOn: InputSignal<FoldWeekday>
+
+### FoldCalendarWeekComponent
+- date: ModelSignal<string> — required
+- dayClick: OutputEmitterRef<string>
+- eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
+- events: InputSignal<readonly FoldCalendarEvent<T>[]>
+- labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
+- locale: InputSignal<string | undefined>
 - today: InputSignal<string | undefined>
 - weekStartsOn: InputSignal<FoldWeekday>
 
@@ -662,7 +688,9 @@
 - FoldBadgeVariant (type)
 - FoldBlurToken (type)
 - foldBlurVar (function)
+- foldBuildDay (function)
 - foldBuildMonthGrid (function)
+- foldBuildWeek (function)
 - FoldBuiltinIconName (type)
 - FoldButtonEmphasis (type)
 - FoldButtonIconShape (type)
@@ -674,6 +702,7 @@
 - FoldCalendarBand (interface)
 - FoldCalendarDate (type)
 - FoldCalendarDay (interface)
+- FoldCalendarDayEvents (interface)
 - FoldCalendarEvent (interface)
 - FoldCalendarHalfDay (type)
 - FoldCalendarLabels (interface)
@@ -689,6 +718,7 @@
 - foldColorVar (function)
 - FoldComponentPanelDescriptor (interface)
 - FoldDataTableLabels (interface)
+- FoldDayColumnsOptions (interface)
 - foldDaysBetween (function)
 - foldDefaultPasswordRules (function)
 - foldEndOfMonth (function)

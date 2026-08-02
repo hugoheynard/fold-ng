@@ -1,0 +1,55 @@
+<div class="foldcalw" [attr.aria-label]="l().grid" role="group">
+  @for (column of columns(); track column.day.date) {
+    <section
+      class="foldcalw-col"
+      [class.is-today]="column.day.isToday"
+      [class.is-weekend]="column.day.isWeekEnd"
+      [attr.aria-label]="columnLabel(column)"
+    >
+      <button
+        type="button"
+        class="foldcalw-head"
+        [attr.aria-current]="column.day.isToday ? 'date' : null"
+        (click)="dayClick.emit(column.day.date)"
+      >
+        <span class="foldcalw-weekday">{{ weekdayName(column) }}</span>
+        <span class="foldcalw-daynum">{{ column.day.dayOfMonth }}</span>
+      </button>
+
+      <ul class="foldcalw-list">
+        @for (event of column.events; track event.id) {
+          <li>
+            <button
+              type="button"
+              class="foldcal-chip"
+              [attr.data-tone]="event.tone ?? 'neutral'"
+              (click)="eventClick.emit(event)"
+            >
+              @if (eventContent(); as projected) {
+                <ng-container
+                  [ngTemplateOutlet]="projected"
+                  [ngTemplateOutletContext]="{ $implicit: event, band: null }"
+                />
+              } @else {
+                <span class="foldcal-chip-bar"></span>
+                @if (event.icon; as icon) {
+                  <fold-icon
+                    class="foldcal-chip-icon"
+                    [name]="icon"
+                    size="sm"
+                  />
+                }
+                <span class="foldcal-chip-body">
+                  <span class="foldcal-chip-label">{{ event.label }}</span>
+                  @if (event.subline) {
+                    <span class="foldcal-chip-sub">{{ event.subline }}</span>
+                  }
+                </span>
+              }
+            </button>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</div>

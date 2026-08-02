@@ -1,0 +1,76 @@
+@use "./calendar-chip" as chip;
+
+:host {
+  display: block;
+}
+
+@include chip.calendar-chip;
+
+.foldcald {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-lg);
+  padding: var(--fold-space-lg);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+}
+
+.foldcald-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--fold-space-md);
+  padding-bottom: var(--fold-space-md);
+  border-bottom: 1px solid var(--fold-color-border);
+}
+
+.foldcald-weekday {
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-md);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.foldcald-daynum {
+  color: var(--fold-color-text);
+  font-size: var(--fold-calendar-day-number, 32px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+
+  &.is-today {
+    color: var(--fold-color-primary-text);
+  }
+}
+
+.foldcald-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// The larger chip the day view has room for.
+.foldcald-chip {
+  padding-block: var(--fold-space-sm);
+}
+
+.foldcald-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-lg);
+  border: 1px dashed var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-subtle);
+
+  p {
+    margin: 0;
+    color: var(--fold-color-text-secondary);
+    font-size: var(--fold-text-sm);
+  }
+}

@@ -22,6 +22,10 @@ export interface FoldCalendarLabels {
   readonly eventCount: (count: number) => string;
   /** Accessible reading of a span, so a locale can reorder the bounds. */
   readonly dateRange: (start: string, end: string) => string;
+  /** Shown by the day view when nothing sits on the day. */
+  readonly emptyDay: string;
+  /** Shown by the list view when the range holds nothing. */
+  readonly emptyRange: string;
 }
 
 /** The English defaults — the base every override merges onto. */
@@ -31,6 +35,8 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   moreEvents: (count) => `+${count} more`,
   eventCount: (count) => (count === 1 ? "1 event" : `${count} events`),
   dateRange: (start, end) => `${start} to ${end}`,
+  emptyDay: "Nothing on this day.",
+  emptyRange: "Nothing in this range.",
 };
 
 /** App-wide calendar labels; defaults to English. */

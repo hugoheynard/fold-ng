@@ -1,0 +1,104 @@
+// The event chip shared by the week, day and agenda views — one accent bar, an
+// optional glyph, and a label over an optional subline. The month view does NOT
+// use this: its bands span columns and carry their own geometry.
+//
+// `@use`d by the sibling views so the chip cannot drift between them.
+
+@mixin calendar-chip {
+  .foldcal-chip {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: var(--fold-space-sm);
+    width: 100%;
+    padding: var(--fold-space-xs) var(--fold-space-sm) var(--fold-space-xs) 0;
+    border: 0;
+    border-radius: var(--fold-radius-sm);
+    background: var(--fold-color-surface-raised);
+    color: var(--fold-color-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background-color var(--fold-motion-fast, 120ms) ease;
+
+    &:hover {
+      background: var(--fold-color-surface-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--fold-color-primary);
+      outline-offset: -2px;
+    }
+  }
+
+  .foldcal-chip-bar {
+    flex: 0 0 3px;
+    align-self: stretch;
+    background: var(--fold-color-text-muted);
+  }
+
+  .foldcal-chip-icon {
+    flex: none;
+    align-self: center;
+    margin-left: var(--fold-space-sm);
+    color: var(--fold-color-text-secondary);
+  }
+
+  .foldcal-chip-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .foldcal-chip-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--fold-text-sm);
+    font-weight: 500;
+  }
+
+  .foldcal-chip-sub {
+    color: var(--fold-color-text-muted);
+    font-size: var(--fold-text-xs);
+  }
+
+  // Tones name roles only — the theme decides what they look like.
+  .foldcal-chip[data-tone="success"] .foldcal-chip-bar {
+    background: var(--fold-color-success);
+  }
+
+  .foldcal-chip[data-tone="warning"] .foldcal-chip-bar {
+    background: var(--fold-color-warning);
+  }
+
+  .foldcal-chip[data-tone="alert"] .foldcal-chip-bar {
+    background: var(--fold-color-alert);
+  }
+
+  .foldcal-chip[data-tone="muted"] {
+    .foldcal-chip-bar {
+      background: var(--fold-color-text-faded);
+    }
+
+    .foldcal-chip-label {
+      color: var(--fold-color-text-muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .foldcal-chip {
+      border: 1px solid CanvasText;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .foldcal-chip {
+      transition: none;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+<section class="foldcald" [attr.aria-label]="headerLabel()">
+  <header class="foldcald-head">
+    <span class="foldcald-weekday">{{ weekdayName() }}</span>
+    <span
+      class="foldcald-daynum"
+      [class.is-today]="isToday()"
+      [attr.aria-current]="isToday() ? 'date' : null"
+      >{{ dayOfMonth() }}</span
+    >
+  </header>
+
+  @if (dayEvents().length === 0) {
+    <div class="foldcald-empty">
+      <p>{{ l().emptyDay }}</p>
+      <ng-content select="[empty]" />
+    </div>
+  } @else {
+    <ul class="foldcald-list">
+      @for (event of dayEvents(); track event.id) {
+        <li>
+          <button
+            type="button"
+            class="foldcal-chip foldcald-chip"
+            [attr.data-tone]="event.tone ?? 'neutral'"
+            (click)="eventClick.emit(event)"
+          >
+            @if (eventContent(); as projected) {
+              <ng-container
+                [ngTemplateOutlet]="projected"
+                [ngTemplateOutletContext]="{ $implicit: event, band: null }"
+              />
+            } @else {
+              <span class="foldcal-chip-bar"></span>
+              @if (event.icon; as icon) {
+                <fold-icon class="foldcal-chip-icon" [name]="icon" size="md" />
+              }
+              <span class="foldcal-chip-body">
+                <span class="foldcal-chip-label">{{ event.label }}</span>
+                @if (event.subline) {
+                  <span class="foldcal-chip-sub">{{ event.subline }}</span>
+                }
+              </span>
+            }
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</section>

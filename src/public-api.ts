@@ -92,6 +92,9 @@ export type {
 } from "./components/content/data-table/data-table.types";
 
 export { FoldCalendarMonthComponent } from "./components/content/calendar/calendar-month.component";
+export { FoldCalendarWeekComponent } from "./components/content/calendar/calendar-week.component";
+export { FoldCalendarDayComponent } from "./components/content/calendar/calendar-day.component";
+export { FoldCalendarListComponent } from "./components/content/calendar/calendar-list.component";
 export { FoldCalendarEventDirective } from "./components/content/calendar/calendar-event.directive";
 export {
   provideFoldCalendarLabels,
@@ -117,14 +120,20 @@ export type {
   FoldWeekday,
 } from "./components/content/calendar/calendar-date";
 export {
+  foldBuildDay,
   foldBuildMonthGrid,
+  foldBuildWeek,
   foldEventsInRange,
   foldEventsOnDay,
 } from "./components/content/calendar/calendar-layout";
-export type { FoldMonthGridOptions } from "./components/content/calendar/calendar-layout";
+export type {
+  FoldDayColumnsOptions,
+  FoldMonthGridOptions,
+} from "./components/content/calendar/calendar-layout";
 export type {
   FoldCalendarBand,
   FoldCalendarDay,
+  FoldCalendarDayEvents,
   FoldCalendarEvent,
   FoldCalendarHalfDay,
   FoldCalendarTone,

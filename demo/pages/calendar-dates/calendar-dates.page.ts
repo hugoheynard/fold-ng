@@ -8,7 +8,10 @@ import {
 import { KindBadgeComponent } from "../../components/kind-badge.component";
 import {
   FoldCardComponent,
+  FoldDataTableCellDirective,
+  FoldDataTableComponent,
   FoldPageLayoutComponent,
+  type FoldTableColumn,
   foldAddDays,
   foldAddMonths,
   foldDaysBetween,
@@ -35,10 +38,24 @@ interface HelperRow {
   selector: "gal-calendar-dates-page",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [KindBadgeComponent, FoldPageLayoutComponent, FoldCardComponent],
+  imports: [
+    KindBadgeComponent,
+    FoldPageLayoutComponent,
+    FoldCardComponent,
+    FoldDataTableComponent,
+    FoldDataTableCellDirective,
+  ],
   templateUrl: "./calendar-dates.page.html",
 })
 export default class CalendarDatesPage {
+  protected readonly columns: readonly FoldTableColumn[] = [
+    { key: "call", label: "call" },
+    { key: "result", label: "result", width: "9rem" },
+    { key: "note", label: "note" },
+  ];
+
+  protected readonly rowKey = (row: HelperRow): string => row.call;
+
   /** The one call that reads a clock — everything else is pure. */
   protected readonly today = foldToday();
 

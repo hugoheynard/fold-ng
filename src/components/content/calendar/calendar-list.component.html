@@ -1,0 +1,33 @@
+@if (rows().length === 0) {
+  <p class="foldcall-empty">{{ l().emptyRange }}</p>
+} @else {
+  <ul class="foldcall">
+    @for (event of rows(); track event.id) {
+      <li>
+        <button
+          type="button"
+          class="foldcall-row"
+          [attr.data-tone]="event.tone ?? 'neutral'"
+          (click)="eventClick.emit(event)"
+        >
+          <span class="foldcall-bar"></span>
+          <span class="foldcall-when">{{ rangeLabel(event) }}</span>
+          @if (eventContent(); as projected) {
+            <ng-container
+              [ngTemplateOutlet]="projected"
+              [ngTemplateOutletContext]="{ $implicit: event, band: null }"
+            />
+          } @else {
+            <span class="foldcall-body">
+              @if (event.icon; as icon) {
+                <fold-icon class="foldcall-icon" [name]="icon" size="sm" />
+              }
+              <span class="foldcall-label">{{ event.label }}</span>
+            </span>
+            <span class="foldcall-sub">{{ event.subline ?? "" }}</span>
+          }
+        </button>
+      </li>
+    }
+  </ul>
+}

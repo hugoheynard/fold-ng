@@ -1,0 +1,99 @@
+@use "./calendar-chip" as chip;
+
+:host {
+  display: block;
+}
+
+@include chip.calendar-chip;
+
+.foldcalw {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  min-height: var(--fold-calendar-week-height, 320px);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-card);
+  overflow: clip;
+}
+
+.foldcalw-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  min-width: 0;
+  padding: var(--fold-space-sm);
+  border-right: 1px solid var(--fold-color-border-subtle);
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  &.is-weekend {
+    background: var(--fold-color-surface-subtle);
+  }
+
+  &.is-today {
+    background: linear-gradient(
+      180deg,
+      var(--fold-color-primary-surface) 0%,
+      transparent 28%
+    );
+    box-shadow: inset 0 2px 0 0 var(--fold-color-primary);
+  }
+}
+
+.foldcalw-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 0 0 var(--fold-space-xs);
+  border: 0;
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.foldcalw-weekday {
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.foldcalw-daynum {
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-lg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.is-today .foldcalw-daynum {
+  color: var(--fold-color-primary-text);
+}
+
+.foldcalw-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (forced-colors: active) {
+  .foldcalw-col.is-today {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

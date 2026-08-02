@@ -111,6 +111,16 @@ export interface FoldCalendarBand<T = unknown> {
   readonly endHalfDay?: FoldCalendarHalfDay;
 }
 
+/**
+ * A day with the events sitting on it — the render model of the column views
+ * (week, day), where chips stack in a list and need no lane packing.
+ */
+export interface FoldCalendarDayEvents<T = unknown> {
+  readonly day: FoldCalendarDay;
+  /** Events covering {@link day}, in the caller's order. */
+  readonly events: readonly FoldCalendarEvent<T>[];
+}
+
 /** One row of a month grid: its seven days, the bands over them, and what did not fit. */
 export interface FoldCalendarWeek<T = unknown> {
   /** The week's anchor day — also the segment keys' discriminator. */
