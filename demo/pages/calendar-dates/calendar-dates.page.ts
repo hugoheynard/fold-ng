@@ -101,7 +101,10 @@ export default class CalendarDatesPage {
     ];
   });
 
-  protected onProbe(value: string): void {
-    this.probe.set(value);
+  /** Narrows the native event rather than reaching through `$any`. */
+  protected onProbe(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.probe.set(event.target.value);
+    }
   }
 }

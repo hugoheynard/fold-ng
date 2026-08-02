@@ -74,7 +74,7 @@
             id="cal-probe"
             type="date"
             [value]="probe()"
-            (input)="onProbe($any($event.target).value)"
+            (input)="onProbe($event)"
           />
           <span class="gal-tag">week starts on</span>
           <div class="ss-seg">
