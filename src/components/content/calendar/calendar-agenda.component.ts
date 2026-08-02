@@ -92,7 +92,10 @@ const NEAR_HORIZON = 7;
   templateUrl: "./calendar-agenda.component.html",
   styleUrl: "./calendar-agenda.component.scss",
   hostDirectives: [
-    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+    {
+      directive: FoldCalendarChromeDirective,
+      inputs: ["locale", "labels", "formats"],
+    },
   ],
 })
 export class FoldCalendarAgendaComponent<T = unknown> {

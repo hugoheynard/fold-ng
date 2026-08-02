@@ -48,14 +48,19 @@ const CACHE = new Map<string, Intl.DateTimeFormat>();
 export function foldCalendarFormatter(
   locale: string | undefined,
   format: FoldCalendarFormat,
+  override?: Intl.DateTimeFormatOptions,
 ): Intl.DateTimeFormat {
-  const cacheKey = `${locale ?? ""}|${format}`;
+  const options = { ...FOLD_CALENDAR_FORMATS[format], ...override };
+  const cacheKey =
+    override === undefined
+      ? `${locale ?? ""}|${format}`
+      : `${locale ?? ""}|${format}|${JSON.stringify(options)}`;
   const cached = CACHE.get(cacheKey);
   if (cached !== undefined) {
     return cached;
   }
   const built = new Intl.DateTimeFormat(locale, {
-    ...FOLD_CALENDAR_FORMATS[format],
+    ...options,
     timeZone: "UTC",
   });
   CACHE.set(cacheKey, built);
@@ -67,8 +72,11 @@ export function foldFormatDate(
   date: FoldCalendarDate,
   locale: string | undefined,
   format: FoldCalendarFormat,
+  override?: Intl.DateTimeFormatOptions,
 ): string {
-  return foldCalendarFormatter(locale, format).format(foldToNativeDate(date));
+  return foldCalendarFormatter(locale, format, override).format(
+    foldToNativeDate(date),
+  );
 }
 
 /**
@@ -80,8 +88,9 @@ export function foldFormatRange(
   to: FoldCalendarDate,
   locale: string | undefined,
   format: FoldCalendarFormat,
+  override?: Intl.DateTimeFormatOptions,
 ): string {
-  return foldCalendarFormatter(locale, format).formatRange(
+  return foldCalendarFormatter(locale, format, override).formatRange(
     foldToNativeDate(from),
     foldToNativeDate(to),
   );

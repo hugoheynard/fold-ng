@@ -18,6 +18,7 @@ import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldCalendarChromeDirective } from "./calendar-chrome.directive";
 import {
   foldAddDays,
+  foldIsoWeek,
   foldStartOfWeek,
   type FoldCalendarDate,
   type FoldWeekday,
@@ -60,8 +61,9 @@ const ACTIVATION_KEYS = new Set(["Enter", " ", "Spacebar"]);
  * | `month`        | `FoldCalendarDate`            | —             | **Two-way.** Any date in the month on display; keyboard paging writes back. |
  * | `events`       | `FoldCalendarEvent<T>[]`      | `[]`          | What to plot. Anything outside the grid is ignored. |
  * | `today`        | `FoldCalendarDate`            | —             | The day to mark. Omitted, nothing is marked — pass `foldToday()`. |
- * | `weekStartsOn` | `FoldWeekday`                 | `'mon'`       | Which day opens the row. |
- * | `weekendDays`  | `FoldWeekday[]`               | `['sat','sun']` | Which days are shaded — a separate fact from the anchor. |
+ * | `weekStartsOn` | `FoldWeekday`                 | the locale's   | Which day opens the row — `Intl.Locale` knows, so it is only an override. |
+ * | `weekendDays`  | `FoldWeekday[]`               | the locale's   | Which days are shaded — a separate fact from the anchor, and also in the locale. |
+ * | `showWeekNumbers` | `boolean`                  | `false`       | An ISO week number in a leading column. |
  * | `maxLanes`     | `number`                      | `3`           | Bands a week stacks before the rest collapse into overflow chips. |
  * | `fixedWeeks`   | `boolean`                     | `false`       | Always six rows, so the grid keeps one height across months. |
  * | `dayModifiers` | `(day) => string[]`           | —             | Extra names per cell, emitted as `data-fold-day-modifiers`. |
@@ -90,6 +92,7 @@ const ACTIVATION_KEYS = new Set(["Enter", " ", "Spacebar"]);
  * | `--fold-calendar-month-row-min-height`| `112px` | Minimum height of a week row. |
  * | `--fold-calendar-month-daynum-size`   | `22px`  | The day number's round box. |
  * | `--fold-calendar-month-cell-padding`  | `--fold-space-sm` | Padding inside a day cell. |
+ * | `--fold-calendar-month-week-number-width` | `34px` | The ISO week column, when shown. |
  * | `--fold-calendar-bar-width`           | `3px`   | The tone bar down a band's leading edge. |
  * | `--fold-calendar-band-radius`         | `--fold-radius-sm` | Band and chip corners. |
  * | `--fold-calendar-band-gutter`         | `--fold-space-xs` | Gap between a band and its cell edge. |
@@ -131,12 +134,16 @@ const ACTIVATION_KEYS = new Set(["Enter", " ", "Spacebar"]);
   templateUrl: "./calendar-month.component.html",
   styleUrl: "./calendar-month.component.scss",
   hostDirectives: [
-    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+    {
+      directive: FoldCalendarChromeDirective,
+      inputs: ["locale", "labels", "formats"],
+    },
   ],
   host: {
     "data-fold-calendar": "",
     role: "grid",
     "[attr.aria-label]": "chrome.l().grid",
+    "[class.has-week-numbers]": "showWeekNumbers()",
   },
 })
 export class FoldCalendarMonthComponent<T = unknown> {
@@ -146,10 +153,12 @@ export class FoldCalendarMonthComponent<T = unknown> {
   readonly events = input<readonly FoldCalendarEvent<T>[]>([]);
   /** The day to mark as today. Omit and none is marked (an SSR-stable default). */
   readonly today = input<FoldCalendarDate>();
-  /** Day the weeks start on. @default 'mon' */
-  readonly weekStartsOn = input<FoldWeekday>("mon");
-  /** Days shaded as the weekend. @default ['sat', 'sun'] */
+  /** Day the weeks start on. @default the locale's own first day */
+  readonly weekStartsOn = input<FoldWeekday>();
+  /** Days shaded as the weekend. @default the locale's own weekend */
   readonly weekendDays = input<readonly FoldWeekday[]>();
+  /** Show the ISO week number in a leading column. */
+  readonly showWeekNumbers = input(false, { transform: booleanAttribute });
   /** Bands a week stacks before the rest collapse into overflow chips. @default 3 */
   readonly maxLanes = input(3, { transform: numberAttribute });
   /** Always emit six rows, so the grid keeps one height across months. */
@@ -190,11 +199,16 @@ export class FoldCalendarMonthComponent<T = unknown> {
   private readonly lanes = computed(() => foldClampLanes(this.maxLanes()));
 
   /** The laid-out grid: week rows, their days, and their packed bands. */
+  /** The anchor in force: the caller's, else the one the locale declares. */
+  protected readonly anchor = computed(() =>
+    this.chrome.anchor(this.weekStartsOn()),
+  );
+
   protected readonly weeks = computed<readonly FoldCalendarWeek<T>[]>(() =>
     foldBuildMonthGrid(this.events(), {
       month: this.month(),
-      weekStartsOn: this.weekStartsOn(),
-      weekendDays: this.weekendDays(),
+      weekStartsOn: this.anchor(),
+      weekendDays: this.chrome.weekend(this.weekendDays()),
       maxLanes: this.lanes(),
       fixedWeeks: this.fixedWeeks(),
       today: this.today(),
@@ -203,11 +217,25 @@ export class FoldCalendarMonthComponent<T = unknown> {
 
   /** Column headers, walked out of `Intl` so every locale comes for free. */
   protected readonly weekdayNames = computed<readonly string[]>(() => {
-    const anchor = foldStartOfWeek(WEEKDAY_SAMPLE, this.weekStartsOn());
+    const sample = foldStartOfWeek(WEEKDAY_SAMPLE, this.anchor());
     return Array.from({ length: 7 }, (_unused, offset) =>
-      this.chrome.format(foldAddDays(anchor, offset), "weekdayShort"),
+      this.chrome.format(foldAddDays(sample, offset), "weekdayShort"),
     );
   });
+
+  /**
+   * Columns before the first day. The week-number column is a real grid column,
+   * so everything placed by index — cells, bands, overflow chips — shifts with
+   * it, and nothing has to know why.
+   */
+  protected readonly columnOffset = computed(() =>
+    this.showWeekNumbers() ? 1 : 0,
+  );
+
+  /** The ISO week each row belongs to — always Monday-based, whatever the anchor. */
+  protected weekNumber(week: FoldCalendarWeek<T>): number {
+    return foldIsoWeek(week.start);
+  }
 
   /**
    * Row track sizes: the day-number row, one row per lane, then the overflow
@@ -244,7 +272,7 @@ export class FoldCalendarMonthComponent<T = unknown> {
   private readonly focus = new FoldCalendarRovingFocus({
     dates: this.gridDates,
     fallback: this.defaultStop,
-    weekStartsOn: this.weekStartsOn,
+    weekStartsOn: this.anchor,
     root: () => this.rootElement(),
     page: (date) => this.month.set(date),
     injector: inject(Injector),

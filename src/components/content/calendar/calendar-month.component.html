@@ -1,4 +1,9 @@
 <div class="foldcal-weekdays" role="row">
+  @if (showWeekNumbers()) {
+    <span class="foldcal-weekday foldcal-weeknum-head" role="columnheader">
+      {{ chrome.l().weekNumberShort }}
+    </span>
+  }
   @for (name of weekdayNames(); track $index) {
     <span class="foldcal-weekday" role="columnheader">{{ name }}</span>
   }
@@ -6,6 +11,18 @@
 
 @for (week of weeks(); track week.start) {
   <div class="foldcal-week" role="row" [style.gridTemplateRows]="rowTemplate()">
+    <!--
+      ISO weeks always start on Monday and belong to the year holding their
+      Thursday, so this is not derivable from the calendar's own anchor.
+    -->
+    @if (showWeekNumbers()) {
+      <span
+        class="foldcal-weeknum"
+        role="rowheader"
+        [attr.aria-label]="chrome.l().weekNumber(weekNumber(week))"
+        >{{ weekNumber(week) }}</span
+      >
+    }
     <!--
       The cell is the focusable widget, as the ARIA grid pattern asks: a
       <button> here would have its native role overwritten by role="gridcell",
@@ -20,7 +37,7 @@
         [class.is-outside]="!day.inMonth"
         [class.is-today]="day.isToday"
         [class.is-weekend]="day.isWeekend"
-        [style.gridColumn]="column + 1"
+        [style.gridColumn]="column + 1 + columnOffset()"
         [attr.tabindex]="dayTabIndex(day.date)"
         [attr.aria-label]="dayLabel(day)"
         [attr.aria-current]="day.isToday ? 'date' : null"
@@ -54,7 +71,13 @@
         [class.continues-after]="band.continuesAfter"
         [class.half-start]="band.startHalfDay !== undefined"
         [class.half-end]="band.endHalfDay !== undefined"
-        [style.gridColumn]="band.startColumn + 1 + ' / ' + (band.endColumn + 2)"
+        [style.gridColumn]="
+          band.startColumn +
+          1 +
+          columnOffset() +
+          ' / ' +
+          (band.endColumn + 2 + columnOffset())
+        "
         [style.gridRow]="band.lane + 2"
         [attr.title]="bandLabel(band)"
         (click)="eventClick.emit(band.event)"
@@ -85,7 +108,7 @@
           class="foldcal-overflow"
           aria-hidden="true"
           tabindex="-1"
-          [style.gridColumn]="column + 1"
+          [style.gridColumn]="column + 1 + columnOffset()"
           [style.gridRow]="overflowRow()"
           (click)="overflowClick.emit(day.date)"
         >

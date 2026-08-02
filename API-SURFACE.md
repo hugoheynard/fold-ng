@@ -97,6 +97,7 @@
 - mode: ModelSignal<FoldCalendarAgendaMode>
 
 ### FoldCalendarChromeDirective
+- formats: InputSignal<Partial<Record<"dateFull" | "dateFullWeekday" | "dayMonthYear" | "weekdayShort" | "weekdayLong" | "monthLong" | "monthShort" | "monthYear" | "dayMonthShort", Intl.DateTimeFormatOptions>> | undefined>
 - labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
 - locale: InputSignal<string | undefined>
 
@@ -130,9 +131,10 @@
 - maxLanes: InputSignalWithTransform<number, unknown>
 - month: ModelSignal<string> — required
 - overflowClick: OutputEmitterRef<string>
+- showWeekNumbers: InputSignalWithTransform<boolean, unknown>
 - today: InputSignal<string | undefined>
 - weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
-- weekStartsOn: InputSignal<FoldWeekday>
+- weekStartsOn: InputSignal<FoldWeekday | undefined>
 
 ### FoldCalendarOverflowDirective
 - (no input·model·output bindings)
@@ -151,7 +153,7 @@
 - today: InputSignal<string | undefined>
 - view: ModelSignal<FoldCalendarView>
 - views: InputSignal<readonly (FoldCalendarView | FoldCalendarViewOption)[]>
-- weekStartsOn: InputSignal<FoldWeekday>
+- weekStartsOn: InputSignal<FoldWeekday | undefined>
 
 ### FoldCalendarWeekComponent
 - date: InputSignal<string> — required
@@ -160,7 +162,7 @@
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
 - today: InputSignal<string | undefined>
 - weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
-- weekStartsOn: InputSignal<FoldWeekday>
+- weekStartsOn: InputSignal<FoldWeekday | undefined>
 
 ### FoldCalloutComponent
 - announce: InputSignalWithTransform<boolean, unknown>
@@ -695,10 +697,12 @@
 - FOLD_BLUR_TOKENS (value)
 - FOLD_BUILTIN_ICONS (value)
 - FOLD_CALENDAR_DEFAULT_LABELS (value)
+- FOLD_CALENDAR_FORMATS (value)
 - FOLD_CALENDAR_LABELS (value)
 - FOLD_DATA_TABLE_DEFAULT_LABELS (value)
 - FOLD_DATA_TABLE_LABELS (value)
 - FOLD_DEFAULT_WEEKEND_DAYS (value)
+- FOLD_FALLBACK_WEEK_INFO (value)
 - FOLD_INLINE_CONFIRM_DEFAULT_LABELS (value)
 - FOLD_INLINE_CONFIRM_LABELS (value)
 - FOLD_MOTION_TOKENS (value)
@@ -749,6 +753,7 @@
 - FoldCalendarDayModifiers (type)
 - FoldCalendarEvent (interface)
 - FoldCalendarEventContext (interface)
+- FoldCalendarFormat (type)
 - FoldCalendarHalfDay (type)
 - FoldCalendarHeadingContext (interface)
 - FoldCalendarLabels (interface)
@@ -788,7 +793,10 @@
 - FoldInlineConfirmLabels (interface)
 - foldIsActionable (function)
 - foldIsCalendarDate (function)
+- foldIsoWeek (function)
+- foldIsoWeekYear (function)
 - foldIsWeekend (function)
+- foldLocaleWeekInfo (function)
 - FoldMenuItemBadgeTone (type)
 - FoldMenuLevel (type)
 - FoldMenuTint (type)
@@ -859,6 +867,7 @@
 - FoldWeekday (type)
 - foldWeekdayIndex (function)
 - foldWeekdayOf (function)
+- FoldWeekInfo (interface)
 - observeElementWidth (function)
 - provideFoldCalendarLabels (function)
 - provideFoldDataTableLabels (function)

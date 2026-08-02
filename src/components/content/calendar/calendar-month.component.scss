@@ -18,9 +18,22 @@
 
 /* ── Weekday header ─────────────────────────────────────────────── */
 
+// One shared track definition: the week-number column, when shown, has to line
+// the header up with every row, and a second copy would drift.
+.foldcal-weekdays,
+.foldcal-week {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+:host(.has-week-numbers) .foldcal-weekdays,
+:host(.has-week-numbers) .foldcal-week {
+  grid-template-columns:
+    var(--fold-calendar-month-week-number-width, 34px)
+    repeat(7, 1fr);
+}
+
 .foldcal-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
   background: var(--fold-color-surface-subtle);
   border-bottom: 1px solid var(--fold-color-border);
 }
@@ -38,7 +51,6 @@
 
 .foldcal-week {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
   flex: 1;
   min-height: var(--fold-calendar-month-row-min-height, 112px);
   border-bottom: 1px solid var(--fold-color-border-subtle);
@@ -46,6 +58,24 @@
   &:last-child {
     border-bottom: 0;
   }
+}
+
+.foldcal-weeknum {
+  grid-row: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--fold-space-sm);
+  border-inline-end: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-subtle);
+  color: var(--fold-color-text-faded);
+  font-size: var(--fold-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.foldcal-weeknum-head {
+  color: var(--fold-color-text-faded);
+  text-align: center;
 }
 
 /* The cell spans every lane row: it is the row's background and hit area, and
@@ -295,5 +325,61 @@
   .foldcal-day,
   .foldcal-band {
     transition: none;
+  }
+}
+
+/* ── Print ──────────────────────────────────────────────────────── */
+// A month calendar gets printed, and a dark theme printed as-is is unreadable:
+// browsers drop backgrounds but keep text colour, so light-on-dark becomes
+// light-on-white. System colours are the way to say "the page's own ink" —
+// they are not theme tokens and not hard-coded values, and the UA resolves
+// them against the paper.
+@media print {
+  :host {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .foldcal-weekdays,
+  .foldcal-weekday,
+  .foldcal-day,
+  .foldcal-daynum,
+  .foldcal-weeknum,
+  .foldcal-overflow {
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .foldcal-week,
+  .foldcal-day,
+  .foldcal-weeknum {
+    border-color: GrayText;
+  }
+
+  .foldcal-day.is-today {
+    background: Canvas;
+    box-shadow: inset 0 2px 0 0 CanvasText;
+  }
+
+  .foldcal-day.is-today .foldcal-daynum {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .foldcal-day.is-outside {
+    opacity: 0.55;
+  }
+
+  .foldcal-band {
+    border: 1px solid GrayText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+
+  // The tone bar is the only thing left telling two bands apart on paper, so
+  // it is the one place worth asking the printer for the ink.
+  .foldcal-band-bar {
+    print-color-adjust: exact;
   }
 }

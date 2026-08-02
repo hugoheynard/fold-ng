@@ -61,7 +61,10 @@ import type { FoldCalendarEvent } from "./calendar.types";
   templateUrl: "./calendar-list.component.html",
   styleUrl: "./calendar-list.component.scss",
   hostDirectives: [
-    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+    {
+      directive: FoldCalendarChromeDirective,
+      inputs: ["locale", "labels", "formats"],
+    },
   ],
 })
 export class FoldCalendarListComponent<T = unknown> {

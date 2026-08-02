@@ -26,6 +26,10 @@ export interface FoldCalendarLabels {
    * than silently given a smaller number.
    */
   readonly hiddenCount: (count: number) => string;
+  /** Header of the ISO week-number column — a symbol, not a sentence. */
+  readonly weekNumberShort: string;
+  /** Accessible reading of a week number, since the column header is a glyph. */
+  readonly weekNumber: (week: number) => string;
   /** Shown by the day view when nothing sits on the day. */
   readonly emptyDay: string;
   /** Shown by the list view when the range holds nothing. */
@@ -74,6 +78,8 @@ export const FOLD_CALENDAR_DEFAULT_LABELS: FoldCalendarLabels = {
   moreEvents: (count) => `+${count} more`,
   eventCount: (count) => (count === 1 ? "1 event" : `${count} events`),
   hiddenCount: (count) => `${count} not shown`,
+  weekNumberShort: "Wk",
+  weekNumber: (week) => `Week ${week}`,
   emptyDay: "Nothing on this day.",
   emptyRange: "Nothing in this range.",
   todayAction: "Today",

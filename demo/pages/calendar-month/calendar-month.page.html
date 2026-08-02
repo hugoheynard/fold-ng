@@ -210,10 +210,31 @@
       </div>
     </div>
 
+    <div class="np-field" params>
+      <span class="gal-tag">showWeekNumbers</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgWeekNumbers()"
+          (click)="pgWeekNumbers.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgWeekNumbers()"
+          (click)="pgWeekNumbers.set(true)"
+        >
+          ISO weeks
+        </button>
+      </div>
+    </div>
+
     <fold-calendar-month
       [(month)]="pgMonth"
       [events]="events"
       [today]="today"
+      [showWeekNumbers]="pgWeekNumbers()"
       [weekStartsOn]="pgWeekStart()"
       [maxLanes]="pgLanes()"
       [fixedWeeks]="pgFixed()"

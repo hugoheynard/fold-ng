@@ -5,8 +5,10 @@ import {
   foldAddMonths,
   foldDaysBetween,
   foldEndOfMonth,
-  foldIsCalendarDate,
   foldFromNativeDate,
+  foldIsCalendarDate,
+  foldIsoWeek,
+  foldIsoWeekYear,
   foldIsWeekend,
   foldStartOfMonth,
   foldStartOfWeek,
@@ -269,5 +271,36 @@ describe("year bounds", () => {
     // than something that silently reorders a calendar.
     const overflow = foldAddDays("9999-12-31", 1);
     expect(foldIsCalendarDate(overflow)).toBe(false);
+  });
+});
+
+describe("foldIsoWeek", () => {
+  // The cases the ISO-8601 standard itself uses as worked examples: a week
+  // belongs to the year holding its Thursday, so a January date can be week 53
+  // of the year before, and a December date week 1 of the year after.
+  const cases: readonly [string, number, number][] = [
+    ["2026-01-01", 1, 2026],
+    ["2025-12-29", 1, 2026],
+    ["2027-01-01", 53, 2026],
+    ["2026-05-18", 21, 2026],
+    ["2021-01-01", 53, 2020],
+    ["2024-12-30", 1, 2025],
+    ["1970-01-01", 1, 1970],
+  ];
+
+  it("numbers the week by the year its Thursday falls in", () => {
+    for (const [date, week, year] of cases) {
+      expect([date, foldIsoWeek(date), foldIsoWeekYear(date)]).toEqual([
+        date,
+        week,
+        year,
+      ]);
+    }
+  });
+
+  it("is Monday-based whatever the calendar's anchor is", () => {
+    // Sunday 2026-05-24 closes ISO week 21; Monday 2026-05-25 opens week 22.
+    expect(foldIsoWeek("2026-05-24")).toBe(21);
+    expect(foldIsoWeek("2026-05-25")).toBe(22);
   });
 });

@@ -113,6 +113,30 @@ All notable changes to **fold-ng** are documented here. The format follows
   with `[data-fold-day-modifiers~="holiday"]` — so nobody has to write CSS
   against an internal class name. `foldCalendarEvent` is now generic too, so
   `event.data` comes back as the app's own record.
+- **The week now comes from the locale, not from a guess.** `Intl.Locale`
+  knows which day a locale's week opens on and which days it rests — most
+  calendars stop at the month names and hard-code Monday, which is right in
+  Paris and wrong in Chicago, Cairo and Malé. `weekStartsOn` and `weekendDays`
+  default to `foldLocaleWeekInfo(locale)` and stay overridable, so the common
+  case needs no input at all. Both `getWeekInfo()` and the older `weekInfo`
+  getter are probed, and a runtime with neither falls back to Monday + Sat/Sun.
+- **ISO week numbers, as an optional leading column.** `showWeekNumbers` on
+  `fold-calendar-month`, backed by `foldIsoWeek` / `foldIsoWeekYear`. ISO weeks
+  start on Monday and belong to the year holding their **Thursday**, so they are
+  deliberately _not_ derived from the calendar's own anchor — 1 January is
+  sometimes week 53 of the year before, which is the whole point of the rule and
+  the reason European B2B reporting asks for it. The column is a real grid
+  track, so every placed element — cells, bands, overflow chips — shifts with it.
+- **A `formats` input beside `labels`.** Labels let a locale translate; this
+  lets it **reformat**. Every `Intl` option bag the family uses lives in one
+  table (`FOLD_CALENDAR_FORMATS`, now exported); `formats` merges over it per
+  instance — a narrow weekday header, a numeric month, a four-digit year.
+- **A print stylesheet for the month.** Browsers drop backgrounds but keep text
+  colour, so a dark theme printed as-is is light-on-white — unreadable. The
+  print block re-expresses everything in system colours (`Canvas`/`CanvasText`/
+  `GrayText`), which are neither theme tokens nor hard-coded values, and asks
+  for ink on exactly one thing: the tone bar, the last cue telling two bands
+  apart on paper.
 - **The month layout is ~5× faster, and the benchmark ships with it.** The cost
   was never the algorithm — it was the representation: every comparison in the
   candidate sort called `foldDaysBetween`, which re-parsed two strings and built

@@ -283,6 +283,31 @@ export function foldWeekdayIndex(
   );
 }
 
+/**
+ * The ISO-8601 week number `date` falls in, `1`–`53`.
+ *
+ * ISO weeks always start on Monday and belong to the year holding their
+ * **Thursday**, which is why 1 January is sometimes week 52 of the year before
+ * — the rule European B2B reporting runs on, and the reason this cannot be
+ * derived from the calendar's own `weekStartsOn`.
+ */
+export function foldIsoWeek(date: FoldCalendarDate): number {
+  const day = foldToEpochDay(date);
+  // Epoch day 0 is a Thursday, so `+3` puts Monday at 0.
+  const mondayOffset = (((day + 3) % 7) + 7) % 7;
+  const thursday = day - mondayOffset + 3;
+  const year = Number(foldFromEpochDay(thursday).slice(0, 4));
+  const firstThursdayWeek = foldToEpochDay(`${pad4(year)}-01-01`);
+  return Math.floor((thursday - firstThursdayWeek) / 7) + 1;
+}
+
+/** The ISO week-numbering year of `date` — not always its calendar year. */
+export function foldIsoWeekYear(date: FoldCalendarDate): number {
+  const day = foldToEpochDay(date);
+  const mondayOffset = (((day + 3) % 7) + 7) % 7;
+  return Number(foldFromEpochDay(day - mondayOffset + 3).slice(0, 4));
+}
+
 /** Which day of the week `date` falls on, anchor-independent. */
 export function foldWeekdayOf(date: FoldCalendarDate): FoldWeekday {
   return WEEKDAY_AT[new Date(toUtcMs(date)).getUTCDay()] ?? "sun";

@@ -214,12 +214,15 @@ export default class CalendarMonthPage {
   protected readonly pgLanes = signal(3);
   protected readonly pgFixed = signal(false);
   protected readonly pgLocale = signal("en-GB");
+  protected readonly pgWeekNumbers = signal(false);
 
   protected readonly weekStarts: readonly FoldWeekday[] = ["mon", "sat", "sun"];
+  /** en-US opens on Sunday and ar-EG on Saturday — the anchor follows. */
   protected readonly locales: readonly string[] = [
     "en-GB",
+    "en-US",
     "fr-FR",
-    "de-DE",
+    "ar-EG",
     "ja-JP",
   ];
 
@@ -232,6 +235,7 @@ export default class CalendarMonthPage {
       ...(this.pgWeekStart() === "mon"
         ? []
         : [`  weekStartsOn="${this.pgWeekStart()}"`]),
+      ...(this.pgWeekNumbers() ? [`  showWeekNumbers`] : []),
       ...(this.pgLanes() === 3 ? [] : [`  [maxLanes]="${this.pgLanes()}"`]),
       ...(this.pgFixed() ? [`  fixedWeeks`] : []),
       `  locale="${this.pgLocale()}"`,

@@ -69,7 +69,10 @@ interface SourceChip {
   templateUrl: "./calendar-source-filter.component.html",
   styleUrl: "./calendar-source-filter.component.scss",
   hostDirectives: [
-    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+    {
+      directive: FoldCalendarChromeDirective,
+      inputs: ["locale", "labels", "formats"],
+    },
   ],
 })
 export class FoldCalendarSourceFilterComponent {

@@ -23,8 +23,8 @@ import type {
  * | `date`         | `FoldCalendarDate`       | —       | Any date in the week on display. |
  * | `events`       | `FoldCalendarEvent<T>[]` | `[]`    | What to list. |
  * | `today`        | `FoldCalendarDate`       | —       | The day to mark. |
- * | `weekStartsOn` | `FoldWeekday`            | `'mon'` | Which day opens the week. |
- * | `weekendDays`  | `FoldWeekday[]`          | `['sat','sun']` | Which days are shaded. |
+ * | `weekStartsOn` | `FoldWeekday`            | the locale's | Which day opens the week — `Intl.Locale` knows. |
+ * | `weekendDays`  | `FoldWeekday[]`          | the locale's | Which days are shaded. |
  * | `locale`       | `string`                 | runtime | Drives the column headers through `Intl`. |
  * | `labels`       | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
  *
@@ -71,7 +71,10 @@ import type {
   templateUrl: "./calendar-week.component.html",
   styleUrl: "./calendar-week.component.scss",
   hostDirectives: [
-    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+    {
+      directive: FoldCalendarChromeDirective,
+      inputs: ["locale", "labels", "formats"],
+    },
   ],
 })
 export class FoldCalendarWeekComponent<T = unknown> {
@@ -81,8 +84,8 @@ export class FoldCalendarWeekComponent<T = unknown> {
   readonly events = input<readonly FoldCalendarEvent<T>[]>([]);
   /** The day to mark as today. */
   readonly today = input<FoldCalendarDate>();
-  /** Day the week starts on. @default 'mon' */
-  readonly weekStartsOn = input<FoldWeekday>("mon");
+  /** Day the week starts on. @default the locale's own first day */
+  readonly weekStartsOn = input<FoldWeekday>();
   /** Days shaded as the weekend. @default ['sat', 'sun'] */
   readonly weekendDays = input<readonly FoldWeekday[]>();
 
@@ -98,8 +101,8 @@ export class FoldCalendarWeekComponent<T = unknown> {
     () =>
       foldBuildWeek(this.events(), {
         date: this.date(),
-        weekStartsOn: this.weekStartsOn(),
-        weekendDays: this.weekendDays(),
+        weekStartsOn: this.chrome.anchor(this.weekStartsOn()),
+        weekendDays: this.chrome.weekend(this.weekendDays()),
         today: this.today(),
       }),
   );

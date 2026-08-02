@@ -46,7 +46,7 @@ import { FoldCalendarTitleDirective } from "./calendar-slots.directive";
  * | `view`         | `FoldCalendarView`       | `'month'` | **Two-way.** Which reading is on screen. |
  * | `views`        | `(FoldCalendarView \| FoldCalendarViewOption)[]` | all four | Which switches to offer; pass fewer to drop one, or `{ value, label }` to add your own. |
  * | `today`        | `FoldCalendarDate`       | local clock | Where the "today" button jumps to. |
- * | `weekStartsOn` | `FoldWeekday`            | `'mon'` | How the week view snaps and names itself. |
+ * | `weekStartsOn` | `FoldWeekday`            | the locale's | How the week view snaps and names itself. |
  * | `locale`       | `string`                 | runtime | Drives the title through `Intl`. |
  * | `labels`       | `Partial<FoldCalendarLabels>` | — | Per-instance label overrides. |
  *
@@ -87,7 +87,10 @@ import { FoldCalendarTitleDirective } from "./calendar-slots.directive";
   templateUrl: "./calendar-toolbar.component.html",
   styleUrl: "./calendar-toolbar.component.scss",
   hostDirectives: [
-    { directive: FoldCalendarChromeDirective, inputs: ["locale", "labels"] },
+    {
+      directive: FoldCalendarChromeDirective,
+      inputs: ["locale", "labels", "formats"],
+    },
   ],
 })
 export class FoldCalendarToolbarComponent {
@@ -104,11 +107,16 @@ export class FoldCalendarToolbarComponent {
   >(["month", "week", "day", "list"]);
   /** The day the "today" button jumps to; defaults to the local clock. */
   readonly today = input<FoldCalendarDate>();
-  /** Day the week starts on. @default 'mon' */
-  readonly weekStartsOn = input<FoldWeekday>("mon");
+  /** Day the week starts on. @default the locale's own first day */
+  readonly weekStartsOn = input<FoldWeekday>();
 
   /** Labels and locale — see the directive. */
   protected readonly chrome = inject(FoldCalendarChromeDirective);
+
+  /** The anchor in force: the caller's, else the one the locale declares. */
+  private readonly anchor = computed(() =>
+    this.chrome.anchor(this.weekStartsOn()),
+  );
 
   private readonly projectedTitle = contentChild(FoldCalendarTitleDirective);
 
@@ -123,13 +131,13 @@ export class FoldCalendarToolbarComponent {
       this.view(),
       this.date(),
       this.chrome.locale(),
-      this.weekStartsOn(),
+      this.anchor(),
     ),
   );
 
   /** The period the title stands for — handed to a projected title template. */
   protected readonly range = computed(() =>
-    foldRangeForView(this.view(), this.date(), this.weekStartsOn()),
+    foldRangeForView(this.view(), this.date(), this.anchor()),
   );
 
   protected readonly options = computed<readonly FoldViewToggleOption[]>(() => {
@@ -150,7 +158,7 @@ export class FoldCalendarToolbarComponent {
   /** Pages by one period in the units the current view reads in. */
   protected shift(delta: number): void {
     this.date.set(
-      foldShiftDate(this.view(), this.date(), delta, this.weekStartsOn()),
+      foldShiftDate(this.view(), this.date(), delta, this.anchor()),
     );
   }
 

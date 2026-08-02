@@ -624,3 +624,104 @@ describe("FoldCalendarMonthComponent — paging keeps the focus", () => {
     );
   });
 });
+
+describe("FoldCalendarMonthComponent — week numbers", () => {
+  @Component({
+    standalone: true,
+    imports: [FoldCalendarMonthComponent],
+    template: `
+      <fold-calendar-month month="2026-05-18" showWeekNumbers locale="en-GB" />
+    `,
+  })
+  class WeekNumberHost {}
+
+  it("adds an ISO week column that shifts every placed element with it", () => {
+    const fixture = TestBed.createComponent(WeekNumberHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    const numbers = [...el.querySelectorAll(".foldcal-weeknum")].map((n) =>
+      n.textContent?.trim(),
+    );
+    // May 2026's grid opens on Mon 27 Apr — ISO week 18 — and runs to week 22.
+    expect(numbers).toEqual(["18", "19", "20", "21", "22"]);
+
+    // The cells moved over by one: Monday is now the second grid column.
+    expect(dayCell(el, "2026-04-27").style.gridColumn).toBe("2");
+    // The host flags it so one grid-template definition serves header and rows.
+    expect(
+      el
+        .querySelector("fold-calendar-month")
+        ?.classList.contains("has-week-numbers"),
+    ).toBe(true);
+  });
+
+  it("names the column for a screen reader, since the header is a glyph", () => {
+    const fixture = TestBed.createComponent(WeekNumberHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(
+      el.querySelector(".foldcal-weeknum")?.getAttribute("aria-label"),
+    ).toBe("Week 18");
+    expect(el.querySelector(".foldcal-weeknum-head")?.textContent?.trim()).toBe(
+      "Wk",
+    );
+  });
+
+  it("has no column at all when it is not asked for", () => {
+    const { el } = setup();
+    expect(el.querySelector(".foldcal-weeknum")).toBeNull();
+    expect(dayCell(el, "2026-04-27").style.gridColumn).toBe("1");
+  });
+});
+
+describe("FoldCalendarMonthComponent — the locale's own week", () => {
+  @Component({
+    standalone: true,
+    imports: [FoldCalendarMonthComponent],
+    template: `<fold-calendar-month month="2026-05-18" [locale]="locale()" />`,
+  })
+  class LocaleHost {
+    readonly locale = signal("en-GB");
+  }
+
+  it("takes its anchor from the locale instead of hard-coding Monday", () => {
+    const fixture = TestBed.createComponent(LocaleHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const first = () =>
+      el
+        .querySelector(".foldcal-week [data-fold-day]")
+        ?.getAttribute("data-fold-day");
+
+    // en-GB opens on Monday, en-US on Sunday — the whole grid shifts a day.
+    expect(first()).toBe("2026-04-27");
+
+    fixture.componentInstance.locale.set("en-US");
+    fixture.detectChanges();
+    expect(first()).toBe("2026-04-26");
+  });
+
+  it("still lets the caller override it", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldCalendarMonthComponent],
+      template: `
+        <fold-calendar-month
+          month="2026-05-18"
+          locale="en-US"
+          weekStartsOn="mon"
+        />
+      `,
+    })
+    class OverrideHost {}
+
+    const fixture = TestBed.createComponent(OverrideHost);
+    fixture.detectChanges();
+    expect(
+      (fixture.nativeElement as HTMLElement)
+        .querySelector(".foldcal-week [data-fold-day]")
+        ?.getAttribute("data-fold-day"),
+    ).toBe("2026-04-27");
+  });
+});

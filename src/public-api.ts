@@ -126,6 +126,8 @@ export {
   foldEndOfMonth,
   foldFromNativeDate,
   foldIsCalendarDate,
+  foldIsoWeek,
+  foldIsoWeekYear,
   foldIsWeekend,
   foldStartOfMonth,
   foldStartOfWeek,
@@ -139,6 +141,13 @@ export type {
   FoldCalendarDate,
   FoldWeekday,
 } from "./components/content/calendar/calendar-date";
+export {
+  foldLocaleWeekInfo,
+  FOLD_FALLBACK_WEEK_INFO,
+} from "./components/content/calendar/calendar-locale";
+export type { FoldWeekInfo } from "./components/content/calendar/calendar-locale";
+export { FOLD_CALENDAR_FORMATS } from "./components/content/calendar/calendar-format";
+export type { FoldCalendarFormat } from "./components/content/calendar/calendar-format";
 // The geometry tier: everything a consumer needs to lay a calendar out
 // *without* rendering it with these components. Kept public deliberately — see
 // the README's "Two tiers" note — which is why the keyboard map ships with it:
