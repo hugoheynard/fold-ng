@@ -15,8 +15,10 @@ All notable changes to **fold-ng** are documented here. The format follows
   week with an open edge on the side that continues, so a three-week holiday
   reads as one thing rather than twenty-one chips. Bands pack into lanes
   (earliest start, then longest) under a `maxLanes` budget, and whatever will
-  not fit becomes an overflow chip that hands the **whole week** to
-  `overflowClick` rather than being dropped silently. Events sharing a `groupId`
+  not fit becomes an overflow chip **in the column of each day that lost
+  something** — a hidden span counts against every day it would have covered,
+  so the chip says _which_ day to open rather than only that the week is
+  crowded, and `overflowClick` emits that day. Events sharing a `groupId`
   collapse into one chip spanning the union of their ranges and carrying the
   count; a half-day edge is kept only on the segment holding the event's real
   edge. Inputs cover `weekStartsOn` (any anchor, not just Monday), `fixedWeeks`,

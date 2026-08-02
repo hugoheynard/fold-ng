@@ -199,10 +199,12 @@
   background: var(--fold-color-text-muted);
 }
 
+// Inherits the band's colour, which is the tone's — pinning a colour here is
+// what made a warning band's glyph stay grey next to its amber label.
 .foldcal-band-icon {
   flex: none;
   margin-left: 2px;
-  color: var(--fold-color-text-secondary);
+  opacity: 0.9;
 }
 
 .foldcal-band-label {
@@ -266,11 +268,12 @@
 
 /* ── Overflow chip ──────────────────────────────────────────────── */
 
+// One per crowded day, sitting in that day's own column under the last lane.
 .foldcal-overflow {
-  grid-column: 1 / -1;
-  justify-self: end;
-  align-self: end;
-  margin-inline: var(--fold-space-sm);
+  justify-self: start;
+  align-self: start;
+  z-index: 1;
+  margin-inline: var(--fold-space-xs);
   padding: 0 var(--fold-space-xs);
   border: 0;
   border-radius: var(--fold-radius-sm);

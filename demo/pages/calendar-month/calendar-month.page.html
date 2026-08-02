@@ -35,7 +35,7 @@
   <div class="gal-row gal-row--wide">
     <div class="gal-cell" style="flex: 1 1 460px">
       <span class="gal-tag"
-        >lane budget · the rest collapse into “+N more”</span
+        >lane budget · each crowded day says how much it lost</span
       >
       <fold-card surface="sunken" style="--fold-card-padding: 0">
         <fold-calendar-month
@@ -48,8 +48,9 @@
         />
       </fold-card>
       <p class="doc-p">
-        Overflow chip reported {{ lastOverflow() ?? "—" }} hidden event(s) — it
-        hands the whole week over, so a caller can open what was cut.
+        A hidden span counts against every day it would have covered, so the
+        chip sits in the column that actually lost something rather than at the
+        end of the row. It emits that day — last: “{{ lastOverflow() ?? "—" }}”.
       </p>
     </div>
 

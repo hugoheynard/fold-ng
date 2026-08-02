@@ -77,17 +77,21 @@
         </button>
       }
 
-      @if (week.hiddenCount > 0) {
-        <button
-          type="button"
-          class="foldcal-overflow"
-          aria-hidden="true"
-          tabindex="-1"
-          [style.gridRow]="overflowRow()"
-          (click)="overflowClick.emit(week)"
-        >
-          {{ l().moreEvents(week.hiddenCount) }}
-        </button>
+      <!-- One chip per crowded day, in that day's own column. -->
+      @for (day of week.days; track day.date; let column = $index) {
+        @if (hiddenOn(week, column); as hidden) {
+          <button
+            type="button"
+            class="foldcal-overflow"
+            aria-hidden="true"
+            tabindex="-1"
+            [style.gridColumn]="column + 1"
+            [style.gridRow]="overflowRow()"
+            (click)="overflowClick.emit(day.date)"
+          >
+            {{ l().moreEvents(hidden) }}
+          </button>
+        }
       }
     </div>
   }

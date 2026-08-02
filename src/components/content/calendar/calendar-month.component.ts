@@ -130,8 +130,8 @@ export class FoldCalendarMonthComponent<T> {
   readonly dayClick = output<FoldCalendarDate>();
   /** A band was clicked; a grouped band emits its representative event. */
   readonly eventClick = output<FoldCalendarEvent<T>>();
-  /** The `+N` chip was clicked, with the week whose events overflowed. */
-  readonly overflowClick = output<FoldCalendarWeek<T>>();
+  /** A `+N` chip was clicked, with the day whose events overflowed. */
+  readonly overflowClick = output<FoldCalendarDate>();
 
   private readonly host = inject(ElementRef);
   private readonly injectedLabels = inject(FOLD_CALENDAR_LABELS);
@@ -245,6 +245,11 @@ export class FoldCalendarMonthComponent<T> {
 
   protected dayTabIndex(date: FoldCalendarDate): 0 | -1 {
     return date === this.activeDate() ? 0 : -1;
+  }
+
+  /** Events `column` lost to the lane budget, or `0` — falsy, so `@if` skips it. */
+  protected hiddenOn(week: FoldCalendarWeek<T>, column: number): number {
+    return week.hiddenByDay[column] ?? 0;
   }
 
   /** A day's accessible name: its date, the today marker, and what sits on it. */

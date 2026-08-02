@@ -114,7 +114,7 @@
 - locale: InputSignal<string | undefined>
 - maxLanes: InputSignal<number>
 - month: ModelSignal<string> — required
-- overflowClick: OutputEmitterRef<FoldCalendarWeek<T>>
+- overflowClick: OutputEmitterRef<string>
 - today: InputSignal<string | undefined>
 - weekStartsOn: InputSignal<FoldWeekday>
 

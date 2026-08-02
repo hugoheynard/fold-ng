@@ -129,6 +129,13 @@ export interface FoldCalendarWeek<T = unknown> {
   readonly days: readonly FoldCalendarDay[];
   /** Placed bands, ordered by lane then column. */
   readonly bands: readonly FoldCalendarBand<T>[];
-  /** Events overlapping this week that no lane could take. */
+  /** Spans overlapping this week that no lane could take. */
   readonly hiddenCount: number;
+  /**
+   * How many of them each day lost, one entry per column — a hidden span
+   * counts against **every** day it would have covered. This is what the
+   * overflow chips read: a row-wide total says a week is crowded without
+   * saying which day to open.
+   */
+  readonly hiddenByDay: readonly number[];
 }

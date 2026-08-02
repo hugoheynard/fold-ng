@@ -261,6 +261,48 @@ describe("foldBuildMonthGrid — lane packing", () => {
     expect(week.hiddenCount).toBe(2);
   });
 
+  it("charges a hidden span to every day it would have covered", () => {
+    // Five spans over Mon–Fri, three lanes: two are lost on each of those days.
+    const overlapping = Array.from({ length: 5 }, (_unused, index) =>
+      event(`e${index}`, "2026-05-18", "2026-05-22"),
+    );
+    const weeks = foldBuildMonthGrid(overlapping, { month: MAY, maxLanes: 3 });
+    const week = at(
+      weeks.filter((candidate) => candidate.hiddenCount > 0),
+      0,
+    );
+    expect([...week.hiddenByDay]).toEqual([2, 2, 2, 2, 2, 0, 0]);
+  });
+
+  it("leaves every day at zero when nothing overflows", () => {
+    const weeks = foldBuildMonthGrid([event("a", "2026-05-18", "2026-05-19")], {
+      month: MAY,
+    });
+    for (const week of weeks) {
+      expect([...week.hiddenByDay]).toEqual([0, 0, 0, 0, 0, 0, 0]);
+    }
+  });
+
+  it("charges only the days a clipped span reaches", () => {
+    // Three single-day spans on Wednesday plus two long ones: only Wednesday
+    // can lose anything once the long pair has taken two lanes.
+    const weeks = foldBuildMonthGrid(
+      [
+        event("long1", "2026-05-18", "2026-05-24"),
+        event("long2", "2026-05-18", "2026-05-24"),
+        event("w1", "2026-05-20", "2026-05-20"),
+        event("w2", "2026-05-20", "2026-05-20"),
+      ],
+      { month: MAY, maxLanes: 3 },
+    );
+    const week = at(
+      weeks.filter((candidate) => candidate.hiddenCount > 0),
+      0,
+    );
+    expect(week.hiddenCount).toBe(1);
+    expect([...week.hiddenByDay]).toEqual([0, 0, 1, 0, 0, 0, 0]);
+  });
+
   it("honours a raised lane budget", () => {
     const overlapping = Array.from({ length: 5 }, (_unused, index) =>
       event(`e${index}`, "2026-05-18", "2026-05-22"),

@@ -21,7 +21,7 @@ const MAY = "2026-05-18";
       locale="en-GB"
       (dayClick)="clickedDay.set($event)"
       (eventClick)="clickedEvent.set($event)"
-      (overflowClick)="overflowWeeks.set(overflowWeeks() + 1)"
+      (overflowClick)="overflowDay.set($event)"
     />
   `,
 })
@@ -32,7 +32,7 @@ class HostComponent {
   readonly maxLanes = signal(3);
   readonly clickedDay = signal<string | null>(null);
   readonly clickedEvent = signal<FoldCalendarEvent | null>(null);
-  readonly overflowWeeks = signal(0);
+  readonly overflowDay = signal<string | null>(null);
 }
 
 @Component({
@@ -219,6 +219,26 @@ describe("FoldCalendarMonthComponent — bands", () => {
     );
   });
 
+  it("tints the glyph with the band's tone rather than pinning a colour", () => {
+    const { fixture, host, el } = setup();
+    host.events.set([
+      {
+        id: "e1",
+        start: "2026-05-18",
+        end: "2026-05-18",
+        label: "Due",
+        tone: "alert",
+        icon: "clock",
+      },
+    ]);
+    fixture.detectChanges();
+
+    // The icon must inherit, so it cannot carry a colour of its own.
+    const icon = el.querySelector(".foldcal-band-icon");
+    expect(icon).not.toBeNull();
+    expect(icon?.getAttribute("style")).toBeNull();
+  });
+
   it("shows an overflow chip once a week runs out of lanes", () => {
     const { fixture, host, el } = setup();
     host.events.set(
@@ -232,9 +252,29 @@ describe("FoldCalendarMonthComponent — bands", () => {
     fixture.detectChanges();
 
     expect(el.querySelectorAll(".foldcal-band")).toHaveLength(3);
-    expect(el.querySelector(".foldcal-overflow")?.textContent?.trim()).toBe(
-      "+2 more",
-    );
+    // One chip per crowded day — Mon to Fri — not one at the end of the row.
+    const chips = [...el.querySelectorAll(".foldcal-overflow")];
+    expect(chips).toHaveLength(5);
+    for (const chip of chips) {
+      expect(chip.textContent?.trim()).toBe("+2 more");
+    }
+  });
+
+  it("puts each overflow chip in the column that lost something", () => {
+    const { fixture, host, el } = setup();
+    host.events.set([
+      { id: "l1", start: "2026-05-18", end: "2026-05-24", label: "Long 1" },
+      { id: "l2", start: "2026-05-18", end: "2026-05-24", label: "Long 2" },
+      { id: "w1", start: "2026-05-20", end: "2026-05-20", label: "Wed 1" },
+      { id: "w2", start: "2026-05-20", end: "2026-05-20", label: "Wed 2" },
+    ]);
+    fixture.detectChanges();
+
+    const chips = [...el.querySelectorAll(".foldcal-overflow")];
+    expect(chips).toHaveLength(1);
+    expect(chips[0]?.textContent?.trim()).toBe("+1 more");
+    // Wednesday is the third column.
+    expect(chips[0]?.getAttribute("style")).toContain("grid-column: 3");
   });
 });
 
@@ -262,7 +302,7 @@ describe("FoldCalendarMonthComponent — outputs", () => {
     expect(host.clickedEvent()?.data).toEqual({ ref: 42 });
   });
 
-  it("emits the overflowing week", () => {
+  it("emits the day whose events overflowed", () => {
     const { fixture, host, el } = setup();
     host.events.set(
       Array.from({ length: 5 }, (_unused, index) => ({
@@ -274,8 +314,9 @@ describe("FoldCalendarMonthComponent — outputs", () => {
     );
     fixture.detectChanges();
 
+    // The first chip belongs to Monday the 18th.
     el.querySelector<HTMLElement>(".foldcal-overflow")?.click();
-    expect(host.overflowWeeks()).toBe(1);
+    expect(host.overflowDay()).toBe("2026-05-18");
   });
 });
 

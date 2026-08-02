@@ -13,7 +13,6 @@ import {
   FoldPageLayoutComponent,
   type FoldCalendarDate,
   type FoldCalendarEvent,
-  type FoldCalendarWeek,
   type FoldWeekday,
 } from "../../../src/public-api";
 
@@ -172,10 +171,10 @@ export default class CalendarMonthPage {
 
   protected readonly lastDay = signal<FoldCalendarDate | null>(null);
   protected readonly lastEvent = signal<string | null>(null);
-  protected readonly lastOverflow = signal<number | null>(null);
+  protected readonly lastOverflow = signal<FoldCalendarDate | null>(null);
 
-  protected onOverflow(week: FoldCalendarWeek<unknown>): void {
-    this.lastOverflow.set(week.hiddenCount);
+  protected onOverflow(date: FoldCalendarDate): void {
+    this.lastOverflow.set(date);
   }
 
   /* ── playground ── */

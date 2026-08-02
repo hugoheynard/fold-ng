@@ -114,18 +114,30 @@ function candidatesForWeek<T>(
   });
 }
 
-/** One span clipped to a week row, or `null` when the lanes are full. */
+/** The columns a span occupies once clipped to its week row. */
+function columnsOf<T>(
+  span: LogicalSpan<T>,
+  weekStart: FoldCalendarDate,
+  weekEnd: FoldCalendarDate,
+): { startColumn: number; endColumn: number } {
+  const clippedStart = span.start >= weekStart ? span.start : weekStart;
+  const clippedEnd = span.end <= weekEnd ? span.end : weekEnd;
+  return {
+    startColumn: foldDaysBetween(weekStart, clippedStart),
+    endColumn: foldDaysBetween(weekStart, clippedEnd),
+  };
+}
+
+/** One span placed in a lane, or `null` when the budget is spent. */
 function placeSpan<T>(
   span: LogicalSpan<T>,
   weekStart: FoldCalendarDate,
   weekEnd: FoldCalendarDate,
+  columns: { startColumn: number; endColumn: number },
   laneEnds: number[],
   maxLanes: number,
 ): FoldCalendarBand<T> | null {
-  const clippedStart = span.start >= weekStart ? span.start : weekStart;
-  const clippedEnd = span.end <= weekEnd ? span.end : weekEnd;
-  const startColumn = foldDaysBetween(weekStart, clippedStart);
-  const endColumn = foldDaysBetween(weekStart, clippedEnd);
+  const { startColumn, endColumn } = columns;
 
   // First lane whose occupant ends before this span starts; else a fresh one.
   const reusable = laneEnds.findIndex((end) => end < startColumn);
@@ -156,26 +168,51 @@ function placeSpan<T>(
   };
 }
 
-/** Packs a week's candidates into lanes, counting what overflowed. */
+/**
+ * Packs a week's candidates into lanes, and records what overflowed **per
+ * day** — a row-wide total would say a week is crowded without saying which
+ * day to look at, so each column carries its own count.
+ */
 function packWeek<T>(
   spans: readonly LogicalSpan<T>[],
   weekStart: FoldCalendarDate,
   maxLanes: number,
-): { bands: readonly FoldCalendarBand<T>[]; hiddenCount: number } {
+): {
+  bands: readonly FoldCalendarBand<T>[];
+  hiddenCount: number;
+  hiddenByDay: readonly number[];
+} {
   const weekEnd = foldAddDays(weekStart, DAYS_PER_WEEK - 1);
   const laneEnds: number[] = [];
   const bands: FoldCalendarBand<T>[] = [];
+  const hiddenByDay: number[] = Array.from({ length: DAYS_PER_WEEK }, () => 0);
   let hiddenCount = 0;
 
   for (const span of candidatesForWeek(spans, weekStart, weekEnd)) {
-    const band = placeSpan(span, weekStart, weekEnd, laneEnds, maxLanes);
+    const columns = columnsOf(span, weekStart, weekEnd);
+    const band = placeSpan(
+      span,
+      weekStart,
+      weekEnd,
+      columns,
+      laneEnds,
+      maxLanes,
+    );
     if (band === null) {
       hiddenCount += 1;
+      // A hidden span is missing from every day it would have covered.
+      for (
+        let column = columns.startColumn;
+        column <= columns.endColumn;
+        column += 1
+      ) {
+        hiddenByDay[column] = (hiddenByDay[column] ?? 0) + 1;
+      }
       continue;
     }
     bands.push(band);
   }
-  return { bands, hiddenCount };
+  return { bands, hiddenCount, hiddenByDay };
 }
 
 /** The seven cells of one week row. */
@@ -227,12 +264,17 @@ export function foldBuildMonthGrid<T>(
   const spans = collapseGroups(events);
   return Array.from({ length: rowCount }, (_unused, row) => {
     const weekStart = foldAddDays(firstRow, row * DAYS_PER_WEEK);
-    const { bands, hiddenCount } = packWeek(spans, weekStart, maxLanes);
+    const { bands, hiddenCount, hiddenByDay } = packWeek(
+      spans,
+      weekStart,
+      maxLanes,
+    );
     return {
       start: weekStart,
       days: buildDays(weekStart, month, options.today, weekStartsOn),
       bands,
       hiddenCount,
+      hiddenByDay,
     };
   });
 }
