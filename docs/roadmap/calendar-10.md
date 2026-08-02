@@ -61,25 +61,33 @@ were caught by a human looking at it.
       3.06:1) and that is a different component's failing test.
 
       It caught two real things. **52 contrast failures**: every faint string in
-          the family sat on `--fold-color-text-muted` (2.78:1) or `-faded` (2.00:1),
-          neither of which can reach AA — all raised to `-secondary` (4.86:1), and
-          the choice is now enforced at the **source** by
-          `calendar-contrast.spec.ts`, which cannot drift with a theme the way a
-          pixel measurement does. And **`scrollable-region-focusable`**: the time
-          grid's hour area scrolls, so it needed to be a named tab stop.
+              the family sat on `--fold-color-text-muted` (2.78:1) or `-faded` (2.00:1),
+              neither of which can reach AA — all raised to `-secondary` (4.86:1), and
+              the choice is now enforced at the **source** by
+              `calendar-contrast.spec.ts`, which cannot drift with a theme the way a
+              pixel measurement does. And **`scrollable-region-focusable`**: the time
+              grid's hour area scrolls, so it needed to be a named tab stop.
 
-          What is left below AA in that subtree is four **shared token pairs** used
-          correctly — `on-primary`/`primary` 3.06, `alert-text`/`alert-surface`
-          4.01, `text-secondary`/`surface-sunken` 4.18–4.47, and `text-muted` inside
-          a nested `fold-view-toggle` 3.16. Fixing any of them re-tunes the whole
-          package, so they are **the one thing this roadmap leaves open**. *Original
-          scope:*, in the same run. Zero
-          violations is a claim worth making only when a machine re-checks it.
+              What is left below AA in that subtree is four **shared token pairs** used
+              correctly — `on-primary`/`primary` 3.06, `alert-text`/`alert-surface`
+              4.01, `text-secondary`/`surface-sunken` 4.18–4.47, and `text-muted` inside
+              a nested `fold-view-toggle` 3.16. Fixing any of them re-tunes the whole
+              package, so they are **the one thing this roadmap leaves open**. *Original
+              scope:*, in the same run. Zero
+              violations is a claim worth making only when a machine re-checks it.
 
-- [ ] `P0·test` **Visual regression on the three pages × 2 themes × RTL.**
-      Cheap, and it catches exactly the class that got through twice: a chip
-      truncated to one letter, a custom chip wrapping out of its lane.
-- [ ] `P1·a11y` **One real screen-reader pass** (VoiceOver + NVDA), written up in
+- [x] `P0·test` **Visual regression — the month, 2 themes + RTL.** Three
+      baselines, stable across runs. Scoped to the month deliberately: the week
+      view is container-queried and the time grid scrolls, so both settle a
+      pixel differently between runs against a live dev server, and a shot that
+      fails one run in three teaches people to ignore the suite. Their geometry
+      is asserted by **measurement** instead — a block's offset against the hour
+      rules, a chip's label length under a container query — which is stable and
+      says more about _why_. Add them here the day this runs against a pinned CI
+      browser. _Original scope:_ the three pages × 2 themes × RTL.
+- [ ] `P1·a11y` **One real screen-reader pass** — the one item here I cannot do:
+      it needs a human at a keyboard with VoiceOver and NVDA. Everything a
+      machine can check is checked. _Scope:_ (VoiceOver + NVDA), written up in
       the docblock — what is announced walking a month, and what the drill-down
       sounds like. No competitor in this category publishes that.
 
