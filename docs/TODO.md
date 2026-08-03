@@ -726,14 +726,16 @@ committed work; the point is to learn before we lock anything.
   (`aspect-ratio` cards in an `auto-fill minmax` grid — resize changes the column
   count, so it reflows hard). Ship the owned-container version first; the directive
   only if a 2nd consumer needs it on a non-fold scroller.
-- **Discoverability by intention — a "need → component" index** (consumer-friction
-  Round 4 #4). The B2B app hand-rolled a `.h` eyebrow label though
-  `fold-element-title variant="eyebrow"` already does exactly that — the author
-  never found it among ~90 exports (discovery is grep-the-`.d.ts`). `llms.txt` +
-  README list components by **name**, not by the **job** a consumer is trying to do.
-  Probe: a short "I want X → use Y" table (eyebrow label, section header, inline
-  confirm, status pill, …) in the README / `llms.txt`, or a gallery search keyed on
-  intent. Cheap hedge against silent reuse-before-create misses.
+- [x] **Discoverability by intention — a "need → component" index** (consumer-friction
+      Round 4 #4). ✅ Done — added a **"Find one by what you need"** intent table to the
+      README (before the name-keyed reference table: intent → component, covering the
+      hand-roll traps — eyebrow label, section header, field types, inline confirm,
+      status pill, overlays, …), and a condensed **"Pick by intent"** block to `llms.txt`
+      (highest leverage — the LLM consumer is exactly who hand-rolled `.h`). Also fixed
+      the reference table's own discoverability gaps found in passing: added the missing
+      `fold-select` / `fold-textarea` / `fold-date` / `fold-time` rows, dropped a
+      duplicate `fold-range-slider` row, corrected the icon count. A gallery
+      intent-search is a possible follow-up but the docs index covers the failure mode.
 - [x] **Missing commerce glyphs** (consumer-friction Round 4 #3). ✅ Done — new
       **`commerce` category** (`COMMERCE_ICONS`, the 7th), 21 e-commerce glyphs
       (cart/bag/basket · package(+check/return) · tag/tags/barcode/qr/gift ·

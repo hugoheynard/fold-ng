@@ -24,13 +24,24 @@ with a `@selector` and an `@example`.
 ## Components
 
 - Actions: `[foldButton]` (on a real `<button>`/`<a>`; `emphasis` × `intent` axes; `loading`), `fold-button-icon` (momentary), `fold-toggle-icon` (toggle), `fold-link`.
-- Forms: `fold-input`, `fold-number-input`, `fold-select`, `fold-search`, `fold-slider`, `fold-range-slider`, `fold-file-dropzone` (Angular Signal Forms — no `ngModel`/`ReactiveFormsModule`).
+- Forms: `fold-input` (text), `fold-number-input`, `fold-textarea` (multiline, no resize), `fold-date` (date·datetime-local·month·week) / `fold-time`, `fold-select` (native) / `fold-listbox` (custom rows) / `fold-multiselect`, `fold-checkbox`, `fold-password-field`, `fold-search`, `fold-slider` / `fold-range-slider`, `fold-file-dropzone` (Angular Signal Forms — no `ngModel`/`ReactiveFormsModule`).
 - Overlays: `fold-panel-host` / `fold-panel-header` (modal side panels with accessible name, `inert` background barrier, focus trap, scroll-lock; imperative `open<TData,TResult>()` → typed `FoldPanelRef`).
 - Navigation: `fold-menu`, `fold-nav-launcher`, `fold-view-nav` (tab-styled nav bar; items with a `link` render real `<a routerLink>` with `aria-current` + auto active state, else buttons; `direction="auto"`, `collapsed` icon rail), `fold-tabs` + `fold-tab-panel` (the in-page ARIA Tabs widget — `role="tablist"`, roving arrow keys).
 - Layout: `fold-app-shell`, `fold-page-layout`, `fold-aside-layout`, `fold-nav-layout` (places a nav/tabs bar + content, folds side↔top), `fold-hero-section`.
 - Content: `fold-card`, `fold-hero-card`, `fold-badge`, `fold-status-badge`, `fold-avatar`, `fold-avatar-list`, `fold-timeline`, `fold-data-table`, `fold-paginator`, `fold-field`.
 - Feedback: `fold-callout`, `fold-disclosure`, `fold-toast`, `fold-loading`, `fold-empty-state`.
-- Foundations: `fold-icon` (114 built-in SVGs + registry), `fold-spinner`.
+- Foundations: `fold-icon` (~135 built-in SVGs across 7 categories incl. `commerce` + registry), `fold-spinner`.
+
+## Pick by intent (don't hand-roll — fold likely ships it)
+
+You usually know the intent, not the name. Before hand-rolling a label/field/badge/card/overlay, map it here:
+
+- uppercase label / eyebrow over a group → `fold-element-title` (`variant="eyebrow"`); a titled section → `fold-page-section`; read-only label/value pairs → `fold-field-list`.
+- multiline note → `fold-textarea`; a date → `fold-date`; a time → `fold-time`; a dropdown → `fold-select` (custom rows → `fold-listbox`, multi → `fold-multiselect`); on/off → `fold-checkbox`.
+- inline "are you sure?" → `fold-inline-confirm`; a tinted alert row → `fold-callout`; a toast → `FoldToastService`; a status/count pill → `fold-badge` / `fold-status-badge`.
+- a side panel → `fold-panel-host`; anchored popover → `fold-popover`; actions menu → `fold-dropdown`; collapsible → `fold-disclosure`. (No modal dialog yet — use a modal `fold-panel-host`.)
+- in-page tabs → `fold-tabs`; routed nav bar → `fold-view-nav`; segmented control → `fold-view-toggle` / `fold-choice-row`.
+- empty/loading state → `fold-empty-state` / `fold-loading`; a table → `fold-data-table` (+ `fold-paginator`); a calendar → `fold-calendar-*`; a timeline/stepper → `fold-timeline`.
 
 ## Conventions
 
