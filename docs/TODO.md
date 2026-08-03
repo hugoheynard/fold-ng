@@ -164,6 +164,13 @@ leave-balance-display, configurable-tab-bar, etc.
     Its own commit + responsive specs — kept out of the 2026-07-29 panel lot to
     keep that lot clean. This is the 9.5 → 10 lever for the panel system.
 
+- [ ] **`open()` overload for optional/no data** (consumer-friction Round 4 #5). A
+      panel whose data is optional (`data?: InputSignal<TData>`) forces the caller
+      to spell `open<TData | undefined, R>()` to dodge `TS2345` (hit by the B2B
+      PickupPanel). Add a no-data `open(Cmp)` overload — or a `TData = void` default
+      flowing to `FoldPanelContent` — so the common case infers without the manual
+      widen. Cheap, purely type-level.
+
 - [ ] **Better `/panel` gallery demo.** The dedicated page landed (2026-07-29:
       bounded stage, 5+ triggers, background click-counter, cascade docs), but the
       demo undersells the system. Raise it to `/app-shell`'s `dev-playground`
@@ -185,6 +192,36 @@ leave-balance-display, configurable-tab-bar, etc.
   - Keep the background counter (proves non-modal pass-through) + the bounded
     `panelScope` stage. Sequences with bottom-sheet: add a mobile preview width to
     the same demo once `side: 'bottom'` lands.
+
+## Form inputs — the native-input gap (`fold-textarea` · `fold-date` · `fold-time`)
+
+Surfaced by the **2nd consumer** (LaFolieDouce B2B — `consumer-friction.md` Round 4
+#2). fold ships `fold-input` / `fold-number-input` / `fold-select` but **no
+multiline, date, or time control**, so every form that needs one drops to a native
+element and pays three times: native markup, an `inputValue($event)` helper to type
+the untyped native event, and a **copied** `.date/.note` box chrome (padding +
+border + radius + `:focus-visible`). Measured in the B2B app: native inputs in **6**
+templates, the `inputValue` helper in **5** files, and the box chrome duplicated
+byte-for-byte across **3** panels (`checkout-panel`, `activation-support-panel`,
+`creer-entreprise-panel`). This is the highest-volume DX tax found so far, and the
+chrome already exists to fix it cheaply.
+
+- [ ] **`fold-textarea`** — the multiline sibling of `fold-input`. `[(value)]`
+      model, same `_field-box.scss` chrome (single-sourced with the listbox work),
+      optional autosize (grow-to-content up to a `max-rows`), `resize` knob. The
+      commit-continuous `model` contract is right here (unlike the table-cell case
+      in Round 1 #5) — a note field wants live binding.
+- [ ] **`fold-date` / `fold-time`** — wrap native `type=date` / `type=time` in the
+      field box, expose a **typed** `[(value)]` + `(valueChange)` (string ISO date /
+      `HH:mm`) so consumers stop hand-writing `inputValue`. Native pickers keep the
+      mobile keyboard + OS calendar for free (same reasoning as `fold-number-input`
+      staying `type=number`). **Not** a full calendar popover — that's the
+      `fold-calendar` family; this is the plain field. **Trigger check:** date/time
+      fields recur across ≥2 consumers now (SH3PHERD contract forms left dates
+      native too — see the `fold-number-input` note in Tech debt), so this clears
+      the "generalise on the 2nd real use" bar.
+- Retires: the `.date/.note` duplication (3 panels) + the `inputValue()` helper
+  (5 sites) collapse into the field box on adoption.
 
 ## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4) ✅ DONE
 
@@ -232,7 +269,7 @@ lib-wide levers there cleared._
 
 - [ ] **Add a `scroll` opt-out to `fold-page-layout` (`'own' | 'flow'`, default `'own'`).**
       Its `:host` hardcodes `overflow-y:auto; overscroll-behavior:contain;
-    flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
+  flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
       for the `contentScroll="clip"` model, with **no input to turn it off**. So a
       page built on `fold-page-layout` is structurally incompatible with the shell
       owning the scroll (`footerBehavior="scroll"`): the page scrolls internally,
@@ -247,6 +284,16 @@ lib-wide levers there cleared._
       `overflow`/`overscroll`/`min-height` so the page flows and the scroll — and
       footer reach — returns to the shell. Pairs with the footer-scroll snapshot
       coverage below. Ground truth in `consumer-friction.md` Round 3.
+  - **Companion (surfaced by the 2nd consumer, LaFolieDouce B2B — `consumer-friction.md`
+    Round 4 #1):** `scroll="flow"` is necessary but **not sufficient**. The
+    shell glues its in-flow footer with `.footer-inflow { margin-top:auto }`, and
+    a flex auto-margin **consumes free space before `flex-grow`** — so even a
+    flowing page won't grow to fill the scrollport, and a short page leaves the
+    footer floating mid-viewport. The shell must also make the routed page
+    **grow** (a `flex:1 0 auto` content wrapper) instead of pushing the footer
+    with `margin-top:auto`. The app's workaround is a global
+    `router-outlet + * { flex:1 0 auto }` + `.footer-inflow { margin-top:0 !important }`
+    — the `!important` against a lib rule is the smell. Fix both together.
 
 **Do — the a11y promise (the component advertises accessibility):**
 
@@ -671,6 +718,19 @@ committed work; the point is to learn before we lock anything.
   (`aspect-ratio` cards in an `auto-fill minmax` grid — resize changes the column
   count, so it reflows hard). Ship the owned-container version first; the directive
   only if a 2nd consumer needs it on a non-fold scroller.
+- **Discoverability by intention — a "need → component" index** (consumer-friction
+  Round 4 #4). The B2B app hand-rolled a `.h` eyebrow label though
+  `fold-element-title variant="eyebrow"` already does exactly that — the author
+  never found it among ~90 exports (discovery is grep-the-`.d.ts`). `llms.txt` +
+  README list components by **name**, not by the **job** a consumer is trying to do.
+  Probe: a short "I want X → use Y" table (eyebrow label, section header, inline
+  confirm, status pill, …) in the README / `llms.txt`, or a gallery search keyed on
+  intent. Cheap hedge against silent reuse-before-create misses.
+- **Missing commerce glyphs** (consumer-friction Round 4 #3). `truck` / `delivery` /
+  `receipt` absent from the built-in set, so the B2B app reuses `icon="package"` as
+  a placeholder for both the Panier page and the Retraits nav tab. Additive, same as
+  Round 1's archive/filter — add them (mind the tree-shaking tech-debt note: they
+  land in the always-bundled catalogue until that's decoupled).
 - **DX sweep across the components.** AppShell now uses the house pattern —
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining

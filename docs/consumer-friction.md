@@ -78,6 +78,71 @@ input on `fold-page-layout` (`'own' | 'flow'`, default `'own'`); `'flow'` drops
 `overflow`/`overscroll`/`min-height` so the page flows and the scroll — and footer
 reach — returns to the shell. ⏳
 
+## Round 4 — LaFolieDouce **B2B** build (2026-08-03)
+
+The **second** consumer (the B2B storefront + admin, not the PIM) — exactly the
+"2nd user reveals hidden assumptions" that Road to 9.5 §5 calls for. Five
+frictions, ground-truthed against **fold-ng 0.8.1**.
+
+| #   | Point                                                                 | Verdict                                                                                                                                                                                                                                                                                              | Status                 |
+| --- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| 1   | Shell footer floats mid-page / unreachable on short pages             | **Confirms Round 3 from the _shell_ side.** `footerBehavior="scroll"` stamps `.footer-inflow { margin-top:auto }`, and a flex **auto margin eats free space _before_ `flex-grow`** → the routed page never grows to fill the scrollport, so the footer rides up. Second consumer, second workaround. | ⏳ (P0 already queued) |
+| 2   | No `fold-textarea` / `fold-date` / `fold-time` — forms drop to native | Real gap. **6** templates hand-roll native `<input type="date">` / `<textarea>`, **5** need an `inputValue()` helper just to type the native event, and the `.date/.note` box chrome is copy-pasted across **3** panels.                                                                             | ⏳ roadmap             |
+| 3   | Icon set misses commerce basics (`truck` / `delivery` / `receipt`)    | `icon="package"` is reused as a placeholder for **both** the Panier page and the Retraits nav tab. Additive, same shape as Round 1 #4 (archive/filter).                                                                                                                                              | ⏳                     |
+| 4   | Discoverability by **intention**                                      | The `.h` column labels were **hand-rolled** though `fold-element-title variant="eyebrow"` already does exactly that — the author never found it. ~90 exports; discovery is grep-the-`.d.ts`.                                                                                                         | ⏳ doc                 |
+| 5   | A panel with **optional** data forces `open<TData \| undefined, R>()` | `FoldPanelContent<TData>` requires `data?: InputSignal<TData>`; `open()` doesn't infer the no-/optional-data case cleanly — `TS2345` until the generic is widened by hand (the B2B PickupPanel).                                                                                                     | ⏳                     |
+
+### On #1 — the shell-side half of the scroll gap
+
+Round 3 fixes the **page** (`fold-page-layout` can't cede its scroll). But the
+B2B app puts every page in `fold-page-layout` **and still** hit a footer bug — from
+the other end: the shell's in-flow footer is glued with `margin-top:auto`, which in
+a flex column **consumes the free space before `flex-grow` ever runs**. So even a
+page that flows correctly won't push the footer down — the page doesn't grow, the
+scrollport equals the content height (nothing to scroll), and on a short page the
+footer sits in the middle. The app workaround is **not** the Round 3 overflow
+override — it neutralises the margin and grows the page instead:
+
+```scss
+router-outlet + * {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+.footer-inflow {
+  margin-top: 0 !important;
+} /* !important beats the shell's scoped rule */
+```
+
+**Verdict.** The Round 3 `scroll="flow"` knob is necessary but **not sufficient** —
+the shell must also make the routed page **grow** (a `flex:1 0 auto` content
+wrapper) rather than push the footer with `margin-top:auto`. Do both together, or
+the sticky-footer-on-short-page promise still leaks. Queued alongside the Round 3
+P0 in Roadmap 1.0.1.
+
+### On #2 — the native-input gap (the biggest DX tax by volume)
+
+fold ships `fold-input` / `fold-number-input` / `fold-select` but **no
+`fold-textarea`, `fold-date`, `fold-time`**. Every form that needs one drops to a
+native control, and pays three times: (a) native `<input>`/`<textarea>` markup,
+(b) an `inputValue($event)` helper to type the untyped native event, (c) a copy of
+the `.date/.note` box chrome (padding + border + radius + `:focus-visible`) — which
+is byte-identical across `checkout-panel`, `activation-support-panel`,
+`creer-entreprise-panel`. The `_field-box.scss` single-source (from the listbox
+work) already holds that chrome, so these siblings are cheap: `fold-textarea`
+(multiline `fold-input`, `[(value)]`, optional autosize), `fold-date` / `fold-time`
+(native `type=date|time` wrapped in the field box, typed `(valueChange)` — no more
+`inputValue`). This is the fix that pays back fastest — 3 duplications + 5 helper
+sites collapse.
+
+### On #5 — optional panel data
+
+`open()` infers cleanly when data is required, but an optional-data panel (`data?:
+InputSignal<TData>`) makes the caller spell `open<TData | undefined, R>()` to dodge
+`TS2345`. A no-data `open(Cmp)` overload (or a `TData = void` default that flows to
+the content contract) would lift the common case.
+
 ## The systemic fix — surfacing breaking changes
 
 The sharpest lesson: three of these were **controlled-pair twins nobody flagged**,
