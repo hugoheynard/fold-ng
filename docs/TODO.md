@@ -734,11 +734,12 @@ committed work; the point is to learn before we lock anything.
   Probe: a short "I want X → use Y" table (eyebrow label, section header, inline
   confirm, status pill, …) in the README / `llms.txt`, or a gallery search keyed on
   intent. Cheap hedge against silent reuse-before-create misses.
-- **Missing commerce glyphs** (consumer-friction Round 4 #3). `truck` / `delivery` /
-  `receipt` absent from the built-in set, so the B2B app reuses `icon="package"` as
-  a placeholder for both the Panier page and the Retraits nav tab. Additive, same as
-  Round 1's archive/filter — add them (mind the tree-shaking tech-debt note: they
-  land in the always-bundled catalogue until that's decoupled).
+- [x] **Missing commerce glyphs** (consumer-friction Round 4 #3). ✅ Done — new
+      **`commerce` category** (`COMMERCE_ICONS`, the 7th), 21 e-commerce glyphs
+      (cart/bag/basket · package(+check/return) · tag/tags/barcode/qr/gift ·
+      credit-card/wallet/receipt/coins/banknote/percent · truck/store/warehouse/map-pin),
+      wired into `FOLD_BUILTIN_ICONS` + the `/icons` gallery. (They land in the
+      always-bundled catalogue until the tree-shaking tech-debt below is addressed.)
 - **DX sweep across the components.** AppShell now uses the house pattern —
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining
@@ -776,10 +777,10 @@ Deliberate compromises taken to keep momentum — tracked so they get paid back,
 not forgotten.
 
 - **`fold-icon` built-in set is not tree-shakeable.** `FoldIconRegistry` seeds
-  itself with `FOLD_BUILTIN_ICONS`, which spreads all six sets
-  (`ui`/`nav`/`music`/`status`/`people`/`brands` — 114 icons). Because the
-  registry statically references the merged catalogue, **every app that renders a
-  single `fold-icon` bundles all 114 SVG strings**, used or not. Nothing drops.
+  itself with `FOLD_BUILTIN_ICONS`, which spreads all seven sets
+  (`ui`/`nav`/`commerce`/`music`/`status`/`people`/`brands` — ~135 icons). Because
+  the registry statically references the merged catalogue, **every app that renders
+  a single `fold-icon` bundles all ~135 SVG strings**, used or not. Nothing drops.
   - **Why it's blocked:** tree-shaking is static — as long as the registry
     references the full catalogue, the bundler must keep it. The fix is to
     **decouple the registry from the catalogue** (seed it empty) and make

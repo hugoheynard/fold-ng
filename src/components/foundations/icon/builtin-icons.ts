@@ -1,5 +1,6 @@
 import { UI_ICONS } from "./icons/ui.icons";
 import { NAV_ICONS } from "./icons/nav.icons";
+import { COMMERCE_ICONS } from "./icons/commerce.icons";
 import { MUSIC_ICONS } from "./icons/music.icons";
 import { STATUS_ICONS } from "./icons/status.icons";
 import { PEOPLE_ICONS } from "./icons/people.icons";
@@ -19,6 +20,7 @@ import { BRANDS_ICONS } from "./icons/brands.icons";
 export const FOLD_BUILTIN_ICONS = {
   ...UI_ICONS,
   ...NAV_ICONS,
+  ...COMMERCE_ICONS,
   ...MUSIC_ICONS,
   ...STATUS_ICONS,
   ...PEOPLE_ICONS,

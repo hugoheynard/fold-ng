@@ -8,6 +8,16 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **A `commerce` icon category — 21 e-commerce glyphs.** The built-in set had no
+  cart, catalogue, payment or fulfilment icons, so a consumer reused `package` as a
+  placeholder for both a cart and a delivery tab (`docs/consumer-friction.md` Round
+  4 #3). New `COMMERCE_ICONS` (the 7th category, wired into `FOLD_BUILTIN_ICONS` and
+  the `/icons` gallery): `shopping-cart` · `shopping-bag` · `basket` · `package` ·
+  `package-check` · `tag` · `tags` · `barcode` · `qr-code` · `gift` · `credit-card`
+  · `wallet` · `receipt` · `coins` · `banknote` · `percent` · `truck` · `store` ·
+  `warehouse` · `map-pin` · `package-return`. Same self-contained inlined-SVG /
+  `currentColor` contract; names autocomplete on `FoldIconName`.
+
 - **`fold-textarea` — the multiline sibling of `fold-input`.** Same box chrome
   (tokens, sizes, `panel` variant, focus/disabled) via `input-shell.scss` and the
   same label / required / hint / error chrome via `fold-input-base` — so a note

@@ -12,6 +12,7 @@ import {
 } from "../../../src/public-api";
 import { UI_ICONS } from "../../../src/components/foundations/icon/icons/ui.icons";
 import { NAV_ICONS } from "../../../src/components/foundations/icon/icons/nav.icons";
+import { COMMERCE_ICONS } from "../../../src/components/foundations/icon/icons/commerce.icons";
 import { MUSIC_ICONS } from "../../../src/components/foundations/icon/icons/music.icons";
 import { STATUS_ICONS } from "../../../src/components/foundations/icon/icons/status.icons";
 import { PEOPLE_ICONS } from "../../../src/components/foundations/icon/icons/people.icons";
@@ -112,6 +113,12 @@ export default class IconsPage {
       label: "Navigation",
       desc: "The app's destinations — roughly one per rail entry.",
       names: Object.keys(NAV_ICONS),
+    },
+    {
+      key: "commerce",
+      label: "Commerce",
+      desc: "Cart, catalogue, payment, fulfilment — the e-commerce domain.",
+      names: Object.keys(COMMERCE_ICONS),
     },
     {
       key: "music",
