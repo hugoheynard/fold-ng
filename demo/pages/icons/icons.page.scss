@@ -11,6 +11,50 @@ gal-icons-page {
 }
 
 /* The section-leading pitch reads like a statement, not a notice. */
+/* ── Hero (full-bleed top band) ─────────────────────────────────────── */
+gal-icons-page .ic-hero-title {
+  margin: 0.4rem 0 0;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+gal-icons-page .ic-hero-lede {
+  margin: 0.75rem 0 0;
+  max-width: 44rem;
+  font-size: var(--fold-text-md);
+  line-height: 1.6;
+  color: var(--fold-color-text-secondary);
+}
+gal-icons-page .ic-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fold-space-md);
+  margin-top: var(--fold-space-lg);
+}
+gal-icons-page .ic-hero-hint {
+  max-width: 22rem;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+  line-height: 1.5;
+}
+/* The decorative backdrop glyph — oversized, faint, behind the text. */
+gal-icons-page .ic-hero-bg {
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  transform: translateY(-50%);
+  color: var(--fold-color-primary);
+  opacity: 0.06;
+  pointer-events: none;
+}
+gal-icons-page .ic-hero-bg :is(svg, fold-icon) {
+  display: block;
+  width: clamp(9rem, 22vw, 16rem);
+  height: clamp(9rem, 22vw, 16rem);
+}
+
+/* The section-leading pitch reads like a statement, not a notice. */
 gal-icons-page .pitch {
   display: block;
   margin-bottom: var(--fold-space-lg);

@@ -19,6 +19,8 @@ import {
   FoldPanelHostService,
   FoldToastContainerComponent,
 } from "../../src/public-api";
+import { FoldIconDevtoolComponent } from "../../src/devtools/public-api";
+import { GalleryDevtools } from "./gallery-devtools";
 import { InspectPanelComponent } from "./inspect-panel.component";
 import { closestFold, inspect } from "./inspect";
 import { GALLERY_NAV, GALLERY_NAV_ITEMS, galleryLabel } from "./gallery-nav";
@@ -53,6 +55,7 @@ import pkg from "../../package.json";
     FoldIconComponent,
     FoldPanelHostComponent,
     FoldToastContainerComponent,
+    FoldIconDevtoolComponent,
   ],
   host: {
     class: "gal-root",
@@ -62,6 +65,8 @@ import pkg from "../../package.json";
 })
 export class GalleryShellComponent {
   private readonly panelHost = inject(FoldPanelHostService);
+  /** Shared open-state for the dev tools (icon devtool overlay). */
+  protected readonly devtools = inject(GalleryDevtools);
 
   /** The `?from=<id>` origin, when a page was reached from a "Built from" link —
    *  drives the sticky "← Back to …" bar above the routed page. */

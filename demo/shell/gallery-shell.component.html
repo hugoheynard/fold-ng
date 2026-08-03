@@ -57,6 +57,16 @@
       [active]="labRla.isActive"
       (click)="mobileNavOpen.set(false)"
     ></a>
+    <button
+      footer
+      fold-menu-item
+      icon="sliders"
+      label="Dev tools"
+      badge="dev"
+      badgeTone="warning"
+      [active]="devtools.iconTool()"
+      (click)="devtools.openIconTool(); mobileNavOpen.set(false)"
+    ></button>
     <button footer fold-menu-item icon="settings" label="Settings"></button>
   </fold-menu>
 
@@ -260,3 +270,10 @@
 
 <fold-panel-host />
 <fold-toast-container />
+
+<!-- Dev-only overlay: browse the live icon registry, build + copy a snippet.
+     Draggable, minimisable. Opened from the primary rail's "Dev tools" or the
+     /icons hero CTA (shared open-state via GalleryDevtools). -->
+@if (devtools.iconTool()) {
+  <fold-icon-devtool (closed)="devtools.iconTool.set(false)" />
+}

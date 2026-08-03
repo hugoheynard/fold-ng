@@ -5,11 +5,16 @@ import {
   FoldButtonComponent,
   FoldCalloutComponent,
   FoldCardComponent,
+  FoldHeroSectionComponent,
   FoldIconComponent,
   FoldIconRegistry,
+  FoldNavLayoutComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
+  FoldViewNavComponent,
+  type FoldViewNavItem,
 } from "../../../src/public-api";
+import { GalleryDevtools } from "../../shell/gallery-devtools";
 import { UI_ICONS } from "../../../src/components/foundations/icon/icons/ui.icons";
 import { NAV_ICONS } from "../../../src/components/foundations/icon/icons/nav.icons";
 import { COMMERCE_ICONS } from "../../../src/components/foundations/icon/icons/commerce.icons";
@@ -44,6 +49,9 @@ const DEMO_ICON =
     KindBadgeComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
+    FoldHeroSectionComponent,
+    FoldNavLayoutComponent,
+    FoldViewNavComponent,
     FoldCardComponent,
     FoldCalloutComponent,
     FoldBadgeComponent,
@@ -56,6 +64,17 @@ const DEMO_ICON =
 })
 export default class IconsPage {
   private readonly registry = inject(FoldIconRegistry);
+  /** Opens the shell-level icon devtool overlay (shared with the primary rail). */
+  protected readonly devtools = inject(GalleryDevtools);
+
+  /** Vertical tab-nav (fill, transparent) — one page-section per tab. */
+  protected readonly tabs: FoldViewNavItem[] = [
+    { key: "catalog", label: "Catalogue", icon: "grid" },
+    { key: "usage", label: "Usage", icon: "code" },
+    { key: "extend", label: "Registry", icon: "plus" },
+    { key: "why", label: "Why it holds up", icon: "lightning" },
+  ];
+  protected readonly tab = signal("catalog");
 
   protected readonly iconSizeSteps = ["xs", "sm", "md", "lg", "xl"] as const;
   protected readonly iconColorTokens = [
