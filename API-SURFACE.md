@@ -685,6 +685,23 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
+### FoldTimeComponent
+- disabled: InputSignal<boolean>
+- errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
+- hint: InputSignal<string | undefined>
+- label: InputSignal<string | undefined>
+- max: InputSignal<string | undefined>
+- min: InputSignal<string | undefined>
+- optional: InputSignalWithTransform<boolean, unknown>
+- optionalLabel: InputSignal<string>
+- readOnly: InputSignal<boolean>
+- required: InputSignalWithTransform<boolean, unknown>
+- size: InputSignal<"sm" | "md" | "lg">
+- step: InputSignal<string | number | undefined>
+- touched: ModelSignal<boolean>
+- value: ModelSignal<string>
+- variant: InputSignal<"default" | "panel">
+
 ### FoldTimelineComponent
 - ariaLabel: InputSignal<string | undefined>
 - datePlacement: InputSignal<FoldTimelineDatePlacement>

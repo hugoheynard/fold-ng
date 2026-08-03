@@ -16,14 +16,17 @@ All notable changes to **fold-ng** are documented here. The format follows
   scrolls** overflow (`resize: none; overflow-y: auto`), so a user-dragged corner
   can't break a panel layout. `FormValueControl<string>` (`[formField]` or
   `[(value)]`).
-- **`fold-date` — the temporal-field wrapper (`type`: `date` · `time` ·
-  `datetime-local` · `month` · `week`).** Wraps the native `<input type="date">`
-  family the way `fold-select` wraps `<select>` — keeping the OS calendar/clock +
-  mobile keyboard — and hands back a **typed `[(value)]`** (the native string,
-  `YYYY-MM-DD` / `HH:mm`), so consumers stop hand-writing an `inputValue($event)`
-  reader on a bare date input. `min` / `max` / `step` pass through; shares the
-  `fold-input` box + field chrome. **Not** a calendar popover (that's the
-  `fold-calendar` family) — the plain field. `FormValueControl<string>`.
+- **`fold-date` + `fold-time` — the temporal-field wrappers.** Two sibling
+  controls (distinct selectors for call-site clarity, the same "one control, one
+  job" split as `fold-input` vs `fold-number-input`): `fold-date` wraps the native
+  `<input type="date">` family (`type`: `date` · `datetime-local` · `month` ·
+  `week`), `fold-time` wraps `<input type="time">`. Both wrap the native control
+  the way `fold-select` wraps `<select>` — keeping the OS calendar/clock + mobile
+  keyboard — and hand back a **typed `[(value)]`** (the native string, `YYYY-MM-DD`
+  / `HH:mm`), so consumers stop hand-writing an `inputValue($event)` reader.
+  `min` / `max` / `step` pass through; both share the `fold-input` box + field
+  chrome. **Not** a calendar popover (that's the `fold-calendar` family) — the plain
+  fields. `FormValueControl<string>`.
 - Surfaced by the 2nd consumer (LaFolieDouce B2B); see `docs/consumer-friction.md`
   Round 4 #2. The shared `_field-box.scss` `size()` mixin gained a `$height: false`
   opt-out (a `<textarea>`'s height is content-driven), and `readInputValue` now

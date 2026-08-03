@@ -379,7 +379,7 @@
     <div class="gal-stack">
       <div class="gal-cell">
         <span class="gal-tag"
-          >fold-date · native picker, typed [(value)] string</span
+          >fold-date / fold-time · native picker, typed [(value)] string</span
         >
         <div class="fld-inputs">
           <fold-date
@@ -388,11 +388,7 @@
             hint="Native calendar — value is the YYYY-MM-DD string."
             [(value)]="demoDate"
           />
-          <fold-date
-            type="time"
-            label="Heure de retrait"
-            [(value)]="demoTime"
-          />
+          <fold-time label="Heure de retrait" [(value)]="demoTime" />
         </div>
         <p class="doc-p">Date “{{ demoDate() }}” · time “{{ demoTime() }}”</p>
       </div>

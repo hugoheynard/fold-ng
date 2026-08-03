@@ -193,7 +193,7 @@ leave-balance-display, configurable-tab-bar, etc.
     `panelScope` stage. Sequences with bottom-sheet: add a mobile preview width to
     the same demo once `side: 'bottom'` lands.
 
-## Form inputs — the native-input gap (`fold-textarea` · `fold-date`) ✅ DONE
+## Form inputs — the native-input gap (`fold-textarea` · `fold-date` · `fold-time`) ✅ DONE
 
 Surfaced by the **2nd consumer** (LaFolieDouce B2B — `consumer-friction.md` Round 4
 #2). fold ships `fold-input` / `fold-number-input` / `fold-select` but **no
@@ -215,18 +215,19 @@ chrome already exists to fix it cheaply.
       panel layout. Commit-continuous `model` is right here (a note wants live
       binding, unlike the table-cell case in Round 1 #5). 8 specs; `/form` gallery
       “Textarea” tab.
-- [x] **`fold-date`** — covers `date` · `time` · `datetime-local` · `month` ·
-      `week` through a single `type` knob (one control: they share the chrome + a
-      `string` value; only the picker differs — DRY + OCP, month/week come free).
-      ✅ Done — wraps the native `<input type="date">` family like `fold-select`
-      wraps `<select>`, keeps the OS picker + mobile keyboard, hands back a **typed**
-      `[(value)]` (native string) so consumers drop `inputValue`. `min`/`max`/`step`
-      pass through (`min`/`max` typed `string | undefined`, not `| null`, to stay
-      assignable to the `FormValueControl` reserved field-state bindings — same
-      reason `readOnly` isn't `readonly`). **Not** a calendar popover (that's the
-      `fold-calendar` family). 8 specs; `/form` gallery “Date & time” tab. _Shipped
-      as one `fold-date` + `type` rather than separate `fold-date` / `fold-time`;
-      revisit if a distinct `fold-time` selector is ever wanted._
+- [x] **`fold-date` + `fold-time`** — two sibling controls (distinct selectors, for
+      call-site clarity — the consumer's ergonomics call; the same "one control, one
+      job" split as `fold-input` vs `fold-number-input`). `fold-date` wraps the
+      native `<input type="date">` family (`type`: `date` · `datetime-local` ·
+      `month` · `week`); `fold-time` wraps `<input type="time">`. ✅ Done — both wrap
+      the native control like `fold-select` wraps `<select>`, keep the OS picker +
+      mobile keyboard, hand back a **typed** `[(value)]` (native string) so consumers
+      drop `inputValue`. `min`/`max`/`step` pass through (`min`/`max` typed
+      `string | undefined`, not `| null`, to stay assignable to the
+      `FormValueControl` reserved field-state bindings — same reason `readOnly` isn't
+      `readonly`). `fold-time` reuses `date.component.scss` (same picker chrome).
+      **Not** a calendar popover (that's the `fold-calendar` family). 16 specs (8 + 8);
+      `/form` gallery “Date & time” tab.
 - Retires (app-side, on adoption): the `.date/.note` duplication (3 panels) + the
   `inputValue()` helper (5 sites) collapse into the field box.
 

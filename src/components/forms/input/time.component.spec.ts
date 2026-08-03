@@ -2,14 +2,13 @@ import { Component, signal } from "@angular/core";
 import type { ValidationError } from "@angular/forms/signals";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldDateComponent, type FoldDateType } from "./date.component";
+import { FoldTimeComponent } from "./time.component";
 
 @Component({
   standalone: true,
-  imports: [FoldDateComponent],
-  template: `<fold-date
+  imports: [FoldTimeComponent],
+  template: `<fold-time
     [label]="label()"
-    [type]="type()"
     [min]="min()"
     [max]="max()"
     [required]="required()"
@@ -22,7 +21,6 @@ import { FoldDateComponent, type FoldDateType } from "./date.component";
 })
 class HostComponent {
   readonly label = signal<string | undefined>(undefined);
-  readonly type = signal<FoldDateType>("date");
   readonly min = signal<string | undefined>(undefined);
   readonly max = signal<string | undefined>(undefined);
   readonly required = signal(false);
@@ -38,50 +36,43 @@ class HostComponent {
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  const host = fixture.nativeElement.querySelector("fold-date") as HTMLElement;
+  const host = fixture.nativeElement.querySelector("fold-time") as HTMLElement;
   const input = host.querySelector("input") as HTMLInputElement;
   return { fixture, host, input };
 }
 
-describe("FoldDateComponent", () => {
-  it("wraps a native date input by default", () => {
+describe("FoldTimeComponent", () => {
+  it("wraps a native time input", () => {
     const { input } = render();
-    expect(input.getAttribute("type")).toBe("date");
-  });
-
-  it("switches the native type (datetime-local / month / week)", () => {
-    const { fixture, input } = render();
-    fixture.componentInstance.type.set("month");
-    fixture.detectChanges();
-    expect(input.getAttribute("type")).toBe("month");
+    expect(input.getAttribute("type")).toBe("time");
   });
 
   it("writes the chosen value back through the model on input", () => {
     const { fixture, input } = render();
-    input.value = "2026-08-03";
+    input.value = "09:30";
     input.dispatchEvent(new Event("input"));
-    expect(fixture.componentInstance.value()).toBe("2026-08-03");
+    expect(fixture.componentInstance.value()).toBe("09:30");
   });
 
   it("reflects the bound value onto the native input", () => {
     const { fixture, input } = render();
-    fixture.componentInstance.value.set("2026-01-15");
+    fixture.componentInstance.value.set("14:15");
     fixture.detectChanges();
-    expect(input.value).toBe("2026-01-15");
+    expect(input.value).toBe("14:15");
   });
 
   it("passes min/max bounds through to the native input", () => {
     const { fixture, input } = render();
-    fixture.componentInstance.min.set("2026-01-01");
-    fixture.componentInstance.max.set("2026-12-31");
+    fixture.componentInstance.min.set("09:00");
+    fixture.componentInstance.max.set("18:00");
     fixture.detectChanges();
-    expect(input.getAttribute("min")).toBe("2026-01-01");
-    expect(input.getAttribute("max")).toBe("2026-12-31");
+    expect(input.getAttribute("min")).toBe("09:00");
+    expect(input.getAttribute("max")).toBe("18:00");
   });
 
   it("associates the label with the input by id", () => {
     const { fixture, host, input } = render();
-    fixture.componentInstance.label.set("Date de livraison");
+    fixture.componentInstance.label.set("Heure de retrait");
     fixture.detectChanges();
     const label = host.querySelector("label");
     expect(label?.getAttribute("for")).toBe(input.id);

@@ -11,51 +11,43 @@ import { FoldIdService } from "../../../a11y/id.service";
 import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
-/** The native calendar-date input types `fold-date` wraps — they share the exact
- *  chrome and a `string` value; only the picker granularity differs. For a
- *  clock/time field use {@link FoldTimeComponent} (`fold-time`). */
-export type FoldDateType = "date" | "datetime-local" | "month" | "week";
-
 /**
- * `<fold-date>` — the calendar-field sibling of {@link FoldInputComponent}: a thin
- * wrapper around a **native `<input type="date">`** (and its family — `datetime-local`,
- * `month`, `week` via {@link type}), like `fold-select` wraps the native `<select>`.
- * It honours the project's Signal-Forms convention (native `[value]` / `(input)`)
- * and gives back a **typed `[(value)]`** (the native value string, `YYYY-MM-DD` for
- * a date) — so consumers stop hand-writing an `inputValue($event)` reader on a bare
- * `<input type="date">`. For a time-of-day field, use the sibling {@link
- * FoldTimeComponent} (`fold-time`).
+ * `<fold-time>` — the time-of-day sibling of {@link FoldDateComponent}: a thin
+ * wrapper around a **native `<input type="time">`**, like `fold-select` wraps the
+ * native `<select>`. It honours the project's Signal-Forms convention (native
+ * `[value]` / `(input)`) and gives back a **typed `[(value)]`** (the native value
+ * string, `HH:mm`, or `HH:mm:ss` when a sub-minute `step` is set) — so consumers
+ * stop hand-writing an `inputValue($event)` reader on a bare `<input type="time">`.
  *
- * The native pickers keep the OS calendar + mobile keyboard for free (same
- * reasoning as {@link FoldNumberInputComponent} staying `type="number"`). This is
- * **not** a calendar popover — that's the `fold-calendar` family; this is the plain
- * field. Shares the exact box chrome (tokens, sizes, `panel` variant) via
- * `input-shell.scss` and the label / required / hint / error chrome via {@link
- * FoldInputBaseComponent}.
+ * A separate control from `fold-date` (rather than a `type="time"` on it) so each
+ * reads for what it is at the call site — the same "one control, one job" split as
+ * {@link FoldInputComponent} vs {@link FoldNumberInputComponent}. Shares the exact
+ * box chrome (tokens, sizes, `panel` variant) via `input-shell.scss` and the label
+ * / required / hint / error chrome via {@link FoldInputBaseComponent}.
  *
- * @selector `fold-date`
+ * @selector `fold-time`
  *
  * @example
  * ```html
- * <!-- A date field, signal-forms bound -->
- * <fold-date label="Date de livraison" [formField]="form.date" />
+ * <!-- Signal-forms bound -->
+ * <fold-time label="Heure de retrait" [formField]="form.time" />
  *
- * <!-- A month field, standalone two-way -->
- * <fold-date type="month" [(value)]="billingMonth" />
+ * <!-- Standalone two-way, whole-minute steps -->
+ * <fold-time [step]="60" [(value)]="pickupTime" />
  * ```
  */
 @Component({
-  selector: "fold-date",
+  selector: "fold-time",
   standalone: true,
   imports: [FoldInputBaseComponent],
-  templateUrl: "./date.component.html",
+  templateUrl: "./time.component.html",
   styleUrl: "./date.component.scss",
   host: {
     "[class]": 'size() + " " + variant()',
   },
 })
-export class FoldDateComponent implements FormValueControl<string> {
-  /** The bound value — the native input string (`YYYY-MM-DD`, `HH:mm`, …). A
+export class FoldTimeComponent implements FormValueControl<string> {
+  /** The bound value — the native input string (`HH:mm` / `HH:mm:ss`). A
    *  `model()` so `FormField` and `[(value)]` both stay in sync. */
   readonly value = model<string>("");
   /** Disabled state — bound automatically by `FormField` from the field. */
@@ -65,15 +57,13 @@ export class FoldDateComponent implements FormValueControl<string> {
   /** Validation errors — bound by `FormField` from the field. */
   readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
-  /** Which native temporal picker to render. @default 'date' */
-  readonly type = input<FoldDateType>("date");
-  /** Native `min` bound (e.g. `2026-01-01`) — passes through to the input. Typed
+  /** Native `min` bound (e.g. `09:00`) — passes through to the input. Typed
    *  `string | undefined` (not `| null`) to stay assignable to the signal-forms
    *  `FormValueControl` reserved `min` field-state binding. */
   readonly min = input<string | undefined>(undefined);
-  /** Native `max` bound — passes through to the input (see {@link min}). */
+  /** Native `max` bound (e.g. `18:00`) — passes through (see {@link min}). */
   readonly max = input<string | undefined>(undefined);
-  /** Native `step` (e.g. `60` for whole-minute time) — passes through. */
+  /** Native `step` in seconds (e.g. `60` whole-minute, `1` seconds field). */
   readonly step = input<string | number | undefined>(undefined);
 
   /** Size preset — see {@link FoldInputComponent.size}. @default 'md' */
@@ -96,7 +86,7 @@ export class FoldDateComponent implements FormValueControl<string> {
   readonly readOnly = input(false);
 
   /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
-  readonly inputId = inject(FoldIdService).next("fold-date");
+  readonly inputId = inject(FoldIdService).next("fold-time");
 
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {

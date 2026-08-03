@@ -13,6 +13,7 @@ import {
   FoldSliderComponent,
   FoldTextareaComponent,
   FoldDateComponent,
+  FoldTimeComponent,
   FoldViewNavComponent,
   type FoldViewNavItem,
 } from "../../../src/public-api";
@@ -34,6 +35,7 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
     FoldSliderComponent,
     FoldTextareaComponent,
     FoldDateComponent,
+    FoldTimeComponent,
     FormField,
     DevPlaygroundComponent,
   ],

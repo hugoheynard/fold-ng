@@ -224,6 +224,7 @@ export {
   FoldDateComponent,
   type FoldDateType,
 } from "./components/forms/input/date.component";
+export { FoldTimeComponent } from "./components/forms/input/time.component";
 export { FoldSearchComponent } from "./components/forms/input/search.component";
 export { FoldSelectComponent } from "./components/forms/input/select.component";
 export { FoldListboxComponent } from "./components/forms/listbox/listbox.component";
