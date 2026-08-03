@@ -11,6 +11,8 @@ import {
   FoldSearchComponent,
   FoldSelectComponent,
   FoldSliderComponent,
+  FoldTextareaComponent,
+  FoldDateComponent,
   FoldViewNavComponent,
   type FoldViewNavItem,
 } from "../../../src/public-api";
@@ -30,6 +32,8 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
     FoldSelectComponent,
     FoldSearchComponent,
     FoldSliderComponent,
+    FoldTextareaComponent,
+    FoldDateComponent,
     FormField,
     DevPlaygroundComponent,
   ],
@@ -38,8 +42,10 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
 export default class FormPage {
   protected readonly inputTabs: FoldViewNavItem[] = [
     { key: "text", label: "Text" },
+    { key: "textarea", label: "Textarea" },
     { key: "number", label: "Number" },
     { key: "select", label: "Select" },
+    { key: "datetime", label: "Date & time" },
     { key: "search", label: "Search" },
   ];
   protected readonly inputTab = signal("text");
@@ -49,8 +55,12 @@ export default class FormPage {
   protected readonly selSize = signal("");
   protected readonly currencies = ["EUR", "USD", "GBP", "JPY"];
 
-  /* Fields — plain signals bound to fold-input via [(value)] (text) or native
-     controls (select / textarea, the sanctioned path for those). Showcases the
+  protected readonly demoNote = signal("");
+  protected readonly demoDate = signal("");
+  protected readonly demoTime = signal("");
+  protected readonly demoMonth = signal("");
+
+  /* Fields — plain signals bound to fold-input via [(value)] (text). Showcases the
      layout: vertical nav + page-section + choice-row. */
   protected readonly demoText = signal("Two-way [(value)]");
   protected readonly demoBpm = signal<number | null>(120);

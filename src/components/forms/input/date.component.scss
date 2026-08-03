@@ -1,0 +1,26 @@
+// fold-date renders the shared native-input box (see input-shell.scss) inside
+// fold-input-base. Only the temporal-picker tweaks live here — the box, sizes,
+// `panel` variant and focus/disabled are shared with fold-input / fold-select.
+@use "./input-shell" as shell;
+
+:host {
+  display: block;
+}
+
+@include shell.field-input-shell;
+
+.date {
+  // Let the native calendar/clock popup + spin fields follow the page theme so the
+  // picker glyph and controls stay legible on both grounds.
+  color-scheme: light dark;
+  cursor: text;
+
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.65;
+    transition: opacity var(--fold-motion-fast);
+  }
+  &::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+}

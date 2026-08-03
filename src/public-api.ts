@@ -219,6 +219,11 @@ export {
   type FoldNumberSpinner,
   type FoldNumberControls,
 } from "./components/forms/input/number-input.component";
+export { FoldTextareaComponent } from "./components/forms/input/textarea.component";
+export {
+  FoldDateComponent,
+  type FoldDateType,
+} from "./components/forms/input/date.component";
 export { FoldSearchComponent } from "./components/forms/input/search.component";
 export { FoldSelectComponent } from "./components/forms/input/select.component";
 export { FoldListboxComponent } from "./components/forms/listbox/listbox.component";

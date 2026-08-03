@@ -6,7 +6,28 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-textarea` — the multiline sibling of `fold-input`.** Same box chrome
+  (tokens, sizes, `panel` variant, focus/disabled) via `input-shell.scss` and the
+  same label / required / hint / error chrome via `fold-input-base` — so a note
+  field is no longer a hand-rolled native `<textarea>` + copied box CSS. **No
+  resize handle by design**: the box keeps its `rows` height and **wraps +
+  scrolls** overflow (`resize: none; overflow-y: auto`), so a user-dragged corner
+  can't break a panel layout. `FormValueControl<string>` (`[formField]` or
+  `[(value)]`).
+- **`fold-date` — the temporal-field wrapper (`type`: `date` · `time` ·
+  `datetime-local` · `month` · `week`).** Wraps the native `<input type="date">`
+  family the way `fold-select` wraps `<select>` — keeping the OS calendar/clock +
+  mobile keyboard — and hands back a **typed `[(value)]`** (the native string,
+  `YYYY-MM-DD` / `HH:mm`), so consumers stop hand-writing an `inputValue($event)`
+  reader on a bare date input. `min` / `max` / `step` pass through; shares the
+  `fold-input` box + field chrome. **Not** a calendar popover (that's the
+  `fold-calendar` family) — the plain field. `FormValueControl<string>`.
+- Surfaced by the 2nd consumer (LaFolieDouce B2B); see `docs/consumer-friction.md`
+  Round 4 #2. The shared `_field-box.scss` `size()` mixin gained a `$height: false`
+  opt-out (a `<textarea>`'s height is content-driven), and `readInputValue` now
+  reads `<textarea>` targets.
 
 ## [0.8.1] - 2026-08-02
 

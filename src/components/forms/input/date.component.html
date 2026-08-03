@@ -1,0 +1,26 @@
+<fold-input-base
+  [label]="label()"
+  [for]="inputId"
+  [required]="required()"
+  [optional]="optional()"
+  [optionalLabel]="optionalLabel()"
+  [hint]="hint()"
+  [error]="errorMessage()"
+>
+  <input
+    [id]="inputId"
+    class="date"
+    [attr.type]="type()"
+    [attr.min]="min()"
+    [attr.max]="max()"
+    [attr.step]="step()"
+    [attr.readonly]="readOnly() || null"
+    [attr.disabled]="disabled() || null"
+    [attr.required]="required() || null"
+    [attr.aria-invalid]="errorMessage() ? true : null"
+    [attr.aria-describedby]="describedBy()"
+    [value]="value()"
+    (input)="onInputChange($event)"
+    (blur)="onBlur()"
+  />
+</fold-input-base>

@@ -248,6 +248,24 @@
 ### FoldDataTableRowCardDirective
 - (no input·model·output bindings)
 
+### FoldDateComponent
+- disabled: InputSignal<boolean>
+- errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
+- hint: InputSignal<string | undefined>
+- label: InputSignal<string | undefined>
+- max: InputSignal<string | undefined>
+- min: InputSignal<string | undefined>
+- optional: InputSignalWithTransform<boolean, unknown>
+- optionalLabel: InputSignal<string>
+- readOnly: InputSignal<boolean>
+- required: InputSignalWithTransform<boolean, unknown>
+- size: InputSignal<"sm" | "md" | "lg">
+- step: InputSignal<string | number | undefined>
+- touched: ModelSignal<boolean>
+- type: InputSignal<FoldDateType>
+- value: ModelSignal<string>
+- variant: InputSignal<"default" | "panel">
+
 ### FoldDisclosureComponent
 - open: ModelSignal<boolean>
 
@@ -651,6 +669,22 @@
 - size: InputSignal<"comfortable" | "compact">
 - tabs: InputSignal<FoldTabItem[]> — required
 
+### FoldTextareaComponent
+- disabled: InputSignal<boolean>
+- errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
+- hint: InputSignal<string | undefined>
+- label: InputSignal<string | undefined>
+- optional: InputSignalWithTransform<boolean, unknown>
+- optionalLabel: InputSignal<string>
+- placeholder: InputSignal<string>
+- readOnly: InputSignal<boolean>
+- required: InputSignalWithTransform<boolean, unknown>
+- rows: InputSignalWithTransform<number, unknown>
+- size: InputSignal<"sm" | "md" | "lg">
+- touched: ModelSignal<boolean>
+- value: ModelSignal<string>
+- variant: InputSignal<"default" | "panel">
+
 ### FoldTimelineComponent
 - ariaLabel: InputSignal<string | undefined>
 - datePlacement: InputSignal<FoldTimelineDatePlacement>
@@ -796,6 +830,7 @@
 - FoldComponentPanelDescriptor (interface)
 - foldCountActionable (function)
 - FoldDataTableLabels (interface)
+- FoldDateType (type)
 - FoldDayColumnsOptions (interface)
 - foldDaysBetween (function)
 - foldDefaultPasswordRules (function)

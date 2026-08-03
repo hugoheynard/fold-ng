@@ -1,0 +1,23 @@
+<fold-input-base
+  [label]="label()"
+  [for]="inputId"
+  [required]="required()"
+  [optional]="optional()"
+  [optionalLabel]="optionalLabel()"
+  [hint]="hint()"
+  [error]="errorMessage()"
+>
+  <textarea
+    [id]="inputId"
+    [attr.rows]="rows()"
+    [attr.placeholder]="placeholder()"
+    [attr.readonly]="readOnly() || null"
+    [attr.disabled]="disabled() || null"
+    [attr.required]="required() || null"
+    [attr.aria-invalid]="errorMessage() ? true : null"
+    [attr.aria-describedby]="describedBy()"
+    [value]="value()"
+    (input)="onInputChange($event)"
+    (blur)="onBlur()"
+  ></textarea>
+</fold-input-base>

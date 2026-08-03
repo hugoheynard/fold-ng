@@ -9,7 +9,8 @@
 
 @mixin field-input-shell {
   input,
-  select {
+  select,
+  textarea {
     all: unset;
     box-sizing: border-box;
     width: 100%;
@@ -59,19 +60,30 @@
   }
 
   // ─── Sizes — shared metrics (see _field-box.scss) ───
+  // A <textarea> shares the font / padding / radius but not the fixed height
+  // (its height is content-driven, set by `rows`) — see `$height: false`.
   :host(.sm) input,
   :host(.sm) select {
     @include box.size(sm);
+  }
+  :host(.sm) textarea {
+    @include box.size(sm, $height: false);
   }
 
   :host(.md) input,
   :host(.md) select {
     @include box.size(md);
   }
+  :host(.md) textarea {
+    @include box.size(md, $height: false);
+  }
 
   :host(.lg) input,
   :host(.lg) select {
     @include box.size(lg);
+  }
+  :host(.lg) textarea {
+    @include box.size(lg, $height: false);
   }
 
   // ─── Alignment ──────────────────────────────────────
@@ -84,7 +96,8 @@
   // (roomier padding, `radius-sm`, content-height). Declared after the size
   // block so it wins; `size` on a panel input then only drives the font-size.
   :host(.panel) input,
-  :host(.panel) select {
+  :host(.panel) select,
+  :host(.panel) textarea {
     @include box.panel;
 
     &:focus {

@@ -1,0 +1,23 @@
+// fold-textarea renders the shared native-input box (see input-shell.scss) inside
+// fold-input-base (which owns the label/hint layout). Only the textarea-specific
+// resets live here — the box, sizes, `panel` variant and focus/disabled are shared
+// with fold-input / fold-select.
+@use "./input-shell" as shell;
+
+:host {
+  display: block;
+}
+
+@include shell.field-input-shell;
+
+textarea {
+  // `all: unset` (from the shell) flattens the textarea to an inline box and drops
+  // its multiline defaults — restore them, and refuse the native resize handle:
+  // the field keeps its `rows` height and wraps + scrolls its overflow instead.
+  display: block;
+  resize: none;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  line-height: 1.45;
+}

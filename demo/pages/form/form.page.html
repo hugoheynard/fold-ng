@@ -67,6 +67,37 @@
         </div>
       </div>
     </div>
+    } @case ("textarea") {
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag">rows · no resize handle (wraps + scrolls)</span>
+        <div class="fld-inputs">
+          <fold-textarea
+            label="Note"
+            [rows]="3"
+            optional
+            placeholder="Consigne pour cette commande…"
+            hint="Fixed height — overflow wraps and scrolls, no drag corner."
+            [(value)]="demoNote"
+          />
+          <fold-textarea
+            variant="panel"
+            label="Panel · 4 rows"
+            [rows]="4"
+            placeholder="flatter side-panel chrome"
+          />
+        </div>
+        <p class="doc-p">Value: “{{ demoNote() }}”</p>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">sizes · sm / md / lg</span>
+        <div class="fld-inputs">
+          <fold-textarea size="sm" [rows]="2" placeholder="sm" />
+          <fold-textarea size="md" [rows]="2" placeholder="md" />
+          <fold-textarea size="lg" [rows]="2" placeholder="lg" />
+        </div>
+      </div>
+    </div>
     } @case ("number") {
     <div class="gal-stack">
       <div class="gal-cell">
@@ -341,6 +372,41 @@
             <option value="lead">Lead</option>
             <option value="member">Member</option>
           </fold-select>
+        </div>
+      </div>
+    </div>
+    } @case ("datetime") {
+    <div class="gal-stack">
+      <div class="gal-cell">
+        <span class="gal-tag"
+          >fold-date · native picker, typed [(value)] string</span
+        >
+        <div class="fld-inputs">
+          <fold-date
+            label="Date de livraison"
+            optional
+            hint="Native calendar — value is the YYYY-MM-DD string."
+            [(value)]="demoDate"
+          />
+          <fold-date
+            type="time"
+            label="Heure de retrait"
+            [(value)]="demoTime"
+          />
+        </div>
+        <p class="doc-p">Date “{{ demoDate() }}” · time “{{ demoTime() }}”</p>
+      </div>
+      <div class="gal-cell">
+        <span class="gal-tag">type · min / max · variant</span>
+        <div class="fld-inputs">
+          <fold-date type="month" label="Mois" [(value)]="demoMonth" />
+          <fold-date
+            label="Bornée · 2026"
+            min="2026-01-01"
+            max="2026-12-31"
+            hint="min/max passed through"
+          />
+          <fold-date variant="panel" label="Panel" />
         </div>
       </div>
     </div>

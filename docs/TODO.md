@@ -193,7 +193,7 @@ leave-balance-display, configurable-tab-bar, etc.
     `panelScope` stage. Sequences with bottom-sheet: add a mobile preview width to
     the same demo once `side: 'bottom'` lands.
 
-## Form inputs — the native-input gap (`fold-textarea` · `fold-date` · `fold-time`)
+## Form inputs — the native-input gap (`fold-textarea` · `fold-date`) ✅ DONE
 
 Surfaced by the **2nd consumer** (LaFolieDouce B2B — `consumer-friction.md` Round 4
 #2). fold ships `fold-input` / `fold-number-input` / `fold-select` but **no
@@ -206,22 +206,29 @@ byte-for-byte across **3** panels (`checkout-panel`, `activation-support-panel`,
 `creer-entreprise-panel`). This is the highest-volume DX tax found so far, and the
 chrome already exists to fix it cheaply.
 
-- [ ] **`fold-textarea`** — the multiline sibling of `fold-input`. `[(value)]`
-      model, same `_field-box.scss` chrome (single-sourced with the listbox work),
-      optional autosize (grow-to-content up to a `max-rows`), `resize` knob. The
-      commit-continuous `model` contract is right here (unlike the table-cell case
-      in Round 1 #5) — a note field wants live binding.
-- [ ] **`fold-date` / `fold-time`** — wrap native `type=date` / `type=time` in the
-      field box, expose a **typed** `[(value)]` + `(valueChange)` (string ISO date /
-      `HH:mm`) so consumers stop hand-writing `inputValue`. Native pickers keep the
-      mobile keyboard + OS calendar for free (same reasoning as `fold-number-input`
-      staying `type=number`). **Not** a full calendar popover — that's the
-      `fold-calendar` family; this is the plain field. **Trigger check:** date/time
-      fields recur across ≥2 consumers now (SH3PHERD contract forms left dates
-      native too — see the `fold-number-input` note in Tech debt), so this clears
-      the "generalise on the 2nd real use" bar.
-- Retires: the `.date/.note` duplication (3 panels) + the `inputValue()` helper
-  (5 sites) collapse into the field box on adoption.
+- [x] **`fold-textarea`** — the multiline sibling of `fold-input`. ✅ Done —
+      `[(value)]` model (`FormValueControl<string>`), the `_field-box.scss` chrome
+      shared via `input-shell.scss` (the `size()` mixin gained a `$height: false`
+      opt-out so a textarea shares font/padding/radius but not the fixed height).
+      **No resize handle** (decided with the consumer): `resize: none` + wrap +
+      `overflow-y: auto`, height driven by `rows` — a dragged corner can't break a
+      panel layout. Commit-continuous `model` is right here (a note wants live
+      binding, unlike the table-cell case in Round 1 #5). 8 specs; `/form` gallery
+      “Textarea” tab.
+- [x] **`fold-date`** — covers `date` · `time` · `datetime-local` · `month` ·
+      `week` through a single `type` knob (one control: they share the chrome + a
+      `string` value; only the picker differs — DRY + OCP, month/week come free).
+      ✅ Done — wraps the native `<input type="date">` family like `fold-select`
+      wraps `<select>`, keeps the OS picker + mobile keyboard, hands back a **typed**
+      `[(value)]` (native string) so consumers drop `inputValue`. `min`/`max`/`step`
+      pass through (`min`/`max` typed `string | undefined`, not `| null`, to stay
+      assignable to the `FormValueControl` reserved field-state bindings — same
+      reason `readOnly` isn't `readonly`). **Not** a calendar popover (that's the
+      `fold-calendar` family). 8 specs; `/form` gallery “Date & time” tab. _Shipped
+      as one `fold-date` + `type` rather than separate `fold-date` / `fold-time`;
+      revisit if a distinct `fold-time` selector is ever wanted._
+- Retires (app-side, on adoption): the `.date/.note` duplication (3 panels) + the
+  `inputValue()` helper (5 sites) collapse into the field box.
 
 ## `fold-menu` — `collapsible` sensible default (DX, see dev-rules 5.2.4) ✅ DONE
 
@@ -269,7 +276,7 @@ lib-wide levers there cleared._
 
 - [ ] **Add a `scroll` opt-out to `fold-page-layout` (`'own' | 'flow'`, default `'own'`).**
       Its `:host` hardcodes `overflow-y:auto; overscroll-behavior:contain;
-  flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
+flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
       for the `contentScroll="clip"` model, with **no input to turn it off**. So a
       page built on `fold-page-layout` is structurally incompatible with the shell
       owning the scroll (`footerBehavior="scroll"`): the page scrolls internally,

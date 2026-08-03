@@ -28,11 +28,15 @@ $sizes: (
   ),
 );
 
-/** Box dimensions for one size preset (`sm` | `md` | `lg`). */
-@mixin size($key) {
+/** Box dimensions for one size preset (`sm` | `md` | `lg`). Pass `$height: false`
+ *  for a control whose height is content-driven (a `<textarea>`, sized by `rows`)
+ *  — it still shares the font / padding / radius, only the fixed box height drops. */
+@mixin size($key, $height: true) {
   $s: map.get($sizes, $key);
 
-  height: map.get($s, height);
+  @if $height {
+    height: map.get($s, height);
+  }
   font-size: map.get($s, font);
   padding: map.get($s, pad);
   border-radius: map.get($s, radius);
