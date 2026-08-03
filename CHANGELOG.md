@@ -8,6 +8,20 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-ng/devtools` — an opt-in dev-tools entry, starting with
+  `FoldIconDevtoolComponent`.** A **dev-only** floating panel that browses the live
+  `FoldIconRegistry` (built-ins + whatever the host app registered), with a search,
+  a preview grid, and a mini playground that builds a `<fold-icon>` snippet and
+  copies it. The panel is **draggable** (grab the header) and **minimisable**
+  (collapses to a pill). Published from a **separate entry** so it never lands in a
+  bundle that doesn't ask for it — import it behind a dev guard
+  (`if (isDevMode())` + a dynamic `import("fold-ng/devtools")`) so production
+  tree-shakes it away. Dogfooded in the gallery (primary-rail "Dev tools" + the
+  `/icons` hero CTA).
+- **`FoldIconRegistry.names()`** — the sorted list of every registered icon name
+  (built-ins + runtime additions), reactive. Powers catalogue tooling (the icon
+  devtool).
+
 - **A `commerce` icon category — 21 e-commerce glyphs.** The built-in set had no
   cart, catalogue, payment or fulfilment icons, so a consumer reused `package` as a
   placeholder for both a cart and a delivery tab (`docs/consumer-friction.md` Round

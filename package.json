@@ -58,6 +58,10 @@
     ".": {
       "types": "./src/public-api.ts",
       "import": "./src/public-api.ts"
+    },
+    "./devtools": {
+      "types": "./src/devtools/public-api.ts",
+      "import": "./src/devtools/public-api.ts"
     }
   },
   "scripts": {

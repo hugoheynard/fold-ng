@@ -1,0 +1,110 @@
+<header
+  class="dt-head"
+  (pointerdown)="onDragStart($event)"
+  (pointermove)="onDragMove($event)"
+  (pointerup)="onDragEnd($event)"
+  (pointercancel)="onDragEnd($event)"
+>
+  <span class="dt-grip" aria-hidden="true"></span>
+  <span class="dt-title">
+    <fold-icon name="grid" size="sm" aria-hidden="true" />
+    Icons
+    <span class="dt-count">{{ matches().length }}</span>
+  </span>
+  <span class="dt-actions">
+    <fold-button-icon
+      [icon]="minimized() ? 'chevron-up' : 'minus'"
+      size="sm"
+      [tooltip]="minimized() ? 'Expand' : 'Minimise'"
+      (clicked)="toggleMinimize()"
+    />
+    <fold-button-icon
+      icon="close"
+      size="sm"
+      tooltip="Close"
+      (clicked)="close()"
+    />
+  </span>
+</header>
+
+@if (!minimized()) {
+  <div class="dt-body">
+    <div class="dt-search">
+      <fold-icon
+        name="search"
+        size="sm"
+        class="dt-search-ico"
+        aria-hidden="true"
+      />
+      <input
+        type="search"
+        class="dt-search-input"
+        placeholder="Search icons…"
+        aria-label="Search icons"
+        [value]="query()"
+        (input)="onSearch($event)"
+      />
+    </div>
+
+    <div class="dt-grid" role="listbox" aria-label="Icons">
+      @for (name of matches(); track name) {
+        <button
+          type="button"
+          role="option"
+          class="dt-cell"
+          [class.is-selected]="selected() === name"
+          [attr.aria-selected]="selected() === name"
+          [title]="name"
+          (click)="select(name)"
+        >
+          <fold-icon [name]="name" size="md" aria-hidden="true" />
+        </button>
+      } @empty {
+        <p class="dt-empty">No icon matches “{{ query() }}”.</p>
+      }
+    </div>
+
+    @if (selected(); as name) {
+      <div class="dt-play">
+        <div class="dt-preview">
+          <fold-icon [name]="name" [size]="size()" />
+          <code class="dt-name">{{ name }}</code>
+        </div>
+        <div class="dt-controls">
+          <div class="dt-sizes" role="group" aria-label="Preview size">
+            @for (s of sizeSteps; track s) {
+              <button
+                type="button"
+                class="dt-size"
+                [class.is-on]="size() === s"
+                (click)="setSize(s)"
+              >
+                {{ s }}
+              </button>
+            }
+          </div>
+          <div class="dt-snippet">
+            <code>{{ snippet() }}</code>
+            <button
+              type="button"
+              class="dt-copy"
+              [class.is-copied]="copied()"
+              (click)="copy()"
+            >
+              <fold-icon
+                [name]="copied() ? 'check' : 'copy'"
+                size="sm"
+                aria-hidden="true"
+              />
+              {{ copied() ? "Copied" : "Copy" }}
+            </button>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <p class="dt-hint">
+        Pick an icon to build a <code>&lt;fold-icon&gt;</code> snippet.
+      </p>
+    }
+  </div>
+}

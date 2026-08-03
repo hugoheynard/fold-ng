@@ -1,0 +1,265 @@
+// A dev-only floating tool panel. Fixed to the viewport, above app chrome;
+// draggable by the header, collapsible to a pill. Tokens only.
+:host {
+  position: fixed;
+  z-index: 2147483000; // above app overlays, below nothing that matters in dev
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  max-width: calc(100vw - 2rem);
+  max-height: min(78vh, 640px);
+  overflow: hidden;
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg, 14px);
+  box-shadow: var(--fold-shadow-lg);
+  font-size: var(--fold-text-sm, 0.875rem);
+  user-select: none;
+}
+
+// Default corner while it has never been dragged.
+:host(.docked) {
+  right: 1.25rem;
+  bottom: 1.25rem;
+}
+
+:host(.minimized) {
+  max-height: none;
+}
+
+// ── Header (drag handle) ───────────────────────────────────────────────
+.dt-head {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm, 0.5rem);
+  padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+  background: var(--fold-color-surface-raised);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+  cursor: grab;
+  touch-action: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+:host(.minimized) .dt-head {
+  border-bottom: 0;
+}
+.dt-grip {
+  width: 10px;
+  height: 14px;
+  flex: none;
+  background-image: radial-gradient(currentColor 1px, transparent 1.4px);
+  background-size: 4px 4px;
+  color: var(--fold-color-text-faded);
+  opacity: 0.7;
+}
+.dt-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+.dt-count {
+  padding: 0.05rem 0.4rem;
+  border-radius: var(--fold-radius-pill, 9999px);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs, 0.75rem);
+  font-variant-numeric: tabular-nums;
+}
+.dt-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin-left: auto;
+}
+
+// ── Body ───────────────────────────────────────────────────────────────
+.dt-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm, 0.6rem);
+  padding: var(--fold-space-sm, 0.6rem);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dt-search {
+  position: relative;
+  flex: none;
+}
+.dt-search-ico {
+  position: absolute;
+  top: 50%;
+  left: 0.55rem;
+  transform: translateY(-50%);
+  color: var(--fold-color-text-muted);
+  pointer-events: none;
+}
+.dt-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4rem 0.6rem 0.4rem 1.9rem;
+  font: inherit;
+  color: var(--fold-color-text);
+  background: var(--fold-color-surface-sunken);
+  border: 1px solid var(--fold-color-border-subtle);
+  border-radius: var(--fold-radius-sm, 8px);
+
+  &::placeholder {
+    color: var(--fold-color-text-faded);
+  }
+  &:focus-visible {
+    outline: none;
+    border-color: var(--fold-color-primary);
+    box-shadow: 0 0 0 2px var(--fold-color-primary-border);
+  }
+}
+
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 0.25rem;
+  overflow-y: auto;
+  min-height: 4rem;
+  padding: 0.1rem;
+}
+.dt-cell {
+  all: unset;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--fold-radius-sm, 8px);
+  color: var(--fold-color-text-secondary);
+  cursor: pointer;
+  transition: background var(--fold-motion-fast);
+
+  &:hover {
+    background: var(--fold-color-surface-hover);
+    color: var(--fold-color-text);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: -2px;
+  }
+  &.is-selected {
+    background: var(
+      --fold-color-primary-surface,
+      var(--fold-color-surface-hover)
+    );
+    color: var(--fold-color-primary);
+    box-shadow: inset 0 0 0 1px var(--fold-color-primary-border);
+  }
+}
+.dt-empty,
+.dt-hint {
+  margin: 0;
+  padding: 0.5rem 0.25rem;
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs, 0.75rem);
+}
+
+// ── Playground ─────────────────────────────────────────────────────────
+.dt-play {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+.dt-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--fold-color-text);
+}
+.dt-name {
+  font-family: ui-monospace, monospace;
+  font-size: var(--fold-text-xs, 0.75rem);
+  color: var(--fold-color-text-muted);
+}
+.dt-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.dt-sizes {
+  display: inline-flex;
+  gap: 0.15rem;
+  padding: 0.15rem;
+  background: var(--fold-color-surface-sunken);
+  border-radius: var(--fold-radius-sm, 8px);
+  width: fit-content;
+}
+.dt-size {
+  all: unset;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--fold-radius-xs, 5px);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs, 0.75rem);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fold-color-text);
+  }
+  &.is-on {
+    background: var(--fold-color-surface-card);
+    color: var(--fold-color-text);
+    box-shadow: var(--fold-shadow-sm);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+  }
+}
+.dt-snippet {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  code {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0.35rem 0.5rem;
+    background: var(--fold-color-surface-sunken);
+    border-radius: var(--fold-radius-sm, 8px);
+    font-family: ui-monospace, monospace;
+    font-size: var(--fold-text-xs, 0.75rem);
+    color: var(--fold-color-text);
+  }
+}
+.dt-copy {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--fold-radius-sm, 8px);
+  background: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+  font-size: var(--fold-text-xs, 0.75rem);
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--fold-color-primary-strong, var(--fold-color-primary));
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: 2px;
+  }
+  &.is-copied {
+    background: var(--fold-color-success, var(--fold-color-primary));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dt-cell {
+    transition: none;
+  }
+}

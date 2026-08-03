@@ -689,6 +689,16 @@ committed work; the point is to learn before we lock anything.
   all `--fold-color-*`, edit live, export diff; contrast warnings as a
   fast-follow. **Decide overlay-vs-entry-point in a short design note before
   coding** (a real architecture fork). Separate initiative from the components.
+  - **Precedent set (2026-08-03): the `fold-ng/devtools` entry.** The icon devtool
+    (`FoldIconDevtoolComponent`) shipped the **opt-in secondary-entry** pattern —
+    option (b) above — because an _icon_ tool must read `FoldIconRegistry`, so it
+    can't be framework-agnostic (c). It's kept out of prod by living in a separate
+    `exports` entry a consumer only imports behind `if (isDevMode())` + a dynamic
+    `import("fold-ng/devtools")`. A theme editor that only touches CSSOM should
+    still prefer (c), but if it ever needs Angular it now has a home. **Follow-ups:**
+    (1) a `fold-ng/devtools` `ng-package.json` secondary-entry config for the
+    published build (source-consumed works today); (2) extend the api-surface guard
+    to scan the devtools entry too (it currently scans only the main `public-api.ts`).
 
 - **[2026-07-28] Tokenised scrollbar styling — including thumb radius.** Fold
   themes everything else via tokens, but scrollbars are still browser-default,

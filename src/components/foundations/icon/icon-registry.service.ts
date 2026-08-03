@@ -77,4 +77,11 @@ export class FoldIconRegistry {
   has(name: string): boolean {
     return name in this._icons();
   }
+
+  /** Every registered icon name (built-ins + runtime additions), sorted.
+   *  Reactive — recomputes when an icon is registered. Powers tooling that
+   *  browses the live catalogue (e.g. the `fold-icon-devtool`). */
+  names(): string[] {
+    return Object.keys(this._icons()).sort();
+  }
 }
