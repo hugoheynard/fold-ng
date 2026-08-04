@@ -325,6 +325,14 @@ lib-wide levers there cleared._
 
 **Priority (P0) — `fold-page-layout` can't cede its scroll (breaks shell-owned scroll + in-flow footer):**
 
+> **Superseded by the scroll-system design note → [`docs/scroll.md`](scroll.md)**
+> (2026-08-04). The P0 fix is **Slice A** there (shell owns the scroll by default;
+> `fold-page-layout scroll="flow"` default + the footer-grow companion; deletes the
+> LFC `!important`). The two scroll Explore items below (scrollbar tokens,
+> scroll-anchoring) fold into Slices C. **Decisions to lock first** (default flip,
+> naming, directive-vs-component, registry scope) are listed in the note. The
+> original P0 write-up is kept below for reference.
+
 - [ ] **Add a `scroll` opt-out to `fold-page-layout` (`'own' | 'flow'`, default `'own'`).**
       Its `:host` hardcodes `overflow-y:auto; overscroll-behavior:contain;
 flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
