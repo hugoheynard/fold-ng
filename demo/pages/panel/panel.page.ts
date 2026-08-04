@@ -4,6 +4,7 @@ import {
   FoldButtonComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
+  FoldPanelFooterComponent,
   FoldPanelHostComponent,
   type FoldPanelHostService,
 } from "../../../src/public-api";
@@ -36,6 +37,7 @@ interface DemoPanelConfig {
     PanelScopeDirective,
     FoldPanelHostComponent,
     FoldButtonComponent,
+    FoldPanelFooterComponent,
     FoldPageLayoutComponent,
     FoldPageSectionComponent,
   ],
@@ -69,6 +71,18 @@ host.open(MyPanel, { surface: 'solid' });
 // Guard the casual close: Escape + backdrop no longer dismiss.
 // The header close button & FoldPanelRef.close() still work.
 host.open(MyPanel, { disableClose: true });`;
+
+  protected readonly footerCode = `<!-- default: Annuler/Confirmer pushed to the trailing edge -->
+<fold-panel-footer>
+  <button foldButton emphasis="outline" intent="neutral" (click)="cancel()">Annuler</button>
+  <button foldButton (click)="save()">Enregistrer</button>
+</fold-panel-footer>
+
+<!-- between: a leading block (a running total) + trailing actions -->
+<fold-panel-footer align="between">
+  <span>Total {{ "{{" }} total {{ "}}" }}</span>
+  <button foldButton (click)="checkout()">Commander</button>
+</fold-panel-footer>`;
 
   protected readonly dataCode = `// A required data input — data must be passed.
 export class UserPanel implements FoldPanelContent<User> {

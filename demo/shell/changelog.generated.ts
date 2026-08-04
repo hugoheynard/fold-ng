@@ -39,7 +39,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     unreleased: true,
     counts: {
       Changed: 1,
-      Added: 11,
+      Added: 12,
     },
     breaking: 0,
     groups: [
@@ -176,6 +176,99 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-panel-footer",
+              },
+              {
+                kind: "text",
+                value: " — the action bar for panels/dialogs.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Pairs with ",
+              },
+              {
+                kind: "code",
+                value: "fold-panel-header",
+              },
+              {
+                kind: "text",
+                value:
+                  ": the tokenised bar at a panel's bottom edge (glass top border + padding + button alignment), so a panel no longer hand-rolls a ",
+              },
+              {
+                kind: "code",
+                value: '<footer class="foot">',
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: 'align="end"',
+              },
+              {
+                kind: "text",
+                value: " (default — the Annuler/Confirmer pair) · ",
+              },
+              {
+                kind: "code",
+                value: "between",
+              },
+              {
+                kind: "text",
+                value: " (a leading total + trailing actions) · ",
+              },
+              {
+                kind: "code",
+                value: "start",
+              },
+              {
+                kind: "text",
+                value: ". Sits with ",
+              },
+              {
+                kind: "code",
+                value: "flex: none",
+              },
+              {
+                kind: "text",
+                value: ", so it stays pinned while the body scrolls — no ",
+              },
+              {
+                kind: "code",
+                value: "position: sticky",
+              },
+              {
+                kind: "text",
+                value: ". Probed against the 2nd consumer (LaFolieDouce): ",
+              },
+              {
+                kind: "strong",
+                value: "17",
+              },
+              {
+                kind: "text",
+                value:
+                  " hand-rolled panel footers across its 3 apps, so it earns a primitive. Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/panel",
+              },
+              {
+                kind: "text",
+                value: " “Panel footer”; 3 specs.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

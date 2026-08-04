@@ -20,6 +20,15 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-panel-footer` — the action bar for panels/dialogs.** Pairs with
+  `fold-panel-header`: the tokenised bar at a panel's bottom edge (glass top
+  border + padding + button alignment), so a panel no longer hand-rolls a
+  `<footer class="foot">`. `align="end"` (default — the Annuler/Confirmer pair)
+  · `between` (a leading total + trailing actions) · `start`. Sits with
+  `flex: none`, so it stays pinned while the body scrolls — no `position: sticky`.
+  Probed against the 2nd consumer (LaFolieDouce): **17** hand-rolled panel footers
+  across its 3 apps, so it earns a primitive. Gallery `/panel` “Panel footer”; 3 specs.
+
 - **`fold-danger-zone` — the destructive-action block.** An alert-toned framed
   region for “delete X” panels/forms: a title, a projected explanation of the
   blast radius, and an optional **type-to-confirm** guard (`confirmPhrase`) — the

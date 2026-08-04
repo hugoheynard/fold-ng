@@ -1,0 +1,26 @@
+// The action bar at a panel's bottom edge. `flex: none` keeps it out of the
+// scrolling body above, so it stays pinned to the bottom without `position:
+// sticky`. Mirrors the header's chrome: same glass top border + padding.
+:host {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-md) var(--fold-space-lg);
+  border-top: 1px solid var(--fold-color-glass-border);
+  justify-content: flex-end; // align="end" (default)
+}
+
+:host([data-align="between"]) {
+  justify-content: space-between;
+}
+
+:host([data-align="start"]) {
+  justify-content: flex-start;
+}
+
+@media (forced-colors: active) {
+  :host {
+    border-top-color: CanvasText;
+  }
+}

@@ -151,17 +151,16 @@ from a **real use-case** (the PIM), so it earns its place. Composes inside
 
 </details>
 
-- [ ] **Explore `fold-panel-footer` — the action bar for panels/dialogs.** Pairs
-      with `fold-panel-header` the way a footer pairs with a header: today every
-      panel hand-rolls a `<footer class="foot">` with a right-aligned
-      Annuler/Confirmer button pair (e.g. LaFolieDouce PIM's
-      `tva-regime-form-panel`). A primitive would carry the tokenised top border,
-      padding, sticky-to-panel-bottom behaviour, and button alignment
-      (`align="end" | "between" | "start"`), with a projected slot for the
-      buttons. **Probe first:** is it a component, or just a `fold-panel-footer`
-      layout/utility class? Count the real footers across consumers before
-      locking. If it lands, it composes inside `fold-panel-host` and the future
-      `fold-dialog`, and `fold-danger-zone` drops its danger button into it.
+- [x] **`fold-panel-footer` — the action bar for panels/dialogs.** ✅ Done
+      (2026-08-04). **Probe answered it's a component:** counted **17** hand-rolled
+      `<footer class="foot">` across LaFolieDouce's 3 apps (PIM + B2B client + B2B
+      admin) — all the same Annuler/Confirmer bar (one is the cart's total-left /
+      actions-right `between` case). It carries the glass top border + padding +
+      `align="end" | "between" | "start"`, projects the buttons, and sits `flex:
+    none` (pinned to the panel bottom while the body scrolls — no `position:
+    sticky` needed). Gallery `/panel` “Panel footer”; 3 specs. **LFC adoption
+      (17 sites) is a follow-up, app-side.** Composes inside `fold-panel-host` /
+      the future `fold-dialog`; `fold-danger-zone` can drop its button into it.
 
 - [ ] **`fold-panel-host` — bottom-sheet edge (`side: 'bottom'`) + responsive
       auto-switch.** The last real gap in the panel system (config cascade,

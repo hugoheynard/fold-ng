@@ -551,6 +551,9 @@
 #### FoldPanelComponentOutletDirective
 - descriptor: InputSignal<FoldComponentPanelDescriptor> — required
 
+#### FoldPanelFooterComponent
+- align: InputSignal<"start" | "end" | "between">
+
 #### FoldPanelHeaderComponent
 - closed: OutputEmitterRef<void>
 - closeLabel: InputSignal<string | undefined>

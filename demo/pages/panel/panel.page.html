@@ -100,6 +100,36 @@
   </fold-page-section>
 
   <fold-page-section
+    title="Panel footer"
+    description="fold-panel-footer pairs with fold-panel-header: the tokenised action bar at a panel's bottom edge (top border + padding + alignment). It sits with flex:none, so it stays pinned while the body scrolls — no sticky."
+  >
+    <div class="pf-demos">
+      <div class="pf-frame">
+        <span class="pf-label">align="end" (default)</span>
+        <fold-panel-footer>
+          <button foldButton emphasis="outline" intent="neutral">
+            Annuler
+          </button>
+          <button foldButton>Enregistrer</button>
+        </fold-panel-footer>
+      </div>
+
+      <div class="pf-frame">
+        <span class="pf-label">align="between"</span>
+        <fold-panel-footer align="between">
+          <span class="pf-total">Total <strong>128,40 €</strong></span>
+          <button foldButton>Commander</button>
+        </fold-panel-footer>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">html</span></div>
+      <pre class="code-pre"><code>{{ footerCode }}</code></pre>
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
     title="Modal &amp; surface"
     description="Two per-panel options. Both default to today's behaviour (modal, glass)."
   >

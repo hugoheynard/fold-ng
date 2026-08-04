@@ -51,3 +51,28 @@
   line-height: 1.5;
   color: var(--fold-color-text-secondary);
 }
+
+/* fold-panel-footer demos — framed to read like a panel bottom edge. */
+.pf-demos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-md);
+  margin-bottom: var(--fold-space-lg);
+}
+.pf-frame {
+  border: 1px solid var(--fold-color-border-subtle);
+  border-radius: var(--fold-radius-md, 10px);
+  overflow: hidden;
+  background: var(--fold-color-surface-card);
+}
+.pf-label {
+  display: block;
+  padding: var(--fold-space-sm) var(--fold-space-lg);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+  font-family: ui-monospace, monospace;
+}
+.pf-total strong {
+  font-size: var(--fold-text-lg, 1.25rem);
+  color: var(--fold-color-text);
+}
