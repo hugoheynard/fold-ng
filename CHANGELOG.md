@@ -29,6 +29,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-breadcrumb` — a hierarchical link trail.** Data-driven: pass `[items]`
+  where each crumb links by an Angular `routerLink` **or** a plain `href`, so it
+  works in a router app and degrades to anchors without one (importing it never
+  forces `@angular/router` — `RouterLink` only instantiates on a crumb that sets
+  `routerLink`). The last item renders as the current page (`aria-current="page"`),
+  never a link; it's a `navigation` landmark with decorative chevron separators.
+  Gallery `/breadcrumb`; 5 specs.
+
 - **Panel bottom sheet (`side: 'bottom'`) + responsive `side: 'auto'`.** The panel
   host gained two docking edges beyond `left`/`right`: `bottom` is a full-width
   sheet whose height is content-driven up to a max (`85dvh`) with the body

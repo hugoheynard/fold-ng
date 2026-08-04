@@ -67,6 +67,10 @@
 - radius: InputSignal<"pill" | "square">
 - variant: InputSignal<FoldBadgeVariant>
 
+#### FoldBreadcrumbComponent
+- ariaLabel: InputSignal<string>
+- items: InputSignal<readonly FoldBreadcrumbItem[]> — required
+
 #### FoldButtonComponent
 - block: InputSignalWithTransform<boolean, unknown>
 - disabled: InputSignalWithTransform<boolean, unknown>
@@ -817,6 +821,7 @@
 - FoldBadgeVariant (type)
 - FoldBlurToken (type)
 - foldBlurVar (function)
+- FoldBreadcrumbItem (interface)
 - foldBuildAgenda (function)
 - foldBuildDay (function)
 - foldBuildMonthGrid (function)

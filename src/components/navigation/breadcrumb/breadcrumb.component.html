@@ -1,0 +1,28 @@
+<ol class="bc-list">
+  @for (item of items(); track $index; let last = $last) {
+    <li class="bc-item">
+      @if (last) {
+        <span class="bc-node bc-current" aria-current="page">{{
+          item.label
+        }}</span>
+      } @else if (item.routerLink !== undefined) {
+        <a class="bc-node bc-link" [routerLink]="item.routerLink">{{
+          item.label
+        }}</a>
+      } @else if (item.href !== undefined) {
+        <a class="bc-node bc-link" [href]="item.href">{{ item.label }}</a>
+      } @else {
+        <span class="bc-node">{{ item.label }}</span>
+      }
+
+      @if (!last) {
+        <fold-icon
+          class="bc-sep"
+          name="chevron-right"
+          size="sm"
+          aria-hidden="true"
+        />
+      }
+    </li>
+  }
+</ol>

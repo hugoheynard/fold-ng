@@ -1,0 +1,33 @@
+<fold-page-layout title="breadcrumb">
+  <p description>
+    A hierarchical <strong>trail</strong> of links to the current page. Data
+    driven — pass <code>[items]</code>; each crumb links by an Angular
+    <code>routerLink</code> <strong>or</strong> a plain <code>href</code>, so it
+    works in a router app and degrades to anchors without one. The last item is
+    the current page (<code>aria-current="page"</code>), never a link. It's a
+    <code>navigation</code> landmark; chevrons are decorative.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['icons']" />
+
+  <fold-page-section
+    title="routerLink"
+    description="In-app crumbs via Angular routerLink — the last item is the current page."
+  >
+    <fold-breadcrumb [items]="routed" ariaLabel="Example breadcrumb" />
+  </fold-page-section>
+
+  <fold-page-section
+    title="href"
+    description="Plain-URL crumbs — for external links or an app that doesn't use the router."
+  >
+    <fold-breadcrumb [items]="linked" ariaLabel="Linked breadcrumb" />
+  </fold-page-section>
+
+  <fold-page-section title="Usage" icon="code">
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">html</span></div>
+      <pre class="code-pre"><code>{{ code }}</code></pre>
+    </div>
+  </fold-page-section>
+</fold-page-layout>

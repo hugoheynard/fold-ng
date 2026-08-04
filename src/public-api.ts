@@ -300,6 +300,8 @@ export {
 export type { FoldPaginatorLabels } from "./components/content/paginator/paginator-labels";
 export { FoldViewNavComponent } from "./components/navigation/view-nav/view-nav.component";
 export type { FoldViewNavItem } from "./components/navigation/view-nav/view-nav.component";
+export { FoldBreadcrumbComponent } from "./components/navigation/breadcrumb/breadcrumb.component";
+export type { FoldBreadcrumbItem } from "./components/navigation/breadcrumb/breadcrumb.component";
 export { FoldTabsComponent } from "./components/navigation/tabs/tabs.component";
 export type {
   FoldTabItem,

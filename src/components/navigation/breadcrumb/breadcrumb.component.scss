@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.bc-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fold-text-sm, 0.875rem);
+}
+
+.bc-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.bc-node {
+  padding: 0.15rem 0.3rem;
+  border-radius: var(--fold-radius-sm, 8px);
+  color: var(--fold-color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bc-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--fold-motion-fast);
+
+  &:hover {
+    color: var(--fold-color-text);
+    background: var(--fold-color-surface-hover);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/* The current page — emphasised, not a link. */
+.bc-current {
+  color: var(--fold-color-text);
+  font-weight: 600;
+}
+
+.bc-sep {
+  flex: none;
+  color: var(--fold-color-text-faded);
+}
+
+@media (forced-colors: active) {
+  .bc-link:hover {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

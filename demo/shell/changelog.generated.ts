@@ -39,7 +39,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     unreleased: true,
     counts: {
       Changed: 2,
-      Added: 13,
+      Added: 14,
     },
     breaking: 0,
     groups: [
@@ -234,6 +234,106 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-breadcrumb",
+              },
+              {
+                kind: "text",
+                value: " — a hierarchical link trail.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Data-driven: pass ",
+              },
+              {
+                kind: "code",
+                value: "[items]",
+              },
+              {
+                kind: "text",
+                value: " where each crumb links by an Angular ",
+              },
+              {
+                kind: "code",
+                value: "routerLink",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "strong",
+                value: "or",
+              },
+              {
+                kind: "text",
+                value: " a plain ",
+              },
+              {
+                kind: "code",
+                value: "href",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so it works in a router app and degrades to anchors without one (importing it never forces ",
+              },
+              {
+                kind: "code",
+                value: "@angular/router",
+              },
+              {
+                kind: "text",
+                value: " — ",
+              },
+              {
+                kind: "code",
+                value: "RouterLink",
+              },
+              {
+                kind: "text",
+                value: " only instantiates on a crumb that sets ",
+              },
+              {
+                kind: "code",
+                value: "routerLink",
+              },
+              {
+                kind: "text",
+                value: "). The last item renders as the current page (",
+              },
+              {
+                kind: "code",
+                value: 'aria-current="page"',
+              },
+              {
+                kind: "text",
+                value: "), never a link; it's a ",
+              },
+              {
+                kind: "code",
+                value: "navigation",
+              },
+              {
+                kind: "text",
+                value: " landmark with decorative chevron separators. Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/breadcrumb",
+              },
+              {
+                kind: "text",
+                value: "; 5 specs.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {
