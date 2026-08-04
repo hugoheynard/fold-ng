@@ -8,6 +8,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **The icon devtool browses by category.** `FoldIconDevtoolComponent` now
+  groups the live registry into **collapsible sections** — UI · Navigation ·
+  Commerce · Music · Status · People · Brands (+ a **Custom** bucket for
+  host-registered icons) — each with its icon count; a search only surfaces the
+  categories it hits. New public `FOLD_BUILTIN_ICON_CATEGORIES` (+ `FoldIconCategoryId`)
+  is the single source of truth for the grouping (each icon file owns its slice).
+
+- **`fold-ng/devtools` now builds as a real ng-packagr secondary entry**, so
+  `import("fold-ng/devtools")` resolves for **published (npm) consumers**, not
+  only source-consumed ones. It compiles to its own FESM + `d.ts` and imports the
+  primary `fold-ng` by name; `finalize-dist` normalises ng-packagr's flattened
+  `./src/devtools` export to the public `./devtools` subpath (+ a node10 directory
+  manifest). `attw` all-🟢, `publint` clean. The api-surface guard was generalised
+  to snapshot every published entry point (`.` + `./devtools`).
+
 - **`fold-ng/devtools` — an opt-in dev-tools entry, starting with
   `FoldIconDevtoolComponent`.** A **dev-only** floating panel that browses the live
   `FoldIconRegistry` (built-ins + whatever the host app registered), with a search,

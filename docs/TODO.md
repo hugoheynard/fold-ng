@@ -695,10 +695,16 @@ committed work; the point is to learn before we lock anything.
     can't be framework-agnostic (c). It's kept out of prod by living in a separate
     `exports` entry a consumer only imports behind `if (isDevMode())` + a dynamic
     `import("fold-ng/devtools")`. A theme editor that only touches CSSOM should
-    still prefer (c), but if it ever needs Angular it now has a home. **Follow-ups:**
-    (1) a `fold-ng/devtools` `ng-package.json` secondary-entry config for the
-    published build (source-consumed works today); (2) extend the api-surface guard
-    to scan the devtools entry too (it currently scans only the main `public-api.ts`).
+    still prefer (c), but if it ever needs Angular it now has a home. **Follow-ups
+    (both ✅ 2026-08-04):** (1) `src/devtools/ng-package.json` makes `fold-ng/devtools`
+    a real ng-packagr secondary entry in the **published build** — it compiles to its
+    own FESM + d.ts and imports the primary `fold-ng` by name (its own rootDir forbids
+    relative cross-entry imports; the monorepo's vite/vitest alias `fold-ng` →
+    `src/public-api`). ng-packagr flattens the module id `src/devtools` into the
+    on-disk name + the `./src/devtools` export key, so `finalize-dist` normalises it to
+    the public `./devtools` subpath (+ a `dist/devtools/` node10 manifest); `attw` is
+    all-🟢 and `publint` clean for `fold-ng/devtools`. (2) the api-surface guard now
+    walks an ENTRIES list (`.` + `./devtools`), snapshotting the devtools surface too.
 
 - **[2026-07-28] Tokenised scrollbar styling — including thumb radius.** Fold
   themes everything else via tokens, but scrollbars are still browser-default,

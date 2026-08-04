@@ -1,6 +1,7 @@
 import angular from "@analogjs/vite-plugin-angular";
 import { defineConfig } from "vite";
 import { env } from "node:process";
+import { fileURLToPath } from "node:url";
 
 /**
  * Dev server for the component gallery — `pnpm --filter fold-ng dev`.
@@ -21,4 +22,12 @@ import { env } from "node:process";
 export default defineConfig({
   base: env.PAGES_BASE ?? "/",
   plugins: [angular()],
+  // `fold-ng/devtools` imports the primary `fold-ng` by name (it's a separate
+  // ng-packagr entry point with its own rootDir). Source-consumed, there is no
+  // installed `node_modules/fold-ng`, so alias the package name to the barrel.
+  resolve: {
+    alias: {
+      "fold-ng": fileURLToPath(new URL("./src/public-api.ts", import.meta.url)),
+    },
+  },
 });

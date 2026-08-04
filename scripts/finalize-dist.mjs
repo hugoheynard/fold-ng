@@ -5,6 +5,7 @@ import {
   existsSync,
   readdirSync,
   rmSync,
+  mkdirSync,
 } from "node:fs";
 import { resolve } from "node:path";
 
@@ -59,6 +60,44 @@ pkg.exports = {
   "./tokens/scales.css": "./tokens/scales.css",
   "./tokens/semantic.css": "./tokens/semantic.css",
 };
+
+// The `./devtools` secondary entry. ng-packagr flattens its module id — the
+// path from the package root, `src/devtools` — into the compiled export key
+// `./src/devtools` (and the on-disk `fold-ng-src-devtools.*` bundle names). It
+// also MERGES the source `./devtools` export, which points at raw `.ts`. Rename
+// the compiled entry to the public `./devtools` subpath (the flattened on-disk
+// filename stays an internal detail, resolved through this map), and drop both
+// the raw-TS leak and the now-redundant `dist/src/devtools/` manifest dir.
+const compiledDevtools = pkg.exports["./src/devtools"];
+if (compiledDevtools) {
+  pkg.exports["./devtools"] = compiledDevtools;
+  delete pkg.exports["./src/devtools"];
+  // node10 (classic) resolution ignores `exports` and walks directories, so it
+  // needs a physical `dist/devtools/` manifest — the primary entry supports
+  // node10, keep the secondary consistent. Move ng-packagr's `dist/src/devtools`
+  // manifest up to `dist/devtools`, re-pointing its now-one-level-shallower refs
+  // (`../../` → `../`). The compiled bundles keep their flattened on-disk names.
+  const upOneLevel = (p) => withDot(p).replace(/^\.\//, "../");
+  mkdirSync(resolve(DIST, "devtools"), { recursive: true });
+  writeFileSync(
+    resolve(DIST, "devtools/package.json"),
+    `${JSON.stringify(
+      {
+        module: upOneLevel(compiledDevtools.default),
+        typings: upOneLevel(compiledDevtools.types),
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  rmSync(resolve(DIST, "src"), { recursive: true, force: true });
+} else {
+  throw new Error(
+    "finalize-dist: expected a compiled './src/devtools' export from ng-packagr — " +
+      "did the secondary entry point (src/devtools/ng-package.json) build?",
+  );
+}
+
 pkg.sideEffects = ["**/*.css"];
 
 // `files` leaked from source and lists `src` (absent in dist) — it would ship

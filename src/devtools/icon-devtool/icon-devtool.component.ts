@@ -6,10 +6,16 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { FOLD_BUILTIN_ICON_CATEGORIES } from "../../components/foundations/icon/builtin-icons";
-import { FoldIconRegistry } from "../../components/foundations/icon/icon-registry.service";
-import { FoldIconComponent } from "../../components/foundations/icon/icon.component";
-import { FoldButtonIconComponent } from "../../components/actions/button-icon/button-icon.component";
+// Cross-entry imports resolve through the package name, not a relative path
+// into `../../components`: `fold-ng/devtools` is its own ng-packagr entry point
+// (own rootDir), so it depends on the primary `fold-ng` entry the same way any
+// consumer would. The monorepo's vite/vitest alias `fold-ng` → `src/public-api`.
+import {
+  FOLD_BUILTIN_ICON_CATEGORIES,
+  FoldButtonIconComponent,
+  FoldIconComponent,
+  FoldIconRegistry,
+} from "fold-ng";
 
 /** A draggable panel position, in viewport pixels (top-left origin). `null`
  *  until the first drag — the panel sits in its default corner via CSS. */
