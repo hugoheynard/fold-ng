@@ -49,7 +49,14 @@ overlay. Scanning for the remaining **controlled `input` + twin `output`** shape
 Pure event outputs (`clicked`, `activated`, `rowClick`, `nodeClick`,
 `filesPicked`, `validChange`, `confirmed`) are correctly outputs — no state to own.
 
-## Round 3 — `fold-page-layout` owns its scroll, with no opt-out (⏳ open, P0)
+## Round 3 — `fold-page-layout` owns its scroll, with no opt-out (✅ resolved 2026-08-04)
+
+> **Resolved by scroll-system Slice A** (`docs/scroll.md`): `fold-page-layout`
+> gained `scroll="flow" | "own"` and now **defaults to `flow`** (owns no scroll
+> box), while `fold-app-shell` flipped to owning the content scroll by default
+> (`scroll="scroll"`) on an inner box, with a `.content-flow { flex:1 0 auto }`
+> grow that pins a short-page footer. The `!important` workaround is deleted. The
+> original write-up stays below.
 
 Surfaced building **LaFolieDouce B2B**: an **app-level footer** (in the shell's
 `[footer]` slot) that should sit **at the end of scrolled content**.

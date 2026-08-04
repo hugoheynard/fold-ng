@@ -120,8 +120,11 @@
   min-width: 0;
   min-height: 0;
 }
-/* The content cell is the positioning anchor for floating panels: they
-       cover the page but stay below the rails/header (nav context preserved). */
+/* The content cell is the FRAME: the positioning anchor for floating panels
+   (they cover the page but stay below the rails/header, nav context preserved)
+   and it NEVER scrolls — `overflow: hidden` clips to the visible region. The
+   scroll lives on `.content-scroll` inside it, so a panel dock anchored to this
+   frame (its containing block) escapes that inner scroll and floats over it. */
 .content {
   grid-area: content;
   position: relative;
@@ -139,18 +142,40 @@
   outline: none;
 }
 
-/* footerBehavior="scroll" — the content region owns the scroll and the footer
-   flows at its end, revealed on the way down. `margin-top: auto` gives the
-   classic sticky-footer behaviour: it sits at the bottom of the viewport when
-   the page is short, and scrolls below the fold when the page is tall. Inset
-   only (it lives in the content column), so `footerLayout="full"` has no effect
-   here — project flow content, not a page that owns its own full-height scroll. */
-:host(.footer-scroll) .content,
-:host(.content-auto) .content {
-  overflow: auto;
+/* The inner scroll box — the shell's single scroll authority. In `scroll` mode
+   (default) it owns the content scroll; in `stage` mode it is a fixed-height
+   stage that does not scroll (scrolling happens inside `[foldScrollRegion]`s).
+   A flex column so `.content-flow` and a trailing in-flow footer stack. */
+.content-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
+:host([data-scroll="scroll"]) .content-scroll,
+:host(.footer-scroll) .content-scroll {
+  overflow-y: auto;
+}
+/* The page-holder: grows to fill the scroll box (`flex: 1 0 auto`) so a short
+   page still pushes a trailing `scroll` footer to the true bottom — the content-
+   grow sticky-footer, replacing the old `margin-top: auto` glue (which fought a
+   page that owned its own scroll and forced the LFC `!important`). A flex column
+   so a single flowing `fold-page-layout` child fills it. */
+.content-flow {
+  flex: 1 0 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* footerBehavior="scroll" — the footer flows at the end of the content scroll,
+   revealed on the way down and pinned to the bottom on a short page by the
+   grow above. It never grows or shrinks. Inset only (it lives in the content
+   column), so `footerLayout="full"` has no effect here. */
 .footer-inflow {
-  margin-top: auto;
+  flex: none;
 }
 
 /* Elevation is not the shell's skin to own — a region floats when the consumer
@@ -240,7 +265,7 @@
     animation: fold-shell-scrim-in 240ms ease;
   }
   /* Freeze the content scroll behind an open drawer. */
-  :host(.mobile-nav-open) .content {
+  :host(.mobile-nav-open) .content-scroll {
     overflow: hidden;
   }
 }

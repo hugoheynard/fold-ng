@@ -237,15 +237,32 @@ describe("FoldAppShellComponent", () => {
     }
   });
 
-  it('scrolls the content region itself when contentScroll="auto"', () => {
+  it('owns the content scroll by default (scroll="scroll")', () => {
     const fixture = TestBed.createComponent(FoldAppShellComponent);
     fixture.detectChanges();
     const shell = fixture.nativeElement as HTMLElement;
-    expect(shell.classList.contains("content-auto")).toBe(false);
+    // The default flips to shell-owns-scroll: `data-scroll="scroll"`.
+    expect(shell.getAttribute("data-scroll")).toBe("scroll");
 
-    fixture.componentRef.setInput("contentScroll", "auto");
+    fixture.componentRef.setInput("scroll", "stage");
     fixture.detectChanges();
-    expect(shell.classList.contains("content-auto")).toBe(true);
+    expect(shell.getAttribute("data-scroll")).toBe("stage");
+  });
+
+  it("puts the scroll on an inner box, keeping the content frame as the anchor", () => {
+    // The frame (.content) never scrolls — it stays the positioning anchor for a
+    // docked panel; the scroll lives on the inner `.content-scroll`, and
+    // `.content-flow` holds the projected page so a short page can grow to pin a
+    // trailing footer. This structural chain is the linchpin of the model.
+    const fixture = TestBed.createComponent(FoldAppShellComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement as HTMLElement;
+    const frame = shell.querySelector("main.content");
+    const scrollBox = frame?.querySelector(":scope > .content-scroll");
+    const flow = scrollBox?.querySelector(":scope > .content-flow");
+    expect(frame).not.toBeNull();
+    expect(scrollBox).not.toBeNull();
+    expect(flow).not.toBeNull();
   });
 });
 

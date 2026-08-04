@@ -1,9 +1,11 @@
 # The scroll system (design note)
 
-> Status: **design, not built.** Decides the model before any code. Target: once
-> an app uses `fold-app-shell`, **nobody writes `overflow` again** — not the page,
-> not a split view, not a sticky sidebar, not a data-table body. Scroll is owned
-> in one place and every nested scroll region is an explicit, coordinated opt-in.
+> Status: **Slice A shipped (2026-08-04); B + C pending.** Decides the model
+> before any code. Target: once an app uses `fold-app-shell`, **nobody writes
+> `overflow` again** — not the page, not a split view, not a sticky sidebar, not a
+> data-table body. Scroll is owned in one place and every nested scroll region is
+> an explicit, coordinated opt-in. The "Why" table below is the pre-Slice-A state,
+> kept for context.
 
 ## Why
 
@@ -134,14 +136,16 @@ coordinated scroll box:
 
 Ship in order; each is independently useful.
 
-1. **Slice A — the authority + the P0 fix.** Shell owns the content scroll by
-   default (`scroll` mode); `fold-page-layout scroll="flow"` becomes the default and
-   drops its hardcoded overflow; add the companion **content-grow** fix so a short
-   page still pushes a `footerBehavior="scroll"` footer to the bottom (the shell
-   makes the routed page `flex: 1 0 auto` instead of gluing the footer with
-   `margin-top:auto`). **Deletes the LFC `!important`.** Breaking for pages that
-   relied on the page owning scroll in a clip shell → they set `scroll="own"` or the
-   shell to `stage`.
+1. **Slice A — the authority + the P0 fix. ✅ Shipped 2026-08-04.** Shell owns the
+   content scroll by default (`scroll` mode, renamed from `contentScroll`);
+   `fold-page-layout scroll="flow"` is the default and drops its hardcoded
+   overflow. The scroll lives on an **inner** `.content-scroll` box (not the
+   content region itself), so a docked panel anchored to the content frame stays
+   fixed over it; the companion **content-grow** fix (`.content-flow { flex: 1 0
+auto }`) pushes a short page's `footerBehavior="scroll"` footer to the bottom,
+   replacing the old `margin-top:auto` glue. **Deletes the LFC `!important`.**
+   Breaking for pages that relied on the page owning scroll in a clip shell → they
+   set `scroll="own"` or the shell to `stage`.
 2. **Slice B — `foldScrollRegion` + the shell registry.** The opt-in directive and
    the registration/scroll-lock coordination. Migrate the data-table body + panel
    body onto it.

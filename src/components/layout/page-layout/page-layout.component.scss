@@ -22,12 +22,24 @@
   padding-block: var(--fold-page-pad-top, 28px)
     var(--fold-page-pad-bottom, 40px);
   padding-inline: var(--fold-page-gutter, 32px);
-  /* The page is its own scroll box: it fills the height its frame gives it and
-     scrolls inside, so the frame's chrome (rails, header, gutter) stays put.
-     Inert until something constrains the height — a page in a taller container
+  /* `scroll="flow"` (default): the page owns NO scroll — it flows inside its
+     host's scroll region (the app-shell content owns the scroll). It fills the
+     height its frame gives it (`flex: 1 0 auto` — grow to push a trailing shell
+     footer down, never shrink below its content so nothing is clipped) and lets
+     the shell scroll. This kills the page-inside-shell double scrollbar and the
+     `overscroll-behavior: contain` chain-stop that made a scroll footer
+     unreachable. Inert outside a flex frame — a page in a plain block container
      just grows as before. */
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   min-height: 0;
+}
+/* `scroll="own"` (legacy / stage): the page is its own scroll box — it fills the
+   height its frame gives it and scrolls inside, so the frame's chrome (rails,
+   header, gutter) stays put. Needed only when a page must scroll as a self-
+   contained unit inside a non-scrolling `stage` shell or a bare fixed-height
+   container. */
+:host([data-scroll="own"]) {
+  flex: 1 1 auto;
   overflow-y: auto;
   overscroll-behavior: contain;
 }

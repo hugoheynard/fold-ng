@@ -65,6 +65,20 @@ export class FoldPageTitleDirective {}
  * </fold-page-layout>
  * ```
  *
+ * ## Who owns the scroll
+ * The `scroll` input decides whether the page is its own scroll box:
+ * - **`flow` (default)** — the page owns **no** scroll; it flows inside its
+ *   host's scroll region (typically the `fold-app-shell` content, which owns the
+ *   scroll). This is the "never manage scroll again" default — the page just
+ *   grows and the shell scrolls, so a shell footer at the end of the content is
+ *   always reachable and there is never a page-inside-shell double scrollbar.
+ * - **`own`** — the page is its own scroll box (the legacy behaviour):
+ *   `overflow-y: auto` + `overscroll-behavior: contain`, filling the height its
+ *   frame gives it. Reach for it only when the page must scroll as a self-
+ *   contained unit — dropped into a `stage` shell (whose content region does not
+ *   scroll) or a bare fixed-height container. See the shell's `scroll` knob and
+ *   `docs/scroll.md`.
+ *
  * @selector `fold-page-layout`
  */
 @Component({
@@ -73,7 +87,7 @@ export class FoldPageTitleDirective {}
   imports: [FoldIconComponent],
   // `title` is a heading input — strip the native attribute a static
   // `title="…"` leaves behind, so it never doubles as a browser tooltip.
-  host: { "[attr.title]": "null" },
+  host: { "[attr.title]": "null", "[attr.data-scroll]": "scroll()" },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
 })
@@ -84,6 +98,15 @@ export class FoldPageLayoutComponent {
   readonly title = input<string>();
   /** An optional leading icon shown beside the title. */
   readonly icon = input<FoldIconName>();
+
+  /**
+   * Who owns the page's scroll:
+   * - `"flow"` (default) — the page flows inside its host's scroll (the shell
+   *   owns the scroll); the page has no scroll box of its own.
+   * - `"own"` — the page is its own scroll box (`overflow-y: auto`), for a page
+   *   dropped into a non-scrolling `stage` shell or a bare fixed-height frame.
+   */
+  readonly scroll = input<"flow" | "own">("flow");
 
   /** A projected `[pageTitle]`, if any — switches the header on for a custom
    *  title even without the `title` input. */

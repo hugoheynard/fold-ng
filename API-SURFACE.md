@@ -14,7 +14,6 @@
 ### Components & classes
 
 #### FoldAppShellComponent
-- contentScroll: InputSignal<"clip" | "auto">
 - drawerLabel: InputSignal<string>
 - footerBehavior: InputSignal<"pinned" | "scroll">
 - footerLayout: InputSignal<"inset" | "full">
@@ -24,6 +23,7 @@
 - mobileNav: InputSignal<"drawer" | "none">
 - mobileNavOpen: ModelSignal<boolean>
 - railWidth: InputSignal<number | undefined>
+- scroll: InputSignal<"scroll" | "stage">
 - skipLinkLabel: InputSignal<string>
 
 #### FoldAsideLayoutComponent
@@ -532,6 +532,7 @@
 
 #### FoldPageLayoutComponent
 - icon: InputSignal<FoldIconName | undefined>
+- scroll: InputSignal<"flow" | "own">
 - title: InputSignal<string | undefined>
 
 #### FoldPageSectionComponent

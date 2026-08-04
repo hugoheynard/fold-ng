@@ -38,14 +38,193 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Changed: 2,
+      Changed: 3,
       Added: 15,
     },
-    breaking: 0,
+    breaking: 1,
     groups: [
       {
         kind: "Changed",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "BREAKING — the shell owns the content scroll by default; pages flow.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The all-in-one scroll model (",
+              },
+              {
+                kind: "code",
+                value: "docs/scroll.md",
+              },
+              {
+                kind: "text",
+                value: "), slice A. ",
+              },
+              {
+                kind: "code",
+                value: "fold-app-shell",
+              },
+              {
+                kind: "text",
+                value: "'s ",
+              },
+              {
+                kind: "code",
+                value: 'contentScroll="clip" | "auto"',
+              },
+              {
+                kind: "text",
+                value: " input is ",
+              },
+              {
+                kind: "strong",
+                value: "renamed and reshaped",
+              },
+              {
+                kind: "text",
+                value: " to ",
+              },
+              {
+                kind: "code",
+                value: 'scroll="scroll" | "stage"',
+              },
+              {
+                kind: "text",
+                value: ", and the ",
+              },
+              {
+                kind: "strong",
+                value: "default flips",
+              },
+              {
+                kind: "text",
+                value: ": the shell's content region now owns the scroll (",
+              },
+              {
+                kind: "code",
+                value: "scroll",
+              },
+              {
+                kind: "text",
+                value: ", was ",
+              },
+              {
+                kind: "code",
+                value: "clip",
+              },
+              {
+                kind: "text",
+                value: "/page-owns), so a ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " inside it no longer double-scrolls. ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " gains ",
+              },
+              {
+                kind: "code",
+                value: 'scroll="flow" | "own"',
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "strong",
+                value: "defaults to `flow`",
+              },
+              {
+                kind: "text",
+                value:
+                  " — it owns no scroll box and flows inside the shell. Net effect for a normal page: identical, minus the P0 bug where a ",
+              },
+              {
+                kind: "code",
+                value: 'footerBehavior="scroll"',
+              },
+              {
+                kind: "text",
+                value: " footer sat below an unreachable ",
+              },
+              {
+                kind: "code",
+                value: "overscroll-behavior: contain",
+              },
+              {
+                kind: "text",
+                value: " boundary (this ",
+              },
+              {
+                kind: "strong",
+                value: "deletes the LaFolieDouce B2B `!important` workaround",
+              },
+              {
+                kind: "text",
+                value: "). The scroll lives on an ",
+              },
+              {
+                kind: "strong",
+                value: "inner",
+              },
+              {
+                kind: "text",
+                value:
+                  " box, never the content region itself, so a docked panel anchored to the region stays fixed over the frame. Migration: a page that must scroll as a self-contained unit (a split view whose shell must not move) sets ",
+              },
+              {
+                kind: "code",
+                value: 'fold-app-shell scroll="stage"',
+              },
+              {
+                kind: "text",
+                value: " and/or ",
+              },
+              {
+                kind: "code",
+                value: 'fold-page-layout scroll="own"',
+              },
+              {
+                kind: "text",
+                value: ". A short page still pins a trailing ",
+              },
+              {
+                kind: "code",
+                value: "scroll",
+              },
+              {
+                kind: "text",
+                value:
+                  " footer to the bottom (the content grows to fill), replacing the old ",
+              },
+              {
+                kind: "code",
+                value: "margin-top: auto",
+              },
+              {
+                kind: "text",
+                value: " glue.",
+              },
+            ],
+            breaking: true,
+          },
           {
             lead: [
               {
@@ -682,7 +861,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               },
               {
                 kind: "text",
-                value: ", a danger *section* with a ",
+                value: ", a danger _section_ with a ",
               },
               {
                 kind: "strong",

@@ -77,8 +77,8 @@ const MOBILE_BREAKPOINT = 768;
  * |----------------|-----------------------|-----------|--------------------------------------------|
  * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
  * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
- * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset), and the shell owns the content scroll, so project *flow* content, not a page that manages its own full-height scroll. |
- * | `contentScroll`| `"clip" \| "auto"`    | `"clip"`  | `clip` = the shell clips the content region; the page inside owns its scroll (`fold-page-layout`). `auto` = the content region scrolls itself, for plain content. Ignored under `footerBehavior="scroll"`. |
+ * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset). A short page still pushes it to the bottom (the content grows to fill), and a tall page reveals it below the fold; you never manage that. |
+ * | `scroll`       | `"scroll" \| "stage"` | `"scroll"`| **Who owns the content scroll.** `scroll` (default) = the shell's content region owns the scroll; pages flow inside it (`fold-page-layout scroll="flow"`), the chrome stays put, a `scroll` footer sits at the true end. `stage` = the content region is a fixed-height stage that does *not* scroll — the page fills it and scrolling happens inside `[foldScrollRegion]` areas (a mail-style split view). See `docs/scroll.md`. |
  *
  * ## Elevation (the floating look)
  * The shell owns **structure**, not skin — it drives no `floating` flag. To lift
@@ -159,7 +159,7 @@ const MOBILE_BREAKPOINT = 768;
     "[class.footer-scroll]": 'footerBehavior() === "scroll"',
     "[class.mobile-drawer]": 'mobileNav() === "drawer"',
     "[class.mobile-nav-open]": "drawerOpen()",
-    "[class.content-auto]": 'contentScroll() === "auto"',
+    "[attr.data-scroll]": "scroll()",
   },
   templateUrl: "./app-shell.component.html",
   styleUrl: "./app-shell.component.scss",
@@ -180,15 +180,23 @@ export class FoldAppShellComponent {
   /** `"pinned"` (default) keeps the footer always in sight as a fixed row (a player / status bar); `"scroll"` lets it flow at the end of the content, revealed when you scroll to the bottom (a legal / support footer). `scroll` is inset-only and makes the shell own the content scroll — project flow content, not a page that manages its own full-height scroll. */
   readonly footerBehavior = input<"pinned" | "scroll">("pinned");
   /**
-   * Who owns the content region's scroll:
-   * - `"clip"` (default) — the shell clips it; the page inside owns its scroll
-   *   (an `fold-page-layout` is its own scroll box). A full-bleed page paints to
-   *   the edges and never double-scrolls.
-   * - `"auto"` — the shell's content region scrolls itself. For plain content
-   *   that isn't wrapped in a self-scrolling page. Ignored under
-   *   `footerBehavior="scroll"` (which already makes the region scroll).
+   * Who owns the content region's scroll — the shell's single scroll switch.
+   * - `"scroll"` (default) — the shell's content region **owns** the scroll.
+   *   Pages flow inside it (`fold-page-layout` defaults to `scroll="flow"`), the
+   *   header/rails stay put, and a `footerBehavior="scroll"` footer sits at the
+   *   true end of the content. This is the document case — the vast majority.
+   * - `"stage"` — the content region is a **fixed-height stage** that does *not*
+   *   scroll; the page fills it and any scrolling happens inside
+   *   `[foldScrollRegion]` areas. This is the app case: a mail-style split view
+   *   where the list and the detail scroll independently and the viewport never
+   *   moves. A page that must scroll as a unit inside a stage sets
+   *   `fold-page-layout scroll="own"`.
+   *
+   * The scroll always lives on an **inner** scroll box, never on the content
+   * region itself, so a docked overlay (the panel host) anchored to the region
+   * stays fixed over the frame instead of scrolling away with the content.
    */
-  readonly contentScroll = input<"clip" | "auto">("clip");
+  readonly scroll = input<"scroll" | "stage">("scroll");
 
   /** The skip-link's label — the first Tab stop, jumping keyboard users past the
    *  rails straight to `<main>`. Override for a non-English app. */

@@ -56,6 +56,12 @@
   </footer>
 </ng-template>
 
+<!-- The content region is the fixed, positioned FRAME — never scrolls, so a
+     docked overlay (the panel host) anchored to it stays put. The scroll lives on
+     the inner `.content-scroll` box; because its containing block is this frame
+     (above the scroll box), an absolutely-positioned panel dock escapes the
+     scroll and floats over the frame. `.content-flow` grows to fill, so a short
+     page still pushes a trailing `scroll` footer to the true bottom. -->
 <main
   class="content"
   foldSurface="page"
@@ -63,10 +69,12 @@
   tabindex="-1"
   [attr.inert]="drawerOpen() ? '' : null"
 >
-  <ng-content />
-  @if (footerBehavior() === "scroll") {
-    <ng-container [ngTemplateOutlet]="footerTpl" />
-  }
+  <div class="content-scroll">
+    <div class="content-flow"><ng-content /></div>
+    @if (footerBehavior() === "scroll") {
+      <ng-container [ngTemplateOutlet]="footerTpl" />
+    }
+  </div>
 </main>
 @if (footerBehavior() !== "scroll") {
   <ng-container [ngTemplateOutlet]="footerTpl" />

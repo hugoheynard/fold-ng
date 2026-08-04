@@ -8,6 +8,24 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING — the shell owns the content scroll by default; pages flow.** The
+  all-in-one scroll model (`docs/scroll.md`), slice A. `fold-app-shell`'s
+  `contentScroll="clip" | "auto"` input is **renamed and reshaped** to
+  `scroll="scroll" | "stage"`, and the **default flips**: the shell's content
+  region now owns the scroll (`scroll`, was `clip`/page-owns), so a
+  `fold-page-layout` inside it no longer double-scrolls. `fold-page-layout` gains
+  `scroll="flow" | "own"` and **defaults to `flow`** — it owns no scroll box and
+  flows inside the shell. Net effect for a normal page: identical, minus the P0
+  bug where a `footerBehavior="scroll"` footer sat below an unreachable
+  `overscroll-behavior: contain` boundary (this **deletes the LaFolieDouce B2B
+  `!important` workaround**). The scroll lives on an **inner** box, never the
+  content region itself, so a docked panel anchored to the region stays fixed
+  over the frame. Migration: a page that must scroll as a self-contained unit
+  (a split view whose shell must not move) sets `fold-app-shell scroll="stage"`
+  and/or `fold-page-layout scroll="own"`. A short page still pins a trailing
+  `scroll` footer to the bottom (the content grows to fill), replacing the old
+  `margin-top: auto` glue.
+
 - **`@angular/router` is now a declared (optional) peer dependency.** `fold-view-nav`
   imports `RouterLink`/`RouterLinkActive`, but the package only listed router as a
   devDependency — an undeclared peer that happened to resolve because every Angular

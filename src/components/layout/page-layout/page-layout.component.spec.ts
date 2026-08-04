@@ -81,6 +81,31 @@ describe("FoldPageLayoutComponent", () => {
     expect(root.querySelector(".page-title .page-icon")).not.toBeNull();
   });
 
+  it('flows by default (scroll="flow") and owns its scroll only on scroll="own"', () => {
+    // The default flips to "flow": the page no longer owns a scroll box — it
+    // flows inside the shell's scroll. `data-scroll` is the contract the CSS
+    // keys off, so assert it directly (jsdom can't compute the overflow itself).
+    @Component({
+      standalone: true,
+      imports: [FoldPageLayoutComponent],
+      template: `<fold-page-layout [scroll]="mode()">Body</fold-page-layout>`,
+    })
+    class ScrollHost {
+      readonly mode = signal<"flow" | "own">("flow");
+    }
+
+    const fixture = TestBed.createComponent(ScrollHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-page-layout",
+    );
+    expect(host?.getAttribute("data-scroll")).toBe("flow");
+
+    fixture.componentInstance.mode.set("own");
+    fixture.detectChanges();
+    expect(host?.getAttribute("data-scroll")).toBe("own");
+  });
+
   it("shows the header from a projected [pageTitle] with no title input", () => {
     @Component({
       standalone: true,

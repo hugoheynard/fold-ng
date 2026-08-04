@@ -325,41 +325,41 @@ lib-wide levers there cleared._
 
 **Priority (P0) — `fold-page-layout` can't cede its scroll (breaks shell-owned scroll + in-flow footer):**
 
-> **Superseded by the scroll-system design note → [`docs/scroll.md`](scroll.md)**
-> (2026-08-04). The P0 fix is **Slice A** there (shell owns the scroll by default;
-> `fold-page-layout scroll="flow"` default + the footer-grow companion; deletes the
-> LFC `!important`). The two scroll Explore items below (scrollbar tokens,
-> scroll-anchoring) fold into Slices C. **Decisions to lock first** (default flip,
-> naming, directive-vs-component, registry scope) are listed in the note. The
-> original P0 write-up is kept below for reference.
+> **✅ RESOLVED (2026-08-04) — scroll-system Slice A shipped.** See
+> [`docs/scroll.md`](scroll.md). What landed, matching the locked decisions:
+> `fold-app-shell` `contentScroll` → `scroll="scroll" | "stage"`, **default flipped
+> to `scroll`** (shell owns the content scroll); `fold-page-layout` gained
+> `scroll="flow" | "own"`, **default `flow`** (drops its `overflow`/`overscroll`,
+> so no page-inside-shell double scroll and the chain-stop that hid the footer is
+> gone). The **footer-grow companion** shipped too: the scroll lives on an inner
+> `.content-scroll`, and `.content-flow { flex: 1 0 auto }` grows to pin a short-
+> page footer — no more `margin-top: auto` glue. The scroll box is inner so a
+> docked panel anchored to the content frame stays fixed. **Deletes the LFC
+> `!important`.** Slices B (`foldScrollRegion` + registry) and C (scrollbar
+> tokens + scroll-anchoring) are the remaining scroll work (below / in the note).
+> The original P0 write-up is kept below for reference.
 
-- [ ] **Add a `scroll` opt-out to `fold-page-layout` (`'own' | 'flow'`, default `'own'`).**
-      Its `:host` hardcodes `overflow-y:auto; overscroll-behavior:contain;
-flex:1 1 auto; min-height:0` — it is **always** a self-scrolling box, built
-      for the `contentScroll="clip"` model, with **no input to turn it off**. So a
-      page built on `fold-page-layout` is structurally incompatible with the shell
-      owning the scroll (`footerBehavior="scroll"`): the page scrolls internally,
-      and `overscroll-behavior:contain` **stops the scroll from chaining to
-      `.content`** — so the in-flow footer stamped at the end of `.content` becomes
-      **unreachable** (you reach the bottom of the page and cannot get to the
-      footer). Surfaced building **LaFolieDouce B2B** (an app-level footer that
-      should sit at the end of scrolled content). Consumer workaround today is a
-      global `!important` override
-      (`fold-page-layout { overflow:visible; overscroll-behavior:auto; flex-shrink:0 }`),
-      a smell that points straight at this gap. **Fix:** `scroll="flow"` drops
-      `overflow`/`overscroll`/`min-height` so the page flows and the scroll — and
-      footer reach — returns to the shell. Pairs with the footer-scroll snapshot
-      coverage below. Ground truth in `consumer-friction.md` Round 3.
-  - **Companion (surfaced by the 2nd consumer, LaFolieDouce B2B — `consumer-friction.md`
-    Round 4 #1):** `scroll="flow"` is necessary but **not sufficient**. The
-    shell glues its in-flow footer with `.footer-inflow { margin-top:auto }`, and
-    a flex auto-margin **consumes free space before `flex-grow`** — so even a
-    flowing page won't grow to fill the scrollport, and a short page leaves the
-    footer floating mid-viewport. The shell must also make the routed page
-    **grow** (a `flex:1 0 auto` content wrapper) instead of pushing the footer
-    with `margin-top:auto`. The app's workaround is a global
-    `router-outlet + * { flex:1 0 auto }` + `.footer-inflow { margin-top:0 !important }`
-    — the `!important` against a lib rule is the smell. Fix both together.
+- [x] **`fold-page-layout` gained `scroll="flow" | "own"` (default `flow`); the
+      shell flipped to owning the scroll.** (Shipped default is `flow`, not the
+      `own` first sketched here — the locked decision took the one-time breaking
+      flip.) Its `:host` used to hardcode `overflow-y:auto;
+  overscroll-behavior:contain; flex:1 1 auto; min-height:0` — **always** a
+      self-scrolling box, built for the old `contentScroll="clip"` model, with no
+      input to turn it off, so a page built on `fold-page-layout` was structurally
+      incompatible with the shell owning the scroll (`footerBehavior="scroll"`):
+      the page scrolled internally and `overscroll-behavior:contain` stopped the
+      scroll from chaining to `.content`, leaving the in-flow footer unreachable.
+      Surfaced building **LaFolieDouce B2B**; the consumer workaround was a global
+      `!important` override — the smell that pointed at the gap. Ground truth in
+      `consumer-friction.md` Round 3.
+  - [x] **Companion (2nd consumer, LaFolieDouce B2B — `consumer-friction.md`
+        Round 4 #1): the footer-grow.** `scroll="flow"` alone was necessary but not
+        sufficient — the old `.footer-inflow { margin-top:auto }` consumed free space
+        before `flex-grow`, so a short flowing page left the footer floating
+        mid-viewport. Fixed together: the shell now grows the page-holder
+        (`.content-flow { flex: 1 0 auto }`) instead of gluing the footer, so a short
+        page pins the footer to the bottom and the app drops its
+        `router-outlet + * { flex:1 0 auto }` + `.footer-inflow { margin-top:0 !important }`.
 
 **Do — the a11y promise (the component advertises accessibility):**
 
