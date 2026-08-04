@@ -710,6 +710,19 @@ subtree mirror → public `dev`, gallery served on GitHub Pages via hash routing
 Open investigations — run the probe, bring back a finding, _then_ decide. Not
 committed work; the point is to learn before we lock anything.
 
+- **[2026-08-04] `fold-async-state` — one wrapper for loading / not-found /
+  error + loaded content.** Consumers hand-wire the same `@if (loading()) {…}
+@else if (notFound()) {…} @else if (error()) {…} @else { … }` ladder around
+  every async view (seen in LaFolieDouce PIM `product-form`, and elsewhere).
+  Idea: a single component with three inputs — `loading` (bool), `error`
+  (string | null), `empty` (bool, "not found / no data") — that renders
+  `fold-loading` / an error `fold-callout` / `fold-empty-state` respectively, and
+  projects the default slot only once resolved. Decide: input shape (three flags
+  vs a single discriminated `state`), whether `empty` vs `error` messaging is
+  configurable via inputs or projected slots (`[loading]`/`[empty]`/`[error]`
+  named slots for full control), and the precedence order (error > loading >
+  empty > content). Composes the existing `fold-loading` + `fold-empty-state` +
+  `fold-callout` — no new primitives.
 - **[2026-08-04] `fold-menu` — reduce the `routerLinkActive` boilerplate (and
   decide whether a data-driven `[items]` API earns its place).** With
   `@angular/router` now an **optional peer** (2026-08-04), the menu can afford a
