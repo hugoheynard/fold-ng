@@ -1,0 +1,48 @@
+/* ── [foldScrollRegion] directive demo ─────────────────────── */
+.sr-demo {
+  /* A fixed-height frame — the region scrolls INSIDE it; the frame itself never
+     scrolls and was never given an `overflow`. */
+  height: 240px;
+  padding: 12px;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-sunken);
+  display: flex;
+}
+
+.sr-region {
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-raised);
+  border: 1px solid var(--fold-color-border-subtle);
+  /* No `overflow` here — [foldScrollRegion] supplies it. */
+}
+
+.sr-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+/* For inline/both, force the content wider than the box so a horizontal scroll
+   appears too. */
+.sr-inner--wide .sr-row {
+  width: 720px;
+}
+
+.sr-row {
+  flex: none;
+  padding: 12px 14px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border-subtle);
+  font-size: 12px;
+  color: var(--fold-color-text-secondary);
+}
+
+.sr-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fold-color-text-muted);
+}

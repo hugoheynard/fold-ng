@@ -47,6 +47,24 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`[foldScrollRegion]` + the shell scroll registry — scroll-system Slice B.**
+  The one opt-in of the scroll model (`docs/scroll.md`): with `fold-app-shell`
+  owning the page scroll, a layout that needs an independently-scrolling area (a
+  split list/detail, a data-table body, a sticky sidebar, a panel body) marks it
+  with `[foldScrollRegion]` instead of hand-rolling `overflow`. The directive sets
+  the three foot-guns (`overflow`, `min-*: 0`, `overscroll-behavior: contain`) and
+  the thin house scrollbar, and takes an axis (`block` default · `inline` · `both`).
+  It **registers with the new `ScrollRegionRegistry`**, which the shell also feeds
+  with its own content scroll box; the panel host freezes the registry when a
+  modal opens, so the page stops scrolling behind the overlay even though the
+  scroll owner is an inner box, not `document.body`. Freezing toggles a
+  `.fold-scroll-frozen` class (`overflow: hidden !important`, shipped in
+  `tokens.css`), never an inline write, so a region's own overflow is never
+  clobbered. Registry injection is optional, so the directive is a useful bounded
+  scroll box even without a shell. Gallery `/scroll-region`; 19 specs. (Migrating
+  the data-table / panel bodies onto it is deferred — they already scroll
+  correctly; the win there is registry coordination, not the overflow.)
+
 - **`fold-back-link` — the “← Back” affordance for a detail page.** Three modes,
   picked by which input is set: an in-app `routerLink`, a plain `href`, or — with
   neither — a `<button>` that goes **back in history** (`Location.back()`).

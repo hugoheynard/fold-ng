@@ -1,6 +1,10 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import {
+  FOLD_SCROLL_FROZEN_CLASS,
+  ScrollRegionRegistry,
+} from "../../../a11y/scroll-region-registry.service";
 import { FoldAppShellComponent } from "./app-shell.component";
 
 @Component({
@@ -247,6 +251,20 @@ describe("FoldAppShellComponent", () => {
     fixture.componentRef.setInput("scroll", "stage");
     fixture.detectChanges();
     expect(shell.getAttribute("data-scroll")).toBe("stage");
+  });
+
+  it("registers its content scroll box so an overlay can freeze it", async () => {
+    const fixture = TestBed.createComponent(FoldAppShellComponent);
+    fixture.detectChanges();
+    await fixture.whenStable(); // let afterNextRender register the box
+    const shell = fixture.nativeElement as HTMLElement;
+    const scrollBox = shell.querySelector(".content-scroll") as HTMLElement;
+
+    const registry = TestBed.inject(ScrollRegionRegistry);
+    registry.freeze();
+    expect(scrollBox.classList.contains(FOLD_SCROLL_FROZEN_CLASS)).toBe(true);
+    registry.unfreeze();
+    expect(scrollBox.classList.contains(FOLD_SCROLL_FROZEN_CLASS)).toBe(false);
   });
 
   it("puts the scroll on an inner box, keeping the content frame as the anchor", () => {

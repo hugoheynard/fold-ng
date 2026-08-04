@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 import { FocusTrapDirective } from "../../../a11y/focus-trap.directive";
 import { ScrollLockService } from "../../../a11y/scroll-lock.service";
+import { ScrollRegionRegistry } from "../../../a11y/scroll-region-registry.service";
 import { FoldPanelComponentOutletDirective } from "./panel-component-outlet.directive";
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelHostService } from "./panel-host.service";
@@ -57,6 +58,7 @@ import type {
 export class FoldPanelHostComponent {
   private readonly host = inject(FoldPanelHostService);
   private readonly scrollLock = inject(ScrollLockService);
+  private readonly scrollRegions = inject(ScrollRegionRegistry);
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly document = inject(DOCUMENT);
 
@@ -74,10 +76,15 @@ export class FoldPanelHostComponent {
       const barrier = this.panels().some((p) => p.modal !== false);
       if (barrier && !this.locked) {
         this.scrollLock.lock();
+        // Freeze the shell's own scroll box + every foldScrollRegion too: in a
+        // shell the scroll owner is an inner box, not `body`, so the body lock
+        // alone would leave the page scrolling behind the modal.
+        this.scrollRegions.freeze();
         this.applyBackgroundBarrier();
         this.locked = true;
       } else if (!barrier && this.locked) {
         this.scrollLock.unlock();
+        this.scrollRegions.unfreeze();
         this.removeBackgroundBarrier();
         this.locked = false;
       }
@@ -86,6 +93,7 @@ export class FoldPanelHostComponent {
     inject(DestroyRef).onDestroy(() => {
       if (this.locked) {
         this.scrollLock.unlock();
+        this.scrollRegions.unfreeze();
         this.removeBackgroundBarrier();
         this.locked = false;
       }

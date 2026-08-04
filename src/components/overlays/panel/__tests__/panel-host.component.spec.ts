@@ -1,6 +1,10 @@
 import { Component, type TemplateRef, ViewChild, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
+import {
+  FOLD_SCROLL_FROZEN_CLASS,
+  ScrollRegionRegistry,
+} from "../../../../a11y/scroll-region-registry.service";
 import { FoldPanelHostComponent } from "../panel-host.component";
 import { FoldPanelHostService } from "../panel-host.service";
 import type {
@@ -261,6 +265,35 @@ describe("FoldPanelHostComponent", () => {
     const { fixture } = render();
     fixture.detectChanges();
     expect(document.body.style.overflow).not.toBe("hidden");
+  });
+
+  it("freezes the registered scroll regions for a modal panel and thaws them on close", () => {
+    // The scroll owner in a shell is an inner box, not `body`, so the host must
+    // freeze the region registry too — otherwise the page scrolls behind the modal.
+    const registry = TestBed.inject(ScrollRegionRegistry);
+    const region = document.createElement("div");
+    registry.register(region);
+
+    present("A", "right");
+    const { fixture } = render();
+    expect(region.classList.contains(FOLD_SCROLL_FROZEN_CLASS)).toBe(true);
+
+    host.dismissAll();
+    fixture.detectChanges();
+    expect(region.classList.contains(FOLD_SCROLL_FROZEN_CLASS)).toBe(false);
+    registry.unregister(region);
+  });
+
+  it("does NOT freeze scroll regions for a non-modal panel", () => {
+    const registry = TestBed.inject(ScrollRegionRegistry);
+    const region = document.createElement("div");
+    registry.register(region);
+
+    present("A", "right", () => undefined, { modal: false });
+    const { fixture } = render();
+    fixture.detectChanges();
+    expect(region.classList.contains(FOLD_SCROLL_FROZEN_CLASS)).toBe(false);
+    registry.unregister(region);
   });
 
   it("adds the pass-through modifier to a non-modal dock only", () => {

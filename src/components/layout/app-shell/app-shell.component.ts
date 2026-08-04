@@ -1,15 +1,20 @@
 import { DOCUMENT, NgTemplateOutlet } from "@angular/common";
 import {
   Component,
+  DestroyRef,
+  ElementRef,
   HostListener,
+  afterNextRender,
   computed,
   effect,
   inject,
   input,
   model,
+  viewChild,
 } from "@angular/core";
 import { FocusTrapDirective } from "../../../a11y/focus-trap.directive";
 import { FoldIdService } from "../../../a11y/id.service";
+import { ScrollRegionRegistry } from "../../../a11y/scroll-region-registry.service";
 import { observeElementWidth } from "../../../dom/observe-element-width";
 import { FoldSurfaceDirective } from "../../../directives/surface.directive";
 
@@ -249,6 +254,13 @@ export class FoldAppShellComponent {
   /** The shell's own width, kept live by a shared `ResizeObserver` primitive. */
   private readonly width = observeElementWidth();
 
+  /** The registry of live scroll regions. The shell registers its own content
+   *  scroll box so an overlay (the panel host) can freeze it — the scroll owner
+   *  here is this inner box, not `document.body`. */
+  private readonly scrollRegions = inject(ScrollRegionRegistry);
+  /** The inner content scroll box (`scroll` mode) / stage (`stage` mode). */
+  private readonly scrollBox = viewChild<ElementRef<HTMLElement>>("scrollBox");
+
   /** Whether the shell is narrow enough to collapse — tracked from its **own**
    *  width, not the viewport, so the drawer engages in step with the CSS
    *  collapse whether that fires on `@media` (the shell fills the viewport) or
@@ -273,6 +285,22 @@ export class FoldAppShellComponent {
     effect(() => {
       if (!this.isNarrow() && this.mobileNavOpen()) {
         this.mobileNavOpen.set(false);
+      }
+    });
+
+    // Register the content scroll box so overlays can freeze it. Client-only
+    // (afterNextRender) — SSR has no live scroll to coordinate, and the view
+    // child is resolved by then.
+    afterNextRender(() => {
+      const box = this.scrollBox()?.nativeElement;
+      if (box) {
+        this.scrollRegions.register(box);
+      }
+    });
+    inject(DestroyRef).onDestroy(() => {
+      const box = this.scrollBox()?.nativeElement;
+      if (box) {
+        this.scrollRegions.unregister(box);
       }
     });
   }

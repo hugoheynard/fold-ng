@@ -53,6 +53,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "page-section", label: "page-section" },
       { id: "hero-section", label: "hero-section" },
       { id: "sticky-column", label: "sticky-column" },
+      { id: "scroll-region", label: "scroll-region" },
       { id: "aside-layout", label: "aside-layout" },
       { id: "tab-layout", label: "nav-layout" },
     ],

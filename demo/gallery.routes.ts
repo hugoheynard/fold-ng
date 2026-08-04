@@ -15,6 +15,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   lab: () => import("./pages/lab/lab.page"),
   "hero-card": () => import("./pages/hero-card/hero-card.page"),
   "sticky-column": () => import("./pages/sticky-column/sticky-column.page"),
+  "scroll-region": () => import("./pages/scroll-region/scroll-region.page"),
   "aside-layout": () => import("./pages/aside-layout/aside-layout.page"),
   "tab-layout": () => import("./pages/tab-layout/tab-layout.page"),
   "page-layout": () => import("./pages/page-layout/page-layout.page"),

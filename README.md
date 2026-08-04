@@ -442,7 +442,11 @@ an inset, rounded, shadowed card — the per-surface "floating" mechanism, drive
 by `--fold-surface-inset`/`-radius`/`-shadow`), **`foldStickyColumn`** (turn an
 `<aside>` into a sticky side column — `sticky="top·center·bottom"` + `stickyOffset`,
 the rest tunable via `--fold-sticky-column-*`; un-stick with
-`--fold-sticky-column-position: static` at the page's stacking breakpoint), and
+`--fold-sticky-column-position: static` at the page's stacking breakpoint),
+**`foldScrollRegion`** (turn any element into a bounded, coordinated scroll box —
+`overflow` + `min-*: 0` + `overscroll-behavior` + the house scrollbar, on a
+`block`·`inline`·`both` axis; the one opt-in of the shell scroll system, it
+registers with the shell so an overlay freezes it while a modal is open), and
 **`foldRepeatPress`** (press-and-hold auto-repeat for a stepper button — fires
 once on press then on a tunable cadence while held, and stops the instant
 `foldRepeatPressDisabled` goes true mid-hold).

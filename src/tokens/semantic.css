@@ -308,6 +308,17 @@
   box-shadow: var(--fold-surface-shadow, var(--fold-shadow-md));
 }
 
+/* ── Frozen scroll region ─────────────────────────────────────
+   Toggled by the ScrollRegionRegistry to freeze a scroll region (the shell's
+   content box, a `[foldScrollRegion]`) while a modal overlay is open — the
+   scroll owner in a shell is an inner box, not `body`, so a body scroll-lock
+   alone leaves the page scrolling behind the modal. A class with `!important`,
+   not an inline write, so it never clobbers the region's own overflow (inline
+   binding or stylesheet), which returns the instant the class is removed. */
+.fold-scroll-frozen {
+  overflow: hidden !important;
+}
+
 /* ── Override theme: LUMEN (light) ────────────────────────── */
 [data-theme="lumen"] {
   /* Surfaces */

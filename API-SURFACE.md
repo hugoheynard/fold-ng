@@ -640,6 +640,9 @@
 - period: InputSignal<number>
 - repeat: OutputEmitterRef<void>
 
+#### FoldScrollRegionDirective
+- foldScrollRegion: InputSignalWithTransform<FoldScrollAxis, "" | FoldScrollAxis>
+
 #### FoldSearchComponent
 - delayMs: InputSignal<number>
 - placeholder: InputSignal<string>
@@ -787,6 +790,9 @@
 - options: InputSignal<readonly FoldViewToggleOption[]> — required
 - size: InputSignal<"sm" | "md">
 - value: ModelSignal<string> — required
+
+#### ScrollRegionRegistry
+- (no input·model·output bindings)
 
 ### Types & values
 
@@ -948,6 +954,7 @@
 - FoldRect (interface)
 - foldRegexRule (function)
 - foldResolvePalette (function)
+- FoldScrollAxis (type)
 - FoldSelectItem (type)
 - FoldSelectOption (interface)
 - FoldSelectOptionGroup (interface)

@@ -214,6 +214,9 @@ export { observeElementWidth } from "./dom/observe-element-width";
 export { FoldSurfaceDirective } from "./directives/surface.directive";
 export type { FoldSurfaceName } from "./directives/surface.directive";
 export { FoldElevatedDirective } from "./directives/elevated.directive";
+export { FoldScrollRegionDirective } from "./directives/scroll-region.directive";
+export type { FoldScrollAxis } from "./directives/scroll-region.directive";
+export { ScrollRegionRegistry } from "./a11y/scroll-region-registry.service";
 export { FoldInputComponent } from "./components/forms/input/input.component";
 export {
   FoldNumberInputComponent,

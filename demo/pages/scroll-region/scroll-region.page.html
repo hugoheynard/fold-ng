@@ -1,0 +1,48 @@
+<fold-page-layout title="scroll-region">
+  <gal-kind-badge titleBadge kind="directive" />
+  <p description>
+    The one opt-in of the shell scroll system. With
+    <code>fold-app-shell</code> owning the page scroll, a layout that needs an
+    independently-scrolling area — a split list/detail, a data-table body, a
+    sticky sidebar — marks it with <code>[foldScrollRegion]</code> instead of
+    hand-rolling <code>overflow</code>. It sets the three foot-guns
+    (<code>overflow</code>, <code>min-*: 0</code>,
+    <code>overscroll-behavior: contain</code>) and the thin house scrollbar, and
+    <strong>registers with the shell</strong> so a modal overlay freezes it too
+    (the scroll owner is an inner box, not <code>body</code>). Axis:
+    <code>block</code> (default), <code>inline</code>, <code>both</code>.
+  </p>
+
+  <dev-playground [code]="code()" lang="html">
+    <div class="np-field" params>
+      <span class="gal-tag">axis</span>
+      <div class="ss-seg">
+        @for (a of axes; track a) {
+        <button
+          type="button"
+          [class.is-on]="axis() === a"
+          (click)="axis.set(a)"
+        >
+          {{ a }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="sr-demo">
+      <div class="sr-region" [foldScrollRegion]="axis()">
+        <div class="sr-inner" [class.sr-inner--wide]="axis() !== 'block'">
+          @for (i of rows; track i) {
+          <div class="sr-row">Row {{ i }} — scrolls inside its own box</div>
+          }
+        </div>
+      </div>
+    </div>
+  </dev-playground>
+
+  <div class="sr-note">
+    The frame around it never gave the region an <code>overflow</code> — the
+    directive owns that. In a <code>stage</code> shell, two such regions side by
+    side make a mail-style split view where the viewport never moves.
+  </div>
+</fold-page-layout>

@@ -1,6 +1,6 @@
 # The scroll system (design note)
 
-> Status: **Slice A shipped (2026-08-04); B + C pending.** Decides the model
+> Status: **Slices A + B shipped (2026-08-04); C pending.** Decides the model
 > before any code. Target: once an app uses `fold-app-shell`, **nobody writes
 > `overflow` again** — not the page, not a split view, not a sticky sidebar, not a
 > data-table body. Scroll is owned in one place and every nested scroll region is
@@ -146,9 +146,16 @@ auto }`) pushes a short page's `footerBehavior="scroll"` footer to the bottom,
    replacing the old `margin-top:auto` glue. **Deletes the LFC `!important`.**
    Breaking for pages that relied on the page owning scroll in a clip shell → they
    set `scroll="own"` or the shell to `stage`.
-2. **Slice B — `foldScrollRegion` + the shell registry.** The opt-in directive and
-   the registration/scroll-lock coordination. Migrate the data-table body + panel
-   body onto it.
+2. **Slice B — `foldScrollRegion` + the shell registry. ✅ Shipped 2026-08-04.**
+   The opt-in directive (`block`·`inline`·`both` axis) and the
+   `ScrollRegionRegistry` it registers with; the shell feeds its own content
+   scroll box in, and the panel host freezes the registry on a modal open so the
+   page stops scrolling behind the overlay even though the scroll owner is an
+   inner box, not `body`. Freezing toggles a `.fold-scroll-frozen` class
+   (`overflow: hidden !important`, in `tokens.css`), never an inline write, so a
+   region's own overflow is never clobbered. Migrating the data-table / panel
+   bodies onto it is deferred — they already scroll correctly, so the only win is
+   the registry coordination, not the overflow.
 3. **Slice C — scrollbar tokens + scroll-anchoring.** Fold the two Explore items in;
    apply to the shell content + every `foldScrollRegion`.
 
