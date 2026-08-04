@@ -54,7 +54,14 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         to the options at **compile time** (no projection seam), rich rows via a
         projected `<ng-template #option let-o>`. Both APIs share one option core;
         dev-warns if both are given (array wins).
-  - [ ] **Option groups** (`fold-optgroup`, `role="group"` + label + skip in nav).
+  - [x] **Option groups** (`fold-optgroup`, `role="group"` + label + skip in nav).
+        ✅ Done (2026-08-04) — a presentational `<fold-optgroup label>` around
+        `<fold-option>`s; the owner discovers grouped options via a
+        `descendants: true` content query (document order = roving order), header is
+        `role="group"` + `aria-labelledby`, no `role="option"` so nav skips it.
+        Works in `fold-listbox` **and** `fold-multiselect`. Gallery `/listbox`
+        “grouped” tab; 4 specs. **Follow-up:** a grouped `[options]` array variant
+        (`FoldSelectOptionGroup<T>` in the data API) — projected only for now.
   - [ ] **Filter / combobox variant** — a typed input that filters the list
         (`role="combobox"` textbox, live `aria-activedescendant`, no-match state).
   - [ ] **Multiselect clear-all / select-all** — bulk affordances (the current

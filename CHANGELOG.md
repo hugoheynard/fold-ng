@@ -8,6 +8,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-optgroup` — labelled option groups for the styleable selects.** The
+  counterpart to the native `<optgroup>`: wrap `<fold-option>`s in
+  `<fold-optgroup label="…">` to sort a long list into sections. Purely
+  presentational — the owning `fold-listbox` / `fold-multiselect` now discovers
+  options with a `descendants: true` query, so grouped options join the same
+  flat, document-ordered list the roving keyboard core walks; the header carries
+  `role="group"` + `aria-labelledby` (no `role="option"`), so nav skips straight
+  over it. Gallery `/listbox` “grouped” tab; specs cover discovery, cross-group
+  roving and selection. (Projected only for now; a grouped `[options]` array
+  variant is a follow-up.)
+
 - **The icon devtool browses by category.** `FoldIconDevtoolComponent` now
   groups the live registry into **collapsible sections** — UI · Navigation ·
   Commerce · Music · Status · People · Brands (+ a **Custom** bucket for

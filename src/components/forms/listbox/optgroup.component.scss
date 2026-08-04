@@ -1,0 +1,32 @@
+// A group of options inside the listbox. The host is a plain block; only the
+// header carries visual weight. Options keep their own padding, so the group
+// adds none — it just stacks its label above the projected rows.
+:host {
+  display: block;
+}
+
+// The group heading: quiet, uppercase, non-interactive. A hairline above it
+// separates one group from the previous (dropped on the first via :first-child
+// on the host inside the list).
+.og-label {
+  display: block;
+  padding: 0.4rem 0.7rem 0.2rem;
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fold-color-text-muted);
+  user-select: none;
+}
+
+// Separate adjacent groups with a hairline above the heading (not the first).
+:host + :host .og-label {
+  border-top: 1px solid var(--fold-color-border-subtle);
+  margin-top: 0.25rem;
+}
+
+@media (forced-colors: active) {
+  :host + :host .og-label {
+    border-top-color: CanvasText;
+  }
+}

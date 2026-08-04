@@ -7,6 +7,7 @@ import { SelectSchemaComponent } from "./select-schema.component";
 import {
   FoldListboxComponent,
   FoldMultiselectComponent,
+  FoldOptgroupComponent,
   FoldOptionComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
@@ -41,6 +42,7 @@ interface Currency {
     FoldTabPanelComponent,
     FoldListboxComponent,
     FoldMultiselectComponent,
+    FoldOptgroupComponent,
     FoldOptionComponent,
     FoldSelectComponent,
   ],
@@ -52,10 +54,24 @@ export default class ListboxPage {
   protected readonly tab = signal("listbox");
   protected readonly tabs: FoldTabItem[] = [
     { key: "listbox", label: "listbox", icon: "list" },
+    { key: "grouped", label: "grouped", icon: "layers" },
     { key: "multi", label: "multiselect", icon: "check-circle" },
     { key: "select", label: "select · native", icon: "chevron-down" },
     { key: "typed", label: "typed value", icon: "code" },
   ];
+
+  /** Grouped options — projected `<fold-optgroup>` around `<fold-option>`s. */
+  protected readonly cityValue = signal<string | null>(null);
+  protected readonly groupedCode = `<fold-listbox label="Ville" [(value)]="city">
+  <fold-optgroup label="France">
+    <fold-option value="paris">Paris</fold-option>
+    <fold-option value="lyon">Lyon</fold-option>
+  </fold-optgroup>
+  <fold-optgroup label="Italia">
+    <fold-option value="roma">Roma</fold-option>
+    <fold-option value="milano">Milano</fold-option>
+  </fold-optgroup>
+</fold-listbox>`;
 
   /** Data-driven number options — the `[options]` array API (value = number). */
   protected readonly plans: readonly FoldSelectOption<number>[] = [

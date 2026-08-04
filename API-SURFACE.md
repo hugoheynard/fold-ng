@@ -500,6 +500,9 @@
 - value: ModelSignal<number | null>
 - variant: InputSignal<"default" | "panel">
 
+#### FoldOptgroupComponent
+- label: InputSignal<string> — required
+
 #### FoldOptionComponent
 - disabled: InputSignalWithTransform<boolean, unknown>
 - value: InputSignal<T> — required

@@ -99,6 +99,53 @@
         </fold-page-section>
       </fold-tab-panel>
 
+      <!-- ── grouped ─────────────────────────────────────────────── -->
+      <fold-tab-panel [tabs]="t" key="grouped">
+        <p class="sel-lede">
+          Sort a long list into labelled sections with
+          <code>&lt;fold-optgroup&gt;</code> — the styleable
+          <code>&lt;optgroup&gt;</code>. The header is non-selectable
+          (<code>role="group"</code>, <code>aria-labelledby</code>) and the
+          keyboard <strong>roves straight across group boundaries</strong> in
+          document order, so grouping changes the layout, never the nav model.
+        </p>
+
+        <dev-playground [code]="groupedCode" [responsive]="false">
+          <div params>
+            <ng-container [ngTemplateOutlet]="knobs" />
+          </div>
+          <fold-listbox
+            label="Ville"
+            placeholder="Choisir une ville…"
+            [size]="size()"
+            [variant]="variant()"
+            [allowClear]="true"
+            [(value)]="cityValue"
+          >
+            <fold-optgroup label="France">
+              <fold-option value="paris">Paris</fold-option>
+              <fold-option value="lyon">Lyon</fold-option>
+              <fold-option value="marseille">Marseille</fold-option>
+            </fold-optgroup>
+            <fold-optgroup label="Italia">
+              <fold-option value="roma">Roma</fold-option>
+              <fold-option value="milano">Milano</fold-option>
+            </fold-optgroup>
+          </fold-listbox>
+        </dev-playground>
+
+        <fold-page-section title="Tech — how it works" icon="code">
+          <p class="sel-prose">
+            <code>fold-optgroup</code> is purely presentational — it renders the
+            heading and projects its rows. The owning listbox discovers grouped
+            options with a <code>descendants: true</code> content query, so they
+            join the same flat, document-ordered list the roving core walks; the
+            group header carries no <code>role="option"</code>, so keyboard nav
+            skips it. Works the same inside <code>fold-multiselect</code>.
+          </p>
+        </fold-page-section>
+      </fold-tab-panel>
+
       <!-- ── multiselect ─────────────────────────────────────────── -->
       <fold-tab-panel [tabs]="t" key="multi">
         <p class="sel-lede">

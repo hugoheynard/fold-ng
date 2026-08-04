@@ -24,7 +24,7 @@ with a `@selector` and an `@example`.
 ## Components
 
 - Actions: `[foldButton]` (on a real `<button>`/`<a>`; `emphasis` × `intent` axes; `loading`), `fold-button-icon` (momentary), `fold-toggle-icon` (toggle), `fold-link`.
-- Forms: `fold-input` (text), `fold-number-input`, `fold-textarea` (multiline, no resize), `fold-date` (date·datetime-local·month·week) / `fold-time`, `fold-select` (native) / `fold-listbox` (custom rows) / `fold-multiselect`, `fold-checkbox`, `fold-password-field`, `fold-search`, `fold-slider` / `fold-range-slider`, `fold-file-dropzone` (Angular Signal Forms — no `ngModel`/`ReactiveFormsModule`).
+- Forms: `fold-input` (text), `fold-number-input`, `fold-textarea` (multiline, no resize), `fold-date` (date·datetime-local·month·week) / `fold-time`, `fold-select` (native) / `fold-listbox` (custom rows) / `fold-multiselect` (+ `fold-optgroup` for labelled groups), `fold-checkbox`, `fold-password-field`, `fold-search`, `fold-slider` / `fold-range-slider`, `fold-file-dropzone` (Angular Signal Forms — no `ngModel`/`ReactiveFormsModule`).
 - Overlays: `fold-panel-host` / `fold-panel-header` (modal side panels with accessible name, `inert` background barrier, focus trap, scroll-lock; imperative `open<TData,TResult>()` → typed `FoldPanelRef`).
 - Navigation: `fold-menu`, `fold-nav-launcher`, `fold-view-nav` (tab-styled nav bar; items with a `link` render real `<a routerLink>` with `aria-current` + auto active state, else buttons; `direction="auto"`, `collapsed` icon rail), `fold-tabs` + `fold-tab-panel` (the in-page ARIA Tabs widget — `role="tablist"`, roving arrow keys).
 - Layout: `fold-app-shell`, `fold-page-layout`, `fold-aside-layout`, `fold-nav-layout` (places a nav/tabs bar + content, folds side↔top), `fold-hero-section`.

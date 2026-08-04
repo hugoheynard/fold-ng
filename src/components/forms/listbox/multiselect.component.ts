@@ -123,8 +123,12 @@ export class FoldMultiselectComponent<T>
   /** Rich per-row template for the `[options]` array API (`<ng-template #option>`). */
   protected readonly optionTemplate =
     contentChild<TemplateRef<{ $implicit: FoldSelectOption<T> }>>("option");
-  private readonly projectedOptions =
-    contentChildren<FoldOptionComponent<T>>(FoldOptionComponent);
+  // `descendants: true` so options nested inside a `<fold-optgroup>` are found,
+  // not only direct children — returned in document order, keeping roving order.
+  private readonly projectedOptions = contentChildren<FoldOptionComponent<T>>(
+    FoldOptionComponent,
+    { descendants: true },
+  );
   private readonly renderedOptions =
     viewChildren<FoldOptionComponent<T>>(FoldOptionComponent);
   /** The live option instances, from whichever API is in use. */
