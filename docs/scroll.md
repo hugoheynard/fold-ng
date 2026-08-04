@@ -148,23 +148,22 @@ Ship in order; each is independently useful.
 3. **Slice C — scrollbar tokens + scroll-anchoring.** Fold the two Explore items in;
    apply to the shell content + every `foldScrollRegion`.
 
-## Decisions to lock (before Slice A)
+## Decisions (locked 2026-08-04)
 
-1. **Default flips to shell-owns-scroll.** Today `contentScroll` defaults to
-   `clip` (page owns). The new default is `scroll` (shell owns) + page `flow`. This
-   is the crux of the vision, and it is a **breaking default** for existing shells.
-   Confirm we take the break (with a clear migration) rather than keep `clip` as the
-   default and make the new behaviour opt-in.
-2. **Naming.** `scroll`/`stage` on the shell + `flow`/`own` on the page — vs.
-   keeping `contentScroll="auto"|"clip"`. Lock the vocabulary before it ships in the
-   public API.
-3. **`foldScrollRegion`: directive vs component** (`fold-scroll-area`). Lean
-   directive (no wrapper element, composes on the consumer's own node), matching
-   `foldStickyColumn`/`foldSurface`.
-4. **Registry scope.** Does a `foldScrollRegion` require an ancestor
-   `fold-app-shell` (inject-or-throw), or degrade to a plain bounded scroll box when
-   there's no shell (inject-optional)? Lean **optional** — the directive is useful
-   standalone; shell coordination is a bonus when present.
+1. **Default flips to shell-owns-scroll — we take the break.** The new default is
+   `scroll` (shell owns) + page `flow`, not the old `clip` (page owns). This is the
+   crux of the vision (never manage scroll again) and worth a one-time breaking
+   default. Migration: a shell/page that relied on the page owning scroll sets
+   `scroll="own"` on the page, or `stage` on the shell. SH3PHERD + LaFolieDouce
+   migrate in the adoption pass.
+2. **Naming: `scroll`/`stage` (shell) + `flow`/`own` (page).** Named for _who owns
+   the scroll_, replacing `contentScroll="auto"|"clip"`. (`contentScroll` is
+   renamed → `scroll`; document the rename in the CHANGELOG as breaking.)
+3. **`foldScrollRegion` is a directive** (no wrapper element; composes on the
+   consumer's own node), matching `foldStickyColumn` / `foldSurface`.
+4. **Registry scope is optional (inject-optional).** The directive is a useful
+   bounded scroll box on its own; shell coordination (scroll-lock, anchoring) is a
+   bonus applied only when an ancestor `fold-app-shell` is present.
 
 ## Non-goals
 
