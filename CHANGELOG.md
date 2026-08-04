@@ -6,6 +6,18 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **`FoldPanelHostService.open()` accepts an optional-data panel without a manual
+  type widen.** A panel whose `data` input is optional (`data = input<T>()` →
+  `InputSignal<T | undefined>`) used to force `open<T | undefined, R>()` to dodge
+  a `TS2345` (hit by the LaFolieDouce B2B PickupPanel). `FoldPanelContent<T>.data`
+  is now typed as the covariant **read** side (`Signal<T | undefined>`) instead of
+  the invariant `InputSignal<T>`, so both a required (`input.required<T>()`) and an
+  optional data input satisfy the contract — `open(Cmp, { data })` infers `T` from
+  the value with no widen, and the data value stays type-checked. Non-breaking for
+  existing panels (an `InputSignal<T>` still assigns to the contract).
+
 ### Added
 
 - **`fold-optgroup` — labelled option groups for the styleable selects.** The

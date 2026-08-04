@@ -171,12 +171,16 @@ leave-balance-display, configurable-tab-bar, etc.
     Its own commit + responsive specs — kept out of the 2026-07-29 panel lot to
     keep that lot clean. This is the 9.5 → 10 lever for the panel system.
 
-- [ ] **`open()` overload for optional/no data** (consumer-friction Round 4 #5). A
-      panel whose data is optional (`data?: InputSignal<TData>`) forces the caller
-      to spell `open<TData | undefined, R>()` to dodge `TS2345` (hit by the B2B
-      PickupPanel). Add a no-data `open(Cmp)` overload — or a `TData = void` default
-      flowing to `FoldPanelContent` — so the common case infers without the manual
-      widen. Cheap, purely type-level.
+- [x] **`open()` overload for optional/no data** (consumer-friction Round 4 #5).
+      ✅ Done (2026-08-04) — the fix was on the **contract**, not a new overload:
+      `FoldPanelContent<T>.data` is now the covariant read side
+      (`Signal<T | undefined>`), not the invariant `InputSignal<T>`. So an optional
+      data input (`data = input<T>()` → `InputSignal<T | undefined>`) satisfies
+      `FoldPanelContent<T>` just like a required one, and `open(Cmp, { data })`
+      infers `T` from the value with no `<T | undefined>` widen (the data-less
+      overload already existed). Data value stays type-checked; non-breaking.
+      Type-contract spec grew the optional-data + negative cases; `/panel` gallery
+      “Typed data” section.
 
 - [ ] **Better `/panel` gallery demo.** The dedicated page landed (2026-07-29:
       bounded stage, 5+ triggers, background click-counter, cascade docs), but the

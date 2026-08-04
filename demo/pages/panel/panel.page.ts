@@ -70,6 +70,22 @@ host.open(MyPanel, { surface: 'solid' });
 // The header close button & FoldPanelRef.close() still work.
 host.open(MyPanel, { disableClose: true });`;
 
+  protected readonly dataCode = `// A required data input — data must be passed.
+export class UserPanel implements FoldPanelContent<User> {
+  readonly data = input.required<User>();
+}
+host.open(UserPanel, { data: user });   // T inferred from the value
+
+// An OPTIONAL data input — same call, no manual <T | undefined> widen…
+export class NotePanel implements FoldPanelContent<Note> {
+  readonly data = input<Note>();        // InputSignal<Note | undefined>
+}
+host.open(NotePanel, { data: note });   // ✓ infers Note from the value
+host.open(NotePanel);                    // ✓ …and can open data-less too
+
+// The data VALUE is still type-checked — a wrong shape is rejected:
+host.open(UserPanel, { data: 42 });     // ✗ compile error`;
+
   protected readonly cascadeCode = `// 1 · app identity — set once at bootstrap (lowest priority)
 providers: [provideFoldPanelDefaults({ surface: 'solid' })];
 

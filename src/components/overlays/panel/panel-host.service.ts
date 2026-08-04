@@ -58,7 +58,10 @@ export class FoldPanelHostService {
   readonly panels = this._panels.asReadonly();
 
   // Data-carrying panel: `config.data` is type-checked against the component's
-  // `data` input.
+  // `data` input. `FoldPanelContent`'s `data` is the covariant read side
+  // (`Signal<TData | undefined>`), so a panel whose data input is **optional**
+  // (`data = input<T>()`) is accepted without forcing the caller to spell
+  // `open<T | undefined, R>()`; `config.data` still has to be a present `TData`.
   open<TData, TResult = unknown>(
     component: Type<FoldPanelContent<TData>>,
     config: FoldPanelConfig<TData> & { data: TData },

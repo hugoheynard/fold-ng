@@ -1,5 +1,4 @@
 import type {
-  InputSignal,
   Injector,
   Provider,
   Signal,
@@ -134,9 +133,15 @@ export type FoldPanelDescriptor =
 /**
  * A component opened imperatively. Data-carrying panels declare a typed `data`
  * input; data-less panels (e.g. a help panel) simply omit it.
+ *
+ * `data` is typed as the **read** side (`Signal`), covariant, not the invariant
+ * `InputSignal` — so a panel whose data input is *optional* (`data = input<T>()`
+ * → `InputSignal<T | undefined>`) satisfies `FoldPanelContent<T>` just as a
+ * required one (`input.required<T>()`) does. That's what lets `open(Cmp, { data })`
+ * infer `T` from the value without the caller widening to `<T | undefined>`.
  */
 export interface FoldPanelContent<TData> {
-  readonly data?: InputSignal<TData>;
+  readonly data?: Signal<TData | undefined>;
 }
 
 /** Options for `FoldPanelHostService.open()`. */
