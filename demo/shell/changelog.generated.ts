@@ -37,9 +37,1302 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     version: "Unreleased",
     date: null,
     unreleased: true,
-    counts: {},
+    counts: {
+      Changed: 1,
+      Added: 10,
+    },
     breaking: 0,
-    groups: [],
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "FoldPanelHostService.open()",
+              },
+              {
+                kind: "text",
+                value:
+                  " accepts an optional-data panel without a manual type widen.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A panel whose ",
+              },
+              {
+                kind: "code",
+                value: "data",
+              },
+              {
+                kind: "text",
+                value: " input is optional (",
+              },
+              {
+                kind: "code",
+                value: "data = input<T>()",
+              },
+              {
+                kind: "text",
+                value: " → ",
+              },
+              {
+                kind: "code",
+                value: "InputSignal<T | undefined>",
+              },
+              {
+                kind: "text",
+                value: ") used to force ",
+              },
+              {
+                kind: "code",
+                value: "open<T | undefined, R>()",
+              },
+              {
+                kind: "text",
+                value: " to dodge a ",
+              },
+              {
+                kind: "code",
+                value: "TS2345",
+              },
+              {
+                kind: "text",
+                value: " (hit by the LaFolieDouce B2B PickupPanel). ",
+              },
+              {
+                kind: "code",
+                value: "FoldPanelContent<T>.data",
+              },
+              {
+                kind: "text",
+                value: " is now typed as the covariant ",
+              },
+              {
+                kind: "strong",
+                value: "read",
+              },
+              {
+                kind: "text",
+                value: " side (",
+              },
+              {
+                kind: "code",
+                value: "Signal<T | undefined>",
+              },
+              {
+                kind: "text",
+                value: ") instead of the invariant ",
+              },
+              {
+                kind: "code",
+                value: "InputSignal<T>",
+              },
+              {
+                kind: "text",
+                value: ", so both a required (",
+              },
+              {
+                kind: "code",
+                value: "input.required<T>()",
+              },
+              {
+                kind: "text",
+                value: ") and an optional data input satisfy the contract — ",
+              },
+              {
+                kind: "code",
+                value: "open(Cmp, { data })",
+              },
+              {
+                kind: "text",
+                value: " infers ",
+              },
+              {
+                kind: "code",
+                value: "T",
+              },
+              {
+                kind: "text",
+                value:
+                  " from the value with no widen, and the data value stays type-checked. Non-breaking for existing panels (an ",
+              },
+              {
+                kind: "code",
+                value: "InputSignal<T>",
+              },
+              {
+                kind: "text",
+                value: " still assigns to the contract).",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: " bulk actions — ",
+              },
+              {
+                kind: "code",
+                value: "allowSelectAll",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "allowClear",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A sticky bar at the top of the panel offers ",
+              },
+              {
+                kind: "strong",
+                value: "Select all",
+              },
+              {
+                kind: "text",
+                value:
+                  " (adds every enabled option, skipping disabled rows and preserving an already-picked disabled one) and ",
+              },
+              {
+                kind: "strong",
+                value: "Clear",
+              },
+              {
+                kind: "text",
+                value:
+                  " (empties the set). Each button is gated — select-all disables once everything enabled is picked, clear disables while empty. Labels are overridable (",
+              },
+              {
+                kind: "code",
+                value: "selectAllLabel",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "clearLabel",
+              },
+              {
+                kind: "text",
+                value: "). The panel is now a wrapper around the ",
+              },
+              {
+                kind: "code",
+                value: 'role="listbox"',
+              },
+              {
+                kind: "text",
+                value:
+                  " (the bar sits outside it, so it stays valid ARIA). Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/listbox",
+              },
+              {
+                kind: "text",
+                value: " multiselect tab enables both; 5 specs.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-optgroup",
+              },
+              {
+                kind: "text",
+                value: " — labelled option groups for the styleable selects.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The counterpart to the native ",
+              },
+              {
+                kind: "code",
+                value: "<optgroup>",
+              },
+              {
+                kind: "text",
+                value: ": wrap ",
+              },
+              {
+                kind: "code",
+                value: "<fold-option>",
+              },
+              {
+                kind: "text",
+                value: "s in ",
+              },
+              {
+                kind: "code",
+                value: '<fold-optgroup label="…">',
+              },
+              {
+                kind: "text",
+                value:
+                  " to sort a long list into sections. Purely presentational — the owning ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: " now discovers options with a ",
+              },
+              {
+                kind: "code",
+                value: "descendants: true",
+              },
+              {
+                kind: "text",
+                value:
+                  " query, so grouped options join the same flat, document-ordered list the roving keyboard core walks; the header carries ",
+              },
+              {
+                kind: "code",
+                value: 'role="group"',
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "aria-labelledby",
+              },
+              {
+                kind: "text",
+                value: " (no ",
+              },
+              {
+                kind: "code",
+                value: 'role="option"',
+              },
+              {
+                kind: "text",
+                value:
+                  "), so nav skips straight over it. Also supported in the data-driven ",
+              },
+              {
+                kind: "strong",
+                value: "`[options]` array API",
+              },
+              {
+                kind: "text",
+                value: ": an entry is a ",
+              },
+              {
+                kind: "code",
+                value: "FoldSelectOption<T>",
+              },
+              {
+                kind: "text",
+                value: " or a labelled ",
+              },
+              {
+                kind: "code",
+                value: "FoldSelectOptionGroup<T>",
+              },
+              {
+                kind: "text",
+                value: " (mix both), narrowed by the exported ",
+              },
+              {
+                kind: "code",
+                value: "isFoldSelectOptionGroup",
+              },
+              {
+                kind: "text",
+                value: " guard. Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/listbox",
+              },
+              {
+                kind: "text",
+                value:
+                  " “grouped” tab shows both forms; specs cover projected + array discovery, cross-group roving and selection.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "The icon devtool browses by category.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "FoldIconDevtoolComponent",
+              },
+              {
+                kind: "text",
+                value: " now groups the live registry into ",
+              },
+              {
+                kind: "strong",
+                value: "collapsible sections",
+              },
+              {
+                kind: "text",
+                value:
+                  " — UI · Navigation · Commerce · Music · Status · People · Brands (+ a ",
+              },
+              {
+                kind: "strong",
+                value: "Custom",
+              },
+              {
+                kind: "text",
+                value:
+                  " bucket for host-registered icons) — each with its icon count; a search only surfaces the categories it hits. New public ",
+              },
+              {
+                kind: "code",
+                value: "FOLD_BUILTIN_ICON_CATEGORIES",
+              },
+              {
+                kind: "text",
+                value: " (+ ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconCategoryId",
+              },
+              {
+                kind: "text",
+                value:
+                  ") is the single source of truth for the grouping (each icon file owns its slice).",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-ng/devtools",
+              },
+              {
+                kind: "text",
+                value: " now builds as a real ng-packagr secondary entry",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ", so ",
+              },
+              {
+                kind: "code",
+                value: 'import("fold-ng/devtools")',
+              },
+              {
+                kind: "text",
+                value: " resolves for ",
+              },
+              {
+                kind: "strong",
+                value: "published (npm) consumers",
+              },
+              {
+                kind: "text",
+                value:
+                  ", not only source-consumed ones. It compiles to its own FESM + ",
+              },
+              {
+                kind: "code",
+                value: "d.ts",
+              },
+              {
+                kind: "text",
+                value: " and imports the primary ",
+              },
+              {
+                kind: "code",
+                value: "fold-ng",
+              },
+              {
+                kind: "text",
+                value: " by name; ",
+              },
+              {
+                kind: "code",
+                value: "finalize-dist",
+              },
+              {
+                kind: "text",
+                value: " normalises ng-packagr's flattened ",
+              },
+              {
+                kind: "code",
+                value: "./src/devtools",
+              },
+              {
+                kind: "text",
+                value: " export to the public ",
+              },
+              {
+                kind: "code",
+                value: "./devtools",
+              },
+              {
+                kind: "text",
+                value: " subpath (+ a node10 directory manifest). ",
+              },
+              {
+                kind: "code",
+                value: "attw",
+              },
+              {
+                kind: "text",
+                value: " all-🟢, ",
+              },
+              {
+                kind: "code",
+                value: "publint",
+              },
+              {
+                kind: "text",
+                value:
+                  " clean. The api-surface guard was generalised to snapshot every published entry point (",
+              },
+              {
+                kind: "code",
+                value: ".",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "./devtools",
+              },
+              {
+                kind: "text",
+                value: ").",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-ng/devtools",
+              },
+              {
+                kind: "text",
+                value: " — an opt-in dev-tools entry, starting with ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconDevtoolComponent",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "strong",
+                value: "dev-only",
+              },
+              {
+                kind: "text",
+                value: " floating panel that browses the live ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconRegistry",
+              },
+              {
+                kind: "text",
+                value:
+                  " (built-ins + whatever the host app registered), with a search, a preview grid, and a mini playground that builds a ",
+              },
+              {
+                kind: "code",
+                value: "<fold-icon>",
+              },
+              {
+                kind: "text",
+                value: " snippet and copies it. The panel is ",
+              },
+              {
+                kind: "strong",
+                value: "draggable",
+              },
+              {
+                kind: "text",
+                value: " (grab the header) and ",
+              },
+              {
+                kind: "strong",
+                value: "minimisable",
+              },
+              {
+                kind: "text",
+                value: " (collapses to a pill). Published from a ",
+              },
+              {
+                kind: "strong",
+                value: "separate entry",
+              },
+              {
+                kind: "text",
+                value:
+                  " so it never lands in a bundle that doesn't ask for it — import it behind a dev guard (",
+              },
+              {
+                kind: "code",
+                value: "if (isDevMode())",
+              },
+              {
+                kind: "text",
+                value: " + a dynamic ",
+              },
+              {
+                kind: "code",
+                value: 'import("fold-ng/devtools")',
+              },
+              {
+                kind: "text",
+                value:
+                  ') so production tree-shakes it away. Dogfooded in the gallery (primary-rail "Dev tools" + the ',
+              },
+              {
+                kind: "code",
+                value: "/icons",
+              },
+              {
+                kind: "text",
+                value: " hero CTA).",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "FoldIconRegistry.names()",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— the sorted list of every registered icon name (built-ins + runtime additions), reactive. Powers catalogue tooling (the icon devtool).",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: "commerce",
+              },
+              {
+                kind: "text",
+                value: " icon category — 21 e-commerce glyphs.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The built-in set had no cart, catalogue, payment or fulfilment icons, so a consumer reused ",
+              },
+              {
+                kind: "code",
+                value: "package",
+              },
+              {
+                kind: "text",
+                value: " as a placeholder for both a cart and a delivery tab (",
+              },
+              {
+                kind: "code",
+                value: "docs/consumer-friction.md",
+              },
+              {
+                kind: "text",
+                value: " Round 4 #3). New ",
+              },
+              {
+                kind: "code",
+                value: "COMMERCE_ICONS",
+              },
+              {
+                kind: "text",
+                value: " (the 7th category, wired into ",
+              },
+              {
+                kind: "code",
+                value: "FOLD_BUILTIN_ICONS",
+              },
+              {
+                kind: "text",
+                value: " and the ",
+              },
+              {
+                kind: "code",
+                value: "/icons",
+              },
+              {
+                kind: "text",
+                value: " gallery): ",
+              },
+              {
+                kind: "code",
+                value: "shopping-cart",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "shopping-bag",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "basket",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "package",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "package-check",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "tag",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "tags",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "barcode",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "qr-code",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "gift",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "credit-card",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "wallet",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "receipt",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "coins",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "banknote",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "percent",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "truck",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "store",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "warehouse",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "map-pin",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "package-return",
+              },
+              {
+                kind: "text",
+                value: ". Same self-contained inlined-SVG / ",
+              },
+              {
+                kind: "code",
+                value: "currentColor",
+              },
+              {
+                kind: "text",
+                value: " contract; names autocomplete on ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconName",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-textarea",
+              },
+              {
+                kind: "text",
+                value: " — the multiline sibling of ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Same box chrome (tokens, sizes, ",
+              },
+              {
+                kind: "code",
+                value: "panel",
+              },
+              {
+                kind: "text",
+                value: " variant, focus/disabled) via ",
+              },
+              {
+                kind: "code",
+                value: "input-shell.scss",
+              },
+              {
+                kind: "text",
+                value:
+                  " and the same label / required / hint / error chrome via ",
+              },
+              {
+                kind: "code",
+                value: "fold-input-base",
+              },
+              {
+                kind: "text",
+                value: " — so a note field is no longer a hand-rolled native ",
+              },
+              {
+                kind: "code",
+                value: "<textarea>",
+              },
+              {
+                kind: "text",
+                value: " + copied box CSS. ",
+              },
+              {
+                kind: "strong",
+                value: "No resize handle by design",
+              },
+              {
+                kind: "text",
+                value: ": the box keeps its ",
+              },
+              {
+                kind: "code",
+                value: "rows",
+              },
+              {
+                kind: "text",
+                value: " height and ",
+              },
+              {
+                kind: "strong",
+                value: "wraps + scrolls",
+              },
+              {
+                kind: "text",
+                value: " overflow (",
+              },
+              {
+                kind: "code",
+                value: "resize: none; overflow-y: auto",
+              },
+              {
+                kind: "text",
+                value:
+                  "), so a user-dragged corner can't break a panel layout. ",
+              },
+              {
+                kind: "code",
+                value: "FormValueControl<string>",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "[formField]",
+              },
+              {
+                kind: "text",
+                value: " or ",
+              },
+              {
+                kind: "code",
+                value: "[(value)]",
+              },
+              {
+                kind: "text",
+                value: ").",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-date",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "fold-time",
+              },
+              {
+                kind: "text",
+                value: " — the temporal-field wrappers.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  'Two sibling controls (distinct selectors for call-site clarity, the same "one control, one job" split as ',
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: " vs ",
+              },
+              {
+                kind: "code",
+                value: "fold-number-input",
+              },
+              {
+                kind: "text",
+                value: "): ",
+              },
+              {
+                kind: "code",
+                value: "fold-date",
+              },
+              {
+                kind: "text",
+                value: " wraps the native ",
+              },
+              {
+                kind: "code",
+                value: '<input type="date">',
+              },
+              {
+                kind: "text",
+                value: " family (",
+              },
+              {
+                kind: "code",
+                value: "type",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "date",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "datetime-local",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "month",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "week",
+              },
+              {
+                kind: "text",
+                value: "), ",
+              },
+              {
+                kind: "code",
+                value: "fold-time",
+              },
+              {
+                kind: "text",
+                value: " wraps ",
+              },
+              {
+                kind: "code",
+                value: '<input type="time">',
+              },
+              {
+                kind: "text",
+                value: ". Both wrap the native control the way ",
+              },
+              {
+                kind: "code",
+                value: "fold-select",
+              },
+              {
+                kind: "text",
+                value: " wraps ",
+              },
+              {
+                kind: "code",
+                value: "<select>",
+              },
+              {
+                kind: "text",
+                value:
+                  " — keeping the OS calendar/clock + mobile keyboard — and hand back a ",
+              },
+              {
+                kind: "strong",
+                value: "typed `[(value)]`",
+              },
+              {
+                kind: "text",
+                value: " (the native string, ",
+              },
+              {
+                kind: "code",
+                value: "YYYY-MM-DD",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "HH:mm",
+              },
+              {
+                kind: "text",
+                value: "), so consumers stop hand-writing an ",
+              },
+              {
+                kind: "code",
+                value: "inputValue($event)",
+              },
+              {
+                kind: "text",
+                value: " reader. ",
+              },
+              {
+                kind: "code",
+                value: "min",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "max",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "step",
+              },
+              {
+                kind: "text",
+                value: " pass through; both share the ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: " box + field chrome. ",
+              },
+              {
+                kind: "strong",
+                value: "Not",
+              },
+              {
+                kind: "text",
+                value: " a calendar popover (that's the ",
+              },
+              {
+                kind: "code",
+                value: "fold-calendar",
+              },
+              {
+                kind: "text",
+                value: " family) — the plain fields. ",
+              },
+              {
+                kind: "code",
+                value: "FormValueControl<string>",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Surfaced by the 2nd consumer (LaFolieDouce B2B); see ",
+              },
+              {
+                kind: "code",
+                value: "docs/consumer-friction.md",
+              },
+              {
+                kind: "text",
+                value: " Round 4 #2. The shared ",
+              },
+              {
+                kind: "code",
+                value: "_field-box.scss",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "size()",
+              },
+              {
+                kind: "text",
+                value: " mixin gained a ",
+              },
+              {
+                kind: "code",
+                value: "$height: false",
+              },
+              {
+                kind: "text",
+                value: " opt-out (a ",
+              },
+              {
+                kind: "code",
+                value: "<textarea>",
+              },
+              {
+                kind: "text",
+                value: "'s height is content-driven), and ",
+              },
+              {
+                kind: "code",
+                value: "readInputValue",
+              },
+              {
+                kind: "text",
+                value: " now reads ",
+              },
+              {
+                kind: "code",
+                value: "<textarea>",
+              },
+              {
+                kind: "text",
+                value: " targets.",
+              },
+            ],
+            rest: [],
+            breaking: false,
+          },
+        ],
+      },
+    ],
   },
   {
     version: "0.8.1",
