@@ -157,8 +157,8 @@ from a **real use-case** (the PIM), so it earns its place. Composes inside
       admin) — all the same Annuler/Confirmer bar (one is the cart's total-left /
       actions-right `between` case). It carries the glass top border + padding +
       `align="end" | "between" | "start"`, projects the buttons, and sits `flex:
-  none` (pinned to the panel bottom while the body scrolls — no `position:
-  sticky` needed). Gallery `/panel` “Panel footer”; 3 specs. **LFC adoption
+none` (pinned to the panel bottom while the body scrolls — no `position:
+sticky` needed). Gallery `/panel` “Panel footer”; 3 specs. **LFC adoption
       (17 sites) is a follow-up, app-side.** Composes inside `fold-panel-host` /
       the future `fold-dialog`; `fold-danger-zone` can drop its button into it.
 
@@ -692,6 +692,34 @@ subtree mirror → public `dev`, gallery served on GitHub Pages via hash routing
 
 Open investigations — run the probe, bring back a finding, _then_ decide. Not
 committed work; the point is to learn before we lock anything.
+
+- **[2026-08-04] `fold-menu` — reduce the `routerLinkActive` boilerplate (and
+  decide whether a data-driven `[items]` API earns its place).** With
+  `@angular/router` now an **optional peer** (2026-08-04), the menu can afford a
+  tighter Router integration. Two frictions to weigh, don't lock yet:
+  1. **Active-state boilerplate.** `fold-menu-item` is an attribute component
+     (`a[fold-menu-item]`) that stays Router-agnostic by design — but every call
+     site hand-wires `routerLinkActive #r="routerLinkActive" [active]="r.isActive()"`
+     (seen across the SH3PHERD workspace rail + LaFolieDouce shells). Options:
+     (a) an **opt-in** `autoActive` on `fold-menu-item` that injects the optional
+     `RouterLinkActive` (via `inject(RouterLinkActive, { optional: true })`) and
+     derives `active` from it — zero wiring when Router is present, unchanged when
+     absent; (b) a host directive `foldMenuItemActive` the consumer adds next to
+     `routerLinkActive`; (c) leave it (the explicit binding is honest). Lean (a),
+     but **probe the injection timing** — `RouterLinkActive`'s `isActive` is not a
+     signal today, so deriving reactively may need a `computed` over a
+     `toSignal(router.events)` or its `isActiveChange` output. Measure before
+     committing.
+  2. **Data-driven `[items]`?** The menu is projection-only (coloured sections +
+     `a[fold-menu-item]`). A `[items]` array API (like `fold-listbox` gained)
+     would cut the repeated section/item markup in the app shells — but the menu's
+     value is its _rich_ projected items (badges, avatars, custom rows), which an
+     array API flattens. **Only generalise on a 2nd real consumer that wants the
+     data form**; the projected API stays the default. Cross-ref the deferred
+     sub-menus / nested-menu item (top of this file) — decide the item model once,
+     together.
+     Decision gate: ship (1a) if the injection-timing probe is clean; keep (2) a note
+     until a consumer asks. Sequence after `fold-breadcrumb` / `fold-back-link`.
 
 - **[2026-07-26] Should the specs be type-checked under the strict
   `tsconfig.json`?** Probe done 2026-07-25: `tsconfig.spec.json` **extends** the

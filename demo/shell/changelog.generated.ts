@@ -38,7 +38,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Changed: 1,
+      Changed: 2,
       Added: 13,
     },
     breaking: 0,
@@ -46,6 +46,64 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Changed",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "@angular/router",
+              },
+              {
+                kind: "text",
+                value: " is now a declared (optional) peer dependency.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: " imports ",
+              },
+              {
+                kind: "code",
+                value: "RouterLink",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "RouterLinkActive",
+              },
+              {
+                kind: "text",
+                value:
+                  ", but the package only listed router as a devDependency — an undeclared peer that happened to resolve because every Angular app ships Router. It's now in ",
+              },
+              {
+                kind: "code",
+                value: "peerDependencies",
+              },
+              {
+                kind: "text",
+                value: " with ",
+              },
+              {
+                kind: "code",
+                value:
+                  'peerDependenciesMeta: { "@angular/router": { optional: true } }',
+              },
+              {
+                kind: "text",
+                value:
+                  ", so apps that use the router-coupled nav components (view-nav, and the new breadcrumb / back-link) get a correct install signal, while apps that don't aren't forced to add it (those components tree-shake out). No API change.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

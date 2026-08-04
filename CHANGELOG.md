@@ -8,6 +8,15 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **`@angular/router` is now a declared (optional) peer dependency.** `fold-view-nav`
+  imports `RouterLink`/`RouterLinkActive`, but the package only listed router as a
+  devDependency — an undeclared peer that happened to resolve because every Angular
+  app ships Router. It's now in `peerDependencies` with `peerDependenciesMeta:
+{ "@angular/router": { optional: true } }`, so apps that use the router-coupled
+  nav components (view-nav, and the new breadcrumb / back-link) get a correct
+  install signal, while apps that don't aren't forced to add it (those components
+  tree-shake out). No API change.
+
 - **`FoldPanelHostService.open()` accepts an optional-data panel without a manual
   type widen.** A panel whose `data` input is optional (`data = input<T>()` →
   `InputSignal<T | undefined>`) used to force `open<T | undefined, R>()` to dodge

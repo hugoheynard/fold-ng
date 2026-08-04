@@ -100,7 +100,13 @@
     "@angular/common": "^22",
     "@angular/core": "^22",
     "@angular/forms": "^22",
-    "@angular/platform-browser": "^22"
+    "@angular/platform-browser": "^22",
+    "@angular/router": "^22"
+  },
+  "peerDependenciesMeta": {
+    "@angular/router": {
+      "optional": true
+    }
   },
   "dependencies": {
     "tslib": "^2.3.0"
