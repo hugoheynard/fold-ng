@@ -157,34 +157,49 @@ from a **real use-case** (the PIM), so it earns its place. Composes inside
       admin) — all the same Annuler/Confirmer bar (one is the cart's total-left /
       actions-right `between` case). It carries the glass top border + padding +
       `align="end" | "between" | "start"`, projects the buttons, and sits `flex:
-    none` (pinned to the panel bottom while the body scrolls — no `position:
-    sticky` needed). Gallery `/panel` “Panel footer”; 3 specs. **LFC adoption
+  none` (pinned to the panel bottom while the body scrolls — no `position:
+  sticky` needed). Gallery `/panel` “Panel footer”; 3 specs. **LFC adoption
       (17 sites) is a follow-up, app-side.** Composes inside `fold-panel-host` /
       the future `fold-dialog`; `fold-danger-zone` can drop its button into it.
 
-- [ ] **`fold-panel-host` — bottom-sheet edge (`side: 'bottom'`) + responsive
-      auto-switch.** The last real gap in the panel system (config cascade,
-      `modal`/`surface`, size presets, `disableClose` all landed 2026-07-29). A
-      side sheet is the wrong shape on a phone: the dominant mobile pattern is a
-      sheet that slides up from the **bottom**, full-width, with a drag/tap-to-
-      dismiss handle. Scope:
-  - **`side: 'bottom'`** — a new edge alongside `left`/`right`. Full-width, height
-    driven by content up to a `max-height` with internal scroll; slides on the
-    Y axis. The scss `.panel--bottom` + a bottom `.panel-dock` variant; the
-    surface/glass/solid, focus-trap, `inert`, scroll-lock and `disableClose`
-    machinery all **reuse** as-is (they're edge-agnostic).
-  - **Responsive auto-switch** — a panel opened `side: 'right'` should become a
-    bottom-sheet under a breakpoint, container-driven (fold's "responsive on
-    its own width, never the viewport" contract — key off the host/shell
-    width, likely a `@container`, not a media query). Decide the API: an
-    explicit `side: 'auto'` (right on wide, bottom on narrow) vs. an implicit
-    fold at a token width. Lean `side: 'auto'` so it's opt-in and legible.
-  - **Grabber affordance** — a top drag-handle on the sheet; tap dismisses (honours
-    `disableClose`). Pointer-drag-to-dismiss is a **nice-to-have**, sequence
-    after the static breakpoint switch — don't block the edge on gesture work.
-  - Pulled by a real use-case: the LaFolieDouce storefront cart panel on mobile.
-    Its own commit + responsive specs — kept out of the 2026-07-29 panel lot to
-    keep that lot clean. This is the 9.5 → 10 lever for the panel system.
+- [x] **`fold-panel-host` — bottom-sheet edge (`side: 'bottom'`) + responsive
+      auto-switch.** ✅ Done (2026-08-04). `side: 'bottom'` = full-width sheet,
+      content-driven height up to `85dvh` with the body scrolling, slides up,
+      rounded top, tap-to-dismiss grabber (honours `disableClose`). `side: 'auto'`
+      docks right on a wide host, bottom on a narrow one — switched by a
+      `@container (max-width: 640px)` on the dock's own inline-size (container, not
+      viewport). All modal machinery is edge-agnostic and reused. Host uses
+      `[data-side]` (was the `--left` class). Gallery `/panel` “Bottom sheet” +
+      “Auto (by width)”; +6 host specs. **Pointer-drag-to-dismiss deferred**
+      (tap-to-dismiss ships). Original scope below.
+
+<details><summary>Original scope</summary>
+
+The last real gap in the panel system (config cascade,
+`modal`/`surface`, size presets, `disableClose` all landed 2026-07-29). A
+side sheet is the wrong shape on a phone: the dominant mobile pattern is a
+sheet that slides up from the **bottom**, full-width, with a drag/tap-to-
+dismiss handle. Scope:
+
+- **`side: 'bottom'`** — a new edge alongside `left`/`right`. Full-width, height
+  driven by content up to a `max-height` with internal scroll; slides on the
+  Y axis. The scss `.panel--bottom` + a bottom `.panel-dock` variant; the
+  surface/glass/solid, focus-trap, `inert`, scroll-lock and `disableClose`
+  machinery all **reuse** as-is (they're edge-agnostic).
+- **Responsive auto-switch** — a panel opened `side: 'right'` should become a
+  bottom-sheet under a breakpoint, container-driven (fold's "responsive on
+  its own width, never the viewport" contract — key off the host/shell
+  width, likely a `@container`, not a media query). Decide the API: an
+  explicit `side: 'auto'` (right on wide, bottom on narrow) vs. an implicit
+  fold at a token width. Lean `side: 'auto'` so it's opt-in and legible.
+- **Grabber affordance** — a top drag-handle on the sheet; tap dismisses (honours
+  `disableClose`). Pointer-drag-to-dismiss is a **nice-to-have**, sequence
+  after the static breakpoint switch — don't block the edge on gesture work.
+- Pulled by a real use-case: the LaFolieDouce storefront cart panel on mobile.
+  Its own commit + responsive specs — kept out of the 2026-07-29 panel lot to
+  keep that lot clean. This is the 9.5 → 10 lever for the panel system.
+
+</details>
 
 - [x] **`open()` overload for optional/no data** (consumer-friction Round 4 #5).
       ✅ Done (2026-08-04) — the fix was on the **contract**, not a new overload:

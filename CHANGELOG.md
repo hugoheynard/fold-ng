@@ -20,6 +20,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **Panel bottom sheet (`side: 'bottom'`) + responsive `side: 'auto'`.** The panel
+  host gained two docking edges beyond `left`/`right`: `bottom` is a full-width
+  sheet whose height is content-driven up to a max (`85dvh`) with the body
+  scrolling, slides up, rounded top, and a top **grabber** that taps to dismiss
+  (honours `disableClose`). `auto` docks **right on a wide host, bottom on a
+  narrow one** — the switch is container-driven via `@container` on the panel
+  host's own inline-size (fold's "responsive on its own width", not the viewport),
+  so it reacts to the content region, not the screen. All the modal machinery
+  (focus-trap, `inert` barrier, scroll-lock, `disableClose`) is edge-agnostic and
+  reused as-is. Motivated by the LaFolieDouce storefront cart on mobile. Gallery
+  `/panel` gained “Bottom sheet” + “Auto (by width)” triggers; +6 host specs.
+  (Pointer-drag-to-dismiss on the grabber is a deferred nice-to-have.)
+
 - **`fold-panel-footer` — the action bar for panels/dialogs.** Pairs with
   `fold-panel-header`: the tokenised bar at a panel's bottom edge (glass top
   border + padding + button alignment), so a panel no longer hand-rolls a

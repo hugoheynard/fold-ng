@@ -1,13 +1,13 @@
 @for (panel of panels(); track panel.id) {
   <div
     class="panel-dock"
-    [class.panel-dock--left]="panel.side === 'left'"
+    [attr.data-side]="panelSide(panel)"
     [class.panel-dock--passthrough]="!isModal(panel)"
     (click)="onBackdrop($event, panel)"
   >
     <aside
       class="panel"
-      [class.panel--left]="panel.side === 'left'"
+      [attr.data-side]="panelSide(panel)"
       [attr.data-surface]="panelSurface(panel)"
       [style.--panel-width.px]="panel.width()"
       role="dialog"
@@ -18,6 +18,17 @@
       [foldFocusTrap]="shouldTrap(panel)"
       (click)="$event.stopPropagation()"
     >
+      @if (hasGrabber(panel)) {
+        <button
+          type="button"
+          class="panel-grabber"
+          [attr.aria-label]="dismissLabel"
+          (click)="onGrabber(panel)"
+        >
+          <span class="panel-grabber__bar" aria-hidden="true"></span>
+        </button>
+      }
+
       @if (panel.kind === "template") {
         <fold-panel-header
           [title]="panel.title()"

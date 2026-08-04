@@ -12,8 +12,13 @@ import { ScrollLockService } from "../../../a11y/scroll-lock.service";
 import { FoldPanelComponentOutletDirective } from "./panel-component-outlet.directive";
 import { FoldPanelHeaderComponent } from "./panel-header.component";
 import { FoldPanelHostService } from "./panel-host.service";
+import { FOLD_PANEL_CLOSE_LABEL } from "./panel-labels";
 import { foldPanelTitleId } from "./panel.types";
-import type { FoldPanelDescriptor, FoldPanelSurface } from "./panel.types";
+import type {
+  FoldPanelDescriptor,
+  FoldPanelSide,
+  FoldPanelSurface,
+} from "./panel.types";
 
 /**
  * `<fold-panel-host>` — the single, layout-owned chrome for every side panel.
@@ -127,6 +132,29 @@ export class FoldPanelHostComponent {
   /** Surface treatment for the panel shell; defaults to `glass`. */
   panelSurface(panel: FoldPanelDescriptor): FoldPanelSurface {
     return panel.surface ?? "glass";
+  }
+
+  /** The edge the panel docks to; defaults to `right`. `auto` is resolved to
+   *  right/bottom by the CSS `@container` on the host's own width, not here. */
+  panelSide(panel: FoldPanelDescriptor): FoldPanelSide {
+    return panel.side ?? "right";
+  }
+
+  /** A bottom sheet (`bottom`, or `auto` which can become one on a narrow host)
+   *  gets a top grabber. Hidden by CSS when `auto` resolves to a side sheet. */
+  hasGrabber(panel: FoldPanelDescriptor): boolean {
+    const side = this.panelSide(panel);
+    return side === "bottom" || side === "auto";
+  }
+
+  /** Accessible label for the bottom-sheet grabber — the app-wide close label. */
+  protected readonly dismissLabel = inject(FOLD_PANEL_CLOSE_LABEL);
+
+  /** Tapping the grabber dismisses the sheet, unless it guards implicit close. */
+  onGrabber(panel: FoldPanelDescriptor): void {
+    if (this.allowsImplicitClose(panel)) {
+      panel.onClose();
+    }
   }
 
   /**

@@ -12,7 +12,7 @@
 
   <fold-page-section
     title="Live"
-    description="Triggers open the demo panel inside this bounded stage. The counter proves the background stays interactive under a non-modal panel."
+    description="Triggers open the demo panel inside this bounded stage. The counter proves the background stays interactive under a non-modal panel. 'Auto' docks right on a wide stage and becomes a bottom sheet when the stage is narrow — keyed off the stage's own width, not the viewport."
   >
     <div class="panel-stage" panelScope #stage="panelScope">
       <div class="stage-bg">
@@ -59,6 +59,22 @@
             (click)="open(stage.service, { disableClose: true })"
           >
             Guarded
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { side: 'bottom' })"
+          >
+            Bottom sheet
+          </button>
+          <button
+            foldButton
+            size="sm"
+            emphasis="outline"
+            (click)="open(stage.service, { side: 'auto' })"
+          >
+            Auto (by width)
           </button>
         </div>
 

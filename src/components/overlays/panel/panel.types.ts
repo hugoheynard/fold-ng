@@ -6,8 +6,17 @@ import type {
   Type,
 } from "@angular/core";
 
-/** Which layout edge the panel slides in from. */
-export type FoldPanelSide = "left" | "right";
+/**
+ * Which layout edge the panel slides in from.
+ * - `right` (default) / `left` — a vertical side sheet, full height.
+ * - `bottom` — a bottom sheet: full width, height driven by content up to a
+ *   max-height with internal scroll; slides up. The mobile-native shape, with a
+ *   top grabber that taps to dismiss.
+ * - `auto` — **right on a wide container, bottom on a narrow one**. The switch is
+ *   container-driven (keyed off the panel host's own width via `@container`, not
+ *   the viewport), honouring fold's "responsive on its own width" contract.
+ */
+export type FoldPanelSide = "left" | "right" | "bottom" | "auto";
 
 /**
  * Panel surface treatment.

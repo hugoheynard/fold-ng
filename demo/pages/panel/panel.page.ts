@@ -15,7 +15,7 @@ import { TabPanelComponent } from "../../components/tab-panel.component";
 
 /** Options a demo trigger passes to `open()`. */
 interface DemoPanelConfig {
-  readonly side?: "left" | "right";
+  readonly side?: "left" | "right" | "bottom" | "auto";
   readonly width?: number | "sm" | "md" | "lg" | "xl";
   readonly modal?: boolean;
   readonly surface?: "glass" | "solid";

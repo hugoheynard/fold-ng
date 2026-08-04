@@ -6,16 +6,24 @@
 }
 /* Invisible, click-capturing dock — no dark scrim. position:absolute so it
        fills the content region (its positioned host), not the viewport: the
-       panel floats over the page but stays below the header + rails. */
+       panel floats over the page but stays below the header + rails.
+       container-type: the dock's inline-size IS the content-region width, so a
+       `side="auto"` panel switches to a bottom sheet on its own width (the
+       @container query below), honouring "responsive on its own width". */
 .panel-dock {
   position: absolute;
   inset: 0;
   z-index: 50;
   display: flex;
   justify-content: flex-end;
+  container-type: inline-size;
 }
-.panel-dock--left {
+.panel-dock[data-side="left"] {
   justify-content: flex-start;
+}
+/* Bottom sheet: pin the (full-width) panel to the bottom edge. */
+.panel-dock[data-side="bottom"] {
+  align-items: flex-end;
 }
 /* Non-modal panel: the dock must not capture pointer events, so the page behind
    stays fully interactive and an outside click never reaches `onBackdrop`
@@ -44,11 +52,57 @@
   box-shadow: var(--fold-shadow-panel-right);
   animation: panel-slide-in-right 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.panel--left {
+.panel[data-side="left"] {
   border-left: none;
   border-right: 1px solid var(--fold-color-glass-border);
   box-shadow: var(--fold-shadow-panel-left);
   animation-name: panel-slide-in-left;
+}
+
+/* Bottom-sheet shape: full width, height driven by content up to a max with the
+   body scrolling; rounded top; slides up. Shared by an explicit `side="bottom"`
+   and by `side="auto"` once the host is narrow (the @container below). */
+@mixin bottom-sheet {
+  width: 100%;
+  height: auto;
+  max-height: min(85dvh, 40rem);
+  border-left: none;
+  border-top: 1px solid var(--fold-color-glass-border);
+  border-radius: var(--fold-radius-lg) var(--fold-radius-lg) 0 0;
+  box-shadow: var(--fold-shadow-lg);
+  animation-name: panel-slide-in-bottom;
+}
+.panel[data-side="bottom"] {
+  @include bottom-sheet;
+}
+
+/* The top grabber — hidden on side sheets, a `display:grid` centred bar on
+   bottom sheets. A wide tap target that dismisses the sheet (the host honours
+   `disableClose`). */
+.panel-grabber {
+  all: unset;
+  display: none;
+  box-sizing: border-box;
+  width: 100%;
+  flex: none;
+  place-items: center;
+  padding: var(--fold-space-sm) 0;
+  cursor: grab;
+
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: -4px;
+  }
+}
+.panel-grabber__bar {
+  display: block;
+  width: 2.25rem;
+  height: 0.28rem;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-border);
+}
+.panel[data-side="bottom"] .panel-grabber {
+  display: grid;
 }
 
 /* Solid surface: an opaque sheet (no frosted glass). For content that must stay
@@ -59,9 +113,28 @@
   -webkit-backdrop-filter: none;
   border-color: var(--fold-color-border);
 }
+
+/* Explicit side sheets go full-width on a small viewport (a mobile nicety).
+   `auto` (container-driven) and `bottom` are excluded — they have their own
+   responsive shape. */
 @media (max-width: 768px) {
-  .panel {
+  .panel[data-side="right"],
+  .panel[data-side="left"] {
     width: 100vw;
+  }
+}
+
+/* `side="auto"` → a bottom sheet once the host (content region) is narrow. Keyed
+   off the dock's own inline-size, never the viewport. */
+@container (max-width: 640px) {
+  .panel-dock[data-side="auto"] {
+    align-items: flex-end;
+  }
+  .panel[data-side="auto"] {
+    @include bottom-sheet;
+  }
+  .panel[data-side="auto"] .panel-grabber {
+    display: grid;
   }
 }
 
@@ -87,5 +160,19 @@
   }
   to {
     transform: translateX(0);
+  }
+}
+@keyframes panel-slide-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
   }
 }

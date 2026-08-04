@@ -39,7 +39,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     unreleased: true,
     counts: {
       Changed: 1,
-      Added: 12,
+      Added: 13,
     },
     breaking: 0,
     groups: [
@@ -176,6 +176,138 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Panel bottom sheet (",
+              },
+              {
+                kind: "code",
+                value: "side: 'bottom'",
+              },
+              {
+                kind: "text",
+                value: ") + responsive ",
+              },
+              {
+                kind: "code",
+                value: "side: 'auto'",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The panel host gained two docking edges beyond ",
+              },
+              {
+                kind: "code",
+                value: "left",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "right",
+              },
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "bottom",
+              },
+              {
+                kind: "text",
+                value:
+                  " is a full-width sheet whose height is content-driven up to a max (",
+              },
+              {
+                kind: "code",
+                value: "85dvh",
+              },
+              {
+                kind: "text",
+                value:
+                  ") with the body scrolling, slides up, rounded top, and a top ",
+              },
+              {
+                kind: "strong",
+                value: "grabber",
+              },
+              {
+                kind: "text",
+                value: " that taps to dismiss (honours ",
+              },
+              {
+                kind: "code",
+                value: "disableClose",
+              },
+              {
+                kind: "text",
+                value: "). ",
+              },
+              {
+                kind: "code",
+                value: "auto",
+              },
+              {
+                kind: "text",
+                value: " docks ",
+              },
+              {
+                kind: "strong",
+                value: "right on a wide host, bottom on a narrow one",
+              },
+              {
+                kind: "text",
+                value: " — the switch is container-driven via ",
+              },
+              {
+                kind: "code",
+                value: "@container",
+              },
+              {
+                kind: "text",
+                value:
+                  " on the panel host's own inline-size (fold's \"responsive on its own width\", not the viewport), so it reacts to the content region, not the screen. All the modal machinery (focus-trap, ",
+              },
+              {
+                kind: "code",
+                value: "inert",
+              },
+              {
+                kind: "text",
+                value: " barrier, scroll-lock, ",
+              },
+              {
+                kind: "code",
+                value: "disableClose",
+              },
+              {
+                kind: "text",
+                value:
+                  ") is edge-agnostic and reused as-is. Motivated by the LaFolieDouce storefront cart on mobile. Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/panel",
+              },
+              {
+                kind: "text",
+                value:
+                  " gained “Bottom sheet” + “Auto (by width)” triggers; +6 host specs. (Pointer-drag-to-dismiss on the grabber is a deferred nice-to-have.)",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

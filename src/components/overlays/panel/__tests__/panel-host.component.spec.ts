@@ -68,14 +68,57 @@ describe("FoldPanelHostComponent", () => {
     expect(root.querySelectorAll(".panel-dock").length).toBe(2);
   });
 
-  it("marks left-side panels with the left modifier", () => {
+  it("reflects the docking side via data-side on the dock and panel", () => {
     present("Left", "left");
     const { root } = render();
-    const scrim = root.querySelector(".panel-dock");
-    expect(scrim?.classList.contains("panel-dock--left")).toBe(true);
-    expect(
-      root.querySelector(".panel")?.classList.contains("panel--left"),
-    ).toBe(true);
+    expect(root.querySelector(".panel-dock")?.getAttribute("data-side")).toBe(
+      "left",
+    );
+    expect(root.querySelector(".panel")?.getAttribute("data-side")).toBe(
+      "left",
+    );
+  });
+
+  it("defaults an unspecified side to right", () => {
+    host.open(DummyPanelComponent); // no side in config
+    const { root } = render();
+    expect(root.querySelector(".panel")?.getAttribute("data-side")).toBe(
+      "right",
+    );
+  });
+
+  it("renders a grabber for a bottom sheet (and not for a side sheet)", () => {
+    present("Bottom", "bottom");
+    present("Side", "right");
+    const { root } = render();
+    const asides = root.querySelectorAll(".panel");
+    expect(asides[0]?.getAttribute("data-side")).toBe("bottom");
+    expect(asides[0]?.querySelector(".panel-grabber")).not.toBeNull();
+    expect(asides[1]?.querySelector(".panel-grabber")).toBeNull();
+  });
+
+  it("renders a grabber for an auto panel (it may become a bottom sheet)", () => {
+    present("Auto", "auto");
+    const { root } = render();
+    const aside = root.querySelector(".panel")!;
+    expect(aside.getAttribute("data-side")).toBe("auto");
+    expect(aside.querySelector(".panel-grabber")).not.toBeNull();
+  });
+
+  it("tapping the grabber dismisses the sheet", () => {
+    let closed = 0;
+    present("Bottom", "bottom", () => (closed += 1));
+    const { root } = render();
+    root.querySelector<HTMLButtonElement>(".panel-grabber")!.click();
+    expect(closed).toBe(1);
+  });
+
+  it("the grabber does NOT dismiss a disableClose sheet", () => {
+    let closed = 0;
+    present("Guarded", "bottom", () => (closed += 1), { disableClose: true });
+    const { root } = render();
+    root.querySelector<HTMLButtonElement>(".panel-grabber")!.click();
+    expect(closed).toBe(0);
   });
 
   it("Escape closes the top-most (last-opened) panel only", () => {
