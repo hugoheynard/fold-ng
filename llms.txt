@@ -38,7 +38,7 @@ You usually know the intent, not the name. Before hand-rolling a label/field/bad
 
 - uppercase label / eyebrow over a group → `fold-element-title` (`variant="eyebrow"`); a titled section → `fold-page-section`; read-only label/value pairs → `fold-field-list`.
 - multiline note → `fold-textarea`; a date → `fold-date`; a time → `fold-time`; a dropdown → `fold-select` (custom rows → `fold-listbox`, multi → `fold-multiselect`); on/off → `fold-checkbox`.
-- inline "are you sure?" → `fold-inline-confirm`; a tinted alert row → `fold-callout`; a toast → `FoldToastService`; a status/count pill → `fold-badge` / `fold-status-badge`.
+- inline "are you sure?" → `fold-inline-confirm`; a "delete X" danger block with type-to-confirm → `fold-danger-zone`; a tinted alert row → `fold-callout`; a toast → `FoldToastService`; a status/count pill → `fold-badge` / `fold-status-badge`.
 - a side panel → `fold-panel-host`; anchored popover → `fold-popover`; actions menu → `fold-dropdown`; collapsible → `fold-disclosure`. (No modal dialog yet — use a modal `fold-panel-host`.)
 - in-page tabs → `fold-tabs`; routed nav bar → `fold-view-nav`; segmented control → `fold-view-toggle` / `fold-choice-row`.
 - empty/loading state → `fold-empty-state` / `fold-loading`; a table → `fold-data-table` (+ `fold-paginator`); a calendar → `fold-calendar-*`; a timeline/stepper → `fold-timeline`.

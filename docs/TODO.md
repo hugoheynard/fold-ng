@@ -126,19 +126,30 @@ leave-balance-display, configurable-tab-bar, etc.
       (in-place guard); `fold-dialog` is for when the choice must **block**. - Not from SH3PHERD `shared/` — a net-new component; sequence after the
       0.5 extractions unless a real use-case pulls it forward.
 
-- [ ] **`fold-danger-zone` — the destructive-action block.** A styled, tokenised
-      danger region for the "delete X" panels/forms: an alert-toned frame, a
-      title + explanation of the blast radius, and a **type-to-confirm** guard
-      (retype the entity's exact name/handle to arm the destructive button).
-      Today this is hand-rolled per feature — e.g. LaFolieDouce PIM's
-      `tva-regime-form-panel` delete mode: an `fold-callout variant="alert"` +
-      a `fold-input` whose value must equal the régime name before the danger
-      button enables. A small primitive would carry the frame, the confirm
-      contract (`confirmWith` string + `(confirmed)`), and the danger styling.
-      API sketch: `[title]`, `[confirmPhrase]`, projected explanation, an
-      `[armed]`/`(confirmedChange)` model, slots for the action button. Pulled
-      from a **real use-case** (the PIM), so it earns its place. Composes inside
-      `fold-panel-host` / a future `fold-dialog`.
+- [x] **`fold-danger-zone` — the destructive-action block.** ✅ Done (2026-08-04)
+      — alert-toned frame + title + projected blast-radius explanation + optional
+      type-to-confirm (`confirmPhrase`, trimmed/case-sensitive). The destructive
+      control is projected via `[actions]`; the consumer wires `[disabled]` to the
+      two-way `armed` model (always `true` when no phrase). `role="group"` +
+      `aria-labelledby`. Gallery `/danger-zone`; 5 specs. Original sketch below.
+
+<details><summary>Original note</summary>
+
+A styled, tokenised
+danger region for the "delete X" panels/forms: an alert-toned frame, a
+title + explanation of the blast radius, and a **type-to-confirm** guard
+(retype the entity's exact name/handle to arm the destructive button).
+Today this is hand-rolled per feature — e.g. LaFolieDouce PIM's
+`tva-regime-form-panel` delete mode: an `fold-callout variant="alert"` +
+a `fold-input` whose value must equal the régime name before the danger
+button enables. A small primitive would carry the frame, the confirm
+contract (`confirmWith` string + `(confirmed)`), and the danger styling.
+API sketch: `[title]`, `[confirmPhrase]`, projected explanation, an
+`[armed]`/`(confirmedChange)` model, slots for the action button. Pulled
+from a **real use-case** (the PIM), so it earns its place. Composes inside
+`fold-panel-host` / a future `fold-dialog`.
+
+</details>
 
 - [ ] **Explore `fold-panel-footer` — the action bar for panels/dialogs.** Pairs
       with `fold-panel-header` the way a footer pairs with a header: today every

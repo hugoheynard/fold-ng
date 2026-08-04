@@ -20,6 +20,15 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-danger-zone` — the destructive-action block.** An alert-toned framed
+  region for “delete X” panels/forms: a title, a projected explanation of the
+  blast radius, and an optional **type-to-confirm** guard (`confirmPhrase`) — the
+  user retypes the exact phrase (trimmed, case-sensitive) before the action arms.
+  The destructive control is **projected** via `[actions]`, so the consumer owns
+  it and wires its `[disabled]` to the two-way `armed` state; omit `confirmPhrase`
+  for a framed region with no gate (`armed` always `true`). `role="group"` +
+  `aria-labelledby`. Gallery `/danger-zone`; 5 specs.
+
 - **`fold-multiselect` bulk actions — `allowSelectAll` / `allowClear`.** A sticky
   bar at the top of the panel offers **Select all** (adds every enabled option,
   skipping disabled rows and preserving an already-picked disabled one) and

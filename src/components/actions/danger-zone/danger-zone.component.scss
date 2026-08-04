@@ -1,0 +1,63 @@
+// A framed destructive-action region — alert-toned so it reads as "careful". A
+// tinted surface + alert border set it apart from the surrounding form/panel.
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-md, 0.75rem);
+  padding: var(--fold-space-lg, 1rem);
+  border: 1px solid var(--fold-color-alert-border);
+  border-radius: var(--fold-radius-md, 10px);
+  background: var(--fold-color-alert-surface);
+}
+
+.dz-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--fold-color-alert-text);
+}
+.dz-icon {
+  flex: none;
+}
+.dz-title {
+  margin: 0;
+  font-size: var(--fold-text-md, 1rem);
+  font-weight: 600;
+}
+
+// The blast-radius explanation. Muted, readable.
+.dz-body {
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-sm, 0.875rem);
+  line-height: 1.5;
+
+  :first-child {
+    margin-top: 0;
+  }
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.dz-confirm {
+  display: block;
+}
+
+// The action row — right-aligned, wraps on narrow. Empty when no [actions] are
+// projected (its gap then contributes nothing since it has no children).
+.dz-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--fold-space-sm, 0.5rem);
+
+  &:empty {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :host {
+    border-color: CanvasText;
+  }
+}

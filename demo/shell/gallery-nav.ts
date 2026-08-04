@@ -76,6 +76,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "button-icon", label: "button-icon" },
       { id: "link", label: "link" },
       { id: "inline-confirm", label: "inline-confirm" },
+      { id: "danger-zone", label: "danger-zone" },
     ],
   },
   {

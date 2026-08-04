@@ -21,6 +21,7 @@ export {
   type FoldBadgeVariant,
 } from "./components/content/badge/badge.component";
 export { FoldButtonComponent } from "./components/actions/button/button.component";
+export { FoldDangerZoneComponent } from "./components/actions/danger-zone/danger-zone.component";
 export type {
   FoldButtonEmphasis,
   FoldButtonIntent,

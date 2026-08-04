@@ -39,7 +39,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     unreleased: true,
     counts: {
       Changed: 1,
-      Added: 10,
+      Added: 11,
     },
     breaking: 0,
     groups: [
@@ -176,6 +176,123 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-danger-zone",
+              },
+              {
+                kind: "text",
+                value: " — the destructive-action block.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "An alert-toned framed region for “delete X” panels/forms: a title, a projected explanation of the blast radius, and an optional ",
+              },
+              {
+                kind: "strong",
+                value: "type-to-confirm",
+              },
+              {
+                kind: "text",
+                value: " guard (",
+              },
+              {
+                kind: "code",
+                value: "confirmPhrase",
+              },
+              {
+                kind: "text",
+                value:
+                  ") — the user retypes the exact phrase (trimmed, case-sensitive) before the action arms. The destructive control is ",
+              },
+              {
+                kind: "strong",
+                value: "projected",
+              },
+              {
+                kind: "text",
+                value: " via ",
+              },
+              {
+                kind: "code",
+                value: "[actions]",
+              },
+              {
+                kind: "text",
+                value: ", so the consumer owns it and wires its ",
+              },
+              {
+                kind: "code",
+                value: "[disabled]",
+              },
+              {
+                kind: "text",
+                value: " to the two-way ",
+              },
+              {
+                kind: "code",
+                value: "armed",
+              },
+              {
+                kind: "text",
+                value: " state; omit ",
+              },
+              {
+                kind: "code",
+                value: "confirmPhrase",
+              },
+              {
+                kind: "text",
+                value: " for a framed region with no gate (",
+              },
+              {
+                kind: "code",
+                value: "armed",
+              },
+              {
+                kind: "text",
+                value: " always ",
+              },
+              {
+                kind: "code",
+                value: "true",
+              },
+              {
+                kind: "text",
+                value: "). ",
+              },
+              {
+                kind: "code",
+                value: 'role="group"',
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "aria-labelledby",
+              },
+              {
+                kind: "text",
+                value: ". Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/danger-zone",
+              },
+              {
+                kind: "text",
+                value: "; 5 specs.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

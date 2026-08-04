@@ -1,0 +1,22 @@
+<div class="dz-head">
+  <fold-icon name="warning" size="sm" class="dz-icon" aria-hidden="true" />
+  <h3 class="dz-title" [id]="titleId">{{ title() }}</h3>
+</div>
+
+<div class="dz-body">
+  <ng-content />
+</div>
+
+@if (confirmPhrase(); as phrase) {
+  <fold-input
+    class="dz-confirm"
+    [label]="promptLabel()"
+    [placeholder]="confirmPlaceholder() ?? phrase"
+    autocomplete="off"
+    [(value)]="typed"
+  />
+}
+
+<div class="dz-actions">
+  <ng-content select="[actions]" />
+</div>

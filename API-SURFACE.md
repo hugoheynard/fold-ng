@@ -223,6 +223,13 @@
 - subtitle: InputSignal<string | undefined>
 - title: InputSignal<string> — required
 
+#### FoldDangerZoneComponent
+- armed: ModelSignal<boolean>
+- confirmLabel: InputSignal<string | undefined>
+- confirmPhrase: InputSignal<string | undefined>
+- confirmPlaceholder: InputSignal<string | undefined>
+- title: InputSignal<string> — required
+
 #### FoldDataTableCellDirective
 - foldCell: InputSignal<string> — required
 
