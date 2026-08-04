@@ -5,11 +5,15 @@
      update this snapshot in the SAME commit and add a CHANGELOG entry.
      In 0.x a removed / renamed / retyped input·model·output is BREAKING
      (→ minor bump). This guard catches the binding breaks that a plain
-     consumer `tsc` cannot see (Angular templates aren't type-checked by tsc). -->
+     consumer `tsc` cannot see (Angular templates aren't type-checked by tsc).
+     Every published entry point below is snapshotted — the opt-in
+     `fold-ng/devtools` entry is public surface too. -->
 
-## Components & classes
+## Entry `fold-ng`
 
-### FoldAppShellComponent
+### Components & classes
+
+#### FoldAppShellComponent
 - contentScroll: InputSignal<"clip" | "auto">
 - drawerLabel: InputSignal<string>
 - footerBehavior: InputSignal<"pinned" | "scroll">
@@ -22,13 +26,13 @@
 - railWidth: InputSignal<number | undefined>
 - skipLinkLabel: InputSignal<string>
 
-### FoldAsideLayoutComponent
+#### FoldAsideLayoutComponent
 - asideLeftLabel: InputSignal<string | undefined>
 - asideRightLabel: InputSignal<string | undefined>
 - stackLeftFirst: InputSignalWithTransform<boolean, unknown>
 - topOffset: InputSignal<string | number | undefined>
 
-### FoldAvatarComponent
+#### FoldAvatarComponent
 - colorSeed: InputSignal<string | undefined>
 - imageUrl: InputSignal<string | undefined>
 - muted: InputSignalWithTransform<boolean, unknown>
@@ -39,7 +43,7 @@
 - square: InputSignalWithTransform<boolean, unknown>
 - variant: InputSignal<FoldAvatarVariant>
 
-### FoldAvatarDetailComponent
+#### FoldAvatarDetailComponent
 - avatarName: InputSignal<string>
 - imageUrl: InputSignal<string | undefined>
 - muted: InputSignalWithTransform<boolean, unknown>
@@ -51,19 +55,19 @@
 - square: InputSignalWithTransform<boolean, unknown>
 - variant: InputSignal<"solid" | "ghost">
 
-### FoldAvatarListComponent
+#### FoldAvatarListComponent
 - avatars: InputSignal<readonly FoldAvatarListItem[]> — required
 - limit: InputSignalWithTransform<number, unknown>
 - size: InputSignal<"sm" | "md" | "lg">
 - square: InputSignalWithTransform<boolean, unknown>
 - top: InputSignal<"first" | "last">
 
-### FoldBadgeComponent
+#### FoldBadgeComponent
 - content: InputSignal<string> — required
 - radius: InputSignal<"pill" | "square">
 - variant: InputSignal<FoldBadgeVariant>
 
-### FoldButtonComponent
+#### FoldButtonComponent
 - block: InputSignalWithTransform<boolean, unknown>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - emphasis: InputSignal<FoldButtonEmphasis>
@@ -75,7 +79,7 @@
 - size: InputSignal<FoldButtonSize>
 - type: InputSignal<"reset" | "button" | "submit">
 
-### FoldButtonIconComponent
+#### FoldButtonIconComponent
 - clicked: OutputEmitterRef<MouseEvent>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName> — required
@@ -86,7 +90,7 @@
 - tooltip: InputSignal<string | undefined>
 - type: InputSignal<"button" | "submit">
 
-### FoldCalendarAgendaComponent
+#### FoldCalendarAgendaComponent
 - collapsed: ModelSignal<boolean>
 - dayClick: OutputEmitterRef<string>
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
@@ -96,33 +100,33 @@
 - limit: InputSignalWithTransform<number, unknown>
 - mode: ModelSignal<FoldCalendarAgendaMode>
 
-### FoldCalendarChromeDirective
+#### FoldCalendarChromeDirective
 - formats: InputSignal<Partial<Record<"dateFull" | "dateFullWeekday" | "dayMonthYear" | "weekdayShort" | "weekdayLong" | "monthLong" | "monthShort" | "monthYear" | "dayMonthShort" | "hourMark", Intl.DateTimeFormatOptions>> | undefined>
 - labels: InputSignal<Partial<FoldCalendarLabels> | undefined>
 - locale: InputSignal<string | undefined>
 
-### FoldCalendarDayComponent
+#### FoldCalendarDayComponent
 - date: InputSignal<string> — required
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
 - today: InputSignal<string | undefined>
 
-### FoldCalendarDayDirective
+#### FoldCalendarDayDirective
 - (no input·model·output bindings)
 
-### FoldCalendarEventDirective
+#### FoldCalendarEventDirective
 - (no input·model·output bindings)
 
-### FoldCalendarHeadingDirective
+#### FoldCalendarHeadingDirective
 - (no input·model·output bindings)
 
-### FoldCalendarListComponent
+#### FoldCalendarListComponent
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
 - events: InputSignal<readonly FoldCalendarEvent<T>[]>
 - from: InputSignal<string | undefined>
 - to: InputSignal<string | undefined>
 
-### FoldCalendarMonthComponent
+#### FoldCalendarMonthComponent
 - dayClick: OutputEmitterRef<string>
 - dayModifiers: InputSignal<FoldCalendarDayModifiers | undefined>
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
@@ -136,16 +140,16 @@
 - weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
 - weekStartsOn: InputSignal<FoldWeekday | undefined>
 
-### FoldCalendarOverflowDirective
+#### FoldCalendarOverflowDirective
 - (no input·model·output bindings)
 
-### FoldCalendarSourceFilterComponent
+#### FoldCalendarSourceFilterComponent
 - active: ModelSignal<ReadonlySet<string> | null>
 - events: InputSignal<readonly FoldCalendarEvent<unknown>[]>
 - selectionChange: OutputEmitterRef<ReadonlySet<string>>
 - sources: InputSignal<readonly FoldCalendarSource[]>
 
-### FoldCalendarTimegridComponent
+#### FoldCalendarTimegridComponent
 - date: InputSignal<string> — required
 - dayClick: OutputEmitterRef<string>
 - dayCount: InputSignalWithTransform<number, unknown>
@@ -159,17 +163,17 @@
 - weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
 - weekStartsOn: InputSignal<FoldWeekday | undefined>
 
-### FoldCalendarTitleDirective
+#### FoldCalendarTitleDirective
 - (no input·model·output bindings)
 
-### FoldCalendarToolbarComponent
+#### FoldCalendarToolbarComponent
 - date: ModelSignal<string> — required
 - today: InputSignal<string | undefined>
 - view: ModelSignal<FoldCalendarView>
 - views: InputSignal<readonly (FoldCalendarView | FoldCalendarViewOption)[]>
 - weekStartsOn: InputSignal<FoldWeekday | undefined>
 
-### FoldCalendarWeekComponent
+#### FoldCalendarWeekComponent
 - date: InputSignal<string> — required
 - dayClick: OutputEmitterRef<string>
 - eventClick: OutputEmitterRef<FoldCalendarEvent<T>>
@@ -178,13 +182,13 @@
 - weekendDays: InputSignal<readonly FoldWeekday[] | undefined>
 - weekStartsOn: InputSignal<FoldWeekday | undefined>
 
-### FoldCalloutComponent
+#### FoldCalloutComponent
 - announce: InputSignalWithTransform<boolean, unknown>
 - appearance: InputSignal<FoldCalloutAppearance>
 - icon: InputSignal<FoldIconName | undefined>
 - variant: InputSignal<FoldCalloutVariant>
 
-### FoldCardComponent
+#### FoldCardComponent
 - activated: OutputEmitterRef<Event>
 - ariaLabel: InputSignal<string | undefined>
 - interactive: InputSignalWithTransform<boolean, unknown>
@@ -194,7 +198,7 @@
 - separators: InputSignalWithTransform<FoldCardBandChrome, FoldCardBandChromeInput>
 - surface: InputSignal<"accent" | "card" | "sunken">
 
-### FoldCheckboxComponent
+#### FoldCheckboxComponent
 - ariaLabel: InputSignal<string | undefined>
 - checked: ModelSignal<boolean>
 - disabled: InputSignal<boolean>
@@ -206,23 +210,23 @@
 - size: InputSignal<"sm" | "md">
 - touched: ModelSignal<boolean>
 
-### FoldChoiceRowComponent
+#### FoldChoiceRowComponent
 - activeKey: InputSignal<string> — required
 - ariaLabel: InputSignal<string>
 - layout: InputSignal<"segmented" | "chips">
 - options: InputSignal<readonly FoldChoiceOption[]> — required
 - selected: OutputEmitterRef<string>
 
-### FoldContextCardComponent
+#### FoldContextCardComponent
 - icon: InputSignal<FoldIconName | undefined>
 - iconTone: InputSignal<"neutral" | "primary" | "faded">
 - subtitle: InputSignal<string | undefined>
 - title: InputSignal<string> — required
 
-### FoldDataTableCellDirective
+#### FoldDataTableCellDirective
 - foldCell: InputSignal<string> — required
 
-### FoldDataTableComponent
+#### FoldDataTableComponent
 - caption: InputSignal<string | undefined>
 - clickable: InputSignalWithTransform<boolean, unknown>
 - columns: InputSignal<readonly FoldTableColumn[]> — required
@@ -245,10 +249,10 @@
 - toolbarSurface: InputSignal<"accent" | "sunken" | "default" | "raised">
 - zebra: InputSignalWithTransform<boolean, unknown>
 
-### FoldDataTableRowCardDirective
+#### FoldDataTableRowCardDirective
 - (no input·model·output bindings)
 
-### FoldDateComponent
+#### FoldDateComponent
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
@@ -266,22 +270,22 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
-### FoldDisclosureComponent
+#### FoldDisclosureComponent
 - open: ModelSignal<boolean>
 
-### FoldDropdownComponent
+#### FoldDropdownComponent
 - ariaLabel: InputSignal<string | undefined>
 - offset: InputSignal<number>
 - open: ModelSignal<boolean>
 - placement: InputSignal<FoldPopoverPlacement>
 
-### FoldDropdownItemComponent
+#### FoldDropdownItemComponent
 - disabled: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName | undefined>
 - selected: OutputEmitterRef<void>
 - tone: InputSignal<"danger" | "default">
 
-### FoldElementTitleComponent
+#### FoldElementTitleComponent
 - headingId: InputSignal<string | undefined>
 - icon: InputSignal<FoldIconName | undefined>
 - iconTone: InputSignal<"neutral" | "primary" | "faded">
@@ -290,26 +294,26 @@
 - title: InputSignal<string> — required
 - variant: InputSignal<"eyebrow" | "bar" | "title">
 
-### FoldElevatedDirective
+#### FoldElevatedDirective
 - foldElevated: InputSignalWithTransform<boolean, unknown>
 
-### FoldEmptyStateComponent
+#### FoldEmptyStateComponent
 - subtitle: InputSignal<string>
 - title: InputSignal<string> — required
 - tone: InputSignal<"alert" | "neutral">
 
-### FoldFieldComponent
+#### FoldFieldComponent
 - empty: InputSignalWithTransform<boolean, unknown>
 - label: InputSignal<string> — required
 - placeholder: InputSignal<string>
 
-### FoldFieldIdDirective
+#### FoldFieldIdDirective
 - (no input·model·output bindings)
 
-### FoldFieldListComponent
+#### FoldFieldListComponent
 - (no input·model·output bindings)
 
-### FoldFileDropzoneComponent
+#### FoldFileDropzoneComponent
 - accept: InputSignal<string>
 - busy: InputSignal<boolean>
 - busyLabel: InputSignal<string>
@@ -319,29 +323,29 @@
 - label: InputSignal<string>
 - multiple: InputSignal<boolean>
 
-### FoldHeroCardComponent
+#### FoldHeroCardComponent
 - accent: InputSignal<"none" | "subtle" | "gradient">
 - accentBar: InputSignalWithTransform<boolean, unknown>
 - padding: InputSignal<"sm" | "md" | "lg">
 - surface: InputSignal<"primary" | "card" | "sunken">
 
-### FoldHeroSectionComponent
+#### FoldHeroSectionComponent
 - align: InputSignal<"center" | "start">
 - wash: InputSignalWithTransform<boolean, unknown>
 
-### FoldIconComponent
+#### FoldIconComponent
 - name: InputSignal<FoldIconName> — required
 - size: InputSignal<FoldIconSize>
 - title: InputSignal<string | undefined>
 - tone: InputSignal<FoldIconTone | undefined>
 
-### FoldIconRegistry
+#### FoldIconRegistry
 - (no input·model·output bindings)
 
-### FoldIdService
+#### FoldIdService
 - (no input·model·output bindings)
 
-### FoldInlineConfirmComponent
+#### FoldInlineConfirmComponent
 - cancelIcon: InputSignal<FoldIconName | undefined>
 - cancelled: OutputEmitterRef<void>
 - confirmed: OutputEmitterRef<string>
@@ -357,7 +361,7 @@
 - placeholder: InputSignal<string | undefined>
 - size: InputSignal<FoldButtonSize>
 
-### FoldInputComponent
+#### FoldInputComponent
 - align: InputSignal<"center" | "start">
 - autocomplete: InputSignal<string | null>
 - autofocus: InputSignal<boolean>
@@ -379,7 +383,7 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
-### FoldLinkComponent
+#### FoldLinkComponent
 - clicked: OutputEmitterRef<MouseEvent>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - href: InputSignal<string | undefined>
@@ -389,7 +393,7 @@
 - tone: InputSignal<"accent" | "muted">
 - trailingIcon: InputSignal<FoldIconName | undefined>
 
-### FoldListboxComponent
+#### FoldListboxComponent
 - allowClear: InputSignalWithTransform<boolean, unknown>
 - clearLabel: InputSignal<string>
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
@@ -410,35 +414,35 @@
 - value: ModelSignal<T | null>
 - variant: InputSignal<"default" | "panel">
 
-### FoldLoadingStateComponent
+#### FoldLoadingStateComponent
 - message: InputSignal<string>
 - size: InputSignal<FoldSpinnerSize>
 
-### FoldMenuComponent
+#### FoldMenuComponent
 - collapsible: InputSignalWithTransform<boolean, unknown>
 - expanded: ModelSignal<boolean | undefined>
 - level: InputSignal<FoldMenuLevel>
 - tint: InputSignal<FoldMenuTint>
 - togglePlacement: InputSignal<FoldMenuTogglePlacement>
 
-### FoldMenuItemComponent
+#### FoldMenuItemComponent
 - active: InputSignalWithTransform<boolean, unknown>
 - badge: InputSignal<string | number | undefined>
 - badgeTone: InputSignal<FoldMenuItemBadgeTone>
 - icon: InputSignal<FoldIconName> — required
 - label: InputSignal<string> — required
 
-### FoldMenuSectionComponent
+#### FoldMenuSectionComponent
 - collapsed: ModelSignal<boolean>
 - collapsible: InputSignalWithTransform<boolean, unknown>
 - color: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 
-### FoldMenuSeparatorComponent
+#### FoldMenuSeparatorComponent
 - color: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 
-### FoldMultiselectComponent
+#### FoldMultiselectComponent
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
@@ -456,22 +460,22 @@
 - value: ModelSignal<readonly T[]>
 - variant: InputSignal<"default" | "panel">
 
-### FoldNavLauncherComponent
+#### FoldNavLauncherComponent
 - columns: InputSignal<number | "auto">
 - label: InputSignal<string>
 - open: ModelSignal<boolean>
 
-### FoldNavLayoutComponent
+#### FoldNavLayoutComponent
 - foldAt: InputSignalWithTransform<number, unknown>
 - placement: InputSignal<"top" | "side">
 
-### FoldNavTileComponent
+#### FoldNavTileComponent
 - active: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName> — required
 - label: InputSignal<string> — required
 - variant: InputSignal<"surface" | "filled">
 
-### FoldNumberInputComponent
+#### FoldNumberInputComponent
 - align: InputSignal<"center" | "start">
 - controls: InputSignal<FoldNumberControls>
 - decimals: InputSignal<number | undefined>
@@ -496,15 +500,15 @@
 - value: ModelSignal<number | null>
 - variant: InputSignal<"default" | "panel">
 
-### FoldOptionComponent
+#### FoldOptionComponent
 - disabled: InputSignalWithTransform<boolean, unknown>
 - value: InputSignal<T> — required
 
-### FoldPageLayoutComponent
+#### FoldPageLayoutComponent
 - icon: InputSignal<FoldIconName | undefined>
 - title: InputSignal<string | undefined>
 
-### FoldPageSectionComponent
+#### FoldPageSectionComponent
 - bleed: InputSignalWithTransform<boolean, unknown>
 - description: InputSignal<string | undefined>
 - headingLevel: InputSignal<number>
@@ -513,10 +517,10 @@
 - stack: InputSignalWithTransform<boolean, unknown>
 - title: InputSignal<string | undefined>
 
-### FoldPageTitleDirective
+#### FoldPageTitleDirective
 - (no input·model·output bindings)
 
-### FoldPaginatorComponent
+#### FoldPaginatorComponent
 - currentPage: InputSignal<number> — required
 - disabled: InputSignalWithTransform<boolean, unknown>
 - labels: InputSignal<Partial<FoldPaginatorLabels> | undefined>
@@ -527,13 +531,13 @@
 - siblingCount: InputSignal<number>
 - totalItems: InputSignal<number> — required
 
-### FoldPaletteRegistry
+#### FoldPaletteRegistry
 - (no input·model·output bindings)
 
-### FoldPanelComponentOutletDirective
+#### FoldPanelComponentOutletDirective
 - descriptor: InputSignal<FoldComponentPanelDescriptor> — required
 
-### FoldPanelHeaderComponent
+#### FoldPanelHeaderComponent
 - closed: OutputEmitterRef<void>
 - closeLabel: InputSignal<string | undefined>
 - icon: InputSignal<FoldIconName | undefined>
@@ -541,19 +545,19 @@
 - title: InputSignal<string> — required
 - variant: InputSignal<"eyebrow" | "title">
 
-### FoldPanelHostComponent
+#### FoldPanelHostComponent
 - (no input·model·output bindings)
 
-### FoldPanelHostService
+#### FoldPanelHostService
 - (no input·model·output bindings)
 
-### FoldPanelRef
+#### FoldPanelRef
 - (no input·model·output bindings)
 
-### FoldPanelToggle
+#### FoldPanelToggle
 - (no input·model·output bindings)
 
-### FoldPasswordFieldComponent
+#### FoldPasswordFieldComponent
 - autocomplete: InputSignal<string | null>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
@@ -575,7 +579,7 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
-### FoldPopoverComponent
+#### FoldPopoverComponent
 - ariaControls: InputSignal<string | undefined>
 - arrow: InputSignalWithTransform<boolean, unknown>
 - autoFocus: InputSignal<boolean>
@@ -585,10 +589,10 @@
 - padding: InputSignal<number>
 - placement: InputSignal<FoldPopoverPlacement>
 
-### FoldPopoverTriggerDirective
+#### FoldPopoverTriggerDirective
 - haspopup: InputSignalWithTransform<FoldTriggerHaspopup, string>
 
-### FoldRangeSliderComponent
+#### FoldRangeSliderComponent
 - disabled: InputSignalWithTransform<boolean, unknown>
 - label: InputSignal<string> — required
 - max: InputSignal<number>
@@ -600,20 +604,20 @@
 - unit: InputSignal<"number" | "duration">
 - value: ModelSignal<FoldRangeValue | undefined>
 
-### FoldRepeatPressDirective
+#### FoldRepeatPressDirective
 - delay: InputSignal<number>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - period: InputSignal<number>
 - repeat: OutputEmitterRef<void>
 
-### FoldSearchComponent
+#### FoldSearchComponent
 - delayMs: InputSignal<number>
 - placeholder: InputSignal<string>
 - searchChange: OutputEmitterRef<string>
 - size: InputSignal<"sm" | "md" | "lg">
 - variant: InputSignal<"default" | "panel">
 
-### FoldSelectComponent
+#### FoldSelectComponent
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
@@ -627,7 +631,7 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
-### FoldSliderComponent
+#### FoldSliderComponent
 - ariaLabel: InputSignal<string | undefined>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
@@ -641,26 +645,26 @@
 - value: ModelSignal<number>
 - valueText: InputSignal<string | undefined>
 
-### FoldSpinnerComponent
+#### FoldSpinnerComponent
 - label: InputSignal<string | undefined>
 - size: InputSignal<FoldSpinnerSize>
 
-### FoldStatusBadgeComponent
+#### FoldStatusBadgeComponent
 - label: InputSignal<string>
 - status: InputSignal<string> — required
 
-### FoldStickyColumnDirective
+#### FoldStickyColumnDirective
 - sticky: InputSignal<FoldStickyColumnAnchor>
 - stickyOffset: InputSignal<string | number | undefined>
 
-### FoldSurfaceDirective
+#### FoldSurfaceDirective
 - foldSurface: InputSignalWithTransform<FoldSurfaceName, "" | FoldSurfaceName>
 
-### FoldTabPanelComponent
+#### FoldTabPanelComponent
 - key: InputSignal<string> — required
 - tabs: InputSignal<FoldTabsContext> — required
 
-### FoldTabsComponent
+#### FoldTabsComponent
 - activeKey: ModelSignal<string> — required
 - activeStyle: InputSignal<"underline" | "fill">
 - background: InputSignal<"surface" | "transparent">
@@ -669,7 +673,7 @@
 - size: InputSignal<"comfortable" | "compact">
 - tabs: InputSignal<FoldTabItem[]> — required
 
-### FoldTextareaComponent
+#### FoldTextareaComponent
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
@@ -685,7 +689,7 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
-### FoldTimeComponent
+#### FoldTimeComponent
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
@@ -702,7 +706,7 @@
 - value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
-### FoldTimelineComponent
+#### FoldTimelineComponent
 - ariaLabel: InputSignal<string | undefined>
 - datePlacement: InputSignal<FoldTimelineDatePlacement>
 - nodeClick: OutputEmitterRef<string>
@@ -713,19 +717,19 @@
 - square: InputSignalWithTransform<boolean, unknown>
 - variant: InputSignal<"plain" | "hollow">
 
-### FoldToastComponent
+#### FoldToastComponent
 - dismiss: OutputEmitterRef<void>
 - dismissible: InputSignalWithTransform<boolean, unknown>
 - duration: InputSignalWithTransform<number, unknown>
 - variant: InputSignal<FoldToastVariant>
 
-### FoldToastContainerComponent
+#### FoldToastContainerComponent
 - (no input·model·output bindings)
 
-### FoldToastService
+#### FoldToastService
 - (no input·model·output bindings)
 
-### FoldToggleIconComponent
+#### FoldToggleIconComponent
 - active: ModelSignal<boolean>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName> — required
@@ -737,7 +741,7 @@
 - tooltip: InputSignal<string | undefined>
 - type: InputSignal<"button" | "submit">
 
-### FoldViewNavComponent
+#### FoldViewNavComponent
 - activeKey: ModelSignal<string>
 - activeStyle: InputSignal<"underline" | "fill">
 - background: InputSignal<"surface" | "transparent">
@@ -746,7 +750,7 @@
 - items: InputSignal<FoldViewNavItem[]> — required
 - size: InputSignal<"comfortable" | "compact">
 
-### FoldViewToggleComponent
+#### FoldViewToggleComponent
 - activeStyle: InputSignal<"accent" | "raised">
 - ariaLabel: InputSignal<string | undefined>
 - iconOnly: InputSignalWithTransform<boolean, unknown>
@@ -754,12 +758,13 @@
 - size: InputSignal<"sm" | "md">
 - value: ModelSignal<string> — required
 
-## Types & values
+### Types & values
 
 - autoUpdate (function)
 - computePlacement (function)
 - FOLD_AUTO_PALETTES (value)
 - FOLD_BLUR_TOKENS (value)
+- FOLD_BUILTIN_ICON_CATEGORIES (value)
 - FOLD_BUILTIN_ICONS (value)
 - FOLD_CALENDAR_DEFAULT_LABELS (value)
 - FOLD_CALENDAR_FORMATS (value)
@@ -859,6 +864,7 @@
 - foldFromNativeDate (function)
 - foldFromTemporal (function)
 - foldHashSeed (function)
+- FoldIconCategoryId (type)
 - FoldIconName (type)
 - FoldIconSet (type)
 - FoldIconSize (type)
@@ -961,3 +967,13 @@
 - provideFoldPanelDefaults (function)
 - provideFoldPanelLabels (function)
 - provideFoldToasts (function)
+
+## Entry `fold-ng/devtools`
+
+### Components & classes
+
+#### FoldIconDevtoolComponent
+- closed: OutputEmitterRef<void>
+
+### Types & values
+

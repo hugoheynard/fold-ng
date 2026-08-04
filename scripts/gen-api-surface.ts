@@ -29,8 +29,18 @@ import ts from "typescript";
 
 const PKG_ROOT = resolve(import.meta.dirname, "..");
 const TSCONFIG = resolve(PKG_ROOT, "tsconfig.lib.json");
-const ENTRY = resolve(PKG_ROOT, "src/public-api.ts");
 export const API_SURFACE_PATH = resolve(PKG_ROOT, "API-SURFACE.md");
+
+/** Every published entry point the guard snapshots — the `exports` map's code
+ *  entries. `fold-ng/devtools` is opt-in but still public surface, so a change
+ *  to it is just as breaking to a consumer that imports it. */
+const ENTRIES: readonly { readonly label: string; readonly path: string }[] = [
+  { label: "fold-ng", path: resolve(PKG_ROOT, "src/public-api.ts") },
+  {
+    label: "fold-ng/devtools",
+    path: resolve(PKG_ROOT, "src/devtools/public-api.ts"),
+  },
+];
 
 /** A binding member of a component/directive — the part a template consumer wires. */
 interface BindingMember {
@@ -142,11 +152,11 @@ function target(symbol: ts.Symbol, checker: ts.TypeChecker): ts.Symbol {
     : symbol;
 }
 
-function readExports(program: ts.Program): ApiExport[] {
+function readExports(program: ts.Program, entryPath: string): ApiExport[] {
   const checker = program.getTypeChecker();
-  const entry = program.getSourceFile(ENTRY);
+  const entry = program.getSourceFile(entryPath);
   if (!entry) {
-    throw new Error(`Cannot find entry point ${ENTRY} in the program.`);
+    throw new Error(`Cannot find entry point ${entryPath} in the program.`);
   }
   const moduleSymbol = checker.getSymbolAtLocation(entry);
   if (!moduleSymbol) {
@@ -192,7 +202,6 @@ export function buildApiSurface(): string {
     throw new Error(`Cannot read ${TSCONFIG}`);
   }
   const program = ts.createProgram(parsed.fileNames, parsed.options);
-  const exports = readExports(program);
 
   const lines: string[] = [
     "# fold-ng — public API surface",
@@ -202,28 +211,34 @@ export function buildApiSurface(): string {
     "     update this snapshot in the SAME commit and add a CHANGELOG entry.",
     "     In 0.x a removed / renamed / retyped input·model·output is BREAKING",
     "     (→ minor bump). This guard catches the binding breaks that a plain",
-    "     consumer `tsc` cannot see (Angular templates aren't type-checked by tsc). -->",
-    "",
+    "     consumer `tsc` cannot see (Angular templates aren't type-checked by tsc).",
+    "     Every published entry point below is snapshotted — the opt-in",
+    "     `fold-ng/devtools` entry is public surface too. -->",
   ];
 
-  const classes = exports.filter((e) => e.flavor === "class");
-  const rest = exports.filter((e) => e.flavor !== "class");
+  for (const { label, path } of ENTRIES) {
+    const exports = readExports(program, path);
+    const classes = exports.filter((e) => e.flavor === "class");
+    const rest = exports.filter((e) => e.flavor !== "class");
 
-  lines.push("## Components & classes", "");
-  for (const cls of classes) {
-    lines.push(`### ${cls.name}`);
-    if (cls.bindings.length === 0) {
-      lines.push("- (no input·model·output bindings)");
-    }
-    for (const b of cls.bindings) {
-      lines.push(`- ${b.name}: ${b.type}${b.required ? " — required" : ""}`);
-    }
-    lines.push("");
-  }
+    lines.push("", `## Entry \`${label}\``, "");
 
-  lines.push("## Types & values", "");
-  for (const e of rest) {
-    lines.push(`- ${e.name} (${e.flavor})`);
+    lines.push("### Components & classes", "");
+    for (const cls of classes) {
+      lines.push(`#### ${cls.name}`);
+      if (cls.bindings.length === 0) {
+        lines.push("- (no input·model·output bindings)");
+      }
+      for (const b of cls.bindings) {
+        lines.push(`- ${b.name}: ${b.type}${b.required ? " — required" : ""}`);
+      }
+      lines.push("");
+    }
+
+    lines.push("### Types & values", "");
+    for (const e of rest) {
+      lines.push(`- ${e.name} (${e.flavor})`);
+    }
   }
   lines.push("");
 
