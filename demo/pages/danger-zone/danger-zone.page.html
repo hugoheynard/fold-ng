@@ -1,67 +1,61 @@
 <fold-page-layout title="danger-zone">
   <p description>
-    The framed block for a <strong>destructive</strong> action. An alert-toned
-    region with a title, a projected explanation of the blast radius, and an
-    optional <strong>type-to-confirm</strong> guard — the user retypes an exact
-    phrase (the entity's name / handle) before the action arms. The destructive
-    control is <strong>projected</strong> via <code>[actions]</code>, so you
-    keep full control of it and just wire its <code>[disabled]</code> to the
-    two-way <code>armed</code> state.
+    The framed region for a <strong>destructive</strong> action. Two
+    appearances: <code>filled</code> (alert-tinted block) and
+    <code>section</code> — a danger <strong>section</strong> with a
+    <strong>normal-background body</strong> that can host ordinary content, only
+    the frame + heading signalling danger. The destructive control's confirm
+    <strong>reveals on click</strong>: activating it opens an in-place
+    <code>fold-inline-confirm</code> — a plain “are you sure?”, or a
+    <strong>type-to-confirm</strong> field when <code>confirmPhrase</code> is
+    set.
   </p>
   <gal-kind-badge titleBadge kind="component" />
-  <gal-composed-of [ids]="['form', 'icons']" />
+  <gal-composed-of [ids]="['inline-confirm', 'icons']" />
 
   <fold-page-section
-    title="Type-to-confirm"
-    description="The destructive button stays disabled until the phrase is retyped exactly (trimmed, case-sensitive)."
+    title="Section — normal-bg content + type-to-confirm"
+    description="An alert-bordered card; the body is a normal surface. Click the button to reveal the retype-to-confirm field."
   >
-    <dev-playground [code]="code" [responsive]="false">
-      <fold-danger-zone
-        title="Delete workspace"
-        [confirmPhrase]="workspaceName"
-        [(armed)]="armed"
-      >
-        <p>
-          This permanently deletes <strong>{{ workspaceName }}</strong> and
-          everything in it. It cannot be undone.
-        </p>
-        <button
-          foldButton
-          emphasis="solid"
-          intent="danger"
-          actions
-          [disabled]="!armed()"
-          (click)="fire('Delete workspace')"
-        >
-          Delete workspace
-        </button>
-      </fold-danger-zone>
-
-      @if (log(); as l) {
-      <p class="dz-readout">{{ l }}</p>
-      }
-    </dev-playground>
+    <fold-danger-zone
+      appearance="section"
+      title="Delete workspace"
+      actionLabel="Delete workspace"
+      [confirmPhrase]="workspaceName"
+      (confirmed)="fire('Delete workspace')"
+    >
+      <p>
+        This permanently deletes <strong>{{ workspaceName }}</strong> and
+        everything in it. It cannot be undone.
+      </p>
+    </fold-danger-zone>
   </fold-page-section>
 
   <fold-page-section
-    title="No gate"
-    description="Omit confirmPhrase for a framed danger region with no type-to-confirm — armed is always true."
+    title="Filled — plain reveal-on-click confirm"
+    description="The whole block is alert-tinted; with no confirmPhrase the click opens a plain 'are you sure?'."
   >
-    <fold-danger-zone title="Leave organisation" [(armed)]="armedNoGate">
+    <fold-danger-zone
+      title="Leave organisation"
+      actionLabel="Leave organisation"
+      intent="warning"
+      (confirmed)="fire('Leave organisation')"
+    >
       <p>
         You'll lose access to all shared workspaces. You can be re-invited
         later.
       </p>
-      <button
-        foldButton
-        emphasis="outline"
-        intent="danger"
-        actions
-        [disabled]="!armedNoGate()"
-        (click)="fire('Leave organisation')"
-      >
-        Leave organisation
-      </button>
     </fold-danger-zone>
+
+    @if (log(); as l) {
+    <p class="dz-readout">{{ l }}</p>
+    }
+  </fold-page-section>
+
+  <fold-page-section title="Usage" icon="code">
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">html</span></div>
+      <pre class="code-pre"><code>{{ code }}</code></pre>
+    </div>
   </fold-page-section>
 </fold-page-layout>

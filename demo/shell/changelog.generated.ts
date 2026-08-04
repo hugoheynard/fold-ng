@@ -658,15 +658,65 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "An alert-toned framed region for “delete X” panels/forms: a title, a projected explanation of the blast radius, and an optional ",
+                  "A framed region for “delete X” settings: a title, a projected explanation, and a guarded action. ",
               },
               {
                 kind: "strong",
-                value: "type-to-confirm",
+                value: "Two appearances",
               },
               {
                 kind: "text",
-                value: " guard (",
+                value: " — ",
+              },
+              {
+                kind: "code",
+                value: "filled",
+              },
+              {
+                kind: "text",
+                value: " (alert-tinted block) and ",
+              },
+              {
+                kind: "code",
+                value: "section",
+              },
+              {
+                kind: "text",
+                value: ", a danger *section* with a ",
+              },
+              {
+                kind: "strong",
+                value: "normal-background body",
+              },
+              {
+                kind: "text",
+                value:
+                  " so it can host ordinary content, only the frame + heading signalling danger (the GitHub “Danger Zone” look). The destructive control's confirm ",
+              },
+              {
+                kind: "strong",
+                value: "reveals on click",
+              },
+              {
+                kind: "text",
+                value: ": an ",
+              },
+              {
+                kind: "code",
+                value: "actionLabel",
+              },
+              {
+                kind: "text",
+                value: " button opens an in-place ",
+              },
+              {
+                kind: "code",
+                value: "fold-inline-confirm",
+              },
+              {
+                kind: "text",
+                value:
+                  " — a plain “are you sure?”, or a type-to-confirm field when ",
               },
               {
                 kind: "code",
@@ -675,63 +725,31 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  ") — the user retypes the exact phrase (trimmed, case-sensitive) before the action arms. The destructive control is ",
-              },
-              {
-                kind: "strong",
-                value: "projected",
-              },
-              {
-                kind: "text",
-                value: " via ",
+                  " is set (the input is never shown until the button is clicked). ",
               },
               {
                 kind: "code",
-                value: "[actions]",
+                value: "(confirmed)",
               },
               {
                 kind: "text",
-                value: ", so the consumer owns it and wires its ",
+                value: " emits the typed text (or ",
               },
               {
                 kind: "code",
-                value: "[disabled]",
+                value: '""',
               },
               {
                 kind: "text",
-                value: " to the two-way ",
+                value: "); omit ",
               },
               {
                 kind: "code",
-                value: "armed",
+                value: "actionLabel",
               },
               {
                 kind: "text",
-                value: " state; omit ",
-              },
-              {
-                kind: "code",
-                value: "confirmPhrase",
-              },
-              {
-                kind: "text",
-                value: " for a framed region with no gate (",
-              },
-              {
-                kind: "code",
-                value: "armed",
-              },
-              {
-                kind: "text",
-                value: " always ",
-              },
-              {
-                kind: "code",
-                value: "true",
-              },
-              {
-                kind: "text",
-                value: "). ",
+                value: " for a framed section with no action. ",
               },
               {
                 kind: "code",

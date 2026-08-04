@@ -8,34 +8,39 @@ import { FoldDangerZoneComponent } from "./danger-zone.component";
   imports: [FoldDangerZoneComponent],
   template: `<fold-danger-zone
     [title]="title()"
+    [appearance]="appearance()"
+    [actionLabel]="actionLabel()"
     [confirmPhrase]="phrase()"
-    [(armed)]="armed"
+    (confirmed)="onConfirmed($event)"
   >
     <p>Deletes everything. Cannot be undone.</p>
-    <button actions class="act" [disabled]="!armed()">Delete</button>
   </fold-danger-zone>`,
 })
 class HostComponent {
   readonly title = signal("Delete workspace");
+  readonly appearance = signal<"filled" | "section">("filled");
+  readonly actionLabel = signal<string | undefined>("Delete workspace");
   readonly phrase = signal<string | undefined>("my-workspace");
-  readonly armed = signal(false);
+  readonly confirmedWith = signal<string | null>(null);
+  onConfirmed(value: string): void {
+    this.confirmedWith.set(value);
+  }
 }
 
 function render() {
   const fixture = TestBed.createComponent(HostComponent);
   fixture.detectChanges();
-  fixture.detectChanges();
   const host = fixture.nativeElement as HTMLElement;
-  const input = () => host.querySelector<HTMLInputElement>("input")!;
   return {
     fixture,
-    armed: fixture.componentInstance.armed,
-    phrase: fixture.componentInstance.phrase,
+    cmp: fixture.componentInstance,
     zone: () => host.querySelector<HTMLElement>("fold-danger-zone")!,
-    action: () => host.querySelector<HTMLButtonElement>(".act")!,
-    input,
+    trigger: () => host.querySelector<HTMLButtonElement>(".fic-trigger button"),
+    input: () => host.querySelector<HTMLInputElement>("input"),
+    confirmBtn: () =>
+      host.querySelector<HTMLButtonElement>(".fic-actions button"),
     type(text: string) {
-      const el = input();
+      const el = this.input()!;
       el.value = text;
       el.dispatchEvent(new Event("input"));
       fixture.detectChanges();
@@ -44,47 +49,66 @@ function render() {
 }
 
 describe("FoldDangerZoneComponent", () => {
-  it("is a group labelled by its title", () => {
+  it("is a group labelled by its title, reflecting the appearance", () => {
     const r = render();
     const labelledby = r.zone().getAttribute("aria-labelledby");
     expect(r.zone().getAttribute("role")).toBe("group");
     expect(r.zone().querySelector(`#${labelledby}`)?.textContent).toBe(
       "Delete workspace",
     );
-  });
-
-  it("starts disarmed and arms only on an exact phrase match", () => {
-    const r = render();
-    expect(r.armed()).toBe(false);
-    expect(r.action().disabled).toBe(true);
-
-    r.type("my-workspac"); // close but not exact
-    expect(r.armed()).toBe(false);
-
-    r.type("my-workspace"); // exact
-    expect(r.armed()).toBe(true);
-    expect(r.action().disabled).toBe(false);
-  });
-
-  it("trims surrounding whitespace before matching", () => {
-    const r = render();
-    r.type("  my-workspace  ");
-    expect(r.armed()).toBe(true);
-  });
-
-  it("disarms again when the text stops matching", () => {
-    const r = render();
-    r.type("my-workspace");
-    expect(r.armed()).toBe(true);
-    r.type("my-workspace!");
-    expect(r.armed()).toBe(false);
-  });
-
-  it("with no confirmPhrase there is no field and it is armed immediately", () => {
-    const r = render();
-    r.phrase.set(undefined);
+    expect(r.zone().getAttribute("data-appearance")).toBe("filled");
+    r.cmp.appearance.set("section");
     r.fixture.detectChanges();
-    expect(r.fixture.nativeElement.querySelector("input")).toBeNull();
-    expect(r.armed()).toBe(true);
+    expect(r.zone().getAttribute("data-appearance")).toBe("section");
+  });
+
+  it("renders no action when actionLabel is unset (a framed danger section)", () => {
+    const r = render();
+    r.cmp.actionLabel.set(undefined);
+    r.fixture.detectChanges();
+    expect(r.trigger()).toBeNull();
+    expect(
+      r.fixture.nativeElement.querySelector("fold-inline-confirm"),
+    ).toBeNull();
+  });
+
+  it("reveals the confirm input only after the button is clicked", () => {
+    const r = render();
+    // idle: the trigger shows, no confirm input
+    expect(r.trigger()).not.toBeNull();
+    expect(r.input()).toBeNull();
+    // click reveals the type-to-confirm field
+    r.trigger()!.click();
+    r.fixture.detectChanges();
+    expect(r.input()).not.toBeNull();
+  });
+
+  it("arms the confirm only on an exact phrase match, then emits it", () => {
+    const r = render();
+    r.trigger()!.click();
+    r.fixture.detectChanges();
+
+    r.type("nope");
+    expect(r.confirmBtn()!.disabled).toBe(true);
+
+    r.type("my-workspace");
+    expect(r.confirmBtn()!.disabled).toBe(false);
+    r.confirmBtn()!.click();
+    r.fixture.detectChanges();
+    expect(r.cmp.confirmedWith()).toBe("my-workspace");
+  });
+
+  it("with no confirmPhrase it is a plain reveal-on-click confirm", () => {
+    const r = render();
+    r.cmp.phrase.set(undefined);
+    r.fixture.detectChanges();
+    r.trigger()!.click();
+    r.fixture.detectChanges();
+    // simple family: no input, confirm enabled immediately
+    expect(r.input()).toBeNull();
+    expect(r.confirmBtn()!.disabled).toBe(false);
+    r.confirmBtn()!.click();
+    r.fixture.detectChanges();
+    expect(r.cmp.confirmedWith()).toBe("");
   });
 });

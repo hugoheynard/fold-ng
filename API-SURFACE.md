@@ -234,10 +234,12 @@
 - title: InputSignal<string> — required
 
 #### FoldDangerZoneComponent
-- armed: ModelSignal<boolean>
-- confirmLabel: InputSignal<string | undefined>
+- actionLabel: InputSignal<string | undefined>
+- appearance: InputSignal<"filled" | "section">
+- confirmed: OutputEmitterRef<string>
 - confirmPhrase: InputSignal<string | undefined>
-- confirmPlaceholder: InputSignal<string | undefined>
+- intent: InputSignal<FoldButtonIntent>
+- message: InputSignal<string | undefined>
 - title: InputSignal<string> — required
 
 #### FoldDataTableCellDirective
@@ -494,7 +496,7 @@
 - active: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName> — required
 - label: InputSignal<string> — required
-- variant: InputSignal<"surface" | "filled">
+- variant: InputSignal<"filled" | "surface">
 
 #### FoldNumberInputComponent
 - align: InputSignal<"center" | "start">

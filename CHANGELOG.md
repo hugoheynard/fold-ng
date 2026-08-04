@@ -65,13 +65,16 @@ All notable changes to **fold-ng** are documented here. The format follows
   Probed against the 2nd consumer (LaFolieDouce): **17** hand-rolled panel footers
   across its 3 apps, so it earns a primitive. Gallery `/panel` “Panel footer”; 3 specs.
 
-- **`fold-danger-zone` — the destructive-action block.** An alert-toned framed
-  region for “delete X” panels/forms: a title, a projected explanation of the
-  blast radius, and an optional **type-to-confirm** guard (`confirmPhrase`) — the
-  user retypes the exact phrase (trimmed, case-sensitive) before the action arms.
-  The destructive control is **projected** via `[actions]`, so the consumer owns
-  it and wires its `[disabled]` to the two-way `armed` state; omit `confirmPhrase`
-  for a framed region with no gate (`armed` always `true`). `role="group"` +
+- **`fold-danger-zone` — the destructive-action block.** A framed region for
+  “delete X” settings: a title, a projected explanation, and a guarded action.
+  **Two appearances** — `filled` (alert-tinted block) and `section`, a danger
+  _section_ with a **normal-background body** so it can host ordinary content, only
+  the frame + heading signalling danger (the GitHub “Danger Zone” look). The
+  destructive control's confirm **reveals on click**: an `actionLabel` button
+  opens an in-place `fold-inline-confirm` — a plain “are you sure?”, or a
+  type-to-confirm field when `confirmPhrase` is set (the input is never shown until
+  the button is clicked). `(confirmed)` emits the typed text (or `""`); omit
+  `actionLabel` for a framed section with no action. `role="group"` +
   `aria-labelledby`. Gallery `/danger-zone`; 5 specs.
 
 - **`fold-multiselect` bulk actions — `allowSelectAll` / `allowClear`.** A sticky

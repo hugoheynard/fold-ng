@@ -130,12 +130,17 @@ leave-balance-display, configurable-tab-bar, etc.
       (in-place guard); `fold-dialog` is for when the choice must **block**. - Not from SH3PHERD `shared/` — a net-new component; sequence after the
       0.5 extractions unless a real use-case pulls it forward.
 
-- [x] **`fold-danger-zone` — the destructive-action block.** ✅ Done (2026-08-04)
-      — alert-toned frame + title + projected blast-radius explanation + optional
-      type-to-confirm (`confirmPhrase`, trimmed/case-sensitive). The destructive
-      control is projected via `[actions]`; the consumer wires `[disabled]` to the
-      two-way `armed` model (always `true` when no phrase). `role="group"` +
-      `aria-labelledby`. Gallery `/danger-zone`; 5 specs. Original sketch below.
+- [x] **`fold-danger-zone` — the destructive-action block.** ✅ Done (2026-08-04),
+      reworked same day: two appearances — `filled` (alert-tinted) and `section`
+      (alert border + **normal-background body** for ordinary content, the GitHub
+      "Danger Zone" look) — and the confirm **reveals on click** by composing
+      `fold-inline-confirm` (`actionLabel` opens a plain or type-to-confirm flow;
+      `(confirmed)` emits). `role="group"` + `aria-labelledby`. Gallery
+      `/danger-zone`; 5 specs.
+  - [ ] **Revisit the visual design.** The current filled/section styling +
+        spacing is a first pass — review the danger-zone look (heading weight/colour,
+        the section footer bar, icon, density) against the rest of the system once
+        it's used in a real settings page. Design polish, not behaviour.
 
 <details><summary>Original note</summary>
 

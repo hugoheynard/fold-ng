@@ -7,16 +7,17 @@
   <ng-content />
 </div>
 
-@if (confirmPhrase(); as phrase) {
-  <fold-input
-    class="dz-confirm"
-    [label]="promptLabel()"
-    [placeholder]="confirmPlaceholder() ?? phrase"
-    autocomplete="off"
-    [(value)]="typed"
-  />
+@if (actionLabel(); as label) {
+  <div class="dz-actions">
+    <fold-inline-confirm
+      [match]="confirmPhrase() ?? ''"
+      [message]="message() ?? ''"
+      [intent]="intent()"
+      (confirmed)="confirmed.emit($event)"
+    >
+      <button foldButton emphasis="solid" [intent]="intent()">
+        {{ label }}
+      </button>
+    </fold-inline-confirm>
+  </div>
 }
-
-<div class="dz-actions">
-  <ng-content select="[actions]" />
-</div>

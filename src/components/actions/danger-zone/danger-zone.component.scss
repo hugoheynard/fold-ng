@@ -1,19 +1,28 @@
-// A framed destructive-action region — alert-toned so it reads as "careful". A
-// tinted surface + alert border set it apart from the surrounding form/panel.
+// A framed destructive-action region. Two appearances share the alert border +
+// danger-toned heading; they differ in the body background.
 :host {
-  display: flex;
-  flex-direction: column;
-  gap: var(--fold-space-md, 0.75rem);
-  padding: var(--fold-space-lg, 1rem);
+  display: block;
   border: 1px solid var(--fold-color-alert-border);
   border-radius: var(--fold-radius-md, 10px);
+  overflow: hidden; // keep the section dividers flush with the rounded corners
+}
+
+// `filled` — the whole block is alert-tinted (a compact "delete X" region).
+:host([data-appearance="filled"]) {
   background: var(--fold-color-alert-surface);
+}
+
+// `section` — a normal-background card; only the border + heading signal danger,
+// so the body can host ordinary content (the GitHub "Danger Zone" look).
+:host([data-appearance="section"]) {
+  background: var(--fold-color-surface-card);
 }
 
 .dz-head {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: var(--fold-space-lg) var(--fold-space-lg) var(--fold-space-sm);
   color: var(--fold-color-alert-text);
 }
 .dz-icon {
@@ -25,12 +34,15 @@
   font-weight: 600;
 }
 
-// The blast-radius explanation. Muted, readable.
 .dz-body {
+  padding: 0 var(--fold-space-lg) var(--fold-space-md);
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-sm, 0.875rem);
   line-height: 1.5;
 
+  &:empty {
+    display: none;
+  }
   :first-child {
     margin-top: 0;
   }
@@ -39,25 +51,26 @@
   }
 }
 
-.dz-confirm {
-  display: block;
-}
-
-// The action row — right-aligned, wraps on narrow. Empty when no [actions] are
-// projected (its gap then contributes nothing since it has no children).
 .dz-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: var(--fold-space-sm, 0.5rem);
+  gap: var(--fold-space-sm);
+  padding: var(--fold-space-md) var(--fold-space-lg);
+}
 
-  &:empty {
-    display: none;
-  }
+// In the section appearance, set the action row off from the body with a rule +
+// a faintly sunken bar (a real footer), like a settings card.
+:host([data-appearance="section"]) .dz-actions {
+  border-top: 1px solid var(--fold-color-border-subtle);
+  background: var(--fold-color-surface-sunken);
 }
 
 @media (forced-colors: active) {
   :host {
     border-color: CanvasText;
+  }
+  :host([data-appearance="section"]) .dz-actions {
+    border-top-color: CanvasText;
   }
 }

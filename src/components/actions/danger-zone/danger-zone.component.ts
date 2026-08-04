@@ -1,42 +1,48 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
-  effect,
   inject,
   input,
-  model,
-  signal,
+  output,
 } from "@angular/core";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
-import { FoldInputComponent } from "../../forms/input/input.component";
+import { FoldButtonComponent } from "../button/button.component";
+import type { FoldButtonIntent } from "../button/button.types";
+import { FoldInlineConfirmComponent } from "../inline-confirm/inline-confirm.component";
 
 /**
- * `<fold-danger-zone>` — the framed block for a **destructive** action (delete an
- * entity, close an account). An alert-toned region with a title, a projected
- * explanation of the blast radius, and an optional **type-to-confirm** guard:
- * the user must retype an exact phrase (the entity's name / handle) before the
- * action arms. The destructive control is projected via `[actions]`, so the
- * consumer keeps full control of it — they just wire its `[disabled]` to the
- * two-way {@link armed} state.
+ * `<fold-danger-zone>` — the framed region for **destructive** actions on a
+ * settings page (delete an entity, close an account). A title, a projected
+ * explanation, and an optional guarded action.
+ *
+ * **Two appearances:**
+ * - `filled` (default) — the whole block is alert-tinted; a compact "delete X"
+ *   region (e.g. at the foot of a panel).
+ * - `section` — a **danger *section***: an alert-bordered card with a
+ *   **normal-background body**, so it can host ordinary content (rows,
+ *   descriptions, forms) with only the frame + heading signalling danger — the
+ *   GitHub "Danger Zone" look.
+ *
+ * **The confirm reveals on click.** The destructive control is a projected-free
+ * `actionLabel` button; activating it opens an in-place {@link
+ * FoldInlineConfirmComponent} — a simple "are you sure?", or (with
+ * `confirmPhrase`) a type-to-confirm field that must be retyped before the action
+ * arms. The input is never shown until the button is clicked. `(confirmed)` fires
+ * with the typed text (or `""`). Omit `actionLabel` for a framed danger section
+ * with no action of its own.
  *
  * ```html
  * <fold-danger-zone
+ *   appearance="section"
  *   title="Delete workspace"
+ *   actionLabel="Delete workspace"
  *   [confirmPhrase]="workspace.name"
- *   [(armed)]="armed"
+ *   (confirmed)="delete()"
  * >
  *   <p>This permanently deletes the workspace and everything in it. It cannot be undone.</p>
- *   <button foldButton emphasis="solid" intent="critical" actions
- *           [disabled]="!armed()" (click)="delete()">
- *     Delete workspace
- *   </button>
  * </fold-danger-zone>
  * ```
- *
- * Omit `confirmPhrase` for a framed danger region with **no** gate — `armed` is
- * then always `true`. Composes inside `fold-panel-host` / a future `fold-dialog`.
  *
  * @selector `fold-danger-zone`
  */
@@ -44,11 +50,12 @@ import { FoldInputComponent } from "../../forms/input/input.component";
   selector: "fold-danger-zone",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FoldIconComponent, FoldInputComponent],
+  imports: [FoldIconComponent, FoldButtonComponent, FoldInlineConfirmComponent],
   templateUrl: "./danger-zone.component.html",
   styleUrl: "./danger-zone.component.scss",
   host: {
     role: "group",
+    "[attr.data-appearance]": "appearance()",
     "[attr.aria-labelledby]": "titleId",
   },
 })
@@ -57,43 +64,25 @@ export class FoldDangerZoneComponent {
 
   /** The region heading — also its accessible name. */
   readonly title = input.required<string>();
-  /** The exact phrase the user must retype to arm the action. Omit for a framed
-   *  danger region with **no** confirm gate ({@link armed} stays `true`). */
-  readonly confirmPhrase = input<string>();
-  /** Prompt shown above the confirm field. Defaults to a “Type “<phrase>” to
-   *  confirm” sentence built from {@link confirmPhrase}. */
-  readonly confirmLabel = input<string>();
-  /** Placeholder in the confirm field. @default the phrase itself */
-  readonly confirmPlaceholder = input<string>();
   /**
-   * Two-way **armed** state — `true` when the action may fire: always `true` when
-   * there is no `confirmPhrase`, otherwise `true` only while the typed text
-   * exactly matches it (trimmed, case-sensitive). Bind it to the projected
-   * control's `[disabled]`.
+   * `filled` (alert-tinted block) or `section` (alert-bordered card with a
+   * normal-background body — the danger *section*). @default 'filled'
    */
-  readonly armed = model<boolean>(false);
+  readonly appearance = input<"filled" | "section">("filled");
+  /** The destructive button's label. Omit for a framed danger section with no
+   *  action of its own. */
+  readonly actionLabel = input<string>();
+  /** The exact phrase the user must retype to arm the action (type-to-confirm).
+   *  Omit for a plain "are you sure?" reveal. */
+  readonly confirmPhrase = input<string>();
+  /** An optional warning shown above the confirm row when the action opens. */
+  readonly message = input<string>();
+  /** Colour of the destructive button. @default 'danger' */
+  readonly intent = input<FoldButtonIntent>("danger");
+
+  /** Fires when the user confirms — carries the typed phrase (or `""`). */
+  readonly confirmed = output<string>();
 
   /** Stable id the host's `aria-labelledby` points at. */
   protected readonly titleId = this.ids.next("fold-danger-zone");
-  /** What the user has typed into the confirm field. */
-  protected readonly typed = signal("");
-
-  /** The confirm prompt — the consumer's `confirmLabel`, else a default built
-   *  from the phrase. Empty when there is no phrase (the field is hidden). */
-  protected readonly promptLabel = computed(() => {
-    const phrase = this.confirmPhrase();
-    if (!phrase) {
-      return "";
-    }
-    return this.confirmLabel() ?? `Type “${phrase}” to confirm`;
-  });
-
-  constructor() {
-    // Keep the two-way `armed` in sync: no phrase ⇒ always armed; otherwise the
-    // trimmed typed text must exactly match the phrase.
-    effect(() => {
-      const phrase = this.confirmPhrase();
-      this.armed.set(phrase ? this.typed().trim() === phrase : true);
-    });
-  }
 }
