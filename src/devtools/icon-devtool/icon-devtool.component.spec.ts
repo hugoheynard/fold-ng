@@ -49,6 +49,31 @@ describe("FoldIconDevtoolComponent", () => {
     expect(cells[0].getAttribute("title")).toBe("truck");
   });
 
+  it("groups icons into category sections whose counts sum to the total", () => {
+    const { host } = render();
+    const registry = TestBed.inject(FoldIconRegistry);
+    const counts = [...host.querySelectorAll(".dt-cat-count")].map((n) =>
+      Number(n.textContent),
+    );
+    expect(counts.length).toBeGreaterThan(1); // several categories
+    const total = counts.reduce((sum, n) => sum + n, 0);
+    expect(total).toBe(registry.names().length);
+  });
+
+  it("collapses a category to its header, hiding its cells", () => {
+    const { fixture, host } = render();
+    const before = host.querySelectorAll(".dt-cell").length;
+    const head = host.querySelector(".dt-cat-head") as HTMLButtonElement;
+    const count = Number(
+      head.querySelector(".dt-cat-count")?.textContent ?? "0",
+    );
+    expect(count).toBeGreaterThan(0);
+    head.click();
+    fixture.detectChanges();
+    expect(head.getAttribute("aria-expanded")).toBe("false");
+    expect(host.querySelectorAll(".dt-cell").length).toBe(before - count);
+  });
+
   it("shows an empty message when nothing matches", () => {
     const { fixture, host } = render();
     const input = host.querySelector(".dt-search-input") as HTMLInputElement;

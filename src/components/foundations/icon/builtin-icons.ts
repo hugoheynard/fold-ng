@@ -27,6 +27,27 @@ export const FOLD_BUILTIN_ICONS = {
   ...BRANDS_ICONS,
 } as const;
 
+/**
+ * The built-in catalogue grouped by category, in display order — the single
+ * source of truth for tooling that browses icons by theme (e.g. the
+ * `fold-icon-devtool`). Each source file owns its slice; this list only names
+ * and orders them. Host-registered icons are *not* here — they carry no
+ * built-in category, so tooling buckets them separately.
+ */
+export const FOLD_BUILTIN_ICON_CATEGORIES = [
+  { id: "ui", label: "UI", names: Object.keys(UI_ICONS) },
+  { id: "nav", label: "Navigation", names: Object.keys(NAV_ICONS) },
+  { id: "commerce", label: "Commerce", names: Object.keys(COMMERCE_ICONS) },
+  { id: "music", label: "Music", names: Object.keys(MUSIC_ICONS) },
+  { id: "status", label: "Status", names: Object.keys(STATUS_ICONS) },
+  { id: "people", label: "People", names: Object.keys(PEOPLE_ICONS) },
+  { id: "brands", label: "Brands", names: Object.keys(BRANDS_ICONS) },
+] as const;
+
+/** A built-in icon category id (`"ui"`, `"commerce"`, …). */
+export type FoldIconCategoryId =
+  (typeof FOLD_BUILTIN_ICON_CATEGORIES)[number]["id"];
+
 /** Every built-in icon name — derived from the registry keys (autocompletes). */
 export type FoldBuiltinIconName = keyof typeof FOLD_BUILTIN_ICONS;
 

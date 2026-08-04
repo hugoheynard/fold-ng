@@ -266,10 +266,14 @@ export {
   provideFoldIcons,
 } from "./components/foundations/icon/icon-registry.service";
 export type { FoldIconSet } from "./components/foundations/icon/icon-registry.service";
-export { FOLD_BUILTIN_ICONS } from "./components/foundations/icon/builtin-icons";
+export {
+  FOLD_BUILTIN_ICONS,
+  FOLD_BUILTIN_ICON_CATEGORIES,
+} from "./components/foundations/icon/builtin-icons";
 export type {
   FoldIconName,
   FoldBuiltinIconName,
+  FoldIconCategoryId,
 } from "./components/foundations/icon/builtin-icons";
 export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
 export { FoldNavLayoutComponent } from "./components/layout/nav-layout/nav-layout.component";

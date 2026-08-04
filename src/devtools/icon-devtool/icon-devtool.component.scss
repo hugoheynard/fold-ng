@@ -118,13 +118,61 @@
   }
 }
 
+// ── Category sections ──────────────────────────────────────────────────
+.dt-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow-y: auto;
+  min-height: 4rem;
+  padding: 0.1rem;
+}
+.dt-cat {
+  display: flex;
+  flex-direction: column;
+}
+.dt-cat-head {
+  all: unset;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.35rem;
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text-muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fold-color-text);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: -2px;
+    border-radius: var(--fold-radius-sm, 8px);
+  }
+}
+.dt-cat-label {
+  font-size: var(--fold-text-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dt-cat-count {
+  padding: 0.02rem 0.35rem;
+  border-radius: var(--fold-radius-pill, 9999px);
+  background: var(--fold-color-surface-sunken);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs, 0.75rem);
+  font-variant-numeric: tabular-nums;
+}
+
 .dt-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
   gap: 0.25rem;
-  overflow-y: auto;
-  min-height: 4rem;
-  padding: 0.1rem;
+  padding: 0.1rem 0.1rem 0.35rem;
 }
 .dt-cell {
   all: unset;

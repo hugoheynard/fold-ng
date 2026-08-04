@@ -46,19 +46,42 @@
       />
     </div>
 
-    <div class="dt-grid" role="listbox" aria-label="Icons">
-      @for (name of matches(); track name) {
-        <button
-          type="button"
-          role="option"
-          class="dt-cell"
-          [class.is-selected]="selected() === name"
-          [attr.aria-selected]="selected() === name"
-          [title]="name"
-          (click)="select(name)"
-        >
-          <fold-icon [name]="name" size="md" aria-hidden="true" />
-        </button>
+    <div class="dt-cats">
+      @for (cat of categories(); track cat.id) {
+        <section class="dt-cat">
+          <button
+            type="button"
+            class="dt-cat-head"
+            [attr.aria-expanded]="!isCollapsed(cat.id)"
+            (click)="toggleCategory(cat.id)"
+          >
+            <fold-icon
+              [name]="isCollapsed(cat.id) ? 'chevron-right' : 'chevron-down'"
+              size="sm"
+              aria-hidden="true"
+            />
+            <span class="dt-cat-label">{{ cat.label }}</span>
+            <span class="dt-cat-count">{{ cat.names.length }}</span>
+          </button>
+
+          @if (!isCollapsed(cat.id)) {
+            <div class="dt-grid" role="listbox" [attr.aria-label]="cat.label">
+              @for (name of cat.names; track name) {
+                <button
+                  type="button"
+                  role="option"
+                  class="dt-cell"
+                  [class.is-selected]="selected() === name"
+                  [attr.aria-selected]="selected() === name"
+                  [title]="name"
+                  (click)="select(name)"
+                >
+                  <fold-icon [name]="name" size="md" aria-hidden="true" />
+                </button>
+              }
+            </div>
+          }
+        </section>
       } @empty {
         <p class="dt-empty">No icon matches “{{ query() }}”.</p>
       }

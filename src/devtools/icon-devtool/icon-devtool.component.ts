@@ -6,6 +6,7 @@ import {
   output,
   signal,
 } from "@angular/core";
+import { FOLD_BUILTIN_ICON_CATEGORIES } from "../../components/foundations/icon/builtin-icons";
 import { FoldIconRegistry } from "../../components/foundations/icon/icon-registry.service";
 import { FoldIconComponent } from "../../components/foundations/icon/icon.component";
 import { FoldButtonIconComponent } from "../../components/actions/button-icon/button-icon.component";
@@ -19,6 +20,23 @@ interface DevtoolPos {
 
 const SIZE_STEPS = ["xs", "sm", "md", "lg", "xl"] as const;
 type IconSize = (typeof SIZE_STEPS)[number];
+
+/** Bucket id for registry icons that belong to no built-in category. */
+const CUSTOM_CATEGORY_ID = "custom";
+
+/** A category section rendered in the grid: its label, count, and members. */
+interface IconCategory {
+  readonly id: string;
+  readonly label: string;
+  readonly names: readonly string[];
+}
+
+/** name → built-in category id, for bucketing the live registry by theme. */
+const CATEGORY_OF_NAME = new Map<string, string>(
+  FOLD_BUILTIN_ICON_CATEGORIES.flatMap((category) =>
+    category.names.map((name) => [name, category.id] as const),
+  ),
+);
 
 /**
  * `<fold-icon-devtool>` — a **dev-only** floating panel that browses the live
@@ -79,6 +97,54 @@ export class FoldIconDevtoolComponent {
     const names = this.allNames();
     return q ? names.filter((n) => n.includes(q)) : names;
   });
+
+  /** Category ids the user has collapsed (folded to their header). */
+  private readonly collapsed = signal<ReadonlySet<string>>(new Set());
+
+  /**
+   * The matches grouped into category sections, in built-in order, with a
+   * trailing **Custom** bucket for host-registered icons. Empty categories are
+   * dropped so a search only shows the themes it actually hit.
+   */
+  protected readonly categories = computed<readonly IconCategory[]>(() => {
+    const buckets = new Map<string, string[]>();
+    for (const name of this.matches()) {
+      const id = CATEGORY_OF_NAME.get(name) ?? CUSTOM_CATEGORY_ID;
+      const bucket = buckets.get(id);
+      if (bucket) {
+        bucket.push(name);
+      } else {
+        buckets.set(id, [name]);
+      }
+    }
+    const sections: IconCategory[] = [];
+    for (const category of FOLD_BUILTIN_ICON_CATEGORIES) {
+      const names = buckets.get(category.id);
+      if (names) {
+        sections.push({ id: category.id, label: category.label, names });
+      }
+    }
+    const custom = buckets.get(CUSTOM_CATEGORY_ID);
+    if (custom) {
+      sections.push({ id: CUSTOM_CATEGORY_ID, label: "Custom", names: custom });
+    }
+    return sections;
+  });
+
+  /** Whether a category section is folded to its header. */
+  protected isCollapsed(id: string): boolean {
+    return this.collapsed().has(id);
+  }
+
+  protected toggleCategory(id: string): void {
+    this.collapsed.update((set) => {
+      const next = new Set(set);
+      if (!next.delete(id)) {
+        next.add(id);
+      }
+      return next;
+    });
+  }
 
   /** The icon selected into the playground (empty = none). */
   protected readonly selected = signal("");
