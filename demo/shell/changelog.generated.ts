@@ -39,7 +39,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     unreleased: true,
     counts: {
       Changed: 3,
-      Added: 16,
+      Added: 17,
     },
     breaking: 1,
     groups: [
@@ -413,6 +413,153 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "House scrollbar tokens + ",
+              },
+              {
+                kind: "code",
+                value: "overflow-anchor",
+              },
+              {
+                kind: "text",
+                value: " — scroll-system Slice C.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The shell content scroll box and every ",
+              },
+              {
+                kind: "code",
+                value: "[foldScrollRegion]",
+              },
+              {
+                kind: "text",
+                value: " now paint one tokenised scrollbar: ",
+              },
+              {
+                kind: "code",
+                value: "--fold-scrollbar-size",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "-radius",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "-thumb",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "-track",
+              },
+              {
+                kind: "text",
+                value:
+                  ", with the thumb derived from the surface's own text so it adapts per theme ",
+              },
+              {
+                kind: "strong",
+                value: "and",
+              },
+              {
+                kind: "text",
+                value: " per surface (a chrome rail vs the page). Standard ",
+              },
+              {
+                kind: "code",
+                value: "scrollbar-width",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "scrollbar-color",
+              },
+              {
+                kind: "text",
+                value: " everywhere, plus a ",
+              },
+              {
+                kind: "code",
+                value: "@supports selector(::-webkit-scrollbar)",
+              },
+              {
+                kind: "text",
+                value: " layer (shipped in ",
+              },
+              {
+                kind: "code",
+                value: "tokens.css",
+              },
+              {
+                kind: "text",
+                value:
+                  ") for the thumb radius on Blink/WebKit. Both regions also set ",
+              },
+              {
+                kind: "code",
+                value: "overflow-anchor: auto",
+              },
+              {
+                kind: "text",
+                value:
+                  " so the reading position survives content reflowing above them. (The ",
+              },
+              {
+                kind: "code",
+                value: "--fold-scrollbar-*",
+              },
+              {
+                kind: "text",
+                value:
+                  " knobs are component vars, out of the colour catalogue — retune them on any ancestor. The viewport-",
+              },
+              {
+                kind: "strong",
+                value: "resize",
+              },
+              {
+                kind: "text",
+                value: " anchoring correction, which native ",
+              },
+              {
+                kind: "code",
+                value: "overflow-anchor",
+              },
+              {
+                kind: "text",
+                value: " doesn't cover, is a deferred follow-up — see ",
+              },
+              {
+                kind: "code",
+                value: "docs/scroll.md",
+              },
+              {
+                kind: "text",
+                value: ".)",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

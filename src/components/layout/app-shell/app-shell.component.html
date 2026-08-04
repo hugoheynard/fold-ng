@@ -69,7 +69,7 @@
   tabindex="-1"
   [attr.inert]="drawerOpen() ? '' : null"
 >
-  <div class="content-scroll" #scrollBox>
+  <div class="content-scroll fold-shell-scroll" #scrollBox>
     <div class="content-flow"><ng-content /></div>
     @if (footerBehavior() === "scroll") {
       <ng-container [ngTemplateOutlet]="footerTpl" />

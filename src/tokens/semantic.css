@@ -43,6 +43,20 @@
      width (16 → 24px vs 20 → 32px). Override to retune a panel's inner rhythm. */
   --fold-panel-gap: clamp(1rem, 2.4vw, 1.5rem); /* 16 → 24px */
 
+  /* Scrollbar — the house scrollbar for the shell content scroll box and every
+     `[foldScrollRegion]`. Not a `--fold-color-*` role (it's a component knob,
+     like the page-scaffold vars above), so it's out of the colour catalogue.
+     The thumb derives from the surface's own text via `currentColor`-style
+     mix, so it adapts per theme AND per surface with no per-theme entry. */
+  --fold-scrollbar-size: 10px;
+  --fold-scrollbar-radius: var(--fold-radius-pill);
+  --fold-scrollbar-thumb: color-mix(
+    in srgb,
+    var(--fold-color-text) 24%,
+    transparent
+  );
+  --fold-scrollbar-track: transparent;
+
   /* Surfaces (bg- = a fill role, darkest chrome → lightest page) */
   --fold-color-bg-page: var(--fold-ref-ink-850); /* page background        */
   --fold-color-bg-header: var(--fold-ref-ink-950); /* top header bar        */
@@ -317,6 +331,38 @@
    binding or stylesheet), which returns the instant the class is removed. */
 .fold-scroll-frozen {
   overflow: hidden !important;
+}
+
+/* ── House scrollbar (WebKit / Blink) ─────────────────────────
+   The tokenised scrollbar for the shell's content scroll box (`.fold-shell-scroll`)
+   and every `[foldScrollRegion]` (`.fold-scroll-region`). Firefox / the standard
+   `scrollbar-width` + `scrollbar-color` are set inline by the directive / shell
+   (they take custom-property values); this `::-webkit-scrollbar` layer — which
+   can't be an inline style — adds the thumb radius on Blink/WebKit. The colour
+   tokens derive from the surface's own text, so the thumb adapts per theme AND
+   per surface (chrome rail vs page). `@supports selector()` gates it so only
+   engines that actually style the pseudo pay for it. */
+@supports selector(::-webkit-scrollbar) {
+  .fold-shell-scroll::-webkit-scrollbar,
+  .fold-scroll-region::-webkit-scrollbar {
+    width: var(--fold-scrollbar-size, 10px);
+    height: var(--fold-scrollbar-size, 10px);
+  }
+  .fold-shell-scroll::-webkit-scrollbar-track,
+  .fold-scroll-region::-webkit-scrollbar-track {
+    background: var(--fold-scrollbar-track, transparent);
+  }
+  .fold-shell-scroll::-webkit-scrollbar-thumb,
+  .fold-scroll-region::-webkit-scrollbar-thumb {
+    background: var(
+      --fold-scrollbar-thumb,
+      color-mix(in srgb, currentColor 24%, transparent)
+    );
+    border-radius: var(--fold-scrollbar-radius, var(--fold-radius-pill));
+    /* A transparent inset so the thumb reads as a slim pill, not a full-width bar. */
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
 }
 
 /* ── Override theme: LUMEN (light) ────────────────────────── */

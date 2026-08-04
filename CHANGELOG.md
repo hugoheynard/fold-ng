@@ -47,6 +47,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **House scrollbar tokens + `overflow-anchor` — scroll-system Slice C.** The
+  shell content scroll box and every `[foldScrollRegion]` now paint one tokenised
+  scrollbar: `--fold-scrollbar-size` / `-radius` / `-thumb` / `-track`, with the
+  thumb derived from the surface's own text so it adapts per theme **and** per
+  surface (a chrome rail vs the page). Standard `scrollbar-width`/`scrollbar-color`
+  everywhere, plus a `@supports selector(::-webkit-scrollbar)` layer (shipped in
+  `tokens.css`) for the thumb radius on Blink/WebKit. Both regions also set
+  `overflow-anchor: auto` so the reading position survives content reflowing above
+  them. (The `--fold-scrollbar-*` knobs are component vars, out of the colour
+  catalogue — retune them on any ancestor. The viewport-**resize** anchoring
+  correction, which native `overflow-anchor` doesn't cover, is a deferred
+  follow-up — see `docs/scroll.md`.)
+
 - **`[foldScrollRegion]` + the shell scroll registry — scroll-system Slice B.**
   The one opt-in of the scroll model (`docs/scroll.md`): with `fold-app-shell`
   owning the page scroll, a layout that needs an independently-scrolling area (a

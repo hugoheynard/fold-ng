@@ -343,7 +343,7 @@ lib-wide levers there cleared._
       shell flipped to owning the scroll.** (Shipped default is `flow`, not the
       `own` first sketched here — the locked decision took the one-time breaking
       flip.) Its `:host` used to hardcode `overflow-y:auto;
-  overscroll-behavior:contain; flex:1 1 auto; min-height:0` — **always** a
+overscroll-behavior:contain; flex:1 1 auto; min-height:0` — **always** a
       self-scrolling box, built for the old `contentScroll="clip"` model, with no
       input to turn it off, so a page built on `fold-page-layout` was structurally
       incompatible with the shell owning the scroll (`footerBehavior="scroll"`):
@@ -792,23 +792,38 @@ committed work; the point is to learn before we lock anything.
     all-🟢 and `publint` clean for `fold-ng/devtools`. (2) the api-surface guard now
     walks an ENTRIES list (`.` + `./devtools`), snapshotting the devtools surface too.
 
-- **[2026-07-28] Tokenised scrollbar styling — including thumb radius.** Fold
-  themes everything else via tokens, but scrollbars are still browser-default,
-  which reads as un-designed inside the glass shell/panels. Want a house
-  scrollbar (track/thumb colour, thumb width, and **radius**) driven by tokens
-  (`--fold-scrollbar-*`), opt-in on the scroll containers we own (panel body,
-  data-table, shell rails). **The catch to probe:** the standard
-  `scrollbar-width` / `scrollbar-color` props (Firefox + Chromium) give colour
-  and thin/auto **but no radius** — a rounded thumb only exists via the
-  non-standard `::-webkit-scrollbar*` pseudo-elements (WebKit/Blink), and the
-  two can't be mixed on the same element cleanly. Decide the strategy:
-  (a) standard props only (colour + thin, no radius, universal), or
-  (b) a `@supports selector(::-webkit-scrollbar)` layer that adds the radius
-  on Blink/WebKit and degrades to the standard props elsewhere. Also decide
-  **global vs opt-in** (styling every scroller vs a `.fold-scroll` utility /
-  per-component flag) — global risks fighting consumer apps. Ship the tokens
-  first; wire the owned scroll containers once the strategy is picked.
+- [x] **[2026-07-28] Tokenised scrollbar styling — including thumb radius.**
+      ✅ Shipped in scroll-system Slice C (2026-08-04). Strategy (b): standard
+      `scrollbar-width`/`-color` inline + a `@supports selector(::-webkit-scrollbar)`
+      layer in `tokens.css` for the radius. Opt-in on the containers fold owns — the
+      shell content box (`.fold-shell-scroll`) and every `[foldScrollRegion]`
+      (`.fold-scroll-region`), not global. Tokens `--fold-scrollbar-size` / `-radius`
+      / `-thumb` / `-track`, thumb derived from the surface text so it adapts per
+      theme + surface. Original write-up below.
+      <br>Fold
+      themes everything else via tokens, but scrollbars are still browser-default,
+      which reads as un-designed inside the glass shell/panels. Want a house
+      scrollbar (track/thumb colour, thumb width, and **radius**) driven by tokens
+      (`--fold-scrollbar-*`), opt-in on the scroll containers we own (panel body,
+      data-table, shell rails). **The catch to probe:** the standard
+      `scrollbar-width` / `scrollbar-color` props (Firefox + Chromium) give colour
+      and thin/auto **but no radius** — a rounded thumb only exists via the
+      non-standard `::-webkit-scrollbar*` pseudo-elements (WebKit/Blink), and the
+      two can't be mixed on the same element cleanly. Decide the strategy:
+      (a) standard props only (colour + thin, no radius, universal), or
+      (b) a `@supports selector(::-webkit-scrollbar)` layer that adds the radius
+      on Blink/WebKit and degrades to the standard props elsewhere. Also decide
+      **global vs opt-in** (styling every scroller vs a `.fold-scroll` utility /
+      per-component flag) — global risks fighting consumer apps. Ship the tokens
+      first; wire the owned scroll containers once the strategy is picked.
 - **[2026-07-29] Preserve reading position when content above resizes / reflows.**
+  ⏳ **Partially shipped in Slice C (2026-08-04):** native `overflow-anchor: auto`
+  is now set on the shell content box + every `[foldScrollRegion]`, covering the
+  **content-mutation** half. The **viewport-resize** correction below is the one
+  deferred piece — it wants a `ResizeObserver` adjustment that jsdom can't
+  exercise, so it waits for a real reflow case (the B2B catalogue) to design +
+  test against rather than shipping an untested timing hack. Original write-up:
+  <br>
   When a consumer resizes the window (or an upper element reflows) while reading a
   long list — e.g. LaFolieDouce B2B scrolling the product catalogue — the viewport
   must **stay on the row they were reading**, not jump. Browser **scroll anchoring**

@@ -1,6 +1,8 @@
 # The scroll system (design note)
 
-> Status: **Slices A + B shipped (2026-08-04); C pending.** Decides the model
+> Status: **Slices A + B + C shipped (2026-08-04).** (Slice C ships the tokenised
+> scrollbar + native `overflow-anchor`; the viewport-**resize** anchoring
+> correction is the one deferred follow-up — see Slice C below.) Decides the model
 > before any code. Target: once an app uses `fold-app-shell`, **nobody writes
 > `overflow` again** — not the page, not a split view, not a sticky sidebar, not a
 > data-table body. Scroll is owned in one place and every nested scroll region is
@@ -122,9 +124,9 @@ coordinated scroll box:
   region registry makes this robust when the scroll owner is the shell, not `body`.
 - **Scroll-anchoring on resize.** The shell content region and every
   `foldScrollRegion` keep the top-most visible row fixed when an upper element
-  reflows or the window resizes (native `overflow-anchor` covers content mutation,
-  **not** viewport resize — so the region adds a `ResizeObserver` correction,
-  reduced-motion-safe).
+  reflows. Native `overflow-anchor: auto` (shipped in Slice C) covers content
+  mutation; it does **not** cover a viewport resize — the `ResizeObserver`
+  correction for that is the one deferred follow-up (Slice C).
 - **House scrollbar.** Tokenised (`--fold-scrollbar-*`: track/thumb colour, thumb
   width, **radius**) on the containers the system owns — standard
   `scrollbar-width`/`scrollbar-color` everywhere, plus a
@@ -156,8 +158,18 @@ auto }`) pushes a short page's `footerBehavior="scroll"` footer to the bottom,
    region's own overflow is never clobbered. Migrating the data-table / panel
    bodies onto it is deferred — they already scroll correctly, so the only win is
    the registry coordination, not the overflow.
-3. **Slice C — scrollbar tokens + scroll-anchoring.** Fold the two Explore items in;
-   apply to the shell content + every `foldScrollRegion`.
+3. **Slice C — scrollbar tokens + scroll-anchoring. ✅ Shipped 2026-08-04 (with
+   one deferral).** The tokenised house scrollbar (`--fold-scrollbar-size` /
+   `-radius` / `-thumb` / `-track`, thumb derived from the surface's own text so
+   it adapts per theme + surface) on the shell content box and every
+   `foldScrollRegion` — standard `scrollbar-width`/`-color` inline, plus a
+   `@supports selector(::-webkit-scrollbar)` layer in `tokens.css` for the thumb
+   radius. Both regions set `overflow-anchor: auto`, which keeps the reading
+   position on **content mutation** above them (native). **Deferred:** the
+   viewport-**resize** correction (native `overflow-anchor` does not cover a
+   window resize) — it wants a `ResizeObserver` adjustment that jsdom can't
+   exercise, so it waits for a real reflow case to design + test against, rather
+   than shipping an untested timing hack.
 
 ## Decisions (locked 2026-08-04)
 

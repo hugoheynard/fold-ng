@@ -37,6 +37,11 @@ describe("FoldScrollRegionDirective", () => {
     expect(el.style.minWidth).toBe(""); // only the scroll axis gets min-*: 0
     expect(el.style.overscrollBehavior).toBe("contain");
     expect(el.style.scrollbarWidth).toBe("thin");
+    expect(el.style.overflowAnchor).toBe("auto");
+    // The house scrollbar colour is tokenised, with a self-sufficient fallback.
+    expect(el.style.scrollbarColor).toContain("--fold-scrollbar-thumb");
+    // The class carries the WebKit pseudo from the global rule.
+    expect(el.classList.contains("fold-scroll-region")).toBe(true);
   });
 
   it('scrolls horizontally on axis="inline"', () => {

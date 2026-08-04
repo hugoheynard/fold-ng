@@ -153,6 +153,16 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* The house scrollbar (standard props; the WebKit pseudo rides the
+     `fold-shell-scroll` class from tokens.css). Tokenised, adapts per surface. */
+  scrollbar-width: thin;
+  scrollbar-color: var(
+      --fold-scrollbar-thumb,
+      color-mix(in srgb, currentColor 24%, transparent)
+    )
+    var(--fold-scrollbar-track, transparent);
+  /* Keep the reading position when content above reflows (content mutation). */
+  overflow-anchor: auto;
 }
 :host([data-scroll="scroll"]) .content-scroll,
 :host(.footer-scroll) .content-scroll {

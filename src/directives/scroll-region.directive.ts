@@ -52,12 +52,23 @@ export type FoldScrollAxis = "block" | "inline" | "both";
   selector: "[foldScrollRegion]",
   standalone: true,
   host: {
+    // The `fold-scroll-region` class carries the house scrollbar's WebKit/Blink
+    // `::-webkit-scrollbar` pseudo (which can't be an inline style) from the
+    // global rule in tokens.css; the standard scrollbar props are inline below.
+    class: "fold-scroll-region",
     "[style.overflowY]": "overflowY()",
     "[style.overflowX]": "overflowX()",
     "[style.minHeight]": "minHeight()",
     "[style.minWidth]": "minWidth()",
     "[style.overscrollBehavior]": '"contain"',
+    // Keep the reading position when content above the region reflows (native
+    // overflow-anchor; covers content mutation — a viewport-resize correction
+    // is a deferred follow-up, see docs/scroll.md Slice C).
+    "[style.overflowAnchor]": '"auto"',
+    // The house scrollbar (Firefox / standard). Tokenised, with a currentColor
+    // fallback so the directive still paints a subtle thumb without tokens.css.
     "[style.scrollbarWidth]": '"thin"',
+    "[style.scrollbarColor]": "scrollbarColor",
   },
 })
 export class FoldScrollRegionDirective {
@@ -66,6 +77,11 @@ export class FoldScrollRegionDirective {
     "block",
     { transform: (value) => (value === "" ? "block" : value) },
   );
+
+  /** `scrollbar-color: <thumb> <track>`, tokenised with a self-sufficient
+   *  fallback so the region paints a subtle thumb even without `tokens.css`. */
+  protected readonly scrollbarColor =
+    "var(--fold-scrollbar-thumb, color-mix(in srgb, currentColor 24%, transparent)) var(--fold-scrollbar-track, transparent)";
 
   protected readonly overflowY = computed(() =>
     this.foldScrollRegion() === "inline" ? null : "auto",
