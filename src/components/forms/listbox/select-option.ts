@@ -13,3 +13,26 @@ export interface FoldSelectOption<T> {
   /** Skip in keyboard nav and block selection. @default false */
   readonly disabled?: boolean;
 }
+
+/**
+ * A labelled group of options for the array API — the data-driven counterpart to
+ * a projected `<fold-optgroup>`. Put groups (and/or plain options) in the
+ * `[options]` array; the control renders each group's `options` under its
+ * `label`, and keyboard nav still roves the flattened list in order.
+ */
+export interface FoldSelectOptionGroup<T> {
+  /** The group heading — its accessible name; not selectable. */
+  readonly label: string;
+  /** The options under this heading. */
+  readonly options: readonly FoldSelectOption<T>[];
+}
+
+/** One entry of the `[options]` array: a plain option or a labelled group. */
+export type FoldSelectItem<T> = FoldSelectOption<T> | FoldSelectOptionGroup<T>;
+
+/** True when an `[options]` entry is a group (has nested `options`), not a leaf. */
+export function isFoldSelectOptionGroup<T>(
+  item: FoldSelectItem<T>,
+): item is FoldSelectOptionGroup<T> {
+  return "options" in item;
+}

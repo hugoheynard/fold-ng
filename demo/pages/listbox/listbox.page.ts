@@ -15,6 +15,7 @@ import {
   FoldTabPanelComponent,
   FoldTabsComponent,
   type FoldTabItem,
+  type FoldSelectItem,
   type FoldSelectOption,
 } from "../../../src/public-api";
 
@@ -62,16 +63,41 @@ export default class ListboxPage {
 
   /** Grouped options — projected `<fold-optgroup>` around `<fold-option>`s. */
   protected readonly cityValue = signal<string | null>(null);
-  protected readonly groupedCode = `<fold-listbox label="Ville" [(value)]="city">
+  /** The same grouping, data-driven via the `[options]` array API. */
+  protected readonly cityArrayValue = signal<string | null>(null);
+  protected readonly cityGroups: readonly FoldSelectItem<string>[] = [
+    {
+      label: "France",
+      options: [
+        { value: "paris", label: "Paris" },
+        { value: "lyon", label: "Lyon" },
+      ],
+    },
+    {
+      label: "Italia",
+      options: [
+        { value: "roma", label: "Roma" },
+        { value: "milano", label: "Milano" },
+      ],
+    },
+  ];
+  protected readonly groupedCode = `<!-- projected: <fold-optgroup> around <fold-option>s -->
+<fold-listbox label="Ville" [(value)]="city">
   <fold-optgroup label="France">
     <fold-option value="paris">Paris</fold-option>
     <fold-option value="lyon">Lyon</fold-option>
   </fold-optgroup>
   <fold-optgroup label="Italia">
     <fold-option value="roma">Roma</fold-option>
-    <fold-option value="milano">Milano</fold-option>
   </fold-optgroup>
-</fold-listbox>`;
+</fold-listbox>
+
+<!-- data-driven: groups in the [options] array (FoldSelectItem<T>[]) -->
+groups = [
+  { label: 'France', options: [{ value: 'paris', label: 'Paris' }, …] },
+  { label: 'Italia', options: [{ value: 'roma',  label: 'Roma'  }] },
+];
+<fold-listbox label="Ville" [(value)]="city" [options]="groups" />`;
 
   /** Data-driven number options — the `[options]` array API (value = number). */
   protected readonly plans: readonly FoldSelectOption<number>[] = [

@@ -64,17 +64,34 @@
       (pointermove)="onListPointermove($event)"
     >
       @if (options(); as opts) {
-        @for (o of opts; track o.value) {
-          <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
-            @if (optionTemplate(); as tpl) {
-              <ng-container
-                [ngTemplateOutlet]="tpl"
-                [ngTemplateOutletContext]="{ $implicit: o }"
-              />
-            } @else {
-              {{ o.label }}
-            }
-          </fold-option>
+        @for (item of opts; track $index) {
+          @if (asGroup(item); as group) {
+            <fold-optgroup [label]="group.label">
+              @for (o of group.options; track o.value) {
+                <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
+                  @if (optionTemplate(); as tpl) {
+                    <ng-container
+                      [ngTemplateOutlet]="tpl"
+                      [ngTemplateOutletContext]="{ $implicit: o }"
+                    />
+                  } @else {
+                    {{ o.label }}
+                  }
+                </fold-option>
+              }
+            </fold-optgroup>
+          } @else if (asOption(item); as o) {
+            <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
+              @if (optionTemplate(); as tpl) {
+                <ng-container
+                  [ngTemplateOutlet]="tpl"
+                  [ngTemplateOutletContext]="{ $implicit: o }"
+                />
+              } @else {
+                {{ o.label }}
+              }
+            </fold-option>
+          }
         }
       } @else {
         <ng-content />

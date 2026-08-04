@@ -27,9 +27,11 @@ All notable changes to **fold-ng** are documented here. The format follows
   options with a `descendants: true` query, so grouped options join the same
   flat, document-ordered list the roving keyboard core walks; the header carries
   `role="group"` + `aria-labelledby` (no `role="option"`), so nav skips straight
-  over it. Gallery `/listbox` “grouped” tab; specs cover discovery, cross-group
-  roving and selection. (Projected only for now; a grouped `[options]` array
-  variant is a follow-up.)
+  over it. Also supported in the data-driven **`[options]` array API**: an entry
+  is a `FoldSelectOption<T>` or a labelled `FoldSelectOptionGroup<T>` (mix both),
+  narrowed by the exported `isFoldSelectOptionGroup` guard. Gallery `/listbox`
+  “grouped” tab shows both forms; specs cover projected + array discovery,
+  cross-group roving and selection.
 
 - **The icon devtool browses by category.** `FoldIconDevtoolComponent` now
   groups the live registry into **collapsible sections** — UI · Navigation ·

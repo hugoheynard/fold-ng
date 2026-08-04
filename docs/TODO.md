@@ -59,9 +59,10 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         `<fold-option>`s; the owner discovers grouped options via a
         `descendants: true` content query (document order = roving order), header is
         `role="group"` + `aria-labelledby`, no `role="option"` so nav skips it.
-        Works in `fold-listbox` **and** `fold-multiselect`. Gallery `/listbox`
-        “grouped” tab; 4 specs. **Follow-up:** a grouped `[options]` array variant
-        (`FoldSelectOptionGroup<T>` in the data API) — projected only for now.
+        Works in `fold-listbox` **and** `fold-multiselect`, projected **and** in the
+        data-driven `[options]` array (an entry is a `FoldSelectOption<T>` or a
+        `FoldSelectOptionGroup<T>`, narrowed by the exported `isFoldSelectOptionGroup`
+        guard). Gallery `/listbox` “grouped” tab shows both forms; 7 specs.
   - [ ] **Filter / combobox variant** — a typed input that filters the list
         (`role="combobox"` textbox, live `aria-activedescendant`, no-match state).
   - [ ] **Multiselect clear-all / select-all** — bulk affordances (the current

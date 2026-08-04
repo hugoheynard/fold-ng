@@ -114,24 +114,36 @@
           <div params>
             <ng-container [ngTemplateOutlet]="knobs" />
           </div>
-          <fold-listbox
-            label="Ville"
-            placeholder="Choisir une ville…"
-            [size]="size()"
-            [variant]="variant()"
-            [allowClear]="true"
-            [(value)]="cityValue"
-          >
-            <fold-optgroup label="France">
-              <fold-option value="paris">Paris</fold-option>
-              <fold-option value="lyon">Lyon</fold-option>
-              <fold-option value="marseille">Marseille</fold-option>
-            </fold-optgroup>
-            <fold-optgroup label="Italia">
-              <fold-option value="roma">Roma</fold-option>
-              <fold-option value="milano">Milano</fold-option>
-            </fold-optgroup>
-          </fold-listbox>
+          <div class="sel-typed">
+            <fold-listbox
+              label="Ville (projected)"
+              placeholder="Choisir une ville…"
+              [size]="size()"
+              [variant]="variant()"
+              [allowClear]="true"
+              [(value)]="cityValue"
+            >
+              <fold-optgroup label="France">
+                <fold-option value="paris">Paris</fold-option>
+                <fold-option value="lyon">Lyon</fold-option>
+                <fold-option value="marseille">Marseille</fold-option>
+              </fold-optgroup>
+              <fold-optgroup label="Italia">
+                <fold-option value="roma">Roma</fold-option>
+                <fold-option value="milano">Milano</fold-option>
+              </fold-optgroup>
+            </fold-listbox>
+
+            <fold-listbox
+              label="Ville ([options] array)"
+              placeholder="Choisir une ville…"
+              [size]="size()"
+              [variant]="variant()"
+              [allowClear]="true"
+              [options]="cityGroups"
+              [(value)]="cityArrayValue"
+            />
+          </div>
         </dev-playground>
 
         <fold-page-section title="Tech — how it works" icon="code">

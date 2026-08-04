@@ -404,7 +404,7 @@
 - open: ModelSignal<boolean>
 - optional: InputSignalWithTransform<boolean, unknown>
 - optionalLabel: InputSignal<string>
-- options: InputSignal<readonly FoldSelectOption<T>[] | undefined>
+- options: InputSignal<readonly FoldSelectItem<T>[] | undefined>
 - placeholder: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
 - required: InputSignalWithTransform<boolean, unknown>
@@ -451,7 +451,7 @@
 - open: ModelSignal<boolean>
 - optional: InputSignalWithTransform<boolean, unknown>
 - optionalLabel: InputSignal<string>
-- options: InputSignal<readonly FoldSelectOption<T>[] | undefined>
+- options: InputSignal<readonly FoldSelectItem<T>[] | undefined>
 - placeholder: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
 - required: InputSignalWithTransform<boolean, unknown>
@@ -920,7 +920,9 @@
 - FoldRect (interface)
 - foldRegexRule (function)
 - foldResolvePalette (function)
+- FoldSelectItem (type)
 - FoldSelectOption (interface)
+- FoldSelectOptionGroup (interface)
 - FoldSemanticColorToken (type)
 - FoldShadowToken (type)
 - foldShadowVar (function)
@@ -960,6 +962,7 @@
 - foldWeekdayIndex (function)
 - foldWeekdayOf (function)
 - FoldWeekInfo (interface)
+- isFoldSelectOptionGroup (function)
 - observeElementWidth (function)
 - provideFoldCalendarLabels (function)
 - provideFoldDataTableLabels (function)

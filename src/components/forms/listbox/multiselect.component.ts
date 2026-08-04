@@ -23,7 +23,13 @@ import { FoldPopoverTriggerDirective } from "../../overlays/popover/popover-trig
 import type { FoldPopoverPlacement } from "../../overlays/popover/placement";
 import { FoldInputBaseComponent } from "../input/input-base.component";
 import { FoldOptionComponent } from "./option.component";
-import type { FoldSelectOption } from "./select-option";
+import { FoldOptgroupComponent } from "./optgroup.component";
+import {
+  type FoldSelectItem,
+  type FoldSelectOption,
+  type FoldSelectOptionGroup,
+  isFoldSelectOptionGroup,
+} from "./select-option";
 import { FoldListboxNav } from "./listbox-nav";
 import {
   FOLD_LISTBOX_OWNER,
@@ -62,6 +68,7 @@ const SUMMARY_MAX = 3;
     FoldInputBaseComponent,
     FoldIconComponent,
     FoldOptionComponent,
+    FoldOptgroupComponent,
     FoldPopoverComponent,
     FoldPopoverTriggerDirective,
     NgTemplateOutlet,
@@ -84,9 +91,11 @@ export class FoldMultiselectComponent<T>
    *  values; primitives don't need it. @default `Object.is` */
   readonly compareWith = input<(a: T, b: T) => boolean>();
   /** Data-driven options — the alternative to projecting `<fold-option>`. When
-   *  set, the value type is linked to the options at compile time. For rich rows,
-   *  project `<ng-template #option let-o>`. */
-  readonly options = input<readonly FoldSelectOption<T>[]>();
+   *  set, the value type is linked to the options at compile time. Entries can be
+   *  plain options or labelled {@link FoldSelectOptionGroup}s (the array
+   *  counterpart to `<fold-optgroup>`). For rich rows, project
+   *  `<ng-template #option let-o>`. */
+  readonly options = input<readonly FoldSelectItem<T>[]>();
   /** Disabled state — bound automatically by `FormField`. */
   readonly disabled = input<boolean>(false);
   /** Two-way touched state — set on the first toggle, kept in sync with the field. */
@@ -236,6 +245,17 @@ export class FoldMultiselectComponent<T>
   isSelected(value: T): boolean {
     const set = this.selectedSet();
     return set ? set.has(value) : this.value().some((v) => this.eq(v, value));
+  }
+
+  /** Narrow an `[options]` entry to a group, or `null` — lets the template
+   *  branch on the two shapes with each side fully typed (no `any`). */
+  protected asGroup(item: FoldSelectItem<T>): FoldSelectOptionGroup<T> | null {
+    return isFoldSelectOptionGroup(item) ? item : null;
+  }
+
+  /** Narrow an `[options]` entry to a plain option, or `null`. */
+  protected asOption(item: FoldSelectItem<T>): FoldSelectOption<T> | null {
+    return isFoldSelectOptionGroup(item) ? null : item;
   }
 
   /** Open with the keys a native select opens on. */
