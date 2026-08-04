@@ -37,53 +37,84 @@
       />
     </button>
 
-    <div
-      #list
-      foldPopoverPanel
-      class="lb-list"
-      role="listbox"
-      aria-multiselectable="true"
-      tabindex="-1"
-      [id]="listId"
-      [attr.aria-label]="label()"
-      [attr.aria-activedescendant]="activeId()"
-      (keydown)="onListKeydown($event)"
-      (click)="onListClick($event)"
-      (pointermove)="onListPointermove($event)"
-    >
-      @if (options(); as opts) {
-        @for (item of opts; track $index) {
-          @if (asGroup(item); as group) {
-            <fold-optgroup [label]="group.label">
-              @for (o of group.options; track o.value) {
-                <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
-                  @if (optionTemplate(); as tpl) {
-                    <ng-container
-                      [ngTemplateOutlet]="tpl"
-                      [ngTemplateOutletContext]="{ $implicit: o }"
-                    />
-                  } @else {
-                    {{ o.label }}
-                  }
-                </fold-option>
-              }
-            </fold-optgroup>
-          } @else if (asOption(item); as o) {
-            <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
-              @if (optionTemplate(); as tpl) {
-                <ng-container
-                  [ngTemplateOutlet]="tpl"
-                  [ngTemplateOutletContext]="{ $implicit: o }"
-                />
-              } @else {
-                {{ o.label }}
-              }
-            </fold-option>
+    <div foldPopoverPanel class="lb-panel">
+      @if (showBulk()) {
+        <div class="lb-bulk" role="group" aria-label="Bulk actions">
+          @if (allowSelectAll()) {
+            <button
+              type="button"
+              class="lb-bulk-btn"
+              [disabled]="allEnabledSelected()"
+              (click)="selectAll()"
+            >
+              <fold-icon name="check-circle" size="sm" aria-hidden="true" />
+              {{ selectAllLabel() }}
+            </button>
           }
-        }
-      } @else {
-        <ng-content />
+          @if (allowClear()) {
+            <button
+              type="button"
+              class="lb-bulk-btn"
+              [disabled]="value().length === 0"
+              (click)="clearAll()"
+            >
+              <fold-icon name="close" size="sm" aria-hidden="true" />
+              {{ clearLabel() }}
+            </button>
+          }
+        </div>
       }
+
+      <div
+        #list
+        class="lb-list"
+        role="listbox"
+        aria-multiselectable="true"
+        tabindex="-1"
+        [id]="listId"
+        [attr.aria-label]="label()"
+        [attr.aria-activedescendant]="activeId()"
+        (keydown)="onListKeydown($event)"
+        (click)="onListClick($event)"
+        (pointermove)="onListPointermove($event)"
+      >
+        @if (options(); as opts) {
+          @for (item of opts; track $index) {
+            @if (asGroup(item); as group) {
+              <fold-optgroup [label]="group.label">
+                @for (o of group.options; track o.value) {
+                  <fold-option
+                    [value]="o.value"
+                    [disabled]="o.disabled ?? false"
+                  >
+                    @if (optionTemplate(); as tpl) {
+                      <ng-container
+                        [ngTemplateOutlet]="tpl"
+                        [ngTemplateOutletContext]="{ $implicit: o }"
+                      />
+                    } @else {
+                      {{ o.label }}
+                    }
+                  </fold-option>
+                }
+              </fold-optgroup>
+            } @else if (asOption(item); as o) {
+              <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
+                @if (optionTemplate(); as tpl) {
+                  <ng-container
+                    [ngTemplateOutlet]="tpl"
+                    [ngTemplateOutletContext]="{ $implicit: o }"
+                  />
+                } @else {
+                  {{ o.label }}
+                }
+              </fold-option>
+            }
+          }
+        } @else {
+          <ng-content />
+        }
+      </div>
     </div>
   </fold-popover>
 </fold-input-base>

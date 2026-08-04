@@ -443,6 +443,9 @@
 - label: InputSignal<string | undefined>
 
 #### FoldMultiselectComponent
+- allowClear: InputSignalWithTransform<boolean, unknown>
+- allowSelectAll: InputSignalWithTransform<boolean, unknown>
+- clearLabel: InputSignal<string>
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
@@ -455,6 +458,7 @@
 - placeholder: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
 - required: InputSignalWithTransform<boolean, unknown>
+- selectAllLabel: InputSignal<string>
 - size: InputSignal<"sm" | "md" | "lg">
 - touched: ModelSignal<boolean>
 - value: ModelSignal<readonly T[]>

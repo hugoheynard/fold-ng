@@ -166,7 +166,9 @@
           row toggles it and the panel <strong>stays open</strong>. A separate
           component, not a <code>multiple</code> flag, so the Signal-Forms value
           type stays honest. <code>aria-multiselectable</code>; the trigger
-          summarises the picks.
+          summarises the picks. <code>allowSelectAll</code> /
+          <code>allowClear</code> add a sticky bulk-action bar at the top of the
+          panel (select-all skips disabled rows and keeps already-picked ones).
         </p>
 
         <dev-playground [code]="msCode()" [responsive]="false">
@@ -178,6 +180,8 @@
             placeholder="Choisir plusieurs…"
             [size]="size()"
             [variant]="variant()"
+            [allowSelectAll]="true"
+            [allowClear]="true"
             [(value)]="msValue"
           >
             @for (c of currencies; track c.value) {

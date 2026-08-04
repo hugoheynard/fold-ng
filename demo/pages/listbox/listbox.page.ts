@@ -151,7 +151,10 @@ groups = [
     ]),
   );
   protected readonly msCode = computed(() =>
-    this.snippet("fold-multiselect", '[(value)]="picked"', "fold-option"),
+    this.snippet("fold-multiselect", '[(value)]="picked"', "fold-option", [
+      "allowSelectAll",
+      "allowClear",
+    ]),
   );
   protected readonly selCode = computed(() =>
     this.snippet("fold-select", '[(value)]="currency"', "option"),

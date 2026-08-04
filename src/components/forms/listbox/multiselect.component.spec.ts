@@ -135,3 +135,83 @@ describe("FoldMultiselectComponent", () => {
     );
   });
 });
+
+// ── Bulk actions: select all / clear ─────────────────────────────────────
+@Component({
+  standalone: true,
+  imports: [FoldMultiselectComponent, FoldOptionComponent],
+  template: `<fold-multiselect
+    label="Genres"
+    [allowSelectAll]="true"
+    [allowClear]="true"
+    [(value)]="value"
+    [(open)]="open"
+  >
+    <fold-option value="rock">Rock</fold-option>
+    <fold-option value="jazz" [disabled]="true">Jazz</fold-option>
+    <fold-option value="soul">Soul</fold-option>
+    <fold-option value="funk">Funk</fold-option>
+  </fold-multiselect>`,
+})
+class BulkHostComponent {
+  readonly value = signal<readonly string[]>([]);
+  readonly open = signal(false);
+}
+
+describe("FoldMultiselect — bulk actions", () => {
+  function render() {
+    const fixture = TestBed.createComponent(BulkHostComponent);
+    fixture.detectChanges();
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const buttons = () => [
+      ...host.querySelectorAll<HTMLButtonElement>(".lb-bulk-btn"),
+    ];
+    return {
+      fixture,
+      value: fixture.componentInstance.value,
+      selectAll: () => buttons()[0]!,
+      clear: () => buttons()[1]!,
+    };
+  }
+
+  it("renders both bulk buttons when enabled", () => {
+    const r = render();
+    expect(r.selectAll().textContent).toContain("Select all");
+    expect(r.clear().textContent).toContain("Clear");
+  });
+
+  it("Select all adds every ENABLED option (skips disabled)", () => {
+    const r = render();
+    r.selectAll().click();
+    r.fixture.detectChanges();
+    expect([...r.value()].sort()).toEqual(["funk", "rock", "soul"]);
+  });
+
+  it("disables Select all once every enabled option is picked", () => {
+    const r = render();
+    r.selectAll().click();
+    r.fixture.detectChanges();
+    expect(r.selectAll().disabled).toBe(true);
+  });
+
+  it("Clear empties the set; it is disabled while empty", () => {
+    const r = render();
+    expect(r.clear().disabled).toBe(true);
+    r.value.set(["rock", "soul"]);
+    r.fixture.detectChanges();
+    expect(r.clear().disabled).toBe(false);
+    r.clear().click();
+    r.fixture.detectChanges();
+    expect(r.value()).toEqual([]);
+  });
+
+  it("Select all preserves an already-picked disabled option", () => {
+    const r = render();
+    r.value.set(["jazz"]); // disabled, but already selected
+    r.fixture.detectChanges();
+    r.selectAll().click();
+    r.fixture.detectChanges();
+    expect([...r.value()].sort()).toEqual(["funk", "jazz", "rock", "soul"]);
+  });
+});

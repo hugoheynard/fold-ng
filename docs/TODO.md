@@ -65,8 +65,12 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         guard). Gallery `/listbox` “grouped” tab shows both forms; 7 specs.
   - [ ] **Filter / combobox variant** — a typed input that filters the list
         (`role="combobox"` textbox, live `aria-activedescendant`, no-match state).
-  - [ ] **Multiselect clear-all / select-all** — bulk affordances (the current
-        `allowClear` is single-select only).
+  - [x] **Multiselect clear-all / select-all** — bulk affordances. ✅ Done
+        (2026-08-04) — `allowSelectAll` / `allowClear` render a sticky bar at the
+        panel top (select-all skips disabled + keeps already-picked; each button
+        gated; `selectAllLabel`/`clearLabel` overridable). The panel became a
+        wrapper around the `role="listbox"` so the bar stays valid ARIA. 5 specs;
+        gallery multiselect tab.
 - [x] **`fold-view-toggle`** (from `shared/view-toggle`, 2). ✅ Done (2026-07-26)
       — generalised from the app's Cards/Table control to any `options` segmented
       single-select. A real `role="radiogroup"` (roving tabindex, arrow keys,

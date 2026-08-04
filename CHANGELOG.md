@@ -20,6 +20,15 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-multiselect` bulk actions — `allowSelectAll` / `allowClear`.** A sticky
+  bar at the top of the panel offers **Select all** (adds every enabled option,
+  skipping disabled rows and preserving an already-picked disabled one) and
+  **Clear** (empties the set). Each button is gated — select-all disables once
+  everything enabled is picked, clear disables while empty. Labels are overridable
+  (`selectAllLabel` / `clearLabel`). The panel is now a wrapper around the
+  `role="listbox"` (the bar sits outside it, so it stays valid ARIA). Gallery
+  `/listbox` multiselect tab enables both; 5 specs.
+
 - **`fold-optgroup` — labelled option groups for the styleable selects.** The
   counterpart to the native `<optgroup>`: wrap `<fold-option>`s in
   `<fold-optgroup label="…">` to sort a long list into sections. Purely

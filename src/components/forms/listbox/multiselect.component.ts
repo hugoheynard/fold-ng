@@ -123,6 +123,16 @@ export class FoldMultiselectComponent<T>
   readonly placeholder = input<string>();
   /** Preferred popup placement. @default 'bottom-start' */
   readonly placement = input<FoldPopoverPlacement>("bottom-start");
+  /** Offer a **Select all** bulk action at the top of the panel (adds every
+   *  enabled option to the set). @default false */
+  readonly allowSelectAll = input(false, { transform: booleanAttribute });
+  /** Offer a **Clear** bulk action at the top of the panel (empties the set). The
+   *  multiselect counterpart to `fold-listbox`'s trigger `allowClear`. @default false */
+  readonly allowClear = input(false, { transform: booleanAttribute });
+  /** Label of the select-all action. @default 'Select all' */
+  readonly selectAllLabel = input("Select all");
+  /** Label of the clear action. @default 'Clear' */
+  readonly clearLabel = input("Clear");
 
   /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
   readonly inputId = inject(FoldIdService).next("fold-multiselect");
@@ -198,6 +208,21 @@ export class FoldMultiselectComponent<T>
       return `${this.inputId}-error`;
     }
     return this.hint() ? `${this.inputId}-hint` : null;
+  });
+
+  /** Whether the bulk-action bar shows at all (either affordance enabled, and
+   *  there is at least one option to act on). */
+  protected readonly showBulk = computed(
+    () =>
+      (this.allowSelectAll() || this.allowClear()) &&
+      this.allOptions().length > 0,
+  );
+  /** Every enabled option is already selected — nothing left for "Select all". */
+  protected readonly allEnabledSelected = computed(() => {
+    const enabled = this.allOptions().filter((o) => !o.disabled());
+    return (
+      enabled.length > 0 && enabled.every((o) => this.isSelected(o.value()))
+    );
   });
 
   /** Has the popup been opened this lifetime — so any close marks touched (blur
@@ -306,6 +331,27 @@ export class FoldMultiselectComponent<T>
     const opts = this.allOptions();
     const index = opts.findIndex((o) => o.id === el?.id);
     return index >= 0 && !opts[index]?.disabled() ? index : -1;
+  }
+
+  /** Add every enabled option to the set (keeps already-picked disabled ones);
+   *  the panel stays open. */
+  protected selectAll(): void {
+    const toAdd = this.allOptions()
+      .filter((o) => !o.disabled())
+      .map((o) => o.value())
+      .filter((v) => !this.isSelected(v));
+    if (toAdd.length > 0) {
+      this.value.set([...this.value(), ...toAdd]);
+      this.touched.set(true);
+    }
+  }
+
+  /** Empty the set (the bulk "Clear"). */
+  protected clearAll(): void {
+    if (this.value().length > 0) {
+      this.value.set([]);
+      this.touched.set(true);
+    }
   }
 
   /** Add or remove the option's value from the set; the panel stays open. */

@@ -1,3 +1,55 @@
 @use "listbox-shell" as shell;
 
 @include shell.listbox-shell;
+
+// The panel wraps the (optional) bulk-action bar above the scrolling list, so
+// the bar can stay put while the options scroll under it.
+.lb-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+// Bulk actions (select all / clear) — a sticky bar pinned to the panel top. An
+// opaque surface so options scroll cleanly beneath it.
+.lb-bulk {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  margin-bottom: 1px;
+  background: var(--fold-color-surface-card);
+  border-bottom: 1px solid var(--fold-color-border-subtle);
+}
+
+.lb-bulk-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--fold-radius-sm);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-secondary);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: var(--fold-color-surface-hover);
+    color: var(--fold-color-text);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: -2px;
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+@media (forced-colors: active) {
+  .lb-bulk {
+    border-bottom-color: CanvasText;
+  }
+}
