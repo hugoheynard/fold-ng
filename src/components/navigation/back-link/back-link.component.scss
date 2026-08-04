@@ -1,0 +1,43 @@
+:host {
+  display: inline-flex;
+}
+
+.bl {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.4rem 0.25rem 0.25rem;
+  border-radius: var(--fold-radius-sm, 8px);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-sm, 0.875rem);
+  cursor: pointer;
+  transition: color var(--fold-motion-fast);
+
+  &:hover {
+    color: var(--fold-color-text);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--fold-color-primary-border);
+    outline-offset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/* Nudge the chevron left a hair on hover — a small "going back" cue. */
+.bl-icon {
+  flex: none;
+  transition: transform var(--fold-motion-fast);
+}
+.bl:hover .bl-icon {
+  transform: translateX(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bl:hover .bl-icon {
+    transform: none;
+  }
+}

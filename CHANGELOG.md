@@ -29,6 +29,12 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-back-link` — the “← Back” affordance for a detail page.** Three modes,
+  picked by which input is set: an in-app `routerLink`, a plain `href`, or — with
+  neither — a `<button>` that goes **back in history** (`Location.back()`).
+  Router-coupled but degradable (the history mode needs no router; `RouterLink`
+  only instantiates on a `routerLink`). Gallery `/back-link`; 4 specs.
+
 - **`fold-breadcrumb` — a hierarchical link trail.** Data-driven: pass `[items]`
   where each crumb links by an Angular `routerLink` **or** a plain `href`, so it
   works in a router app and degrades to anchors without one (importing it never

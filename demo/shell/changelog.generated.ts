@@ -39,7 +39,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     unreleased: true,
     counts: {
       Changed: 2,
-      Added: 14,
+      Added: 15,
     },
     breaking: 0,
     groups: [
@@ -234,6 +234,90 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-back-link",
+              },
+              {
+                kind: "text",
+                value: " — the “← Back” affordance for a detail page.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Three modes, picked by which input is set: an in-app ",
+              },
+              {
+                kind: "code",
+                value: "routerLink",
+              },
+              {
+                kind: "text",
+                value: ", a plain ",
+              },
+              {
+                kind: "code",
+                value: "href",
+              },
+              {
+                kind: "text",
+                value: ", or — with neither — a ",
+              },
+              {
+                kind: "code",
+                value: "<button>",
+              },
+              {
+                kind: "text",
+                value: " that goes ",
+              },
+              {
+                kind: "strong",
+                value: "back in history",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "Location.back()",
+              },
+              {
+                kind: "text",
+                value:
+                  "). Router-coupled but degradable (the history mode needs no router; ",
+              },
+              {
+                kind: "code",
+                value: "RouterLink",
+              },
+              {
+                kind: "text",
+                value: " only instantiates on a ",
+              },
+              {
+                kind: "code",
+                value: "routerLink",
+              },
+              {
+                kind: "text",
+                value: "). Gallery ",
+              },
+              {
+                kind: "code",
+                value: "/back-link",
+              },
+              {
+                kind: "text",
+                value: "; 4 specs.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {

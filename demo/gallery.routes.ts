@@ -64,6 +64,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   popover: () => import("./pages/popover/popover.page"),
   "nav-launcher": () => import("./pages/nav-launcher/nav-launcher.page"),
   breadcrumb: () => import("./pages/breadcrumb/breadcrumb.page"),
+  "back-link": () => import("./pages/back-link/back-link.page"),
 };
 
 /**

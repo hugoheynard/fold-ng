@@ -1,0 +1,10 @@
+/* back-link gallery page. */
+:host {
+  display: block;
+}
+.bl-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-lg);
+  align-items: center;
+}

@@ -67,6 +67,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "tab-nav", label: "view-nav" },
       { id: "tabs", label: "tabs" },
       { id: "breadcrumb", label: "breadcrumb" },
+      { id: "back-link", label: "back-link" },
     ],
   },
   {

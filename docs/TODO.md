@@ -99,8 +99,12 @@ Priority: the popover primitive. Usage counts are current app call-sites.
         needn't hand-write `test` closures for the common cases.
   - [ ] **Strength meter** — an optional aggregate bar (weak/ok/strong) beside
         the checklist.
-- [ ] **`fold-back-link`** (from `shared/back-link`, 3) — router back-link; generic
-      but Router-coupled.
+- [x] **`fold-back-link`** (from `shared/back-link`, 3) — ✅ Done (2026-08-04).
+      Three modes by input: `routerLink` (in-app), `href` (external/non-router), or
+      neither → a history-back button (`Location.back()`). Router-coupled but
+      degradable (history mode needs no router; `RouterLink` only instantiates on a
+      `routerLink`). Rides the new optional `@angular/router` peer. Gallery
+      `/back-link`; 4 specs.
 
 Then **0.5**, then the SH3PHERD migration phase: swap the app's shared duplicates
 to the published fold components (`fold-select` — a real rewrite, native+projected

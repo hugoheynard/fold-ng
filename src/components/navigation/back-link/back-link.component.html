@@ -1,0 +1,16 @@
+@if (routerLink(); as link) {
+  <a class="bl" [routerLink]="link">
+    <fold-icon class="bl-icon" [name]="icon()" size="sm" aria-hidden="true" />
+    <span>{{ label() }}</span>
+  </a>
+} @else if (href(); as url) {
+  <a class="bl" [href]="url">
+    <fold-icon class="bl-icon" [name]="icon()" size="sm" aria-hidden="true" />
+    <span>{{ label() }}</span>
+  </a>
+} @else {
+  <button type="button" class="bl" (click)="goBack()">
+    <fold-icon class="bl-icon" [name]="icon()" size="sm" aria-hidden="true" />
+    <span>{{ label() }}</span>
+  </button>
+}

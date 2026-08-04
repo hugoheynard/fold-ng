@@ -1,0 +1,30 @@
+<fold-page-layout title="back-link">
+  <p description>
+    The “← Back” affordance for a detail page. Three modes, picked by which
+    input is set: an in-app <code>routerLink</code>, a plain <code>href</code>,
+    or — with neither — a <strong>history-back</strong> button
+    (<code>Location.back()</code>). Router-coupled but degradable: the history
+    mode needs no router, and importing it never forces
+    <code>@angular/router</code>.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['icons']" />
+
+  <fold-page-section
+    title="Modes"
+    description="routerLink (in-app), href (external / non-router), or a history-back button."
+  >
+    <div class="bl-row">
+      <fold-back-link routerLink="/menu" label="routerLink → /menu" />
+      <fold-back-link href="https://example.com" label="href → example.com" />
+      <fold-back-link label="history back" />
+    </div>
+  </fold-page-section>
+
+  <fold-page-section title="Usage" icon="code">
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">html</span></div>
+      <pre class="code-pre"><code>{{ code }}</code></pre>
+    </div>
+  </fold-page-section>
+</fold-page-layout>

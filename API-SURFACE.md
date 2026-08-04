@@ -62,6 +62,12 @@
 - square: InputSignalWithTransform<boolean, unknown>
 - top: InputSignal<"first" | "last">
 
+#### FoldBackLinkComponent
+- href: InputSignal<string | undefined>
+- icon: InputSignal<FoldIconName>
+- label: InputSignal<string>
+- routerLink: InputSignal<string | unknown[] | undefined>
+
 #### FoldBadgeComponent
 - content: InputSignal<string> — required
 - radius: InputSignal<"pill" | "square">
