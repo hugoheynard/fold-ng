@@ -150,6 +150,56 @@ InputSignal<TData>`) makes the caller spell `open<TData | undefined, R>()` to do
 `TS2345`. A no-data `open(Cmp)` overload (or a `TData = void` default that flows to
 the content contract) would lift the common case.
 
+## Round 5 — LaFolieDouce B2B, écran de réglages commerciaux (2026-08-09)
+
+Un seul point, mais rencontré deux fois dans la même journée, sur deux barres
+différentes. Ground-truthé contre **fold-ng 0.9.0**.
+
+| #   | Point                                                                         | Verdict                                                                                                                                                                                                                                                                                                                                       | Status     |
+| --- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1   | `fold-view-nav` ne sait pas rester **collée en haut** d'un contenu qui défile | Réel. Une barre d'onglets au-dessus d'une section longue doit rester atteignable ; `fold-view-nav` n'a ni `sticky` ni fond opaque, donc le consommateur écrit les deux — et doit deviner **quel** fond, puisque `background="transparent"` laisse le contenu défiler visiblement dessous. Deux occurrences dans la même app (cf. ci-dessous). | ⏳ roadmap |
+
+### On #1 — la barre d'onglets qui doit tenir en haut
+
+Deux endroits, la même semaine, le même contournement :
+
+- **Réglages ▸ Commercial** — trois sections (Prise de rendez-vous · Définition
+  des marchés · Réglage des alertes) derrière une `fold-view-nav` horizontale.
+  La première section fait plusieurs écrans de haut (grille hebdomadaire +
+  règles + exceptions + aperçu) : sans barre collée, changer de section oblige à
+  remonter tout en haut.
+- **Réglages** (le niveau au-dessus) — le rail vertical routé, déjà collé par le
+  consommateur avec le même trio de propriétés.
+
+Le contournement, dans les deux cas :
+
+```scss
+.rc-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-bottom: var(--fold-space-xs);
+  border-bottom: 1px solid var(--fold-color-border);
+  background: var(--fold-color-surface, transparent); /* ← lequel, au juste ? */
+}
+```
+
+Trois choses que le consommateur ne devrait pas avoir à décider :
+
+1. **Le fond.** `background="transparent"` est le défaut ; collée, une barre
+   transparente laisse le contenu défiler visiblement dessous. Le consommateur
+   doit alors choisir un token de surface — et rien ne dit lequel correspond à
+   celui du conteneur derrière.
+2. **Le `z-index`.** Choisi au doigt mouillé, sans savoir contre quoi il joue.
+3. **L'offset `top`.** `0` marche dans une région de scroll ; sous un en-tête de
+   shell il faudrait la hauteur de cet en-tête, que le consommateur ne connaît pas.
+
+**Verdict.** Ce n'est pas du style d'application, c'est un **mode de la barre** :
+« cette barre reste en tête de son conteneur de défilement ». Elle sait déjà
+qu'elle est horizontale ou verticale, compacte ou confortable, transparente ou
+non — la position collée appartient à la même famille de décisions, et c'est elle
+qui sait quel fond opaque va avec quelle surface. Voir Roadmap 1.0.1.
+
 ## The systemic fix — surfacing breaking changes
 
 The sharpest lesson: three of these were **controlled-pair twins nobody flagged**,

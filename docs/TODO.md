@@ -361,6 +361,34 @@ overscroll-behavior:contain; flex:1 1 auto; min-height:0` — **always** a
         page pins the footer to the bottom and the app drops its
         `router-outlet + * { flex:1 0 auto }` + `.footer-inflow { margin-top:0 !important }`.
 
+**Do — `fold-view-nav` / `fold-nav-layout` : a sticky mode (2nd consumer ask):**
+
+- [ ] **`stick` on `fold-view-nav` — the bar holds the top of its scroll
+      container.** Today a tab bar above a long section scrolls away, and the
+      consumer hand-writes `position: sticky` + `top` + `z-index` + an opaque
+      `background` — three of which they cannot decide correctly from outside:
+      **which** surface token matches the container behind, what the `z-index`
+      competes with, and what `top` offset a shell header imposes. The bar
+      already owns `direction` / `size` / `activeStyle` / `background`; staying
+      put is the same family of decision, and it is the bar that knows which
+      opaque surface pairs with which `background` value.
+      Sketch: `stick="none" | "top"` (+ `stickOffset` for a shell header), which
+      **forces an opaque surface** — a sticky transparent bar shows the content
+      scrolling under it, so `background="transparent"` + `stick="top"` should
+      resolve to the container's surface, not stay see-through.
+      **Ground truth:** LaFolieDouce B2B, `consumer-friction.md` Round 5 — two
+      bars in the same app the same week (Réglages ▸ Commercial's horizontal
+      section bar over a multi-screen grid, and the Réglages vertical rail), same
+      six-line workaround both times.
+  - [ ] **Companion on `fold-nav-layout`** — when the layout folds its rail into
+        a horizontal bar, that bar has the same need; the sticky decision should
+        come from the layout rather than be re-declared by each consumer.
+  - [ ] **Interaction with `[foldScrollRegion]`.** `top: 0` is right inside a
+        scroll region but wrong under a shell header. Decide whether `stick`
+        reads the nearest scroll region (the registry already knows them) or
+        stays explicit via `stickOffset`. Record the call before it grows
+        organically.
+
 **Do — the a11y promise (the component advertises accessibility):**
 
 - [ ] **Rails as named landmarks.** `.rail-primary` / `.rail-secondary` are bare
