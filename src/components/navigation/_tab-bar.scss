@@ -11,6 +11,32 @@
   max-width: 100%;
   overflow: hidden;
 }
+
+/* A HORIZONTAL bar that doesn't fit must stay REACHABLE. Items never wrap —
+   `white-space: nowrap` is what makes a tab a tab — so with the host clipping,
+   the tail of a four-item comfortable bar simply vanished on a phone, and with
+   it any way of reaching those pages. Scrolling the bar is the honest answer: a
+   menu you have to swipe beats a menu whose last entries don't exist.
+
+   `min-width: max-content` on the bar is the other half — without it the bar
+   shrinks back to the host and the items clip *inside* it rather than overflow.
+
+   Two exclusions. VERTICAL rails grow downward: the page scroll already covers
+   them, and an inner scroll box there would trap the wheel. COLLAPSED is the
+   icon accordion — it is *designed* to fit any width, and it needs the host's
+   overflow to stay visible for its tooltips. */
+:host:has(.tab-bar:not(.dir-vertical):not(.is-collapsed)) {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* The house scrollbar — thin, and never chained to the page behind it. */
+  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+}
+:host:has(.tab-bar:not(.dir-vertical):not(.is-collapsed)) .tab-bar {
+  min-width: max-content;
+  max-width: none;
+}
+
 /* flex: 1 so the bar fills the host box in both axes — the surface background
    then covers the whole container, not just the items (e.g. a full-height
    vertical sidebar). */

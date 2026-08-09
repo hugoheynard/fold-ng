@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { Component } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
@@ -191,5 +194,29 @@ describe("FoldViewNavComponent", () => {
     const el = hostEl({ direction: "vertical" });
     expect(el.classList.contains("is-standalone")).toBe(true);
     expect(el.classList.contains("is-horizontal")).toBe(false);
+  });
+
+  // happy-dom neither compiles the SCSS nor computes `:has()`, so the runtime
+  // overflow can't be asserted here. What CAN be locked is the source, against
+  // the exact regression: `:host { overflow: hidden }` plus `nowrap` items made
+  // a too-narrow horizontal bar clip its tail, leaving those pages unreachable.
+  // Guards the SHARED partial — `fold-tabs` renders the same bar.
+  it("lets a horizontal bar scroll rather than clip its tail", () => {
+    const raw = readFileSync(
+      join(process.cwd(), "src/components/navigation/_tab-bar.scss"),
+      "utf-8",
+    );
+    const scss = raw.replace(/\/\*[\s\S]*?\*\//g, "");
+
+    // The host scrolls on the inline axis…
+    expect(scss).toMatch(
+      /:host:has\(\.tab-bar:not\(\.dir-vertical\):not\(\.is-collapsed\)\)\s*\{[^}]*overflow-x:\s*auto/,
+    );
+    // …and the bar keeps its natural width, or the items clip inside it instead.
+    expect(scss).toMatch(
+      /:host:has\(\.tab-bar:not\(\.dir-vertical\):not\(\.is-collapsed\)\)\s+\.tab-bar\s*\{[^}]*min-width:\s*max-content/,
+    );
+    // Both exclusions are IN the selector above: a vertical rail would trap the
+    // wheel, and the collapsed accordion needs its overflow visible for tooltips.
   });
 });

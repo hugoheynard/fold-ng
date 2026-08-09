@@ -20,6 +20,19 @@ All notable changes to **fold-ng** are documented here. The format follows
   `overflow: hidden`. Consumers were hand-rolling this: LaFolieDouce B2B had a
   bespoke absolutely-positioned bubble anchored to each field wrapper.
 
+### Fixed
+
+- **A horizontal tab bar that doesn't fit now scrolls instead of clipping its
+  tail.** `fold-view-nav` and `fold-tabs` share a bar whose host clipped its
+  overflow while its items never wrap — so on a phone, the last entries of a
+  four-item `size="comfortable"` bar simply vanished, and with them any way of
+  reaching those pages. The host now scrolls on the inline axis (thin house
+  scrollbar, `overscroll-behavior-x: contain`) and the bar keeps its natural
+  width. Vertical rails are untouched — the page scroll already covers them, and
+  an inner scroll box there would trap the wheel — and so is `collapsed`, the
+  icon accordion, which is designed to fit any width and needs its overflow
+  visible for its tooltips.
+
 ## [0.9.0] - 2026-08-04
 
 ### Changed
