@@ -275,6 +275,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - max: InputSignal<string | undefined>
 - min: InputSignal<string | undefined>
@@ -388,6 +390,8 @@
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hideLabel: InputSignal<string>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
 - optionalLabel: InputSignal<string>
@@ -419,6 +423,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - open: ModelSignal<boolean>
 - optional: InputSignalWithTransform<boolean, unknown>
@@ -469,6 +475,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - open: ModelSignal<boolean>
 - optional: InputSignalWithTransform<boolean, unknown>
@@ -505,6 +513,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - integer: InputSignalWithTransform<boolean, unknown>
 - label: InputSignal<string | undefined>
 - max: InputSignal<number | undefined>
@@ -654,6 +664,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
 - optionalLabel: InputSignal<string>
@@ -710,6 +722,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
 - optionalLabel: InputSignal<string>
@@ -726,6 +740,8 @@
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string>
 - label: InputSignal<string | undefined>
 - max: InputSignal<string | undefined>
 - min: InputSignal<string | undefined>

@@ -113,6 +113,13 @@ export class FoldInputComponent implements FormValueControl<string> {
 
   /** The word inside the optional marker. @default 'optional' */
   readonly optionalLabel = input("optional");
+  /**
+   * Longer explanation behind an `i` at the end of the label line — for the
+   * sentence or two a {@link hint} can't carry. Forwarded to `fold-input-base`.
+   */
+  readonly info = input<string>();
+  /** Accessible name of the info button. @default 'More information' */
+  readonly infoLabel = input("More information");
 
   /** Optional helper text shown under the input. */
   readonly hint = input<string>();

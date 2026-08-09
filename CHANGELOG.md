@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`info` on every labelled input — the explanation a `hint` can't carry.** An
+  `i` button at the end of the label line reveals a sentence or two in a
+  `fold-popover`. Lives in `fold-input-base`, so it lands on the whole family at
+  once: `fold-input`, `fold-number-input`, `fold-select`, `fold-textarea`,
+  `fold-date`, `fold-time`, `fold-listbox`, `fold-multiselect` (`[info]`, plus
+  `[infoLabel]` for the button's accessible name, default `More information`).
+  Composes with `hint` rather than replacing it — short line under the control,
+  the _why_ behind the `i`. The panel rides the popover's native top layer, so a
+  long explanation never pushes the next control down, and it escapes any
+  `overflow: hidden`. Consumers were hand-rolling this: LaFolieDouce B2B had a
+  bespoke absolutely-positioned bubble anchored to each field wrapper.
 
 ## [0.9.0] - 2026-08-04
 
