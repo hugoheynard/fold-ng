@@ -18,6 +18,15 @@ cours…"`; they are now `"Drag a file or browse"` and `"Uploading…"`. Both we
 
 ### Added
 
+- **`fold-toast` pauses its countdown while it is being read.** Hovering the
+  toast, or moving the keyboard focus into it, freezes the auto-dismiss timer;
+  leaving resumes it with **the time that was left**, not a fresh `duration` —
+  a toast that renewed itself on every mouse pass would never leave. Focus
+  moving between the message and the close button counts as staying inside.
+  This is WCAG 2.2.1 (Timing Adjustable): the previous timer ran regardless, so
+  a message could expire mid-sentence, or while the pointer was travelling to
+  its ✕. The paused state is exposed as `data-paused` for styling.
+
 - **`info` on every labelled input — the explanation a `hint` can't carry.** An
   `i` button at the end of the label line reveals a sentence or two in a
   `fold-popover`. Lives in `fold-input-base`, so it lands on the whole family at

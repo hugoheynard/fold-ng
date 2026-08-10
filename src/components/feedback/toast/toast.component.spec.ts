@@ -104,4 +104,75 @@ describe("FoldToastComponent", () => {
       expect(host.dismissed).toBe(0);
     });
   });
+
+  // WCAG 2.2.1 (Timing Adjustable): a message must not expire while it is being
+  // read, nor while its close button is being aimed at. The resume must spend
+  // what was LEFT, not restart — a toast that renews itself on every mouse pass
+  // is a toast that never leaves.
+  describe("pause while read", () => {
+    afterEach(() => vi.useRealTimers());
+
+    function hover(fixture: { detectChanges(): void }, toast: HTMLElement) {
+      toast.dispatchEvent(new MouseEvent("mouseenter"));
+      fixture.detectChanges();
+    }
+
+    it("freezes the countdown under the pointer and resumes with the remainder", () => {
+      vi.useFakeTimers();
+      const { fixture, host, toast } = render((h) => (h.duration = 1000));
+
+      vi.advanceTimersByTime(400);
+      hover(fixture, toast);
+      expect(toast.getAttribute("data-paused")).toBe("");
+
+      vi.advanceTimersByTime(100_000);
+      expect(host.dismissed).toBe(0);
+
+      toast.dispatchEvent(new MouseEvent("mouseleave"));
+      fixture.detectChanges();
+      expect(toast.getAttribute("data-paused")).toBeNull();
+
+      vi.advanceTimersByTime(599); // 600 were left, not 1000
+      expect(host.dismissed).toBe(0);
+      vi.advanceTimersByTime(1);
+      expect(host.dismissed).toBe(1);
+    });
+
+    it("freezes while the keyboard focus is inside", () => {
+      vi.useFakeTimers();
+      const { fixture, host, toast } = render((h) => (h.duration = 1000));
+      const close = toast.querySelector<HTMLButtonElement>(".toast-close");
+
+      toast.dispatchEvent(new FocusEvent("focusin"));
+      fixture.detectChanges();
+      vi.advanceTimersByTime(100_000);
+      expect(host.dismissed).toBe(0);
+
+      // Message → close button is an internal hop, not a departure.
+      toast.dispatchEvent(new FocusEvent("focusout", { relatedTarget: close }));
+      fixture.detectChanges();
+      vi.advanceTimersByTime(100_000);
+      expect(host.dismissed).toBe(0);
+
+      toast.dispatchEvent(new FocusEvent("focusout", { relatedTarget: null }));
+      fixture.detectChanges();
+      vi.advanceTimersByTime(1000);
+      expect(host.dismissed).toBe(1);
+    });
+
+    it("stays paused on mouseleave while the focus is still inside", () => {
+      vi.useFakeTimers();
+      const { fixture, host, toast } = render((h) => (h.duration = 1000));
+
+      hover(fixture, toast);
+      toast.dispatchEvent(new FocusEvent("focusin"));
+      fixture.detectChanges();
+
+      toast.dispatchEvent(new MouseEvent("mouseleave"));
+      fixture.detectChanges();
+      expect(toast.getAttribute("data-paused")).toBe("");
+      vi.advanceTimersByTime(100_000);
+      expect(host.dismissed).toBe(0);
+    });
+  });
 });
