@@ -904,11 +904,27 @@ committed work; the point is to learn before we lock anything.
   typed `input()` for the common case (discoverable, type-checked) with a CSS-var
   escape hatch for theming. Audit `Badge` · `ChoiceRow` · `TabNav` for remaining
   magic-string knobs and align them to the same pattern.
-- **Panel-open glitch.** Opening a panel makes the main content do a horizontal
-  left↔right translation. Root cause unknown — scroll-lock is ruled out (`html,
-body` are already `overflow: hidden`, so the body lock is a no-op). Reproduce
-  and measure _which_ element shifts (inner scroll-container scrollbar vs.
-  `backdrop-filter` repaint on the glass) before touching CSS.
+- **Panel-open glitch — RÉSOLU (2026-08-10), cause mesurée.** Ce n'était ni la
+  scrollbar du conteneur interne, ni un repaint `backdrop-filter` : les deux
+  pistes du write-up d'origine sont fausses. Mesure image par image sur la
+  galerie (`e2e/panel.spec.ts`, désormais le test de non-régression) :
+  1. un panneau démarre son animation **garé hors bord** (`translateX(100%)`) ;
+  2. le dock ne coupait pas son débordement, donc ce panneau garé entrait dans
+     le **débordement scrollable** de l'hôte positionné → `scrollWidth` 960 →
+     1221 à l'ouverture ;
+  3. le focus-trap y déplaçait le focus → le navigateur **scrollait l'hôte
+     latéralement** pour le révéler (`scrollLeft` 0 → 261) : le contenu saute
+     de 261 px à gauche ;
+  4. la glissade entrante réduisait le débordement image par image, le
+     `scrollLeft` était rogné d'autant → le contenu revenait en douceur.
+     D'où la « translation gauche↔droite ».
+     Correctif : `overflow: clip` sur `.panel-dock` (la cause structurelle — un
+     panneau garé n'a rien à faire dans le débordement de qui que ce soit) +
+     `focus({ preventScroll: true })` à l'activation du focus-trap (entrer dans
+     un overlay ne doit jamais scroller la page derrière). Vérifié isolément :
+     le `clip` seul suffit ; `preventScroll` seul masque le symptôme mais laisse
+     le débordement anormal. Les deux sont gardés — le second se justifie tout
+     seul.
 - **`rail-primary` sizing model — resolved.** Now `auto` (content-driven), like
   `rail-secondary`: each rail component owns its width and the grid follows —
   needed once `fold-menu` gained an expanded state (it takes its content width
@@ -981,10 +997,15 @@ FOLD_BUILTIN_ICONS | (string & {})`), erased at build — autocomplete for all
 
 - **`ScrollLockService` is effectively a no-op.** `html, body` are already
   `overflow: hidden`, so locking `body.overflow` changes nothing. Either drop it,
-  or make it lock the app's real scroll container. Tied to the panel-open glitch.
+  or make it lock the app's real scroll container. **No longer tied to the
+  panel-open glitch** — that one is diagnosed and fixed (above), and the lock was
+  not involved. In a shell the real scroll owner is the `ScrollRegionRegistry`,
+  which is already frozen alongside; so the honest question now is whether this
+  service still earns its place at all, outside a shell.
 - **`PanelHostComponent :host { display: contents }`** landed as layout hygiene
-  (the overlay host claims no layout box); whether it also settles the open-panel
-  glitch is unverified — revisit once the glitch is diagnosed.
+  (the overlay host claims no layout box). **Settled:** it was never related to
+  the open-panel glitch — the cause was the dock's unclipped overflow, and
+  `display: contents` was already doing its own job correctly.
 - _`fold-app-shell` / `foldElevated` items moved to **Roadmap 1.0.1** (top of file)._
 - [x] **Re-export shims — paid back.** The `app/shared/{panel,toast,avatar,
 avatar-detail}/*` shims that re-exported `fold-ng` are deleted; all ~115

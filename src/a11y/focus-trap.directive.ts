@@ -87,7 +87,14 @@ export class FocusTrapDirective {
   private activate(): void {
     const active = this.document.activeElement;
     this.previouslyFocused = active instanceof HTMLElement ? active : null;
-    (this.focusable()[0] ?? this.host.nativeElement).focus();
+    // `preventScroll`: entering an overlay must never scroll the page behind it.
+    // The default focus scroll used to drag the content sideways to reveal a
+    // panel still parked off-edge by its enter animation. Only here — a Tab
+    // *inside* the overlay should still scroll its target into view, and
+    // `restore()` should bring the trigger back into view on close.
+    (this.focusable()[0] ?? this.host.nativeElement).focus({
+      preventScroll: true,
+    });
   }
 
   private restore(): void {

@@ -62,6 +62,22 @@ cours…"`; they are now `"Drag a file or browse"` and `"Uploading…"`. Both we
 
 ### Fixed
 
+- **Opening a panel no longer shoves the page sideways.** The main content
+  jumped left by the panel's width and eased back — a long-standing glitch whose
+  cause turned out to be neither of the two suspects (an inner scrollbar, a
+  `backdrop-filter` repaint). Measured frame by frame: a panel begins its enter
+  animation parked off-edge at `translateX(100%)`, the dock did not clip, so the
+  parked panel joined the positioned host's **scrollable overflow**
+  (`scrollWidth` 960 → 1221 on the gallery); the focus trap then moved focus into
+  it and the browser scrolled the host sideways to reveal it
+  (`scrollLeft` 0 → 261); the slide-in shrank the overflow again and the scroll
+  was clamped back frame by frame, hence the eased return. Fixed with
+  `overflow: clip` on the dock — a parked panel has no business in anyone's
+  scrollable overflow — plus `focus({ preventScroll: true })` when a focus trap
+  activates, since entering an overlay must never scroll the page behind it.
+  `e2e/panel.spec.ts` samples the whole animation and fails on any sideways
+  scroll; jsdom cannot see this class of bug at all.
+
 - **A horizontal tab bar that doesn't fit now scrolls instead of clipping its
   tail.** `fold-view-nav` and `fold-tabs` share a bar whose host clipped its
   overflow while its items never wrap — so on a phone, the last entries of a

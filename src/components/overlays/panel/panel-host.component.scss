@@ -17,6 +17,17 @@
   display: flex;
   justify-content: flex-end;
   container-type: inline-size;
+  /* A panel parked off-edge (`translateX(100%)` — where its enter keyframe
+     starts) must not join anyone's SCROLLABLE overflow. Without this clip it
+     did, and that was the panel-open glitch: measured on the gallery, opening a
+     panel grew the positioned host's `scrollWidth` by the panel's width, the
+     focus trap then scrolled that host sideways to reveal the parked panel
+     (`scrollLeft` 0 → 261), and the content eased back as the slide-in shrank
+     the overflow again — the main content's left↔right translation.
+     `clip`, not `hidden`: the dock must not become a scroll container itself.
+     It also bounds the `width: 100vw` mobile rule below to the dock — i.e. the
+     content region, which on a phone (rails collapsed) is the same width. */
+  overflow: clip;
 }
 .panel-dock[data-side="left"] {
   justify-content: flex-start;
