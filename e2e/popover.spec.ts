@@ -79,8 +79,8 @@ test("outside-click dismisses the menu", async ({ page }) => {
 test("content popover shows its panel and an arrow", async ({ page }) => {
   await page.getByRole("button", { name: "Notifications" }).click();
   await expect(page.locator(".pop-panel")).toBeVisible();
-  // Scoped to *this* popover: the page carries other arrowed popovers
-  // (fold-info), so a bare `.fpop-arrow` would match several.
+  // Scoped to *this* popover rather than a bare `.fpop-arrow`: the page can
+  // carry more than one arrowed panel.
   const panel = page.locator(".fpop-panel", {
     has: page.locator(".pop-panel"),
   });

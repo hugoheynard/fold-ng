@@ -1,0 +1,36 @@
+/* info gallery page. */
+:host {
+  display: block;
+}
+
+/* A metric label with its bubble at the end — the standalone case. */
+.inf-metric {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+  margin: 0 0 var(--fold-space-sm);
+  font-size: var(--fold-text-sm);
+  font-weight: 600;
+}
+.inf-metric:last-child {
+  margin-bottom: 0;
+}
+
+.inf-fields {
+  display: grid;
+  gap: var(--fold-space-lg);
+  max-width: 26rem;
+}
+
+.inf-placements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fold-space-xl);
+}
+.inf-placement {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}

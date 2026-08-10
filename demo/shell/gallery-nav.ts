@@ -34,7 +34,7 @@ export interface GalleryNavGroup {
 }
 
 /** The next version — unreleased components carry this as their `since`. */
-const NEXT = "0.8.0";
+const NEXT = "0.10.0";
 
 /**
  * The single source of truth for the gallery's nav **and** its routes: the rail
@@ -106,25 +106,25 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
         id: "calendar-month",
         label: "calendar-month",
         icon: "calendar",
-        since: NEXT,
+        since: "0.8.0",
       },
       {
         id: "calendar-views",
         label: "week · day · list",
         icon: "calendar",
-        since: NEXT,
+        since: "0.8.0",
       },
       {
         id: "calendar-timegrid",
         label: "time grid",
         icon: "clock",
-        since: NEXT,
+        since: "0.8.0",
       },
       {
         id: "calendar-dates",
         label: "plain dates",
         icon: "clock",
-        since: NEXT,
+        since: "0.8.0",
       },
     ],
   },
@@ -135,6 +135,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "toast", label: "toast", icon: "toast" },
       { id: "callout", label: "callout", icon: "info" },
       { id: "disclosure", label: "disclosure" },
+      { id: "info", label: "info", icon: "info", since: NEXT },
       { id: "state", label: "loading · empty" },
     ],
   },

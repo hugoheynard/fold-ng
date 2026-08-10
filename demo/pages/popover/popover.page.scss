@@ -68,19 +68,3 @@
 .ss-seg--wrap {
   flex-wrap: wrap;
 }
-
-/* The fold-info sample: a metric label with its help bubble at the end. */
-.pop-info-row {
-  display: flex;
-  align-items: center;
-  gap: var(--fold-space-xs);
-  margin: 0;
-  font-size: var(--fold-text-sm);
-  font-weight: 600;
-}
-.pop-info-note {
-  margin: var(--fold-space-sm) 0 0;
-  color: var(--fold-color-text-muted);
-  font-size: var(--fold-text-xs);
-  line-height: 1.5;
-}

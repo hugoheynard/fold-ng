@@ -1,0 +1,89 @@
+<fold-page-layout title="info">
+  <p description>
+    The small <code>i</code> that answers “what is this?”. A quiet round trigger
+    that reveals a sentence or two in a <code>fold-popover</code> — the
+    affordance for explanation
+    <strong>worth reading once and not worth taking permanent space</strong>. A
+    click, not a hover: hover-only help is unreachable on a touch screen.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+  <gal-composed-of [ids]="['popover']" />
+
+  <fold-page-section
+    title="Standalone"
+    description="Where there is no field to hang off — a metric label, a card corner, a table header."
+  >
+    <fold-card surface="sunken" style="--fold-card-padding: 20px">
+      <p class="inf-metric">
+        Monthly recurring revenue
+        <fold-info
+          label="More information about monthly recurring revenue"
+          text="What the active subscriptions bill in a month, at today's prices — not what was actually collected."
+        />
+      </p>
+      <p class="inf-metric">
+        Activation rate
+        <fold-info
+          label="More information about the activation rate"
+          text="The share of accounts that placed a first order within 30 days of signing up."
+        />
+      </p>
+    </fold-card>
+  </fold-page-section>
+
+  <fold-page-section
+    title="On a field — the info input"
+    description="Every labelled control carries an info input; it renders this same component at the end of the label line. hint and info compose: the short line under the control, the why behind the i."
+  >
+    <div class="inf-fields">
+      <fold-number-input
+        label="Lead time (hours)"
+        hint="In hours"
+        info="The time you need to get organised: nothing is bookable in the hours ahead. It is also the limit past which a client can no longer cancel on their own."
+        infoLabel="More information about the lead time"
+        [min]="0"
+        [max]="720"
+        [value]="24"
+      />
+      <fold-input
+        label="Invoice reference"
+        info="Printed on the invoice and used to reconcile the payment — it must match the reference your accounting exports."
+        infoLabel="More information about the invoice reference"
+        placeholder="INV-2026-0142"
+      />
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
+    title="Placement"
+    description="bottom-end by default: the trigger usually sits at the end of a label line or a card header, where a panel growing further outward would leave the viewport."
+  >
+    <div class="inf-placements">
+      @for (p of placements; track p) {
+      <span class="inf-placement">
+        <code>{{ p }}</code>
+        <fold-info
+          [placement]="p"
+          [label]="'More information — ' + p"
+          [text]="'This panel opens at ' + p + '.'"
+        />
+      </span>
+      }
+    </div>
+  </fold-page-section>
+
+  <fold-page-section title="Usage" icon="code">
+    <div class="code-block">
+      <div class="code-top">
+        <span class="code-lang">html · standalone</span>
+      </div>
+      <pre class="code-pre"><code>{{ standaloneCode }}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-top">
+        <span class="code-lang">html · on a field</span>
+      </div>
+      <pre class="code-pre"><code>{{ fieldCode }}</code></pre>
+    </div>
+  </fold-page-section>
+</fold-page-layout>

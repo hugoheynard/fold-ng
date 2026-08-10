@@ -24,13 +24,24 @@
         </div>
       </div>
       <div class="gal-cell">
-        <span class="gal-tag">label · required · optional · hint · error</span>
+        <span class="gal-tag"
+          >label · required · optional · hint · info · error</span
+        >
         <div class="fld-inputs">
           <fold-input
             label="Email"
             required
             hint="We'll never share it."
             placeholder="you@example.com"
+          />
+          <!-- hint vs info: the short line under the control, the *why* behind
+               the `i` at the end of the label. That `i` is fold-info — /info. -->
+          <fold-input
+            label="Invoice reference"
+            hint="Format INV-YYYY-NNNN"
+            info="Printed on the invoice and used to reconcile the payment — it must match the reference your accounting exports, or the payment lands unmatched."
+            infoLabel="More information about the invoice reference"
+            placeholder="INV-2026-0142"
           />
           <fold-input
             label="Motif"
