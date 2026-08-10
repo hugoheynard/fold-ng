@@ -83,6 +83,15 @@ export default class ToastPage {
     );
   }
 
+  /** No sequence suffix — the point is that the message is *identical*. */
+  protected fireSameToast(): void {
+    this.toastService.show(
+      "Network unreachable",
+      "error",
+      Number(this.toastDuration()),
+    );
+  }
+
   protected readonly toastFireCode = [
     "const toast = inject(FoldToastService);",
     "",
@@ -95,6 +104,8 @@ export default class ToastPage {
     "provideFoldToasts({",
     "  defaultDurationMs: 4000,",
     "  durationByVariant: { success: 2000, error: 0 }, // 0 = sticky",
+    "  maxVisible: 4,   // beyond it the oldest is evicted",
+    "  dedupe: true,    // default — an identical live message tallies ×N",
     "}),",
   ].join("\n");
   protected readonly toastStandaloneCode = [

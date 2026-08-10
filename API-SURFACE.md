@@ -770,6 +770,7 @@
 - dismiss: OutputEmitterRef<void>
 - dismissible: InputSignalWithTransform<boolean, unknown>
 - duration: InputSignalWithTransform<number, unknown>
+- repeat: InputSignalWithTransform<number, unknown>
 - variant: InputSignal<FoldToastVariant>
 
 #### FoldToastContainerComponent

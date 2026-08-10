@@ -2,6 +2,10 @@
 
 <span class="toast-message"><ng-content /></span>
 
+@if (repeat() > 1) {
+  <span class="toast-repeat">×{{ repeat() }}</span>
+}
+
 @if (dismissible()) {
   <button
     class="toast-close"

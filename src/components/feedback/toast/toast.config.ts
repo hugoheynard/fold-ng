@@ -2,14 +2,30 @@ import { InjectionToken, type Provider } from "@angular/core";
 import type { FoldToastVariant } from "./toast.types";
 
 /**
- * App-level toast duration policy. A `show()` call with no explicit duration
- * resolves through it (see {@link resolveToastDuration}).
+ * App-level toast policy — how long a toast lives, and how many of them the
+ * screen will carry. A `show()` call with no explicit duration resolves through
+ * it (see {@link resolveToastDuration}).
  */
 export type FoldToastConfig = {
   /** Fallback for any variant without a per-variant entry. */
   defaultDurationMs?: number;
   /** Per-variant duration (ms) overrides. `0` = sticky (no auto-dismiss). */
   durationByVariant?: Partial<Record<FoldToastVariant, number>>;
+  /**
+   * Hard cap on the stack. Beyond it the **oldest** toast is evicted — it has
+   * been on screen longest, so it is the one already read. Unset = no cap.
+   *
+   * Eviction rather than a waiting queue, deliberately: a queue drains only
+   * when a visible toast leaves, and a sticky one (an `error`, by default)
+   * never does — the backlog would sit behind it forever.
+   */
+  maxVisible?: number;
+  /**
+   * Collapse a message identical to one already on screen into a `×N` tally
+   * instead of stacking a copy (default `true`). A retry loop or an event storm
+   * otherwise buries the screen under the same sentence.
+   */
+  dedupe?: boolean;
 };
 
 /** DI token carrying the app's {@link FoldToastConfig}. Set via {@link provideFoldToasts}. */

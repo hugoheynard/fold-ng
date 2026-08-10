@@ -2,6 +2,7 @@
   <fold-toast
     [variant]="toast.variant"
     [duration]="toast.durationMs"
+    [repeat]="toast.repeats"
     animate.leave="toast-leaving"
     (dismiss)="toastService.dismiss(toast.id)"
     >{{ toast.message }}</fold-toast

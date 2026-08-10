@@ -7,4 +7,6 @@ export type FoldToast = {
   message: string;
   variant: FoldToastVariant;
   durationMs: number;
+  /** Occurrences collapsed into this toast — `1` unless the message recurred. */
+  repeats: number;
 };

@@ -75,6 +75,19 @@
           }
         </div>
       </fold-page-section>
+
+      <fold-page-section
+        surface="card"
+        stack
+        title="Repeats"
+        description="A message identical to one already on screen folds into it as a ×N tally instead of stacking a copy, and restarts its countdown — a message still recurring is still current. Press this several times."
+      >
+        <div class="gal-row">
+          <button type="button" class="gal-theme" (click)="fireSameToast()">
+            <fold-icon name="x-circle" size="sm" /> Network unreachable
+          </button>
+        </div>
+      </fold-page-section>
       } @case ("usage") {
       <fold-page-section
         surface="card"

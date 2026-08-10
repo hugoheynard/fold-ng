@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { afterEach, describe, it, expect, vi } from "vitest";
@@ -12,6 +12,7 @@ import type { FoldToastVariant } from "./toast.types";
     [variant]="variant"
     [dismissible]="dismissible"
     [duration]="duration"
+    [repeat]="repeat()"
     (dismiss)="dismissed = dismissed + 1"
     >Hello</fold-toast
   >`,
@@ -20,6 +21,10 @@ class HostComponent {
   variant: FoldToastVariant = "info";
   dismissible = true;
   duration = 0;
+  /** A signal, unlike its siblings: this one is changed *after* the first
+   * render, and under zoneless change detection only a signal marks the view
+   * dirty — a plain field would simply never reach the component. */
+  readonly repeat = signal(1);
   dismissed = 0;
 }
 
@@ -82,6 +87,35 @@ describe("FoldToastComponent", () => {
   it("hides the close button when not dismissible", () => {
     const { toast } = render((h) => (h.dismissible = false));
     expect(toast.querySelector(".toast-close")).toBeNull();
+  });
+
+  describe("repeat", () => {
+    afterEach(() => vi.useRealTimers());
+
+    it("shows no tally for a message that arrived once", () => {
+      const { toast } = render();
+      expect(toast.querySelector(".toast-repeat")).toBeNull();
+    });
+
+    it("tallies further occurrences", () => {
+      const { toast } = render((h) => h.repeat.set(12));
+      expect(toast.querySelector(".toast-repeat")?.textContent).toBe("×12");
+    });
+
+    it("restarts the countdown on a new occurrence", () => {
+      vi.useFakeTimers();
+      const { fixture, host } = render((h) => (h.duration = 1000));
+
+      vi.advanceTimersByTime(900);
+      host.repeat.set(2); // the message is still current
+      fixture.detectChanges();
+
+      // A full second again, not the 100ms left on the first occurrence's clock.
+      vi.advanceTimersByTime(999);
+      expect(host.dismissed).toBe(0);
+      vi.advanceTimersByTime(1);
+      expect(host.dismissed).toBe(1);
+    });
   });
 
   describe("duration", () => {

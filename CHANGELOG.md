@@ -16,7 +16,28 @@ cours…"`; they are now `"Drag a file or browse"` and `"Uploading…"`. Both we
   override it just to be readable, which is the portability promise leaking. It
   was the last of the seven release blockers in `docs/RELEASE-READINESS.md`.
 
+- **BREAKING — identical toasts collapse instead of stacking.** A `show()` whose
+  message _and_ variant match a toast already on screen now folds into it as a
+  `×N` tally and restarts its countdown, rather than queueing a copy: a retry
+  loop used to bury the screen under the same sentence. Opt out with
+  `provideFoldToasts({ dedupe: false })`. `FoldToast` gained a required
+  `repeats` field, so anything constructing that type by hand must supply it.
+
+- **`FoldToastService.show()` returns the toast's id** (it returned `void`). The
+  id was generated and thrown away, which made a sticky "Uploading…" impossible
+  to close from the code that opened it. A deduped call returns the id of the
+  toast it folded into. Ids now come from `FoldIdService`'s counter rather than
+  `crypto.randomUUID()`, which **throws outright** in a non-secure context
+  (plain http off localhost) and whose randomness bought nothing for an id that
+  only has to be unique within one queue.
+
 ### Added
+
+- **`maxVisible` bounds the toast stack.** Beyond the cap the oldest toast is
+  evicted — it has been on screen longest, so it is the one already read. Unset
+  (the default) stays unbounded. Deliberately eviction and not a waiting queue:
+  a queue only drains when a visible toast leaves, and a sticky one — an
+  `error`, by default — never does, so the backlog would sit behind it forever.
 
 - **`fold-toast` pauses its countdown while it is being read.** Hovering the
   toast, or moving the keyboard focus into it, freezes the auto-dismiss timer;

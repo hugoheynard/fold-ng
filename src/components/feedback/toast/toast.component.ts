@@ -68,6 +68,12 @@ export class FoldToastComponent {
   readonly dismissible = input(true, { transform: booleanAttribute });
   /** Auto-dismiss after this many ms. `0` (default) is sticky — no timer. */
   readonly duration = input(0, { transform: numberAttribute });
+  /**
+   * How many times this same message arrived. Above 1 it renders a `×N` tally
+   * and **restarts the countdown** — a message still recurring is a message
+   * still current, so it should not expire on the first occurrence's clock.
+   */
+  readonly repeat = input(1, { transform: numberAttribute });
 
   /** Emitted on the close button, or when `duration` elapses. */
   readonly dismiss = output();
@@ -82,11 +88,13 @@ export class FoldToastComponent {
   protected readonly paused = computed(() => this.hovered() || this.focused());
 
   /**
-   * How much of `duration` is left to run, and which `duration` that budget was
-   * cut from. Plain fields, not signals: nothing renders them, and a pause must
-   * not itself schedule a change-detection pass.
+   * How much time is left to run, and what it was granted for. Plain fields,
+   * not signals: nothing renders them, and a pause must not itself schedule a
+   * change-detection pass. The key is what distinguishes a **new** budget (a
+   * changed `duration`, or another occurrence of the message) from a mere
+   * pause — only the former refills it.
    */
-  private budgetFor = -1;
+  private budgetFor = "";
   private remainingMs = 0;
 
   constructor() {
@@ -97,8 +105,9 @@ export class FoldToastComponent {
     effect((onCleanup) => {
       const ms = this.duration();
       const paused = this.paused();
-      if (this.budgetFor !== ms) {
-        this.budgetFor = ms;
+      const key = `${ms}:${this.repeat()}`;
+      if (this.budgetFor !== key) {
+        this.budgetFor = key;
         this.remainingMs = ms;
       }
       if (ms <= 0 || paused) {

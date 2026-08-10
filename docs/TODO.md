@@ -1099,20 +1099,31 @@ avatar-detail}/*` shims that re-exported `fold-ng` are deleted; all ~115
   préserve `0=sticky`, **error sticky par défaut**), `animate.leave` +
   `prefers-reduced-motion`, `@Service()` (idiome Angular 22, vérifié réel).
   À faire, dans l'ordre :
-  - [ ] **Pause au survol/focus (LE gros manque, WCAG 2.2.1 Timing Adjustable).**
-        Le timer tourne quoi qu'il arrive → un toast disparaît pendant qu'on le lit
-        ou qu'on vise sa croix. Hover **et** focus doivent geler `duration`, reprise
-        au leave. C'est l'affordance n°1 (Sonner/Radix/React-Aria l'ont toutes).
-  - [ ] **Cap de stack + dedup.** Queue non bornée → une boucle/tempête de retries
-        empile N snackbars. Ajouter `maxVisible` (collapse « +N ») + dédup des
-        messages identiques. Cohérent avec la barre qualité burst→audit→durcissement.
-  - [ ] **`show()` retourne l'id (ou un handle).** Aujourd'hui l'id est généré puis
-        jeté côté appelant → impossible de dismiss un toast précis ni de le mettre à
-        jour (« Upload… » → « Uploadé »). Retourner l'id = cheap, très utile.
-  - [ ] **Id via compteur, pas `crypto.randomUUID()`.** Pas de risque hydratation
-        (créé côté client), mais `randomUUID` **throw en contexte non-sécurisé**
-        (http non-localhost), hasard crypto inutile, et **incohérent avec
-        `FoldIdService`** (compteur monotone fait pour bannir `randomUUID`). `#seq++`.
+  - [x] **Pause au survol/focus (LE gros manque, WCAG 2.2.1 Timing Adjustable).**
+        ✅ Fait (2026-08-10). Survol **et** focus clavier gèlent le compte à
+        rebours ; la reprise dépense ce qu'il RESTE, pas une durée neuve (sinon
+        un toast se renouvelle à chaque passage de souris et ne part jamais). Le
+        budget vit en champs simples, pas en signaux : rien ne l'affiche, et une
+        pause ne doit pas déclencher de détection de changement. Un focus qui
+        saute message → croix ne compte pas comme une sortie (`relatedTarget`).
+        État exposé en `data-paused` ; 3 specs.
+  - [x] **Cap de stack + dedup.** ✅ Fait (2026-08-10) — `maxVisible` (défaut :
+        pas de cap) et `dedupe` (défaut **actif**) dans `provideFoldToasts`. Deux
+        écarts assumés par rapport à la note d'origine : (1) le cap **évince le
+        plus ancien** au lieu de mettre en file d'attente — une file ne se vide
+        que quand un toast visible part, et un toast collant (une `error`, par
+        défaut) ne part jamais : le reliquat resterait coincé derrière ; (2) donc
+        pas de « +N » de débordement, mais un **`×N`** sur le message dédupliqué,
+        qui relance aussi son compte à rebours (un message qui se répète est un
+        message encore d'actualité). 6 specs + démo galerie « Repeats ».
+  - [x] **`show()` retourne l'id (ou un handle).** ✅ Fait (2026-08-10) — retourne
+        l'id ; un appel dédupliqué retourne celui du toast dans lequel il s'est
+        replié. La **mise à jour** d'un toast (« Upload… » → « Uploadé ») reste
+        ouverte : ce serait un `update(id, …)`, à faire au 1er usage réel.
+  - [x] **Id via compteur, pas `crypto.randomUUID()`.** ✅ Fait (2026-08-10) — via
+        `FoldIdService` (`fold-toast-N`) plutôt qu'un compteur local : le service
+        existait précisément pour bannir `randomUUID`, en dupliquer un second
+        aurait recréé la divergence qu'on corrigeait.
   - [ ] Secondaires (scope à assumer) : input `position` (figé bottom-right
         aujourd'hui) ; slot **action** (« Annuler »/« Réessayer ») ; hotkey pour
         focaliser la région toasts (F6, cf. Radix/Sonner).

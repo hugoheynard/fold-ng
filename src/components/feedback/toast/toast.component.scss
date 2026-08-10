@@ -49,6 +49,18 @@
   line-height: 1.4;
 }
 
+/* The tally of a message that kept arriving. Muted on purpose: it qualifies the
+   message, it isn't a second message. */
+.toast-repeat {
+  flex-shrink: 0;
+  padding: 1px var(--fold-space-xs);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
 .toast-close {
   flex-shrink: 0;
   display: grid;
