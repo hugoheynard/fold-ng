@@ -1,0 +1,11 @@
+<fold-popover [placement]="placement()" arrow>
+  <button
+    foldPopoverTrigger
+    type="button"
+    class="fi-trigger"
+    [attr.aria-label]="label()"
+  >
+    <span aria-hidden="true">i</span>
+  </button>
+  <div foldPopoverPanel class="fi-panel">{{ text() }}</div>
+</fold-popover>

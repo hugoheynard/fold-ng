@@ -8,17 +8,7 @@
       [optionalLabel]="optionalLabel()"
     />
     @if (info(); as infoText) {
-      <fold-popover placement="bottom-end" arrow>
-        <button
-          foldPopoverTrigger
-          type="button"
-          class="ib-info"
-          [attr.aria-label]="infoLabel()"
-        >
-          <span aria-hidden="true">i</span>
-        </button>
-        <div foldPopoverPanel class="ib-info-panel">{{ infoText }}</div>
-      </fold-popover>
+      <fold-info [text]="infoText" [label]="infoLabel()" />
     }
   </div>
 }

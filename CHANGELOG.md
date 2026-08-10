@@ -33,6 +33,16 @@ cours…"`; they are now `"Drag a file or browse"` and `"Uploading…"`. Both we
 
 ### Added
 
+- **`fold-info` — the `i` that answers "what is this?", now a primitive.** The
+  affordance shipped inlined in the field label row; it is extracted so the same
+  bubble works where there is no field at all — a dashboard card's corner, a
+  table header — which is exactly where the second consumer had hand-rolled it
+  (LaFolieDouce's admin: ~30 sites across the growth dashboard and the booking
+  rules). `text` · `label` (accessible name, English default) · `placement`.
+  `fold-input-base` now composes it instead of carrying its own copy, so the
+  `info` input on every labelled field renders the same component. A click, not
+  a hover: hover-only help is unreachable on a touch screen.
+
 - **`maxVisible` bounds the toast stack.** Beyond the cap the oldest toast is
   evicted — it has been on screen longest, so it is the one already read. Unset
   (the default) stays unbounded. Deliberately eviction and not a waiting queue:

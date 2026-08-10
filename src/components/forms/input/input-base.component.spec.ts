@@ -71,18 +71,20 @@ describe("FoldInputBaseComponent", () => {
 
   it("renders the info affordance only with both a label and info text", () => {
     const { fixture, el } = render();
-    expect(el.querySelector(".ib-info")).toBeNull();
+    expect(el.querySelector("fold-info")).toBeNull();
 
     // Info without a label has nothing to sit next to — still nothing.
     fixture.componentInstance.info.set("What this really changes");
     fixture.detectChanges();
-    expect(el.querySelector(".ib-info")).toBeNull();
+    expect(el.querySelector("fold-info")).toBeNull();
 
     fixture.componentInstance.label.set("Amount");
     fixture.detectChanges();
-    const trigger = el.querySelector(".ib-info");
-    expect(trigger).not.toBeNull();
-    expect(trigger?.getAttribute("aria-label")).toBe("More information");
+    expect(el.querySelector("fold-info")).not.toBeNull();
+    // The label input reaches the primitive's accessible name.
+    expect(
+      el.querySelector("fold-info .fi-trigger")?.getAttribute("aria-label"),
+    ).toBe("More information");
   });
 
   it("keeps the info text out of the flow until the trigger is used", () => {
@@ -93,7 +95,9 @@ describe("FoldInputBaseComponent", () => {
 
     // The panel is a popover: it exists in the template but is not shown, so a
     // long explanation never pushes the next control down.
-    const trigger = el.querySelector<HTMLButtonElement>(".ib-info");
+    const trigger = el.querySelector<HTMLButtonElement>(
+      "fold-info .fi-trigger",
+    );
     expect(trigger?.getAttribute("aria-expanded")).toBe("false");
   });
 
@@ -109,7 +113,7 @@ describe("FoldInputBaseComponent", () => {
     expect(el.querySelector(".ib-hint")?.textContent?.trim()).toBe(
       "In minutes",
     );
-    expect(el.querySelector(".ib-info")).not.toBeNull();
+    expect(el.querySelector("fold-info")).not.toBeNull();
   });
 
   it("shows the error instead of the hint, with an alert role", () => {

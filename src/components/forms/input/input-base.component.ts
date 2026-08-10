@@ -1,6 +1,5 @@
 import { booleanAttribute, Component, input } from "@angular/core";
-import { FoldPopoverComponent } from "../../overlays/popover/popover.component";
-import { FoldPopoverTriggerDirective } from "../../overlays/popover/popover-trigger.directive";
+import { FoldInfoComponent } from "../../overlays/info/info.component";
 import { FoldLabelComponent } from "./label.component";
 
 /**
@@ -20,18 +19,16 @@ import { FoldLabelComponent } from "./label.component";
  * sentence or two doesn't belong under every field: it pushes the next control
  * down and gets skipped anyway. That's {@link info} — an `i` at the end of the
  * label line, revealing the text in a popover. The two compose: keep the hint
- * short, put the *why* behind the `i`.
+ * short, put the *why* behind the `i`. That `i` is {@link FoldInfoComponent}, a
+ * primitive of its own, so the same affordance is available where there is no
+ * field at all — a dashboard card's corner, a table header.
  *
  * @selector `fold-input-base`
  */
 @Component({
   selector: "fold-input-base",
   standalone: true,
-  imports: [
-    FoldLabelComponent,
-    FoldPopoverComponent,
-    FoldPopoverTriggerDirective,
-  ],
+  imports: [FoldLabelComponent, FoldInfoComponent],
   templateUrl: "./input-base.component.html",
   styleUrl: "./input-base.component.scss",
 })

@@ -366,6 +366,11 @@
 #### FoldIdService
 - (no input·model·output bindings)
 
+#### FoldInfoComponent
+- label: InputSignal<string>
+- placement: InputSignal<FoldPopoverPlacement>
+- text: InputSignal<string> — required
+
 #### FoldInlineConfirmComponent
 - cancelIcon: InputSignal<FoldIconName | undefined>
 - cancelled: OutputEmitterRef<void>
