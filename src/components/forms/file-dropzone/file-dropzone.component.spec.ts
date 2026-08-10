@@ -27,11 +27,30 @@ describe("FoldFileDropzoneComponent", () => {
     expect(input.getAttribute("type")).toBe("file");
   });
 
-  it("shows the label, and the busy message when busy", () => {
+  // Both defaults are asserted in ENGLISH on purpose: a lib that ships French
+  // copy forces every non-French consumer to override two inputs just to be
+  // readable. The overrides below are the localisation path.
+  it("defaults to English copy, and lets the consumer localise it", () => {
     const { fixture, host } = render();
-    expect(host.querySelector(".label")?.textContent).toContain("Glissez");
+    expect(host.querySelector(".label")?.textContent).toContain(
+      "Drag a file or browse",
+    );
 
+    fixture.componentRef.setInput("label", "Glissez un fichier ou parcourez");
+    fixture.detectChanges();
+    expect(host.querySelector(".label")?.textContent?.trim()).toBe(
+      "Glissez un fichier ou parcourez",
+    );
+  });
+
+  it("swaps the label for the busy message when busy", () => {
+    const { fixture, host } = render();
     fixture.componentRef.setInput("busy", true);
+    fixture.detectChanges();
+    expect(host.querySelector(".label")?.textContent?.trim()).toBe(
+      "Uploading…",
+    );
+
     fixture.componentRef.setInput("busyLabel", "Envoi…");
     fixture.detectChanges();
     expect(host.querySelector(".label")?.textContent?.trim()).toBe("Envoi…");
@@ -71,6 +90,34 @@ describe("FoldFileDropzoneComponent", () => {
     fixture.detectChanges();
     zone.dispatchEvent(dropEvent([new File(["x"], "c.pdf")]));
     expect(picked).toHaveLength(0);
+  });
+
+  // The zone is a `role="button"` div, so Enter and Space are the only reasons
+  // a keyboard user can reach the picker at all — they're the a11y contract,
+  // not a nicety.
+  it("opens the picker on Enter and on Space", () => {
+    const { zone, input } = render();
+    const click = vi.spyOn(input, "click").mockImplementation(() => undefined);
+
+    zone.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    expect(click).toHaveBeenCalledTimes(1);
+
+    const space = new KeyboardEvent("keydown", { key: " ", cancelable: true });
+    zone.dispatchEvent(space);
+    expect(click).toHaveBeenCalledTimes(2);
+    // Space must not also scroll the page under the dropzone.
+    expect(space.defaultPrevented).toBe(true);
+  });
+
+  it("passes `accept` and `multiple` through to the native input", () => {
+    const { fixture, input } = render();
+    expect(input.multiple).toBe(true); // documented default
+
+    fixture.componentRef.setInput("accept", ".pdf,.png");
+    fixture.componentRef.setInput("multiple", false);
+    fixture.detectChanges();
+    expect(input.getAttribute("accept")).toBe(".pdf,.png");
+    expect(input.multiple).toBe(false);
   });
 
   it("opens the native picker on click, but not when busy", () => {

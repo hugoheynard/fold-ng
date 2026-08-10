@@ -106,16 +106,16 @@ and the gallery nav — **layout first**.
 
 **Forms** — `src/components/forms/`
 
-| Component            | DX  | Tests | Docs | Verdict                                                       |
-| -------------------- | :-: | :---: | :--: | ------------------------------------------------------------- |
-| `fold-input`         | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                           |
-| `fold-checkbox`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — native + `FormCheckboxControl`; gallery page |
-| `fold-number-input`  | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate           |
-| `fold-select`        | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                             |
-| `fold-slider`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — FormValueControl, real label, focus, gallery |
-| `fold-range-slider`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — [(value)], i18n aria, disabled, gallery      |
-| `fold-file-dropzone` | 🟡  |  🟢   |  🟡  | **French default copy (portability)**; README row             |
-| `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                            |
+| Component            | DX  | Tests | Docs | Verdict                                                         |
+| -------------------- | :-: | :---: | :--: | --------------------------------------------------------------- |
+| `fold-input`         | 🟢  |  🟢   |  🟢  | Wire or drop dead `autofocus` input                             |
+| `fold-checkbox`      | 🟢  |  🟢   |  🟢  | **Ship-ready** — native + `FormCheckboxControl`; gallery page   |
+| `fold-number-input`  | 🟢  |  🟢   |  🟢  | Extract — **299/300 lines**, one line from the gate             |
+| `fold-select`        | 🟢  |  🟢   |  🟡  | README row; `[formField]` example                               |
+| `fold-slider`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — FormValueControl, real label, focus, gallery   |
+| `fold-range-slider`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — [(value)], i18n aria, disabled, gallery        |
+| `fold-file-dropzone` | 🟢  |  🟢   |  🟢  | **Ship-ready** — English defaults; keyboard + passthrough tests |
+| `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                              |
 
 **Foundations** — `src/components/foundations/`
 
@@ -163,11 +163,15 @@ per-header `closeLabel` override; the app sets `"Fermer"` once via
 `provideFoldPanelLabels`. The host renders that same header for template panels,
 so the second hardcoded copy is gone entirely.
 
-**P0-4 · `fold-file-dropzone` ships French default copy.**
-`label` defaults to `'Glissez un fichier ou parcourez'`, `busyLabel` to
-`'Téléversement en cours…'` (`file-dropzone.component.ts`). Every other component
-defaults to English and lets the caller localise. Flip the defaults to
-`'Drag a file or browse'` / `'Uploading…'`.
+**P0-4 · `fold-file-dropzone` ships French default copy. ✅ FIXED.**
+`label` now defaults to `'Drag a file or browse'` and `busyLabel` to
+`'Uploading…'` — the two inputs were always overridable, but a French default
+forces every non-French consumer to localise just to be readable, which is the
+portability leak the other components don't have. A spec asserts the English
+default **and** the override path. Two inputs on one component didn't warrant a
+`provideFold…Labels` token (cf. P0-2/P0-3, where the strings were unreachable).
+Same pass closed the component's other actions: keyboard Enter/Space activation
+and `accept`/`multiple` passthrough are now covered.
 
 **P0-5 · Focus-trap does not `inert` the background. ✅ FIXED.**
 `FoldPanelHostComponent` now marks every branch that doesn't contain a panel
@@ -488,10 +492,10 @@ thumb ring, `prefers-reduced-motion` and `forced-colors`. README row + gallery
 not raw seconds); `disabled`; shares the hardened thumb (focus ring, reduced
 motion, forced colors). README row + gallery `/slider`.
 
-**`fold-file-dropzone`** 🟡🟢🟡 — Solid affordance (drag visuals, keyboard
-activation, same-file re-pick reset, disabled/busy guards). Actions: **P0-4**
-(French defaults → English); (2) README row (C-2); (3) tests for keyboard
-Enter/Space activation and `accept`/`multiple` passthrough.
+**`fold-file-dropzone`** 🟢🟢🟢 — **Ship-ready.** Solid affordance (drag visuals,
+keyboard activation, same-file re-pick reset, disabled/busy guards), English
+defaults (P0-4), a README row, and specs covering Enter/Space activation +
+`accept`/`multiple` passthrough.
 
 ### Nav, shell & overlays
 

@@ -36,14 +36,14 @@ export class FoldFileDropzoneComponent {
   readonly accept = input<string>("");
   /** Multi-file pick. Defaults to true — the consumer can cap on its end. */
   readonly multiple = input<boolean>(true);
-  /** Primary line of copy. */
-  readonly label = input<string>("Glissez un fichier ou parcourez");
+  /** Primary line of copy. English by default — the consumer localises. */
+  readonly label = input<string>("Drag a file or browse");
   /** Smaller helper line under the label (size limit, count remaining, …). */
   readonly hint = input<string | null>(null);
   /** Pending state — disables interaction and swaps the copy for a loading message. */
   readonly busy = input<boolean>(false);
   /** Loading message displayed while `busy` is true. */
-  readonly busyLabel = input<string>("Téléversement en cours…");
+  readonly busyLabel = input<string>("Uploading…");
   /** Fully disable the dropzone (e.g. cap reached). */
   readonly disabled = input<boolean>(false);
 

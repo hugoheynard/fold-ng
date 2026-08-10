@@ -6,6 +6,16 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING — `fold-file-dropzone` defaults to English copy.** `label` was
+  `"Glissez un fichier ou parcourez"` and `busyLabel` `"Téléversement en
+cours…"`; they are now `"Drag a file or browse"` and `"Uploading…"`. Both were
+  always inputs, so the fix for a French app is to pass the old strings — but a
+  library that defaults to one natural language makes every other consumer
+  override it just to be readable, which is the portability promise leaking. It
+  was the last of the seven release blockers in `docs/RELEASE-READINESS.md`.
+
 ### Added
 
 - **`info` on every labelled input — the explanation a `hint` can't carry.** An
