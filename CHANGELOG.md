@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.10.0] - 2026-08-11
+
 ### Changed
 
 - **BREAKING — `fold-file-dropzone` defaults to English copy.** `label` was
@@ -1354,7 +1358,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.9.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0
 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0
 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1
 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0

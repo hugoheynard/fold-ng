@@ -42,6 +42,676 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.10.0",
+    date: "2026-08-11",
+    unreleased: false,
+    counts: {
+      Changed: 3,
+      Added: 4,
+      Fixed: 2,
+    },
+    breaking: 2,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-file-dropzone",
+              },
+              {
+                kind: "text",
+                value: " defaults to English copy.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value: " was ",
+              },
+              {
+                kind: "code",
+                value: '"Glissez un fichier ou parcourez"',
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "busyLabel",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: '"Téléversement en cours…"',
+              },
+              {
+                kind: "text",
+                value: "; they are now ",
+              },
+              {
+                kind: "code",
+                value: '"Drag a file or browse"',
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: '"Uploading…"',
+              },
+              {
+                kind: "text",
+                value:
+                  ". Both were always inputs, so the fix for a French app is to pass the old strings — but a library that defaults to one natural language makes every other consumer override it just to be readable, which is the portability promise leaking. It was the last of the seven release blockers in ",
+              },
+              {
+                kind: "code",
+                value: "docs/RELEASE-READINESS.md",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "BREAKING — identical toasts collapse instead of stacking.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: "show()",
+              },
+              {
+                kind: "text",
+                value:
+                  " whose message _and_ variant match a toast already on screen now folds into it as a ",
+              },
+              {
+                kind: "code",
+                value: "×N",
+              },
+              {
+                kind: "text",
+                value:
+                  " tally and restarts its countdown, rather than queueing a copy: a retry loop used to bury the screen under the same sentence. Opt out with ",
+              },
+              {
+                kind: "code",
+                value: "provideFoldToasts({ dedupe: false })",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "FoldToast",
+              },
+              {
+                kind: "text",
+                value: " gained a required ",
+              },
+              {
+                kind: "code",
+                value: "repeats",
+              },
+              {
+                kind: "text",
+                value:
+                  " field, so anything constructing that type by hand must supply it.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "FoldToastService.show()",
+              },
+              {
+                kind: "text",
+                value: " returns the toast's id",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(it returned ",
+              },
+              {
+                kind: "code",
+                value: "void",
+              },
+              {
+                kind: "text",
+                value:
+                  '). The id was generated and thrown away, which made a sticky "Uploading…" impossible to close from the code that opened it. A deduped call returns the id of the toast it folded into. Ids now come from ',
+              },
+              {
+                kind: "code",
+                value: "FoldIdService",
+              },
+              {
+                kind: "text",
+                value: "'s counter rather than ",
+              },
+              {
+                kind: "code",
+                value: "crypto.randomUUID()",
+              },
+              {
+                kind: "text",
+                value: ", which ",
+              },
+              {
+                kind: "strong",
+                value: "throws outright",
+              },
+              {
+                kind: "text",
+                value:
+                  " in a non-secure context (plain http off localhost) and whose randomness bought nothing for an id that only has to be unique within one queue.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-info",
+              },
+              {
+                kind: "text",
+                value: " — the ",
+              },
+              {
+                kind: "code",
+                value: "i",
+              },
+              {
+                kind: "text",
+                value: ' that answers "what is this?", now a primitive.',
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The affordance shipped inlined in the field label row; it is extracted so the same bubble works where there is no field at all — a dashboard card's corner, a table header — which is exactly where the second consumer had hand-rolled it (LaFolieDouce's admin: ~30 sites across the growth dashboard and the booking rules). ",
+              },
+              {
+                kind: "code",
+                value: "text",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value: " (accessible name, English default) · ",
+              },
+              {
+                kind: "code",
+                value: "placement",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "fold-input-base",
+              },
+              {
+                kind: "text",
+                value:
+                  " now composes it instead of carrying its own copy, so the ",
+              },
+              {
+                kind: "code",
+                value: "info",
+              },
+              {
+                kind: "text",
+                value:
+                  " input on every labelled field renders the same component. A click, not a hover: hover-only help is unreachable on a touch screen.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "maxVisible",
+              },
+              {
+                kind: "text",
+                value: " bounds the toast stack.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Beyond the cap the oldest toast is evicted — it has been on screen longest, so it is the one already read. Unset (the default) stays unbounded. Deliberately eviction and not a waiting queue: a queue only drains when a visible toast leaves, and a sticky one — an ",
+              },
+              {
+                kind: "code",
+                value: "error",
+              },
+              {
+                kind: "text",
+                value:
+                  ", by default — never does, so the backlog would sit behind it forever.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-toast",
+              },
+              {
+                kind: "text",
+                value: " pauses its countdown while it is being read.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Hovering the toast, or moving the keyboard focus into it, freezes the auto-dismiss timer; leaving resumes it with ",
+              },
+              {
+                kind: "strong",
+                value: "the time that was left",
+              },
+              {
+                kind: "text",
+                value: ", not a fresh ",
+              },
+              {
+                kind: "code",
+                value: "duration",
+              },
+              {
+                kind: "text",
+                value:
+                  " — a toast that renewed itself on every mouse pass would never leave. Focus moving between the message and the close button counts as staying inside. This is WCAG 2.2.1 (Timing Adjustable): the previous timer ran regardless, so a message could expire mid-sentence, or while the pointer was travelling to its ✕. The paused state is exposed as ",
+              },
+              {
+                kind: "code",
+                value: "data-paused",
+              },
+              {
+                kind: "text",
+                value: " for styling.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "info",
+              },
+              {
+                kind: "text",
+                value: " on every labelled input — the explanation a ",
+              },
+              {
+                kind: "code",
+                value: "hint",
+              },
+              {
+                kind: "text",
+                value: " can't carry.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "An ",
+              },
+              {
+                kind: "code",
+                value: "i",
+              },
+              {
+                kind: "text",
+                value:
+                  " button at the end of the label line reveals a sentence or two in a ",
+              },
+              {
+                kind: "code",
+                value: "fold-popover",
+              },
+              {
+                kind: "text",
+                value: ". Lives in ",
+              },
+              {
+                kind: "code",
+                value: "fold-input-base",
+              },
+              {
+                kind: "text",
+                value: ", so it lands on the whole family at once: ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-number-input",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-select",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-textarea",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-date",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-time",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "[info]",
+              },
+              {
+                kind: "text",
+                value: ", plus ",
+              },
+              {
+                kind: "code",
+                value: "[infoLabel]",
+              },
+              {
+                kind: "text",
+                value: " for the button's accessible name, default ",
+              },
+              {
+                kind: "code",
+                value: "More information",
+              },
+              {
+                kind: "text",
+                value: "). Composes with ",
+              },
+              {
+                kind: "code",
+                value: "hint",
+              },
+              {
+                kind: "text",
+                value:
+                  " rather than replacing it — short line under the control, the _why_ behind the ",
+              },
+              {
+                kind: "code",
+                value: "i",
+              },
+              {
+                kind: "text",
+                value:
+                  ". The panel rides the popover's native top layer, so a long explanation never pushes the next control down, and it escapes any ",
+              },
+              {
+                kind: "code",
+                value: "overflow: hidden",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Consumers were hand-rolling this: LaFolieDouce B2B had a bespoke absolutely-positioned bubble anchored to each field wrapper.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Opening a panel no longer shoves the page sideways.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The main content jumped left by the panel's width and eased back — a long-standing glitch whose cause turned out to be neither of the two suspects (an inner scrollbar, a ",
+              },
+              {
+                kind: "code",
+                value: "backdrop-filter",
+              },
+              {
+                kind: "text",
+                value:
+                  " repaint). Measured frame by frame: a panel begins its enter animation parked off-edge at ",
+              },
+              {
+                kind: "code",
+                value: "translateX(100%)",
+              },
+              {
+                kind: "text",
+                value:
+                  ", the dock did not clip, so the parked panel joined the positioned host's ",
+              },
+              {
+                kind: "strong",
+                value: "scrollable overflow",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "scrollWidth",
+              },
+              {
+                kind: "text",
+                value:
+                  " 960 → 1221 on the gallery); the focus trap then moved focus into it and the browser scrolled the host sideways to reveal it (",
+              },
+              {
+                kind: "code",
+                value: "scrollLeft",
+              },
+              {
+                kind: "text",
+                value:
+                  " 0 → 261); the slide-in shrank the overflow again and the scroll was clamped back frame by frame, hence the eased return. Fixed with ",
+              },
+              {
+                kind: "code",
+                value: "overflow: clip",
+              },
+              {
+                kind: "text",
+                value:
+                  " on the dock — a parked panel has no business in anyone's scrollable overflow — plus ",
+              },
+              {
+                kind: "code",
+                value: "focus({ preventScroll: true })",
+              },
+              {
+                kind: "text",
+                value:
+                  " when a focus trap activates, since entering an overlay must never scroll the page behind it. ",
+              },
+              {
+                kind: "code",
+                value: "e2e/panel.spec.ts",
+              },
+              {
+                kind: "text",
+                value:
+                  " samples the whole animation and fails on any sideways scroll; jsdom cannot see this class of bug at all.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "A horizontal tab bar that doesn't fit now scrolls instead of clipping its tail.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value:
+                  " share a bar whose host clipped its overflow while its items never wrap — so on a phone, the last entries of a four-item ",
+              },
+              {
+                kind: "code",
+                value: 'size="comfortable"',
+              },
+              {
+                kind: "text",
+                value:
+                  " bar simply vanished, and with them any way of reaching those pages. The host now scrolls on the inline axis (thin house scrollbar, ",
+              },
+              {
+                kind: "code",
+                value: "overscroll-behavior-x: contain",
+              },
+              {
+                kind: "text",
+                value:
+                  ") and the bar keeps its natural width. Vertical rails are untouched — the page scroll already covers them, and an inner scroll box there would trap the wheel — and so is ",
+              },
+              {
+                kind: "code",
+                value: "collapsed",
+              },
+              {
+                kind: "text",
+                value:
+                  ", the icon accordion, which is designed to fit any width and needs its overflow visible for its tooltips.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.9.0",
     date: "2026-08-04",
     unreleased: false,
@@ -13133,7 +13803,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.9.0...HEAD [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.0...HEAD [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -13145,4 +13815,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.9.0";
+export const PUBLISHED_VERSION = "0.10.0";
