@@ -1291,6 +1291,24 @@ The blocker to the "reusable across projects" promise (rule 5.1).
       **Includes the app-shell mode-combos** itemised in Roadmap 1.0.1 (drawer
       open/closed, elevated rail, footer scroll/pinned, mobile collapse) — the
       crop bug shipped for lack of exactly this.
+  - [ ] **⚠️ The one suite that exists is ungated, and its baselines have
+        rotted.** `e2e/calendar-visual.spec.ts` (3 tests: month × umbra/lumen +
+        RTL) is the only visual coverage in the lib — and **nothing runs it**:
+        `test:e2e` is `playwright test --grep-invert @visual`, and no CI job
+        calls `test:e2e:visual`. So it is outside the release gate _and_ outside
+        the PR gate. Measured 2026-08-10: all 3 fail, `Expected an image 940px
+by 596px, received 960px` — a 20px width drift that dates from the
+        scroll-system Slice A (`fold-page-layout` stopped owning its scroll),
+        shipped in **0.9.0**. The baselines have therefore been wrong for a
+        release and a half without a single red build.
+        **Decide, don't drift:** (a) re-record the baselines
+        (`pnpm test:e2e:visual --update-snapshots`) _after_ eyeballing the diff —
+        the drift is expected, but blessing a diff you haven't looked at is how
+        a real regression gets baked into the baseline; then (b) wire
+        `test:e2e:visual` into a gate, or it will rot again the same way. Note
+        the platform trap: snapshots are `-darwin` suffixed, so a Linux CI
+        runner needs its own set (record in a container, or gate only on macOS).
+        A visual gate nobody runs is worse than none — it reads as coverage.
 - [ ] Coverage floor in CI; fill the thinly-tested components (menu, app-shell).
 
 **3 · a11y depth (Modernité 8.5→9, and unblocks a real 6.2 gap).**
