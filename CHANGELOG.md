@@ -6,7 +6,38 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **A `side="auto"` panel now docks to the bottom on a narrow host.** It got the
+  bottom-sheet _shape_ (content height, rounded top, slide-up, grabber) but not
+  its _alignment_: the rule that pinned it, `align-items: flex-end`, selected
+  `.panel-dock` from **inside** the dock's own `@container` query — and an
+  element can never match its own container query (`container-type` makes it a
+  container for its _descendants_). The sheet kept the dock's default `stretch`
+  and filled the whole region, which reads as a sheet stuck to the top of the
+  screen. The alignment now rides on the panel (`align-self`), a real
+  descendant. Regression test in `e2e/panel.spec.ts` — a **wide viewport with a
+  narrow stage**, because shrinking the viewport instead lets some ancestor
+  container match ≤640 and answer the query in the dock's place, hiding the bug.
+
+- **A `background="surface"` tab bar is opaque.** `fold-view-nav` / `fold-tabs`
+  painted the rail-3 role, which is a 3% white **overlay** — so a bar a consumer
+  pinned with `position: sticky` had page content scrolling visibly through it.
+  The overlay is now layered over the page fill. On the page background — where
+  a filled bar belongs — the paint is unchanged; anywhere else it is opaque,
+  which is what "carries its own surface" always claimed.
+
+### Changed
+
+- **Tighter insets below 640px.** Three defaults step one notch down the spacing
+  scale on a phone, where a horizontal inset is charged twice against a reading
+  width that has none to spare: the nav↔content gap (`fold-nav-layout` and a
+  standalone `fold-view-nav`, 16 → 8px), the `fold-card` body and chrome padding
+  (16 → 12px, 12/16 → 8/12px), and the panel host's template-panel body
+  (16 → 12px, keyed to the dock's width, not the viewport). Every one keeps its
+  override: `--fold-nav-layout-gap`, `--fold-card-padding` and the card's
+  `padding` input (`p-sm` / `p-lg` / `p-none`) still win at every width — an
+  author who asked for a generous card meant it.
 
 ## [0.10.0] - 2026-08-11
 

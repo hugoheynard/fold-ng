@@ -31,6 +31,21 @@
   overflow: var(--fold-card-overflow, clip);
 }
 
+/* Narrow: a card's inset comes off the reading width twice (left + right), so
+   on a phone 16px of padding costs 32px of the ~360px a sentence has to live
+   in. One notch down the scale — the card still reads as a card, the content
+   gets the room. `p-lg` and an explicit `--fold-card-padding` are untouched:
+   an author who asked for a generous card meant it.
+   Viewport-keyed (@media) rather than container-keyed: a card is not a
+   container, and the constraint being answered here is the device's, not the
+   slot's. */
+@media (max-width: 640px) {
+  :host {
+    --_pad: 12px;
+    --_chrome: 8px 12px;
+  }
+}
+
 /* Sunken — a deeper container; pairs with a fainter hairline + a subtler raise
    (one step up = the card surface). */
 :host(.s-sunken) {
