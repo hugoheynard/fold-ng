@@ -136,16 +136,28 @@
 }
 
 /* `side="auto"` → a bottom sheet once the host (content region) is narrow. Keyed
-   off the dock's own inline-size, never the viewport. */
+   off the dock's own inline-size, never the viewport.
+
+   The alignment rides on the PANEL (`align-self`), not on the dock
+   (`align-items`) — and that is not a style preference. An element can never
+   match its own container query: `container-type` makes `.panel-dock` a
+   container for its DESCENDANTS, so a rule selecting `.panel-dock` inside
+   `@container` resolves against the dock's *ancestor* container and, there
+   being none, never applied. The sheet kept the dock's default `stretch`, which
+   with a `height: auto` sheet pins it to the TOP — a bottom sheet hanging off
+   the top edge. `align-self` on the panel, a real descendant, matches. */
 @container (max-width: 640px) {
-  .panel-dock[data-side="auto"] {
-    align-items: flex-end;
-  }
   .panel[data-side="auto"] {
     @include bottom-sheet;
+    align-self: flex-end;
   }
   .panel[data-side="auto"] .panel-grabber {
     display: grid;
+  }
+  /* Same reasoning as the card: on a phone the body's inset is charged twice
+     against a reading width that has nothing to spare. */
+  .panel-body {
+    padding: var(--fold-space-md);
   }
 }
 

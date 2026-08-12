@@ -50,9 +50,22 @@
 
 /* Filled bar — carries its own surface instead of blending with the app
    background. Uses the tertiary rail role: a tab sidebar is, semantically, the
-   third navigation rail (app menu · workspace · section). */
+   third navigation rail (app menu · workspace · section).
+
+   The rail-3 role is a FAINT OVERLAY (3% white), so on its own it is
+   translucent — and a bar that a consumer pins with `position: sticky` had
+   page content sliding visibly through it. A surface you can read through is
+   not a surface. The overlay is therefore layered over the page fill: two
+   backgrounds, one paint. On the page background — where a filled bar belongs —
+   the result is pixel-identical to before; anywhere else it is now opaque,
+   which is what "carries its own surface" always claimed. */
 .bg-surface {
-  background: var(--fold-color-bg-rail-tertiary);
+  background:
+    linear-gradient(
+      var(--fold-color-bg-rail-tertiary),
+      var(--fold-color-bg-rail-tertiary)
+    ),
+    var(--fold-color-bg-page);
   padding: var(--fold-space-xs) var(--fold-space-sm) 0;
 }
 .bg-surface.dir-vertical {
