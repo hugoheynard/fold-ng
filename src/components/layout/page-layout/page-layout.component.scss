@@ -130,11 +130,24 @@
     justify-content: flex-start;
   }
 }
+/* Narrow: the gutter is charged twice against a width that has nothing to give,
+   and it is the one inset a reader never notices missing — a card that reaches
+   the screen edge still reads as a card. Half the themed value rather than a new
+   token: a page or theme that retuned `--fold-page-gutter` gets its own value
+   halved, and a `fold-page-section[bleed]` (which cancels the gutter with
+   `calc(-1 * …)`) stays in lockstep at every width. */
+@mixin page-narrow-gutter {
+  :host {
+    padding-inline: calc(var(--fold-page-gutter, 32px) / 2);
+  }
+}
 @media (max-width: 640px) {
   @include page-head-stack;
+  @include page-narrow-gutter;
 }
 @container (max-width: 640px) {
   @include page-head-stack;
+  @include page-narrow-gutter;
 }
 .page-body {
   display: flex;

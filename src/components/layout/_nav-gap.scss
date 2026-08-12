@@ -18,9 +18,10 @@
 
   /* Narrow: 16px is page rhythm, and a phone has none to spare — at that width
      the bar reads as floating away from the view it introduces, instead of
-     heading it. One notch down the scale. The consumer's
-     `--fold-nav-layout-gap` still wins, at every width. */
+     heading it. Down to the smallest step: the bar and its first card are one
+     block, and the seam between them only has to be visible, not roomy. The
+     consumer's `--fold-nav-layout-gap` still wins, at every width. */
   @media (max-width: 640px) {
-    #{$property}: var(--fold-nav-layout-gap, var(--fold-space-sm, 8px));
+    #{$property}: var(--fold-nav-layout-gap, var(--fold-space-xs, 4px));
   }
 }

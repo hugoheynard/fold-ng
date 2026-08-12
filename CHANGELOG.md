@@ -6,7 +6,25 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **A `fold-nav-layout` hands its content a zero gutter below 640px.** The bar
+  spans the layout's full width, so a gutter under it insets the cards _relative
+  to the menu that names them_ — they stop reading as one column. It is also
+  pure loss on a phone: 2 × 16px off a ~360px reading width. Handed down as
+  `--fold-page-gutter: 0` on the body rather than selected as a child: a custom
+  property crosses view encapsulation, so it reaches a nested `fold-page-layout`
+  (or a `bleed` section, which stays in lockstep) without the layout having to
+  know what its content is. Vertical rhythm untouched.
+
+- **`fold-page-layout` halves its gutter below 640px** —
+  `calc(var(--fold-page-gutter) / 2)`, so a page or theme that retuned the token
+  gets _its_ value halved, and a `fold-page-section[bleed]` still cancels it
+  exactly.
+
+- **The nav↔content gap drops to the smallest step below 640px** (8 → 4px). The
+  bar and its first card are one block; the seam only has to be visible, not
+  roomy. `--fold-nav-layout-gap` still wins at every width.
 
 ## [0.10.1] - 2026-08-12
 
