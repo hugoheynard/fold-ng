@@ -36,20 +36,22 @@
   min-width: 0;
 }
 
-/* Narrow: the content a nav layout introduces stops paying a horizontal gutter.
-   Two reasons, one shape. The bar already spans the layout's full width, so a
-   gutter under it insets the cards *relative to the menu that names them* —
-   they stop reading as the same column. And on a phone that inset is pure loss:
-   2 × 16px off a ~360px reading width.
+/* The content a nav layout introduces pays NO horizontal gutter — at every
+   width, not just on a phone.
+
+   The bar is that column's header: it spans the layout's full width, so a
+   gutter under it insets the cards *relative to the menu that names them*, and
+   the two stop reading as one column. That misalignment is a desktop problem as
+   much as a mobile one; on a phone it merely also costs room there isn't. The
+   gutter belongs to the PAGE, and a nav layout's body is not the page — it is
+   the inside of a column the page has already inset.
 
    Handed DOWN as a custom property rather than selected as a child: a custom
    property crosses view encapsulation where a selector cannot, and it reaches
    whatever the consumer put there — a nested `fold-page-layout`, a
    `fold-page-section[bleed]` that cancels the gutter in lockstep — without this
-   layout having to know what that is. Vertical rhythm is untouched: horizontal
-   room is what's scarce. */
-@media (max-width: 640px) {
-  .tl-body {
-    --fold-page-gutter: 0px;
-  }
+   layout having to know what that is. Vertical rhythm is untouched, and a body
+   that wants its inset back sets `--fold-page-gutter` on its own content. */
+.tl-body {
+  --fold-page-gutter: 0px;
 }

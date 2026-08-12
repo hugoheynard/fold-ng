@@ -12,14 +12,17 @@ _Nothing yet._
 
 ### Changed
 
-- **A `fold-nav-layout` hands its content a zero gutter below 640px.** The bar
-  spans the layout's full width, so a gutter under it insets the cards _relative
-  to the menu that names them_ — they stop reading as one column. It is also
-  pure loss on a phone: 2 × 16px off a ~360px reading width. Handed down as
-  `--fold-page-gutter: 0` on the body rather than selected as a child: a custom
-  property crosses view encapsulation, so it reaches a nested `fold-page-layout`
-  (or a `bleed` section, which stays in lockstep) without the layout having to
-  know what its content is. Vertical rhythm untouched.
+- **A `fold-nav-layout` hands its content a zero gutter, at every width.** The
+  bar is that column's header: it spans the layout's full width, so a gutter
+  under it insets the cards _relative to the menu that names them_ and the two
+  stop reading as one column — a desktop misalignment as much as a mobile one,
+  where it also costs room there isn't. The gutter belongs to the PAGE; a nav
+  layout's body is the inside of a column the page has already inset. Handed
+  down as `--fold-page-gutter: 0` on the body rather than selected as a child: a
+  custom property crosses view encapsulation, so it reaches a nested
+  `fold-page-layout` (or a `bleed` section, which stays in lockstep) without the
+  layout having to know what its content is. Vertical rhythm untouched, and a
+  body that wants its inset back sets the token on its own content.
 
 - **`fold-page-layout` halves its gutter below 640px** —
   `calc(var(--fold-page-gutter) / 2)`, so a page or theme that retuned the token
