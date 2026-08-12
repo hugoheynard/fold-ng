@@ -42,6 +42,14 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.10.3",
+    date: "2026-08-12",
+    unreleased: false,
+    counts: {},
+    breaking: 0,
+    groups: [],
+  },
+  {
     version: "0.10.2",
     date: "2026-08-12",
     unreleased: false,
@@ -65,14 +73,14 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               },
               {
                 kind: "text",
-                value: " hands its content a zero gutter below 640px.",
+                value: " hands its content a zero gutter, at every width.",
               },
             ],
             rest: [
               {
                 kind: "text",
                 value:
-                  "The bar spans the layout's full width, so a gutter under it insets the cards _relative to the menu that names them_ — they stop reading as one column. It is also pure loss on a phone: 2 × 16px off a ~360px reading width. Handed down as ",
+                  "The bar is that column's header: it spans the layout's full width, so a gutter under it insets the cards _relative to the menu that names them_ and the two stop reading as one column — a desktop misalignment as much as a mobile one, where it also costs room there isn't. The gutter belongs to the PAGE; a nav layout's body is the inside of a column the page has already inset. Handed down as ",
               },
               {
                 kind: "code",
@@ -98,7 +106,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  " section, which stays in lockstep) without the layout having to know what its content is. Vertical rhythm untouched.",
+                  " section, which stays in lockstep) without the layout having to know what its content is. Vertical rhythm untouched, and a body that wants its inset back sets the token on its own content.",
               },
             ],
             breaking: false,
@@ -14194,7 +14202,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.2...HEAD [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.3...HEAD [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -14206,4 +14214,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.10.2";
+export const PUBLISHED_VERSION = "0.10.3";
