@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.10.2] - 2026-08-12
+
 ### Changed
 
 - **A `fold-nav-layout` hands its content a zero gutter below 640px.** The bar
@@ -1411,7 +1415,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.1...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.2...HEAD
+[0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2
 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1
 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0
 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0
