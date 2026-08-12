@@ -42,6 +42,270 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.10.1",
+    date: "2026-08-12",
+    unreleased: false,
+    counts: {
+      Fixed: 2,
+      Changed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: 'side="auto"',
+              },
+              {
+                kind: "text",
+                value: " panel now docks to the bottom on a narrow host.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "It got the bottom-sheet _shape_ (content height, rounded top, slide-up, grabber) but not its _alignment_: the rule that pinned it, ",
+              },
+              {
+                kind: "code",
+                value: "align-items: flex-end",
+              },
+              {
+                kind: "text",
+                value: ", selected ",
+              },
+              {
+                kind: "code",
+                value: ".panel-dock",
+              },
+              {
+                kind: "text",
+                value: " from ",
+              },
+              {
+                kind: "strong",
+                value: "inside",
+              },
+              {
+                kind: "text",
+                value: " the dock's own ",
+              },
+              {
+                kind: "code",
+                value: "@container",
+              },
+              {
+                kind: "text",
+                value:
+                  " query — and an element can never match its own container query (",
+              },
+              {
+                kind: "code",
+                value: "container-type",
+              },
+              {
+                kind: "text",
+                value:
+                  " makes it a container for its _descendants_). The sheet kept the dock's default ",
+              },
+              {
+                kind: "code",
+                value: "stretch",
+              },
+              {
+                kind: "text",
+                value:
+                  " and filled the whole region, which reads as a sheet stuck to the top of the screen. The alignment now rides on the panel (",
+              },
+              {
+                kind: "code",
+                value: "align-self",
+              },
+              {
+                kind: "text",
+                value: "), a real descendant. Regression test in ",
+              },
+              {
+                kind: "code",
+                value: "e2e/panel.spec.ts",
+              },
+              {
+                kind: "text",
+                value: " — a ",
+              },
+              {
+                kind: "strong",
+                value: "wide viewport with a narrow stage",
+              },
+              {
+                kind: "text",
+                value:
+                  ", because shrinking the viewport instead lets some ancestor container match ≤640 and answer the query in the dock's place, hiding the bug.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: 'background="surface"',
+              },
+              {
+                kind: "text",
+                value: " tab bar is opaque.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value: " painted the rail-3 role, which is a 3% white ",
+              },
+              {
+                kind: "strong",
+                value: "overlay",
+              },
+              {
+                kind: "text",
+                value: " — so a bar a consumer pinned with ",
+              },
+              {
+                kind: "code",
+                value: "position: sticky",
+              },
+              {
+                kind: "text",
+                value:
+                  ' had page content scrolling visibly through it. The overlay is now layered over the page fill. On the page background — where a filled bar belongs — the paint is unchanged; anywhere else it is opaque, which is what "carries its own surface" always claimed.',
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Tighter insets below 640px.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Three defaults step one notch down the spacing scale on a phone, where a horizontal inset is charged twice against a reading width that has none to spare: the nav↔content gap (",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: " and a standalone ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: ", 16 → 8px), the ",
+              },
+              {
+                kind: "code",
+                value: "fold-card",
+              },
+              {
+                kind: "text",
+                value:
+                  " body and chrome padding (16 → 12px, 12/16 → 8/12px), and the panel host's template-panel body (16 → 12px, keyed to the dock's width, not the viewport). Every one keeps its override: ",
+              },
+              {
+                kind: "code",
+                value: "--fold-nav-layout-gap",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "--fold-card-padding",
+              },
+              {
+                kind: "text",
+                value: " and the card's ",
+              },
+              {
+                kind: "code",
+                value: "padding",
+              },
+              {
+                kind: "text",
+                value: " input (",
+              },
+              {
+                kind: "code",
+                value: "p-sm",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "p-lg",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "p-none",
+              },
+              {
+                kind: "text",
+                value:
+                  ") still win at every width — an author who asked for a generous card meant it.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.10.0",
     date: "2026-08-11",
     unreleased: false,
@@ -13803,7 +14067,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.0...HEAD [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.10.1...HEAD [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -13815,4 +14079,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.10.0";
+export const PUBLISHED_VERSION = "0.10.1";
