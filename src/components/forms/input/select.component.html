@@ -17,6 +17,7 @@
       [attr.required]="required() || null"
       [attr.aria-invalid]="errorMessage() ? true : null"
       [attr.aria-describedby]="describedBy()"
+      [attr.aria-label]="ariaLabel()"
       [value]="value()"
       (change)="onChange($event)"
       (blur)="onBlur()"

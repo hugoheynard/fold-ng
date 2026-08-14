@@ -87,6 +87,7 @@ export type FoldViewNavItem = {
     // conjunction. Vertical is a side rail, not a header — no block-end margin.
     "[class.is-standalone]": "isStandalone()",
     "[class.is-horizontal]": "resolvedDirection() === 'horizontal'",
+    "[class.is-sticky]": "sticky()",
   },
 })
 export class FoldViewNavComponent {
@@ -144,6 +145,15 @@ export class FoldViewNavComponent {
    * `surface` (a filled bar that carries its own rail background).
    */
   readonly background = input<"transparent" | "surface">("transparent");
+
+  /**
+   * Pin the bar to the top of its scroll container, so a long view can be
+   * navigated without scrolling back up. Pair it with the default
+   * `background="surface"`: a `transparent` bar would let the content scroll
+   * through it. Bleeding the bar to the page's edges stays the page's business
+   * — the page owns the gutter.
+   */
+  readonly sticky = input(false, { transform: booleanAttribute });
 
   /** The nearest layout, if any — lets `direction="auto"` follow it. */
   private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });

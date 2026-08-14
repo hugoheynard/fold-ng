@@ -123,3 +123,29 @@ describe("FoldTabsComponent", () => {
     expect(tablist.getAttribute("aria-orientation")).toBe("vertical");
   });
 });
+
+describe("FoldTabsComponent — sticky", () => {
+  @Component({
+    standalone: true,
+    imports: [FoldTabsComponent],
+    template: `<fold-tabs [tabs]="tabs" activeKey="a" [sticky]="on()" />`,
+  })
+  class StickyHost {
+    readonly tabs = [{ key: "a", label: "A" }];
+    readonly on = signal(false);
+  }
+
+  it("marks the host only when asked", () => {
+    // The class is the whole feature — the sticking itself is CSS, which JSDOM
+    // does not lay out. Assert the seam, not the paint.
+    const fixture = TestBed.createComponent(StickyHost);
+    fixture.detectChanges();
+    const bar = fixture.nativeElement.querySelector("fold-tabs") as HTMLElement;
+
+    expect(bar.classList.contains("is-sticky")).toBe(false);
+
+    fixture.componentInstance.on.set(true);
+    fixture.detectChanges();
+    expect(bar.classList.contains("is-sticky")).toBe(true);
+  });
+});

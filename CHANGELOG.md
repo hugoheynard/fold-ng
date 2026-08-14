@@ -20,6 +20,19 @@ All notable changes to **fold-ng** are documented here. The format follows
   the tiles. Same reading as the menu item's, including **a count of `0`
   rendering nothing**, and the count folds into the tile's accessible name.
 
+- **`sticky` on `fold-tabs` / `fold-view-nav`.** A bar heading a long view was
+  pinned by hand at every call site — `position: sticky; top: 0; z-index: 2` on
+  the host, twice in the same app. Pair it with the default
+  `background="surface"`; `transparent` would let the content scroll through.
+  Bleeding the bar to the page's edges stays the page's business (it owns the
+  gutter).
+- **`ariaLabel` on `fold-listbox`, `fold-select` and `fold-input`.** Twelve other
+  components have one; these three had no way to be **named without a visible
+  label**, so a toolbar filter reached assistive tech announced only by its own
+  value ("Week") — which says nothing about what it sets. A visible `label` is
+  still the better answer, and setting both is a mistake (`aria-label` wins and
+  the two drift).
+
 ### Changed
 
 - **`BREAKING` `fold-tabs` is generic over its key.** `FoldTabsComponent<K>`,

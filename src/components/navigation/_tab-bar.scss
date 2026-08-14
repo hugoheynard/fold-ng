@@ -12,6 +12,17 @@
   overflow: hidden;
 }
 
+/* `sticky` — the bar stays put while its content scrolls under it. Only ever
+   worth it on a long view, and only with an OPAQUE bar: `background="surface"`
+   is opaque, `transparent` would let the content read through. Bleeding the bar
+   to the page's edges is the PAGE's business (it owns the gutter), not ours. */
+:host(.is-sticky) {
+  position: sticky;
+  top: 0;
+  /* Above the content it covers, below the collapsed-rail tooltips (100). */
+  z-index: 2;
+}
+
 /* A HORIZONTAL bar that doesn't fit must stay REACHABLE. Items never wrap —
    `white-space: nowrap` is what makes a tab a tab — so with the host clipping,
    the tail of a four-item comfortable bar simply vanished on a phone, and with

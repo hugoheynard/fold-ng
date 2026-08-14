@@ -20,6 +20,7 @@
       [attr.required]="required() || null"
       [attr.aria-invalid]="errorMessage() ? true : null"
       [attr.aria-describedby]="describedBy()"
+      [attr.aria-label]="ariaLabel()"
       [attr.autocomplete]="autocomplete()"
       [value]="value()"
       (input)="onInputChange($event)"

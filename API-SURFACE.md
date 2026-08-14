@@ -391,6 +391,7 @@
 
 #### FoldInputComponent
 - align: InputSignal<"center" | "start">
+- ariaLabel: InputSignal<string | undefined>
 - autocomplete: InputSignal<string | null>
 - autofocus: InputSignal<boolean>
 - disabled: InputSignal<boolean>
@@ -425,6 +426,7 @@
 
 #### FoldListboxComponent
 - allowClear: InputSignalWithTransform<boolean, unknown>
+- ariaLabel: InputSignal<string | undefined>
 - clearLabel: InputSignal<string>
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
 - disabled: InputSignal<boolean>
@@ -670,6 +672,7 @@
 - variant: InputSignal<"default" | "panel">
 
 #### FoldSelectComponent
+- ariaLabel: InputSignal<string | undefined>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
@@ -725,6 +728,7 @@
 - collapsed: InputSignalWithTransform<boolean, unknown>
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
 - size: InputSignal<"comfortable" | "compact">
+- sticky: InputSignalWithTransform<boolean, unknown>
 - tabs: InputSignal<readonly FoldTabItem<K>[]> — required
 
 #### FoldTextareaComponent
@@ -808,6 +812,7 @@
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
 - items: InputSignal<readonly FoldViewNavItem[]> — required
 - size: InputSignal<"comfortable" | "compact">
+- sticky: InputSignalWithTransform<boolean, unknown>
 
 #### FoldViewToggleComponent
 - activeStyle: InputSignal<"accent" | "raised">

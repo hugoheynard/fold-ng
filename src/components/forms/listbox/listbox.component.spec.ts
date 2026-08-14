@@ -296,3 +296,27 @@ describe("FoldListboxComponent — [options] array API", () => {
     expect(fixture.componentInstance.value()).toBe(1);
   });
 });
+
+describe("FoldListboxComponent — accessible name without a visible label", () => {
+  @Component({
+    standalone: true,
+    imports: [FoldListboxComponent],
+    template: `<fold-listbox
+      ariaLabel="Granularity"
+      [options]="[{ value: 'week', label: 'Week' }]"
+      value="week"
+    />`,
+  })
+  class BareHost {}
+
+  it("names the trigger, where the value alone would say nothing", () => {
+    // Unlabelled, the trigger reaches assistive tech as "Week" — the value, not
+    // what it sets. This is the escape hatch for a toolbar control with no room
+    // for a visible label.
+    const fixture = TestBed.createComponent(BareHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(".lb-trigger");
+
+    expect(trigger?.getAttribute("aria-label")).toBe("Granularity");
+  });
+});

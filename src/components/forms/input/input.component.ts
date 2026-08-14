@@ -121,6 +121,17 @@ export class FoldInputComponent implements FormValueControl<string> {
   /** Accessible name of the info button. @default 'More information' */
   readonly infoLabel = input("More information");
 
+  /**
+   * Accessible name for the control itself, when there is **no visible
+   * `label`** — a filter in a toolbar, a control whose meaning the surrounding
+   * text already carries. Without it such a control reaches assistive tech named
+   * only by its current value ("Week"), which says nothing about what it sets.
+   *
+   * Prefer a visible `label`: it names the control for *everyone*. Set this only
+   * where the design genuinely has no room — and never both, since `aria-label`
+   * would override the visible one and leave the two out of sync.
+   */
+  readonly ariaLabel = input<string | undefined>(undefined);
   /** Optional helper text shown under the input. */
   readonly hint = input<string>();
 

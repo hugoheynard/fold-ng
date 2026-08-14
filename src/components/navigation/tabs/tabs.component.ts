@@ -83,6 +83,7 @@ export interface FoldTabsContext<K extends string = string> {
   imports: [FoldIconComponent, FoldBadgeComponent],
   templateUrl: "./tabs.component.html",
   styleUrl: "./tabs.component.scss",
+  host: { "[class.is-sticky]": "sticky()" },
 })
 export class FoldTabsComponent<
   K extends string = string,
@@ -110,6 +111,15 @@ export class FoldTabsComponent<
   readonly collapsed = input(false, { transform: booleanAttribute });
   /** `surface` (filled bar, default) or `transparent`. */
   readonly background = input<"transparent" | "surface">("surface");
+
+  /**
+   * Pin the bar to the top of its scroll container, so a long view can be
+   * navigated without scrolling back up. Pair it with the default
+   * `background="surface"`: a `transparent` bar would let the content scroll
+   * through it. Bleeding the bar to the page's edges stays the page's business
+   * — the page owns the gutter.
+   */
+  readonly sticky = input(false, { transform: booleanAttribute });
 
   /** The nearest layout, if any — lets `direction="auto"` follow it. */
   private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });
