@@ -922,6 +922,7 @@
 - FoldCommonLabels (interface)
 - FoldComponentPanelDescriptor (interface)
 - foldCountActionable (function)
+- FoldCustomIcons (interface)
 - FoldDataTableLabels (interface)
 - FoldDateType (type)
 - FoldDayColumnsOptions (interface)

@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`FoldCustomIcons` is now exported, so a consumer can actually augment it.**
+  0.11.0 shipped the interface **declared but not exported**: in the flattened
+  `.d.ts` it was module-local, so a consumer's `declare module "fold-ng" {
+interface FoldCustomIcons { … } }` created a second, unrelated interface. It
+  compiled, it merged with nothing, and `icon="my-logo"` still failed — the
+  headline extensibility of 0.11.0 did not work from outside the repo. Caught by
+  the first real consumer, within the hour.
+
+  In-repo the gallery augments the **source file** path, which is why its own
+  `demo-sparkle` worked and the gap stayed invisible. `API-SURFACE.md` could not
+  catch it either: it snapshots _exported_ symbols, and this one wasn't.
 
 ## [0.11.0] - 2026-08-14
 

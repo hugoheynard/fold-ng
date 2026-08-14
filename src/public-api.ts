@@ -290,6 +290,11 @@ export type {
   FoldIconName,
   FoldBuiltinIconName,
   FoldIconCategoryId,
+  // Exported so a CONSUMER can declaration-merge into it. Left unexported, the
+  // flattened `.d.ts` declares it module-local and `declare module "fold-ng"`
+  // creates a second, unrelated interface — the augmentation compiles and does
+  // nothing. Shipped that way in 0.11.0; caught by the first real consumer.
+  FoldCustomIcons,
 } from "./components/foundations/icon/builtin-icons";
 export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
 export { FoldNavLayoutComponent } from "./components/layout/nav-layout/nav-layout.component";
