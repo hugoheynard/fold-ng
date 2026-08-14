@@ -42,11 +42,15 @@ import type { FoldTabsContext } from "./tabs.component";
     ":host([hidden]){display:none}",
   template: "<ng-content />",
 })
-export class FoldTabPanelComponent {
+export class FoldTabPanelComponent<K extends string = string> {
   /** The owning `fold-tabs`, read via its template ref (`#t="foldTabs"`). */
-  readonly tabs = input.required<FoldTabsContext>();
-  /** This panel's tab key — must match one tab in the bar. */
-  readonly key = input.required<string>();
+  readonly tabs = input.required<FoldTabsContext<K>>();
+  /**
+   * This panel's tab key — must match one tab in the bar. When the bar is typed
+   * on a union of keys, a key outside it fails to compile instead of rendering a
+   * panel no tab can ever reach.
+   */
+  readonly key = input.required<K>();
 
   protected readonly isActive = computed(
     () => this.tabs().activeKey() === this.key(),

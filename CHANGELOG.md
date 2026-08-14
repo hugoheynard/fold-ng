@@ -20,6 +20,22 @@ All notable changes to **fold-ng** are documented here. The format follows
   the tiles. Same reading as the menu item's, including **a count of `0`
   rendering nothing**, and the count folds into the tile's accessible name.
 
+### Changed
+
+- **`BREAKING` `fold-tabs` is generic over its key.** `FoldTabsComponent<K>`,
+  `FoldTabItem<K>`, `FoldTabsContext<K>` and `FoldTabPanelComponent<K>` all carry
+  the caller's key type (defaulting to `string`, so untyped callers are
+  unaffected). A bar whose sections are a closed union now writes the key back
+  **already narrowed** — no `isTabKey`-style predicate at every call site — and a
+  `<fold-tab-panel key="typo">` outside the union fails to compile instead of
+  rendering a panel no tab can reach.
+- **`BREAKING` `tabs` / `items` accept `readonly` arrays.** They were the only
+  two array inputs in the package still demanding a mutable array, so a caller
+  holding a `readonly` list (the idiomatic shape for static data) had to widen it.
+  `fold-view-nav`'s `activeKey` stays `string` on purpose — it has a zero value
+  (`""`, "no item selected") that no caller's union contains, so a generic there
+  would hand the narrowing straight back.
+
 ### Fixed
 
 - **`fold-tabs`' JSDoc example projected into the wrong slot.** It wrote

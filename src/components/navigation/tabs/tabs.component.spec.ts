@@ -1,8 +1,11 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldTabsComponent } from "./tabs.component";
+import { FoldTabsComponent, type FoldTabItem } from "./tabs.component";
 import { FoldTabPanelComponent } from "./tab-panel.component";
+
+/** A closed union of section keys — the shape a real caller has. */
+type Section = "a" | "b" | "c";
 
 @Component({
   standalone: true,
@@ -18,12 +21,15 @@ import { FoldTabPanelComponent } from "./tab-panel.component";
     <fold-tab-panel [tabs]="t" key="c" data-p="c">Panel C</fold-tab-panel>`,
 })
 class HostComponent {
-  readonly tabs = [
+  readonly tabs: readonly FoldTabItem<Section>[] = [
     { key: "a", label: "A" },
     { key: "b", label: "B" },
     { key: "c", label: "C" },
   ];
-  readonly active = signal("a");
+  // Typed as the union, NOT `string`. If the bar ever widens its key back to
+  // `string`, the writeback stops being assignable and this file fails to
+  // compile — which is the point: the narrowing is the feature.
+  readonly active = signal<Section>("a");
   readonly dir = signal<"horizontal" | "vertical">("horizontal");
 }
 

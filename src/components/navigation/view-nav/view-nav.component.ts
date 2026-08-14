@@ -91,13 +91,20 @@ export type FoldViewNavItem = {
 })
 export class FoldViewNavComponent {
   /** The items to render, in order. */
-  readonly items = input.required<FoldViewNavItem[]>();
+  readonly items = input.required<readonly FoldViewNavItem[]>();
 
   /**
    * The active item's `key`, as a **two-way model** — for **button** items (no
    * `link`). Bind `[(activeKey)]` and a click writes the new key back; there is
    * no separate change output (the model is the one way). Link items ignore it:
    * their active state comes from the URL via `routerLinkActive`.
+   *
+   * **Deliberately `string`, where {@link FoldTabsComponent.activeKey} is
+   * generic.** This model has a zero value — `""`, "no item selected", the state
+   * a bar of pure link items sits in forever. No caller's union of view keys
+   * contains `""`, so a generic `K` here would have to be `K | ""` and hand the
+   * narrowing back to the caller — the very burden the generic exists to remove.
+   * `fold-tabs` has no such zero value (`model.required`), which is why it can.
    */
   readonly activeKey = model<string>("");
 

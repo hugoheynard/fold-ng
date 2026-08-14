@@ -715,17 +715,17 @@
 - foldSurface: InputSignalWithTransform<FoldSurfaceName, "" | FoldSurfaceName>
 
 #### FoldTabPanelComponent
-- key: InputSignal<string> — required
-- tabs: InputSignal<FoldTabsContext> — required
+- key: InputSignal<K> — required
+- tabs: InputSignal<FoldTabsContext<K>> — required
 
 #### FoldTabsComponent
-- activeKey: ModelSignal<string> — required
+- activeKey: ModelSignal<K> — required
 - activeStyle: InputSignal<"underline" | "fill">
 - background: InputSignal<"surface" | "transparent">
 - collapsed: InputSignalWithTransform<boolean, unknown>
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
 - size: InputSignal<"comfortable" | "compact">
-- tabs: InputSignal<FoldTabItem[]> — required
+- tabs: InputSignal<readonly FoldTabItem<K>[]> — required
 
 #### FoldTextareaComponent
 - disabled: InputSignal<boolean>
@@ -806,7 +806,7 @@
 - background: InputSignal<"surface" | "transparent">
 - collapsed: InputSignalWithTransform<boolean, unknown>
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
-- items: InputSignal<FoldViewNavItem[]> — required
+- items: InputSignal<readonly FoldViewNavItem[]> — required
 - size: InputSignal<"comfortable" | "compact">
 
 #### FoldViewToggleComponent

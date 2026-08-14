@@ -14,10 +14,17 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
 
-/** A tab in a {@link FoldTabsComponent} bar. */
-export type FoldTabItem = {
+/**
+ * A tab in a {@link FoldTabsComponent} bar.
+ *
+ * Generic over the **key** so a caller whose sections are a closed union
+ * (`"overview" | "settings"`) keeps that type end to end: the bar writes it back
+ * already narrowed, and a panel bound to a key outside the union is a compile
+ * error. Defaults to `string`, so an untyped caller is unaffected.
+ */
+export type FoldTabItem<K extends string = string> = {
   /** Unique key — identifies the tab / its panel, emitted on change. */
-  key: string;
+  key: K;
   /** Display label. */
   label: string;
   /** Optional leading icon. */
@@ -31,13 +38,13 @@ export type FoldTabItem = {
  * exposed by `fold-tabs` via `exportAs="foldTabs"`. Decouples the panel from the
  * concrete component.
  */
-export interface FoldTabsContext {
+export interface FoldTabsContext<K extends string = string> {
   /** The active tab's key. */
-  activeKey(): string;
+  activeKey(): K;
   /** The DOM id of the tab for `key` (a panel's `aria-labelledby`). */
-  tabId(key: string): string;
+  tabId(key: K): string;
   /** The DOM id of the panel for `key` (a tab's `aria-controls`). */
-  panelId(key: string): string;
+  panelId(key: K): string;
 }
 
 /**
@@ -77,9 +84,11 @@ export interface FoldTabsContext {
   templateUrl: "./tabs.component.html",
   styleUrl: "./tabs.component.scss",
 })
-export class FoldTabsComponent implements FoldTabsContext {
+export class FoldTabsComponent<
+  K extends string = string,
+> implements FoldTabsContext<K> {
   /** The tabs to render, in order. */
-  readonly tabs = input.required<FoldTabItem[]>();
+  readonly tabs = input.required<readonly FoldTabItem<K>[]>();
   /**
    * The `key` of the active tab (the shown panel), as a **two-way model** — the
    * single source of selection. Bind `[(activeKey)]` and the bar writes the new
@@ -87,7 +96,7 @@ export class FoldTabsComponent implements FoldTabsContext {
    * listen to the model's `(activeKeyChange)`. There is no separate change
    * output — the model is the one way.
    */
-  readonly activeKey = model.required<string>();
+  readonly activeKey = model.required<K>();
   /** How the active tab reads: accent underline, or accent fill. */
   readonly activeStyle = input<"underline" | "fill">("underline");
   /**
@@ -121,20 +130,20 @@ export class FoldTabsComponent implements FoldTabsContext {
   private readonly tabButtons =
     viewChildren<ElementRef<HTMLButtonElement>>("tabBtn");
 
-  tabId(key: string): string {
+  tabId(key: K): string {
     return `${this.uid}-tab-${key}`;
   }
-  panelId(key: string): string {
+  panelId(key: K): string {
     return `${this.uid}-panel-${key}`;
   }
 
-  protected select(key: string): void {
+  protected select(key: K): void {
     this.commit(key);
   }
 
   /** Records a new selection by writing the `activeKey` model — the two-way
    *  binding (or its `activeKeyChange`) carries it to the parent. */
-  private commit(key: string): void {
+  private commit(key: K): void {
     this.activeKey.set(key);
   }
 
