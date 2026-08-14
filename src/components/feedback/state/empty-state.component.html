@@ -1,6 +1,11 @@
 <div class="empty">
   <div class="empty-icon">
     <ng-content select="[empty-icon]" />
+    <!-- Precedence is decided in CSS (`:has`), not by DOM order: sitting side
+         by side here, both would simply render. -->
+    @if (icon(); as name) {
+      <fold-icon [name]="name" [size]="iconSize()" />
+    }
   </div>
   <p class="empty-title">{{ title() }}</p>
   @if (subtitle()) {

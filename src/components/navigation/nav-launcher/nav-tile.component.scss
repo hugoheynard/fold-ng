@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -89,5 +90,56 @@
   :host {
     animation: none;
     opacity: 1;
+  }
+}
+
+/* Corner bubble — the tile's echo of the collapsed rail's dot. `follow` takes
+   the tile's own ink so it reads as part of the tile; a semantic tone names a
+   role token instead. */
+.nt-badge {
+  position: absolute;
+  top: var(--fold-space-sm);
+  right: var(--fold-space-sm);
+  min-width: 16px;
+  height: 16px;
+  padding: 0 var(--fold-space-xs);
+  display: grid;
+  place-items: center;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+  font-size: var(--fold-text-xs);
+  font-weight: 600;
+  line-height: 1;
+  pointer-events: none;
+}
+.nt-badge[data-tone="neutral"] {
+  background: var(--fold-color-text-muted);
+}
+.nt-badge[data-tone="info"] {
+  background: var(--fold-color-info);
+}
+.nt-badge[data-tone="warning"] {
+  background: var(--fold-color-warning);
+}
+.nt-badge[data-tone="alert"] {
+  background: var(--fold-color-alert);
+}
+.nt-badge[data-tone="success"] {
+  background: var(--fold-color-success);
+}
+
+/* A filled tile already paints in `primary`, so a `follow` bubble on top of it
+   would vanish. Invert it there. */
+:host(.is-filled) .nt-badge[data-tone="follow"] {
+  background: var(--fold-color-on-primary);
+  color: var(--fold-color-primary);
+}
+
+/* Colour alone carries "how many"; the number survives the pass, but the fill
+   does not — keep it legible with a border in a system colour. */
+@media (forced-colors: active) {
+  .nt-badge {
+    border: 1px solid CanvasText;
   }
 }

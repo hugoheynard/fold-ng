@@ -58,7 +58,7 @@ export interface FoldTabsContext {
  *
  * ```html
  * <fold-nav-layout>
- *   <fold-tabs nav #t="foldTabs" [tabs]="tabs" [(activeKey)]="tab" />
+ *   <fold-tabs tabNav #t="foldTabs" [tabs]="tabs" [(activeKey)]="tab" />
  *   <fold-tab-panel [tabs]="t" key="overview">…</fold-tab-panel>
  *   <fold-tab-panel [tabs]="t" key="settings">…</fold-tab-panel>
  * </fold-nav-layout>

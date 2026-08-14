@@ -15,7 +15,15 @@
   color: var(--fold-color-text-faded);
   margin-bottom: var(--fold-space-xs);
 }
-.empty-icon:empty {
+/* No element child — neither projected art nor a named icon. `:not(:has(*))`
+   rather than `:empty`, which a control-flow comment anchor can defeat. */
+.empty-icon:not(:has(*)) {
+  display: none;
+}
+
+/* Projected art wins over `icon`: the slot is the richer of the two, so a
+   caller who supplies both gets the one they had to write by hand. */
+.empty-icon:has([empty-icon]) fold-icon {
   display: none;
 }
 .empty-title {

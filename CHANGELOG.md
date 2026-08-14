@@ -6,7 +6,25 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-empty-state` takes an `icon` name.** The glyph was reachable only
+  through the `[empty-icon]` slot, while `fold-element-title`, `fold-callout` and
+  `fold-back-link` all accept an `icon` input — so `icon="check"` on an empty
+  state landed as a mute HTML attribute and rendered nothing, with no error at
+  build or runtime. The slot stays, for art the registry can't hold (rule 4.7),
+  and **wins** when both are supplied. `iconSize` tunes the named glyph.
+- **`fold-nav-tile` takes a `badge`.** A launcher tile and a `fold-menu-item` are
+  the same destination, but only the rail could carry a count — so an app that
+  showed "3 waiting" in the rail went silent the moment the window narrowed to
+  the tiles. Same reading as the menu item's, including **a count of `0`
+  rendering nothing**, and the count folds into the tile's accessible name.
+
+### Fixed
+
+- **`fold-tabs`' JSDoc example projected into the wrong slot.** It wrote
+  `<fold-tabs nav …>`; `fold-nav-layout`'s bar slot is `[tabNav]`. Copying the
+  example silently dropped the bar into the default slot.
 
 ## [0.10.3] - 2026-08-12
 

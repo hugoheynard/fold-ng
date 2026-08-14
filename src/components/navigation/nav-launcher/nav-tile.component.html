@@ -1,2 +1,10 @@
 <fold-icon [name]="icon()" [size]="26" class="nt-icon" />
 <span class="nt-label">{{ label() }}</span>
+
+<!-- Corner bubble, like the collapsed rail's. `aria-hidden` — the count reaches
+     assistive tech through the host's composed `aria-label`. -->
+@if (hasBadge()) {
+  <span class="nt-badge" [attr.data-tone]="badgeTone()" aria-hidden="true">{{
+    badgeText()
+  }}</span>
+}

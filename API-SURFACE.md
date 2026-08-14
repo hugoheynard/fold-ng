@@ -319,6 +319,8 @@
 - foldElevated: InputSignalWithTransform<boolean, unknown>
 
 #### FoldEmptyStateComponent
+- icon: InputSignal<FoldIconName | undefined>
+- iconSize: InputSignal<FoldIconSize>
 - subtitle: InputSignal<string>
 - title: InputSignal<string> — required
 - tone: InputSignal<"alert" | "neutral">
@@ -507,6 +509,8 @@
 
 #### FoldNavTileComponent
 - active: InputSignalWithTransform<boolean, unknown>
+- badge: InputSignal<string | number | undefined>
+- badgeTone: InputSignal<FoldMenuItemBadgeTone>
 - icon: InputSignal<FoldIconName> — required
 - label: InputSignal<string> — required
 - variant: InputSignal<"filled" | "surface">
