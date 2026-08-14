@@ -78,14 +78,14 @@ export class FoldTimeComponent implements FormValueControl<string> {
   /** Show a lighter `(optional)` marker on the label (ignored when required). */
   readonly optional = input(false, { transform: booleanAttribute });
   /** The word inside the optional marker. @default 'optional' */
-  readonly optionalLabel = input("optional");
+  readonly optionalLabel = input<string | undefined>();
   /**
    * Longer explanation behind an `i` at the end of the label line — for the
    * sentence or two a {@link hint} can't carry. Forwarded to `fold-input-base`.
    */
   readonly info = input<string>();
   /** Accessible name of the info button. @default 'More information' */
-  readonly infoLabel = input("More information");
+  readonly infoLabel = input<string | undefined>();
   /** Optional helper text shown under the control. */
   readonly hint = input<string>();
   /** Render as read-only. Named `readOnly` (not `readonly`) to avoid the

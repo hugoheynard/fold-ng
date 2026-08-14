@@ -43,6 +43,12 @@ export {
 } from "./components/actions/inline-confirm/inline-confirm-labels";
 export type { FoldInlineConfirmLabels } from "./components/actions/inline-confirm/inline-confirm-labels";
 export {
+  FOLD_COMMON_LABELS,
+  FOLD_COMMON_DEFAULT_LABELS,
+  provideFoldCommonLabels,
+} from "./components/forms/common-labels";
+export type { FoldCommonLabels } from "./components/forms/common-labels";
+export {
   FoldCardComponent,
   foldCardBandChrome,
 } from "./components/content/card/card.component";

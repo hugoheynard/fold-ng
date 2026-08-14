@@ -1,4 +1,5 @@
-import { Component, input } from "@angular/core";
+import { Component, computed, inject, input } from "@angular/core";
+import { FOLD_COMMON_LABELS } from "../../forms/common-labels";
 import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
 import type { FoldSpinnerSize } from "../../foundations/spinner/spinner.component";
 
@@ -31,8 +32,15 @@ import type { FoldSpinnerSize } from "../../foundations/spinner/spinner.componen
 })
 export class FoldLoadingStateComponent {
   /** Text to display. Defaults to "Loading...". */
-  readonly message = input("Loading...");
+  readonly message = input<string | undefined>();
 
   /** Spinner size — an icon-size token (`xs…xl`, default `md`) or a pixel number. */
   readonly size = input<FoldSpinnerSize>("md");
+
+  private readonly common = inject(FOLD_COMMON_LABELS);
+
+  /** English default ← app-wide provider ← this instance's own input. */
+  protected readonly text = computed(
+    () => this.message() ?? this.common.loading,
+  );
 }

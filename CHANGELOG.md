@@ -20,6 +20,14 @@ All notable changes to **fold-ng** are documented here. The format follows
   the tiles. Same reading as the menu item's, including **a count of `0`
   rendering nothing**, and the count folds into the tile's accessible name.
 
+- **`provideFoldCommonLabels()` — one place for the four words the package says
+  on its own.** `optional`, `info` (the help-bubble trigger), `clear` and
+  `loading` sat on no single component, so they had no owning label token and
+  stayed per-instance inputs. A non-English app therefore repeated the same
+  translation at every call site — 25 `optionalLabel="facultatif"` across 9 files
+  in the app that prompted this — and a forgotten one shipped a lone English word
+  into a translated screen. Precedence is the package's usual: English default ←
+  app-wide provider ← the component's own input.
 - **`sticky` on `fold-tabs` / `fold-view-nav`.** A bar heading a long view was
   pinned by hand at every call site — `position: sticky; top: 0; z-index: 2` on
   the host, twice in the same app. Pair it with the default
@@ -42,6 +50,12 @@ All notable changes to **fold-ng** are documented here. The format follows
   **already narrowed** — no `isTabKey`-style predicate at every call site — and a
   `<fold-tab-panel key="typo">` outside the union fails to compile instead of
   rendering a panel no tab can reach.
+- **`BREAKING` `optionalLabel`, `infoLabel`, `clearLabel`, `fold-info`'s `label`
+  and `fold-loading`'s `message` widen to `string | undefined`.** They each held
+  a hard-coded English default, which is what made a provider impossible: an
+  unset input was indistinguishable from one deliberately set to the English
+  word. Unset now means "ask the token". Every call site passing a string is
+  unaffected.
 - **`BREAKING` `tabs` / `items` accept `readonly` arrays.** They were the only
   two array inputs in the package still demanding a mutable array, so a caller
   holding a `readonly` list (the idiomatic shape for static data) had to widen it.

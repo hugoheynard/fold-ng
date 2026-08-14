@@ -1,4 +1,11 @@
-import { booleanAttribute, Component, input } from "@angular/core";
+import {
+  Component,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+} from "@angular/core";
+import { FOLD_COMMON_LABELS } from "../common-labels";
 
 /**
  * `<fold-label>` — the label element for a form control: the text plus an optional
@@ -17,7 +24,7 @@ import { booleanAttribute, Component, input } from "@angular/core";
     @if (required()) {
       <span class="req" aria-hidden="true">*</span>
     } @else if (optional()) {
-      <span class="opt">({{ optionalLabel() }})</span>
+      <span class="opt">({{ optionalWord() }})</span>
     }
   </label>`,
   styleUrl: "./label.component.scss",
@@ -32,5 +39,12 @@ export class FoldLabelComponent {
   /** Show a lighter, parenthesised optional marker after the label. */
   readonly optional = input(false, { transform: booleanAttribute });
   /** The word inside the optional marker's parentheses. @default 'optional' */
-  readonly optionalLabel = input("optional");
+  readonly optionalLabel = input<string | undefined>();
+
+  private readonly common = inject(FOLD_COMMON_LABELS);
+
+  /** English default ← app-wide provider ← this instance's own input. */
+  protected readonly optionalWord = computed(
+    () => this.optionalLabel() ?? this.common.optional,
+  );
 }

@@ -1,11 +1,11 @@
 import {
+  Component,
+  ElementRef,
   afterRenderEffect,
   booleanAttribute,
-  Component,
   computed,
   contentChild,
   contentChildren,
-  ElementRef,
   inject,
   input,
   isDevMode,
@@ -15,6 +15,7 @@ import {
   viewChild,
   viewChildren,
 } from "@angular/core";
+import { FOLD_COMMON_LABELS } from "../common-labels";
 import { NgTemplateOutlet } from "@angular/common";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { FoldIdService } from "../../../a11y/id.service";
@@ -124,14 +125,14 @@ export class FoldListboxComponent<T>
   /** Show a lighter `(optional)` marker on the label (ignored when required). */
   readonly optional = input(false, { transform: booleanAttribute });
   /** The word inside the optional marker. @default 'optional' */
-  readonly optionalLabel = input("optional");
+  readonly optionalLabel = input<string | undefined>();
   /**
    * Longer explanation behind an `i` at the end of the label line — for the
    * sentence or two a {@link hint} can't carry. Forwarded to `fold-input-base`.
    */
   readonly info = input<string>();
   /** Accessible name of the info button. @default 'More information' */
-  readonly infoLabel = input("More information");
+  readonly infoLabel = input<string | undefined>();
   /**
    * Accessible name for the control itself, when there is **no visible
    * `label`** — a filter in a toolbar, a control whose meaning the surrounding
@@ -152,7 +153,14 @@ export class FoldListboxComponent<T>
   /** Show a clear (×) affordance on the trigger once a value is picked. */
   readonly allowClear = input(false, { transform: booleanAttribute });
   /** Accessible name of the clear button. @default 'Clear' */
-  readonly clearLabel = input("Clear");
+  readonly clearLabel = input<string | undefined>();
+
+  private readonly common = inject(FOLD_COMMON_LABELS);
+
+  /** English default ← app-wide provider ← this instance's own input. */
+  protected readonly clearWord = computed(
+    () => this.clearLabel() ?? this.common.clear,
+  );
 
   /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
   readonly inputId = inject(FoldIdService).next("fold-listbox");

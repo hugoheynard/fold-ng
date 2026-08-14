@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+} from "@angular/core";
+import { FOLD_COMMON_LABELS } from "../../forms/common-labels";
 import type { FoldPopoverPlacement } from "../popover/placement";
 import { FoldPopoverComponent } from "../popover/popover.component";
 import { FoldPopoverTriggerDirective } from "../popover/popover-trigger.directive";
@@ -45,11 +52,18 @@ export class FoldInfoComponent {
    * when several sit on the same screen.
    * @default 'More information'
    */
-  readonly label = input("More information");
+  readonly label = input<string | undefined>();
   /**
    * Where the panel opens. `bottom-end` by default because the trigger usually
    * sits at the **end** of a label line or a card header, where a panel growing
    * further outward would leave the viewport.
    */
   readonly placement = input<FoldPopoverPlacement>("bottom-end");
+
+  private readonly common = inject(FOLD_COMMON_LABELS);
+
+  /** English default ← app-wide provider ← this instance's own input. */
+  protected readonly triggerLabel = computed(
+    () => this.label() ?? this.common.info,
+  );
 }

@@ -42,7 +42,7 @@ export class FoldInputBaseComponent {
   /** Show a lighter `(optional)` marker on the label (ignored when required). */
   readonly optional = input(false, { transform: booleanAttribute });
   /** The word inside the optional marker. @default 'optional' */
-  readonly optionalLabel = input("optional");
+  readonly optionalLabel = input<string | undefined>();
   /** Helper text shown under the control. */
   readonly hint = input<string>();
   /** Error message shown under the control; when set, it replaces the hint. */
@@ -54,5 +54,5 @@ export class FoldInputBaseComponent {
    */
   readonly info = input<string>();
   /** Accessible name of the info button. @default 'More information' */
-  readonly infoLabel = input("More information");
+  readonly infoLabel = input<string | undefined>();
 }

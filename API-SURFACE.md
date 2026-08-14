@@ -276,12 +276,12 @@
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - max: InputSignal<string | undefined>
 - min: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - readOnly: InputSignal<boolean>
 - required: InputSignalWithTransform<boolean, unknown>
 - size: InputSignal<"sm" | "md" | "lg">
@@ -369,7 +369,7 @@
 - (no input·model·output bindings)
 
 #### FoldInfoComponent
-- label: InputSignal<string>
+- label: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
 - text: InputSignal<string> — required
 
@@ -399,10 +399,10 @@
 - hideLabel: InputSignal<string>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - placeholder: InputSignal<string>
 - readOnly: InputSignal<boolean>
 - required: InputSignalWithTransform<boolean, unknown>
@@ -427,17 +427,17 @@
 #### FoldListboxComponent
 - allowClear: InputSignalWithTransform<boolean, unknown>
 - ariaLabel: InputSignal<string | undefined>
-- clearLabel: InputSignal<string>
+- clearLabel: InputSignal<string | undefined>
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - open: ModelSignal<boolean>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - options: InputSignal<readonly FoldSelectItem<T>[] | undefined>
 - placeholder: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
@@ -449,7 +449,7 @@
 - variant: InputSignal<"default" | "panel">
 
 #### FoldLoadingStateComponent
-- message: InputSignal<string>
+- message: InputSignal<string | undefined>
 - size: InputSignal<FoldSpinnerSize>
 
 #### FoldMenuComponent
@@ -479,17 +479,17 @@
 #### FoldMultiselectComponent
 - allowClear: InputSignalWithTransform<boolean, unknown>
 - allowSelectAll: InputSignalWithTransform<boolean, unknown>
-- clearLabel: InputSignal<string>
+- clearLabel: InputSignal<string | undefined>
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - open: ModelSignal<boolean>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - options: InputSignal<readonly FoldSelectItem<T>[] | undefined>
 - placeholder: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
@@ -525,13 +525,13 @@
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - integer: InputSignalWithTransform<boolean, unknown>
 - label: InputSignal<string | undefined>
 - max: InputSignal<number | undefined>
 - min: InputSignal<number | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - placeholder: InputSignal<string>
 - readOnly: InputSignal<boolean>
 - required: InputSignalWithTransform<boolean, unknown>
@@ -677,10 +677,10 @@
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - placeholder: InputSignal<string | undefined>
 - required: InputSignalWithTransform<boolean, unknown>
 - size: InputSignal<"sm" | "md" | "lg">
@@ -736,10 +736,10 @@
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - placeholder: InputSignal<string>
 - readOnly: InputSignal<boolean>
 - required: InputSignalWithTransform<boolean, unknown>
@@ -754,12 +754,12 @@
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
-- infoLabel: InputSignal<string>
+- infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
 - max: InputSignal<string | undefined>
 - min: InputSignal<string | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
-- optionalLabel: InputSignal<string>
+- optionalLabel: InputSignal<string | undefined>
 - readOnly: InputSignal<boolean>
 - required: InputSignalWithTransform<boolean, unknown>
 - size: InputSignal<"sm" | "md" | "lg">
@@ -836,6 +836,8 @@
 - FOLD_CALENDAR_DEFAULT_LABELS (value)
 - FOLD_CALENDAR_FORMATS (value)
 - FOLD_CALENDAR_LABELS (value)
+- FOLD_COMMON_DEFAULT_LABELS (value)
+- FOLD_COMMON_LABELS (value)
 - FOLD_DATA_TABLE_DEFAULT_LABELS (value)
 - FOLD_DATA_TABLE_LABELS (value)
 - FOLD_DEFAULT_WEEKEND_DAYS (value)
@@ -917,6 +919,7 @@
 - FoldChoiceOption (type)
 - foldColorProperty (function)
 - foldColorVar (function)
+- FoldCommonLabels (interface)
 - FoldComponentPanelDescriptor (interface)
 - foldCountActionable (function)
 - FoldDataTableLabels (interface)
@@ -1031,6 +1034,7 @@
 - isFoldSelectOptionGroup (function)
 - observeElementWidth (function)
 - provideFoldCalendarLabels (function)
+- provideFoldCommonLabels (function)
 - provideFoldDataTableLabels (function)
 - provideFoldIcons (function)
 - provideFoldInlineConfirmLabels (function)
