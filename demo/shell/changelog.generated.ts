@@ -38,15 +38,140 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     date: null,
     unreleased: true,
     counts: {
-      Added: 2,
-      Changed: 2,
+      Added: 6,
+      Migrating: 0,
+      Changed: 5,
       Fixed: 1,
     },
-    breaking: 2,
+    breaking: 4,
     groups: [
       {
         kind: "Added",
         items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "Five icons the package and its consumers were already asking for",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "alert",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "login",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "hash",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "phone",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "inbox",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "alert",
+              },
+              {
+                kind: "text",
+                value:
+                  " is the one that mattered — fold's own semantic vocabulary has both ",
+              },
+              {
+                kind: "code",
+                value: "warning",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "alert",
+              },
+              {
+                kind: "text",
+                value:
+                  " tones (callout, empty-state, badge), while the icon set only had ",
+              },
+              {
+                kind: "code",
+                value: "warning",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so anyone following the package's own words got nothing. ",
+              },
+              {
+                kind: "code",
+                value: "inbox",
+              },
+              {
+                kind: "text",
+                value: " was being asked for ",
+              },
+              {
+                kind: "strong",
+                value: "by `fold-calendar-agenda` itself",
+              },
+              {
+                kind: "text",
+                value: ", and had never existed. ",
+              },
+              {
+                kind: "code",
+                value: "login",
+              },
+              {
+                kind: "text",
+                value: " mirrors ",
+              },
+              {
+                kind: "code",
+                value: "logout",
+              },
+              {
+                kind: "text",
+                value:
+                  " exactly (same path, flipped), which is why they now read as a pair.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {
@@ -183,11 +308,338 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
             ],
             breaking: false,
           },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "provideFoldCommonLabels()",
+              },
+              {
+                kind: "text",
+                value:
+                  " — one place for the four words the package says on its own.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "optional",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "info",
+              },
+              {
+                kind: "text",
+                value: " (the help-bubble trigger), ",
+              },
+              {
+                kind: "code",
+                value: "clear",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "loading",
+              },
+              {
+                kind: "text",
+                value:
+                  " sat on no single component, so they had no owning label token and stayed per-instance inputs. A non-English app therefore repeated the same translation at every call site — 25 ",
+              },
+              {
+                kind: "code",
+                value: 'optionalLabel="facultatif"',
+              },
+              {
+                kind: "text",
+                value:
+                  " across 9 files in the app that prompted this — and a forgotten one shipped a lone English word into a translated screen. Precedence is the package's usual: English default ← app-wide provider ← the component's own input.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "sticky",
+              },
+              {
+                kind: "text",
+                value: " on ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "A bar heading a long view was pinned by hand at every call site — ",
+              },
+              {
+                kind: "code",
+                value: "position: sticky; top: 0; z-index: 2",
+              },
+              {
+                kind: "text",
+                value:
+                  " on the host, twice in the same app. Pair it with the default ",
+              },
+              {
+                kind: "code",
+                value: 'background="surface"',
+              },
+              {
+                kind: "text",
+                value: "; ",
+              },
+              {
+                kind: "code",
+                value: "transparent",
+              },
+              {
+                kind: "text",
+                value:
+                  " would let the content scroll through. Bleeding the bar to the page's edges stays the page's business (it owns the gutter).",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "ariaLabel",
+              },
+              {
+                kind: "text",
+                value: " on ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-select",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Twelve other components have one; these three had no way to be ",
+              },
+              {
+                kind: "strong",
+                value: "named without a visible label",
+              },
+              {
+                kind: "text",
+                value:
+                  ', so a toolbar filter reached assistive tech announced only by its own value ("Week") — which says nothing about what it sets. A visible ',
+              },
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value:
+                  " is still the better answer, and setting both is a mistake (",
+              },
+              {
+                kind: "code",
+                value: "aria-label",
+              },
+              {
+                kind: "text",
+                value: " wins and the two drift).",
+              },
+            ],
+            breaking: false,
+          },
         ],
+      },
+      {
+        kind: "Migrating",
+        items: [],
       },
       {
         kind: "Changed",
         items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "BREAKING",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconName",
+              },
+              {
+                kind: "text",
+                value: " no longer admits any string.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "It was ",
+              },
+              {
+                kind: "code",
+                value: "FoldBuiltinIconName | (string & {})",
+              },
+              {
+                kind: "text",
+                value:
+                  " — autocomplete for the built-ins, but a typo or a name that simply doesn't exist compiled, and surfaced only as a ",
+              },
+              {
+                kind: "code",
+                value: "console.warn",
+              },
+              {
+                kind: "text",
+                value:
+                  " plus a hole where the glyph should be. Six such holes were live across three apps, and one inside this package. It is now ",
+              },
+              {
+                kind: "code",
+                value: "FoldBuiltinIconName | keyof FoldCustomIcons",
+              },
+              {
+                kind: "text",
+                value: ", where ",
+              },
+              {
+                kind: "strong",
+                value: "`FoldCustomIcons` is an empty interface you augment",
+              },
+              {
+                kind: "text",
+                value: ": ``",
+              },
+              {
+                kind: "code",
+                value:
+                  'ts export const APP_ICONS = { "my-logo": "<svg …>" } as const; declare module "fold-ng" { interface FoldCustomIcons extends Record<keyof typeof APP_ICONS, true> {} } providers: [provideFoldIcons(APP_ICONS)]; ',
+              },
+              {
+                kind: "text",
+                value: "`",
+              },
+              {
+                kind: "code",
+                value: " Deriving the declaration from the registered object (",
+              },
+              {
+                kind: "text",
+                value: "keyof typeof",
+              },
+              {
+                kind: "code",
+                value:
+                  ") is the recommended shape: one list, so the names you declare and the art you register cannot drift. **Overriding a built-in needs no declaration** — ",
+              },
+              {
+                kind: "text",
+                value:
+                  "bin` is already a known name; re-register it with your own art and it type-checks as it stands.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "FoldIconRegistry.names()",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "FOLD_BUILTIN_ICON_CATEGORIES[].names",
+              },
+              {
+                kind: "text",
+                value: " now return ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconName",
+              },
+              {
+                kind: "text",
+                value: "s",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  ", so tooling that browses the live catalogue can hand a name straight back to ",
+              },
+              {
+                kind: "code",
+                value: "fold-icon",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Narrowed through a checked predicate, not an assertion.",
+              },
+            ],
+            breaking: false,
+          },
           {
             lead: [
               {
@@ -273,6 +725,90 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
                 kind: "text",
                 value:
                   " outside the union fails to compile instead of rendering a panel no tab can reach.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "BREAKING",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "optionalLabel",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "infoLabel",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "clearLabel",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-info",
+              },
+              {
+                kind: "text",
+                value: "'s ",
+              },
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "fold-loading",
+              },
+              {
+                kind: "text",
+                value: "'s ",
+              },
+              {
+                kind: "code",
+                value: "message",
+              },
+              {
+                kind: "text",
+                value: " widen to ",
+              },
+              {
+                kind: "code",
+                value: "string | undefined",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  'They each held a hard-coded English default, which is what made a provider impossible: an unset input was indistinguishable from one deliberately set to the English word. Unset now means "ask the token". Every call site passing a string is unaffected.',
               },
             ],
             breaking: true,

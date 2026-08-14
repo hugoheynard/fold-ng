@@ -26,7 +26,6 @@ All notable changes to **fold-ng** are documented here. The format follows
   showed "3 waiting" in the rail went silent the moment the window narrowed to
   the tiles. Same reading as the menu item's, including **a count of `0`
   rendering nothing**, and the count folds into the tile's accessible name.
-
 - **`provideFoldCommonLabels()` — one place for the four words the package says
   on its own.** `optional`, `info` (the help-bubble trigger), `clear` and
   `loading` sat on no single component, so they had no owning label token and
@@ -47,6 +46,23 @@ All notable changes to **fold-ng** are documented here. The format follows
   value ("Week") — which says nothing about what it sets. A visible `label` is
   still the better answer, and setting both is a mistake (`aria-label` wins and
   the two drift).
+
+### Migrating
+
+Four breaking changes, and the compiler points at every one of them.
+
+1. **Icon names.** Build fails on a name that isn't registered — which is the
+   point: those were rendering nothing. Either the name exists under fold's own
+   spelling (`bin` not `trash`, `reload` not `refresh`, `tag` not `label`,
+   `shopping-cart` not `cart`, `more-vertical` not `kebab`), or it is yours and
+   wants the `FoldCustomIcons` declaration below. **Overriding a built-in needs
+   nothing** — same name, your art.
+2. **Field labels.** Nothing to do unless you translated them. If you did, the
+   per-instance attributes still win, and `provideFoldCommonLabels()` now lets
+   you delete them.
+3. **Tab keys.** Nothing to do for an untyped caller (`K` defaults to `string`).
+   If your sections are a union, drop the narrowing you were doing by hand.
+4. **`readonly` arrays.** Strictly more permissive — nothing to do.
 
 ### Changed
 
