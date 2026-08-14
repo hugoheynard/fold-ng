@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.11.1] - 2026-08-14
+
 ### Fixed
 
 - **`FoldCustomIcons` is now exported, so a consumer can actually augment it.**
@@ -1561,7 +1565,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.11.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.11.1...HEAD
+[0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1
 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0
 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3
 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2
