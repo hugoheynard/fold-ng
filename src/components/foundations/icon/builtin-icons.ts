@@ -35,14 +35,24 @@ export const FOLD_BUILTIN_ICONS = {
  * built-in category, so tooling buckets them separately.
  */
 export const FOLD_BUILTIN_ICON_CATEGORIES = [
-  { id: "ui", label: "UI", names: Object.keys(UI_ICONS) },
-  { id: "nav", label: "Navigation", names: Object.keys(NAV_ICONS) },
-  { id: "commerce", label: "Commerce", names: Object.keys(COMMERCE_ICONS) },
-  { id: "music", label: "Music", names: Object.keys(MUSIC_ICONS) },
-  { id: "status", label: "Status", names: Object.keys(STATUS_ICONS) },
-  { id: "people", label: "People", names: Object.keys(PEOPLE_ICONS) },
-  { id: "brands", label: "Brands", names: Object.keys(BRANDS_ICONS) },
+  { id: "ui", label: "UI", names: namesOf(UI_ICONS) },
+  { id: "nav", label: "Navigation", names: namesOf(NAV_ICONS) },
+  { id: "commerce", label: "Commerce", names: namesOf(COMMERCE_ICONS) },
+  { id: "music", label: "Music", names: namesOf(MUSIC_ICONS) },
+  { id: "status", label: "Status", names: namesOf(STATUS_ICONS) },
+  { id: "people", label: "People", names: namesOf(PEOPLE_ICONS) },
+  { id: "brands", label: "Brands", names: namesOf(BRANDS_ICONS) },
 ] as const;
+
+/**
+ * The keys of an icon slice, keeping their literal type. `Object.keys` only ever
+ * promises `string`, so the narrowing goes through a **checked predicate** — no
+ * assertion (rule 2.1), and every name kept is genuinely a key of the object.
+ */
+function namesOf<T extends object>(icons: T): (keyof T & string)[] {
+  const known = (name: string): name is keyof T & string => name in icons;
+  return Object.keys(icons).filter(known);
+}
 
 /** A built-in icon category id (`"ui"`, `"commerce"`, …). */
 export type FoldIconCategoryId =
@@ -52,8 +62,35 @@ export type FoldIconCategoryId =
 export type FoldBuiltinIconName = keyof typeof FOLD_BUILTIN_ICONS;
 
 /**
- * The `name` a `fold-icon` accepts: a built-in (autocompleted + type-checked) or
- * any custom string a consumer has registered. `(string & {})` keeps the
- * built-in literals in autocomplete while still admitting a bare `string`.
+ * The names a consumer has added on top of the built-in set — **empty here, and
+ * meant to be augmented**. Declare your app's icons once, derived from the very
+ * object you register, so the two can never drift:
+ *
+ * ```ts
+ * export const APP_ICONS = { "my-logo": "<svg …>" } as const;
+ *
+ * declare module "fold-ng" {
+ *   interface FoldCustomIcons extends Record<keyof typeof APP_ICONS, true> {}
+ * }
+ *
+ * // app.config.ts
+ * providers: [provideFoldIcons(APP_ICONS)];
+ * ```
+ *
+ * **Overriding a built-in needs no declaration.** `bin` is already a known name,
+ * so re-registering it with your own art type-checks as it stands — the registry
+ * merges consumer entries over the built-ins.
  */
-export type FoldIconName = FoldBuiltinIconName | (string & {});
+export interface FoldCustomIcons {}
+
+/**
+ * The `name` a `fold-icon` accepts: a built-in, or one the consumer declared via
+ * {@link FoldCustomIcons}.
+ *
+ * This used to be `FoldBuiltinIconName | (string & {})` — autocomplete for the
+ * built-ins, but any string admitted. A typo (`"trahs"`) and a name that simply
+ * doesn't exist (`"alert"`, before it did) both compiled, and surfaced only as a
+ * `console.warn` and a hole where the glyph should be. Six such holes were live
+ * across three apps when this was tightened.
+ */
+export type FoldIconName = FoldBuiltinIconName | keyof FoldCustomIcons;

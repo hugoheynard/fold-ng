@@ -12,9 +12,10 @@ import {
   type FoldButtonIntent,
   type FoldButtonSize,
 } from "../../../src/public-api";
+import type { FoldIconName } from "../../../src/public-api";
 
 interface ButtonFeature {
-  readonly icon: string;
+  readonly icon: FoldIconName;
   readonly title: string;
   readonly body: string;
 }

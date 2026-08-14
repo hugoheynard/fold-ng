@@ -7,6 +7,7 @@ import {
   signal,
 } from "@angular/core";
 import { FOLD_BUILTIN_ICONS } from "./builtin-icons";
+import type { FoldIconName } from "./builtin-icons";
 import { assertIconSet, assertSvgIcon } from "./icon-safety";
 
 /** A `name → SVG markup` map — the shape both built-in and custom icons take. */
@@ -80,8 +81,15 @@ export class FoldIconRegistry {
 
   /** Every registered icon name (built-ins + runtime additions), sorted.
    *  Reactive — recomputes when an icon is registered. Powers tooling that
-   *  browses the live catalogue (e.g. the `fold-icon-devtool`). */
-  names(): string[] {
-    return Object.keys(this._icons()).sort();
+   *  browses the live catalogue (e.g. the `fold-icon-devtool`).
+   *
+   *  Typed as {@link FoldIconName}, so a browser of the catalogue can hand each
+   *  name straight back to `fold-icon`. `Object.keys` only ever promises
+   *  `string`, so the narrowing goes through a **checked predicate** rather than
+   *  an assertion (rule 2.1): every name kept is one the registry resolves. */
+  names(): FoldIconName[] {
+    const icons = this._icons();
+    const registered = (name: string): name is FoldIconName => name in icons;
+    return Object.keys(icons).filter(registered).sort();
   }
 }

@@ -28,7 +28,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     label: "Point équipe",
     startTime: "09:00",
     endTime: "09:30",
-    icon: "users",
+    icon: "team",
   },
   {
     id: "lemaire",
@@ -39,7 +39,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     startTime: "09:15",
     endTime: "10:30",
     tone: "warning",
-    icon: "file-text",
+    icon: "folder",
   },
   {
     id: "audit",
@@ -58,7 +58,7 @@ const EVENTS: readonly FoldCalendarEvent[] = [
     startTime: "14:00",
     endTime: "15:30",
     tone: "success",
-    icon: "monitor",
+    icon: "view",
   },
   {
     id: "nightshift",

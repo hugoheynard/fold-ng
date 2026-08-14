@@ -8,6 +8,13 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **Five icons the package and its consumers were already asking for**:
+  `alert`, `login`, `hash`, `phone`, `inbox`. `alert` is the one that mattered —
+  fold's own semantic vocabulary has both `warning` and `alert` tones (callout,
+  empty-state, badge), while the icon set only had `warning`, so anyone following
+  the package's own words got nothing. `inbox` was being asked for **by
+  `fold-calendar-agenda` itself**, and had never existed. `login` mirrors
+  `logout` exactly (same path, flipped), which is why they now read as a pair.
 - **`fold-empty-state` takes an `icon` name.** The glyph was reachable only
   through the `[empty-icon]` slot, while `fold-element-title`, `fold-callout` and
   `fold-back-link` all accept an `icon` input — so `icon="check"` on an empty
@@ -43,6 +50,34 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **`BREAKING` `FoldIconName` no longer admits any string.** It was
+  `FoldBuiltinIconName | (string & {})` — autocomplete for the built-ins, but a
+  typo or a name that simply doesn't exist compiled, and surfaced only as a
+  `console.warn` plus a hole where the glyph should be. Six such holes were live
+  across three apps, and one inside this package.
+
+  It is now `FoldBuiltinIconName | keyof FoldCustomIcons`, where
+  **`FoldCustomIcons` is an empty interface you augment**:
+
+  ```ts
+  export const APP_ICONS = { "my-logo": "<svg …>" } as const;
+
+  declare module "fold-ng" {
+    interface FoldCustomIcons extends Record<keyof typeof APP_ICONS, true> {}
+  }
+
+  providers: [provideFoldIcons(APP_ICONS)];
+  ```
+
+  Deriving the declaration from the registered object (`keyof typeof`) is the
+  recommended shape: one list, so the names you declare and the art you register
+  cannot drift. **Overriding a built-in needs no declaration** — `bin` is already
+  a known name; re-register it with your own art and it type-checks as it stands.
+
+- **`FoldIconRegistry.names()` and `FOLD_BUILTIN_ICON_CATEGORIES[].names` now
+  return `FoldIconName`s**, so tooling that browses the live catalogue can hand a
+  name straight back to `fold-icon`. Narrowed through a checked predicate, not an
+  assertion.
 - **`BREAKING` `fold-tabs` is generic over its key.** `FoldTabsComponent<K>`,
   `FoldTabItem<K>`, `FoldTabsContext<K>` and `FoldTabPanelComponent<K>` all carry
   the caller's key type (defaulting to `string`, so untyped callers are

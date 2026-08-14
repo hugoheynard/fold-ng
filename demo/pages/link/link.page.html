@@ -67,7 +67,7 @@
         #leadSel
         class="gal-select"
         [value]="leadingIcon()"
-        (change)="leadingIcon.set(leadSel.value)"
+        (change)="pickLeading(leadSel.value)"
       >
         @for (i of leadingIcons; track i) {
         <option [value]="i">{{ i }}</option>
@@ -81,7 +81,7 @@
         #trailSel
         class="gal-select"
         [value]="trailingIcon()"
-        (change)="trailingIcon.set(trailSel.value)"
+        (change)="pickTrailing(trailSel.value)"
       >
         @for (i of trailingIcons; track i) {
         <option [value]="i">{{ i }}</option>

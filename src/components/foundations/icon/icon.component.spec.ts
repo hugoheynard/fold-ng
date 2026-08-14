@@ -112,3 +112,36 @@ describe("FoldIconRegistry (consumer extensibility)", () => {
     expect(() => reg.registerMany({ bad: "<div>nope</div>" })).toThrow();
   });
 });
+
+describe("the icon catalogue is closed, and extensible", () => {
+  it("names every icon the package's own components ask for", () => {
+    // `fold-calendar-agenda` asked for "inbox" for months and drew nothing —
+    // the escape-hatched type let it through, and only a console.warn said so.
+    // This is the runtime half of the guard the type now provides.
+    const registry = TestBed.inject(FoldIconRegistry);
+
+    for (const name of ["inbox", "alert", "login", "hash", "phone"] as const) {
+      expect(registry.has(name), `built-in "${name}" is missing`).toBe(true);
+    }
+  });
+
+  it("lets a consumer override a built-in, keeping its name", () => {
+    // The override case needs NO declaration: the name is already known, only
+    // the art changes. This is what a host does to re-brand a glyph.
+    const registry = TestBed.inject(FoldIconRegistry);
+    const mine = '<svg xmlns="http://www.w3.org/2000/svg" data-mine="1"></svg>';
+
+    registry.register("bin", mine);
+
+    expect(registry.resolve("bin")).toBe(mine);
+  });
+
+  it("hands back names typed well enough to feed straight back in", () => {
+    // What lets tooling browse the live catalogue without an assertion.
+    const registry = TestBed.inject(FoldIconRegistry);
+    const first = registry.names()[0];
+
+    expect(first).toBeDefined();
+    expect(registry.has(first ?? "bin")).toBe(true);
+  });
+});

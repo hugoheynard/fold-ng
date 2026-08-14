@@ -132,7 +132,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     label: "Feedback",
     color: "#ec4899",
     items: [
-      { id: "toast", label: "toast", icon: "toast" },
+      { id: "toast", label: "toast", icon: "bell" },
       { id: "callout", label: "callout", icon: "info" },
       { id: "disclosure", label: "disclosure" },
       { id: "info", label: "info", icon: "info", since: NEXT },

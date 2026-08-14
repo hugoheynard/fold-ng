@@ -91,6 +91,19 @@ export default tslint.config(
       "@typescript-eslint/consistent-type-definitions": "off",
     },
   },
+  // ── The icon-name augmentation seam ──
+  //    `FoldCustomIcons` is deliberately an EMPTY interface: it exists only to be
+  //    declaration-merged by a consumer, which is the whole extensibility story
+  //    (`type` can't be merged). Both rules below flag exactly what makes it
+  //    work — an empty body, and the `never` it contributes to `FoldIconName`
+  //    until someone augments it. Scoped to the one file, not disabled inline.
+  {
+    files: ["src/components/foundations/icon/builtin-icons.ts"],
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
+    },
+  },
   {
     files: ["**/*.spec.ts"],
     rules: {

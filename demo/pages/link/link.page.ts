@@ -55,17 +55,23 @@ export default class LinkPage {
   protected readonly label = signal("View the organisation");
   protected readonly tone = signal<LinkTone>("accent");
   protected readonly mode = signal<LinkMode>("button");
-  protected readonly leadingIcon = signal<string>("company");
-  protected readonly trailingIcon = signal<string>("chevron-right");
+  protected readonly leadingIcon =
+    signal<(typeof this.leadingIcons)[number]>("company");
+  protected readonly trailingIcon =
+    signal<(typeof this.trailingIcons)[number]>("chevron-right");
   protected readonly disabled = signal(false);
 
   /** `undefined` (not the string `"none"`) is what the input wants for "no icon". */
-  protected readonly leading = computed<FoldIconName | undefined>(() =>
-    this.leadingIcon() === "none" ? undefined : this.leadingIcon(),
-  );
-  protected readonly trailing = computed<FoldIconName | undefined>(() =>
-    this.trailingIcon() === "none" ? undefined : this.trailingIcon(),
-  );
+  protected readonly leading = computed<FoldIconName | undefined>(() => {
+    // Read ONCE: calling the signal twice loses the narrowing, so the second
+    // call still carries `"none"`. Invisible while the type was a bare `string`.
+    const name = this.leadingIcon();
+    return name === "none" ? undefined : name;
+  });
+  protected readonly trailing = computed<FoldIconName | undefined>(() => {
+    const name = this.trailingIcon();
+    return name === "none" ? undefined : name;
+  });
 
   protected readonly linkCode = computed(() => {
     const attrs: string[] = [];
@@ -93,4 +99,21 @@ export default class LinkPage {
     const pad = attrs.length > 0 ? "\n  " : "";
     return `${open}${pad}${this.label()}\n</fold-link>`;
   });
+
+  /** A `<select>` hands back a bare string; the choice lists are closed unions.
+   *  Narrow through them rather than widening the signals — the playground can
+   *  only ever offer what it lists. */
+  protected pickLeading(value: string): void {
+    const choice = this.leadingIcons.find((i) => i === value);
+    if (choice !== undefined) {
+      this.leadingIcon.set(choice);
+    }
+  }
+
+  protected pickTrailing(value: string): void {
+    const choice = this.trailingIcons.find((i) => i === value);
+    if (choice !== undefined) {
+      this.trailingIcon.set(choice);
+    }
+  }
 }

@@ -14,26 +14,35 @@ import {
   FoldViewNavComponent,
   type FoldViewNavItem,
 } from "../../../src/public-api";
+import type { FoldIconCategoryId, FoldIconName } from "../../../src/public-api";
+import { FOLD_BUILTIN_ICON_CATEGORIES } from "../../../src/public-api";
 import { GalleryDevtools } from "../../shell/gallery-devtools";
-import { UI_ICONS } from "../../../src/components/foundations/icon/icons/ui.icons";
-import { NAV_ICONS } from "../../../src/components/foundations/icon/icons/nav.icons";
-import { COMMERCE_ICONS } from "../../../src/components/foundations/icon/icons/commerce.icons";
-import { MUSIC_ICONS } from "../../../src/components/foundations/icon/icons/music.icons";
-import { STATUS_ICONS } from "../../../src/components/foundations/icon/icons/status.icons";
-import { PEOPLE_ICONS } from "../../../src/components/foundations/icon/icons/people.icons";
-import { BRANDS_ICONS } from "../../../src/components/foundations/icon/icons/brands.icons";
 
 interface IconCategory {
   readonly key: string;
   readonly label: string;
   readonly desc: string;
-  readonly names: readonly string[];
+  readonly names: readonly FoldIconName[];
 }
 
 interface IconFeature {
-  readonly icon: string;
+  readonly icon: FoldIconName;
   readonly title: string;
   readonly body: string;
+}
+
+/**
+ * The gallery is itself a consumer, so it declares its custom icon exactly the
+ * way an app does — this block IS the documented pattern, kept honest by being
+ * the one this page relies on.
+ */
+// Augmentation targets the module that DECLARES the interface. In-repo that is
+// the source file; a package consumer writes `declare module "fold-ng"`, since
+// the published bundle declares it at the entry point.
+declare module "../../../src/components/foundations/icon/builtin-icons" {
+  interface FoldCustomIcons {
+    "demo-sparkle": true;
+  }
 }
 
 const DEMO_ICON =
@@ -120,50 +129,27 @@ export default class IconsPage {
     },
   ];
 
-  protected readonly categories: readonly IconCategory[] = [
+  /** What each built-in category is FOR — the one thing the package's own
+   *  `FOLD_BUILTIN_ICON_CATEGORIES` doesn't carry. The names come from there, so
+   *  this page can no longer drift from the catalogue it documents. */
+  private readonly descriptions: Readonly<Record<FoldIconCategoryId, string>> =
     {
-      key: "ui",
-      label: "UI",
-      desc: "Actions, editing, files, view chrome — the everyday verbs.",
-      names: Object.keys(UI_ICONS),
-    },
-    {
-      key: "nav",
-      label: "Navigation",
-      desc: "The app's destinations — roughly one per rail entry.",
-      names: Object.keys(NAV_ICONS),
-    },
-    {
-      key: "commerce",
-      label: "Commerce",
-      desc: "Cart, catalogue, payment, fulfilment — the e-commerce domain.",
-      names: Object.keys(COMMERCE_ICONS),
-    },
-    {
-      key: "music",
-      label: "Music & transport",
-      desc: "Playback, waveforms, the audio domain.",
-      names: Object.keys(MUSIC_ICONS),
-    },
-    {
-      key: "status",
-      label: "Status",
-      desc: "State, severity, achievement.",
-      names: Object.keys(STATUS_ICONS),
-    },
-    {
-      key: "people",
-      label: "People & roles",
-      desc: "Members, leads, rights, roles.",
-      names: Object.keys(PEOPLE_ICONS),
-    },
-    {
-      key: "brands",
-      label: "Brands",
-      desc: "Third-party marks — kept apart from the single-glyph sets.",
-      names: Object.keys(BRANDS_ICONS),
-    },
-  ];
+      ui: "Actions, editing, files, view chrome — the everyday verbs.",
+      nav: "The app's destinations — roughly one per rail entry.",
+      commerce: "Cart, catalogue, payment, fulfilment — the e-commerce domain.",
+      music: "Playback, waveforms, the audio domain.",
+      status: "State, severity, achievement.",
+      people: "Members, leads, rights, roles.",
+      brands: "Third-party marks — kept apart from the single-glyph sets.",
+    };
+
+  protected readonly categories: readonly IconCategory[] =
+    FOLD_BUILTIN_ICON_CATEGORIES.map((category) => ({
+      key: category.id,
+      label: category.label,
+      desc: this.descriptions[category.id],
+      names: category.names,
+    }));
 
   protected readonly totalCount = this.categories.reduce(
     (n, c) => n + c.names.length,

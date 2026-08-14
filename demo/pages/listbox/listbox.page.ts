@@ -55,7 +55,7 @@ export default class ListboxPage {
   protected readonly tab = signal("listbox");
   protected readonly tabs: FoldTabItem[] = [
     { key: "listbox", label: "listbox", icon: "list" },
-    { key: "grouped", label: "grouped", icon: "layers" },
+    { key: "grouped", label: "grouped", icon: "folder-open" },
     { key: "multi", label: "multiselect", icon: "check-circle" },
     { key: "select", label: "select · native", icon: "chevron-down" },
     { key: "typed", label: "typed value", icon: "code" },

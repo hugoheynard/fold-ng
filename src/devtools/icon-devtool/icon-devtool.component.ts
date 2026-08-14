@@ -10,6 +10,7 @@ import {
 // into `../../components`: `fold-ng/devtools` is its own ng-packagr entry point
 // (own rootDir), so it depends on the primary `fold-ng` entry the same way any
 // consumer would. The monorepo's vite/vitest alias `fold-ng` → `src/public-api`.
+import type { FoldIconName } from "fold-ng";
 import {
   FOLD_BUILTIN_ICON_CATEGORIES,
   FoldButtonIconComponent,
@@ -34,7 +35,7 @@ const CUSTOM_CATEGORY_ID = "custom";
 interface IconCategory {
   readonly id: string;
   readonly label: string;
-  readonly names: readonly string[];
+  readonly names: readonly FoldIconName[];
 }
 
 /** name → built-in category id, for bucketing the live registry by theme. */
@@ -113,7 +114,7 @@ export class FoldIconDevtoolComponent {
    * dropped so a search only shows the themes it actually hit.
    */
   protected readonly categories = computed<readonly IconCategory[]>(() => {
-    const buckets = new Map<string, string[]>();
+    const buckets = new Map<string, FoldIconName[]>();
     for (const name of this.matches()) {
       const id = CATEGORY_OF_NAME.get(name) ?? CUSTOM_CATEGORY_ID;
       const bucket = buckets.get(id);
@@ -153,7 +154,9 @@ export class FoldIconDevtoolComponent {
   }
 
   /** The icon selected into the playground (empty = none). */
-  protected readonly selected = signal("");
+  /** The icon under the playground — `null`, not `""`, for "none picked": an
+   *  empty string is not a name, and the template already branches on it. */
+  protected readonly selected = signal<FoldIconName | null>(null);
   /** Playground size preset. */
   protected readonly size = signal<IconSize>("md");
 
@@ -172,7 +175,7 @@ export class FoldIconDevtoolComponent {
   /** Flashes true briefly after a successful copy. */
   protected readonly copied = signal(false);
 
-  protected select(name: string): void {
+  protected select(name: FoldIconName): void {
     this.selected.set(name);
   }
 
