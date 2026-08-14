@@ -37,24 +37,391 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     version: "Unreleased",
     date: null,
     unreleased: true,
-    counts: {},
-    breaking: 0,
-    groups: [],
+    counts: {
+      Added: 2,
+      Changed: 2,
+      Fixed: 1,
+    },
+    breaking: 2,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-empty-state",
+              },
+              {
+                kind: "text",
+                value: " takes an ",
+              },
+              {
+                kind: "code",
+                value: "icon",
+              },
+              {
+                kind: "text",
+                value: " name.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "The glyph was reachable only through the ",
+              },
+              {
+                kind: "code",
+                value: "[empty-icon]",
+              },
+              {
+                kind: "text",
+                value: " slot, while ",
+              },
+              {
+                kind: "code",
+                value: "fold-element-title",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-callout",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "fold-back-link",
+              },
+              {
+                kind: "text",
+                value: " all accept an ",
+              },
+              {
+                kind: "code",
+                value: "icon",
+              },
+              {
+                kind: "text",
+                value: " input — so ",
+              },
+              {
+                kind: "code",
+                value: 'icon="check"',
+              },
+              {
+                kind: "text",
+                value:
+                  " on an empty state landed as a mute HTML attribute and rendered nothing, with no error at build or runtime. The slot stays, for art the registry can't hold (rule 4.7), and ",
+              },
+              {
+                kind: "strong",
+                value: "wins",
+              },
+              {
+                kind: "text",
+                value: " when both are supplied. ",
+              },
+              {
+                kind: "code",
+                value: "iconSize",
+              },
+              {
+                kind: "text",
+                value: " tunes the named glyph.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-nav-tile",
+              },
+              {
+                kind: "text",
+                value: " takes a ",
+              },
+              {
+                kind: "code",
+                value: "badge",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "A launcher tile and a ",
+              },
+              {
+                kind: "code",
+                value: "fold-menu-item",
+              },
+              {
+                kind: "text",
+                value:
+                  ' are the same destination, but only the rail could carry a count — so an app that showed "3 waiting" in the rail went silent the moment the window narrowed to the tiles. Same reading as the menu item\'s, including ',
+              },
+              {
+                kind: "strong",
+                value: "a count of `0` rendering nothing",
+              },
+              {
+                kind: "text",
+                value: ", and the count folds into the tile's accessible name.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "BREAKING",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value: " is generic over its key.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "FoldTabsComponent<K>",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "FoldTabItem<K>",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "FoldTabsContext<K>",
+              },
+              {
+                kind: "text",
+                value: " and ",
+              },
+              {
+                kind: "code",
+                value: "FoldTabPanelComponent<K>",
+              },
+              {
+                kind: "text",
+                value: " all carry the caller's key type (defaulting to ",
+              },
+              {
+                kind: "code",
+                value: "string",
+              },
+              {
+                kind: "text",
+                value:
+                  ", so untyped callers are unaffected). A bar whose sections are a closed union now writes the key back ",
+              },
+              {
+                kind: "strong",
+                value: "already narrowed",
+              },
+              {
+                kind: "text",
+                value: " — no ",
+              },
+              {
+                kind: "code",
+                value: "isTabKey",
+              },
+              {
+                kind: "text",
+                value: "-style predicate at every call site — and a ",
+              },
+              {
+                kind: "code",
+                value: '<fold-tab-panel key="typo">',
+              },
+              {
+                kind: "text",
+                value:
+                  " outside the union fails to compile instead of rendering a panel no tab can reach.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "BREAKING",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "tabs",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "items",
+              },
+              {
+                kind: "text",
+                value: " accept ",
+              },
+              {
+                kind: "code",
+                value: "readonly",
+              },
+              {
+                kind: "text",
+                value: " arrays.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "They were the only two array inputs in the package still demanding a mutable array, so a caller holding a ",
+              },
+              {
+                kind: "code",
+                value: "readonly",
+              },
+              {
+                kind: "text",
+                value:
+                  " list (the idiomatic shape for static data) had to widen it. ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-nav",
+              },
+              {
+                kind: "text",
+                value: "'s ",
+              },
+              {
+                kind: "code",
+                value: "activeKey",
+              },
+              {
+                kind: "text",
+                value: " stays ",
+              },
+              {
+                kind: "code",
+                value: "string",
+              },
+              {
+                kind: "text",
+                value: " on purpose — it has a zero value (",
+              },
+              {
+                kind: "code",
+                value: '""',
+              },
+              {
+                kind: "text",
+                value:
+                  ', "no item selected") that no caller\'s union contains, so a generic there would hand the narrowing straight back.',
+              },
+            ],
+            breaking: true,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-tabs",
+              },
+              {
+                kind: "text",
+                value: "' JSDoc example projected into the wrong slot.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "It wrote ",
+              },
+              {
+                kind: "code",
+                value: "<fold-tabs nav …>",
+              },
+              {
+                kind: "text",
+                value: "; ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: "'s bar slot is ",
+              },
+              {
+                kind: "code",
+                value: "[tabNav]",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Copying the example silently dropped the bar into the default slot.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
   },
   {
     version: "0.10.3",
     date: "2026-08-12",
     unreleased: false,
-    counts: {},
-    breaking: 0,
-    groups: [],
-  },
-  {
-    version: "0.10.2",
-    date: "2026-08-12",
-    unreleased: false,
     counts: {
-      Changed: 3,
+      Changed: 1,
     },
     breaking: 0,
     groups: [
@@ -106,7 +473,73 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  " section, which stays in lockstep) without the layout having to know what its content is. Vertical rhythm untouched, and a body that wants its inset back sets the token on its own content.",
+                  " section, which stays in lockstep) without the layout having to know what its content is. Vertical rhythm untouched, and a body that wants its inset back sets the token on its own content. _(Widens the 0.10.2 change, which stopped at 640px.)_",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    version: "0.10.2",
+    date: "2026-08-12",
+    unreleased: false,
+    counts: {
+      Changed: 3,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "A ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: " hands its content a zero gutter below 640px.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "The bar spans the layout's full width, so a gutter under it insets the cards _relative to the menu that names them_ — they stop reading as one column. It is also pure loss on a phone: 2 × 16px off a ~360px reading width. Handed down as ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-gutter: 0",
+              },
+              {
+                kind: "text",
+                value:
+                  " on the body rather than selected as a child: a custom property crosses view encapsulation, so it reaches a nested ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " (or a ",
+              },
+              {
+                kind: "code",
+                value: "bleed",
+              },
+              {
+                kind: "text",
+                value:
+                  " section, which stays in lockstep) without the layout having to know what its content is. Vertical rhythm untouched.",
               },
             ],
             breaking: false,
