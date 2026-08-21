@@ -6,7 +6,22 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **A tab bar no longer inherits the consumer's leading.** `.tab-bar-item` set
+  its font size (10px `compact`, `--fold-text-sm` `comfortable`) but never its
+  `line-height`, so the label's line box was sized by whatever the host app had
+  on an ancestor. An app with a comfortable body leading gave that 10px label a
+  16–26px box: a `compact` bar that should stand ~32px tall stood ~42px, and
+  read as a slab rather than a row of tabs.
+
+  The consumer cannot fix this from outside — tuning padding fights an inflation
+  that is not theirs, and `.tab-bar-item` lives inside our template. The item now
+  sets `line-height: 1`, as `fold-menu-item` already did for the same reason;
+  the tab bar had simply been left out.
+
+  Affects `fold-tabs` and `fold-view-nav` (they share `_tab-bar.scss`). Bars in
+  apps that already had a tight leading are unchanged.
 
 ## [0.11.1] - 2026-08-14
 

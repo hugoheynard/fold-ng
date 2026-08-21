@@ -95,6 +95,19 @@
   font-family: inherit;
   font-size: 10px;
   font-weight: 600;
+  /* The item owns its leading instead of inheriting one.
+
+     Without this the label's line box is sized by whatever the CONSUMER has on
+     an ancestor — an app that sets a comfortable `line-height` for body copy
+     (1.5–1.6, or worse, a length) gives this 10px label a 16–26px box, and a
+     `compact` tab that should stand 32px tall stands 42. The bar then reads as
+     a slab, and no amount of padding tuning on our side fixes it, because the
+     inflation is not ours. `fold-menu-item` already sets `line-height: 1` for
+     exactly this reason; the tab bar had been left out.
+
+     `1` and not a token: the item is a centred flex row, its height set by the
+     icon and its padding. Leading has nothing to add to a single-line label. */
+  line-height: 1;
   cursor: pointer;
   text-align: center;
   text-decoration: none; /* items can be <a> — kill the UA underline */
