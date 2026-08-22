@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.12.1] - 2026-08-22
+
 ### Fixed
 
 - **A panel body no longer crushes a child that clips its own overflow.**
@@ -1631,7 +1635,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.12.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.12.1...HEAD
+[0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1
 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0
 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1
 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0
