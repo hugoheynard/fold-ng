@@ -339,6 +339,7 @@ export type {
 // ── Panels (overlay system) ──────────────────────────────────
 export { FoldPanelHostComponent } from "./components/overlays/panel/panel-host.component";
 export { FoldPanelHeaderComponent } from "./components/overlays/panel/panel-header.component";
+export { FoldPanelBodyComponent } from "./components/overlays/panel/panel-body.component";
 export { FoldPanelFooterComponent } from "./components/overlays/panel/panel-footer.component";
 export { FoldPanelHostService } from "./components/overlays/panel/panel-host.service";
 export { FoldPanelRef } from "./components/overlays/panel/panel-ref";

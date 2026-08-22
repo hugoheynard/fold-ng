@@ -116,6 +116,16 @@
   </fold-page-section>
 
   <fold-page-section
+    title="Panel body"
+    description="fold-panel-body is the scrolling middle of a component panel — flex:1, overflow-y:auto and min-height:0, plus a column gap. The last one is the rule hand-rolled copies forget: a flex item's default min-height is min-content, so without it a tall child grows the box instead of scrolling and pushes the footer out of the panel."
+  >
+    <div class="code-block">
+      <div class="code-top"><span class="code-lang">html</span></div>
+      <pre class="code-pre"><code>{{ bodyCode }}</code></pre>
+    </div>
+  </fold-page-section>
+
+  <fold-page-section
     title="Panel footer"
     description="fold-panel-footer pairs with fold-panel-header: the tokenised action bar at a panel's bottom edge (top border + padding + alignment). It sits with flex:none, so it stays pinned while the body scrolls — no sticky."
   >

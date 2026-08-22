@@ -6,7 +6,39 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **`fold-panel-body` — the scrolling middle of an imperative panel.** The
+  chrome renders a `.panel-body` for a **template** panel, but a **component**
+  panel is mounted bare and owns its own header/body/footer. Every consumer
+  therefore had to rediscover the same three rules; in one consuming app,
+  eleven panels out of twenty had copied the block, and the nine that had not
+  were quietly broken.
+
+  `flex: 1 1 auto` takes what the header and footer leave, `overflow-y: auto`
+  scrolls the rest, and — the one hand-rolled copies miss — **`min-height: 0`**.
+  A flex item's default minimum height is `min-content`, so without it a tall
+  child _grows the box_ instead of scrolling, pushing the footer past the
+  panel's bottom edge where `overflow: hidden` clips it away. It also lays its
+  children out in a column with the standard gap.
+
 ### Fixed
+
+- **A component panel's footer is now actually pinned.** `fold-panel-footer`
+  documented that it "stays pinned while the body scrolls" thanks to `flex:
+none` — true for a template panel, false for a component one. The mounted
+  component's host element was a **single** flex child of the panel column, so
+  the footer was a grandchild and its `flex: none` applied to nothing: it
+  scrolled away with the body, then `overflow: hidden` clipped it. The panel
+  outlet now mounts the component with `display: contents`, so its header, body
+  and footer become the column's real children and the chrome's layout reaches
+  them as documented.
+
+  ⚠️ **A box that isn't there paints nothing.** A panel component that draws on
+  its own `:host` — background, border, padding — must move that onto an element
+  inside its template. Layout-only `:host` rules (the common case: `display:
+flex; flex-direction: column; height: 100%`) simply become redundant and can
+  be deleted in favour of `fold-panel-body`.
 
 - **A tab bar no longer inherits the consumer's leading.** `.tab-bar-item` set
   its font size (10px `compact`, `--fold-text-sm` `comfortable`) but never its

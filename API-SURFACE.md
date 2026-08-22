@@ -582,6 +582,9 @@
 #### FoldPaletteRegistry
 - (no input·model·output bindings)
 
+#### FoldPanelBodyComponent
+- (no input·model·output bindings)
+
 #### FoldPanelComponentOutletDirective
 - descriptor: InputSignal<FoldComponentPanelDescriptor> — required
 

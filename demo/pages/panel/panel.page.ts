@@ -72,6 +72,21 @@ host.open(MyPanel, { surface: 'solid' });
 // The header close button & FoldPanelRef.close() still work.
 host.open(MyPanel, { disableClose: true });`;
 
+  protected readonly bodyCode = `<!-- The three pieces of a component panel. The chrome mounts the component
+     with display:contents, so these are the panel column's real children:
+     header and footer sit at flex:none, the body takes the rest. -->
+<fold-panel-header title="Réglage" subtitle="Famille" />
+
+<fold-panel-body>
+  <fold-input label="Nom" />
+  <fold-danger-zone title="Archiver" actionLabel="Archiver" />
+</fold-panel-body>
+
+<fold-panel-footer>
+  <button foldButton emphasis="outline" intent="neutral" (click)="cancel()">Annuler</button>
+  <button foldButton (click)="save()">Enregistrer</button>
+</fold-panel-footer>`;
+
   protected readonly footerCode = `<!-- default: Annuler/Confirmer pushed to the trailing edge -->
 <fold-panel-footer>
   <button foldButton emphasis="outline" intent="neutral" (click)="cancel()">Annuler</button>

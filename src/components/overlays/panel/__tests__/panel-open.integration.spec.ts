@@ -103,6 +103,20 @@ describe("Panel open() — imperative component path", () => {
     await expect(first.closed).resolves.toBeUndefined();
   });
 
+  it("mounts the component with display:contents, so its footer is a real sibling", () => {
+    // Without this the component's host is a SINGLE flex child of the panel
+    // column, and a projected `fold-panel-footer` is a grandchild — so its
+    // `flex: none` ("stays pinned while the body scrolls") applied to nothing.
+    // The footer scrolled away and `overflow: hidden` clipped it.
+    const { fixture, root } = render();
+    host.open<DemoData, string>(DemoPanelComponent, { data: { label: "A" } });
+    fixture.detectChanges();
+
+    const mounted = root.querySelector<HTMLElement>("test-demo-panel");
+    expect(mounted).not.toBeNull();
+    expect(mounted?.style.display).toBe("contents");
+  });
+
   it("keeps the prior panel open with stack: true", () => {
     const { fixture, root } = render();
     host.open<DemoData, string>(DemoPanelComponent, { data: { label: "A" } });

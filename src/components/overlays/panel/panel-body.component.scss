@@ -1,0 +1,22 @@
+// The scrolling middle of a panel. Sized by what the header and footer leave.
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--fold-space-md);
+  // The rule hand-rolled copies forget. A flex item's default `min-height` is
+  // `min-content`, so a tall child would GROW this box instead of scrolling it,
+  // pushing the footer past the panel's bottom edge — where the panel's
+  // `overflow: hidden` clips it away.
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--fold-space-lg);
+}
+
+// Same reasoning as the panel chrome's own body: on a phone the inset is
+// charged twice against a reading width that has nothing to spare.
+@container (max-width: 640px) {
+  :host {
+    padding: var(--fold-space-md);
+  }
+}
