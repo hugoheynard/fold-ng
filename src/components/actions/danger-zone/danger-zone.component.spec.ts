@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
@@ -110,5 +112,28 @@ describe("FoldDangerZoneComponent", () => {
     r.confirmBtn()!.click();
     r.fixture.detectChanges();
     expect(r.cmp.confirmedWith()).toBe("");
+  });
+
+  /**
+   * The SCSS is not compiled in the unit-test env, so a computed-style
+   * assertion would pass against an empty stylesheet. Lock the SOURCE, as
+   * elsewhere in the package.
+   */
+  it("keeps a content-based minimum, so a tight column cannot crush it", () => {
+    // `overflow: hidden` (rounded corners) drops this box's automatic minimum
+    // size to ZERO as a flex or grid item. In a full panel it was measured at
+    // 2px — its two borders — which erases a destructive action from the page
+    // without so much as a scrollbar to hint at it.
+    const raw = readFileSync(
+      join(
+        process.cwd(),
+        "src/components/actions/danger-zone/danger-zone.component.scss",
+      ),
+      "utf-8",
+    );
+    const source = raw
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/.*$/gm, "");
+    expect(source).toMatch(/min-height:\s*min-content/);
   });
 });

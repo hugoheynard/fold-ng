@@ -6,7 +6,22 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **A panel body no longer crushes a child that clips its own overflow.**
+  `fold-panel-body` laid its children out as a flex column, where every child
+  may shrink and a child whose `overflow` is not `visible` has an automatic
+  minimum size of **zero**. `fold-danger-zone` clips its overflow to keep its
+  dividers flush with its rounded corners, so in a full panel it was measured
+  at **2px** — its two borders — with the destructive action, its heading and
+  its explanation all erased. The box reported barely any overflow, so there
+  was nothing to scroll to either: the panel looked finished and was not.
+
+  The body is now a single-column grid with `grid-auto-rows: max-content`:
+  rows are sized by their content and the box overflows, which is what a
+  scrolling column is for. Every child is protected, not only the ones we
+  thought of. `fold-danger-zone` also asks for its content-based minimum back
+  explicitly, so it survives a hand-rolled flex column too.
 
 ## [0.12.0] - 2026-08-22
 

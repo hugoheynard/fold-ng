@@ -25,7 +25,14 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
  * failure this component prevents.
  *
  * It also lays its children out in a column with the standard gap, so a panel
- * stops setting a margin on every field.
+ * stops setting a margin on every field. That column is a **grid**, not a flex
+ * column, for a reason worth stating: in a flex column every child may shrink,
+ * and a child whose `overflow` is not `visible` has an automatic minimum size
+ * of **zero** — it is crushed to its borders rather than allowed to overflow.
+ * A `fold-danger-zone` (rounded corners, so `overflow: hidden`) measured 2px in
+ * a full panel: a destructive-action block erased, with almost no overflow left
+ * to scroll to either. `grid-auto-rows: max-content` sizes each row to its
+ * content and lets the box overflow, which is what a scrolling column is for.
  *
  * ```html
  * <fold-panel-header title="Réglage" />

@@ -5,6 +5,11 @@
   border: 1px solid var(--fold-color-alert-border);
   border-radius: var(--fold-radius-md, 10px);
   overflow: hidden; // keep the section dividers flush with the rounded corners
+  // The price of that `overflow: hidden`: as a flex or grid item, this box's
+  // automatic minimum size becomes ZERO, so a column short on space crushes it
+  // to its two borders — 2px — and hides a destructive action behind no visible
+  // clue at all. Ask for the content-based minimum back explicitly.
+  min-height: min-content;
 }
 
 // `filled` — the whole block is alert-tinted (a compact "delete X" region).

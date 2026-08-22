@@ -1,13 +1,27 @@
 // The scrolling middle of a panel. Sized by what the header and footer leave.
 :host {
-  display: flex;
+  // A GRID, not a flex column — and that is not a style preference. In a flex
+  // column every child may shrink, and a child whose `overflow` is not
+  // `visible` has an automatic minimum size of **zero**: it is crushed to its
+  // borders instead of overflowing. `fold-danger-zone` (rounded corners, so
+  // `overflow: hidden`) was measured at **2px** in a full panel — the frame's
+  // two borders, the whole destructive-action block erased — while the box
+  // reported barely any overflow, so there was nothing to scroll to either.
+  // Grid rows sized `max-content` size to the content and let the box overflow,
+  // which is what a scrolling column is for. Every child is protected, not just
+  // the ones we thought of.
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: max-content;
+  // Rows are content-sized, so a short panel must pack them at the top rather
+  // than spread the leftover space between them.
+  align-content: start;
   flex: 1 1 auto;
-  flex-direction: column;
   gap: var(--fold-space-md);
-  // The rule hand-rolled copies forget. A flex item's default `min-height` is
-  // `min-content`, so a tall child would GROW this box instead of scrolling it,
-  // pushing the footer past the panel's bottom edge — where the panel's
-  // `overflow: hidden` clips it away.
+  // The rule hand-rolled copies forget. This box is itself a flex item of the
+  // panel column, whose default `min-height` is `min-content`, so a tall child
+  // would GROW it instead of scrolling it, pushing the footer past the panel's
+  // bottom edge — where the panel's `overflow: hidden` clips it away.
   min-height: 0;
   overflow-y: auto;
   padding: var(--fold-space-lg);
