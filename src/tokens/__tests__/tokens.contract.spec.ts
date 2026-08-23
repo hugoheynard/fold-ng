@@ -58,6 +58,69 @@ function stripComments(css: string): string {
   return css.replace(/\/\*[\s\S]*?\*\//g, "");
 }
 
+/**
+ * A colour role never travels alone. Redeclaring the fill without its ink, or a
+ * status base without its tint, leaves the missing half inherited from the
+ * other polarity — the exact shape of every contrast failure navi shipped.
+ * Each list is closed: declare one member, declare them all.
+ */
+const COLOUR_FAMILIES: readonly (readonly string[])[] = [
+  [
+    "primary",
+    "primary-strong",
+    "on-primary",
+    "primary-text",
+    "primary-surface",
+    "primary-border",
+  ],
+  ["text", "text-secondary", "text-muted", "text-faded"],
+  ["info", "on-info", "info-text", "info-surface", "info-border"],
+  [
+    "warning",
+    "on-warning",
+    "warning-text",
+    "warning-surface",
+    "warning-border",
+  ],
+  ["alert", "on-alert", "alert-text", "alert-surface", "alert-border"],
+  [
+    "success",
+    "on-success",
+    "success-text",
+    "success-surface",
+    "success-border",
+  ],
+];
+
+interface ThemeBlock {
+  readonly selector: string;
+  /** True when the selector narrows the theme to a region (navi's chrome). */
+  readonly scoped: boolean;
+  readonly body: string;
+}
+
+/**
+ * EVERY `[data-theme=…]` block, top-level and scoped alike. The previous parity
+ * test deduped by theme name and kept only the first block, so a scoped
+ * sub-block was tested by nothing at all.
+ */
+function themeBlocks(css: string): ThemeBlock[] {
+  const normalised = css.replace(/['"]/g, '"');
+  const out: ThemeBlock[] = [];
+  for (const m of normalised.matchAll(
+    /(\[data-theme="[\w-]+"\][^{}]*)\{([^}]*)\}/g,
+  )) {
+    const selector = (m[1] ?? "").trim();
+    out.push({
+      selector,
+      scoped:
+        selector !== (selector.match(/^\[data-theme="[\w-]+"\]$/)?.[0] ?? ""),
+      body: (m[2] ?? "").replace(/\/\*[\s\S]*?\*\//g, ""),
+    });
+  }
+  return out;
+}
+
 const primitives = readCss("primitives.css");
 const semantic = readCss("semantic.css");
 const scales = readCss("scales.css");
@@ -73,30 +136,41 @@ describe("token contract · catalogue ↔ CSS", () => {
     expect(new Set(declared)).toEqual(new Set(expectedSemantic));
   });
 
-  it("every theme override declares exactly the catalogue colours (theme parity)", () => {
-    // Normalise quotes first — Prettier may write [data-theme="lumen"] or '…'.
-    const normalised = semantic.replace(/['"]/g, '"');
-    // A theme may also carry scoped sub-blocks (navi re-declares chrome roles
-    // on the shell's regions), so dedupe — `block()` finds the top-level one.
-    const themes = [
-      ...new Set(
-        [...normalised.matchAll(/\[data-theme="([\w-]+)"\]/g)].map(
-          (m) => m[1] as string,
-        ),
-      ),
-    ];
-
+  it("every theme's TOP-LEVEL block declares exactly the catalogue colours", () => {
+    const blocks = themeBlocks(semantic).filter((b) => !b.scoped);
     // Guards the guard: a typo'd selector would otherwise test nothing.
-    expect(themes.length).toBeGreaterThanOrEqual(1);
+    expect(blocks.length).toBeGreaterThanOrEqual(1);
 
-    for (const theme of themes) {
-      const declared = declaredVars(
-        block(normalised, `[data-theme="${theme}"]`),
-      );
+    for (const b of blocks) {
       expect(
-        new Set(declared),
-        `theme "${theme}" is missing or has extra tokens`,
+        new Set(declaredVars(b.body)),
+        `theme "${b.selector}" is missing or has extra tokens`,
       ).toEqual(new Set(expectedSemantic));
+    }
+  });
+
+  it("every SCOPED sub-block is closed: a role it redeclares brings its family", () => {
+    // A sub-block re-inks one region (navi's dark chrome), so it is not held to
+    // full parity — it may leave a role to the theme it sits inside. What it
+    // may NOT do is take half a family: `primary` without `on-primary` renders
+    // ink meant for the other polarity straight onto the new fill, which is how
+    // the chrome shipped 3.9:1 buttons that no test could see.
+    const blocks = themeBlocks(semantic).filter((b) => b.scoped);
+    expect(blocks.length).toBeGreaterThanOrEqual(1);
+
+    for (const b of blocks) {
+      const declared = new Set(declaredVars(b.body));
+      for (const family of COLOUR_FAMILIES) {
+        const props = family.map((t) => `--fold-color-${t}`);
+        const present = props.filter((p) => declared.has(p));
+        if (present.length === 0) {
+          continue;
+        }
+        expect(
+          present,
+          `"${b.selector}" redeclares part of the "${family[0] ?? ""}" family but not all of it`,
+        ).toEqual(props);
+      }
     }
   });
 

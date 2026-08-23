@@ -857,6 +857,10 @@
      against a navy rail. On the chrome the brand lives in its light tints. */
   --fold-color-primary: var(--fold-ref-navy-400);
   --fold-color-primary-strong: var(--fold-ref-navy-300);
+  /* The ink the flipped brand takes with it. Without this line the chrome
+     inherited the page's `on-primary` — white — onto its own lighter fill:
+     3.9:1 on a solid button, and no test looked here. */
+  --fold-color-on-primary: var(--fold-ref-navy-950);
   --fold-color-primary-text: var(--fold-ref-navy-300);
   --fold-color-primary-surface: color-mix(
     in srgb,
