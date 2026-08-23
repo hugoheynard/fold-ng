@@ -8,6 +8,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING — `brand` / `on-brand` entrent au catalogue (48 rôles).** La
+  marque IDENTIFIE, donc contrairement à `primary` elle ne doit pas basculer de
+  polarité : une marque teal sur la page et bleu pâle sur le rail a cessé
+  d'être la marque. `primary` faisait deux métiers contradictoires — porter la
+  marque ET les affordances de premier plan, dont la seconde doit s'éclaircir
+  sur un chrome sombre. Un sous-bloc scopé ne peut **jamais** les redéclarer, et
+  un test le vérifie.
+
+- **BREAKING — `fold-data-table` : `narrowLayout` / `cardsAt` /
+  `rowCardChrome`, et `mobileLayout` déprécié** (retiré avant la 1.0). La
+  bascule se décide sur la largeur du **conteneur** (600px par défaut), pas sur
+  la fenêtre : une table dans un panneau de 480px sur un écran de 1920 restait
+  une table illisible. `custom` était une redondance — projeter un
+  `foldRowCard` disait déjà tout.
+
 - **BREAKING — `surface-band` entre au catalogue (46 rôles).** Une bande ne
   monte pas, elle **s'écarte**, et la direction dépend de la polarité du thème.
   `fold-card` la codait en dur (`surface-hover`, et `surface-card` en sunken) —
@@ -161,6 +176,17 @@ All notable changes to **fold-ng** are documented here. The format follows
   `position: fixed; inset: 0` par-dessus lui. Le test qui le couvrait cliquait
   le scrim directement et passait au vert depuis toujours — jsdom n'a pas de
   mise en page, il n'a jamais vu le recouvrement.
+
+- **Le mode cartes de `fold-data-table` rend une vraie liste.** `auto-cards`
+  était une réécriture CSS du tableau (`display: block` sur le `<tr>`, `flex`
+  sur les cellules) — ce qui **retire le rôle implicite** des éléments de
+  tableau : la table cessait d'être une table sans devenir une liste, et le
+  `<thead>` restait en en-têtes orphelins. Une `<ul>/<li>` maintenant, avec une
+  coquille commune (contour, ton, sélection) et un gabarit par défaut en `<dl>`.
+
+- **Le zébrage se voit sur navi** — 1,07 → 1,15:1. Et les diviseurs de ligne
+  disparaissent dès que le zébrage est actif : la rayure porte déjà la
+  séparation.
 
 - **Une barre d'onglets repliée défile, et son libellé actif n'est plus rogné.**
   Le repli et le défilement s'excluaient : passé une douzaine d'items, le
