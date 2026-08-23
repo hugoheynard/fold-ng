@@ -1,1 +1,0 @@
-import{A as a,s as c,aB as i}from"./index-D0Jqges4.js";const r=32;function u(o,e){const n=typeof e=="number"?a(()=>e):e,t=c(!1);return i(()=>{const s=o();if(s===0)return;const f=n();!t()&&s<=f?t.set(!0):t()&&s>f+r&&t.set(!1)}),t.asReadonly()}export{u as f};
