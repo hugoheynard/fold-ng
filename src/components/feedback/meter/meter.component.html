@@ -1,0 +1,16 @@
+<span class="m-row">
+  <span class="m-label" [id]="labelId">{{ label() }}</span>
+  @if (showValue()) {
+    <span class="m-value">{{ clamped() }} / {{ max() }}</span>
+  }
+</span>
+<span
+  class="m-track"
+  role="meter"
+  [attr.aria-labelledby]="labelId"
+  [attr.aria-valuenow]="clamped()"
+  [attr.aria-valuemin]="min()"
+  [attr.aria-valuemax]="max()"
+>
+  <span class="m-fill" [style.inline-size.%]="percent()"></span>
+</span>

@@ -1,0 +1,62 @@
+.cl-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  margin: 0;
+  padding: 0;
+  /* `list-style: none` strips list semantics in Safari, so the role is restated
+     in the template rather than trusted to the element. */
+  list-style: none;
+}
+
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fold-space-sm);
+  min-width: 0;
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-snug);
+}
+
+.cl-glyph {
+  flex: none;
+  /* Nudged onto the first line's baseline: the label may wrap to two lines and
+     a centred glyph would then float between them. */
+  margin-block-start: 1px;
+}
+
+.cl-item.done .cl-glyph {
+  color: var(--fold-color-success-text);
+}
+
+.cl-item.todo {
+  color: var(--fold-color-warning-text);
+  font-weight: var(--fold-weight-medium);
+}
+
+.cl-item.todo .cl-glyph {
+  color: var(--fold-color-warning-text);
+}
+
+.cl-item.optional {
+  color: var(--fold-color-text-muted);
+}
+
+.cl-item.optional .cl-glyph {
+  color: var(--fold-color-text-faded);
+}
+
+/* Visually hidden, still announced — the state in words for a screen reader,
+   which gets no glyph. */
+.cl-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

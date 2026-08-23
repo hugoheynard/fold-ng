@@ -259,6 +259,13 @@ export { FoldCheckboxComponent } from "./components/forms/checkbox/checkbox.comp
 export { FoldSliderComponent } from "./components/forms/slider/slider.component";
 export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";
 export type { FoldRangeValue } from "./components/forms/slider/range-slider.component";
+export { FoldChecklistComponent } from "./components/feedback/checklist/checklist.component";
+export type {
+  FoldChecklistItem,
+  FoldChecklistState,
+} from "./components/feedback/checklist/checklist.component";
+export { FoldMeterComponent } from "./components/feedback/meter/meter.component";
+export type { FoldMeterTone } from "./components/feedback/meter/meter.component";
 export { FoldCalloutComponent } from "./components/feedback/callout/callout.component";
 export type {
   FoldCalloutVariant,

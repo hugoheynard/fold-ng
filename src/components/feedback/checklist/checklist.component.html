@@ -1,0 +1,14 @@
+<ul class="cl-list" role="list">
+  @for (item of items(); track item.label) {
+    <li class="cl-item" [class]="item.state">
+      <fold-icon
+        class="cl-glyph"
+        aria-hidden="true"
+        [name]="glyph[item.state]"
+        size="sm"
+      />
+      <span class="cl-sr">{{ stateLabels()[item.state] }}</span>
+      <span class="cl-label">{{ item.label }}</span>
+    </li>
+  }
+</ul>

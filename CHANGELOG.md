@@ -6,7 +6,26 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-meter`** — une mesure en LECTURE SEULE dans une plage connue (une
+  complétude, un quota, un score). Ce n'est ni une barre de progression ni un
+  `fold-slider` : ce dernier est un `input type="range"`, focalisable,
+  déplaçable, et il s'annonce comme quelque chose qu'on peut changer. Un
+  `role="meter"` annonce une valeur déjà décidée. Le raccourci habituel — un
+  `div` de 4px — ne donne rien du tout à un lecteur d'écran, et c'est la raison
+  d'être du composant. La valeur est **bornée** plutôt que crue : au-delà du max
+  elle peindrait hors de la piste, et une plage inversée diviserait par un
+  négatif.
+
+- **`fold-checklist`** — une liste de conditions et leur état. Troisième
+  apparition du motif (les règles d'un champ mot de passe, les préconditions
+  d'une zone dangereuse, puis une liste de publication), ce qui est le moment où
+  une forme cesse d'être une coïncidence. Chaque état est porté par un **glyphe
+  autant que par une couleur** : un point vert et un point ambre sont le même
+  point en niveaux de gris, en `forced-colors`, et pour une large part des
+  lecteurs. L'état est aussi dit **en toutes lettres** pour un lecteur d'écran,
+  qui ne voit aucun glyphe.
 
 ## [0.13.0] - 2026-08-23
 

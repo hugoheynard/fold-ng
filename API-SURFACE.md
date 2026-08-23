@@ -220,6 +220,10 @@
 - size: InputSignal<"sm" | "md">
 - touched: ModelSignal<boolean>
 
+#### FoldChecklistComponent
+- items: InputSignal<readonly FoldChecklistItem[]> — required
+- stateLabels: InputSignal<Record<FoldChecklistState, string>>
+
 #### FoldChoiceRowComponent
 - activeKey: InputSignal<string> — required
 - ariaLabel: InputSignal<string>
@@ -478,6 +482,14 @@
 #### FoldMenuSeparatorComponent
 - color: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
+
+#### FoldMeterComponent
+- label: InputSignal<string> — required
+- max: InputSignalWithTransform<number, unknown>
+- min: InputSignalWithTransform<number, unknown>
+- showValue: InputSignalWithTransform<boolean, unknown>
+- tone: InputSignal<FoldMeterTone>
+- value: InputSignalWithTransform<number, unknown> — required
 
 #### FoldMultiselectComponent
 - allowClear: InputSignalWithTransform<boolean, unknown>
@@ -928,6 +940,8 @@
 - foldCardBandChrome (function)
 - FoldCardBandChrome (type)
 - FoldCardBandChromeInput (type)
+- FoldChecklistItem (interface)
+- FoldChecklistState (type)
 - FoldChoiceOption (type)
 - foldColorProperty (function)
 - foldColorVar (function)
@@ -972,6 +986,7 @@
 - FoldMenuLevel (type)
 - FoldMenuTint (type)
 - FoldMenuTogglePlacement (type)
+- FoldMeterTone (type)
 - FoldMonthGridOptions (interface)
 - FoldMotionToken (type)
 - foldMotionVar (function)
