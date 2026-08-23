@@ -99,6 +99,41 @@ describe("depth contract · navi, the theme this was measured on", () => {
   }
 });
 
+describe("depth contract · a zebra stripe has to be seen", () => {
+  /**
+   * A stripe is a subdivision: it says a row is a row. `surface-subtle` on the
+   * table body is what draws it, and on navi that was 22% of an already-pale
+   * grey laid on a near-white body — 1.07:1, invisible.
+   *
+   * Only navi is asserted, because only navi was retuned. The other four are
+   * PINNED below rather than left unmeasured: every one of them is under the
+   * floor too, which is a decision waiting to be made, not a fact to discover
+   * again later.
+   */
+  const navi = REGIONS.filter((r) => r.name === "navi")[0] as Region;
+
+  it("navi: the stripe reads against the table body", () => {
+    expect(
+      against(navi, "surface-subtle", "surface-sunken"),
+    ).toBeGreaterThanOrEqual(SUBDIVISION);
+  });
+
+  it("the other regions are all still under the floor — pinned, not forgotten", () => {
+    const under = REGIONS.filter((r) => r.name !== "navi").filter(
+      (r) => against(r, "surface-subtle", "surface-sunken") < SUBDIVISION,
+    );
+    // Raising them means changing how an existing theme renders — a decision of
+    // its own. When one is raised, this list shrinks and the test says so.
+    expect(under.map((r) => r.name)).toEqual([
+      "umbra",
+      "lumen",
+      "bubbly",
+      "titan",
+      "navi/chrome",
+    ]);
+  });
+});
+
 describe("depth contract · the role only NAMES what the other themes had", () => {
   /**
    * `lumen` is the one exception, and it is a pre-existing one: its band is

@@ -789,9 +789,12 @@
      white, white and ivory: a table nested in a card had no edge at all. */
   --fold-color-surface-card: var(--fold-ref-paper-0);
   --fold-color-surface-sunken: var(--fold-ref-paper-50);
+  /* 22% of an already-pale grey, laid on a near-white body, composited to
+     1.07:1 — a zebra stripe nobody could see. There is no room to be subtle on
+     a light ground; see the depth contract. */
   --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--fold-ref-paper-300) 22%,
+    var(--fold-ref-paper-300) 45%,
     transparent
   );
   --fold-color-surface-raised: color-mix(

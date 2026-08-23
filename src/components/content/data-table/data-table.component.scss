@@ -169,6 +169,13 @@
   .folddt-cell {
   background: var(--fold-color-surface-subtle);
 }
+/* The stripe IS the separation, so the dividers go — under EVERY row, not just
+   the striped ones. Dropping them only under the even rows would leave a rule
+   between 1|2 and 3|4 and none between 2|3: a rhythm that reads as a mistake.
+   Hover and the tone rail stay; three separators on one row is two too many. */
+.folddt--zebra .folddt-row .folddt-cell {
+  border-bottom-color: transparent;
+}
 
 /* Hover (default on) — wins over zebra + tone tint. */
 .folddt--hover .folddt-row:hover .folddt-cell {
