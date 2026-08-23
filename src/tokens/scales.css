@@ -61,12 +61,15 @@
   --fold-text-xl: 20px;
   --fold-text-2xl: 24px;
 
-  /* Weight scale — the four weights the components actually render. Named, so
-     `600` stops being a number 35 files agreed on by accident. */
+  /* Weight scale — the weights that actually get rendered. Named, so `600`
+     stops being a number 35 files agreed on by accident. `extrabold` is the
+     display weight: it appears only on hero headings, always paired with
+     `tracking-tightest` and a fluid size. */
   --fold-weight-regular: 400;
   --fold-weight-medium: 500;
   --fold-weight-semibold: 600;
   --fold-weight-bold: 700;
+  --fold-weight-extrabold: 800;
 
   /* Leading scale — unitless line-height, so it multiplies the element's own
      font-size. `none` is the single-line case (a badge, a button label); the
@@ -77,9 +80,11 @@
   --fold-leading-normal: 1.5;
   --fold-leading-relaxed: 1.6;
 
-  /* Tracking scale — letter-spacing. Two negatives for display sizes (large
-     type needs tightening), and `caps` for the uppercase micro-labels that are
-     the library's most common tracked role. */
+  /* Tracking scale — letter-spacing. Three negatives, because tightening is a
+     function of size: the bigger the type, the more of it. `tightest` belongs
+     to hero headings, `tighter` to page titles. `caps` is the uppercase
+     micro-label, the library's most common tracked role. */
+  --fold-tracking-tightest: -0.04em;
   --fold-tracking-tighter: -0.02em;
   --fold-tracking-tight: -0.01em;
   --fold-tracking-normal: 0;

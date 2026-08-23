@@ -139,12 +139,16 @@ export const FOLD_TEXT_TOKENS = [
 
 export type FoldTextToken = (typeof FOLD_TEXT_TOKENS)[number];
 
-/** Weight scale (`--fold-weight-*`) — the four weights components render. */
+/**
+ * Weight scale (`--fold-weight-*`). `extrabold` is the display weight — hero
+ * headings only, always with `tracking-tightest` and a fluid size.
+ */
 export const FOLD_WEIGHT_TOKENS = [
   "regular",
   "medium",
   "semibold",
   "bold",
+  "extrabold",
 ] as const;
 
 export type FoldWeightToken = (typeof FOLD_WEIGHT_TOKENS)[number];
@@ -162,6 +166,7 @@ export type FoldLeadingToken = (typeof FOLD_LEADING_TOKENS)[number];
 
 /** Tracking scale (`--fold-tracking-*`) — letter-spacing per role. */
 export const FOLD_TRACKING_TOKENS = [
+  "tightest",
   "tighter",
   "tight",
   "normal",
