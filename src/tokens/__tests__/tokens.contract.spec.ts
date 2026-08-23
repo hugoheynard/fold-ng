@@ -224,6 +224,22 @@ describe("token contract · layering integrity", () => {
     expect(unused).toEqual([]);
   });
 
+  it("every semantic role is consumed by a component (no orphan roles)", () => {
+    // The mirror of the dead-primitive check, and the half that was missing.
+    // A primitive nothing points at is caught; a ROLE nothing paints with was
+    // not — `--fold-color-bg-header` was declared by all five themes and
+    // consumed by zero components, so the shell header rendered transparent
+    // onto `bg-page` and a mixed theme put chrome text on a page ground.
+    //
+    // The token layer itself does not count as a consumer: `semantic.css`
+    // referencing a role only proves a theme declared it.
+    const painted = new Set(
+      componentStyles().flatMap((s) => referencedVars(s.css)),
+    );
+    const orphans = expectedSemantic.filter((v) => !painted.has(v));
+    expect(orphans, "declared by every theme, painted by nobody").toEqual([]);
+  });
+
   it("the theme layer names no component internals (surfaces by contract)", () => {
     // A theme must not reach into a component's markup: a per-region override
     // targets [data-surface] (the `[foldSurface]` contract), never a class name
