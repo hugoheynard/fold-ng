@@ -194,6 +194,15 @@ describe("token contract · catalogue ↔ CSS", () => {
   });
 });
 
+/** The gallery's own stylesheets — the system's first consumer. */
+function galleryStyles(): { file: string; css: string }[] {
+  const demoDir = join(tokensDir, "../../demo");
+  return walk(demoDir, [".css", ".scss"]).map((file) => ({
+    file,
+    css: readFileSync(file, "utf8"),
+  }));
+}
+
 describe("token contract · layering integrity", () => {
   it("every primitive a semantic token points at is defined", () => {
     const defined = new Set(declaredVars(block(primitives, ":root")));
@@ -233,11 +242,34 @@ describe("token contract · layering integrity", () => {
     //
     // The token layer itself does not count as a consumer: `semantic.css`
     // referencing a role only proves a theme declared it.
+    // The gallery counts: `brand` / `on-brand` exist for the app that renders a
+    // mark, and the library renders none. A role nobody ANYWHERE paints is
+    // still dead — that is what this asserts — but "nobody" includes the
+    // system's own first consumer.
     const painted = new Set(
-      componentStyles().flatMap((s) => referencedVars(s.css)),
+      [...componentStyles(), ...galleryStyles()].flatMap((s) =>
+        referencedVars(s.css),
+      ),
     );
     const orphans = expectedSemantic.filter((v) => !painted.has(v));
     expect(orphans, "declared by every theme, painted by nobody").toEqual([]);
+  });
+
+  it("a scoped sub-block may never redeclare the MARK", () => {
+    // The closure rule pulls a family along with its base, which is right for
+    // `primary` and would be catastrophic here: dragging `brand` into the
+    // chrome block is exactly the flip these roles exist to prevent. They are
+    // not part of the `primary` family for that reason, and this says so out
+    // loud rather than relying on a list staying correct by accident.
+    for (const b of themeBlocks(semantic).filter((x) => x.scoped)) {
+      const declared = new Set(declaredVars(b.body));
+      for (const role of ["--fold-color-brand", "--fold-color-on-brand"]) {
+        expect(
+          declared.has(role),
+          `"${b.selector}" redeclares ${role} — the mark would flip polarity`,
+        ).toBe(false);
+      }
+    }
   });
 
   it("the theme layer names no component internals (surfaces by contract)", () => {
@@ -348,6 +380,24 @@ describe("token contract · components consume tokens only", () => {
   // A typo like `--fold-color-text-primary` (the token is `--fold-color-text`)
   // resolves to an invalid value and the element silently inherits its colour.
   // The parity/no-hex checks miss it — this closes that gap.
+  it("no stylesheet outside the token layer names a PRIMITIVE", () => {
+    // The guard that was missing, and the one that would have caught the real
+    // mistake: `.rail-brand` painted `var(--fold-ref-signal-600)` — navi's blue
+    // — and every other theme's mark went blue with it. Nothing complained: it
+    // is not a raw hex, and it is a declared variable, so both existing checks
+    // waved it through.
+    //
+    // A primitive is the palette; a role is the contract. Naming a primitive
+    // outside `src/tokens/` hard-wires ONE theme into something that renders
+    // under all of them. (Only stylesheets: the gallery's `.ts` files carry
+    // code SAMPLES that teach how to write a theme, and a theme is exactly
+    // where naming a primitive is right.)
+    const offenders = [...componentStyles(), ...galleryStyles()]
+      .filter(({ css }) => /--fold-ref-[\w-]+/.test(stripComments(css)))
+      .map(({ file }) => file.slice(file.lastIndexOf("/fold-ng/") + 9));
+    expect([...new Set(offenders)]).toEqual([]);
+  });
+
   it("every --fold-color-* a component references is a declared semantic token", () => {
     const declared = new Set(expectedSemantic);
     const offenders = componentStyles().flatMap(({ file, css }) =>

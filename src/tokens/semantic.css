@@ -73,6 +73,8 @@
   ); /* rail 3 — faint overlay */
 
   /* Primary / accent */
+  --fold-color-brand: var(--fold-ref-teal-500);
+  --fold-color-on-brand: var(--fold-ref-white);
   --fold-color-primary: var(--fold-ref-teal-500);
   --fold-color-primary-strong: var(--fold-ref-teal-400); /* hover/active */
   --fold-color-on-primary: var(
@@ -388,6 +390,8 @@
   );
 
   /* Primary / accent — brand mutes on light, hover darkens further */
+  --fold-color-brand: var(--fold-ref-teal-550);
+  --fold-color-on-brand: var(--fold-ref-white);
   --fold-color-primary: var(--fold-ref-teal-550);
   --fold-color-primary-strong: var(--fold-ref-teal-600);
   --fold-color-on-primary: var(--fold-ref-white);
@@ -540,6 +544,8 @@
   );
 
   /* Primary / accent — the violet brand, festive and saturated */
+  --fold-color-brand: var(--fold-ref-grape-500);
+  --fold-color-on-brand: var(--fold-ref-bubble-0);
   --fold-color-primary: var(--fold-ref-grape-500);
   --fold-color-primary-strong: var(--fold-ref-grape-600);
   --fold-color-on-primary: var(--fold-ref-bubble-0);
@@ -702,6 +708,8 @@
   );
 
   /* Brand — page polarity. The chrome sub-block below flips it. */
+  --fold-color-brand: var(--fold-ref-signal-600);
+  --fold-color-on-brand: var(--fold-ref-paper-0);
   --fold-color-primary: var(--fold-ref-signal-600);
   --fold-color-primary-strong: var(--fold-ref-signal-700);
   --fold-color-on-primary: var(--fold-ref-paper-0);
@@ -1006,6 +1014,8 @@
   );
 
   /* Primary / accent — heat-anodized copper-orange, deep enough for white */
+  --fold-color-brand: var(--fold-ref-titanium-500);
+  --fold-color-on-brand: var(--fold-ref-white);
   --fold-color-primary: var(--fold-ref-titanium-500);
   --fold-color-primary-strong: var(--fold-ref-titanium-600);
   --fold-color-on-primary: var(--fold-ref-white);

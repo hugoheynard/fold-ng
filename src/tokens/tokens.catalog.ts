@@ -24,6 +24,25 @@ export const FOLD_SEMANTIC_COLOR_TOKENS = [
   /** Rail 3 — tertiary nav (e.g. a `fold-view-nav` section sidebar). */
   "bg-rail-tertiary",
 
+  /* ── Brand ────────────────────────────────────────────────── */
+  /**
+   * The mark itself — a logo tile, a wordmark glyph. It IDENTIFIES, so unlike
+   * `primary` it must NOT flip polarity: a mark that is teal on the page and
+   * pale blue on the rail has stopped being the mark.
+   *
+   * `primary` does two jobs — it carries the brand AND it carries foreground
+   * affordances (an active icon, a focus ring), and on a dark chrome the second
+   * has to lighten to stay legible while the first must not. Splitting them is
+   * the same move `on-info|warning|alert|success` made when `on-primary` was
+   * serving both a brand fill and a status fill.
+   *
+   * A scoped sub-block may never redeclare these two — that is precisely what
+   * would re-introduce the flip.
+   */
+  "brand",
+  /** Text or icon rendered on top of a solid `brand` fill. */
+  "on-brand",
+
   /* ── Primary / accent ─────────────────────────────────────── */
   /** Primary / accent — brand teal (solid). */
   "primary",
