@@ -44,8 +44,8 @@ The accent **fill** is painted by the component that owns the surface:
 
 Corollary (a common trap): **don't colour your own text/icon with
 `var(--fold-color-primary)` inside an accent surface expecting it to stay the
-brand navy** — under `[data-surface="accent"] *` that token _is_ the light ink, so
-you'd paint invisible-on-navy. Use the semantic `--fold-color-text` /
+brand colour** — under `[data-surface="accent"] *` that token _is_ the light ink,
+so you'd paint the brand on top of itself. Use the semantic `--fold-color-text` /
 `-secondary` roles, which invert correctly.
 
 ### Why it can't be a flat token override
@@ -138,6 +138,13 @@ Follow the accent shape: pick two poles (`--_x-fill` / `--_x-ink`), capture them
 on `[data-surface="x"]`, and derive the role-set on `[data-surface="x"] *` with
 `color-mix` of the captures. Add nothing to a component but the `data-surface`
 stamp (a host binding or `foldSurface`).
+
+**A surface resolves ink, never ground.** `[data-surface]` sets `color` and
+nothing else: it cannot know which of the five `bg-*` roles a given region is,
+so the component paints its own background and the attribute re-points the text
+around it. That split is deliberate — and it is also how `--fold-color-bg-header`
+stayed unpainted in every theme until `fold-app-shell` was made to name it.
+_Enforced:_ `tokens.contract.spec.ts › no orphan roles`.
 
 ---
 

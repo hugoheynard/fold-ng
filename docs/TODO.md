@@ -424,6 +424,10 @@ overscroll-behavior:contain; flex:1 1 auto; min-height:0` — **always** a
       becomes fully self-contained (no "bring your own background" footgun on a
       bare wrapper). Sizeable — touches how all chrome paints. **Trigger:** a 2nd
       surface-without-its-own-bg need.
+      **Not** closed by `fold-app-shell` painting its four regions (2026-08-23):
+      that fix stays inside today's model — the component paints — and only
+      closed the shell's own gap, where `bg-header` was painted by nobody at
+      all. Moving the ground into the directive is still the open item.
 - [ ] **Drawer mechanics → `FoldDrawer*` primitive.** The shell owns the
       mobile-drawer behaviour inline (`mobileNavOpen` model, `drawerOpen` gate,
       `Escape`, widen-reset effect, focus-trap gating). Cohesive, and there is

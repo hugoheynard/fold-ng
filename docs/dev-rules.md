@@ -32,8 +32,10 @@ _Enforced:_ `tokens.contract.spec.ts › components consume tokens only`.
 
 1.4 **Elevation is a scale, not a per-component invention.** Depth comes from
 `--fold-shadow-{sm,md,lg,panel-left,panel-right}`. A component names a level; it
-does not write its own `box-shadow` geometry. Shadows are theme-invariant
-(black-ink via `color-mix`, legible on both themes).
+does not write its own `box-shadow` geometry. The base scale is calibrated for
+the dark themes (black ink via `color-mix`, no raw rgba); a **theme may
+re-declare it** — `navi` does, because 50% black at a 30px blur reads as a grey
+smear on a light page rather than a lifted card.
 
 1.5 **Spacing + motion have scales — prefer them.** `--fold-space-*` is a **4px
 grid** (`xs 4 · sm 8 · md 12 · lg 16 · xl 20 · 2xl 24 · 3xl 32 · 4xl 40 · 5xl
@@ -46,14 +48,23 @@ _Enforced:_ `pnpm run lint:spacing` **fails** on any bare raw-px `padding` /
 hairlines are out of scope). Wired into pre-push + CI. The burn-down is drained
 — all rhythm px are tokenised.
 ⚠️ _Known debt:_ `0.18s ease` motion is still hard-coded in many styles and is
-**not yet measured** (no `lint:motion` gate). Spacing is done.
+**not yet measured** (no `lint:motion` gate). Spacing and typography are done.
 
-1.6 **The type scale is absolute px (`--fold-text-*`), on purpose.** The app root
-is 14px, so `rem` would render the ref ~12% small. This is a **deliberate
-deviation** from the usual "type in rem for user-zoom a11y" rule — accepted
-because pixel-parity with the design reference won out. If the package ever ships
-to an app with a different root, revisit. Documented so it's a choice, not an
-accident.
+1.6 **Typography has four scales, and a gate.** `--fold-text-*` (`2xs 10 · xs 11
+· sm 12 · md 13 · base 14 · lg 16 · xl 20 · 2xl 24` — `base` names the reference
+step, so it sits above `md`), `--fold-weight-*`, `--fold-leading-*`,
+`--fold-tracking-*`, plus `--fold-font-sans|mono`. _Enforced:_
+`pnpm run lint:typography` — no bare `font-size` / `font-weight` /
+`line-height` / `letter-spacing` under `src/components` **or `demo/`**, Sass
+indirections followed. Three carve-outs, each with its reason in the script:
+component geometry (an avatar's initials track its diameter), `clamp()` fluid
+type, and comments.
+
+Sizes are absolute px on purpose: the app root is 14px, so `rem` would render
+the ref ~12% small. A **deliberate deviation** from "type in rem for user-zoom
+a11y" — pixel-parity with the design reference won out. If the package ever
+ships to an app with a different root, revisit. Documented so it's a choice,
+not an accident.
 
 1.7 **The contract test is the lock** (`tokens.contract.spec.ts`). It fails the
 build if: the dark/`:root` and light/`[data-theme="light"]` colour blocks fall

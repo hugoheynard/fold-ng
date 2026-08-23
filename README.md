@@ -99,11 +99,14 @@ is the umbra or lumen block with its primitive families re-pointed. Adding a
 sixth is a new `[data-theme]` block in `semantic.css` plus the primitives it
 names.
 
-`bubbly` and `navi` also change their corners — **radius is the one scale a theme may
-re-declare**, because corner softness is a brand axis (friendly vs
-institutional) and it is the only scale that changes nothing about where a box
-sits. Type, space, motion and elevation stay theme-invariant: retheming must
-never re-flow a page. The contract test enforces that split.
+`bubbly` and `navi` also change their corners, and `navi` its depth — **radius
+and elevation are the two scales a theme may re-declare**. The line is not that
+one scale is special: a theme may change what a surface **looks like**, never
+where it **sits**. Corner softness is a brand axis (friendly vs institutional);
+depth is calibrated against a ground, and a shadow tuned for near-black ink is
+a grey smear on a light page. Neither moves a box by one pixel. Type, space and
+motion stay theme-invariant — those re-flow or re-time a page. The contract
+test enforces that split.
 
 `navi` is the interesting one: mixing chrome and page means one theme needs the
 `text`/`border`/`surface` roles to differ **per region**, which a single set of
