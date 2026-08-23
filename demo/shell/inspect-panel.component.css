@@ -22,9 +22,9 @@
 }
 .ins-heading {
   margin: 0 0 10px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
@@ -38,7 +38,7 @@
   background: var(--fold-color-surface-raised);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   cursor: pointer;
 }
 
@@ -53,8 +53,8 @@
   border: 1px solid var(--fold-color-primary-border);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
 }
 
 .ins-row {
@@ -82,7 +82,7 @@
 .ins-name {
   flex: 1;
   min-width: 0;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   font-variant-numeric: tabular-nums;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -98,7 +98,7 @@
   border-radius: var(--fold-radius-xs);
   background: none;
   color: var(--fold-color-text-secondary);
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   cursor: pointer;
 }
 .ins-reset-one:hover {
@@ -113,7 +113,7 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   font-variant-numeric: tabular-nums;
 }
 .ins-field:focus {
@@ -122,6 +122,6 @@
 }
 .ins-empty {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   color: var(--fold-color-text-muted);
 }

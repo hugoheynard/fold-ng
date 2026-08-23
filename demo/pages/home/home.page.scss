@@ -30,20 +30,20 @@
 }
 
 .home-figure-value {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  font-size: var(--fold-text-2xl);
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tightest);
+  line-height: var(--fold-leading-none);
   color: var(--fold-color-primary-text);
   font-variant-numeric: tabular-nums;
 }
 
 .home-figure-label {
   text-align: right;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-text-muted);
 }
 
@@ -102,8 +102,8 @@
   border-radius: var(--fold-radius-md);
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fold-text-md);
+  font-weight: var(--fold-weight-semibold);
   text-decoration: none;
   transition:
     border-color 0.12s ease,
@@ -138,9 +138,9 @@
   transform: translate(-50%, -50%);
   white-space: nowrap;
   font-size: clamp(140px, 24vw, 300px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tightest);
+  line-height: var(--fold-leading-none);
   background: linear-gradient(
     175deg,
     var(--fold-color-primary),
@@ -161,9 +161,9 @@
   top: 16px;
   right: 20px;
   z-index: 2;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tighter);
   color: var(--fold-color-primary-text);
   font-variant-numeric: tabular-nums;
 }
@@ -186,9 +186,9 @@
 .home-title {
   margin: 0;
   font-size: clamp(44px, 8vw, 72px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tightest);
+  line-height: var(--fold-leading-none);
   color: var(--fold-color-text);
 }
 
@@ -196,14 +196,14 @@
   margin: 0;
   max-width: 56ch;
   font-size: var(--fold-text-lg);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 
 /* The three pillars — Angular 22 · responsive · accessible — lift out of the
    muted lede in full-strength text. */
 .home-lede strong {
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
 }
 
@@ -232,13 +232,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 16px;
+  font-size: var(--fold-text-lg);
 }
 
 .home-startnow-hint {
   margin-left: auto;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   opacity: 0.85;
 }
 
@@ -268,9 +268,9 @@
 
 .home-terminal-title {
   margin-left: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-text-muted);
 }
 
@@ -278,8 +278,8 @@
   margin: 0;
   padding: 14px 16px;
   font-family: var(--fold-font-mono);
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--fold-text-md);
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text);
   overflow-x: auto;
 }

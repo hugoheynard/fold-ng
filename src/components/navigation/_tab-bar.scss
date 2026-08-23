@@ -105,8 +105,9 @@
      inflation is not ours. `fold-menu-item` already sets `line-height: 1` for
      exactly this reason; the tab bar had been left out.
 
-     `1` and not a token: the item is a centred flex row, its height set by the
-     icon and its padding. Leading has nothing to add to a single-line label. */
+     `leading-none` and not a body leading: the item is a centred flex row, its
+     height set by the icon and its padding. Leading has nothing to add to a
+     single-line label. */
   line-height: var(--fold-leading-none);
   cursor: pointer;
   text-align: center;

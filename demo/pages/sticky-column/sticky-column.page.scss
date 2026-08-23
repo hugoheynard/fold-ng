@@ -26,7 +26,7 @@
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-raised);
   border: 1px solid var(--fold-color-border-subtle);
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
 }
 
@@ -36,8 +36,8 @@
   background: var(--fold-color-primary-surface);
   border: 1px solid var(--fold-color-primary-border);
   color: var(--fold-color-primary-text);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   text-align: center;
 }
 

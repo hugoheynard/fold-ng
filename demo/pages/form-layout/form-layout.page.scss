@@ -1,5 +1,5 @@
 .field-hint {
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
 }
 
@@ -17,8 +17,8 @@
   padding: 9px 16px;
   border-radius: var(--fold-radius-sm);
   font: inherit;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fold-text-md);
+  font-weight: var(--fold-weight-semibold);
   cursor: pointer;
 }
 

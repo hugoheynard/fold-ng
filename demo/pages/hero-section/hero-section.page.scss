@@ -11,20 +11,20 @@
 .ghs-title {
   margin: 0;
   font-size: clamp(40px, 7vw, 64px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tightest);
+  line-height: var(--fold-leading-none);
   color: var(--fold-color-text);
 }
 .ghs-lede {
   margin: 0;
   max-width: 52ch;
   font-size: var(--fold-text-lg);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 .ghs-lede strong {
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
 }
 .ghs-cta {
@@ -39,9 +39,9 @@
   top: 46%;
   transform: translate(-50%, -50%);
   font-size: clamp(140px, 22vw, 280px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tightest);
+  line-height: var(--fold-leading-none);
   background: linear-gradient(
     175deg,
     var(--fold-color-primary),

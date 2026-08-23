@@ -58,8 +58,8 @@
   border: 1px solid var(--fold-color-warning-border);
   background: var(--fold-color-warning-surface);
   color: var(--fold-color-warning-text);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-normal);
 }
 
 .code-note fold-icon {
@@ -85,7 +85,7 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text-secondary);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   text-transform: capitalize;
   cursor: pointer;
 }

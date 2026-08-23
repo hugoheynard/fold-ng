@@ -11,11 +11,11 @@
 }
 
 .gal-k {
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-muted);
 }
 
 .gal-v {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
 }

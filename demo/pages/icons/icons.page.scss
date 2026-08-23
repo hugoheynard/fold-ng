@@ -15,14 +15,14 @@ gal-icons-page {
 gal-icons-page .ic-hero-title {
   margin: 0.4rem 0 0;
   font-size: clamp(2.2rem, 6vw, 3.4rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-tighter);
 }
 gal-icons-page .ic-hero-lede {
   margin: 0.75rem 0 0;
   max-width: 44rem;
   font-size: var(--fold-text-base);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 gal-icons-page .ic-hero-cta {
@@ -36,7 +36,7 @@ gal-icons-page .ic-hero-hint {
   max-width: 22rem;
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text-muted);
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
 }
 /* The decorative backdrop glyph — oversized, faint, behind the text. */
 gal-icons-page .ic-hero-bg {
@@ -59,7 +59,7 @@ gal-icons-page .pitch {
   display: block;
   margin-bottom: var(--fold-space-lg);
   font-size: var(--fold-text-base);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
 }
 
 /* ── Why it holds up — feature cards ─────────────────────────────────────── */
@@ -109,14 +109,14 @@ gal-icons-page .feat-ico {
 gal-icons-page .feat-title {
   margin: 0;
   font-size: var(--fold-text-base);
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-tight);
   color: var(--fold-color-text);
 }
 gal-icons-page .feat-body {
   margin: 0;
   font-size: var(--fold-text-sm);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 
@@ -229,8 +229,8 @@ gal-icons-page .cat-head {
 gal-icons-page .cat-title {
   margin: 0;
   font-size: var(--fold-text-lg);
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-tight);
   color: var(--fold-color-text);
 }
 gal-icons-page .cat-desc {
@@ -276,6 +276,6 @@ gal-icons-page .icon-cell-name {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: var(--fold-font-mono);
-  font-size: 10px;
+  font-size: var(--fold-text-2xs);
   color: var(--fold-color-text-muted);
 }

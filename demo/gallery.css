@@ -53,8 +53,8 @@ fold-app-shell {
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
   font: inherit;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fold-text-md);
+  font-weight: var(--fold-weight-semibold);
   cursor: pointer;
   transition:
     background var(--fold-motion-fast),
@@ -72,9 +72,9 @@ fold-app-shell {
   align-items: center;
   gap: 8px;
   padding: 2px 4px 6px;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: var(--fold-text-base);
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tight);
   color: var(--fold-color-text);
 }
 
@@ -111,8 +111,8 @@ fold-app-shell {
 }
 
 .field label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text-secondary);
 }
 
@@ -125,7 +125,7 @@ fold-app-shell {
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fold-text-md);
 }
 
 .field textarea {
@@ -189,9 +189,9 @@ fold-app-shell {
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tighter);
   color: var(--fold-color-text);
   text-decoration: none;
 }
@@ -202,8 +202,8 @@ fold-app-shell {
 }
 
 .gal-title-sub {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   letter-spacing: 0;
   color: var(--fold-color-text-muted);
 }
@@ -228,8 +228,8 @@ fold-app-shell {
   background: none;
   color: var(--fold-color-text-secondary);
   font: inherit;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   cursor: pointer;
 }
 
@@ -252,7 +252,7 @@ fold-app-shell {
   padding: 32px 32px 24px;
   background: var(--fold-color-bg-header);
   border-top: 1px solid var(--fold-color-border);
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   color: var(--fold-color-text-muted);
 }
 
@@ -282,9 +282,9 @@ fold-app-shell {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tighter);
   color: var(--fold-color-text);
   text-decoration: none;
 }
@@ -295,12 +295,12 @@ fold-app-shell {
 
 .gal-footer-tagline {
   margin: 0;
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
   color: var(--fold-color-text-muted);
 }
 
 .gal-footer-ver {
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   font-variant-numeric: tabular-nums;
   color: var(--fold-color-text-secondary);
 }
@@ -314,9 +314,9 @@ fold-app-shell {
 
 .gal-footer-head {
   margin-bottom: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-secondary);
 }
@@ -330,7 +330,7 @@ fold-app-shell {
   border-radius: var(--fold-radius-sm);
   color: var(--fold-color-text-secondary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .gal-footer-link:hover {
@@ -371,7 +371,7 @@ fold-app-shell {
 
 .gal-footer-built code {
   font-family: var(--fold-font-mono);
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
 }
 
@@ -435,8 +435,8 @@ fold-app-shell > .content > *:not(router-outlet) {
 /* Docs sub-page: a short prose line + a compact API reference table. */
 .doc-p {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: var(--fold-text-md);
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 
@@ -444,14 +444,14 @@ fold-app-shell > .content > *:not(router-outlet) {
 [description] code,
 .api-table code {
   font-family: var(--fold-font-mono);
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text);
 }
 
 .api-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12.5px;
+  font-size: var(--fold-text-md);
 }
 
 .api-table th,
@@ -463,9 +463,9 @@ fold-app-shell > .content > *:not(router-outlet) {
 }
 
 .api-table th {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
@@ -475,16 +475,16 @@ fold-app-shell > .content > *:not(router-outlet) {
 }
 
 .gal-tag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
 
 .gal-body {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   color: var(--fold-color-text-secondary);
 }
 
@@ -506,9 +506,9 @@ fold-app-shell > .content > *:not(router-outlet) {
 }
 
 .code-lang {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
@@ -523,7 +523,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   background: var(--fold-color-surface-raised);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   cursor: pointer;
 }
 
@@ -537,8 +537,8 @@ fold-app-shell > .content > *:not(router-outlet) {
   padding: 14px;
   overflow-x: auto;
   font-family: var(--fold-font-mono);
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 
@@ -568,7 +568,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text-secondary);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   cursor: pointer;
 }
 
@@ -689,9 +689,9 @@ fold-app-shell > .content > *:not(router-outlet) {
   margin: 4px 0 18px;
 }
 .gal-composed-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-faded);
 }
@@ -703,8 +703,8 @@ fold-app-shell > .content > *:not(router-outlet) {
   border-radius: var(--fold-radius-pill);
   background: var(--fold-color-surface-card);
   color: var(--fold-color-text);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   text-decoration: none;
   transition:
     border-color var(--fold-motion-fast),
@@ -729,8 +729,8 @@ fold-app-shell > .content > *:not(router-outlet) {
   border-radius: var(--fold-radius-pill);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fold-text-md);
+  font-weight: var(--fold-weight-semibold);
   text-decoration: none;
   backdrop-filter: blur(6px);
 }
@@ -772,15 +772,15 @@ fold-app-shell > .content > *:not(router-outlet) {
 
 /* Calendar composability demo: a consumer's own cell and chip rendering. */
 .cal-daynum {
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   font-variant-numeric: tabular-nums;
   color: var(--fold-color-text-secondary);
 }
 
 .cal-flag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-alert-text);
 }
@@ -791,7 +791,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   gap: 6px;
   min-width: 0;
   padding-inline: 6px;
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   /* A lane is one line tall: a custom chip has to truncate, like the built-in. */
   white-space: nowrap;
   overflow: hidden;

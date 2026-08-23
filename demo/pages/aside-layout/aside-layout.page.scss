@@ -19,14 +19,14 @@
   padding: 6px 10px;
   border-radius: var(--fold-radius-sm);
   color: var(--fold-color-text-secondary);
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   cursor: pointer;
 }
 
 .asl-nav a.is-on {
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .asl-meta {
@@ -40,7 +40,7 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font-size: 13px;
+  font-size: var(--fold-text-md);
 }
 
 .asl-meta dt {
@@ -50,7 +50,7 @@
 .asl-meta dd {
   margin: 0;
   color: var(--fold-color-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .asl-actions {
@@ -71,7 +71,7 @@
   background: var(--fold-color-surface-raised);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   cursor: pointer;
 }
 

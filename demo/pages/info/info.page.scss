@@ -10,7 +10,7 @@
   gap: var(--fold-space-xs);
   margin: 0 0 var(--fold-space-sm);
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 .inf-metric:last-child {
   margin-bottom: 0;

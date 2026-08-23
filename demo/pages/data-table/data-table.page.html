@@ -77,7 +77,9 @@
       <ng-template foldCell="name" let-row>
         <div style="display: flex; align-items: center; gap: 10px">
           <fold-avatar [name]="row.name" size="sm" />
-          <span style="font-weight: 600">{{ row.name }}</span>
+          <span style="font-weight: var(--fold-weight-semibold)"
+            >{{ row.name }}</span
+          >
         </div>
       </ng-template>
       <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
@@ -300,7 +302,9 @@
         <ng-template foldCell="name" let-row>
           <div style="display: flex; align-items: center; gap: 10px">
             <fold-avatar [name]="row.name" size="sm" />
-            <span style="font-weight: 600">{{ row.name }}</span>
+            <span style="font-weight: var(--fold-weight-semibold)"
+              >{{ row.name }}</span
+            >
           </div>
         </ng-template>
         <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
@@ -327,7 +331,9 @@
           >
             <fold-avatar [name]="row.name" size="md" />
             <div style="display: flex; flex-direction: column; gap: 2px">
-              <span style="font-weight: 600">{{ row.name }}</span>
+              <span style="font-weight: var(--fold-weight-semibold)"
+                >{{ row.name }}</span
+              >
               <span style="color: var(--fold-color-text-muted)"
                 >{{ row.role }} · {{ row.tenure }} mo</span
               >

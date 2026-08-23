@@ -37,12 +37,12 @@
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-card);
   border: 1px solid var(--fold-color-border-subtle);
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
 }
 
 .sr-note {
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: var(--fold-text-md);
+  line-height: var(--fold-leading-normal);
   color: var(--fold-color-text-muted);
 }

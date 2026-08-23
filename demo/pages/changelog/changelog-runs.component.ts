@@ -14,7 +14,7 @@ import type { ChangelogRun } from "../../shell/changelog.generated";
   styles: `
     code {
       font-family: var(--fold-font-mono);
-      font-size: 0.88em;
+      font-size: var(--fold-text-sm);
       background: var(--fold-color-surface-subtle);
       color: var(--fold-color-text-primary);
       padding: 0 0.3em;

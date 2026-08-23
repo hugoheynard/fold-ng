@@ -12,7 +12,7 @@ gal-button-page .pitch {
   display: block;
   margin-bottom: var(--fold-space-lg);
   font-size: var(--fold-text-base);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
 }
 
 /* ── Why it holds up — feature cards ─────────────────────────────────────── */
@@ -62,14 +62,14 @@ gal-button-page .feat-ico {
 gal-button-page .feat-title {
   margin: 0;
   font-size: var(--fold-text-base);
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-tight);
   color: var(--fold-color-text);
 }
 gal-button-page .feat-body {
   margin: 0;
   font-size: var(--fold-text-sm);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 
@@ -86,7 +86,7 @@ gal-button-page .axis {
 gal-button-page .axis-note {
   margin: var(--fold-space-sm) 0 0;
   font-size: var(--fold-text-sm);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-muted);
 }
 gal-button-page .axis-note code {
@@ -110,7 +110,7 @@ gal-button-page .matrix-corner {
 gal-button-page .matrix-col {
   text-align: center;
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text-secondary);
   text-transform: capitalize;
 }
@@ -135,7 +135,7 @@ gal-button-page .code-pre {
   overflow-x: auto;
   font-family: var(--fold-font-mono);
   font-size: var(--fold-text-sm);
-  line-height: 1.7;
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 gal-button-page .code-pre code {
@@ -165,7 +165,7 @@ gal-button-page .a11y {
   display: block;
   margin-top: var(--fold-space-lg);
   font-size: var(--fold-text-sm);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
 }
 gal-button-page .a11y .clicks {
   color: var(--fold-color-text-muted);

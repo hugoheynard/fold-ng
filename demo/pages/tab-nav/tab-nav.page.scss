@@ -26,13 +26,13 @@
 
 .tn-url {
   font-family: var(--fold-font-mono);
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   color: var(--fold-color-text-muted);
 }
 
 .tn-url-seg {
   color: var(--fold-color-primary);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
 }
 
 /* Frames the mock content as what the router renders. */
@@ -46,8 +46,8 @@
   top: 10px;
   right: 12px;
   font-family: var(--fold-font-mono);
-  font-size: 10px;
-  letter-spacing: 0.02em;
+  font-size: var(--fold-text-2xs);
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-text-muted);
   opacity: 0.7;
 }
@@ -66,13 +66,13 @@
 .tn-view-title {
   margin: 0;
   font-size: var(--fold-text-base);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
 }
 
 .tn-view-path {
   font-family: var(--fold-font-mono);
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-muted);
 }
 
@@ -100,7 +100,7 @@
 
 .tn-stat-value {
   font-size: var(--fold-text-lg);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
   font-variant-numeric: tabular-nums;
 }
@@ -139,8 +139,8 @@
   border-radius: 50%;
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-bold);
 }
 
 .tn-row-main {
@@ -151,8 +151,8 @@
 }
 
 .tn-row-title {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fold-text-md);
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text);
 }
 
@@ -172,7 +172,7 @@
 }
 
 .tn-field-label {
-  font-size: 13px;
+  font-size: var(--fold-text-md);
   color: var(--fold-color-text-secondary);
 }
 
@@ -182,7 +182,7 @@
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
 }
 
 /* Activity — a dotted feed */
@@ -213,8 +213,8 @@
 }
 
 .tn-amount {
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: var(--fold-weight-bold);
+  font-size: var(--fold-text-md);
   color: var(--fold-color-text);
   font-variant-numeric: tabular-nums;
   text-align: right;

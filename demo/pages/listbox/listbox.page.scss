@@ -30,14 +30,14 @@
   margin: 0 0 0.5rem;
   max-width: 60ch;
   color: var(--fold-color-text-secondary);
-  line-height: 1.55;
+  line-height: var(--fold-leading-normal);
 }
 
 .sel-prose {
   margin: 0 0 1rem;
   max-width: 68ch;
   color: var(--fold-color-text-secondary);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
 }
 
 // ── Playground knobs (segmented toggles) ───────────────────────────────────

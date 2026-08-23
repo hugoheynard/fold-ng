@@ -176,9 +176,9 @@
   gap: 8px;
 }
 .pg-lang {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
@@ -186,8 +186,8 @@
   margin: 0;
   overflow-x: auto;
   font-family: var(--fold-font-mono);
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-relaxed);
   color: var(--fold-color-text-secondary);
 }
 
@@ -239,8 +239,8 @@
   background: transparent;
   color: var(--fold-color-text-secondary);
   font: inherit;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   cursor: pointer;
   transition:
     background 0.12s ease,
@@ -261,9 +261,9 @@
   flex: none;
 }
 .pg-vp-px {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -282,8 +282,8 @@
 .pg-vp-readout {
   min-width: 58px;
   text-align: right;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text-secondary);
   font-variant-numeric: tabular-nums;
 }

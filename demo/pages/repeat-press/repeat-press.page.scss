@@ -38,9 +38,9 @@ gal-repeat-press-page .step-value {
   min-width: 3ch;
   text-align: center;
   font-size: clamp(40px, 6vw, 56px);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--fold-tracking-tighter);
   color: var(--fold-color-text);
 }
 

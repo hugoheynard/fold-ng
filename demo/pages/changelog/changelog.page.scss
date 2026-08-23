@@ -16,7 +16,7 @@
   margin-left: var(--fold-space-xs);
   color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 // A pressed pill owns its count colour, so let it inherit rather than stay muted.
@@ -76,8 +76,8 @@ fold-timeline {
   h2 {
     margin: 0;
     font-size: var(--fold-text-xl);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-weight: var(--fold-weight-bold);
+    letter-spacing: var(--fold-tracking-tight);
   }
 
   time {
@@ -116,7 +116,7 @@ fold-timeline {
   display: block;
   padding-left: var(--fold-space-md);
   border-left: 2px solid var(--fold-color-border-subtle);
-  line-height: 1.55;
+  line-height: var(--fold-leading-normal);
 
   /* A breaking item reads red — the alert accent, matching its `alert` badge. */
   &.is-breaking {
@@ -137,9 +137,9 @@ fold-timeline {
   margin-right: var(--fold-space-xs);
   padding: 0 0.4em;
   font-size: var(--fold-text-xs);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-alert-text);
   background: var(--fold-color-alert-surface);
   border-radius: var(--fold-radius-xs);
@@ -148,7 +148,7 @@ fold-timeline {
 
 .cl-lead {
   color: var(--fold-color-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .cl-rest {
@@ -183,7 +183,7 @@ fold-timeline {
   gap: var(--fold-space-xs);
   color: var(--fold-color-text-muted);
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   text-decoration: none;
   transition: color var(--fold-motion-fast);
 

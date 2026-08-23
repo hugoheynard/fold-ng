@@ -12,7 +12,7 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
 }
 .gal-text:focus-visible,
 .gal-select:focus-visible {
@@ -23,7 +23,7 @@
 .np-field .gal-tag em {
   font-style: normal;
   color: var(--fold-color-text-muted);
-  font-weight: 400;
+  font-weight: var(--fold-weight-regular);
 }
 
 /* The live playground preview sits centred on its stage. */
@@ -44,6 +44,6 @@
 .link-prose {
   margin: 0;
   color: var(--fold-color-text-secondary);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: var(--fold-text-base);
+  line-height: var(--fold-leading-relaxed);
 }

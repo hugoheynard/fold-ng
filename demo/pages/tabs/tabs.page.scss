@@ -30,7 +30,7 @@
 }
 .tp-stat-value {
   font-size: var(--fold-text-xl);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
 }
 .tp-stat-label {
@@ -62,7 +62,7 @@
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
   font-size: var(--fold-text-sm);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
 }
 .tp-row-main {
   display: flex;
@@ -72,7 +72,7 @@
 }
 .tp-row-title {
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text);
 }
 .tp-row-sub {
@@ -96,6 +96,6 @@
 }
 .tp-field-control {
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text);
 }

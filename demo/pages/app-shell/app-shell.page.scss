@@ -18,8 +18,8 @@
   padding: 0 16px;
   background: var(--fold-color-bg-header);
   border-bottom: 1px solid var(--fold-color-border);
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: var(--fold-weight-bold);
+  font-size: var(--fold-text-md);
 }
 
 /* Preview drawer toggle — shown only once the shell folds to one column, keyed
@@ -68,8 +68,8 @@
   background: var(--fold-color-surface-card);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   cursor: pointer;
 }
 
@@ -101,8 +101,8 @@
   padding: 10px 16px;
   background: var(--fold-color-bg-header);
   border-top: 1px solid var(--fold-color-border);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
 }
 
 .sp-footer-time {

@@ -8,7 +8,7 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text-secondary);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   cursor: pointer;
 }
 
@@ -109,9 +109,9 @@
   display: block;
   margin-bottom: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 10px;
-  font-weight: 700;
+  letter-spacing: var(--fold-tracking-caps);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text-muted);
 }
 
@@ -150,7 +150,7 @@
 
 .tok-name {
   font-family: var(--fold-font-mono);
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -158,7 +158,7 @@
 }
 
 .tok-desc {
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
 }
 
@@ -173,7 +173,7 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
   font-family: var(--fold-font-mono);
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
 }
 
 .tok-input:focus-visible {
@@ -194,8 +194,8 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text-secondary);
   font: inherit;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
   cursor: pointer;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .ss-label {
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
 }
 
@@ -259,8 +259,8 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 14px;
-  line-height: 1;
+  font-size: var(--fold-text-base);
+  line-height: var(--fold-leading-none);
   cursor: pointer;
 }
 
@@ -277,7 +277,7 @@
 .ss-step b {
   min-width: 14px;
   text-align: center;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   font-variant-numeric: tabular-nums;
 }
 
@@ -318,7 +318,7 @@
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
 }
 
 .sec-name:focus-visible {
@@ -338,8 +338,8 @@
   background: none;
   color: var(--fold-color-text-muted);
   font: inherit;
-  font-size: 16px;
-  line-height: 1;
+  font-size: var(--fold-text-lg);
+  line-height: var(--fold-leading-none);
   cursor: pointer;
 }
 

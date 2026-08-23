@@ -18,14 +18,14 @@
 }
 
 .th-name {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
 }
 
 .th-attr {
   font-family: var(--fold-font-mono);
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
 }
 
@@ -45,7 +45,7 @@
   align-items: baseline;
   gap: 10px;
   margin: 0;
-  font-size: 12px;
+  font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
 }
 
@@ -81,7 +81,7 @@
   gap: 8px;
   min-width: 0;
   font-family: var(--fold-font-mono);
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text-secondary);
 }
 
@@ -145,8 +145,8 @@
   background: var(--fold-color-primary-surface);
   border: 1px solid var(--fold-color-primary-border);
   color: var(--fold-color-primary-text);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -160,8 +160,8 @@
 
 .th-step-title {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--fold-text-base);
+  font-weight: var(--fold-weight-bold);
   color: var(--fold-color-text);
 }
 
@@ -173,8 +173,8 @@
   margin: 0;
   padding-left: 12px;
   border-left: 2px solid var(--fold-color-border);
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: var(--fold-text-md);
+  line-height: var(--fold-leading-normal);
   color: var(--fold-color-text-secondary);
 }
 
@@ -188,7 +188,7 @@
   display: flex;
   flex-direction: column;
   gap: 7px;
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: var(--fold-text-md);
+  line-height: var(--fold-leading-normal);
   color: var(--fold-color-text-secondary);
 }

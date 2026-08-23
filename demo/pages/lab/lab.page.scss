@@ -22,15 +22,15 @@
 .lab-title {
   margin: var(--fold-space-sm) 0 0;
   font-size: clamp(2rem, 6vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-tighter);
 }
 
 .lab-lede {
   margin: var(--fold-space-sm) auto 0;
   max-width: 46ch;
   color: var(--fold-color-text-muted);
-  line-height: 1.6;
+  line-height: var(--fold-leading-relaxed);
 }
 
 .lab-menu {
@@ -73,7 +73,7 @@
 }
 
 .lab-label {
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .lab-since {
