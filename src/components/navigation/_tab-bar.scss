@@ -70,6 +70,13 @@
    backgrounds, one paint. On the page background — where a filled bar belongs —
    the result is pixel-identical to before; anywhere else it is now opaque,
    which is what "carries its own surface" always claimed. */
+/* `fill` draws a rounded pill, so it needs the same room below as above. The
+   banner's zero bottom padding is right for `underline` ONLY — there the active
+   item must reach the rule. Two independent props whose combination had no
+   rule of its own, so the pill sat clipped against the banner's edge. */
+.bg-surface.style-fill {
+  padding-bottom: var(--fold-space-xs);
+}
 .bg-surface {
   background:
     linear-gradient(
@@ -93,8 +100,12 @@
   border: none;
   color: var(--fold-color-text-muted);
   font-family: inherit;
-  font-size: var(--fold-text-2xs);
-  font-weight: var(--fold-weight-semibold);
+  /* Typography answers to `size` ALONE — never to orientation. It used to
+     change under `.dir-vertical`, so crossing `foldAt` with `direction="auto"`
+     recomposed the labels (10px/600 → 12px/500) instead of just moving the bar.
+     Folding relocates a menu; it does not restyle it. */
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-medium);
   /* The item owns its leading instead of inheriting one.
 
      Without this the label's line box is sized by whatever the CONSUMER has on
@@ -133,14 +144,12 @@
   flex: 0 1 auto;
   gap: var(--fold-space-sm);
   padding: var(--fold-space-md) var(--fold-space-lg);
-  font-size: var(--fold-text-sm);
+  font-size: var(--fold-text-base);
 }
-/* Vertical needs its own comfortable step: the `.dir-vertical .tab-bar-item`
-   rule below resets padding/font at equal specificity, so without this a
-   comfortable rail would look identical to a compact one. */
+/* Vertical keeps its own comfortable PADDING (a rail is narrower than a banner,
+   so it spends its room vertically) — but not its own font size. */
 .dir-vertical.size-comfortable .tab-bar-item {
   padding: var(--fold-space-md) var(--fold-space-md);
-  font-size: var(--fold-text-base);
 }
 
 /* Underline */
@@ -182,8 +191,6 @@
   padding: var(--fold-space-sm) var(--fold-space-md);
   gap: var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
-  font-size: var(--fold-text-sm);
-  font-weight: var(--fold-weight-medium);
 }
 .dir-vertical.style-underline {
   border-bottom: none;
@@ -198,11 +205,8 @@
 .dir-vertical.style-underline .tab-bar-item.is-active {
   border-left-color: var(--fold-color-primary);
 }
-.dir-vertical.style-fill .tab-bar-item.is-active {
-  background: var(--fold-color-primary-surface);
-  color: var(--fold-color-primary-text);
-  font-weight: var(--fold-weight-semibold);
-}
+/* `.style-fill .is-active` already paints and bolds it — orientation adds
+   nothing here, so the rule is gone rather than repeated. */
 
 /* Collapsed — the icon mode, a distinct behaviour from the `size` density scale.
    HORIZONTAL, an icon accordion: every item but the active one shows just its
