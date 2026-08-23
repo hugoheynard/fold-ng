@@ -114,10 +114,62 @@ export const FOLD_RADIUS_TOKENS = [
 
 export type FoldRadiusToken = (typeof FOLD_RADIUS_TOKENS)[number];
 
-/** Type (font-size) scale. */
-export const FOLD_TEXT_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
+/**
+ * Font-family scale (`--fold-font-*`). Two faces only — the base and the
+ * tabular/code one. No `display` face: nothing renders one.
+ */
+export const FOLD_FONT_TOKENS = ["sans", "mono"] as const;
+
+export type FoldFontToken = (typeof FOLD_FONT_TOKENS)[number];
+
+/**
+ * Type (font-size) scale. `base` is body copy (14px) and sits above `md`
+ * (13px): it names the reference step, not a rung on the t-shirt ladder.
+ */
+export const FOLD_TEXT_TOKENS = [
+  "2xs",
+  "xs",
+  "sm",
+  "md",
+  "base",
+  "lg",
+  "xl",
+  "2xl",
+] as const;
 
 export type FoldTextToken = (typeof FOLD_TEXT_TOKENS)[number];
+
+/** Weight scale (`--fold-weight-*`) — the four weights components render. */
+export const FOLD_WEIGHT_TOKENS = [
+  "regular",
+  "medium",
+  "semibold",
+  "bold",
+] as const;
+
+export type FoldWeightToken = (typeof FOLD_WEIGHT_TOKENS)[number];
+
+/** Leading scale (`--fold-leading-*`) — unitless line-heights. */
+export const FOLD_LEADING_TOKENS = [
+  "none",
+  "tight",
+  "snug",
+  "normal",
+  "relaxed",
+] as const;
+
+export type FoldLeadingToken = (typeof FOLD_LEADING_TOKENS)[number];
+
+/** Tracking scale (`--fold-tracking-*`) — letter-spacing per role. */
+export const FOLD_TRACKING_TOKENS = [
+  "tighter",
+  "tight",
+  "normal",
+  "wide",
+  "caps",
+] as const;
+
+export type FoldTrackingToken = (typeof FOLD_TRACKING_TOKENS)[number];
 
 /** Icon-size scale — the length a `fold-icon` renders at, per size preset. */
 export const FOLD_ICON_SIZE_TOKENS = ["xs", "sm", "md", "lg", "xl"] as const;
@@ -187,9 +239,29 @@ export function foldRadiusVar(token: FoldRadiusToken): string {
   return `var(--fold-radius-${token})`;
 }
 
+/** A ready-to-use `var(--fold-font-…)` reference. */
+export function foldFontVar(token: FoldFontToken): string {
+  return `var(--fold-font-${token})`;
+}
+
 /** A ready-to-use `var(--fold-text-…)` reference. */
 export function foldTextVar(token: FoldTextToken): string {
   return `var(--fold-text-${token})`;
+}
+
+/** A ready-to-use `var(--fold-weight-…)` reference. */
+export function foldWeightVar(token: FoldWeightToken): string {
+  return `var(--fold-weight-${token})`;
+}
+
+/** A ready-to-use `var(--fold-leading-…)` reference. */
+export function foldLeadingVar(token: FoldLeadingToken): string {
+  return `var(--fold-leading-${token})`;
+}
+
+/** A ready-to-use `var(--fold-tracking-…)` reference. */
+export function foldTrackingVar(token: FoldTrackingToken): string {
+  return `var(--fold-tracking-${token})`;
 }
 
 /** A ready-to-use `var(--fold-icon-size-…)` reference. */

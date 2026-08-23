@@ -5,7 +5,11 @@ import { describe, it, expect } from "vitest";
 import {
   FOLD_SEMANTIC_COLOR_TOKENS,
   FOLD_RADIUS_TOKENS,
+  FOLD_FONT_TOKENS,
   FOLD_TEXT_TOKENS,
+  FOLD_WEIGHT_TOKENS,
+  FOLD_LEADING_TOKENS,
+  FOLD_TRACKING_TOKENS,
   FOLD_ICON_SIZE_TOKENS,
   FOLD_SPACE_TOKENS,
   FOLD_RAIL_TOKENS,
@@ -96,11 +100,15 @@ describe("token contract · catalogue ↔ CSS", () => {
     }
   });
 
-  it("scales.css declares exactly the radius + type + icon-size + space + rail + motion + shadow catalogue", () => {
+  it("scales.css declares exactly the radius + font + type + weight + leading + tracking + icon-size + space + rail + motion + shadow catalogue", () => {
     const declared = declaredVars(block(scales, ":root"));
     const expected = [
       ...FOLD_RADIUS_TOKENS.map((t) => `--fold-radius-${t}`),
+      ...FOLD_FONT_TOKENS.map((t) => `--fold-font-${t}`),
       ...FOLD_TEXT_TOKENS.map((t) => `--fold-text-${t}`),
+      ...FOLD_WEIGHT_TOKENS.map((t) => `--fold-weight-${t}`),
+      ...FOLD_LEADING_TOKENS.map((t) => `--fold-leading-${t}`),
+      ...FOLD_TRACKING_TOKENS.map((t) => `--fold-tracking-${t}`),
       ...FOLD_ICON_SIZE_TOKENS.map((t) => `--fold-icon-size-${t}`),
       ...FOLD_SPACE_TOKENS.map((t) => `--fold-space-${t}`),
       ...FOLD_RAIL_TOKENS.map((t) => `--fold-rail-${t}`),

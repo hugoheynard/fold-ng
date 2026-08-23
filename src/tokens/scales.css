@@ -1,5 +1,5 @@
 /* ============================================================
-   SH3PHERD · Design tokens — SCALES (radius, type)
+   SH3PHERD · Design tokens — SCALES (radius, type, space…)
    ------------------------------------------------------------
    Sizing + elevation scales. Single-tier: a radius or a font size
    IS its value, so there is no primitive/semantic split — just the
@@ -9,7 +9,7 @@
 
    RADIUS is the one scale a theme may re-declare. Corner softness is
    a brand axis, not a measurement: the same product reads friendly
-   or institutional on the same layout. Type, space, motion and
+   or institutional on the same layout. Font, type, space, motion and
    elevation stay theme-invariant — retheming must never re-flow a
    page, and only radius can change without moving a single box. The
    contract test enforces exactly that split.
@@ -28,13 +28,63 @@
   --fold-radius-pill: 9999px;
   --fold-radius-round: 50%;
 
-  /* Type scale — absolute px, matching claudeDesign-ref exactly (the app root
-     is 14px, so rem would render ~12% small; px is root-independent). */
+  /* Font families. Deliberately only two: `sans` is the base face, `mono` the
+     tabular/code face. There is no `display` face — nothing in the library
+     renders one, and a token nothing consumes is a claim nothing backs.
+
+     Theme-invariant, like every other measurement here: swapping a face
+     re-flows a page, and only radius may vary by theme (the contract test
+     enforces it). A host app overrides these on its own `:root` if it ships a
+     brand face — that is a host decision, not a theme axis.
+
+     Components still declare `font-family: inherit` rather than naming the
+     token: a fold component adopts whatever face its host sets, and the token
+     is what a host names when it wants ours. */
+  --fold-font-sans: system-ui, -apple-system, sans-serif;
+  --fold-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Type scale — absolute px (the app root is 14px, so rem would render ~12%
+     small; px is root-independent).
+
+     `base` (14px) is body copy and sits ABOVE `md` (13px) on purpose: the
+     t-shirt run is a size ladder, and `base` names the reference step on it
+     rather than a rung. Reading order is 2xs → xs → sm → md → base → lg → xl
+     → 2xl. Every step below is consumed by real code today; the scale stops
+     at 24px because nothing in the library or the gallery is bigger, and a
+     step nothing renders is a step that drifts. */
+  --fold-text-2xs: 10px;
   --fold-text-xs: 11px;
   --fold-text-sm: 12px;
-  --fold-text-md: 14px;
+  --fold-text-md: 13px;
+  --fold-text-base: 14px;
   --fold-text-lg: 16px;
   --fold-text-xl: 20px;
+  --fold-text-2xl: 24px;
+
+  /* Weight scale — the four weights the components actually render. Named, so
+     `600` stops being a number 35 files agreed on by accident. */
+  --fold-weight-regular: 400;
+  --fold-weight-medium: 500;
+  --fold-weight-semibold: 600;
+  --fold-weight-bold: 700;
+
+  /* Leading scale — unitless line-height, so it multiplies the element's own
+     font-size. `none` is the single-line case (a badge, a button label); the
+     rest are body rhythms. */
+  --fold-leading-none: 1;
+  --fold-leading-tight: 1.2;
+  --fold-leading-snug: 1.3;
+  --fold-leading-normal: 1.5;
+  --fold-leading-relaxed: 1.6;
+
+  /* Tracking scale — letter-spacing. Two negatives for display sizes (large
+     type needs tightening), and `caps` for the uppercase micro-labels that are
+     the library's most common tracked role. */
+  --fold-tracking-tighter: -0.02em;
+  --fold-tracking-tight: -0.01em;
+  --fold-tracking-normal: 0;
+  --fold-tracking-wide: 0.04em;
+  --fold-tracking-caps: 0.07em;
 
   /* Icon size scale — the length a `fold-icon` renders at (width = height),
      selected by its size preset. A measurement, so theme-invariant like type
