@@ -70,7 +70,7 @@
   padding: var(--fold-space-sm) var(--fold-space-lg);
   font-size: var(--fold-text-xs);
   color: var(--fold-color-text-muted);
-  font-family: ui-monospace, monospace;
+  font-family: var(--fold-font-mono);
 }
 .pf-total strong {
   font-size: var(--fold-text-lg, 1.25rem);

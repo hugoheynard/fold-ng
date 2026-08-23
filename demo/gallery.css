@@ -4,10 +4,7 @@
   overflow: hidden;
   background: var(--fold-color-bg-page);
   color: var(--fold-color-text);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: var(--fold-font-sans);
 }
 
 fold-app-shell {
@@ -373,7 +370,7 @@ fold-app-shell {
 }
 
 .gal-footer-built code {
-  font-family: var(--fold-font-mono, monospace);
+  font-family: var(--fold-font-mono);
   font-size: 12px;
   color: var(--fold-color-text-secondary);
 }
@@ -446,7 +443,7 @@ fold-app-shell > .content > *:not(router-outlet) {
 .doc-p code,
 [description] code,
 .api-table code {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 12px;
   color: var(--fold-color-text);
 }
@@ -539,7 +536,7 @@ fold-app-shell > .content > *:not(router-outlet) {
   margin: 0;
   padding: 14px;
   overflow-x: auto;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 12px;
   line-height: 1.6;
   color: var(--fold-color-text-secondary);

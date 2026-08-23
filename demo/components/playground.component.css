@@ -185,7 +185,7 @@
 .pg-pre {
   margin: 0;
   overflow-x: auto;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 12px;
   line-height: 1.6;
   color: var(--fold-color-text-secondary);

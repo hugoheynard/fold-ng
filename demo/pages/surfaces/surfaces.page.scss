@@ -17,7 +17,7 @@
   border-radius: var(--fold-radius-md);
   border: 1px solid var(--fold-color-border-subtle);
   background: var(--fold-color-surface-sunken);
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 12px;
   line-height: 1.6;
   color: var(--fold-color-text-secondary);

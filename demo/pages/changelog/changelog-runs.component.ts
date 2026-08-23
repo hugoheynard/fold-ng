@@ -13,7 +13,7 @@ import type { ChangelogRun } from "../../shell/changelog.generated";
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     code {
-      font-family: ui-monospace, "SF Mono", monospace;
+      font-family: var(--fold-font-mono);
       font-size: 0.88em;
       background: var(--fold-color-surface-subtle);
       color: var(--fold-color-text-primary);

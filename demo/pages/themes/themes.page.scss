@@ -24,7 +24,7 @@
 }
 
 .th-attr {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 11px;
   color: var(--fold-color-text-muted);
 }
@@ -80,7 +80,7 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 11px;
   color: var(--fold-color-text-secondary);
 }

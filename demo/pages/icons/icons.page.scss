@@ -275,7 +275,7 @@ gal-icons-page .icon-cell-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 10px;
   color: var(--fold-color-text-muted);
 }

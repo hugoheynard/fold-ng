@@ -149,7 +149,7 @@
 }
 
 .tok-name {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 11px;
   color: var(--fold-color-text);
   overflow: hidden;
@@ -172,7 +172,7 @@
   border: 1px solid var(--fold-color-border);
   background: var(--fold-color-surface-sunken);
   color: var(--fold-color-text);
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--fold-font-mono);
   font-size: 11px;
 }
 

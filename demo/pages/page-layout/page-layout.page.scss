@@ -55,7 +55,7 @@
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-family: var(--fold-font-mono);
   font-size: 10px;
   font-weight: 700;
   line-height: 1.5;
@@ -93,7 +93,7 @@
   background: var(--fold-color-success-surface);
   border-block: 1px dashed var(--fold-color-success);
   color: var(--fold-color-success-text);
-  font-family: var(--fold-font-mono, ui-monospace, monospace);
+  font-family: var(--fold-font-mono);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
