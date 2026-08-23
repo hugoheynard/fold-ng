@@ -467,6 +467,44 @@ describe("FoldDataTableComponent — mobile layout", () => {
     expect(el.querySelector(".folddt--custom")).toBeNull();
   });
 
+  it("card mode renders a real LIST, with no table left in the tree", () => {
+    // `auto-cards` used to be a CSS rewrite: `display: block` on the `<tr>`,
+    // `flex` on the cells and the `<tbody>`. Changing the display of a table
+    // element drops its implicit role, so the table stopped being a table
+    // without becoming a list, and the `<thead>` stayed as orphaned headers.
+    const { fixture, host, el } = mobileSetup();
+    host.mobileLayout.set("auto-cards");
+    fixture.detectChanges();
+
+    expect(el.querySelector("table")).toBeNull();
+    expect(el.querySelector("thead")).toBeNull();
+    const list = el.querySelector("ul.folddt-cardlist");
+    expect(list?.getAttribute("role")).toBe("list");
+    expect(el.querySelectorAll("li.folddt-card").length).toBe(2);
+  });
+
+  it("the default card names the row, then labels its values", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.mobileLayout.set("auto-cards");
+    fixture.detectChanges();
+
+    const first = el.querySelector("li.folddt-card");
+    expect(
+      first?.querySelector(".folddt-card-identity")?.textContent?.trim(),
+    ).toBe("Alice");
+    // A description list, not `::before { content: attr(data-label) }` —
+    // generated content is not reliably announced.
+    expect(first?.querySelector("dl.folddt-card-grid")).not.toBeNull();
+  });
+
+  it("a wide container keeps the table, whatever the layout asks for", () => {
+    const { fixture, host, el } = mobileSetup(false);
+    host.mobileLayout.set("auto-cards");
+    fixture.detectChanges();
+    expect(el.querySelector("table.folddt")).not.toBeNull();
+    expect(el.querySelector("ul.folddt-cardlist")).toBeNull();
+  });
+
   it("custom mode renders the parent foldRowCard once per row (narrow)", () => {
     const { fixture, host, el } = mobileSetup(true);
     host.mobileLayout.set("custom");

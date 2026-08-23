@@ -419,109 +419,54 @@
   }
 }
 
-/* ── Mobile: table → stacked cards (≤700px) ── */
-@media (max-width: 700px) {
-  .folddt--cards {
-    overflow-x: hidden;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-  .folddt--cards .folddt {
-    display: block;
-    width: 100%;
-  }
-  .folddt--cards thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  .folddt--cards tbody {
-    display: flex;
-    flex-direction: column;
-    gap: var(--fold-space-sm);
-  }
-  .folddt--cards .folddt-row {
-    display: block;
-    border: 1px solid var(--fold-color-border-subtle);
-    border-radius: var(--fold-radius-md);
-    background: var(--fold-color-surface-sunken);
-    padding: var(--fold-space-xs) var(--fold-space-md) var(--fold-space-sm);
-    box-shadow: var(--fold-shadow-sm);
-  }
-  .folddt--cards .folddt-row.tone-warning {
-    border-left: 3px solid var(--fold-color-warning);
-  }
-  .folddt--cards .folddt-row.tone-alert {
-    border-left: 3px solid var(--fold-color-alert);
-  }
-  .folddt--cards .folddt-row.tone-success {
-    border-left: 3px solid var(--fold-color-success);
-  }
-  .folddt--cards .folddt-row .folddt-cell:first-child {
-    box-shadow: none;
-  }
-  .folddt--cards .folddt-cell {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--fold-space-md);
-    padding: var(--fold-space-sm) 0;
-    white-space: normal;
-    border-bottom: 1px solid var(--fold-color-border-subtle);
-  }
-  .folddt--cards .folddt-cell:last-child {
-    border-bottom: 0;
-  }
-  .folddt--cards .folddt-cell::before {
-    content: attr(data-label);
-    flex-shrink: 0;
-    font-size: var(--fold-text-2xs);
-    font-weight: var(--fold-weight-bold);
-    letter-spacing: var(--fold-tracking-caps);
-    text-transform: uppercase;
-    color: var(--fold-color-text-faded);
-  }
-  .folddt--cards .folddt-cell.right {
-    text-align: left;
-  }
-  .folddt--cards .folddt-cell.is-primary {
-    justify-content: flex-start;
-    padding: var(--fold-space-sm) 0 var(--fold-space-sm);
-    border-bottom: 1px solid var(--fold-color-border);
-  }
-  .folddt--cards .folddt-cell.is-primary::before {
-    display: none;
-  }
-  /* The checkbox sits inline at the top of the card, with no field label. */
-  .folddt--cards .folddt-cell--select {
-    width: auto;
-    justify-content: flex-start;
-    padding: var(--fold-space-sm) 0;
-  }
-  .folddt--cards .folddt-cell--select::before {
-    display: none;
-  }
-  /* Sticky pinning is meaningless once rows are cards. */
-  .folddt--cards .folddt-cell--select,
-  .folddt--cards .folddt-cell.is-primary,
-  .folddt--cards.folddt--sticky-first .folddt-cell {
-    position: static;
-  }
+/* ── The narrow CARD layout ──────────────────────────────────────────────────
+   No `@media` anywhere: the switch is the `.folddt--narrow` class the measured
+   width posts (see `isNarrow`), and the table is not rendered at all in that
+   state. What used to live here was 100 lines of CSS that turned a `<table>`
+   into cards by changing every `display` — which strips the implicit ARIA roles
+   and leaves the `<thead>` as orphaned headers. */
+.folddt-cardlist {
+  gap: var(--fold-space-sm);
+}
 
-  /* Custom layout: the table steps aside, the parent's card list takes over. */
-  .folddt--custom {
-    overflow-x: hidden;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
+/* The default card body: one identity line, an optional overline, then the rest
+   as label/value pairs. It replaces a `space-between` per pair, which produced
+   two ragged columns and gave the row no identity at all. */
+.folddt-card-overline {
+  margin: 0 0 var(--fold-space-xs);
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-medium);
+  overflow-wrap: anywhere;
+}
+.folddt-card-identity {
+  margin: 0;
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-base);
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-tight);
+}
+.folddt-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fold-space-sm) var(--fold-space-md);
+  margin: var(--fold-space-md) 0 0;
+}
+.folddt-card-pair {
+  min-width: 0;
+}
+.folddt-card-grid dt {
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
+  text-transform: uppercase;
+}
+.folddt-card-grid dd {
+  margin: var(--fold-space-xs) 0 0;
+  color: var(--fold-color-text);
+  font-size: var(--fold-text-sm);
+}
+.folddt-card-grid dd.right {
+  font-variant-numeric: tabular-nums;
 }

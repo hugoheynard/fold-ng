@@ -184,6 +184,54 @@ export class FoldDataTableComponent<T> {
   });
 
   private readonly rowCard = contentChild(FoldDataTableRowCardDirective);
+  /**
+   * True while the narrow CARD layout is what renders — the table is not built
+   * at all in that state.
+   *
+   * `auto-cards` used to be a CSS rewrite of the table: the `<tr>` went
+   * `display: block`, its cells `display: flex`, the `<tbody>` `display: flex`.
+   * Changing the `display` of a table element **drops its implicit role**, so
+   * the table stopped being a table without becoming a list, and the `<thead>`
+   * stayed in the tree as orphaned headers. Rendering a real list instead is
+   * the fix; there is nothing left to hide.
+   */
+  protected readonly cardMode = computed(
+    () =>
+      this.isNarrow() &&
+      (this.mobileLayout() === "auto-cards" ||
+        this.mobileLayout() === "custom"),
+  );
+
+  /** The column that names the row — `primaryKey`, else the first one. */
+  protected readonly identityColumn = computed<FoldTableColumn | null>(() => {
+    const cols = this.columns();
+    const key = this.primaryKey();
+    return cols.find((c) => c.key === key) ?? cols[0] ?? null;
+  });
+
+  /**
+   * The small line above the identity: the second column, but only when it is
+   * a `truncate` one — that flag is how a table says "this is a long, secondary
+   * string" (a reference, a path), which is exactly what an overline is for.
+   */
+  protected readonly overlineColumn = computed<FoldTableColumn | null>(() => {
+    const rest = this.columns().filter(
+      (c) => c.key !== this.identityColumn()?.key,
+    );
+    const second = rest[0];
+    return second?.truncate === true ? second : null;
+  });
+
+  /** Everything else, as label/value pairs. */
+  protected readonly gridColumns = computed<readonly FoldTableColumn[]>(() => {
+    const skip = new Set(
+      [this.identityColumn()?.key, this.overlineColumn()?.key].filter(
+        (k): k is string => k !== undefined,
+      ),
+    );
+    return this.columns().filter((c) => !skip.has(c.key));
+  });
+
   /** The custom mobile-card template, only when `mobileLayout="custom"`. */
   readonly rowCardTemplate = computed<TemplateRef<unknown> | null>(() =>
     this.mobileLayout() === "custom"

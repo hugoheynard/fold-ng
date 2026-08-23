@@ -18,130 +18,130 @@
   >
     <ng-content select="[foldToolbar]" />
   </div>
-  <div class="folddt-scroll">
-    <table class="folddt" [attr.aria-colcount]="colCount()">
-      @if (caption(); as cap) {
-        <caption class="folddt-caption">
-          {{
-            cap
-          }}
-        </caption>
-      }
-      <thead>
-        <tr>
-          @if (selectable()) {
-            <th scope="col" class="folddt-select-h">
-              <fold-checkbox
-                size="sm"
-                [ariaLabel]="l().selectAll"
-                [checked]="allSelected()"
-                [indeterminate]="someSelected()"
-                (checkedChange)="toggleAll()"
-              />
-            </th>
-          }
-          @for (col of columns(); track col.key) {
-            <th
-              scope="col"
-              [class.is-primary-h]="col.key === primaryKey()"
-              [style.width]="col.width || null"
-              [attr.aria-sort]="col.sortable ? ariaSort(col.key) : null"
-            >
-              @if (col.sortable) {
-                <button
-                  type="button"
-                  class="folddt-th-sort"
-                  [class.right]="col.align === 'right'"
-                  [class.center]="col.align === 'center'"
-                  [attr.aria-label]="l().sortBy(col.label)"
-                  (click)="sortChange.emit(col.key)"
-                >
-                  <span>{{ col.label }}</span>
-                  <fold-icon
-                    class="folddt-arrow"
-                    [class.on]="isSorted(col.key)"
-                    [name]="sortIcon(col.key)"
-                    [size]="14"
-                  />
-                </button>
-              } @else {
-                <span
-                  class="folddt-th-plain"
-                  [class.right]="col.align === 'right'"
-                  [class.center]="col.align === 'center'"
-                  >{{ col.label }}</span
-                >
-              }
-            </th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (row of rows(); track keyOf(row, $index); let i = $index) {
-          @let tone = toneOf(row);
-          <tr
-            class="folddt-row"
-            [class.tone-warning]="tone === 'warning'"
-            [class.tone-alert]="tone === 'alert'"
-            [class.tone-success]="tone === 'success'"
-            [class.clickable]="clickable()"
-            [class.is-selected]="selectable() && isRowSelected(row, i)"
-            [attr.tabindex]="rowTabIndex(row, i)"
-            [attr.aria-selected]="selectable() ? isRowSelected(row, i) : null"
-            (click)="onRowActivate(row)"
-            (focus)="onRowFocus(row, i)"
-            (keydown)="onRowKeydown($event, row)"
-          >
+  @if (!cardMode()) {
+    <div class="folddt-scroll">
+      <table class="folddt" [attr.aria-colcount]="colCount()">
+        @if (caption(); as cap) {
+          <caption class="folddt-caption">
+            {{
+              cap
+            }}
+          </caption>
+        }
+        <thead>
+          <tr>
             @if (selectable()) {
-              <td class="folddt-cell folddt-cell--select">
+              <th scope="col" class="folddt-select-h">
                 <fold-checkbox
                   size="sm"
-                  [ariaLabel]="labelFor(row)"
-                  [checked]="isRowSelected(row, i)"
-                  (click)="$event.stopPropagation()"
-                  (checkedChange)="toggleRow(row, i)"
+                  [ariaLabel]="l().selectAll"
+                  [checked]="allSelected()"
+                  [indeterminate]="someSelected()"
+                  (checkedChange)="toggleAll()"
                 />
-              </td>
+              </th>
             }
             @for (col of columns(); track col.key) {
-              @if (col.key === primaryKey()) {
-                <th
-                  scope="row"
-                  class="folddt-cell is-primary"
-                  [class.right]="col.align === 'right'"
-                  [class.center]="col.align === 'center'"
-                  [class.truncate]="col.truncate"
-                  [ngClass]="col.cellClass || ''"
-                  [attr.data-label]="col.label"
-                >
-                  <ng-container
-                    [ngTemplateOutlet]="cellTemplate(col.key)"
-                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                  />
-                </th>
-              } @else {
-                <td
-                  class="folddt-cell"
-                  [class.right]="col.align === 'right'"
-                  [class.center]="col.align === 'center'"
-                  [class.truncate]="col.truncate"
-                  [ngClass]="col.cellClass || ''"
-                  [attr.data-label]="col.label"
-                >
-                  <ng-container
-                    [ngTemplateOutlet]="cellTemplate(col.key)"
-                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+              <th
+                scope="col"
+                [class.is-primary-h]="col.key === primaryKey()"
+                [style.width]="col.width || null"
+                [attr.aria-sort]="col.sortable ? ariaSort(col.key) : null"
+              >
+                @if (col.sortable) {
+                  <button
+                    type="button"
+                    class="folddt-th-sort"
+                    [class.right]="col.align === 'right'"
+                    [class.center]="col.align === 'center'"
+                    [attr.aria-label]="l().sortBy(col.label)"
+                    (click)="sortChange.emit(col.key)"
+                  >
+                    <span>{{ col.label }}</span>
+                    <fold-icon
+                      class="folddt-arrow"
+                      [class.on]="isSorted(col.key)"
+                      [name]="sortIcon(col.key)"
+                      [size]="14"
+                    />
+                  </button>
+                } @else {
+                  <span
+                    class="folddt-th-plain"
+                    [class.right]="col.align === 'right'"
+                    [class.center]="col.align === 'center'"
+                    >{{ col.label }}</span
+                  >
+                }
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track keyOf(row, $index); let i = $index) {
+            @let tone = toneOf(row);
+            <tr
+              class="folddt-row"
+              [class.tone-warning]="tone === 'warning'"
+              [class.tone-alert]="tone === 'alert'"
+              [class.tone-success]="tone === 'success'"
+              [class.clickable]="clickable()"
+              [class.is-selected]="selectable() && isRowSelected(row, i)"
+              [attr.tabindex]="rowTabIndex(row, i)"
+              [attr.aria-selected]="selectable() ? isRowSelected(row, i) : null"
+              (click)="onRowActivate(row)"
+              (focus)="onRowFocus(row, i)"
+              (keydown)="onRowKeydown($event, row)"
+            >
+              @if (selectable()) {
+                <td class="folddt-cell folddt-cell--select">
+                  <fold-checkbox
+                    size="sm"
+                    [ariaLabel]="labelFor(row)"
+                    [checked]="isRowSelected(row, i)"
+                    (click)="$event.stopPropagation()"
+                    (checkedChange)="toggleRow(row, i)"
                   />
                 </td>
               }
-            }
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-  @if (isNarrow() && rowCardTemplate(); as card) {
+              @for (col of columns(); track col.key) {
+                @if (col.key === primaryKey()) {
+                  <th
+                    scope="row"
+                    class="folddt-cell is-primary"
+                    [class.right]="col.align === 'right'"
+                    [class.center]="col.align === 'center'"
+                    [class.truncate]="col.truncate"
+                    [ngClass]="col.cellClass || ''"
+                    [attr.data-label]="col.label"
+                  >
+                    <ng-container
+                      [ngTemplateOutlet]="cellTemplate(col.key)"
+                      [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                    />
+                  </th>
+                } @else {
+                  <td
+                    class="folddt-cell"
+                    [class.right]="col.align === 'right'"
+                    [class.center]="col.align === 'center'"
+                    [class.truncate]="col.truncate"
+                    [ngClass]="col.cellClass || ''"
+                    [attr.data-label]="col.label"
+                  >
+                    <ng-container
+                      [ngTemplateOutlet]="cellTemplate(col.key)"
+                      [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                    />
+                  </td>
+                }
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
     <!-- `role="list"` on a <ul> looks redundant and is not: `list-style: none`
          strips list semantics in Safari, which is exactly what the styling
          does. One list, one shell — the projected template supplies the
@@ -169,10 +169,48 @@
             />
           }
           <div class="folddt-card-body">
-            <ng-container
-              [ngTemplateOutlet]="card"
-              [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-            />
+            @if (rowCardTemplate(); as card) {
+              <ng-container
+                [ngTemplateOutlet]="card"
+                [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+              />
+            } @else {
+              @if (overlineColumn(); as col) {
+                <p class="folddt-card-overline">
+                  <ng-container
+                    [ngTemplateOutlet]="cellTemplate(col.key)"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </p>
+              }
+              @if (identityColumn(); as col) {
+                <p class="folddt-card-identity">
+                  <ng-container
+                    [ngTemplateOutlet]="cellTemplate(col.key)"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </p>
+              }
+              <!-- A <dl> and not a `::before { content: attr(data-label) }`:
+                   generated content is not reliably announced, and a label/value
+                   pair IS a description list. It also lets the values line up in
+                   columns, which matters for amounts. -->
+              <dl class="folddt-card-grid">
+                @for (col of gridColumns(); track col.key) {
+                  <!-- A <div> around each pair is valid inside a <dl> and is
+                       what puts the label ABOVE its value in one grid cell. -->
+                  <div class="folddt-card-pair">
+                    <dt>{{ col.label }}</dt>
+                    <dd [class.right]="col.align === 'right'">
+                      <ng-container
+                        [ngTemplateOutlet]="cellTemplate(col.key)"
+                        [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                      />
+                    </dd>
+                  </div>
+                }
+              </dl>
+            }
           </div>
         </li>
       }
