@@ -139,6 +139,40 @@ on `[data-surface="x"]`, and derive the role-set on `[data-surface="x"] *` with
 `color-mix` of the captures. Add nothing to a component but the `data-surface`
 stamp (a host binding or `foldSurface`).
 
+### What identifies does not invert; what signals does
+
+A surface flips the roles a region resolves. That is right for everything whose
+job is to **signal** — text, status, borders, the accent as an interaction cue.
+It is wrong for everything whose job is to **identify**: a brand mark, a logo, a
+category colour. Those are **assets**, not roles. They mean nothing if they
+change with their surroundings — a mark that is teal on the page and pale blue
+on the rail has stopped being the mark.
+
+The precedent is already in the package: the avatar palette (`palettes.ts`) is
+qualitative data, theme-invariant, with `foldReadableInk` choosing the ink. A
+brand tile is the same kind of thing and paints the same way — **from
+primitives**:
+
+```css
+.rail-brand {
+  background: var(--fold-ref-signal-600);
+  color: var(--fold-ref-white);
+}
+```
+
+The gallery's tile used `primary` / `on-primary`. It sits in the chrome region,
+so under `navi` it resolved to the chrome polarity and rendered pale blue on
+dark ink. The token layer did exactly what it was asked; the result was still
+wrong.
+
+**The limit — a mark may keep its own colour only when it brings its own
+ground.** A filled tile carries its background with it, so an absolute pair is
+safe (white on `signal-600` is 6.1:1 everywhere). A bare glyph sitting on the
+host's ground cannot: the gallery's footer mark is an icon on the chrome, where
+the role gives 10.5:1 and the absolute brand colour would give **2.8:1**. A
+glyph on someone else's ground stays a role. Identity does not outrank
+legibility — it outranks _consistency_.
+
 **A surface resolves ink, never ground.** `[data-surface]` sets `color` and
 nothing else: it cannot know which of the five `bg-*` roles a given region is,
 so the component paints its own background and the attribute re-points the text

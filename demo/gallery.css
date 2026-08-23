@@ -12,14 +12,18 @@ fold-app-shell {
 }
 
 /* ── Primary rail: the fold-menu brand tile in its header slot ── */
+/* The brand tile paints from PRIMITIVES, not from `primary` / `on-primary`.
+   It sits in the chrome region, so the semantic roles resolved to the chrome
+   polarity — pale blue on dark ink — and the tile stopped being the mark.
+   A brand is an asset, not a role: what identifies does not invert. */
 .rail-brand {
   width: 40px;
   height: 40px;
   border-radius: var(--fold-radius-md);
   display: grid;
   place-items: center;
-  background: var(--fold-color-primary);
-  color: var(--fold-color-on-primary);
+  background: var(--fold-ref-signal-600);
+  color: var(--fold-ref-white);
   transition: transform 0.12s ease;
 }
 
