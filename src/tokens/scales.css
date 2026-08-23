@@ -154,14 +154,17 @@
 }
 
 /* ── Theme shape override: NAVI ───────────────────────────────
-   Back-office corporate: corners nearly squared off. `pill` and
-   `round` are shapes, not scale steps — flattening them would turn
-   avatars into squares and capsules into slabs — so they stay. */
+   Back-office corporate: corners squared down, not squared off. The
+   first pass ran 1/2/3/4px, which does not read as institutional — it
+   reads as unset: at 1px a corner is a rendering artefact rather than
+   an intention. `pill` and `round` are shapes, not scale steps —
+   flattening them would turn avatars into squares and capsules into
+   slabs — so they stay. */
 [data-theme="navi"] {
-  --fold-radius-xs: 1px;
-  --fold-radius-sm: 2px;
-  --fold-radius-md: 3px;
-  --fold-radius-lg: 4px;
+  --fold-radius-xs: 2px;
+  --fold-radius-sm: 4px;
+  --fold-radius-md: 6px;
+  --fold-radius-lg: 8px;
 }
 
 /* ── Theme shape override: BUBBLY ─────────────────────────────
