@@ -683,37 +683,37 @@
    into rather than by its class names. Give the catalogue real
    `*-on-chrome` roles the day mixed chrome stops being a demo.  */
 [data-theme="navi"] {
-  /* Surfaces */
-  --fold-color-bg-page: var(--fold-ref-ivory-50);
-  --fold-color-bg-header: var(--fold-ref-navy-750);
-  --fold-color-bg-rail-primary: var(--fold-ref-navy-900);
-  --fold-color-bg-rail-secondary: var(--fold-ref-navy-850);
+  /* Surfaces — dark chrome over a light page, three real steps of depth. */
+  --fold-color-bg-page: var(--fold-ref-paper-100);
+  --fold-color-bg-header: var(--fold-ref-graphite-950);
+  --fold-color-bg-rail-primary: var(--fold-ref-graphite-900);
+  --fold-color-bg-rail-secondary: var(--fold-ref-graphite-850);
   --fold-color-bg-rail-tertiary: color-mix(
     in srgb,
-    var(--fold-ref-black) 2%,
+    var(--fold-ref-paper-300) 30%,
     transparent
   );
 
-  /* Primary / accent — brand mutes on light, hover darkens further */
-  --fold-color-primary: var(--fold-ref-navy-500);
-  --fold-color-primary-strong: var(--fold-ref-navy-600);
-  --fold-color-on-primary: var(--fold-ref-white);
-  --fold-color-primary-text: var(--fold-ref-navy-600);
+  /* Brand — page polarity. The chrome sub-block below flips it. */
+  --fold-color-primary: var(--fold-ref-signal-600);
+  --fold-color-primary-strong: var(--fold-ref-signal-700);
+  --fold-color-on-primary: var(--fold-ref-paper-0);
+  --fold-color-primary-text: var(--fold-ref-signal-700);
   --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--fold-ref-navy-500) 8%,
+    var(--fold-ref-signal-600) 8%,
     transparent
   );
   --fold-color-primary-border: color-mix(
     in srgb,
-    var(--fold-ref-navy-500) 24%,
+    var(--fold-ref-signal-600) 26%,
     transparent
   );
 
   /* Info (purple) */
   --fold-color-info: var(--fold-ref-purple-600);
   --fold-color-on-info: var(--fold-ref-white);
-  --fold-color-info-text: var(--fold-ref-purple-500);
+  --fold-color-info-text: var(--fold-ref-purple-600);
   --fold-color-info-surface: color-mix(
     in srgb,
     var(--fold-ref-purple-600) 8%,
@@ -725,10 +725,11 @@
     transparent
   );
 
-  /* Warning (amber) */
+  /* Warning (amber) — the `-text` steps of the light themes do NOT survive on
+     paper (2.4 to 3.9:1); each takes a darker tint of its own hue. */
   --fold-color-warning: var(--fold-ref-amber-600);
   --fold-color-on-warning: var(--fold-ref-graphite-950);
-  --fold-color-warning-text: var(--fold-ref-amber-550);
+  --fold-color-warning-text: var(--fold-ref-amber-700);
   --fold-color-warning-surface: color-mix(
     in srgb,
     var(--fold-ref-amber-600) 8%,
@@ -743,7 +744,7 @@
   /* Alert (red) */
   --fold-color-alert: var(--fold-ref-red-600);
   --fold-color-on-alert: var(--fold-ref-white);
-  --fold-color-alert-text: var(--fold-ref-red-450);
+  --fold-color-alert-text: var(--fold-ref-red-600);
   --fold-color-alert-surface: color-mix(
     in srgb,
     var(--fold-ref-red-600) 8%,
@@ -755,10 +756,10 @@
     transparent
   );
 
-  /* Success (green) — base holds across themes; tint + surfaces soften on light */
+  /* Success (green) */
   --fold-color-success: var(--fold-ref-green-500);
   --fold-color-on-success: var(--fold-ref-graphite-950);
-  --fold-color-success-text: var(--fold-ref-green-550);
+  --fold-color-success-text: var(--fold-ref-green-700);
   --fold-color-success-surface: color-mix(
     in srgb,
     var(--fold-ref-green-500) 10%,
@@ -770,59 +771,46 @@
     transparent
   );
 
-  /* Text */
+  /* Text — one step down from the light themes' ramp: on paper, `faded`
+     borrowed from lumen measured 2.3:1. */
   --fold-color-text: var(--fold-ref-slate-900);
-  --fold-color-text-secondary: var(--fold-ref-slate-600);
-  --fold-color-text-muted: var(--fold-ref-slate-550);
-  --fold-color-text-faded: var(--fold-ref-slate-350);
+  --fold-color-text-secondary: var(--fold-ref-slate-650);
+  --fold-color-text-muted: var(--fold-ref-slate-600);
+  --fold-color-text-faded: var(--fold-ref-slate-450);
 
-  /* Card — a solid raised content surface (white on light) */
-  --fold-color-surface-card: var(--fold-ref-white);
-  /* Sunken — light theme flattens the depth cue to white, matching the ref. */
-  --fold-color-surface-sunken: var(--fold-ref-white);
-
-  /* Neutral surfaces + border — alpha overlays (black on light) */
+  /* Depth — card, sunken and page are three distinct values. They used to be
+     white, white and ivory: a table nested in a card had no edge at all. */
+  --fold-color-surface-card: var(--fold-ref-paper-0);
+  --fold-color-surface-sunken: var(--fold-ref-paper-50);
   --fold-color-surface-subtle: color-mix(
     in srgb,
-    var(--fold-ref-black) 2%,
+    var(--fold-ref-paper-300) 22%,
     transparent
   );
   --fold-color-surface-raised: color-mix(
     in srgb,
-    var(--fold-ref-black) 4%,
+    var(--fold-ref-paper-300) 34%,
     transparent
   );
-  --fold-color-surface-hover: var(
-    --fold-ref-cloud-150
-  ); /* solid raised hover */
-  --fold-color-border: color-mix(
-    in srgb,
-    var(--fold-ref-black) 8%,
-    transparent
-  );
-  /* Fainter hairline — row dividers, subtle panel edges (below `border`). */
+  --fold-color-surface-hover: var(--fold-ref-paper-100);
+
+  /* Borders — SOLID. A back-office reads as machined seams, not soft alphas. */
+  --fold-color-border: var(--fold-ref-paper-200);
   --fold-color-border-subtle: color-mix(
     in srgb,
-    var(--fold-ref-black) 4%,
-    transparent
+    var(--fold-ref-paper-200) 55%,
+    var(--fold-ref-paper-0)
   );
 
-  /* Glass — translucent frosted overlay (panels, floating menus) */
   --fold-color-glass: color-mix(
     in srgb,
-    var(--fold-ref-white) 65%,
+    var(--fold-ref-paper-0) 72%,
     transparent
   );
-  --fold-color-glass-border: color-mix(
-    in srgb,
-    var(--fold-ref-black) 12%,
-    transparent
-  );
-
-  /* Scrim — a darkening veil behind the mobile nav drawer. */
+  --fold-color-glass-border: var(--fold-ref-paper-200);
   --fold-color-scrim: color-mix(
     in srgb,
-    var(--fold-ref-black) 45%,
+    var(--fold-ref-graphite-950) 55%,
     transparent
   );
 }
@@ -832,62 +820,148 @@
    which the shell stamps on its rails + header), never by the shell's class
    names: a renamed rail must not be able to break a theme. */
 [data-theme="navi"] [data-surface="chrome"] {
-  /* Light text on the dark chrome. The whole ramp sits one step above umbra's:
-     navy is a lighter, bluer ground than ink, so the borrowed values landed
-     dim — `faded` on the expanded rail was barely legible. Four distinct
-     steps, no new primitive. */
-  --fold-color-text: var(--fold-ref-slate-50);
-  --fold-color-text-secondary: var(--fold-ref-slate-350);
-  --fold-color-text-muted: var(--fold-ref-slate-400);
-  --fold-color-text-faded: var(--fold-ref-slate-500);
-  --fold-color-border: color-mix(
-    in srgb,
-    var(--fold-ref-white) 8%,
-    transparent
-  );
-  --fold-color-border-subtle: color-mix(
-    in srgb,
-    var(--fold-ref-white) 4%,
-    transparent
-  );
-  /* … and navy surfaces, so a hovered or raised row belongs to the rail
-     instead of looking like a grey patch pasted onto it. */
-  --fold-color-surface-card: var(--fold-ref-navy-800);
-  --fold-color-surface-sunken: var(--fold-ref-navy-950);
-  --fold-color-surface-hover: var(--fold-ref-navy-800);
-  --fold-color-surface-subtle: color-mix(
-    in srgb,
-    var(--fold-ref-white) 3%,
-    transparent
-  );
-  --fold-color-surface-raised: color-mix(
-    in srgb,
-    var(--fold-ref-white) 5%,
-    transparent
-  );
-  --fold-color-bg-rail-tertiary: color-mix(
-    in srgb,
-    var(--fold-ref-white) 3%,
-    transparent
-  );
-  /* The whole brand flips, solid included: a menu item tints its active icon
-     with `primary` itself, and the page's navy-on-white lands dark-on-dark
-     against a navy rail. On the chrome the brand lives in its light tints. */
-  --fold-color-primary: var(--fold-ref-navy-400);
-  --fold-color-primary-strong: var(--fold-ref-navy-300);
-  /* The ink the flipped brand takes with it. Without this line the chrome
-     inherited the page's `on-primary` — white — onto its own lighter fill:
-     3.9:1 on a solid button, and no test looked here. */
-  --fold-color-on-primary: var(--fold-ref-navy-950);
-  --fold-color-primary-text: var(--fold-ref-navy-300);
+  /* The chrome is a second polarity, not a tweak. Everything that meets the
+     dark ground is redeclared — the closure test enforces that a family cannot
+     travel half-way. Seventeen roles used to live here; the twenty-eight that
+     did not are where every contrast failure was.
+
+     Text — four steps. The first three clear 4.5:1 everywhere; `faded` holds
+     4.1:1 on a hovered row, which is a placeholder/disabled role at the 3:1 UI
+     floor. */
+  --fold-color-text: var(--fold-ref-navyink-50);
+  --fold-color-text-secondary: var(--fold-ref-navyink-200);
+  --fold-color-text-muted: var(--fold-ref-navyink-300);
+  --fold-color-text-faded: var(--fold-ref-navyink-400);
+
+  /* Brand — chrome polarity. `primary-text` is a step LIGHTER than `primary`
+     (mirroring 600 → 700 on the page): the same hue laid on its own tinted
+     surface gave only 4.2:1, and a 10px counter cannot afford that. */
+  --fold-color-primary: var(--fold-ref-signal-300);
+  --fold-color-primary-strong: var(--fold-ref-signal-200);
+  --fold-color-on-primary: var(--fold-ref-graphite-950);
+  --fold-color-primary-text: var(--fold-ref-signal-200);
   --fold-color-primary-surface: color-mix(
     in srgb,
-    var(--fold-ref-navy-400) 22%,
+    var(--fold-ref-signal-300) 16%,
     transparent
   );
   --fold-color-primary-border: color-mix(
     in srgb,
-    var(--fold-ref-navy-400) 40%,
+    var(--fold-ref-signal-300) 32%,
+    transparent
+  );
+
+  /* Statuses — the DARK-ground tints, not the page's. Same bases, same inks:
+     a status fill does not change polarity, only the text around it does. */
+  --fold-color-info: var(--fold-ref-purple-500);
+  --fold-color-on-info: var(--fold-ref-white);
+  --fold-color-info-text: var(--fold-ref-purple-300);
+  --fold-color-info-surface: color-mix(
+    in srgb,
+    var(--fold-ref-purple-400) 14%,
+    transparent
+  );
+  --fold-color-info-border: color-mix(
+    in srgb,
+    var(--fold-ref-purple-400) 32%,
+    transparent
+  );
+  --fold-color-warning: var(--fold-ref-amber-500);
+  --fold-color-on-warning: var(--fold-ref-graphite-950);
+  --fold-color-warning-text: var(--fold-ref-amber-300);
+  --fold-color-warning-surface: color-mix(
+    in srgb,
+    var(--fold-ref-amber-500) 16%,
+    transparent
+  );
+  --fold-color-warning-border: color-mix(
+    in srgb,
+    var(--fold-ref-amber-300) 32%,
+    transparent
+  );
+  --fold-color-alert: var(--fold-ref-red-500);
+  --fold-color-on-alert: var(--fold-ref-white);
+  --fold-color-alert-text: color-mix(
+    in srgb,
+    var(--fold-ref-red-400) 72%,
+    var(--fold-ref-navyink-50)
+  );
+  --fold-color-alert-surface: color-mix(
+    in srgb,
+    var(--fold-ref-red-500) 16%,
+    transparent
+  );
+  --fold-color-alert-border: color-mix(
+    in srgb,
+    var(--fold-ref-red-400) 36%,
+    transparent
+  );
+  --fold-color-success: var(--fold-ref-green-500);
+  --fold-color-on-success: var(--fold-ref-graphite-950);
+  --fold-color-success-text: var(--fold-ref-green-300);
+  --fold-color-success-surface: color-mix(
+    in srgb,
+    var(--fold-ref-green-500) 16%,
+    transparent
+  );
+  --fold-color-success-border: color-mix(
+    in srgb,
+    var(--fold-ref-green-300) 32%,
+    transparent
+  );
+
+  /* Surfaces + borders of the chrome. */
+  --fold-color-surface-card: var(--fold-ref-graphite-800);
+  --fold-color-surface-sunken: var(--fold-ref-graphite-950);
+  --fold-color-surface-hover: var(--fold-ref-graphite-800);
+  --fold-color-surface-subtle: color-mix(
+    in srgb,
+    var(--fold-ref-navyink-50) 4%,
+    transparent
+  );
+  --fold-color-surface-raised: color-mix(
+    in srgb,
+    var(--fold-ref-navyink-50) 7%,
+    transparent
+  );
+  --fold-color-border: color-mix(
+    in srgb,
+    var(--fold-ref-navyink-50) 10%,
+    transparent
+  );
+  --fold-color-border-subtle: color-mix(
+    in srgb,
+    var(--fold-ref-navyink-50) 5%,
+    transparent
+  );
+
+  /* Glass — the collapsed-rail tooltip. It inherited the page's white frost
+     onto the dark chrome and rendered 1.9:1: light text on a light veil. */
+  --fold-color-glass: color-mix(
+    in srgb,
+    var(--fold-ref-graphite-950) 78%,
+    transparent
+  );
+  --fold-color-glass-border: color-mix(
+    in srgb,
+    var(--fold-ref-navyink-50) 14%,
+    transparent
+  );
+  --fold-color-scrim: color-mix(
+    in srgb,
+    var(--fold-ref-graphite-950) 62%,
+    transparent
+  );
+
+  /* Grounds — a rail nested inside the chrome stays in the chrome's family
+     instead of punching a hole of page colour through it. */
+  --fold-color-bg-page: var(--fold-ref-graphite-900);
+  --fold-color-bg-header: var(--fold-ref-graphite-950);
+  --fold-color-bg-rail-primary: var(--fold-ref-graphite-900);
+  --fold-color-bg-rail-secondary: var(--fold-ref-graphite-850);
+  --fold-color-bg-rail-tertiary: color-mix(
+    in srgb,
+    var(--fold-ref-navyink-50) 4%,
     transparent
   );
 }

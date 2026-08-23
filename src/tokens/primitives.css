@@ -38,6 +38,7 @@
   --fold-ref-amber-300: #e8b84a; /* light tint (dark theme)     */
   --fold-ref-amber-500: #d4a017; /* base (dark theme)           */
   --fold-ref-amber-550: #d4940e; /* light tint (light theme)    */
+  --fold-ref-amber-700: #8f6508; /* warning-text on paper (4.8:1)     */
   --fold-ref-amber-600: #b8860b; /* base (light theme)          */
 
   /* ── Red — the alert family ───────────────────────────────── */
@@ -55,15 +56,18 @@
   /* ── Green — the success family ───────────────────────────── */
   --fold-ref-green-300: #4bd6a0; /* light tint (dark theme)      */
   --fold-ref-green-500: #1a9e6a; /* base (both themes)           */
+  --fold-ref-green-700: #146b48; /* success-text on paper (6.0:1)     */
   --fold-ref-green-550: #38a169; /* light tint (light theme)     */
 
   /* ── Slate — the neutral text family ──────────────────────── */
   --fold-ref-slate-50: #eef1ff; /* primary text (dark theme)   */
   --fold-ref-slate-350: #9ca3af; /* faded text (light theme)    */
   --fold-ref-slate-400: #8892b0; /* secondary text (dark)       */
+  --fold-ref-slate-450: #7b8496; /* faded — a UI role, 3.5:1 on paper */
   --fold-ref-slate-500: #5e6a86; /* muted text (dark)           */
   --fold-ref-slate-550: #6b7280; /* muted text (light)          */
   --fold-ref-slate-600: #5f6b7a; /* secondary text (light)      */
+  --fold-ref-slate-650: #4a5468; /* secondary — 7.0:1 on paper        */
   --fold-ref-slate-700: #4a5470; /* faded text (dark theme)     */
   --fold-ref-slate-900: #1a1d23; /* primary text (light theme)  */
 
@@ -77,20 +81,35 @@
      on the light page (500/600) and the dark chrome behind it
      (800→950), so rails, header and primary are visibly related.
      300/400 are the tints readable ON the dark chrome.             */
-  --fold-ref-navy-300: #9db8ea; /* text tint on dark chrome     */
-  --fold-ref-navy-400: #5a7fd0; /* hover tint on dark chrome    */
-  --fold-ref-navy-500: #24448f; /* brand base (light page)      */
-  --fold-ref-navy-600: #1b3573; /* hover / readable brand text  */
-  --fold-ref-navy-750: #1a3157; /* header — set apart from the rails */
-  --fold-ref-navy-800: #16294f; /* raised surface on the chrome */
-  --fold-ref-navy-850: #13233f; /* rail 2 · workspace menu      */
-  --fold-ref-navy-900: #101d3a; /* rail 1 · app menu (deepest)  */
-  --fold-ref-navy-950: #0b152b; /* sunken surface on the chrome */
 
-  /* Graphite — the navi chrome (low-chroma blue-graphite). Also the DARK ink
-     every theme puts on a light status fill: amber and green are too bright to
-     carry white, and a near-black reads softer than pure black. */
+  /* Graphite — the navi chrome (low-chroma blue-graphite). `950` is also the
+     DARK ink every theme puts on a light status fill: amber and green are too
+     bright to carry white, and a near-black reads softer than pure black. */
   --fold-ref-graphite-950: #1a2336; /* header — the deepest chrome surface */
+  --fold-ref-graphite-900: #1f2a40; /* rail 1 · app menu                   */
+  --fold-ref-graphite-850: #243049; /* rail 2 · workspace                  */
+  --fold-ref-graphite-800: #2d3a56; /* raised / hover on the chrome        */
+
+  /* Paper — the navi page (cool white, three real steps of depth). */
+  --fold-ref-paper-0: #ffffff; /* card                                     */
+  --fold-ref-paper-50: #fafbfc; /* sunken                                  */
+  --fold-ref-paper-100: #f3f5f8; /* page                                   */
+  --fold-ref-paper-200: #e6e9ef; /* hairline (solid border)                */
+  --fold-ref-paper-300: #d3d8e2; /* marked border (field, divider)         */
+
+  /* Signal — the navi brand, in two polarities: the 600/700 pair reads on the
+     light page, the 200/300 pair on the dark chrome. A brand chosen against
+     one ground is not readable on the other. */
+  --fold-ref-signal-700: #2643aa; /* hover on the page · primary-text      */
+  --fold-ref-signal-600: #3357d4; /* base on the page                      */
+  --fold-ref-signal-300: #8fabff; /* base on the chrome                    */
+  --fold-ref-signal-200: #b6c9ff; /* hover · primary-text on the chrome    */
+
+  /* Navyink — the text ramp on the navi chrome, four steps. */
+  --fold-ref-navyink-50: #f2f5fb;
+  --fold-ref-navyink-200: #b9c4da;
+  --fold-ref-navyink-300: #9aa7c2;
+  --fold-ref-navyink-400: #8f9cb8;
 
   /* ── Ivory — the NAVI page ────────────────────────────────────
      White, off by two points of blue. The opposition is the point: a
@@ -98,7 +117,6 @@
      cool is what makes navy read as navy — and it works at a very low
      dose. Any warmer and the page starts looking like cream, a whole
      warm theme rather than a warm page.                              */
-  --fold-ref-ivory-50: #fdfcfb; /* page background (navi)        */
 
   /* ── Bubble / Grape — the BUBBLY theme families ────────────────
      Festive light: soft lavender-white chrome and a joyful violet

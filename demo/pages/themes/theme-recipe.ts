@@ -35,17 +35,18 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     title: "Keep the chrome descent short",
     body: "Header, rail 2, rail 1 should read as one colour at three depths. Push the darkest too far and the hue drains out — the rails go black and only the lightest surface still looks like your brand.",
     example:
-      "navi first shipped rails at 950/975: they read as charcoal, and the header looked like a different colour rather than the same navy, lighter. 900/850 under an 800 header fixed it.",
+      "navi first shipped rails at 950/975: they read as charcoal, and the header looked like a different colour rather than the same graphite, lighter. Rails at 900/850 under a 950 header fixed it.",
   },
   {
     title: "Check the brand twice — on the page and on the chrome",
     body: "A brand colour chosen against the page can be invisible against the rails. If your theme mixes a light page with dark chrome, the chrome needs its own values for the whole brand — the solid included, not just its tints.",
     example:
-      "navi's active menu icon tints with `primary` directly. The page's navy-500 on a near-black rail was dark on dark; the chrome flips primary/strong/text to 400/300. It targets [data-surface=\"chrome\"] — the contract the shell opts into — not the shell's class names.",
+      "navi's active menu icon tints with `primary` directly. The page's signal-600 on a dark rail was dark on dark; the chrome flips the whole family to the light pair — and takes `on-primary` with it, which is the half that used to be forgotten: a solid button then wore the page's white ink on the chrome's lighter fill, at 3.9:1. It targets [data-surface=\"chrome\"] — the contract the shell opts into — not the shell's class names.",
     code: `[data-theme="navi"] [data-surface="chrome"] {
-  --fold-color-primary: var(--fold-ref-navy-400);
-  --fold-color-primary-strong: var(--fold-ref-navy-300);
-  --fold-color-primary-text: var(--fold-ref-navy-300);
+  --fold-color-primary: var(--fold-ref-signal-300);
+  --fold-color-primary-strong: var(--fold-ref-signal-200);
+  --fold-color-on-primary: var(--fold-ref-graphite-950);
+  --fold-color-primary-text: var(--fold-ref-signal-200);
 }`,
   },
   {
@@ -58,7 +59,7 @@ export const THEME_STEPS: readonly ThemeStep[] = [
     title: "Re-tune the text ramp for the new ground",
     body: "Text values are relative to what they sit on. A lighter or more saturated background makes the same greys read dimmer — borrowed ramps land wrong even when the hex is identical.",
     example:
-      "navi borrowed umbra's ramp; on navy (lighter and bluer than ink) `text-faded` fell near 2:1 on the expanded rail. The whole ramp moved up one step, keeping four distinct levels.",
+      "navi borrowed umbra's ramp; on graphite (lighter and bluer than ink) `text-faded` fell near 2:1 on the expanded rail. Both grounds now carry their own four-step ramp — navyink on the chrome, slate on the page.",
   },
   {
     title: "Change shape only if it means something",
