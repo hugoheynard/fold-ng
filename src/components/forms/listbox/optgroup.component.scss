@@ -12,9 +12,9 @@
   display: block;
   padding: 0.4rem 0.7rem 0.2rem;
   font-size: var(--fold-text-xs);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-text-muted);
   user-select: none;
 }

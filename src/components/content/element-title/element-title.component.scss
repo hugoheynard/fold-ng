@@ -19,19 +19,19 @@
 }
 .et-label {
   min-width: 0;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
 :host(.v-bar) .et-label {
-  font-size: 11px;
+  font-size: var(--fold-text-xs);
   color: var(--fold-color-text-secondary);
 }
 :host(.v-title) .et-label {
   font-size: var(--fold-text-base);
-  letter-spacing: normal;
+  letter-spacing: var(--fold-tracking-normal);
   text-transform: none;
   color: var(--fold-color-text);
 }

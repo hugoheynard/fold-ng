@@ -108,7 +108,7 @@
 }
 
 .cb-label {
-  line-height: 1.3;
+  line-height: var(--fold-leading-snug);
 }
 .cb-req {
   color: var(--fold-color-alert);

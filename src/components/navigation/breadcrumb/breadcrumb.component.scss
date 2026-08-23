@@ -51,7 +51,7 @@
 /* The current page — emphasised, not a link. */
 .bc-current {
   color: var(--fold-color-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .bc-sep {

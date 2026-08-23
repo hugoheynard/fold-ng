@@ -49,7 +49,7 @@
   color: var(--fold-color-text);
   font: inherit;
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   font-variant-numeric: tabular-nums;
   appearance: none;
   cursor: pointer;
@@ -95,7 +95,7 @@
   color: var(--fold-color-text-secondary);
   font: inherit;
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition:

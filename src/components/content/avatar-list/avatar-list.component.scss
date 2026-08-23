@@ -45,8 +45,8 @@
   border-radius: var(--fold-radius-round);
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-wide);
   user-select: none;
 }
 :host(.is-square) .al-more {

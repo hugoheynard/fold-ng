@@ -17,10 +17,10 @@
   background: transparent;
   color: var(--fold-color-text-muted);
   font: inherit;
-  font-size: 0.6875rem;
+  font-size: var(--fold-text-xs);
   font-style: italic;
-  font-weight: 700;
-  line-height: 1;
+  font-weight: var(--fold-weight-bold);
+  line-height: var(--fold-leading-none);
   /* `help`, not `pointer`: it explains, it doesn't navigate or act. */
   cursor: help;
   transition:
@@ -39,8 +39,8 @@
   max-width: 17rem;
   padding: var(--fold-space-sm) var(--fold-space-md);
   font-size: var(--fold-text-xs);
-  font-weight: 400;
-  line-height: 1.45;
+  font-weight: var(--fold-weight-regular);
+  line-height: var(--fold-leading-normal);
   text-align: start;
   white-space: normal;
 }

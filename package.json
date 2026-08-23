@@ -94,7 +94,8 @@
     "bench:calendar": "tsx scripts/bench-calendar.ts",
     "clean": "rm -rf dist out-tsc docs-api .angular *.tsbuildinfo",
     "test:e2e": "playwright test --grep-invert @visual",
-    "test:e2e:visual": "playwright test --grep @visual"
+    "test:e2e:visual": "playwright test --grep @visual",
+    "lint:typography": "tsx scripts/check-typography.ts"
   },
   "peerDependencies": {
     "@angular/common": "^22",

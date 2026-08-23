@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-wide);
   user-select: none;
   border-radius: var(--fold-radius-round);
 }

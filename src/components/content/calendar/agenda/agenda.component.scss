@@ -55,8 +55,8 @@
 .foldcala-spine-label {
   writing-mode: vertical-rl;
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
 }
 
@@ -70,7 +70,7 @@
   background: var(--fold-color-warning-surface);
   color: var(--fold-color-warning-text);
   font-size: var(--fold-text-xs);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -91,7 +91,7 @@
   gap: var(--fold-space-sm);
   color: var(--fold-color-text);
   font-size: var(--fold-text-sm);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
 }
 
 .foldcala-count {
@@ -104,7 +104,7 @@
   background: var(--fold-color-warning-surface);
   color: var(--fold-color-warning-text);
   font-size: var(--fold-text-xs);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -128,7 +128,7 @@
     color: var(--fold-color-text-secondary);
     font: inherit;
     font-size: var(--fold-text-xs);
-    font-weight: 500;
+    font-weight: var(--fold-weight-medium);
     cursor: pointer;
 
     &.is-on {
@@ -208,9 +208,9 @@
 .foldcala-daynum {
   color: var(--fold-color-text);
   font-size: var(--fold-text-lg);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: var(--fold-leading-none);
 }
 
 .foldcala-dmeta {
@@ -221,8 +221,8 @@
 .foldcala-dname {
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-wide);
   text-transform: uppercase;
 }
 

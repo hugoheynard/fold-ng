@@ -61,9 +61,9 @@
   align-items: center;
   gap: var(--fold-space-sm);
   font-size: var(--fold-text-xl);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-tighter);
+  line-height: var(--fold-leading-tight);
   color: var(--fold-color-text);
 }
 .page-icon {
@@ -89,7 +89,7 @@
    line would otherwise get long. */
 .page-desc {
   font-size: var(--fold-text-sm);
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
   max-width: var(--fold-page-desc-measure, none);
   color: var(--fold-color-text-muted);
 }

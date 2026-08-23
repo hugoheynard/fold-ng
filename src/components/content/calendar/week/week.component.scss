@@ -70,17 +70,17 @@
 .foldcalw-weekday {
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
 }
 
 .foldcalw-daynum {
   color: var(--fold-color-text);
   font-size: var(--fold-text-lg);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: var(--fold-leading-none);
 }
 
 .is-today .foldcalw-daynum {

@@ -18,8 +18,8 @@
   background: var(--_surface);
   color: var(--_text);
   font-size: var(--fold-text-sm);
-  font-weight: 500;
-  line-height: 1.45;
+  font-weight: var(--fold-weight-medium);
+  line-height: var(--fold-leading-normal);
 }
 
 /* A band of its container, not a block in it: the side borders and the radius

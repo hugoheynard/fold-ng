@@ -23,7 +23,7 @@
 .fic-message {
   margin: 0;
   font-size: var(--fold-text-xs);
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
   color: var(--fold-color-text-secondary);
 }
 

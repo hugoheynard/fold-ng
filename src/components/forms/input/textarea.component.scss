@@ -19,5 +19,5 @@ textarea {
   overflow-y: auto;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  line-height: 1.45;
+  line-height: var(--fold-leading-normal);
 }

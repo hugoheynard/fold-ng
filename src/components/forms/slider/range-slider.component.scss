@@ -15,9 +15,9 @@
 // scale"), not a value that maps to a token.
 .rs-label {
   font-size: 9px;
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: var(--fold-tracking-wide);
   color: var(--fold-color-text-muted);
 }
 
@@ -70,7 +70,7 @@
 
 .rs-values {
   font-size: 10px;
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   color: var(--fold-color-text-muted);
   text-align: center;
   font-variant-numeric: tabular-nums;

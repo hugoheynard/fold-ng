@@ -34,10 +34,10 @@
 .ph__title {
   margin: 0;
   font-size: var(--fold-text-lg);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text);
-  letter-spacing: -0.005em;
-  line-height: 1.25;
+  letter-spacing: var(--fold-tracking-tight);
+  line-height: var(--fold-leading-tight);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -51,7 +51,7 @@
   margin-top: var(--fold-space-sm);
   font-size: var(--fold-text-sm);
   color: var(--fold-color-text-secondary);
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
 }
 /* no projected content → collapse the slot so it costs no space */
 .ph__desc:empty {
@@ -94,8 +94,8 @@
 }
 .ph--eyebrow .ph__title {
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }

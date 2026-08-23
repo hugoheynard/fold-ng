@@ -39,6 +39,7 @@ jobs:
       - run: pnpm exec tsc --noEmit -p tsconfig.app.json
       - run: pnpm run lint:templates
       - run: pnpm run lint:spacing
+      - run: pnpm run lint:typography
       - run: pnpm run api:check
       - run: pnpm test
 

@@ -110,10 +110,10 @@
   align-items: center;
   padding: var(--fold-space-md) var(--fold-space-lg);
   color: var(--fold-color-text-muted);
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: var(--fold-tracking-caps);
 }
 
 .folddt-th-sort {
@@ -239,7 +239,7 @@
 }
 .folddt-empty-t {
   font-size: var(--fold-text-base);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text);
 }
 .folddt-empty-s {
@@ -429,9 +429,9 @@
   .folddt--cards .folddt-cell::before {
     content: attr(data-label);
     flex-shrink: 0;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-size: var(--fold-text-2xs);
+    font-weight: var(--fold-weight-bold);
+    letter-spacing: var(--fold-tracking-caps);
     text-transform: uppercase;
     color: var(--fold-color-text-faded);
   }

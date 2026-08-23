@@ -5,9 +5,9 @@
   padding: 2px var(--fold-space-sm);
   border-radius: var(--fold-radius-pill);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--fold-tracking-wide);
   white-space: nowrap;
 }
 .badge[data-status="active"] {

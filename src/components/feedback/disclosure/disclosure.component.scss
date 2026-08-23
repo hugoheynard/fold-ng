@@ -18,7 +18,7 @@
   background: var(--fold-disclosure-summary-bg, transparent);
   color: var(--fold-disclosure-summary-color, var(--fold-color-text));
   font: inherit;
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   text-align: left;
   cursor: pointer;
 }

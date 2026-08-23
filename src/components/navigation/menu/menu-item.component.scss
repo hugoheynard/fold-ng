@@ -114,9 +114,9 @@
   display: grid;
   place-items: center;
   border-radius: var(--fold-radius-pill);
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-semibold);
+  line-height: var(--fold-leading-none);
   color: var(--fold-color-on-primary);
 }
 
@@ -130,8 +130,8 @@
   padding: 1px var(--fold-space-sm);
   border-radius: var(--fold-radius-pill);
   font-size: var(--fold-text-xs);
-  font-weight: 500;
-  line-height: 1.5;
+  font-weight: var(--fold-weight-medium);
+  line-height: var(--fold-leading-normal);
   white-space: nowrap;
   background: color-mix(in srgb, var(--mi-badge-accent) 16%, transparent);
   border: 1px solid color-mix(in srgb, var(--mi-badge-accent) 35%, transparent);

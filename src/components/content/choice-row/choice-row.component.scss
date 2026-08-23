@@ -39,7 +39,7 @@
   background: var(--fold-color-surface-subtle);
   border-radius: var(--fold-radius-sm);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 .choice-row.segmented .choice:hover:not(.is-active) {
   background: var(--fold-color-surface-raised);
@@ -66,5 +66,5 @@
   background: var(--fold-color-primary-surface);
   border-color: var(--fold-color-primary-border);
   color: var(--fold-color-primary-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }

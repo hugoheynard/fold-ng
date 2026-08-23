@@ -72,8 +72,8 @@
 .foldcaltg-weekday {
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
 }
 
@@ -88,7 +88,7 @@
 
   .foldcaltg-daynum {
     color: var(--fold-color-primary-text);
-    font-weight: 700;
+    font-weight: var(--fold-weight-bold);
   }
 }
 
@@ -288,7 +288,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
 }
 
 .foldcaltg-block-sub {

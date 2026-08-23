@@ -29,7 +29,7 @@
   color: var(--fold-color-text);
   font: inherit;
   font-size: var(--fold-text-sm);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   cursor: pointer;
   white-space: nowrap;
   transition: background-color var(--fold-motion-fast, 120ms) ease;
@@ -84,8 +84,8 @@
   white-space: nowrap;
   color: var(--fold-color-text);
   font-size: var(--fold-text-lg);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-tight);
 }
 
 // Narrow: the title takes its own line so it never squeezes the controls.

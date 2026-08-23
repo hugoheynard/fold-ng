@@ -27,17 +27,17 @@
 .foldcald-weekday {
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-base);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-wide);
   text-transform: uppercase;
 }
 
 .foldcald-daynum {
   color: var(--fold-color-text);
   font-size: var(--fold-calendar-day-number-size, 32px);
-  font-weight: 700;
+  font-weight: var(--fold-weight-bold);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: var(--fold-leading-none);
 
   &.is-today {
     color: var(--fold-color-primary-text);
@@ -47,7 +47,7 @@
 .foldcald-month {
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-lg);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .foldcald-list {

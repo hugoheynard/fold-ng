@@ -93,8 +93,8 @@
   border: none;
   color: var(--fold-color-text-muted);
   font-family: inherit;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-semibold);
   /* The item owns its leading instead of inheriting one.
 
      Without this the label's line box is sized by whatever the CONSUMER has on
@@ -107,7 +107,7 @@
 
      `1` and not a token: the item is a centred flex row, its height set by the
      icon and its padding. Leading has nothing to add to a single-line label. */
-  line-height: 1;
+  line-height: var(--fold-leading-none);
   cursor: pointer;
   text-align: center;
   text-decoration: none; /* items can be <a> — kill the UA underline */
@@ -163,7 +163,7 @@
 .style-fill .tab-bar-item.is-active {
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 .style-fill .tab-bar-item:hover:not(.is-active) {
   background: var(--fold-color-surface-hover);
@@ -182,7 +182,7 @@
   gap: var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
   font-size: var(--fold-text-sm);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
 }
 .dir-vertical.style-underline {
   border-bottom: none;
@@ -200,7 +200,7 @@
 .dir-vertical.style-fill .tab-bar-item.is-active {
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 /* Collapsed — the icon mode, a distinct behaviour from the `size` density scale.
@@ -243,7 +243,7 @@
   border: 1px solid var(--fold-color-glass-border);
   color: var(--fold-color-text);
   font-size: var(--fold-text-xs);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -333,9 +333,9 @@
   width: 18px;
   height: 18px;
   border-radius: var(--fold-radius-sm);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-bold);
+  line-height: var(--fold-leading-none);
   text-transform: uppercase;
 }
 

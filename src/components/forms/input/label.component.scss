@@ -4,7 +4,7 @@
 
 label {
   font-size: var(--fold-text-xs);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text-secondary);
 }
 
@@ -15,6 +15,6 @@ label {
 
 .opt {
   margin-left: var(--fold-space-xs);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   color: var(--fold-color-text-faded);
 }

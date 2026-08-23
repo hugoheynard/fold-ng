@@ -61,8 +61,8 @@
 }
 .nt-label {
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: var(--fold-weight-semibold);
+  line-height: var(--fold-leading-tight);
   text-align: center;
 }
 
@@ -109,8 +109,8 @@
   background: var(--fold-color-primary);
   color: var(--fold-color-on-primary);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  line-height: 1;
+  font-weight: var(--fold-weight-semibold);
+  line-height: var(--fold-leading-none);
   pointer-events: none;
 }
 .nt-badge[data-tone="neutral"] {

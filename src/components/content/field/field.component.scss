@@ -9,7 +9,7 @@
   margin: 0;
   font-size: var(--fold-text-xs);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--fold-tracking-caps);
   color: var(--fold-color-text-muted);
 }
 

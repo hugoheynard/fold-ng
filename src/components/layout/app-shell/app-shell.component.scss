@@ -42,7 +42,7 @@
   background: var(--fold-color-surface-card);
   color: var(--fold-color-text);
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   text-decoration: none;
   transform: translateY(-150%);
   transition: transform 120ms ease;

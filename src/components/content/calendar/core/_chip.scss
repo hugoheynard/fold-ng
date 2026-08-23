@@ -60,7 +60,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: var(--fold-text-sm);
-    font-weight: 500;
+    font-weight: var(--fold-weight-medium);
   }
 
   .foldcal-chip-sub {

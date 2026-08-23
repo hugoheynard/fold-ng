@@ -12,7 +12,7 @@
     var(--fold-space-md);
   border-radius: var(--fold-radius-md);
   font-size: var(--fold-text-sm);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   color: var(--fold-color-text);
 
   /* Shared frosted-glass surface. */
@@ -46,7 +46,7 @@
 .toast-message {
   flex: 1;
   min-width: 0;
-  line-height: 1.4;
+  line-height: var(--fold-leading-normal);
 }
 
 /* The tally of a message that kept arriving. Muted on purpose: it qualifies the

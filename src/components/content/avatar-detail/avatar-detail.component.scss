@@ -14,7 +14,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   color: var(--fold-color-text);
 }
 .secondary {

@@ -19,15 +19,15 @@
 
 .sl-label {
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-wide);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
 }
 
 .sl-value {
   font-size: var(--fold-text-sm);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text);
   font-variant-numeric: tabular-nums;
 }

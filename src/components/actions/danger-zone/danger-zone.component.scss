@@ -36,14 +36,14 @@
 .dz-title {
   margin: 0;
   font-size: var(--fold-text-base, 1rem);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 .dz-body {
   padding: 0 var(--fold-space-lg) var(--fold-space-md);
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-sm, 0.875rem);
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
 
   &:empty {
     display: none;

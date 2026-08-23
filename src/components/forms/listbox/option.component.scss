@@ -12,7 +12,7 @@
 }
 
 :host(.is-selected) {
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
 }
 
 // A pure-CSS check on the selected row, pinned to the trailing edge.

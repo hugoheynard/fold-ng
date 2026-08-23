@@ -55,8 +55,8 @@
   gap: var(--fold-space-sm);
   min-width: 0;
   font-size: var(--fold-text-base);
-  font-weight: 600;
-  line-height: 1.3;
+  font-weight: var(--fold-weight-semibold);
+  line-height: var(--fold-leading-snug);
   color: var(--fold-color-text);
 }
 /* Leading icon — its tint is fold-icon's own `tone` input (forwarded from
@@ -78,7 +78,7 @@
 .section-desc {
   margin: 0;
   font-size: var(--fold-text-sm);
-  line-height: 1.5;
+  line-height: var(--fold-leading-normal);
   max-width: 62ch;
   color: var(--fold-color-text-secondary);
 }

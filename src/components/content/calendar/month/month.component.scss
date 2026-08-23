@@ -42,8 +42,8 @@
   padding: var(--fold-space-sm) var(--fold-space-md);
   color: var(--fold-color-text-secondary);
   font-size: var(--fold-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-caps);
   text-transform: uppercase;
 }
 
@@ -133,7 +133,7 @@
   &.is-today .foldcal-daynum {
     background: var(--fold-color-primary);
     color: var(--fold-color-on-primary);
-    font-weight: 700;
+    font-weight: var(--fold-weight-bold);
   }
 }
 
@@ -168,7 +168,7 @@
   color: var(--fold-color-text);
   font: inherit;
   font-size: var(--fold-text-xs);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   line-height: var(--fold-calendar-month-lane, 22px);
   text-align: start;
   cursor: pointer;
@@ -291,7 +291,7 @@
   color: var(--fold-color-text-secondary);
   font: inherit;
   font-size: var(--fold-text-xs);
-  font-weight: 500;
+  font-weight: var(--fold-weight-medium);
   cursor: pointer;
 
   &:hover {
@@ -364,7 +364,7 @@
   }
 
   .foldcal-day.is-today .foldcal-daynum {
-    font-weight: 700;
+    font-weight: var(--fold-weight-bold);
     text-decoration: underline;
   }
 

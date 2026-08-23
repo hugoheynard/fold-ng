@@ -104,7 +104,7 @@
 }
 
 .date {
-  font-size: 10px;
+  font-size: var(--fold-text-2xs);
   color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
   /* Below the label by default; opt into above via `datePlacement`. */
@@ -113,9 +113,9 @@
 
 .nlabel {
   font-size: var(--fold-text-xs);
-  font-weight: 600;
+  font-weight: var(--fold-weight-semibold);
   color: var(--fold-color-text-secondary);
-  line-height: 1.3;
+  line-height: var(--fold-leading-snug);
 }
 
 .node.filled .nlabel,
