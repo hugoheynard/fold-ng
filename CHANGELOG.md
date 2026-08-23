@@ -8,6 +8,18 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING — `justify` sépare la répartition de la densité.** `size` se
+  documentait « pure padding/typography » et décidait en douce du modèle de
+  répartition : `compact` justifiait les onglets, `comfortable` les calait à
+  gauche. Une barre `compact` épouse maintenant son contenu ;
+  `justify="stretch"` restaure l'ancien comportement.
+
+- **BREAKING — `FoldNavLayoutContext` gagne `barCollapsed`.** Le contexte ne
+  parlait que dans un sens : la barre savait tout du layout, le layout rien de
+  la barre. `collapsed` appartient à la barre et la largeur de piste au layout,
+  et le JSDoc disait d'aller poser `--fold-nav-layout-rail-width` à la main, à
+  chaque usage. Une implémentation maison du token doit exposer `barCollapsed`.
+
 - **BREAKING — quatre rôles s'ajoutent au catalogue de couleurs** :
   `on-info` · `on-warning` · `on-alert` · `on-success` (41 → 45). Un thème
   maison doit les déclarer, sinon le test de parité échoue.
@@ -123,6 +135,30 @@ All notable changes to **fold-ng** are documented here. The format follows
   suivre, c'est exactement le trou.
 
 ### Fixed
+
+- **Un clic hors tuile ferme le `fold-nav-launcher`.** Le scrim portait bien
+  `(click)="close()"` et ne pouvait jamais se déclencher : `.nl-dialog` est
+  `position: fixed; inset: 0` par-dessus lui. Le test qui le couvrait cliquait
+  le scrim directement et passait au vert depuis toujours — jsdom n'a pas de
+  mise en page, il n'a jamais vu le recouvrement.
+
+- **Une barre d'onglets repliée défile, et son libellé actif n'est plus rogné.**
+  Le repli et le défilement s'excluaient : passé une douzaine d'items, le
+  premier écrasé était l'item actif, le seul qui garde son libellé. L'infobulle
+  d'un item icône passe dans le **top layer** (`popover`), donc elle échappe au
+  débordement du scroller sans qu'il faille lui réserver de la place.
+
+- **La typographie de la barre répond à `size` seul.** L'orientation pilotait
+  taille ET graisse, donc franchir `foldAt` avec `direction="auto"` recomposait
+  les libellés au lieu de déplacer la barre.
+
+- **`background="surface"` + `activeStyle="fill"` : la pilule active n'est plus
+  rognée** contre l'arête basse du bandeau.
+
+- **Le gap d'un `fold-nav-layout` suit sa propre largeur, pas la fenêtre.** Il
+  tenait sur `@media (max-width: 640px)` pendant que le pli tenait sur la
+  largeur du conteneur : un layout étroit sur grand écran gardait 16px alors
+  qu'il était replié.
 
 - **Le header et les rails du `fold-app-shell` peignent enfin leur fond.**
   `--fold-color-bg-header` était déclaré par les cinq thèmes et consommé par
