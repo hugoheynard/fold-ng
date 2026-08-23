@@ -36,16 +36,27 @@ All notable changes to **fold-ng** are documented here. The format follows
     l'intérieur (10 · 11 · 12 · 13 · 14 · 16 · 20 · 24), là où le code avait
     des littéraux. Elle s'arrête à 24px parce que rien, ni dans la librairie
     ni dans la galerie, ne rend plus gros.
-  - `--fold-weight-regular|medium|semibold|bold`
+  - `--fold-weight-regular|medium|semibold|bold|extrabold`
   - `--fold-leading-none|tight|snug|normal|relaxed`
-  - `--fold-tracking-tighter|tight|normal|wide|caps`
+  - `--fold-tracking-tightest|tighter|tight|normal|wide|caps`
+
+  `extrabold` et `tightest` viennent de la galerie : c'est elle, pas la
+  librairie, qui rend des titres hero — 800 sur treize sites, -0.04em sur
+  cinq, toujours ensemble avec une taille fluide. Un registre d'affichage
+  cohérent que personne n'avait nommé.
 
 - **`pnpm run lint:typography`** — jumeau de `lint:spacing`, branché en
   pre-push et dans les deux workflows. Aucun `font-size`, `font-weight`,
   `line-height` ou `letter-spacing` littéral sous `src/components`. Porte dure
-  d'emblée : le solde est à zéro. Les huit tailles qui restent des littéraux
-  sont de la **géométrie de composant**, pas du texte — les initiales d'un
-  avatar suivent son diamètre — et sont listées avec leur raison.
+  d'emblée : le solde est à zéro, **galerie comprise** — elle en portait 276
+  à elle seule, plus que la librairie entière — et le garde-fou lit aussi les
+  styles inline des templates.
+
+  Trois exceptions, chacune pour une raison : les huit tailles qui restent des
+  littéraux sont de la **géométrie de composant**, pas du texte (les initiales
+  d'un avatar suivent son diamètre) ; `clamp()` est du **texte fluide**, une
+  expression qui balaie l'échelle plutôt qu'une marche dessus ; et un
+  commentaire n'est pas du code.
 
 ### Fixed
 
