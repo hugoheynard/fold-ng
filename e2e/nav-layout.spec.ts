@@ -178,3 +178,47 @@ test.describe("nav layout · a collapsed rail hugs its icons", () => {
     await expect.poll(async () => Math.round(await width(track))).toBe(120);
   });
 });
+
+test.describe("tab bar · a busy collapsed bar scrolls", () => {
+  test("horizontal + collapsed is a scroller, and the active label survives", async ({
+    page,
+  }) => {
+    // The accordion was excluded from the scroll because it "fits any width".
+    // It does not: the squeezed item was the active one, the only one that
+    // keeps its label, so the current page's name became an ellipsis.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "horizontal");
+    await setParam(page, "collapsed", "icons");
+    await expect(
+      frame.locator("fold-view-nav .tab-bar.is-collapsed"),
+    ).toBeVisible();
+
+    const host = frame.locator("fold-view-nav").first();
+    expect(await host.evaluate((el) => getComputedStyle(el).overflowX)).toBe(
+      "auto",
+    );
+
+    // The active label is laid out at its full text width, not clipped to fit.
+    const cropped = await frame
+      .locator(".tab-bar-item.is-active .tab-bar-label")
+      .first()
+      .evaluate((el) => el.scrollWidth > el.clientWidth + 1);
+    expect(cropped).toBe(false);
+  });
+
+  test("a collapsed VERTICAL rail still lets its tooltips escape", async ({
+    page,
+  }) => {
+    // The rail does not scroll, so it keeps `overflow: visible`. The fix must
+    // not take that from it.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "vertical");
+    await setParam(page, "collapsed", "icons");
+
+    const overflow = await frame
+      .locator("fold-view-nav")
+      .first()
+      .evaluate((el) => getComputedStyle(el).overflow);
+    expect(overflow).toBe("visible");
+  });
+});

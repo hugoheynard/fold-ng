@@ -32,18 +32,23 @@
    `min-width: max-content` on the bar is the other half — without it the bar
    shrinks back to the host and the items clip *inside* it rather than overflow.
 
-   Two exclusions. VERTICAL rails grow downward: the page scroll already covers
-   them, and an inner scroll box there would trap the wheel. COLLAPSED is the
-   icon accordion — it is *designed* to fit any width, and it needs the host's
-   overflow to stay visible for its tooltips. */
-:host:has(.tab-bar:not(.dir-vertical):not(.is-collapsed)) {
+   One exclusion: VERTICAL rails grow downward, the page scroll already covers
+   them, and an inner scroll box there would trap the wheel.
+
+   COLLAPSED used to be excluded too, on the grounds that the icon accordion
+   "fits any width". It does not: past a dozen items the icons themselves
+   overflow, and the active item — the one that keeps its label — was the first
+   to be squeezed, so the name of the page you are on became an ellipsis. The
+   accordion and the scroll are independent answers to the same pressure, and a
+   bar with many items needs both. */
+:host:has(.tab-bar:not(.dir-vertical)) {
   overflow-x: auto;
   overflow-y: hidden;
   /* The house scrollbar — thin, and never chained to the page behind it. */
   scrollbar-width: thin;
   overscroll-behavior-x: contain;
 }
-:host:has(.tab-bar:not(.dir-vertical):not(.is-collapsed)) .tab-bar {
+:host:has(.tab-bar:not(.dir-vertical)) .tab-bar {
   min-width: max-content;
   max-width: none;
 }
@@ -208,6 +213,18 @@
 /* `.style-fill .is-active` already paints and bolds it — orientation adds
    nothing here, so the rule is gone rather than repeated. */
 
+/* A collapsed HORIZONTAL bar scrolls, so its active item takes the width its
+   label needs instead of being squeezed to fit: the whole point of keeping that
+   one label inline is being able to read it. */
+.is-collapsed:not(.dir-vertical) .tab-bar-item.is-active {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+.is-collapsed:not(.dir-vertical) .tab-bar-item.is-active .tab-bar-label {
+  overflow: visible;
+  text-overflow: clip;
+}
+
 /* Collapsed — the icon mode, a distinct behaviour from the `size` density scale.
    HORIZONTAL, an icon accordion: every item but the active one shows just its
    icon; the active one keeps its label inline and takes the room. VERTICAL, an
@@ -310,9 +327,11 @@
   transform-origin: top right;
   pointer-events: none;
 }
-/* The tooltip escapes the bar (right on a rail, below on a top bar) — the host
-   clips by default. */
-:host:has(.is-collapsed) {
+/* A collapsed VERTICAL rail lets its tooltips escape to the right; the host
+   clips by default. Horizontal is a scroll box now (see the top of this file),
+   so it cannot also be `overflow: visible` — a scroller clips, that is what it
+   is. Its tooltips are the cost; the rail keeps its own. */
+:host:has(.tab-bar.dir-vertical.is-collapsed) {
   overflow: visible;
 }
 

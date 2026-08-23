@@ -50,6 +50,14 @@ function setup(patch: Partial<HostComponent> = {}) {
   };
 }
 
+/** The shared bar partial, comments stripped — `fold-tabs` renders it too. */
+function tabBarScss(): string {
+  return readFileSync(
+    join(process.cwd(), "src/components/navigation/_tab-bar.scss"),
+    "utf-8",
+  ).replace(/\/\*[\s\S]*?\*\//g, "");
+}
+
 describe("FoldViewNavComponent", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -202,21 +210,39 @@ describe("FoldViewNavComponent", () => {
   // a too-narrow horizontal bar clip its tail, leaving those pages unreachable.
   // Guards the SHARED partial — `fold-tabs` renders the same bar.
   it("lets a horizontal bar scroll rather than clip its tail", () => {
-    const raw = readFileSync(
-      join(process.cwd(), "src/components/navigation/_tab-bar.scss"),
-      "utf-8",
-    );
-    const scss = raw.replace(/\/\*[\s\S]*?\*\//g, "");
+    const scss = tabBarScss();
 
     // The host scrolls on the inline axis…
     expect(scss).toMatch(
-      /:host:has\(\.tab-bar:not\(\.dir-vertical\):not\(\.is-collapsed\)\)\s*\{[^}]*overflow-x:\s*auto/,
+      /:host:has\(\.tab-bar:not\(\.dir-vertical\)\)\s*\{[^}]*overflow-x:\s*auto/,
     );
     // …and the bar keeps its natural width, or the items clip inside it instead.
     expect(scss).toMatch(
-      /:host:has\(\.tab-bar:not\(\.dir-vertical\):not\(\.is-collapsed\)\)\s+\.tab-bar\s*\{[^}]*min-width:\s*max-content/,
+      /:host:has\(\.tab-bar:not\(\.dir-vertical\)\)\s+\.tab-bar\s*\{[^}]*min-width:\s*max-content/,
     );
-    // Both exclusions are IN the selector above: a vertical rail would trap the
-    // wheel, and the collapsed accordion needs its overflow visible for tooltips.
+    // The ONE exclusion is in the selector: a vertical rail grows downward, and
+    // an inner scroll box there would trap the wheel.
+  });
+
+  it("scrolls a COLLAPSED horizontal bar too, and never crops its active label", () => {
+    // `collapsed` used to be excluded from the scroll on the grounds that the
+    // icon accordion "fits any width". Past a dozen items it does not, and the
+    // squeezed one was the active item — the only one that keeps its label, so
+    // the name of the current page turned into an ellipsis. The accordion and
+    // the scroll answer the same pressure and a busy bar needs both.
+    const scss = tabBarScss();
+
+    expect(scss).not.toMatch(/:not\(\.is-collapsed\)/);
+    expect(scss).toMatch(
+      /\.is-collapsed:not\(\.dir-vertical\)\s+\.tab-bar-item\.is-active\s*\{[^}]*min-width:\s*max-content/,
+    );
+    expect(scss).toMatch(
+      /\.is-collapsed:not\(\.dir-vertical\)\s+\.tab-bar-item\.is-active\s+\.tab-bar-label\s*\{[^}]*overflow:\s*visible/,
+    );
+    // A collapsed VERTICAL rail still lets its tooltips escape: it does not
+    // scroll, so it can still be `overflow: visible`.
+    expect(scss).toMatch(
+      /:host:has\(\.tab-bar\.dir-vertical\.is-collapsed\)\s*\{[^}]*overflow:\s*visible/,
+    );
   });
 });
