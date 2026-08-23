@@ -6,7 +6,52 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **BREAKING — `--fold-text-md` vaut 13px ; le corps de texte s'appelle
+  `--fold-text-base`.** Un consommateur non migré rétrécit d'un cran **en
+  silence** : c'est un rechercher/remplacer, `--fold-text-md` →
+  `--fold-text-base`, à faire avant de monter de version.
+
+- **Le bouton `lg` cesse d'être un `md` déguisé.** Les deux préréglages
+  nommaient littéralement la même taille — l'échelle n'avait aucune marche
+  entre le corps et 20px à saisir. `lg` rend maintenant en `--fold-text-lg`.
+
+### Added
+
+- **Un système typographique, au contrat.** La typo était la moitié manquante
+  du design system : cinq tailles, et graisse, interligne, interlettrage et
+  famille écrits en dur composant par composant — 74, 25, 22 déclarations,
+  pour 4, 9 et 11 valeurs distinctes. Personne n'avait décidé qu'il y aurait
+  onze interlettrages ; ils se sont accumulés.
+
+  Quatre échelles nouvelles, toutes dans le test de contrat au même titre que
+  la couleur, donc une marche ne peut plus naître ou disparaître sans que le
+  catalogue le dise :
+
+  - `--fold-font-sans` · `--fold-font-mono` — deux fontes, pas de `display` :
+    rien n'en rend une. Elles restent **hors de l'axe de thème** : changer de
+    fonte re-flow une page, et seul le radius peut varier par thème.
+  - `--fold-text-2xs … 2xl` — l'échelle s'étend vers le bas et vers
+    l'intérieur (10 · 11 · 12 · 13 · 14 · 16 · 20 · 24), là où le code avait
+    des littéraux. Elle s'arrête à 24px parce que rien, ni dans la librairie
+    ni dans la galerie, ne rend plus gros.
+  - `--fold-weight-regular|medium|semibold|bold`
+  - `--fold-leading-none|tight|snug|normal|relaxed`
+  - `--fold-tracking-tighter|tight|normal|wide|caps`
+
+- **`pnpm run lint:typography`** — jumeau de `lint:spacing`, branché en
+  pre-push et dans les deux workflows. Aucun `font-size`, `font-weight`,
+  `line-height` ou `letter-spacing` littéral sous `src/components`. Porte dure
+  d'emblée : le solde est à zéro. Les huit tailles qui restent des littéraux
+  sont de la **géométrie de composant**, pas du texte — les initiales d'un
+  avatar suivent son diamètre — et sont listées avec leur raison.
+
+### Fixed
+
+- **`--fold-font-mono` existe.** Neuf déclarations de la galerie le lisaient,
+  aucune ne le déclarait : il ne rendait que par son fallback. Quatorze autres
+  recopiaient la pile à la main.
 
 ## [0.12.1] - 2026-08-22
 
