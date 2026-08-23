@@ -85,7 +85,12 @@ export interface FoldTabsContext<K extends string = string> {
   imports: [FoldIconComponent, FoldBadgeComponent, FoldTabTooltipDirective],
   templateUrl: "./tabs.component.html",
   styleUrl: "./tabs.component.scss",
-  host: { "[class.is-sticky]": "sticky()" },
+  host: {
+    "[class.is-sticky]": "sticky()",
+    // Orientation on the HOST, not just the bar: the SCSS needs it to stop a
+    // horizontal strip from stretching to a flex/grid parent's height.
+    "[class.is-horizontal]": "resolvedDirection() === 'horizontal'",
+  },
 })
 export class FoldTabsComponent<
   K extends string = string,

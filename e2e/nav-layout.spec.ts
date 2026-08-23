@@ -317,3 +317,68 @@ test.describe("tab bar · density and distribution are two axes", () => {
     await expect.poll(grow).toBe("1");
   });
 });
+
+test.describe("tab bar · a horizontal strip is as tall as its items", () => {
+  test("it does not stretch to a flex-row or grid parent's height", async ({
+    page,
+  }) => {
+    // A 38px bar rendered 184px tall inside a row, its items floating in the
+    // middle of the empty space. The gallery never showed it because its own
+    // containers are blocks — this reparents the bar to find out.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "horizontal");
+    const measured = await frame
+      .locator("fold-view-nav")
+      .first()
+      .evaluate((host) => {
+        const origin = host.parentElement;
+        const probe = document.createElement("div");
+        document.body.appendChild(probe);
+        const out: Record<string, number> = {};
+        for (const [name, css] of [
+          ["row", "display:flex;flex-direction:row;height:184px"],
+          ["column", "display:flex;flex-direction:column;height:184px"],
+          ["grid", "display:grid;height:184px"],
+          ["block", "display:block;height:184px"],
+        ]) {
+          probe.setAttribute("style", css);
+          probe.appendChild(host);
+          out[name] = Math.round(host.getBoundingClientRect().height);
+        }
+        origin?.appendChild(host);
+        probe.remove();
+        return out;
+      });
+
+    const heights = Object.values(measured);
+    // Every parent gives the same height, and it is the bar's, not the box's.
+    expect(new Set(heights).size).toBe(1);
+    expect(heights[0]).toBeLessThan(80);
+  });
+
+  test("a VERTICAL rail still fills its column", async ({ page }) => {
+    // The opposite case, and the reason the fix is scoped: a rail must cover
+    // its column so `background="surface"` does not float above the content.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "vertical");
+
+    const filled = await frame
+      .locator("fold-view-nav")
+      .first()
+      .evaluate((host) => {
+        const origin = host.parentElement;
+        const probe = document.createElement("div");
+        probe.setAttribute(
+          "style",
+          "display:flex;flex-direction:row;height:184px",
+        );
+        document.body.appendChild(probe);
+        probe.appendChild(host);
+        const h = host.getBoundingClientRect().height;
+        origin?.appendChild(host);
+        probe.remove();
+        return h;
+      });
+    expect(filled).toBeGreaterThan(150);
+  });
+});

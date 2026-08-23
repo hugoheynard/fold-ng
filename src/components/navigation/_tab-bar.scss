@@ -11,6 +11,18 @@
   max-width: 100%;
   overflow: hidden;
 }
+/* A HORIZONTAL bar is a strip, and a strip is as tall as its items.
+   Left to itself the host stretches on the cross axis of any flex-row or grid
+   parent — a 38px tab bar rendered 184px tall inside a row, with the items
+   floating in the middle of the empty space. The gallery never showed it
+   because its containers are blocks.
+
+   Vertical is the opposite and stays as it is: a rail must fill the column so
+   its `background="surface"` covers it rather than floating above the content
+   (see the flex: 1 on the bar below). */
+:host(.is-horizontal) {
+  align-self: start;
+}
 
 /* `sticky` — the bar stays put while its content scrolls under it. Only ever
    worth it on a long view, and only with an OPAQUE bar: `background="surface"`
