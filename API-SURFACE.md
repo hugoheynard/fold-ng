@@ -516,8 +516,20 @@
 - value: ModelSignal<readonly T[]>
 - variant: InputSignal<"default" | "panel">
 
+#### FoldNavGroupComponent
+- badge: InputSignal<string | number | undefined>
+- badgeTone: InputSignal<FoldMenuItemBadgeTone>
+- entryCountLabel: InputSignal<(count: number) => string>
+- icon: InputSignal<FoldIconName | undefined>
+- label: InputSignal<string> — required
+
 #### FoldNavLauncherComponent
+- backLabel: InputSignal<string>
+- closeLabel: InputSignal<string>
 - columns: InputSignal<number | "auto">
+- eyebrow: InputSignal<string | undefined>
+- glass: InputSignalWithTransform<boolean, unknown>
+- heading: InputSignal<string | undefined>
 - label: InputSignal<string>
 - open: ModelSignal<boolean>
 
@@ -529,9 +541,11 @@
 - active: InputSignalWithTransform<boolean, unknown>
 - badge: InputSignal<string | number | undefined>
 - badgeTone: InputSignal<FoldMenuItemBadgeTone>
-- icon: InputSignal<FoldIconName> — required
+- hint: InputSignal<string | undefined>
+- icon: InputSignal<FoldIconName | undefined>
 - label: InputSignal<string> — required
-- variant: InputSignal<"filled" | "surface">
+- tone: InputSignal<FoldNavTileTone>
+- variant: InputSignal<"accent" | "filled" | "surface">
 
 #### FoldNumberInputComponent
 - align: InputSignal<"center" | "start">
@@ -991,6 +1005,7 @@
 - FoldMonthGridOptions (interface)
 - FoldMotionToken (type)
 - foldMotionVar (function)
+- FoldNavTileTone (type)
 - FoldNumberControls (type)
 - FoldNumberSpinner (type)
 - FoldOverlapInput (interface)

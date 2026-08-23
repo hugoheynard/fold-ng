@@ -1,11 +1,10 @@
 <fold-page-layout title="nav-launcher" icon="grid">
   <p description>
-    A full-screen mobile navigation launcher — a centred grid of large tiles
-    over a blurred scrim. The "app-grid" alternative to the app-shell's slide-in
-    drawer, for a curated set of top-level destinations distinct from the
-    desktop rail. It owns the whole overlay contract itself: scrim,
-    <code>Escape</code> / scrim / close-button dismissal, focus-trap and body
-    scroll-lock.
+    The full-screen mobile navigation, in <strong>two levels</strong>. A grid of
+    large tiles; a tile that <em>contains</em> tiles opens a second level
+    instead of going somewhere. It owns the whole overlay contract: scrim,
+    <code>Escape</code> / close-button dismissal, focus-trap, body scroll-lock —
+    and the descent itself.
   </p>
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['icons']" />
@@ -13,12 +12,17 @@
   <fold-page-section
     title="Live"
     icon="play"
-    description="Open it — it takes over the screen, exactly as it would on a phone. Escape, the close button, or the scrim dismisses it; a tile picks a destination and closes."
+    description="Open it — it takes over the screen, exactly as it would on a phone. Tiles with a chevron open a level; come back with the arrow, the section pastille, Escape, or a swipe to the right."
   >
     <div class="nlp-live">
       <button foldButton icon="menu" (click)="open.set(true)">
         Open the launcher
       </button>
+      <fold-checkbox
+        [(checked)]="glass"
+        label="glass"
+        hint="Translucent planes — off by default"
+      />
       <span class="gal-body">
         Current destination: <strong>{{ active() }}</strong>
       </span>
@@ -26,30 +30,156 @@
   </fold-page-section>
 
   <fold-page-section
-    title="Pairing with the shell"
+    title="The transition is the wayfinding"
+    icon="lightning"
+    description="There is no breadcrumb, and that is the design — not an omission."
+  >
+    <ol class="nlp-steps">
+      <li>
+        <strong>The tile you touch becomes the anchor.</strong> It does not
+        disappear: it climbs into the level-2 header at pastille size. It is the
+        only element that survives the transition, so it is the only landmark
+        the eye needs.
+      </li>
+      <li>
+        <strong
+          >Its sisters leave in a wave that starts under your finger</strong
+        >
+        — 26&nbsp;ms per step of <em>distance</em>, not per position in the
+        list. They rise as they blur, upward, where the finger is not going.
+      </li>
+      <li>
+        <strong>Level 2 arrives as a list from below</strong>, on the tone of
+        the <em>secondary rail</em>, one seam away from the primary. That is the
+        desktop's own relation: descending into a section is moving from rail 1
+        to rail 2, not from furniture to content. A list and not a grid —
+        "Price-list templates" does not fit in a square, and a list is read with
+        the thumb.
+      </li>
+      <li>
+        <strong>A row with no icon falls back to a status dot</strong>, in the
+        same gutter. A silent row must not shift its neighbour.
+      </li>
+      <li>
+        <strong>The way back is the exact inverse</strong>, not another
+        animation. Same curve, same cascade, opposite direction — which is what
+        makes the depth understood without thinking about it.
+      </li>
+    </ol>
+  </fold-page-section>
+
+  <fold-page-section
+    title="The API"
     icon="code"
-    description='Set the shell to mobileNav="none" and bind the launcher&apos;s open state to the same signal a header hamburger toggles.'
+    description="No level to drive and no mode to switch: a tile that contains tiles is a group."
   >
     <pre class="code-pre"><code>{{ usageCode }}</code></pre>
     <fold-callout variant="info">
-      The launcher is deliberately decoupled from <code>fold-app-shell</code>:
-      it is a standalone overlay you can open from anywhere. The shell only
-      exposes <code>[(mobileNavOpen)]</code> — pair the two, or use the shell's
-      built-in <code>drawer</code> mode instead.
+      The launcher finds the depth by <strong>content query</strong>, exactly as
+      <code>fold-multiselect</code> finds its <code>fold-optgroup</code>. Two
+      levels and no more — at a third this stops being a launcher and becomes a
+      tree. The entry count in the header is <strong>derived</strong>, never
+      passed: a count declared beside the list it counts starts lying the first
+      time someone adds a tile without touching it.
+    </fold-callout>
+  </fold-page-section>
+
+  <fold-page-section
+    title="What it owes assistive tech"
+    icon="eye"
+    description="Motion tells a sighted user where they went, and nothing at all to anyone else."
+  >
+    <ul class="nlp-a11y">
+      <li>
+        <strong>Focus follows the level</strong> — down to the sheet's first
+        entry, back to the tile it came from. It moves only once the new level
+        is actually painted; taken a frame early it failed silently and the trap
+        fell back to the close button, so the caret landed on "dismiss" every
+        time.
+      </li>
+      <li>
+        <strong><code>Escape</code> is contextual</strong> — at level 2 it
+        climbs, at level 1 it closes. Two gestures, one key, in that order.
+      </li>
+      <li>
+        <strong>The level is announced</strong> — a polite live region says
+        "PIM, 7 entries".
+      </li>
+      <li>
+        <strong>The swipe is a bonus, not the path.</strong> It doubles the back
+        button; it never replaces it.
+      </li>
+    </ul>
+  </fold-page-section>
+
+  <fold-page-section
+    title="The glass option"
+    icon="theme-dark"
+    description="Off by default, and that is a position rather than an oversight."
+  >
+    <p class="gal-body">
+      The launcher stays <strong>dark</strong>: glass does not brighten the
+      surfaces, it brightens the <em>light that crosses them</em>. The ground
+      drops a step, a veil of three haloes appears behind, and every plane
+      trades opacity for translucency. Without the veil the blur has nothing to
+      blur and you get darker panels, nothing more.
+    </p>
+    <fold-callout variant="warning">
+      Two things to know before switching it on in production: text contrast
+      drops about a step on a 50&nbsp;% plane, so <code>text-faded</code> stops
+      being usable as a UI role; and <code>backdrop-filter</code> costs a
+      compositing layer per plane — eight blurred tiles plus a sheet is
+      noticeable when scrolling on a low-end phone.
     </fold-callout>
   </fold-page-section>
 </fold-page-layout>
 
 <!-- The live launcher. position:fixed → it genuinely fills the viewport. -->
-<fold-nav-launcher [(open)]="open" label="Go to">
-  @for (d of dests; track d.id) {
+<fold-nav-launcher
+  [(open)]="open"
+  [glass]="glass()"
+  label="Go to"
+  eyebrow="LFC B2B"
+  heading="Admin"
+>
+  @for (s of sections; track s.id) { @if (s.entries; as entries) {
+  <fold-nav-group
+    [icon]="s.icon"
+    [label]="s.label"
+    [badge]="s.badge"
+    [badgeTone]="s.badgeTone ?? 'follow'"
+  >
+    @for (e of entries; track e.id) {
+    <button
+      fold-nav-tile
+      [icon]="e.icon"
+      [label]="e.label"
+      [hint]="e.hint"
+      [tone]="e.tone ?? 'neutral'"
+      [active]="active() === e.id"
+      (click)="pick(e.id)"
+    ></button>
+    }
+  </fold-nav-group>
+  } @else {
   <button
     fold-nav-tile
-    variant="filled"
-    [icon]="d.icon"
-    [label]="d.label"
-    [active]="active() === d.id"
-    (click)="pick(d.id)"
+    [icon]="s.icon"
+    [label]="s.label"
+    [badge]="s.badge"
+    [badgeTone]="s.badgeTone ?? 'follow'"
+    [active]="active() === s.id"
+    (click)="pick(s.id)"
   ></button>
-  }
+  } }
+
+  <!-- The footer slot: everything the app owns and the library must not guess. -->
+  <div footer class="nlp-foot">
+    <span class="nlp-avatar" aria-hidden="true">CR</span>
+    <span class="nlp-who">
+      <span class="nlp-name">Camille Roux</span>
+      <span class="nlp-role">Administrator · LFC</span>
+    </span>
+    <button type="button" class="nlp-signout">Sign out</button>
+  </div>
 </fold-nav-launcher>

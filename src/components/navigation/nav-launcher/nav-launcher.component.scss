@@ -1,9 +1,8 @@
-/* The host takes no layout — the scrim + dialog are fixed to the viewport. */
+/* L'hôte ne prend aucune place — le voile et le dialogue sont fixés au viewport. */
 :host {
   display: contents;
 }
 
-/* Blurred darkening veil over the whole viewport, catching the dismiss click. */
 .nl-scrim {
   position: fixed;
   inset: 0;
@@ -14,56 +13,246 @@
   animation: fold-nl-fade 200ms ease;
 }
 
-/* The centred dialog holding the close button + the tile grid. */
+/* Le lanceur est une SURFACE, pas une grille flottant sur la page : il prend
+   l'écran comme le ferait une application. Le ton du rail primaire — c'est de
+   là qu'on vient, et la feuille du niveau 2 prendra celui du rail secondaire. */
 .nl-dialog {
+  --fold-nl-gutter: var(--fold-space-xl);
+  --fold-nl-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Les quatre plans du lanceur, en variables plutôt qu'en règles : elles
+     DESCENDENT dans les tuiles et la feuille par héritage, donc l'option verre
+     se pose ici en un endroit et n'a jamais à traverser l'encapsulation de vue.
+     `::ng-deep` aurait fait la même chose en perçant un mur. */
+  --fold-nl-tile-bg: var(--fold-color-surface-raised);
+  --fold-nl-accent-bg: var(--fold-color-primary-surface);
+  --fold-nl-sheet-bg: var(--fold-color-bg-rail-secondary);
+  --fold-nl-row-bg: var(--fold-color-surface-card);
+  --fold-nl-backdrop: none;
+  --fold-nl-sheet-backdrop: none;
+
   position: fixed;
   inset: 0;
   z-index: 201;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--fold-space-2xl);
+  padding: var(--fold-space-3xl) var(--fold-nl-gutter) var(--fold-space-xl);
+  background: var(--fold-color-bg-rail-primary);
+  color: var(--fold-color-text);
 }
 
-.nl-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  display: inline-flex;
+/* ── En-tête ─────────────────────────────────────────────────── */
+.nl-head {
+  flex: none;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: 0;
-  border-radius: var(--fold-radius-md);
+  justify-content: space-between;
+  gap: var(--fold-space-md);
+  min-height: 44px;
+  margin-bottom: var(--fold-space-xl);
+}
+.nl-titles {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.nl-eyebrow {
+  font-family: var(--fold-font-mono);
+  font-size: var(--fold-text-xs);
+  letter-spacing: var(--fold-tracking-caps);
+  text-transform: uppercase;
+  color: var(--fold-color-text-muted);
+}
+.nl-heading {
+  font-size: var(--fold-text-xl);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-tighter);
+  color: var(--fold-color-text);
+}
+.nl-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-tighter);
+  color: var(--fold-color-text);
+  animation: fold-nl-crumb 320ms var(--fold-nl-ease-in) both;
+  animation-delay: 40ms;
+}
+.nl-sub {
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+  animation: fold-nl-crumb 320ms var(--fold-nl-ease-in) both;
+  animation-delay: 40ms;
+}
+
+.nl-back,
+.nl-close,
+.nl-anchor {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-raised);
+  border: 1px solid var(--fold-color-border);
   color: var(--fold-color-text-secondary);
   cursor: pointer;
   transition:
     background 140ms ease,
     color 140ms ease;
 }
+.nl-back:hover,
 .nl-close:hover {
   background: var(--fold-color-surface-hover);
   color: var(--fold-color-text);
 }
+/* L'ancre porte la marque d'accent : c'est le seul élément qui a traversé la
+   transition, il doit se voir comme tel. */
+.nl-anchor {
+  background: var(--fold-color-primary);
+  border-color: transparent;
+  color: var(--fold-color-on-primary);
+  animation: fold-nl-anchor-in 300ms var(--fold-nl-ease-in) both;
+}
+.nl-close {
+  margin-inline-start: auto;
+}
 
-/* The grid lays the projected tiles out; each tile styles + stages itself. The
-   column count comes from the component (`--nav-cols`, `auto` = scaled to the
-   tile count), so fewer tiles read as larger flat tiles in the same width. */
+/* ── Corps ───────────────────────────────────────────────────── */
+/* PLEINE LARGEUR, et la GRILLE porte la gouttière. Le corps la portait, et son
+   `overflow: hidden` DÉCOUPAIT la feuille du niveau 2 : celle-ci débordait
+   correctement en layout — 0 à 375 — mais ne peignait que la zone rembourrée.
+   Une feuille qui se croit pleine largeur et n'en peint que le milieu. */
+.nl-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-inline: calc(-1 * var(--fold-nl-gutter));
+  overflow: hidden;
+}
 .nl-grid {
+  padding-inline: var(--fold-nl-gutter);
   display: grid;
   grid-template-columns: repeat(var(--nav-cols, 3), 1fr);
-  gap: var(--fold-space-md);
-  width: 100%;
-  max-width: 360px;
+  gap: var(--fold-space-sm);
 }
-/* On a very narrow phone, never more than two across whatever the count. */
+/* Sur un téléphone très étroit, jamais plus de deux de front. */
 @media (max-width: 360px) {
   .nl-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+/* Au niveau 2 la grille sort de la vue ET du parcours clavier — mais reste en
+   place, pour que la feuille du groupe ouvert la couvre sans rien déplacer.
+   Le groupe ouvert se re-montre lui-même (`:host([data-open])` dans SA feuille) :
+   une règle d'ici ne l'atteindrait pas, il porte la portée du consommateur. */
+.nl-dialog[data-level="2"] .nl-grid {
+  visibility: hidden;
+}
+
+/* ── Pied ────────────────────────────────────────────────────── */
+/* ANCRÉ en bas (`margin-top: auto` sur le corps qui pousse), et non posé à la
+   suite du contenu : sans cela la couture flottait là où le contenu s'arrêtait,
+   et bougeait d'un niveau à l'autre. Vide, il ne prend aucune place. */
+.nl-foot:not(:empty) {
+  flex: none;
+  margin-top: auto;
+  padding-top: var(--fold-space-md);
+  border-top: 1px solid var(--fold-color-border-subtle);
+}
+
+.nl-dots {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fold-space-xs);
+  margin-top: var(--fold-space-md);
+}
+.nl-dot {
+  width: 22px;
+  height: 3px;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-border);
+  transition: background 280ms ease;
+}
+.nl-dot.is-on {
+  background: var(--fold-color-primary);
+}
+
+/* La région vive : entendue, jamais vue. */
+.nl-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Option verre ────────────────────────────────────────────── */
+/* La polarité reste SOMBRE : on éclaircit la lumière traversante, jamais la
+   surface. Le fond descend d'un cran, un voile de halos apparaît derrière, et
+   chaque plan échange de l'opacité contre de la translucidité. */
+.nl-veil {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+  background:
+    radial-gradient(
+      120% 70% at 12% 4%,
+      color-mix(in srgb, var(--fold-color-primary) 34%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      90% 60% at 88% 22%,
+      color-mix(in srgb, var(--fold-color-primary-strong) 30%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      80% 55% at 70% 96%,
+      color-mix(in srgb, var(--fold-color-warning) 16%, transparent),
+      transparent 62%
+    );
+}
+/* Le fond descend d'un cran — plus SOMBRE qu'avant, pas plus clair — et chaque
+   plan échange de l'opacité contre de la translucidité : tuiles à 52 %, feuille
+   à 60 %, lignes à 50 %, flou de 20 à 26 px. */
+.nl-dialog[data-glass] {
+  --fold-nl-tile-bg: color-mix(
+    in srgb,
+    var(--fold-color-bg-rail-secondary) 52%,
+    transparent
+  );
+  --fold-nl-accent-bg: color-mix(
+    in srgb,
+    var(--fold-color-primary) 14%,
+    transparent
+  );
+  --fold-nl-sheet-bg: color-mix(
+    in srgb,
+    var(--fold-color-bg-rail-secondary) 60%,
+    transparent
+  );
+  --fold-nl-row-bg: color-mix(
+    in srgb,
+    var(--fold-color-surface-card) 50%,
+    transparent
+  );
+  --fold-nl-backdrop: blur(20px) saturate(150%);
+  --fold-nl-sheet-backdrop: blur(26px) saturate(150%);
+
+  background: var(--fold-color-bg-header);
+}
+.nl-dialog[data-glass] .nl-veil {
+  opacity: 1;
 }
 
 @keyframes fold-nl-fade {
@@ -74,8 +263,31 @@
     opacity: 1;
   }
 }
+@keyframes fold-nl-crumb {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fold-nl-anchor-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .nl-scrim {
+  .nl-scrim,
+  .nl-title,
+  .nl-sub,
+  .nl-anchor {
     animation: none;
   }
 }

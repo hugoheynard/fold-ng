@@ -5,3 +5,70 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+
+.nlp-steps,
+.nlp-a11y {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--fold-color-text-secondary);
+  font-size: var(--fold-text-base);
+  line-height: var(--fold-leading-relaxed);
+}
+.nlp-steps strong,
+.nlp-a11y strong {
+  color: var(--fold-color-text);
+}
+
+/* The launcher's footer slot — app-owned content, styled by the app. */
+.nlp-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nlp-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+}
+.nlp-who {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.nlp-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
+  color: var(--fold-color-text);
+}
+.nlp-role {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fold-text-2xs);
+  color: var(--fold-color-text-muted);
+}
+.nlp-signout {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
+  color: var(--fold-color-alert-text);
+}

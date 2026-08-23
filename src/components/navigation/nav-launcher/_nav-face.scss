@@ -1,0 +1,174 @@
+/* La FACE d'une tuile de lanceur — les déclarations, pas les sélecteurs.
+   Deux composants la portent : `fold-nav-tile` sur son hôte, et `fold-nav-group`
+   sur son bouton de niveau 1. Une tuile qui ouvre un niveau et une tuile qui
+   mène quelque part doivent être la MÊME tuile ; deux copies de ces valeurs
+   auraient divergé au premier ajustement. */
+
+@mixin base {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fold-space-sm);
+  width: 100%;
+  height: 100%;
+  padding: var(--fold-space-sm);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-raised);
+  border: 1px solid var(--fold-color-border);
+  color: var(--fold-color-text-secondary);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  /* L'onde. Le pas vient du LANCEUR (`--fold-nl-step`), parce que son origine
+     est la tuile touchée : aucune tuile ne peut connaître seule sa distance à
+     un doigt posé sur une autre. Sans variable, pas de retard — une tuile hors
+     lanceur entre d'un bloc. */
+  animation: fold-nav-face-in 400ms var(--fold-nl-spring) both;
+  animation-delay: calc(var(--fold-nl-step, 0) * 22ms);
+}
+
+/* La tuile qui OUVRE un niveau. Marquée deux fois — par le fond et par le
+   chevron — parce que la couleur seule ne survit ni au niveau de gris ni à
+   `forced-colors`. */
+@mixin accent {
+  background: var(--fold-color-primary-surface);
+  border-color: var(--fold-color-primary-border);
+}
+
+@mixin glyph {
+  flex: none;
+  color: var(--fold-color-text-secondary);
+}
+
+@mixin glyph-accent {
+  color: var(--fold-color-primary);
+}
+
+@mixin label {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-xs);
+  max-width: 100%;
+  min-width: 0;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-semibold);
+  line-height: var(--fold-leading-tight);
+  color: var(--fold-color-text);
+  letter-spacing: var(--fold-tracking-tight);
+}
+
+@mixin label-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Le chevron : « cette tuile ouvre un niveau », pas « cette tuile mène ailleurs ». */
+@mixin chevron {
+  flex: none;
+  font-weight: var(--fold-weight-bold);
+  color: var(--fold-color-primary);
+}
+
+/* La sortie de l'onde : les sœurs s'élèvent en se floutant, VERS LE HAUT — par
+   où le doigt ne va pas. */
+@mixin leaving {
+  animation: fold-nav-face-out 240ms var(--fold-nl-ease-out) forwards;
+  animation-delay: calc(var(--fold-nl-step, 0) * 26ms);
+}
+
+/* L'ancre : la tuile touchée ne part pas, elle remonte en en-tête. Sa face
+   part sur la courbe INVERSE de la pastille qui la remplace. */
+@mixin anchor {
+  transform: scale(1.04);
+  animation: fold-nav-anchor 260ms var(--fold-nl-spring) reverse forwards;
+  animation-delay: 0ms;
+}
+
+/* Une fois la cascade finie, le lanceur pose `data-settled` : l'animation est
+   retirée pour rendre la main au `:active`. Sans cela son `fill-mode: both`
+   garde `transform`, et l'origine animation prime sur l'origine auteur — le
+   retour tactile serait inerte. */
+@mixin settled {
+  animation: none;
+  transition:
+    transform 140ms var(--fold-nl-ease-out),
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+/* Les trois courbes du lanceur. Portées par l'hôte de chaque composant plutôt
+   que par le lanceur, pour qu'une tuile posée hors lanceur anime quand même. */
+@mixin motion {
+  --fold-nl-spring: cubic-bezier(0.34, 1.48, 0.64, 1);
+  --fold-nl-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --fold-nl-ease-out: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* `@keyframes` n'est PAS encapsulé par Angular : ces règles sont globales.
+   Incluses par la tuile ET par le groupe — deux définitions identiques, parce
+   qu'aucun des deux ne peut supposer que l'autre est chargé. */
+@mixin keyframes {
+  @keyframes fold-nav-face-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(0.9);
+      filter: blur(3px);
+    }
+    60% {
+      filter: blur(0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+  @keyframes fold-nav-face-out {
+    from {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-14px) scale(0.86);
+      filter: blur(3px);
+    }
+  }
+  @keyframes fold-nav-anchor {
+    from {
+      opacity: 0;
+      transform: scale(0.6) rotate(-8deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fold-nav-row-in {
+    from {
+      opacity: 0;
+      transform: translate3d(-10px, 20px, 0) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fold-nav-row-out {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale(0.97);
+    }
+  }
+}

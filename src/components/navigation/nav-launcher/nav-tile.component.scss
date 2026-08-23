@@ -1,45 +1,45 @@
+@use "nav-face" as face;
+
+@include face.keyframes;
+
 :host {
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--fold-space-sm);
+  @include face.motion;
+  @include face.base;
+
   aspect-ratio: 1;
-  padding: var(--fold-space-md);
-  border-radius: var(--fold-radius-lg);
-  background: var(--fold-color-surface-raised);
-  border: 1px solid var(--fold-color-border);
-  color: var(--fold-color-text-secondary);
-  text-decoration: none;
-  cursor: pointer;
-  /* Entrance — staged by grid position (see the @for below), so tiles cascade
-     in without the launcher wiring an index. `forwards` holds the end state. */
-  opacity: 0;
-  animation: fold-nav-tile-in 260ms ease forwards;
-  transition:
-    transform 140ms ease,
-    background 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease;
+  background: var(--fold-nl-tile-bg, var(--fold-color-surface-raised));
+  backdrop-filter: var(--fold-nl-backdrop, none);
+  -webkit-backdrop-filter: var(--fold-nl-backdrop, none);
 }
+:host(.is-accent) {
+  @include face.accent;
+
+  background: var(--fold-nl-accent-bg, var(--fold-color-primary-surface));
+}
+
+/* La cascade finie, le lanceur pose `data-settled` et rend la main au `:active`. */
+:host([data-settled]) {
+  @include face.settled;
+}
+:host([data-settled]:active) {
+  transform: scale(0.95);
+}
+:host([data-leaving]) {
+  @include face.leaving;
+}
+
 :host(:hover) {
-  transform: translateY(-2px);
   background: var(--fold-color-surface-hover);
   border-color: var(--fold-color-primary);
   color: var(--fold-color-text);
-}
-:host(:active) {
-  transform: scale(0.97);
 }
 :host(.is-active) {
   border-color: var(--fold-color-primary);
   color: var(--fold-color-primary-text);
 }
 
-/* Filled — a solid brand tile (the flat "app-icon" look). Names the brand
-   roles, so it's a navy tile with a white glyph under navi, teal under umbra. */
+/* Filled — une tuile de marque pleine (le look « icône d'app »). Nomme les
+   rôles, donc bleue sous navi, teal sous umbra. */
 :host(.is-filled) {
   background: var(--fold-color-primary);
   border-color: transparent;
@@ -50,52 +50,118 @@
   border-color: transparent;
   color: var(--fold-color-on-primary);
 }
-/* Active filled tile: an inset ring in the on-fill colour marks the current
-   destination without breaking the solid fill. */
 :host(.is-filled.is-active) {
   outline: 2px solid var(--fold-color-on-primary);
   outline-offset: -5px;
 }
+
 .nt-icon {
-  flex: none;
+  @include face.glyph;
+}
+:host(.is-accent) .nt-icon {
+  @include face.glyph-accent;
+}
+:host(.is-filled) .nt-icon {
+  color: inherit;
+}
+/* Le repli d'une tuile sans icône : son initiale, à la taille du glyphe, pour
+   que la grille garde son rythme. */
+.nt-initial {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-bold);
+  line-height: var(--fold-leading-none);
 }
 .nt-label {
-  font-size: var(--fold-text-xs);
+  @include face.label;
+}
+.nt-label-text {
+  @include face.label-text;
+}
+:host(.is-filled) .nt-label {
+  color: inherit;
+}
+
+/* ── Niveau 2 : la LIGNE ──────────────────────────────────────
+   Une liste et non une grille : un libellé long ne tient pas dans un carré, et
+   une liste se parcourt au pouce. */
+:host(.is-row) {
+  aspect-ratio: auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--fold-space-sm);
+  width: 100%;
+  height: auto;
+  padding: var(--fold-space-md);
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-nl-row-bg, var(--fold-color-surface-card));
+  border: 1px solid var(--fold-color-border);
+  text-align: start;
+  animation: fold-nav-row-in 420ms var(--fold-nl-spring) both;
+  animation-delay: calc(110ms + var(--fold-nl-step, 0) * 34ms);
+}
+:host(.is-row[data-leaving]) {
+  animation: fold-nav-row-out 180ms var(--fold-nl-ease-out) forwards;
+  animation-delay: calc(var(--fold-nl-step, 0) * 14ms);
+}
+:host(.is-row[data-settled]:active) {
+  transform: scale(0.985);
+}
+:host(.is-row:hover) {
+  background: var(--fold-color-surface-hover);
+  border-color: var(--fold-color-primary-border);
+}
+
+/* Gouttière FIXE : le glyphe et le point l'occupent pareil, sinon une ligne
+   sans icône décalerait sa voisine. */
+.nt-lead {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 23px;
+  color: var(--fold-color-primary);
+}
+:host([data-tone="warning"]) .nt-lead {
+  color: var(--fold-color-warning-text);
+}
+.nt-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--fold-radius-pill);
+  background: currentcolor;
+}
+.nt-row-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fold-text-base);
   font-weight: var(--fold-weight-semibold);
-  line-height: var(--fold-leading-tight);
-  text-align: center;
+  line-height: var(--fold-leading-snug);
+  letter-spacing: var(--fold-tracking-tight);
+  color: var(--fold-color-text);
+}
+.nt-hint {
+  flex: none;
+  white-space: nowrap;
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+}
+:host([data-tone="warning"]) .nt-hint {
+  color: var(--fold-color-warning-text);
+}
+.nt-chevron {
+  flex: none;
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-faded);
 }
 
-/* Stagger the entrance by position among its siblings — the tile knows its own
-   place in the grid, so no index has to cross the projection boundary. Cap at a
-   reasonable tile count; beyond it they all share the last delay. */
-@for $i from 1 through 12 {
-  :host(:nth-child(#{$i})) {
-    animation-delay: #{($i - 1) * 35}ms;
-  }
-}
-
-@keyframes fold-nav-tile-in {
-  from {
-    opacity: 0;
-    transform: scale(0.82);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :host {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-/* Corner bubble — the tile's echo of the collapsed rail's dot. `follow` takes
-   the tile's own ink so it reads as part of the tile; a semantic tone names a
-   role token instead. */
+/* Pastille de coin — l'écho de la tuile sur le point du rail replié. */
 .nt-badge {
   position: absolute;
   top: var(--fold-space-sm);
@@ -108,16 +174,16 @@
   border-radius: var(--fold-radius-pill);
   background: var(--fold-color-primary);
   color: var(--fold-color-on-primary);
-  font-size: var(--fold-text-xs);
-  font-weight: var(--fold-weight-semibold);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
   line-height: var(--fold-leading-none);
   pointer-events: none;
 }
 .nt-badge[data-tone="neutral"] {
   background: var(--fold-color-text-muted);
 }
-/* Each tone brings its own ink. The counter kept `on-primary` while the fill
-   swapped underneath it, so a warning bubble rendered white on amber. */
+/* Chaque ton apporte son encre. Le compteur gardait `on-primary` pendant que le
+   fond changeait dessous : un avertissement rendait blanc sur ambre. */
 .nt-badge[data-tone="info"] {
   background: var(--fold-color-info);
   color: var(--fold-color-on-info);
@@ -134,18 +200,24 @@
   background: var(--fold-color-success);
   color: var(--fold-color-on-success);
 }
-
-/* A filled tile already paints in `primary`, so a `follow` bubble on top of it
-   would vanish. Invert it there. */
+/* Une tuile pleine peint déjà en `primary` : une pastille `follow` y
+   disparaîtrait. On l'inverse. */
 :host(.is-filled) .nt-badge[data-tone="follow"] {
   background: var(--fold-color-on-primary);
   color: var(--fold-color-primary);
 }
 
-/* Colour alone carries "how many"; the number survives the pass, but the fill
-   does not — keep it legible with a border in a system colour. */
+/* La couleur seule porte « combien » ; le nombre survit à la passe, pas le
+   fond — on le garde lisible par une bordure en couleur système. */
 @media (forced-colors: active) {
   .nt-badge {
     border: 1px solid CanvasText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    animation: none;
+    opacity: 1;
   }
 }

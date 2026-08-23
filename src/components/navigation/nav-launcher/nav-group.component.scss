@@ -1,0 +1,171 @@
+@use "nav-face" as face;
+
+@include face.keyframes;
+
+:host {
+  @include face.motion;
+
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  min-width: 0;
+}
+
+.ng-face {
+  @include face.base;
+  @include face.accent;
+
+  font: inherit;
+  background: var(--fold-nl-accent-bg, var(--fold-color-primary-surface));
+  backdrop-filter: var(--fold-nl-backdrop, none);
+  -webkit-backdrop-filter: var(--fold-nl-backdrop, none);
+}
+.ng-face:hover {
+  background: var(--fold-color-surface-hover);
+  border-color: var(--fold-color-primary);
+}
+
+:host([data-settled]) .ng-face {
+  @include face.settled;
+}
+:host([data-settled]) .ng-face:active {
+  transform: scale(0.95);
+}
+:host([data-leaving]) .ng-face {
+  @include face.leaving;
+}
+/* L'ANCRE : la tuile touchée ne part pas avec ses sœurs. Elle sort sur la
+   courbe inverse de la pastille qui la reprend en en-tête. */
+:host([data-anchor]) .ng-face {
+  @include face.anchor;
+}
+
+.ng-glyph {
+  @include face.glyph;
+  @include face.glyph-accent;
+}
+.ng-initial {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-bold);
+  line-height: var(--fold-leading-none);
+}
+.ng-label {
+  @include face.label;
+}
+.ng-label-text {
+  @include face.label-text;
+}
+.ng-chevron {
+  @include face.chevron;
+}
+
+.ng-badge {
+  position: absolute;
+  top: var(--fold-space-sm);
+  right: var(--fold-space-sm);
+  min-width: 16px;
+  height: 16px;
+  padding: 0 var(--fold-space-xs);
+  display: grid;
+  place-items: center;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  line-height: var(--fold-leading-none);
+  pointer-events: none;
+}
+.ng-badge[data-tone="neutral"] {
+  background: var(--fold-color-text-muted);
+}
+.ng-badge[data-tone="info"] {
+  background: var(--fold-color-info);
+  color: var(--fold-color-on-info);
+}
+.ng-badge[data-tone="warning"] {
+  background: var(--fold-color-warning);
+  color: var(--fold-color-on-warning);
+}
+.ng-badge[data-tone="alert"] {
+  background: var(--fold-color-alert);
+  color: var(--fold-color-on-alert);
+}
+.ng-badge[data-tone="success"] {
+  background: var(--fold-color-success);
+  color: var(--fold-color-on-success);
+}
+@media (forced-colors: active) {
+  .ng-badge {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ── La FEUILLE ───────────────────────────────────────────────
+   Fermée, elle ne prend aucune place et ne prend aucun focus (`inert` dans le
+   template — `display: none` suffirait à l'écran, pas au clavier si la feuille
+   reste mesurable). */
+.ng-sheet {
+  display: none;
+}
+
+/* Ouverte, elle SORT de la grille et couvre le corps du lanceur. Le ton du
+   RAIL SECONDAIRE, séparé du rail primaire par une seule couture : descendre
+   dans une section, c'est passer du rail 1 au rail 2 — le rapport visuel exact
+   du bureau, pas un passage du mobilier au contenu. */
+/* `visibility` et non `display` pour cacher la grille : le groupe ouvert doit
+   pouvoir se RE-montrer, et seule `visibility` s'hérite puis se rétablit.
+   La remise en visibilité vit ICI et pas dans la feuille du lanceur : une règle
+   du lanceur ne franchit pas l'encapsulation de vue — un `fold-nav-group` est
+   écrit dans le template du CONSOMMATEUR, donc il porte SON attribut de portée,
+   jamais celui du lanceur. Le sélecteur `:host` d'un composant, lui, atteint
+   toujours son propre hôte. */
+:host([data-open]) {
+  visibility: visible;
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  z-index: 1;
+}
+:host([data-open]) .ng-face {
+  display: none;
+}
+:host([data-open]) .ng-sheet {
+  /* `height: 100%` + un rembourrage : sans `border-box` la feuille dépassait de
+     ses 36px verticaux et mordait sur le pied. */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--fold-space-lg) var(--fold-nl-gutter, 0px) var(--fold-space-xl);
+  background: var(--fold-nl-sheet-bg, var(--fold-color-bg-rail-secondary));
+  backdrop-filter: var(--fold-nl-sheet-backdrop, none);
+  -webkit-backdrop-filter: var(--fold-nl-sheet-backdrop, none);
+  border-top: 1px solid var(--fold-color-border);
+  animation: fold-nav-sheet-in 340ms var(--fold-nl-ease-in) both;
+}
+
+@keyframes fold-nav-sheet-in {
+  from {
+    opacity: 0.4;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ng-face,
+  :host([data-open]) .ng-sheet {
+    animation: none;
+  }
+}

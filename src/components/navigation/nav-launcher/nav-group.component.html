@@ -1,0 +1,34 @@
+<!-- LA FACE — la tuile du niveau 1. Un `button` et non un lien : elle n'a pas de
+     destination, elle ouvre un niveau. `aria-expanded` le dit, et la région
+     `aria-live` du lanceur annonce ce qui s'est ouvert. -->
+<button
+  type="button"
+  class="ng-face"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-label]="tileLabel()"
+  (click)="drill()"
+>
+  @if (icon(); as name) {
+    <fold-icon [name]="name" [size]="26" class="ng-glyph" />
+  } @else {
+    <span class="ng-glyph ng-initial" aria-hidden="true">{{ initial() }}</span>
+  }
+  <span class="ng-label">
+    <span class="ng-label-text">{{ label() }}</span>
+    <!-- Le chevron marque une SECONDE fois ce que le fond teinté dit déjà : la
+         couleur seule ne survit ni au niveau de gris ni à `forced-colors`. -->
+    <span class="ng-chevron" aria-hidden="true">›</span>
+  </span>
+  @if (hasBadge()) {
+    <span class="ng-badge" [attr.data-tone]="badgeTone()" aria-hidden="true">{{
+      badgeText()
+    }}</span>
+  }
+</button>
+
+<!-- LA FEUILLE — le niveau 2. Toujours dans le DOM : les liens projetés
+     gardent leur identité, leur focus et leur état actif d'un niveau à
+     l'autre. C'est le CSS qui la sort de la grille quand elle s'ouvre. -->
+<div class="ng-sheet" [attr.inert]="isOpen() ? null : ''">
+  <ng-content />
+</div>

@@ -1,28 +1,104 @@
 @if (open()) {
   <div class="nl-scrim" aria-hidden="true"></div>
-  <!-- The dismiss handler lives on the DIALOG, not the scrim: the dialog is
-       `position: fixed; inset: 0` on top of it, so a click never reached the
-       scrim at all. Keyboard dismissal is `Escape` (document-level), so this
-       is a pointer shortcut on top of an existing route, not the only way out. -->
+  <!-- Le gestionnaire de renvoi vit sur le DIALOGUE, pas sur le voile : le
+       dialogue est `position: fixed; inset: 0` par-dessus, donc un clic
+       n'atteignait jamais le voile. Le clavier sort par `Escape`. -->
+  <!-- Une SURFACE DE CHROME, et pas seulement un fond sombre : sans cette
+       déclaration le lanceur peignait le sol du rail tout en lisant l'encre de
+       la PAGE — texte sombre sur sombre, et des tuiles claires au milieu d'un
+       panneau noir, sous tout thème mixte (navi). Peindre le sol d'une famille
+       sans en rejoindre la polarité, c'est en revendiquer la moitié. -->
   <div
     class="nl-dialog"
+    foldSurface="chrome"
     role="dialog"
     aria-modal="true"
     [attr.aria-label]="label()"
+    [attr.data-level]="level()"
+    [attr.data-glass]="glass() ? '' : null"
     [foldFocusTrap]="open()"
     tabindex="-1"
     (click)="onSurfaceClick($event)"
   >
-    <button
-      type="button"
-      class="nl-close"
-      (click)="close()"
-      aria-label="Close navigation"
+    <!-- Le voile de l'option verre. Sans lui, le flou n'a rien à flouter et on
+         n'obtient que des panneaux plus sombres. -->
+    <div class="nl-veil" aria-hidden="true"></div>
+
+    <header class="nl-head">
+      @if (anchor(); as group) {
+        <button
+          type="button"
+          class="nl-back"
+          [attr.aria-label]="backLabel()"
+          (click)="back()"
+        >
+          <fold-icon name="chevron-left" size="sm" />
+        </button>
+        <!-- L'ANCRE. La tuile touchée ne disparaît pas : elle remonte ici, à
+             sa taille de pastille. Cliquable, parce que l'élément qui a servi
+             de porte doit aussi servir de sortie. -->
+        <button
+          type="button"
+          class="nl-anchor"
+          [attr.aria-label]="backLabel()"
+          (click)="back()"
+        >
+          @if (group.icon(); as name) {
+            <fold-icon [name]="name" size="sm" />
+          } @else {
+            <span aria-hidden="true">{{ group.label().charAt(0) }}</span>
+          }
+        </button>
+        <span class="nl-titles">
+          <span class="nl-title">{{ group.label() }}</span>
+          <span class="nl-sub">{{ entryCountText() }}</span>
+        </span>
+      } @else {
+        <span class="nl-titles">
+          @if (eyebrow(); as e) {
+            <span class="nl-eyebrow">{{ e }}</span>
+          }
+          @if (heading(); as h) {
+            <span class="nl-heading">{{ h }}</span>
+          }
+        </span>
+      }
+
+      <button
+        type="button"
+        class="nl-close"
+        [attr.aria-label]="closeLabel()"
+        (click)="close()"
+      >
+        <fold-icon name="close" size="md" />
+      </button>
+    </header>
+
+    <div
+      class="nl-body"
+      (pointerdown)="onPointerDown($event)"
+      (pointerup)="onPointerUp($event)"
     >
-      <fold-icon name="close" size="md" />
-    </button>
-    <div class="nl-grid" [style.--nav-cols]="resolvedCols()">
-      <ng-content />
+      <!-- La grille porte les DEUX niveaux : un groupe ouvert sort de la
+           grille et couvre ce corps, sans que rien ne bouge dans le DOM. -->
+      <div class="nl-grid" [style.--nav-cols]="resolvedCols()">
+        <ng-content />
+      </div>
     </div>
+
+    <div class="nl-foot">
+      <ng-content select="[footer]" />
+    </div>
+
+    <!-- Les deux crans de profondeur. `aria-hidden` : la région vive dit la
+         même chose en mots, et un lecteur d'écran n'a que faire de deux
+         pastilles. -->
+    <div class="nl-dots" aria-hidden="true">
+      <span class="nl-dot" [class.is-on]="level() === 1"></span>
+      <span class="nl-dot" [class.is-on]="level() === 2"></span>
+    </div>
+
+    <!-- La descente est MUETTE sans ceci : l'animation ne compense rien. -->
+    <p class="nl-live" aria-live="polite">{{ announcement() }}</p>
   </div>
 }

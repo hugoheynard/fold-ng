@@ -6,6 +6,39 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING — `fold-nav-launcher` a DEUX niveaux.** Une tuile qui contient des
+  tuiles est un **groupe** (`fold-nav-group`) : aucun `level` à piloter, aucun
+  mode à basculer — le lanceur trouve la profondeur par requête de contenu,
+  exactement comme `fold-multiselect` trouve ses `fold-optgroup`. Deux niveaux
+  et pas plus : au troisième ce n'est plus un lanceur, c'est une arborescence.
+
+  Ce qui casse : `icon` devient **facultatif** sur `fold-nav-tile` (une entrée
+  de second niveau n'en a pas toujours ; sans icône, la ligne retombe sur un
+  point de statut plutôt que de décaler son libellé). La cascade d'entrée n'est
+  plus indexée sur `:nth-child` mais sur la **distance à la tuile touchée** —
+  c'est le lanceur qui la calcule, parce qu'aucune tuile ne peut connaître
+  seule sa distance à un doigt posé sur une autre. `variant` gagne `accent`.
+
+  Le lanceur se déclare enfin **surface de chrome** : il peignait le sol du
+  rail tout en lisant l'encre de la PAGE, ce qui donnait du texte sombre sur
+  sombre et des tuiles claires au milieu d'un panneau noir sous tout thème
+  mixte. Peindre le sol d'une famille sans en rejoindre la polarité, c'est en
+  revendiquer la moitié.
+
+  Nouveaux réglages : `eyebrow`, `heading`, `glass`, `closeLabel`, `backLabel`,
+  et un emplacement `footer` pour ce que l'application possède (le compte, la
+  déconnexion) et que la bibliothèque n'a pas à deviner.
+
+  Ce que la transition doit aux technologies d'assistance, parce que le
+  mouvement ne leur dit rien : le **focus suit le niveau** (et ne bouge qu'une
+  fois le niveau peint — pris une frame trop tôt il échouait en silence et le
+  piège retombait sur le bouton de fermeture, donc le curseur atterrissait sur
+  « renvoyer » à chaque descente) ; **Échap devient contextuel** (niveau 2 il
+  remonte, niveau 1 il ferme) ; le **niveau est annoncé** par une région vive.
+  Le balayage double la flèche, il ne la remplace pas.
+
 ### Added
 
 - **`fold-menu` — `navLabel`**, le nom du repère `<nav>` du rail. Facultatif

@@ -1,10 +1,31 @@
-<fold-icon [name]="icon()" [size]="26" class="nt-icon" />
-<span class="nt-label">{{ label() }}</span>
+@if (isRow()) {
+  <!-- Niveau 2. Une entrée sans icône retombe sur un POINT, à la même largeur
+       de gouttière : une ligne muette ne doit pas décaler la colonne. -->
+  @if (icon(); as name) {
+    <span class="nt-lead"><fold-icon [name]="name" [size]="17" /></span>
+  } @else {
+    <span class="nt-lead"><span class="nt-dot" aria-hidden="true"></span></span>
+  }
+  <span class="nt-row-label">{{ label() }}</span>
+  @if (hint(); as h) {
+    <span class="nt-hint" aria-hidden="true">{{ h }}</span>
+  }
+  <span class="nt-chevron" aria-hidden="true">›</span>
+} @else {
+  @if (icon(); as name) {
+    <fold-icon [name]="name" [size]="26" class="nt-icon" />
+  } @else {
+    <span class="nt-icon nt-initial" aria-hidden="true">{{ initial() }}</span>
+  }
+  <span class="nt-label"
+    ><span class="nt-label-text">{{ label() }}</span></span
+  >
 
-<!-- Corner bubble, like the collapsed rail's. `aria-hidden` — the count reaches
-     assistive tech through the host's composed `aria-label`. -->
-@if (hasBadge()) {
-  <span class="nt-badge" [attr.data-tone]="badgeTone()" aria-hidden="true">{{
-    badgeText()
-  }}</span>
+  <!-- Pastille de coin, comme celle du rail replié. `aria-hidden` — le compte
+       atteint les technologies d'assistance par l'`aria-label` composé. -->
+  @if (hasBadge()) {
+    <span class="nt-badge" [attr.data-tone]="badgeTone()" aria-hidden="true">{{
+      badgeText()
+    }}</span>
+  }
 }
