@@ -21,7 +21,7 @@ gal-icons-page .ic-hero-title {
 gal-icons-page .ic-hero-lede {
   margin: 0.75rem 0 0;
   max-width: 44rem;
-  font-size: var(--fold-text-md);
+  font-size: var(--fold-text-base);
   line-height: 1.6;
   color: var(--fold-color-text-secondary);
 }
@@ -58,7 +58,7 @@ gal-icons-page .ic-hero-bg :is(svg, fold-icon) {
 gal-icons-page .pitch {
   display: block;
   margin-bottom: var(--fold-space-lg);
-  font-size: var(--fold-text-md);
+  font-size: var(--fold-text-base);
   line-height: 1.6;
 }
 
@@ -108,7 +108,7 @@ gal-icons-page .feat-ico {
 }
 gal-icons-page .feat-title {
   margin: 0;
-  font-size: var(--fold-text-md);
+  font-size: var(--fold-text-base);
   font-weight: 650;
   letter-spacing: -0.01em;
   color: var(--fold-color-text);

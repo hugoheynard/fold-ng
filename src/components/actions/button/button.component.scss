@@ -63,13 +63,16 @@
 }
 
 :host(.md) {
-  font-size: var(--fold-text-md);
+  font-size: var(--fold-text-base);
   padding: 0.45rem 1rem;
   border-radius: var(--fold-radius-sm);
 }
 
+// `lg` renders one step above `md`. It used to name the same size token, so the
+// two presets were literally identical — the scale had no step between body and
+// 20px to reach for.
 :host(.lg) {
-  font-size: var(--fold-text-md);
+  font-size: var(--fold-text-lg);
   padding: 0.6rem 1.3rem;
   border-radius: var(--fold-radius-sm);
 }
