@@ -176,15 +176,12 @@
 
       <!-- Default foldAt (720): the side rail holds at Desktop and Tablet, and
          folds back to a bar on top at Mobile (375) — the responsive behaviour
-         itself. Pick Mobile, or drag the device below 720, to watch it fold. A
-         collapsed rail is icon-only, so narrow its track to match.
+         itself. Pick Mobile, or drag the device below 720, to watch it fold.
          direction="auto" makes the bar follow this layout — no tl.stacked()
-         wiring. -->
+         wiring, and no rail width to post by hand either: a collapsed bar tells
+         the layout, and the track hugs its icons. -->
       <fold-nav-layout
         [placement]="tnDirection() === 'vertical' ? 'side' : 'top'"
-        [style.--fold-nav-layout-rail-width]="
-          tnCollapsed() && tnDirection() === 'vertical' ? '56px' : null
-        "
       >
         <fold-view-nav
           tabNav

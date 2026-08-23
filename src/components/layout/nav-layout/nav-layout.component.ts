@@ -7,6 +7,7 @@ import {
   signal,
 } from "@angular/core";
 import { observeElementWidth } from "../../../dom/observe-element-width";
+import { FOLD_NARROW } from "../breakpoints";
 import {
   FOLD_NAV_LAYOUT,
   type FoldNavLayoutContext,
@@ -86,7 +87,11 @@ const HYSTERESIS = 32;
   selector: "fold-nav-layout",
   standalone: true,
   exportAs: "foldNavLayout",
-  host: { "[class.is-row]": "!stacked()" },
+  host: {
+    "[class.is-row]": "!stacked()",
+    "[class.bar-collapsed]": "barCollapsed()",
+    "[class.is-narrow]": "narrow()",
+  },
   providers: [
     { provide: FOLD_NAV_LAYOUT, useExisting: FoldNavLayoutComponent },
   ],
@@ -111,8 +116,27 @@ export class FoldNavLayoutComponent implements FoldNavLayoutContext {
     () => this.placement() === "top" || this.folded(),
   );
 
+  /**
+   * Set by the projected bar (see {@link FoldNavLayoutContext.barCollapsed}).
+   * A collapsed bar is icon-only, so its rail hugs its icons instead of holding
+   * a 200px track with ~166px of nothing in it.
+   */
+  readonly barCollapsed = signal(false);
+
   /** The layout's own width, kept live by the shared `ResizeObserver` primitive. */
   private readonly width = observeElementWidth();
+
+  /**
+   * Narrow enough that the gap to the content should tighten.
+   *
+   * Measured on the layout's OWN box, not the viewport. The gap used to sit
+   * behind `@media (max-width: 640px)` while the fold sat behind a container
+   * width, so the two could disagree: a narrow layout on a wide screen kept a
+   * 16px gap while folded, and a wide layout on a phone got 4px.
+   */
+  readonly narrow = computed(
+    () => this.width() > 0 && this.width() <= FOLD_NARROW,
+  );
 
   constructor() {
     // Re-run the hysteretic fold decision on every width change.

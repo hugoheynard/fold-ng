@@ -121,14 +121,9 @@ export default class TabNavPage {
       attrs.push(`background="${this.tnBackground()}"`);
     }
     const nav = ["<fold-view-nav", ...attrs.map((a) => `  ${a}`), "/>"];
-    // A collapsed rail is icon-only, so narrow its track to match.
-    const layoutOpen =
-      side && this.tnCollapsed()
-        ? '<fold-nav-layout placement="side"\n  style="--fold-nav-layout-rail-width: 56px">'
-        : '<fold-nav-layout placement="side">';
     const markup = side
       ? [
-          layoutOpen,
+          '<fold-nav-layout placement="side">',
           ...nav.map((l) => `  ${l}`),
           "  <router-outlet />",
           "</fold-nav-layout>",

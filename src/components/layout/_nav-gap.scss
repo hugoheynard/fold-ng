@@ -15,13 +15,20 @@
  */
 @mixin nav-content-gap($property) {
   #{$property}: var(--fold-nav-layout-gap, var(--fold-space-lg, 16px));
+}
 
-  /* Narrow: 16px is page rhythm, and a phone has none to spare — at that width
-     the bar reads as floating away from the view it introduces, instead of
-     heading it. Down to the smallest step: the bar and its first card are one
-     block, and the seam between them only has to be visible, not roomy. The
-     consumer's `--fold-nav-layout-gap` still wins, at every width. */
-  @media (max-width: 640px) {
-    #{$property}: var(--fold-nav-layout-gap, var(--fold-space-xs, 4px));
-  }
+/* The tightened gap — applied by whoever actually knows the column is narrow.
+ *
+ * It used to live behind `@media (max-width: 640px)` inside the mixin, while
+ * the rail folded on its own CONTAINER width. The two could therefore disagree:
+ * a narrow layout on a wide screen kept a 16px gap while folded, and a wide
+ * layout on a phone got 4px. `_tab-bar.scss` states the principle — "container
+ * width is the only axis" — and this was the file that did not keep it.
+ *
+ * 16px is page rhythm, and a narrow column has none to spare: at that width the
+ * bar reads as floating away from the view it introduces instead of heading it.
+ * The consumer's `--fold-nav-layout-gap` still wins, at every width.
+ */
+@mixin nav-content-gap-narrow($property) {
+  #{$property}: var(--fold-nav-layout-gap, var(--fold-space-xs, 4px));
 }

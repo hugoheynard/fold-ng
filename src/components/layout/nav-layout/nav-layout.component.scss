@@ -10,6 +10,11 @@
   @include nav-gap.nav-content-gap(gap);
   min-width: 0;
 }
+/* `is-narrow` is measured on the layout's OWN box (see `narrow()`), not on the
+   viewport — the same axis the fold already uses. */
+:host(.is-narrow) {
+  @include nav-gap.nav-content-gap-narrow(gap);
+}
 /* No align-items: the rail stretches to the row's height on purpose. A tab bar
    carries its own surface (`background="surface"`), and a rail that hugged its
    tabs would leave that band floating above the content it belongs to. The bar
@@ -29,6 +34,14 @@
 /* Only the rail gets a track — stacked, the nav spans the full width. */
 :host(.is-row) .tl-nav {
   flex: 0 0 var(--fold-nav-layout-rail-width, var(--fold-rail-tertiary, 200px));
+}
+/* A collapsed bar is icon-only, so the track hugs it. Without this the icons
+   floated centred in a 200px column with ~166px of nothing beside them, and the
+   only cure was a `--fold-nav-layout-rail-width` posted by hand at every call
+   site. The bar tells the layout it is collapsed (`barCollapsed` on the DI
+   context); an explicit rail width still wins, for a consumer who wants one. */
+:host(.is-row.bar-collapsed) .tl-nav {
+  flex: 0 0 var(--fold-nav-layout-rail-width, auto);
 }
 
 .tl-body {

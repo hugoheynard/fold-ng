@@ -11,3 +11,10 @@
 :host(.is-standalone.is-horizontal) {
   @include nav-gap.nav-content-gap(margin-block-end);
 }
+/* Standalone, the bar spans the content column, so its own measured width IS
+   that column's width. Measured rather than container-queried because an
+   element is never its own container — and rather than `@media`, because the
+   window is the wrong box (see `_nav-gap.scss`). */
+:host(.is-standalone.is-horizontal.is-narrow) {
+  @include nav-gap.nav-content-gap-narrow(margin-block-end);
+}

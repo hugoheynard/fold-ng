@@ -3,6 +3,7 @@ import {
   booleanAttribute,
   Component,
   computed,
+  effect,
   inject,
   input,
   model,
@@ -12,6 +13,8 @@ import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
+import { FOLD_NARROW } from "../../layout/breakpoints";
+import { observeElementWidth } from "../../../dom/observe-element-width";
 
 export type FoldViewNavItem = {
   /** Unique key — identifies the item; a button item writes it to `activeKey`. */
@@ -88,6 +91,7 @@ export type FoldViewNavItem = {
     "[class.is-standalone]": "isStandalone()",
     "[class.is-horizontal]": "resolvedDirection() === 'horizontal'",
     "[class.is-sticky]": "sticky()",
+    "[class.is-narrow]": "narrow()",
   },
 })
 export class FoldViewNavComponent {
@@ -164,6 +168,21 @@ export class FoldViewNavComponent {
    * gap).
    */
   protected readonly isStandalone = computed(() => this.layout === null);
+
+  /** The bar's own width — the box a standalone bar tightens its gap against. */
+  private readonly width = observeElementWidth();
+
+  /** Narrow enough to tighten the gap. Its own box, never the window. */
+  protected readonly narrow = computed(
+    () => this.width() > 0 && this.width() <= FOLD_NARROW,
+  );
+
+  constructor() {
+    // Tell the layout the bar is icon-only, so its rail track can hug it. The
+    // context runs both ways now: `collapsed` is the bar's prop and the rail
+    // width the layout's, and they had no way to meet.
+    effect(() => this.layout?.barCollapsed.set(this.collapsed()));
+  }
 
   /** `direction` with `auto` resolved against the wrapping layout. */
   protected readonly resolvedDirection = computed<"horizontal" | "vertical">(
