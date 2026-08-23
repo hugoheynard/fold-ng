@@ -8,6 +8,20 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING — `surface-band` entre au catalogue (46 rôles).** Une bande ne
+  monte pas, elle **s'écarte**, et la direction dépend de la polarité du thème.
+  `fold-card` la codait en dur (`surface-hover`, et `surface-card` en sunken) —
+  une hypothèse de polarité posée dans un composant. Sur navi la bande valait
+  la couleur de la page sur une carte blanche (1,09:1) ; sur le chrome navi
+  elle valait **exactement** le corps de la carte (1,00:1). Les quatre thèmes
+  non modifiés reprennent la valeur qu'ils avaient déjà : le rendu ne bouge
+  pas, seul le rôle devient explicite. Un thème maison doit le déclarer.
+
+- **Les bordures de navi descendent d'un cran** (`paper-300` / `paper-200`).
+  Sur un fond clair la profondeur vient du **contour**, pas du remplissage : il
+  reste moins de 10% de luminance entre le blanc et une page claire, et trois
+  niveaux n'y tiennent pas. `surface-sunken` ne bouge pas.
+
 - **BREAKING — `justify` sépare la répartition de la densité.** `size` se
   documentait « pure padding/typography » et décidait en douce du modèle de
   répartition : `compact` justifiait les onglets, `comfortable` les calait à
@@ -93,6 +107,12 @@ All notable changes to **fold-ng** are documented here. The format follows
   échoue depuis longtemps, mais un rôle que les cinq thèmes déclarent et
   qu'aucun composant ne peint ne regardait personne. Sur 45 rôles, il y en
   avait exactement un.
+
+- **`depth-contrast.spec.ts`** — 4,5:1 entre deux **surfaces** ne veut rien
+  dire : personne ne lit un contour. Deux planchers, par le travail que fait la
+  séparation — **structure** (contour de carte, cadre de panneau) ≥ 1,25:1 et
+  **subdivision** (bande, séparateur) ≥ 1,15:1. `lumen` est exempté avec sa
+  raison, et sa valeur épinglée plutôt que passée sous silence.
 
 - **`chrome-contrast.spec.ts`** — douze paires de contraste, chacune un échec
   mesuré avant la refonte, plus deux invariants structurels. Les alphas sont
