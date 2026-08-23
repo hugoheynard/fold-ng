@@ -11,6 +11,8 @@ import {
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import { FoldTabTooltipDirective } from "../tab-tooltip.directive";
+import type { FoldPopoverSide } from "../../overlays/popover/placement";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
 import { FOLD_NARROW } from "../../layout/breakpoints";
@@ -77,6 +79,7 @@ export type FoldViewNavItem = {
     FoldBadgeComponent,
     RouterLink,
     RouterLinkActive,
+    FoldTabTooltipDirective,
   ],
   templateUrl: "./view-nav.component.html",
   // Inline + token-driven. Neutral 1px lines use --fold-color-border /
@@ -182,6 +185,27 @@ export class FoldViewNavComponent {
     // context runs both ways now: `collapsed` is the bar's prop and the rail
     // width the layout's, and they had no way to meet.
     effect(() => this.layout?.barCollapsed.set(this.collapsed()));
+  }
+
+  /** Which side a collapsed tooltip sits on: a rail pushes right, a bar down. */
+  protected readonly tooltipSide = computed<FoldPopoverSide>(() =>
+    this.resolvedDirection() === "vertical" ? "right" : "bottom",
+  );
+
+  /**
+   * True when this item's label is a TOOLTIP rather than inline text: every
+   * item on a collapsed rail, and every inactive one on a collapsed bar (the
+   * active one keeps its label inline).
+   *
+   * A tooltip label is `display: none` until shown — a `[popover]` is — so the
+   * item also takes an explicit `aria-label`. The old `opacity: 0` left the
+   * text in the accessibility tree; the top layer does not, and an icon with no
+   * name is worse than a clipped tooltip.
+   */
+  protected isTooltip(active: boolean): boolean {
+    return (
+      this.collapsed() && (this.resolvedDirection() === "vertical" || !active)
+    );
   }
 
   /** `direction` with `auto` resolved against the wrapping layout. */

@@ -14,6 +14,7 @@
         class="tab-bar-item is-disabled"
         disabled
         aria-disabled="true"
+        [attr.aria-label]="isTooltip(false) ? item.label : null"
       >
         <ng-container
           [ngTemplateOutlet]="body"
@@ -27,6 +28,7 @@
         routerLinkActive="is-active"
         #rla="routerLinkActive"
         [attr.aria-current]="rla.isActive ? 'page' : null"
+        [attr.aria-label]="isTooltip(rla.isActive) ? item.label : null"
       >
         <ng-container
           [ngTemplateOutlet]="body"
@@ -39,6 +41,9 @@
         [href]="item.href"
         [class.is-active]="activeKey() === item.key"
         [attr.aria-current]="activeKey() === item.key ? 'page' : null"
+        [attr.aria-label]="
+          isTooltip(activeKey() === item.key) ? item.label : null
+        "
       >
         <ng-container
           [ngTemplateOutlet]="body"
@@ -54,6 +59,9 @@
         class="tab-bar-item"
         [class.is-active]="activeKey() === item.key"
         [attr.aria-current]="activeKey() === item.key ? 'page' : null"
+        [attr.aria-label]="
+          isTooltip(activeKey() === item.key) ? item.label : null
+        "
         (click)="activeKey.set(item.key)"
       >
         <ng-container
@@ -79,7 +87,12 @@
       item.label.charAt(0)
     }}</span>
   }
-  <span class="tab-bar-label">{{ item.label }}</span>
+  <span
+    class="tab-bar-label"
+    [foldTabTooltip]="isTooltip(active)"
+    [tooltipSide]="tooltipSide()"
+    >{{ item.label }}</span
+  >
   @if (item.badge !== undefined && item.badge !== null) {
     <fold-badge
       class="tab-bar-badge"

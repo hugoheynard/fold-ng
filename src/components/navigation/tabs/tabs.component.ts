@@ -10,6 +10,8 @@ import {
 } from "@angular/core";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import { FoldTabTooltipDirective } from "../tab-tooltip.directive";
+import type { FoldPopoverSide } from "../../overlays/popover/placement";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
@@ -80,7 +82,7 @@ export interface FoldTabsContext<K extends string = string> {
   selector: "fold-tabs",
   standalone: true,
   exportAs: "foldTabs",
-  imports: [FoldIconComponent, FoldBadgeComponent],
+  imports: [FoldIconComponent, FoldBadgeComponent, FoldTabTooltipDirective],
   templateUrl: "./tabs.component.html",
   styleUrl: "./tabs.component.scss",
   host: { "[class.is-sticky]": "sticky()" },
@@ -125,6 +127,28 @@ export class FoldTabsComponent<
   private readonly layout = inject(FOLD_NAV_LAYOUT, { optional: true });
 
   /** `direction` with `auto` resolved against the wrapping layout. */
+
+  /** Which side a collapsed tooltip sits on: a rail pushes right, a bar down. */
+  protected readonly tooltipSide = computed<FoldPopoverSide>(() =>
+    this.resolvedDirection() === "vertical" ? "right" : "bottom",
+  );
+
+  /**
+   * True when this item's label is a TOOLTIP rather than inline text: every
+   * item on a collapsed rail, and every inactive one on a collapsed bar (the
+   * active one keeps its label inline).
+   *
+   * A tooltip label is `display: none` until shown — a `[popover]` is — so the
+   * item also takes an explicit `aria-label`. The old `opacity: 0` left the
+   * text in the accessibility tree; the top layer does not, and an icon with no
+   * name is worse than a clipped tooltip.
+   */
+  protected isTooltip(active: boolean): boolean {
+    return (
+      this.collapsed() && (this.resolvedDirection() === "vertical" || !active)
+    );
+  }
+
   protected readonly resolvedDirection = computed<"horizontal" | "vertical">(
     () => {
       const d = this.direction();

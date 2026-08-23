@@ -22,6 +22,7 @@
       [class.is-active]="activeKey() === tab.key"
       [attr.aria-selected]="activeKey() === tab.key"
       [attr.aria-controls]="panelId(tab.key)"
+      [attr.aria-label]="isTooltip(activeKey() === tab.key) ? tab.label : null"
       [tabindex]="activeKey() === tab.key ? 0 : -1"
       (click)="select(tab.key)"
     >
@@ -32,7 +33,12 @@
           tab.label.charAt(0)
         }}</span>
       }
-      <span class="tab-bar-label">{{ tab.label }}</span>
+      <span
+        class="tab-bar-label"
+        [foldTabTooltip]="isTooltip(activeKey() === tab.key)"
+        [tooltipSide]="tooltipSide()"
+        >{{ tab.label }}</span
+      >
       @if (tab.badge !== undefined && tab.badge !== null) {
         <fold-badge
           class="tab-bar-badge"

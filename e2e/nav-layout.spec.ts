@@ -222,3 +222,63 @@ test.describe("tab bar · a busy collapsed bar scrolls", () => {
     expect(overflow).toBe("visible");
   });
 });
+
+test.describe("tab bar · a collapsed tooltip lives in the top layer", () => {
+  test("it escapes the scroller, on a horizontal collapsed bar", async ({
+    page,
+  }) => {
+    // The whole point of the move: the bar is a scroll box now, and a scroller
+    // clips. An absolutely-positioned tooltip could not survive that; a shown
+    // `popover` renders above everything with no ancestor to arrange.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "horizontal");
+    await setParam(page, "collapsed", "icons");
+
+    const inactive = frame.locator(".tab-bar-item:not(.is-active)").first();
+    const label = inactive.locator(".tab-bar-label");
+
+    // Hidden until hovered — a `[popover]` is `display: none` until shown.
+    await expect(label).toBeHidden();
+
+    await inactive.hover();
+    await expect(label).toBeVisible();
+
+    const escaped = await label.evaluate((el) => {
+      const bar = el.closest("fold-view-nav");
+      if (bar === null) {
+        return false;
+      }
+      const tip = el.getBoundingClientRect();
+      const box = bar.getBoundingClientRect();
+      // Below the bar's own box — i.e. outside what the scroller would clip.
+      return tip.top >= box.bottom - 1;
+    });
+    expect(escaped).toBe(true);
+  });
+
+  test("an icon-only item still has a name", async ({ page }) => {
+    // `opacity: 0` kept the label in the accessibility tree; `display: none`
+    // does not. An icon with no name is worse than a clipped tooltip.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "vertical");
+    await setParam(page, "collapsed", "icons");
+
+    const item = frame.locator(".tab-bar-item").first();
+    const name = await item.getAttribute("aria-label");
+    expect(name).not.toBeNull();
+    expect(name?.length).toBeGreaterThan(0);
+  });
+
+  test("an expanded bar keeps its label inline, with no popover", async ({
+    page,
+  }) => {
+    // The directive must be inert outside the collapsed modes.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "horizontal");
+    await setParam(page, "collapsed", "off");
+
+    const label = frame.locator(".tab-bar-item .tab-bar-label").first();
+    await expect(label).toBeVisible();
+    expect(await label.getAttribute("popover")).toBeNull();
+  });
+});

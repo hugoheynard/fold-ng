@@ -251,14 +251,21 @@
   text-overflow: ellipsis;
 }
 
-/* The icon-only items whose label becomes a tooltip: every vertical item, and
-   the inactive horizontal ones (the active horizontal item shows its label). */
-.dir-vertical.is-collapsed .tab-bar-item .tab-bar-icon ~ .tab-bar-label,
-.is-collapsed:not(.dir-vertical)
-  .tab-bar-item:not(.is-active)
-  .tab-bar-icon
-  ~ .tab-bar-label {
-  position: absolute;
+/* An icon-only label is a TOP-LAYER tooltip — the directive shows it, the
+   browser lifts it out of every ancestor's overflow (see
+   `tab-tooltip.directive.ts`). `[popover]` is `display: none` until shown, so
+   there is no opacity dance and no z-index to win; the directive writes the
+   coordinates, `computePlacement` picks the side.
+
+   It used to be `position: absolute` inside the bar, which held only while the
+   bar never clipped. A busy collapsed bar scrolls now, and a scroller clips —
+   absolute positioning and a scroll container cannot both be satisfied. */
+.tab-bar-label[popover] {
+  position: fixed;
+  /* The UA centres a popover with `inset: 0; margin: auto` — both have to go
+     before `left`/`top` mean anything. */
+  inset: auto;
+  margin: 0;
   padding: var(--fold-space-xs) var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-glass);
@@ -267,42 +274,8 @@
   font-size: var(--fold-text-xs);
   font-weight: var(--fold-weight-medium);
   white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
+  overflow: visible;
   box-shadow: var(--fold-shadow-md);
-  transition: opacity var(--fold-motion-fast);
-  z-index: 100;
-}
-/* Vertical: escape to the right, centred on the icon. */
-.dir-vertical.is-collapsed .tab-bar-item .tab-bar-icon ~ .tab-bar-label {
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-/* Horizontal: drop below the icon, centred. */
-.is-collapsed:not(.dir-vertical)
-  .tab-bar-item:not(.is-active)
-  .tab-bar-icon
-  ~ .tab-bar-label {
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-/* Reveal on hover / keyboard focus — both axes, every icon-only item. */
-.dir-vertical.is-collapsed .tab-bar-item:hover .tab-bar-icon ~ .tab-bar-label,
-.dir-vertical.is-collapsed
-  .tab-bar-item:focus-visible
-  .tab-bar-icon
-  ~ .tab-bar-label,
-.is-collapsed:not(.dir-vertical)
-  .tab-bar-item:not(.is-active):hover
-  .tab-bar-icon
-  ~ .tab-bar-label,
-.is-collapsed:not(.dir-vertical)
-  .tab-bar-item:not(.is-active):focus-visible
-  .tab-bar-icon
-  ~ .tab-bar-label {
-  opacity: 1;
 }
 
 /* VERTICAL rail specifics: each item hugs its icon (align-items: center, not
@@ -327,10 +300,10 @@
   transform-origin: top right;
   pointer-events: none;
 }
-/* A collapsed VERTICAL rail lets its tooltips escape to the right; the host
-   clips by default. Horizontal is a scroll box now (see the top of this file),
-   so it cannot also be `overflow: visible` — a scroller clips, that is what it
-   is. Its tooltips are the cost; the rail keeps its own. */
+/* The tooltips no longer need this — they are in the top layer. The badge
+   bubble still does: it sits at `right: -2px` on the item, so a rail that
+   clipped would shave it on the last column. Vertical only, because horizontal
+   is a scroll box and a scroller clips by definition. */
 :host:has(.tab-bar.dir-vertical.is-collapsed) {
   overflow: visible;
 }
