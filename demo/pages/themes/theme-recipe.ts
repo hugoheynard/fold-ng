@@ -63,7 +63,7 @@ export const THEME_STEPS: readonly ThemeStep[] = [
   },
   {
     title: "Change shape only if it means something",
-    body: "Radius is the one scale a theme may re-declare, because corner softness is a brand axis and the only scale that moves no box. Type, space, motion and elevation stay invariant — retheming must never re-flow a page.",
+    body: "Radius and elevation are the two scales a theme may re-declare. The line is not that one scale is special: a theme may change what a surface LOOKS like, never where it SITS. Neither corners nor shadows move a box. Type, space and motion stay invariant — those re-flow or re-time a page.",
     example:
       "navi squares its corners (1–4px) to read institutional. pill and round stay: they are shapes, not steps — flattening them turns avatars into squares.",
     code: `[data-theme="navi"] {

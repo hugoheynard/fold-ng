@@ -7,12 +7,14 @@
    colour, but stays theme-invariant (black-ink shadows via the black
    primitive, legible on every theme).
 
-   RADIUS is the one scale a theme may re-declare. Corner softness is
-   a brand axis, not a measurement: the same product reads friendly
-   or institutional on the same layout. Font, type, space, motion and
-   elevation stay theme-invariant — retheming must never re-flow a
-   page, and only radius can change without moving a single box. The
-   contract test enforces exactly that split.
+   RADIUS and ELEVATION are the two scales a theme may re-declare. The
+   line is not "one scale is special", it is: a theme may change what a
+   surface LOOKS like, never where it SITS. Corner softness is a brand
+   axis; depth is calibrated against a ground, and a shadow tuned for
+   near-black ink is a grey smear on a light page. Neither moves a box
+   by one pixel. Font, type, space and motion stay theme-invariant —
+   those re-flow or re-time a page. The contract test enforces exactly
+   that split.
    ============================================================ */
 
 :root {
@@ -161,6 +163,20 @@
    flattening them would turn avatars into squares and capsules into
    slabs — so they stay. */
 [data-theme="navi"] {
+  /* Depth. The base scale is tuned for a near-black ground: 50% black at a
+     30px blur reads as a grey smear on paper, not as a lifted card. navi
+     trades opacity for spread — barely-there ink, wider falloff. */
+  --fold-shadow-sm: 0 1px 2px
+    color-mix(in srgb, var(--fold-ref-graphite-950) 8%, transparent);
+  --fold-shadow-md:
+    0 1px 2px color-mix(in srgb, var(--fold-ref-graphite-950) 6%, transparent),
+    0 8px 24px -16px
+      color-mix(in srgb, var(--fold-ref-graphite-950) 24%, transparent);
+  --fold-shadow-lg:
+    0 2px 4px color-mix(in srgb, var(--fold-ref-graphite-950) 6%, transparent),
+    0 16px 40px -20px
+      color-mix(in srgb, var(--fold-ref-graphite-950) 28%, transparent);
+
   --fold-radius-xs: 2px;
   --fold-radius-sm: 4px;
   --fold-radius-md: 6px;

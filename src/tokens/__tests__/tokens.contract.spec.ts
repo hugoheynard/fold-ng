@@ -240,9 +240,12 @@ describe("token contract · theme invariance", () => {
     expect(primitives).not.toContain("data-theme");
   });
 
-  it("only RADIUS may vary by theme in scales.css (type/space/motion/shadow never)", () => {
-    // Corner softness is a brand axis; every other scale is a measurement, and
-    // retheming must never re-flow a page.
+  it("only RADIUS and SHADOW may vary by theme (type/space/motion never)", () => {
+    // The invariant is not "one scale is special", it is: a theme may change
+    // what a surface LOOKS like, never where it SITS. Corner softness and
+    // depth both qualify — neither moves a box by one pixel, and a shadow
+    // calibrated for a near-black ground is a grey smear on a light page.
+    // Type, space and motion stay invariant: those re-flow or re-time a page.
     const normalised = scales.replace(/['"]/g, '"');
     const themes = [
       ...new Set(
@@ -251,21 +254,25 @@ describe("token contract · theme invariance", () => {
         ),
       ),
     ];
+    const steps = [
+      ...FOLD_RADIUS_TOKENS.map((t) => `--fold-radius-${t}`),
+      ...FOLD_SHADOW_TOKENS.map((t) => `--fold-shadow-${t}`),
+    ];
     for (const theme of themes) {
       const declared = declaredVars(
         block(normalised, `[data-theme="${theme}"]`),
       );
-      const offenders = declared.filter((v) => !v.startsWith("--fold-radius-"));
-      expect(offenders, `theme "${theme}" re-scales more than radius`).toEqual(
-        [],
+      const offenders = declared.filter(
+        (v) =>
+          !v.startsWith("--fold-radius-") && !v.startsWith("--fold-shadow-"),
       );
+      expect(
+        offenders,
+        `theme "${theme}" re-scales something that moves boxes`,
+      ).toEqual([]);
       // And every step it does declare must be a real catalogue step.
-      const unknown = declared.filter(
-        (v) => !FOLD_RADIUS_TOKENS.some((t) => v === `--fold-radius-${t}`),
-      );
-      expect(unknown, `theme "${theme}" declares an unknown radius`).toEqual(
-        [],
-      );
+      const unknown = declared.filter((v) => !steps.includes(v));
+      expect(unknown, `theme "${theme}" declares an unknown step`).toEqual([]);
     }
   });
 });
