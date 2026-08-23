@@ -112,7 +112,10 @@
     var(--fold-color-warning) 84%,
     var(--fold-color-bg-page)
   );
-  --b-on: var(--fold-color-on-primary);
+  // A status fill is not a brand fill. `on-primary` here was white on
+  // amber — 2.4:1, on all five themes, the moment `emphasis="solid"` met
+  // `intent="warning"`.
+  --b-on: var(--fold-color-on-warning);
   --b-text: var(--fold-color-warning-text);
   --b-text-strong: var(--fold-color-warning-text);
   --b-surface: var(--fold-color-warning-surface);
@@ -125,7 +128,7 @@
     var(--fold-color-alert) 84%,
     var(--fold-color-bg-page)
   );
-  --b-on: var(--fold-color-on-primary);
+  --b-on: var(--fold-color-on-alert);
   --b-text: var(--fold-color-alert-text);
   --b-text-strong: var(--fold-color-alert-text);
   --b-surface: var(--fold-color-alert-surface);

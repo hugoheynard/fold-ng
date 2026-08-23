@@ -87,6 +87,11 @@
   --fold-ref-navy-900: #101d3a; /* rail 1 · app menu (deepest)  */
   --fold-ref-navy-950: #0b152b; /* sunken surface on the chrome */
 
+  /* Graphite — the navi chrome (low-chroma blue-graphite). Also the DARK ink
+     every theme puts on a light status fill: amber and green are too bright to
+     carry white, and a near-black reads softer than pure black. */
+  --fold-ref-graphite-950: #1a2336; /* header — the deepest chrome surface */
+
   /* ── Ivory — the NAVI page ────────────────────────────────────
      White, off by two points of blue. The opposition is the point: a
      cool page beside a cool rail is merely consistent, where warm-on-

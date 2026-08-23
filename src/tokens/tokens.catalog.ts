@@ -40,24 +40,32 @@ export const FOLD_SEMANTIC_COLOR_TOKENS = [
 
   /* ── Info (purple) ────────────────────────────────────────── */
   "info",
+  /** Text or icon rendered on top of a solid `info` fill. */
+  "on-info",
   "info-text",
   "info-surface",
   "info-border",
 
   /* ── Warning (amber) ──────────────────────────────────────── */
   "warning",
+  /** Text or icon rendered on top of a solid `warning` fill. */
+  "on-warning",
   "warning-text",
   "warning-surface",
   "warning-border",
 
   /* ── Alert (red) ──────────────────────────────────────────── */
   "alert",
+  /** Text or icon rendered on top of a solid `alert` fill. */
+  "on-alert",
   "alert-text",
   "alert-surface",
   "alert-border",
 
   /* ── Success (green) ──────────────────────────────────────── */
   "success",
+  /** Text or icon rendered on top of a solid `success` fill. */
+  "on-success",
   "success-text",
   "success-surface",
   "success-border",

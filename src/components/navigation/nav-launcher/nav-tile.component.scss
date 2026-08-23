@@ -116,17 +116,23 @@
 .nt-badge[data-tone="neutral"] {
   background: var(--fold-color-text-muted);
 }
+/* Each tone brings its own ink. The counter kept `on-primary` while the fill
+   swapped underneath it, so a warning bubble rendered white on amber. */
 .nt-badge[data-tone="info"] {
   background: var(--fold-color-info);
+  color: var(--fold-color-on-info);
 }
 .nt-badge[data-tone="warning"] {
   background: var(--fold-color-warning);
+  color: var(--fold-color-on-warning);
 }
 .nt-badge[data-tone="alert"] {
   background: var(--fold-color-alert);
+  color: var(--fold-color-on-alert);
 }
 .nt-badge[data-tone="success"] {
   background: var(--fold-color-success);
+  color: var(--fold-color-on-success);
 }
 
 /* A filled tile already paints in `primary`, so a `follow` bubble on top of it

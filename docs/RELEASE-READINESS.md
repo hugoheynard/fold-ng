@@ -195,6 +195,21 @@ its `role="tabpanel"`). Both ship with specs asserting their roles/keyboard.
 `globalThis` assignment type-check with no assertion. Zero `as unknown` in the
 package.
 
+**P0-8 · A solid status button rendered brand ink. ✅ FIXED.**
+`emphasis="solid"` + `intent="warning"` painted `on-primary` — white — onto
+`amber`: **2.4:1 on umbra, 3.3:1 on the other four themes**. Same defect on the
+`fold-nav-tile` counter bubble, whose fill swapped per tone while its ink did
+not. The combination has been expressible ever since emphasis and intent became
+independent axes, and nothing tested it, because the catalogue simply had no ink
+for a status fill.
+
+Four roles added — `on-info` · `on-warning` · `on-alert` · `on-success` — and
+`status-ink-contrast.spec.ts` asserts each theme's own ink on its own fill at AA
+body, plus that a theme cannot "add" the roles by pointing all four at the brand
+ink. Measuring found what a blanket rule would have missed: `bubbly` types
+`info` as azure, not purple, so white there is 2.8:1 — it takes the dark ink
+while the other four take white.
+
 ---
 
 ## 3 · Cross-cutting cleanups (batch once, fix many)
