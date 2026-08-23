@@ -8,6 +8,37 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING — quatre rôles s'ajoutent au catalogue de couleurs** :
+  `on-info` · `on-warning` · `on-alert` · `on-success` (41 → 45). Un thème
+  maison doit les déclarer, sinon le test de parité échoue.
+
+  Ils ferment un **P0** indépendant de navi : `emphasis="solid"` +
+  `intent="warning"` peignait `on-primary` — du blanc — sur de l'ambre, à
+  **2,4:1 sur umbra et 3,3:1 sur les quatre autres**. Même défaut sur la bulle
+  compteur de `fold-nav-tile`. La combinaison est exprimable depuis que
+  emphasis et intent sont deux axes indépendants ; rien ne la testait, parce
+  que le catalogue n'avait pas d'encre pour un remplissage de statut.
+
+- **BREAKING — les primitives `--fold-ref-navy-*` (9) et `--fold-ref-ivory-50`
+  sont supprimées**, remplacées par les familles `graphite` / `paper` /
+  `signal` / `navyink`. Une app qui référençait une primitive navi directement
+  doit migrer.
+
+- **BREAKING — `--fold-shadow-*` peut être redéclarée par un thème.**
+  L'invariant disait « seul le rayon varie » et rangeait l'ombre avec les
+  mesures. La vraie ligne : un thème peut changer ce à quoi une surface
+  **ressemble**, jamais où elle **se trouve**. Une ombre ne déplace pas une
+  boîte. Un thème maison qui héritait des ombres de base les garde.
+
+- **navi 2 — « Graphite & Signal ».** navi avait deux polarités et un seul jeu
+  de rôles : son sous-bloc chrome en déclarait **17 sur 45** et héritait les 28
+  autres de la page. Le givre blanc de la page posé sur le rail sombre rendait
+  une infobulle à **1,9:1**. Huit échecs WCAG mesurés sont fermés ; `card`,
+  `sunken` et `page` valaient blanc, blanc et ivoire — une table imbriquée dans
+  une carte n'avait aucun bord — et font maintenant trois marches distinctes.
+  Le rayon passe de 1/2/3/4px à 2/4/6/8px : à 1px un coin est un artefact de
+  rendu, pas une intention.
+
 - **BREAKING — `--fold-text-md` vaut 13px ; le corps de texte s'appelle
   `--fold-text-base`.** Un consommateur non migré rétrécit d'un cran **en
   silence** : c'est un rechercher/remplacer, `--fold-text-md` →
@@ -44,6 +75,25 @@ All notable changes to **fold-ng** are documented here. The format follows
   librairie, qui rend des titres hero — 800 sur treize sites, -0.04em sur
   cinq, toujours ensemble avec une taille fluide. Un registre d'affichage
   cohérent que personne n'avait nommé.
+
+- **`chrome-contrast.spec.ts`** — douze paires de contraste, chacune un échec
+  mesuré avant la refonte, plus deux invariants structurels. Les alphas sont
+  compositées sur le fond qu'elles rencontrent vraiment : mesurer un
+  `color-mix(…, transparent)` contre rien, c'est comment une surface
+  translucide passe un test qu'elle devrait échouer. Rejoué sur l'ancien
+  navi : 10 échecs sur 14.
+
+- **`status-ink-contrast.spec.ts`** — chaque encre de statut sur son propre
+  fond, à 4,5:1, sur les cinq thèmes. Mesurer plutôt que décréter a payé :
+  `bubbly` type `info` en azure et non en violet, donc le blanc y tombe à
+  2,8:1 et il prend l'encre sombre là où les quatre autres prennent le blanc.
+
+- **Un sous-bloc de thème scopé doit être CLOS.** Le test de parité
+  dédupliquait les sélecteurs `[data-theme]` et ne gardait que le bloc de
+  tête — le sous-bloc chrome de navi n'était vérifié par rien, et son
+  commentaire l'assumait. Une famille se redéclare désormais entière : prendre
+  `primary` sans `on-primary`, c'est poser sur le nouveau remplissage l'encre
+  prévue pour l'autre polarité.
 
 - **`pnpm run lint:typography`** — jumeau de `lint:spacing`, branché en
   pre-push et dans les deux workflows. Aucun `font-size`, `font-weight`,
