@@ -36,6 +36,14 @@ import { fileURLToPath } from "node:url";
  *   the scale rather than a step on it. The gallery's hero headings are the
  *   only ones, and a token could not express them.
  *
+ * Sass indirections are **followed, not trusted**. `forms/_field-box.scss`
+ * routes its sizes through a `$sizes` map, so `font-size: map.get($s, font)`
+ * carries no literal of its own — the value lives at the map entry, which no
+ * `font-size:` pattern would ever match. Every `map.get(…, key)` and every
+ * `$variable` reaching a typographic property is therefore resolved against
+ * the file's own bindings and checked there, and an indirection that resolves
+ * to nothing is itself a finding: an unfollowable value is exactly the hole.
+ *
  * Generated files are skipped: `changelog.generated.ts` mirrors past releases
  * verbatim, and an entry that quoted `line-height: 1` in 0.11 must keep saying
  * so. Rewriting it would make the changelog lie about what shipped.
@@ -60,6 +68,15 @@ const HAS_NUMBER = /\d/;
 
 /** Fluid type: an expression across the scale, not a step on it. */
 const FLUID = /^clamp\(/;
+
+/** A Sass map lookup — the second argument is the entry to resolve. */
+const MAP_GET = /map\.get\([^,)]+,\s*([\w-]+)\s*\)/g;
+
+/** A Sass variable reference. */
+const SASS_VAR = /\$([\w-]+)/g;
+
+/** A map entry (`key: value,`) or a variable declaration (`$key: value;`). */
+const BINDING = /^\s*\$?([\w-]+)\s*:\s*([^,;]+)[,;]\s*$/;
 
 /**
  * Blank out comments, keeping every newline so line numbers still line up. A
@@ -139,6 +156,51 @@ function styledFiles(dir: string): string[] {
   return out;
 }
 
+/** Where a value came from, so a finding points at the line to edit. */
+interface Binding {
+  readonly line: number;
+  readonly value: string;
+}
+
+/** Every map entry and variable declaration in a file, by name. */
+function bindingsOf(lines: readonly string[]): Map<string, Binding[]> {
+  const found = new Map<string, Binding[]>();
+  lines.forEach((raw, i) => {
+    const m = BINDING.exec(raw);
+    if (!m) {
+      return;
+    }
+    const name = m[1];
+    if (name === undefined) {
+      return;
+    }
+    const list = found.get(name) ?? [];
+    list.push({ line: i + 1, value: (m[2] ?? "").trim() });
+    found.set(name, list);
+  });
+  return found;
+}
+
+/** The binding names a value defers to: map-lookup keys, then bare variables. */
+function referencedNames(value: string): string[] {
+  const named = (all: RegExpMatchArray[]): string[] =>
+    all.map((m) => m[1] ?? "").filter((n) => n !== "");
+  const keys = named([...value.matchAll(MAP_GET)]);
+  const rest = value.replace(MAP_GET, " ");
+  return [...keys, ...named([...rest.matchAll(SASS_VAR)])];
+}
+
+/** True when a value is a bare literal on a tokenised axis. */
+function isLiteral(value: string): boolean {
+  const bare = value.replace(/var\([^)]*\)/g, "").trim();
+  return (
+    bare !== "" &&
+    !KEYWORDS.has(bare) &&
+    HAS_NUMBER.test(bare) &&
+    !FLUID.test(bare)
+  );
+}
+
 /** Every raw typographic literal under the styled roots. */
 export function findRawTypography(): Finding[] {
   const findings: Finding[] = [];
@@ -153,25 +215,53 @@ export function findRawTypography(): Finding[] {
       if (EXEMPT.has(`${key}:${i + 1}`)) {
         return;
       }
-      // Strip `var(...)` first: a value inside a component-token fallback is
-      // that component's public theming default, not a bare literal.
-      const value = (m[2] ?? "").replace(/var\([^)]*\)/g, "").trim();
-      if (
-        value === "" ||
-        KEYWORDS.has(value) ||
-        !HAS_NUMBER.test(value) ||
-        FLUID.test(value)
-      ) {
+      const prop = m[1] ?? "";
+      const value = (m[2] ?? "").trim();
+      if (isLiteral(value)) {
+        findings.push({ file: key, line: i + 1, text: `${prop}: ${value}` });
         return;
       }
-      findings.push({
-        file: key,
-        line: i + 1,
-        text: `${m[1] ?? ""}: ${value}`,
-      });
+      if (HAS_NUMBER.test(value.replace(/var\([^)]*\)/g, ""))) {
+        return; // a fluid expression or a keyword — already cleared above.
+      }
+      findings.push(...resolved(key, prop, value, bindingsOf(lines), i + 1));
     });
   }
   return findings;
+}
+
+/**
+ * Follow an indirection to its bindings and report any literal found there —
+ * or, if nothing resolves, report the indirection itself.
+ */
+function resolved(
+  file: string,
+  prop: string,
+  value: string,
+  bindings: Map<string, Binding[]>,
+  line: number,
+): Finding[] {
+  const names = referencedNames(value);
+  if (names.length === 0) {
+    return [];
+  }
+  const targets = names.flatMap((n) => bindings.get(n) ?? []);
+  if (targets.length === 0) {
+    return [
+      {
+        file,
+        line,
+        text: `${prop}: ${value} — indirection unresolvable here`,
+      },
+    ];
+  }
+  return targets
+    .filter((t) => isLiteral(t.value))
+    .map((t) => ({
+      file,
+      line: t.line,
+      text: `${t.value} — reaches ${prop} via ${value}`,
+    }));
 }
 
 function main(): void {

@@ -58,6 +58,14 @@ All notable changes to **fold-ng** are documented here. The format follows
   expression qui balaie l'échelle plutôt qu'une marche dessus ; et un
   commentaire n'est pas du code.
 
+  Les indirections Sass sont **suivies, pas crues** : `_field-box.scss` route
+  ses tailles par une map, donc `font-size: map.get($s, font)` ne porte aucun
+  littéral — il vit à l'entrée de map, qu'aucun motif `font-size:` n'aurait
+  jamais vue. Chaque `map.get(…, clé)` et chaque `$variable` est résolu contre
+  les liaisons du fichier et vérifié là-bas, et une indirection qui ne résout
+  nulle part est elle-même un signalement : une valeur qu'on ne peut pas
+  suivre, c'est exactement le trou.
+
 ### Fixed
 
 - **`--fold-font-mono` existe.** Neuf déclarations de la galerie le lisaient,
