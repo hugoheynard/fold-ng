@@ -98,20 +98,30 @@
     "footer       footer         footer";
 }
 
-/* Each region is a named surface (`foldSurface` in the template); the token
-   layer resolves each surface's own text and lets a mixed theme re-colour the
-   chrome ones. The shell no longer owns that rule — see `[data-surface]`. */
+/* Each region is a named surface (`foldSurface` in the template) and paints its
+   own ground. `[data-surface]` resolves the surface's TEXT — it deliberately
+   sets no background, because a surface contract cannot know which of the five
+   `bg-*` roles a given region is — so the ground has to be named here.
+
+   It was not, and nothing noticed: `--fold-color-bg-header` was consumed by no
+   component at all, in any theme. The header rendered transparent onto the
+   shell's `:host`, which paints `bg-page` — resolved OUTSIDE the chrome region,
+   so under navi that meant chrome-light text on a paper ground. The same held
+   for any strip of rail the `fold-menu` did not cover. */
 .rail-primary {
   grid-area: rail-primary;
   min-height: 0;
+  background: var(--fold-color-bg-rail-primary);
 }
 .rail-secondary {
   grid-area: rail-secondary;
   min-height: 0;
+  background: var(--fold-color-bg-rail-secondary);
 }
 .header {
   grid-area: header;
   min-width: 0;
+  background: var(--fold-color-bg-header);
 }
 /* The footer is content-sized — a player/status bar sizes itself. `contentinfo`
    landmark via the `<footer>` element. */
@@ -119,6 +129,7 @@
   grid-area: footer;
   min-width: 0;
   min-height: 0;
+  background: var(--fold-color-bg-header);
 }
 /* The content cell is the FRAME: the positioning anchor for floating panels
    (they cover the page but stay below the rails/header, nav context preserved)
