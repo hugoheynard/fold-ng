@@ -104,6 +104,17 @@ export default tslint.config(
       "@typescript-eslint/no-redundant-type-constituents": "off",
     },
   },
+  // A component keeping a deprecated input for one release cycle HAS to read
+  // it — honouring it is the whole point of the cycle. `no-deprecated` is
+  // about not reaching for someone else's deprecated API, not about a
+  // component being forbidden to support its own. Scoped to the one file, not
+  // disabled inline, and it goes when `mobileLayout` does (before 1.0).
+  {
+    files: ["src/components/content/data-table/data-table.component.ts"],
+    rules: {
+      "@typescript-eslint/no-deprecated": "off",
+    },
+  },
   {
     files: ["**/*.spec.ts"],
     rules: {

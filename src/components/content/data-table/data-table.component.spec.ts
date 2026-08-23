@@ -389,6 +389,7 @@ describe("FoldDataTableComponent — selection + polish", () => {
       [rows]="rows"
       [rowKey]="rowKey"
       [mobileLayout]="mobileLayout()"
+      [rowCardChrome]="rowCardChrome()"
     >
       <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
       <ng-template foldRowCard let-row let-i="index">
@@ -405,6 +406,35 @@ class MobileHostComponent {
   ];
   readonly rowKey = (row: { id: string }): string => row.id;
   readonly mobileLayout = signal<"scroll" | "auto-cards" | "custom">("scroll");
+  readonly rowCardChrome = signal<"shell" | "none">("shell");
+}
+
+@Component({
+  standalone: true,
+  imports: [FoldDataTableComponent, FoldDataTableCellDirective],
+  template: `
+    <fold-data-table
+      [columns]="columns"
+      [rows]="rows"
+      [rowKey]="rowKey"
+      narrowLayout="cards"
+      primaryKey="name"
+    >
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="city" let-row>{{ row.city }}</ng-template>
+    </fold-data-table>
+  `,
+})
+class DefaultCardHostComponent {
+  readonly columns: FoldTableColumn[] = [
+    { key: "name", label: "Name" },
+    { key: "city", label: "City" },
+  ];
+  readonly rows = [
+    { id: "a", name: "Alice", city: "Lyon" },
+    { id: "b", name: "Bob", city: "Nantes" },
+  ];
+  readonly rowKey = (row: { id: string }): string => row.id;
 }
 
 describe("FoldDataTableComponent — mobile layout", () => {
@@ -484,9 +514,12 @@ describe("FoldDataTableComponent — mobile layout", () => {
   });
 
   it("the default card names the row, then labels its values", () => {
-    const { fixture, host, el } = mobileSetup();
-    host.mobileLayout.set("auto-cards");
+    // No `foldRowCard` projected here: the DEFAULT template is what renders,
+    // and the presence of a template is now the whole switch.
+    mockWidth(480);
+    const fixture = TestBed.createComponent(DefaultCardHostComponent);
     fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
 
     const first = el.querySelector("li.folddt-card");
     expect(
@@ -494,7 +527,22 @@ describe("FoldDataTableComponent — mobile layout", () => {
     ).toBe("Alice");
     // A description list, not `::before { content: attr(data-label) }` —
     // generated content is not reliably announced.
-    expect(first?.querySelector("dl.folddt-card-grid")).not.toBeNull();
+    expect(first?.querySelector("dl.folddt-card-grid dt")?.textContent).toBe(
+      "City",
+    );
+    expect(first?.querySelector("dl.folddt-card-grid dd")?.textContent).toBe(
+      "Lyon",
+    );
+  });
+
+  it("a projected foldRowCard replaces the default content, not the shell", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.mobileLayout.set("auto-cards");
+    fixture.detectChanges();
+    // Same shell either way — that is the point of having one.
+    expect(el.querySelectorAll("li.folddt-card").length).toBe(2);
+    expect(el.querySelectorAll(".my-card").length).toBe(2);
+    expect(el.querySelector(".folddt-card-identity")).toBeNull();
   });
 
   it("a wide container keeps the table, whatever the layout asks for", () => {
@@ -503,6 +551,19 @@ describe("FoldDataTableComponent — mobile layout", () => {
     fixture.detectChanges();
     expect(el.querySelector("table.folddt")).not.toBeNull();
     expect(el.querySelector("ul.folddt-cardlist")).toBeNull();
+  });
+
+  it('rowCardChrome="none" gives the parent a bare container', () => {
+    const { fixture, host, el } = mobileSetup();
+    host.mobileLayout.set("auto-cards");
+    fixture.detectChanges();
+    expect(el.querySelector("li.folddt-card.is-bare")).toBeNull();
+
+    host.rowCardChrome.set("none");
+    fixture.detectChanges();
+    expect(el.querySelectorAll("li.folddt-card.is-bare").length).toBe(2);
+    // The content still renders — only the chrome is gone.
+    expect(el.querySelectorAll(".my-card").length).toBe(2);
   });
 
   it("custom mode renders the parent foldRowCard once per row (narrow)", () => {

@@ -247,6 +247,7 @@
 
 #### FoldDataTableComponent
 - caption: InputSignal<string | undefined>
+- cardsAt: InputSignalWithTransform<number, unknown>
 - clickable: InputSignalWithTransform<boolean, unknown>
 - columns: InputSignal<readonly FoldTableColumn[]> — required
 - density: InputSignal<"comfortable" | "compact">
@@ -255,6 +256,8 @@
 - labels: InputSignal<Partial<FoldDataTableLabels> | undefined>
 - loading: InputSignalWithTransform<boolean, unknown>
 - mobileLayout: InputSignal<"scroll" | "auto-cards" | "custom">
+- narrowLayout: InputSignal<"scroll" | "cards">
+- rowCardChrome: InputSignal<"none" | "shell">
 - rowClick: OutputEmitterRef<T>
 - rowKey: InputSignal<((row: T, index: number) => string | number) | undefined>
 - rows: InputSignal<readonly T[]> — required

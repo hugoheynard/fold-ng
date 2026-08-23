@@ -299,6 +299,21 @@
   background: var(--fold-color-primary-surface);
   border-color: var(--fold-color-primary);
 }
+/* `rowCardChrome="none"` — a bare container, the parent takes everything back.
+   Reproduces what `mobileLayout="custom"` rendered before the shell existed;
+   the tone rail and the selected state go with the rest, because a consumer who
+   asked for no chrome did not ask for half of it. */
+.folddt-card.is-bare,
+.folddt-card.is-bare.is-selected,
+.folddt-card.is-bare.tone-warning,
+.folddt-card.is-bare.tone-alert,
+.folddt-card.is-bare.tone-success {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
 .folddt--custom.folddt--narrow .folddt {
   display: none;
 }

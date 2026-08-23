@@ -2,6 +2,7 @@ import {
   Component,
   type TemplateRef,
   booleanAttribute,
+  numberAttribute,
   computed,
   contentChild,
   contentChildren,
@@ -34,8 +35,8 @@ import {
   type FoldDataTableLabels,
 } from "./data-table-labels";
 
-/** Container width (px) at or below which the card layouts take over. */
-const CARDS_AT = 700;
+/** Default container width (px) at or below which the card layout takes over. */
+const CARDS_AT = 600;
 
 /**
  * `fold-data-table` — a controlled, presentational roster table. The parent
@@ -98,12 +99,38 @@ export class FoldDataTableComponent<T> {
   readonly zebra = input(false, { transform: booleanAttribute });
   readonly hover = input(true, { transform: booleanAttribute });
   /**
-   * How the table behaves on a narrow screen:
-   * - `scroll` (default) — stay tabular; the body scrolls horizontally. The
-   *   table imposes no card layout unless asked.
-   * - `auto-cards` — each row stacks into an auto label/value card.
-   * - `custom` — hide the table and render the projected `foldRowCard` template
-   *   per row, so the parent owns the mobile presentation.
+   * How the table presents itself when its CONTAINER is too narrow.
+   *
+   * - `scroll` (default) — stay tabular; the body scrolls horizontally.
+   * - `cards` — one card per row. The content is the projected `foldRowCard`
+   *   template if there is one, otherwise a default label/value card.
+   *
+   * @see cardsAt for the width that decides.
+   */
+  readonly narrowLayout = input<"scroll" | "cards">("scroll");
+
+  /** Container width (px) at or below which `cards` takes over. */
+  readonly cardsAt = input(CARDS_AT, { transform: numberAttribute });
+
+  /**
+   * Chrome around a projected `foldRowCard`.
+   *
+   * - `shell` (default) — the card wears the library's outline, radius, shadow,
+   *   tone rail and selected state, so a consumer supplies content and nothing
+   *   else.
+   * - `none` — a bare container; the parent takes everything back, including
+   *   the selection checkbox. This reproduces what `mobileLayout="custom"`
+   *   rendered before the shell existed.
+   */
+  readonly rowCardChrome = input<"shell" | "none">("shell");
+
+  /**
+   * @deprecated Use {@link narrowLayout} plus a projected `foldRowCard`.
+   *
+   * `custom` was redundant: projecting the template already said everything.
+   * `scroll` → the default · `auto-cards` → `narrowLayout="cards"` ·
+   * `custom` → `narrowLayout="cards"` + `<ng-template foldRowCard>`.
+   * Removed before 1.0.
    */
   readonly mobileLayout = input<"scroll" | "auto-cards" | "custom">("scroll");
   /** Row density — `compact` tightens padding for dense rosters. */
@@ -147,7 +174,7 @@ export class FoldDataTableComponent<T> {
    * taller, which can bring a scrollbar in and hand ~15px of width back —
    * enough to cross the threshold again and flip forever.
    */
-  protected readonly isNarrow = foldAt(this.width, CARDS_AT);
+  protected readonly isNarrow = foldAt(this.width, this.cardsAt);
   private readonly injectedLabels = inject(FOLD_DATA_TABLE_LABELS);
 
   /** Effective labels — the app-wide (or English) set, with the `labels` input on top. */
@@ -157,6 +184,20 @@ export class FoldDataTableComponent<T> {
   }));
 
   constructor() {
+    // `mobileLayout` is deprecated; say so once, where the author will see it.
+    effect(() => {
+      if (isDevMode() && this.mobileLayout() !== "scroll") {
+        console.warn(
+          `[fold-data-table] \`mobileLayout="${this.mobileLayout()}"\` is deprecated. ` +
+            `Use narrowLayout="cards"` +
+            (this.mobileLayout() === "custom"
+              ? " with a projected <ng-template foldRowCard>."
+              : ".") +
+            " It is removed before 1.0.",
+        );
+      }
+    });
+
     // Dev guard: `truncate` clips against the column `width`; without one it
     // silently won't truncate. Warn so the misuse surfaces at authoring time.
     effect(() => {
@@ -196,10 +237,12 @@ export class FoldDataTableComponent<T> {
    * the fix; there is nothing left to hide.
    */
   protected readonly cardMode = computed(
-    () =>
-      this.isNarrow() &&
-      (this.mobileLayout() === "auto-cards" ||
-        this.mobileLayout() === "custom"),
+    () => this.isNarrow() && this.resolvedNarrowLayout() === "cards",
+  );
+
+  /** `narrowLayout`, with the deprecated `mobileLayout` folded in. */
+  private readonly resolvedNarrowLayout = computed<"scroll" | "cards">(() =>
+    this.mobileLayout() === "scroll" ? this.narrowLayout() : "cards",
   );
 
   /** The column that names the row — `primaryKey`, else the first one. */
@@ -233,10 +276,8 @@ export class FoldDataTableComponent<T> {
   });
 
   /** The custom mobile-card template, only when `mobileLayout="custom"`. */
-  readonly rowCardTemplate = computed<TemplateRef<unknown> | null>(() =>
-    this.mobileLayout() === "custom"
-      ? (this.rowCard()?.template ?? null)
-      : null,
+  readonly rowCardTemplate = computed<TemplateRef<unknown> | null>(
+    () => this.rowCard()?.template ?? null,
   );
 
   /**

@@ -152,13 +152,16 @@
         @let tone = toneOf(row);
         <li
           class="folddt-card"
+          [class.is-bare]="rowCardChrome() === 'none' && rowCardTemplate()"
           [class.tone-warning]="tone === 'warning'"
           [class.tone-alert]="tone === 'alert'"
           [class.tone-success]="tone === 'success'"
           [class.is-selected]="selectable() && isRowSelected(row, i)"
           [attr.aria-selected]="selectable() ? isRowSelected(row, i) : null"
         >
-          @if (selectable()) {
+          @if (
+            selectable() && !(rowCardChrome() === "none" && rowCardTemplate())
+          ) {
             <fold-checkbox
               class="folddt-card-select"
               size="sm"
