@@ -89,6 +89,7 @@
   --fold-ref-graphite-900: #1a2336; /* rail 1 · app menu                   */
   --fold-ref-graphite-850: #1f2a40; /* rail 2 · workspace                  */
   --fold-ref-graphite-800: #29344e; /* raised / hover on the chrome        */
+  --fold-ref-graphite-700: #3a4870; /* surface-band on the chrome          */
 
   /* Paper — the navi page (cool white, three real steps of depth). */
   --fold-ref-paper-0: #ffffff; /* card                                     */

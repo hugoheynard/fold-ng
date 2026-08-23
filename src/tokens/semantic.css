@@ -179,6 +179,11 @@
     transparent
   );
   --fold-color-surface-hover: var(--fold-ref-ink-700); /* solid raised hover */
+  /* One step AWAY from its container, in whichever direction the theme's
+     polarity dictates. A header or footer band has to detach from the body of
+     its card: on a dark theme it lightens, on a light theme it darkens. The
+     component names the role and never has to know which way that is. */
+  --fold-color-surface-band: var(--fold-ref-ink-700);
   --fold-color-border: color-mix(
     in srgb,
     var(--fold-ref-white) 8%,
@@ -483,6 +488,7 @@
   --fold-color-surface-hover: var(
     --fold-ref-cloud-150
   ); /* solid raised hover */
+  --fold-color-surface-band: var(--fold-ref-cloud-150);
   --fold-color-border: color-mix(
     in srgb,
     var(--fold-ref-black) 8%,
@@ -635,6 +641,7 @@
   --fold-color-surface-hover: var(
     --fold-ref-bubble-150
   ); /* solid raised hover */
+  --fold-color-surface-band: var(--fold-ref-bubble-150);
   --fold-color-border: color-mix(
     in srgb,
     var(--fold-ref-grape-500) 14%,
@@ -793,14 +800,19 @@
     transparent
   );
   --fold-color-surface-hover: var(--fold-ref-paper-100);
+  --fold-color-surface-band: var(--fold-ref-paper-200);
 
-  /* Borders — SOLID. A back-office reads as machined seams, not soft alphas. */
-  --fold-color-border: var(--fold-ref-paper-200);
-  --fold-color-border-subtle: color-mix(
-    in srgb,
-    var(--fold-ref-paper-200) 55%,
-    var(--fold-ref-paper-0)
-  );
+  /* Borders — SOLID. A back-office reads as machined seams, not soft alphas.
+
+     One step darker than navi 2 shipped: on a light ground the depth comes from
+     the CONTOUR and the shadow, not from the fill. There is no room in the fill
+     — between white and a light page there is under 10% of luminance to spread
+     across three levels — so a `sunken` card sat at 1.05:1 against the page and
+     its border at 1.11:1 did not rescue it. `surface-sunken` is unchanged: it
+     is the outline that holds a card, which is what "machined seam" claimed
+     and these values did not honour. */
+  --fold-color-border: var(--fold-ref-paper-300);
+  --fold-color-border-subtle: var(--fold-ref-paper-200);
 
   --fold-color-glass: color-mix(
     in srgb,
@@ -914,6 +926,7 @@
   --fold-color-surface-card: var(--fold-ref-graphite-800);
   --fold-color-surface-sunken: var(--fold-ref-graphite-950);
   --fold-color-surface-hover: var(--fold-ref-graphite-800);
+  --fold-color-surface-band: var(--fold-ref-graphite-700);
   --fold-color-surface-subtle: color-mix(
     in srgb,
     var(--fold-ref-navyink-50) 4%,
@@ -1089,6 +1102,7 @@
   --fold-color-surface-hover: var(
     --fold-ref-steel-150
   ); /* solid raised hover */
+  --fold-color-surface-band: var(--fold-ref-steel-150);
 
   /* Borders — SOLID brushed-steel seams (the palpable metal edge), where the
      light themes use an alpha hairline. */

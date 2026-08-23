@@ -11,9 +11,15 @@
   /* corner radius, shared with the bands so a raised/bordered band never squares
      off the rounded card. */
   --_radius: var(--fold-radius-lg);
-  /* raisedBands lift (a solid elevation surface, clearly a step above the body)
-     + separators hairline. */
-  --_band-raise: var(--fold-color-surface-hover);
+  /* raisedBands: one step AWAY from the body, plus a hairline separator.
+
+     `surface-band`, not `surface-hover`: a band does not "rise", it separates,
+     and which way that is depends on the theme's polarity. Naming `hover` here
+     hard-coded a dark-theme assumption into a component — the same thing rule
+     1.3 forbids a theme doing in reverse. On navi it made the band the page
+     colour on a white card (1.09:1), and on navi's chrome it made the band
+     EXACTLY the card colour (1.00:1). */
+  --_band-raise: var(--fold-color-surface-band);
   --_sep-line: var(--fold-color-border-subtle);
 
   display: flex;
@@ -46,12 +52,12 @@
   }
 }
 
-/* Sunken — a deeper container; pairs with a fainter hairline + a subtler raise
-   (one step up = the card surface). */
+/* Sunken — a deeper container, with a fainter hairline. It no longer re-points
+   the band: "one step up = the card surface" was the same polarity guess, made
+   twice. The role carries the direction for both cases. */
 :host(.s-sunken) {
   background: var(--fold-color-surface-sunken);
   border-color: var(--fold-color-border-subtle);
-  --_band-raise: var(--fold-color-surface-card);
 }
 
 :host(.r-md) {

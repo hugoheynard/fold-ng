@@ -91,6 +91,13 @@ export const FOLD_SEMANTIC_COLOR_TOKENS = [
   "surface-raised",
   /** Solid raised hover surface (list rows, menu/tab items). */
   "surface-hover",
+  /**
+   * One step AWAY from its container, in whichever direction the theme's
+   * polarity dictates — a card's header or footer band, a strip that has to
+   * detach from the body it sits on. Dark themes lighten it, light themes
+   * darken it, and the component never has to know which.
+   */
+  "surface-band",
   /** Neutral hairline border. */
   "border",
   /** Fainter hairline — row dividers, subtle edges (below `border`). */
