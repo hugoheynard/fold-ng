@@ -103,6 +103,15 @@ export class FoldMenuComponent {
   readonly level = input<FoldMenuLevel>("primary");
   /** Pin the collapse toggle to a band, or `auto` to follow band presence. */
   readonly togglePlacement = input<FoldMenuTogglePlacement>("auto");
+  /**
+   * The rail's accessible name, set on its `<nav>` landmark.
+   *
+   * Optional for a lone rail — the page's only `<nav>` needs no name. It stops
+   * being optional the moment the shell carries **two** rails: an app rail and
+   * a workspace rail both announce as "navigation", and nothing tells them
+   * apart. Name both, or neither.
+   */
+  readonly navLabel = input<string>();
 
   private readonly headRef =
     viewChild.required<ElementRef<HTMLElement>>("head");

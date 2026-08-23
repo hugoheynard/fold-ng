@@ -463,6 +463,7 @@
 - collapsible: InputSignalWithTransform<boolean, unknown>
 - expanded: ModelSignal<boolean | undefined>
 - level: InputSignal<FoldMenuLevel>
+- navLabel: InputSignal<string | undefined>
 - tint: InputSignal<FoldMenuTint>
 - togglePlacement: InputSignal<FoldMenuTogglePlacement>
 

@@ -9,6 +9,7 @@
        the mobile drawer; closes the drawer on navigation. ──────────── -->
   <fold-menu
     railPrimary
+    navLabel="Gallery"
     tint="primary"
     [expanded]="mobileNavOpen()"
     [foldElevated]="cfg().elevated.includes('railPrimary')"
@@ -74,6 +75,7 @@
   <fold-menu
     railSecondary
     level="secondary"
+    navLabel="Library"
     [expanded]="true"
     [foldElevated]="cfg().elevated.includes('railSecondary')"
   >

@@ -8,6 +8,13 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-menu` — `navLabel`**, le nom du repère `<nav>` du rail. Facultatif
+  pour un rail seul : la seule navigation d'une page n'a rien à distinguer.
+  Il cesse de l'être dès que la coquille en porte **deux** — un rail
+  d'application et un rail d'espace de travail s'annoncent alors tous les deux
+  « navigation », et plus rien ne les sépare. La galerie, qui a exactement ces
+  deux rails, les nomme désormais.
+
 - **`fold-meter`** — une mesure en LECTURE SEULE dans une plage connue (une
   complétude, un quota, un score). Ce n'est ni une barre de progression ni un
   `fold-slider` : ce dernier est un `input type="range"`, focalisable,

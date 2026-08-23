@@ -9,7 +9,7 @@
   }
 </div>
 
-<nav class="menu-body">
+<nav class="menu-body" [attr.aria-label]="navLabel() ?? null">
   <ng-content />
   @if (collapsible() && resolvedPlacement() === "body") {
     <ng-container [ngTemplateOutlet]="toggleTpl" />

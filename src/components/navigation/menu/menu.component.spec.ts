@@ -11,6 +11,7 @@ import { FoldMenuComponent } from "./menu.component";
     [(expanded)]="expanded"
     [tint]="tint()"
     [level]="level()"
+    [navLabel]="navLabel()"
   >
     <div header class="h">Brand</div>
     <a class="item">Item</a>
@@ -22,6 +23,7 @@ class HostComponent {
   readonly expanded = signal<boolean | undefined>(false);
   readonly tint = signal<"follow" | "neutral" | "primary">("follow");
   readonly level = signal<"primary" | "secondary" | "tertiary">("primary");
+  readonly navLabel = signal<string | undefined>(undefined);
 }
 
 function render() {
@@ -71,6 +73,16 @@ describe("FoldMenuComponent", () => {
     fixture.componentInstance.level.set("secondary");
     fixture.detectChanges();
     expect(menu.getAttribute("data-level")).toBe("secondary");
+  });
+
+  it("names the nav landmark only when a label is given", () => {
+    const { fixture, menu } = render();
+    const nav = menu.querySelector("nav.menu-body");
+    // Unset: no empty name — a lone rail is fine as the page's only <nav>.
+    expect(nav?.hasAttribute("aria-label")).toBe(false);
+    fixture.componentInstance.navLabel.set("PIM");
+    fixture.detectChanges();
+    expect(nav?.getAttribute("aria-label")).toBe("PIM");
   });
 
   it("toggles the expanded class + writes back the two-way state", () => {
