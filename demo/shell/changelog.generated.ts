@@ -42,6 +42,378 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.14.0",
+    date: "2026-08-23",
+    unreleased: false,
+    counts: {
+      Changed: 1,
+      Added: 3,
+    },
+    breaking: 1,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-launcher",
+              },
+              {
+                kind: "text",
+                value: " a DEUX niveaux.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Une tuile qui contient des tuiles est un ",
+              },
+              {
+                kind: "strong",
+                value: "groupe",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-group",
+              },
+              {
+                kind: "text",
+                value: ") : aucun ",
+              },
+              {
+                kind: "code",
+                value: "level",
+              },
+              {
+                kind: "text",
+                value:
+                  " à piloter, aucun mode à basculer — le lanceur trouve la profondeur par requête de contenu, exactement comme ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: " trouve ses ",
+              },
+              {
+                kind: "code",
+                value: "fold-optgroup",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Deux niveaux et pas plus : au troisième ce n'est plus un lanceur, c'est une arborescence. Ce qui casse : ",
+              },
+              {
+                kind: "code",
+                value: "icon",
+              },
+              {
+                kind: "text",
+                value: " devient ",
+              },
+              {
+                kind: "strong",
+                value: "facultatif",
+              },
+              {
+                kind: "text",
+                value: " sur ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-tile",
+              },
+              {
+                kind: "text",
+                value:
+                  " (une entrée de second niveau n'en a pas toujours ; sans icône, la ligne retombe sur un point de statut plutôt que de décaler son libellé). La cascade d'entrée n'est plus indexée sur ",
+              },
+              {
+                kind: "code",
+                value: ":nth-child",
+              },
+              {
+                kind: "text",
+                value: " mais sur la ",
+              },
+              {
+                kind: "strong",
+                value: "distance à la tuile touchée",
+              },
+              {
+                kind: "text",
+                value:
+                  " — c'est le lanceur qui la calcule, parce qu'aucune tuile ne peut connaître seule sa distance à un doigt posé sur une autre. ",
+              },
+              {
+                kind: "code",
+                value: "variant",
+              },
+              {
+                kind: "text",
+                value: " gagne ",
+              },
+              {
+                kind: "code",
+                value: "accent",
+              },
+              {
+                kind: "text",
+                value: ". Le lanceur se déclare enfin ",
+              },
+              {
+                kind: "strong",
+                value: "surface de chrome",
+              },
+              {
+                kind: "text",
+                value:
+                  " : il peignait le sol du rail tout en lisant l'encre de la PAGE, ce qui donnait du texte sombre sur sombre et des tuiles claires au milieu d'un panneau noir sous tout thème mixte. Peindre le sol d'une famille sans en rejoindre la polarité, c'est en revendiquer la moitié. Nouveaux réglages : ",
+              },
+              {
+                kind: "code",
+                value: "eyebrow",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "heading",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "glass",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "closeLabel",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "backLabel",
+              },
+              {
+                kind: "text",
+                value: ", et un emplacement ",
+              },
+              {
+                kind: "code",
+                value: "footer",
+              },
+              {
+                kind: "text",
+                value:
+                  " pour ce que l'application possède (le compte, la déconnexion) et que la bibliothèque n'a pas à deviner. Ce que la transition doit aux technologies d'assistance, parce que le mouvement ne leur dit rien : le ",
+              },
+              {
+                kind: "strong",
+                value: "focus suit le niveau",
+              },
+              {
+                kind: "text",
+                value:
+                  " (et ne bouge qu'une fois le niveau peint — pris une frame trop tôt il échouait en silence et le piège retombait sur le bouton de fermeture, donc le curseur atterrissait sur « renvoyer » à chaque descente) ; ",
+              },
+              {
+                kind: "strong",
+                value: "Échap devient contextuel",
+              },
+              {
+                kind: "text",
+                value: " (niveau 2 il remonte, niveau 1 il ferme) ; le ",
+              },
+              {
+                kind: "strong",
+                value: "niveau est annoncé",
+              },
+              {
+                kind: "text",
+                value:
+                  " par une région vive. Le balayage double la flèche, il ne la remplace pas.",
+              },
+            ],
+            breaking: true,
+          },
+        ],
+      },
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-menu",
+              },
+              {
+                kind: "text",
+                value: " — ",
+              },
+              {
+                kind: "code",
+                value: "navLabel",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ", le nom du repère ",
+              },
+              {
+                kind: "code",
+                value: "<nav>",
+              },
+              {
+                kind: "text",
+                value:
+                  " du rail. Facultatif pour un rail seul : la seule navigation d'une page n'a rien à distinguer. Il cesse de l'être dès que la coquille en porte ",
+              },
+              {
+                kind: "strong",
+                value: "deux",
+              },
+              {
+                kind: "text",
+                value:
+                  " — un rail d'application et un rail d'espace de travail s'annoncent alors tous les deux « navigation », et plus rien ne les sépare. La galerie, qui a exactement ces deux rails, les nomme désormais.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-meter",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— une mesure en LECTURE SEULE dans une plage connue (une complétude, un quota, un score). Ce n'est ni une barre de progression ni un ",
+              },
+              {
+                kind: "code",
+                value: "fold-slider",
+              },
+              {
+                kind: "text",
+                value: " : ce dernier est un ",
+              },
+              {
+                kind: "code",
+                value: 'input type="range"',
+              },
+              {
+                kind: "text",
+                value:
+                  ", focalisable, déplaçable, et il s'annonce comme quelque chose qu'on peut changer. Un ",
+              },
+              {
+                kind: "code",
+                value: 'role="meter"',
+              },
+              {
+                kind: "text",
+                value:
+                  " annonce une valeur déjà décidée. Le raccourci habituel — un ",
+              },
+              {
+                kind: "code",
+                value: "div",
+              },
+              {
+                kind: "text",
+                value:
+                  " de 4px — ne donne rien du tout à un lecteur d'écran, et c'est la raison d'être du composant. La valeur est ",
+              },
+              {
+                kind: "strong",
+                value: "bornée",
+              },
+              {
+                kind: "text",
+                value:
+                  " plutôt que crue : au-delà du max elle peindrait hors de la piste, et une plage inversée diviserait par un négatif.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-checklist",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— une liste de conditions et leur état. Troisième apparition du motif (les règles d'un champ mot de passe, les préconditions d'une zone dangereuse, puis une liste de publication), ce qui est le moment où une forme cesse d'être une coïncidence. Chaque état est porté par un ",
+              },
+              {
+                kind: "strong",
+                value: "glyphe autant que par une couleur",
+              },
+              {
+                kind: "text",
+                value:
+                  " : un point vert et un point ambre sont le même point en niveaux de gris, en ",
+              },
+              {
+                kind: "code",
+                value: "forced-colors",
+              },
+              {
+                kind: "text",
+                value:
+                  ", et pour une large part des lecteurs. L'état est aussi dit ",
+              },
+              {
+                kind: "strong",
+                value: "en toutes lettres",
+              },
+              {
+                kind: "text",
+                value: " pour un lecteur d'écran, qui ne voit aucun glyphe.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.13.0",
     date: "2026-08-23",
     unreleased: false,
@@ -17245,7 +17617,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.13.0...HEAD [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.14.0...HEAD [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -17257,4 +17629,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.13.0";
+export const PUBLISHED_VERSION = "0.14.0";
