@@ -282,3 +282,38 @@ test.describe("tab bar · a collapsed tooltip lives in the top layer", () => {
     expect(await label.getAttribute("popover")).toBeNull();
   });
 });
+
+test.describe("tab bar · density and distribution are two axes", () => {
+  test("size moves type, never the distribution model", async ({ page }) => {
+    // `compact` used to stretch and `comfortable` to hug, while `size`
+    // documented itself as "pure padding/typography". Changing the density
+    // silently changed the layout model.
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "horizontal");
+
+    const item = frame.locator(".tab-bar-item").first();
+    const grow = async (): Promise<string> =>
+      item.evaluate((el) => getComputedStyle(el).flexGrow);
+
+    await setParam(page, "size", "compact");
+    const compact = await grow();
+    await setParam(page, "size", "comfortable");
+    await expect.poll(grow).toBe(compact);
+  });
+
+  test("justify is the axis that does move it", async ({ page }) => {
+    const frame = await openTabNav(page);
+    await setParam(page, "direction", "horizontal");
+
+    const item = frame.locator(".tab-bar-item").first();
+    const grow = async (): Promise<string> =>
+      item.evaluate((el) => getComputedStyle(el).flexGrow);
+
+    // Polled, not read once: a control click and the style it produces are a
+    // change-detection tick apart, and a bare read raced it.
+    await setParam(page, "justify", "start");
+    await expect.poll(grow).toBe("0");
+    await setParam(page, "justify", "stretch");
+    await expect.poll(grow).toBe("1");
+  });
+});

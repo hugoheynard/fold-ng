@@ -26,6 +26,7 @@ import { TabPanelComponent } from "../../components/tab-panel.component";
 type TabStyle = "underline" | "fill";
 type TabDirection = "horizontal" | "vertical";
 type TabSize = "compact" | "comfortable";
+type TabJustify = "start" | "stretch";
 type TabBackground = "transparent" | "surface";
 
 /** `/tab-nav` — the `fold-view-nav` gallery page. */
@@ -54,9 +55,11 @@ export default class TabNavPage {
   /* ── Playground ─────────────────────────────────────────────────────────── */
   protected readonly tabCounts = [2, 3, 5] as const;
   protected readonly tabSizes = ["compact", "comfortable"] as const;
+  protected readonly tabJustify = ["start", "stretch"] as const;
   protected readonly tnStyle = signal<TabStyle>("underline");
   protected readonly tnDirection = signal<TabDirection>("vertical");
   protected readonly tnSize = signal<TabSize>("compact");
+  protected readonly tnJustify = signal<TabJustify>("start");
   protected readonly tnCollapsed = signal(false);
   protected readonly tnBackground = signal<TabBackground>("transparent");
   protected readonly tnBadge = signal(true);
@@ -116,6 +119,9 @@ export default class TabNavPage {
     }
     if (this.tnCollapsed()) {
       attrs.push("collapsed");
+    }
+    if (this.tnJustify() !== "start") {
+      attrs.push(`justify="${this.tnJustify()}"`);
     }
     if (this.tnBackground() !== "transparent") {
       attrs.push(`background="${this.tnBackground()}"`);

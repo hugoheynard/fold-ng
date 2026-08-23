@@ -8,6 +8,7 @@
   [class.style-fill]="activeStyle() === 'fill'"
   [class.dir-vertical]="resolvedDirection() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
+  [class.justify-stretch]="justify() === 'stretch'"
   [class.is-collapsed]="collapsed()"
   [class.bg-surface]="background() === 'surface'"
   (keydown)="onKeydown($event)"

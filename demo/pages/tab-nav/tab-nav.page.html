@@ -68,6 +68,21 @@
     </div>
 
     <div class="np-field" params>
+      <span class="gal-tag">justify</span>
+      <div class="ss-seg">
+        @for (j of tabJustify; track j) {
+        <button
+          type="button"
+          [class.is-on]="tnJustify() === j"
+          (click)="tnJustify.set(j)"
+        >
+          {{ j }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
       <span class="gal-tag">size</span>
       <div class="ss-seg">
         @for (s of tabSizes; track s) {
@@ -190,6 +205,7 @@
           [activeStyle]="tnStyle()"
           direction="auto"
           [size]="tnSize()"
+          [justify]="tnJustify()"
           [collapsed]="tnCollapsed()"
           [background]="tnBackground()"
           (activeKeyChange)="tnActive.set($event)"

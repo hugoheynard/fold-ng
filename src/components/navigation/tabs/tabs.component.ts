@@ -109,6 +109,21 @@ export class FoldTabsComponent<
   readonly direction = input<"horizontal" | "vertical" | "auto">("auto");
   /** Density — see {@link FoldViewNavComponent} for the same scale. */
   readonly size = input<"compact" | "comfortable">("compact");
+
+  /**
+   * How items share the bar's width — a separate axis from {@link size}.
+   *
+   * - `start` (default) — each item takes the width of its own content.
+   * - `stretch` — items divide the bar's width equally (a bottom tab bar).
+   *
+   * `size` used to decide this in passing: `compact` stretched, `comfortable`
+   * hugged, while the prop documented itself as "pure padding/typography". One
+   * prop quietly steering two axes is the thing `button-icon`/`toggle-icon` and
+   * `view-nav`/`tabs` were each split apart to stop doing.
+   *
+   * Vertical bars ignore it — a rail stacks, it does not share a width.
+   */
+  readonly justify = input<"start" | "stretch">("start");
   /** Collapse to icons — see {@link FoldViewNavComponent.collapsed}. */
   readonly collapsed = input(false, { transform: booleanAttribute });
   /** `surface` (filled bar, default) or `transparent`. */

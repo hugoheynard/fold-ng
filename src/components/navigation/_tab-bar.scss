@@ -94,8 +94,11 @@
 .bg-surface.dir-vertical {
   padding: var(--fold-space-md) var(--fold-space-sm);
 }
+/* Content width by default; `justify="stretch"` divides the bar instead. This
+   used to ride on `size` — compact stretched, comfortable hugged — so changing
+   the density silently changed the distribution model. */
 .tab-bar-item {
-  flex: 1;
+  flex: 0 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,9 +147,13 @@
   pointer-events: none;
 }
 
+/* Horizontal only: a vertical rail stacks, it does not share a width. */
+.justify-stretch:not(.dir-vertical) .tab-bar-item {
+  flex: 1;
+}
+
 /* Comfortable — a prominent, page-level bar (vs the compact default). */
 .size-comfortable .tab-bar-item {
-  flex: 0 1 auto;
   gap: var(--fold-space-sm);
   padding: var(--fold-space-md) var(--fold-space-lg);
   font-size: var(--fold-text-base);

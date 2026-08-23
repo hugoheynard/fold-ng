@@ -730,6 +730,7 @@
 - background: InputSignal<"surface" | "transparent">
 - collapsed: InputSignalWithTransform<boolean, unknown>
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
+- justify: InputSignal<"start" | "stretch">
 - size: InputSignal<"comfortable" | "compact">
 - sticky: InputSignalWithTransform<boolean, unknown>
 - tabs: InputSignal<readonly FoldTabItem<K>[]> — required
@@ -814,6 +815,7 @@
 - collapsed: InputSignalWithTransform<boolean, unknown>
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
 - items: InputSignal<readonly FoldViewNavItem[]> — required
+- justify: InputSignal<"start" | "stretch">
 - size: InputSignal<"comfortable" | "compact">
 - sticky: InputSignalWithTransform<boolean, unknown>
 

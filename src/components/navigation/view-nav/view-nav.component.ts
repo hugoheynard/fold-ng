@@ -136,12 +136,27 @@ export class FoldViewNavComponent {
   readonly size = input<"compact" | "comfortable">("compact");
 
   /**
+   * How items share the bar's width — a separate axis from {@link size}.
+   *
+   * - `start` (default) — each item takes the width of its own content.
+   * - `stretch` — items divide the bar's width equally (a bottom tab bar).
+   *
+   * `size` used to decide this in passing: `compact` stretched, `comfortable`
+   * hugged, while the prop documented itself as "pure padding/typography". One
+   * prop quietly steering two axes is the thing `button-icon`/`toggle-icon` and
+   * `view-nav`/`tabs` were each split apart to stop doing.
+   *
+   * Vertical bars ignore it — a rail stacks, it does not share a width.
+   */
+  readonly justify = input<"start" | "stretch">("start");
+
+  /**
    * Collapse the bar to icons (independent of {@link size}). **Horizontal**, an
    * icon accordion: every item but the active one drops to its icon, the active
    * one keeps its label. **Vertical**, a collapsed icon rail (like a folded
    * menu): every item shows just its icon, its label a hover/focus tooltip and
-   * its count a corner bubble — narrow the layout's `--fold-nav-layout-rail-width`
-   * to match. An item with no icon falls back to a square glyph of its label's
+   * its count a corner bubble. A wrapping `fold-nav-layout` narrows its own
+   * track to match — the bar tells it, there is nothing to post by hand. An item with no icon falls back to a square glyph of its label's
    * initial, so the rail stays icon-width whether or not items carry icons.
    * Toggle it from your own breakpoint when the bar is too tight.
    */
