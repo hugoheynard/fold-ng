@@ -142,16 +142,41 @@
   </div>
 
   @if (isNarrow() && rowCardTemplate(); as card) {
-    <div class="folddt-cardlist" role="list">
+    <!-- `role="list"` on a <ul> looks redundant and is not: `list-style: none`
+         strips list semantics in Safari, which is exactly what the styling
+         does. One list, one shell — the projected template supplies the
+         CONTENT, the shell supplies the chrome (outline, tone, selection), so a
+         consumer never reinvents them. -->
+    <ul class="folddt-cardlist" role="list">
       @for (row of rows(); track keyOf(row, $index); let i = $index) {
-        <div class="folddt-cardlist-item" role="listitem">
-          <ng-container
-            [ngTemplateOutlet]="card"
-            [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-          />
-        </div>
+        @let tone = toneOf(row);
+        <li
+          class="folddt-card"
+          [class.tone-warning]="tone === 'warning'"
+          [class.tone-alert]="tone === 'alert'"
+          [class.tone-success]="tone === 'success'"
+          [class.is-selected]="selectable() && isRowSelected(row, i)"
+          [attr.aria-selected]="selectable() ? isRowSelected(row, i) : null"
+        >
+          @if (selectable()) {
+            <fold-checkbox
+              class="folddt-card-select"
+              size="sm"
+              [ariaLabel]="labelFor(row)"
+              [checked]="isRowSelected(row, i)"
+              (click)="$event.stopPropagation()"
+              (checkedChange)="toggleRow(row, i)"
+            />
+          }
+          <div class="folddt-card-body">
+            <ng-container
+              [ngTemplateOutlet]="card"
+              [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+            />
+          </div>
+        </li>
       }
-    </div>
+    </ul>
   }
 
   @if (loading()) {

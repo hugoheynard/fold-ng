@@ -261,6 +261,43 @@
    gate too many. */
 .folddt-cardlist {
   display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* THE shell — one chrome for every card, whatever renders inside it.
+   Each consumer used to redraw the outline, the radius, the tone rail and the
+   selected state around its own `foldRowCard`, because the list gave it a bare
+   `<div>`. It sits on the container's `sunken` ground, so it needs a surface of
+   its own to be seen at all. */
+.folddt-card {
+  display: flex;
+  gap: var(--fold-space-md);
+  align-items: flex-start;
+  padding: var(--fold-space-md) var(--fold-space-lg);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-lg);
+  box-shadow: var(--fold-shadow-sm);
+}
+.folddt-card-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* The tone rail, logical so it mirrors in RTL — same 3px the table row uses. */
+.folddt-card.tone-warning {
+  border-inline-start: 3px solid var(--fold-color-warning);
+}
+.folddt-card.tone-alert {
+  border-inline-start: 3px solid var(--fold-color-alert);
+}
+.folddt-card.tone-success {
+  border-inline-start: 3px solid var(--fold-color-success);
+}
+.folddt-card.is-selected {
+  background: var(--fold-color-primary-surface);
+  border-color: var(--fold-color-primary);
 }
 .folddt--custom.folddt--narrow .folddt {
   display: none;

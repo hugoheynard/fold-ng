@@ -472,7 +472,7 @@ describe("FoldDataTableComponent — mobile layout", () => {
     host.mobileLayout.set("custom");
     fixture.detectChanges();
     expect(el.querySelector(".folddt--custom")).not.toBeNull();
-    const cards = el.querySelectorAll(".folddt-cardlist-item .my-card");
+    const cards = el.querySelectorAll(".folddt-card .my-card");
     expect(cards.length).toBe(2);
     expect(cards[0]!.textContent).toBe("0:Alice");
     expect(cards[1]!.textContent).toBe("1:Bob");
