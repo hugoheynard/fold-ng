@@ -1,5 +1,9 @@
 @if (open()) {
-  <div class="nl-scrim" (click)="close()" aria-hidden="true"></div>
+  <div class="nl-scrim" aria-hidden="true"></div>
+  <!-- The dismiss handler lives on the DIALOG, not the scrim: the dialog is
+       `position: fixed; inset: 0` on top of it, so a click never reached the
+       scrim at all. Keyboard dismissal is `Escape` (document-level), so this
+       is a pointer shortcut on top of an existing route, not the only way out. -->
   <div
     class="nl-dialog"
     role="dialog"
@@ -7,6 +11,7 @@
     [attr.aria-label]="label()"
     [foldFocusTrap]="open()"
     tabindex="-1"
+    (click)="onSurfaceClick($event)"
   >
     <button
       type="button"

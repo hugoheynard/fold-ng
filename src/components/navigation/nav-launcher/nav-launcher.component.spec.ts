@@ -79,15 +79,38 @@ describe("FoldNavLauncherComponent", () => {
     expect(document.body.style.overflow).not.toBe("hidden");
   });
 
-  it("closes on a scrim click", () => {
+  /**
+   * This used to click `.nl-scrim`, and passed for years while the gesture did
+   * not work: jsdom has no layout, so it never noticed that `.nl-dialog` is
+   * `position: fixed; inset: 0` at a higher z-index and covers the scrim whole.
+   * The handler existed; nothing could ever reach it. The dismiss target is the
+   * surface a pointer actually lands on.
+   */
+  it("closes on a click on the empty surface", () => {
     const { fixture, root } = render();
     fixture.componentInstance.open.set(true);
     fixture.detectChanges();
 
-    (root.querySelector(".nl-scrim") as HTMLElement).click();
+    const dialog = root.querySelector(".nl-dialog");
+    expect(dialog).toBeInstanceOf(HTMLElement);
+    dialog?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     fixture.detectChanges();
     expect(fixture.componentInstance.open()).toBe(false);
     expect(root.querySelector(".nl-dialog")).toBeNull();
+  });
+
+  it("a click on a tile does NOT dismiss it", () => {
+    // The tile navigates; swallowing that click into a dismiss would race the
+    // route change and make the launcher feel like it closed by accident.
+    const { fixture, root } = render();
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+
+    const tile = root.querySelector(".fold-nav-tile");
+    expect(tile).toBeInstanceOf(HTMLElement);
+    tile?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.open()).toBe(true);
   });
 
   it("closes on the close button", () => {

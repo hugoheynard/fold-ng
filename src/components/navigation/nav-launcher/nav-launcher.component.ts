@@ -103,8 +103,33 @@ export class FoldNavLauncherComponent {
     }
   }
 
-  /** Dismiss — the scrim + close-button target. */
+  /** Dismiss — the close-button target. */
   protected close(): void {
     this.open.set(false);
+  }
+
+  /**
+   * A click on the launcher's empty surface dismisses it — anywhere that is not
+   * a tile or the close button.
+   *
+   * The scrim carried this handler, and could never fire it: `.nl-dialog` is
+   * `position: fixed; inset: 0` at a higher z-index, so it covers the scrim
+   * whole. The gesture people expect from a full-screen overlay simply did not
+   * exist, while the markup claimed it did.
+   */
+  protected onSurfaceClick(event: Event): void {
+    const target = event.target;
+    // The launcher's OWN surfaces only — never an allow-list of what may be
+    // projected into it. Anything a consumer puts in the grid keeps its own
+    // clicks, without this component having to know what it is.
+    if (!(target instanceof Element)) {
+      return;
+    }
+    if (
+      target.classList.contains("nl-dialog") ||
+      target.classList.contains("nl-grid")
+    ) {
+      this.close();
+    }
   }
 }
