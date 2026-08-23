@@ -1,23 +1,17 @@
 import {
   computed,
   Component,
-  effect,
   input,
   numberAttribute,
   signal,
 } from "@angular/core";
 import { observeElementWidth } from "../../../dom/observe-element-width";
+import { foldAt } from "../../../dom/fold-at";
 import { FOLD_NARROW } from "../breakpoints";
 import {
   FOLD_NAV_LAYOUT,
   type FoldNavLayoutContext,
 } from "./nav-layout.context";
-
-/**
- * Dead band (px) between folding and unfolding. Wider than any scrollbar, so the
- * width a fold gives back can never flip the layout straight back.
- */
-const HYSTERESIS = 32;
 
 /**
  * `<fold-nav-layout>` — pairs a tab bar with the content it drives, and owns the
@@ -104,8 +98,11 @@ export class FoldNavLayoutComponent implements FoldNavLayoutContext {
   /** Width (px) at or below which a `side` nav folds back on top. */
   readonly foldAt = input(720, { transform: numberAttribute });
 
-  /** Whether a `side` rail has folded. Hysteretic — see {@link HYSTERESIS}. */
-  private readonly folded = signal(false);
+  /** The layout's own width, kept live by the shared `ResizeObserver` primitive. */
+  private readonly width = observeElementWidth();
+
+  /** Whether a `side` rail has folded. Hysteretic — see `foldAt`. */
+  private readonly folded = foldAt(this.width, this.foldAt);
 
   /**
    * Whether the nav currently sits **above** the content — always true for
@@ -123,9 +120,6 @@ export class FoldNavLayoutComponent implements FoldNavLayoutContext {
    */
   readonly barCollapsed = signal(false);
 
-  /** The layout's own width, kept live by the shared `ResizeObserver` primitive. */
-  private readonly width = observeElementWidth();
-
   /**
    * Narrow enough that the gap to the content should tighten.
    *
@@ -137,28 +131,4 @@ export class FoldNavLayoutComponent implements FoldNavLayoutContext {
   readonly narrow = computed(
     () => this.width() > 0 && this.width() <= FOLD_NARROW,
   );
-
-  constructor() {
-    // Re-run the hysteretic fold decision on every width change.
-    effect(() => this.measure(this.width()));
-  }
-
-  /**
-   * Fold at `foldAt`, but only unfold once we are clearly past it.
-   *
-   * Folding makes the content taller, which can bring a scrollbar in and take
-   * ~15px of width back — enough to cross a single threshold again and flip
-   * forever. A dead band wider than any scrollbar breaks that loop.
-   */
-  private measure(width: number): void {
-    if (width === 0) {
-      return;
-    }
-    const fold = this.foldAt();
-    if (!this.folded() && width <= fold) {
-      this.folded.set(true);
-    } else if (this.folded() && width > fold + HYSTERESIS) {
-      this.folded.set(false);
-    }
-  }
 }

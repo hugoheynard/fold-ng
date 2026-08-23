@@ -408,25 +408,30 @@ class MobileHostComponent {
 }
 
 describe("FoldDataTableComponent — mobile layout", () => {
-  // The component reads `window.matchMedia` in its constructor to gate the
-  // custom card list, so the viewport must be mocked before createComponent.
-  function mockViewport(narrow: boolean): void {
-    Object.defineProperty(window, "matchMedia", {
-      configurable: true,
-      value: (query: string) => ({
-        matches: narrow,
-        media: query,
-        onchange: null,
-        addEventListener() {},
-        removeEventListener() {},
-        addListener() {},
-        removeListener() {},
-        dispatchEvent: () => false,
-      }),
-    });
+  /**
+   * The table measures its OWN box now, not the viewport, so the fake is a
+   * `ResizeObserver` that reports one width to every observer. Mocked before
+   * `createComponent`: the observer is wired in a field initialiser.
+   */
+  const realRO = globalThis.ResizeObserver;
+
+  function mockWidth(width: number): void {
+    class FakeResizeObserver implements ResizeObserver {
+      constructor(private readonly cb: ResizeObserverCallback) {}
+      observe(): void {
+        this.cb(
+          [{ contentRect: { width } } as unknown as ResizeObserverEntry],
+          this,
+        );
+      }
+      unobserve(): void {}
+      disconnect(): void {}
+    }
+    globalThis.ResizeObserver = FakeResizeObserver;
   }
+
   afterEach(() => {
-    Reflect.deleteProperty(window, "matchMedia");
+    globalThis.ResizeObserver = realRO;
   });
 
   function mobileSetup(narrow = true): {
@@ -434,7 +439,8 @@ describe("FoldDataTableComponent — mobile layout", () => {
     host: MobileHostComponent;
     el: HTMLElement;
   } {
-    mockViewport(narrow);
+    // 480 is inside any card threshold; 1200 is clear of it plus the dead band.
+    mockWidth(narrow ? 480 : 1200);
     const fixture = TestBed.createComponent(MobileHostComponent);
     fixture.detectChanges();
     return {

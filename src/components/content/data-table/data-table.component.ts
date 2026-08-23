@@ -1,6 +1,5 @@
 import {
   Component,
-  DestroyRef,
   type TemplateRef,
   booleanAttribute,
   computed,
@@ -18,6 +17,8 @@ import { NgClass, NgTemplateOutlet } from "@angular/common";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
 import { focusAdjacentRow, focusEdgeRow } from "./data-table-keyboard";
+import { observeElementWidth } from "../../../dom/observe-element-width";
+import { foldAt } from "../../../dom/fold-at";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
 import { FoldCheckboxComponent } from "../../forms/checkbox/checkbox.component";
@@ -32,6 +33,9 @@ import {
   FOLD_DATA_TABLE_LABELS,
   type FoldDataTableLabels,
 } from "./data-table-labels";
+
+/** Container width (px) at or below which the card layouts take over. */
+const CARDS_AT = 700;
 
 /**
  * `fold-data-table` — a controlled, presentational roster table. The parent
@@ -127,10 +131,23 @@ export class FoldDataTableComponent<T> {
 
   /** Key of the row that currently holds the single tab stop (roving tabindex). */
   private readonly focusedKey = signal<string | number | null>(null);
-  /** True on a narrow viewport — gates the custom mobile-card rendering so the
-   *  desktop never instantiates the (CSS-hidden) per-row cards. */
-  protected readonly isNarrow = signal(false);
-  private readonly destroyRef = inject(DestroyRef);
+  /** The table's OWN width — the box that decides, not the window. */
+  private readonly width = observeElementWidth();
+
+  /**
+   * True while the table's own box is narrow.
+   *
+   * It used to be `matchMedia("(max-width: 700px)")` — the VIEWPORT — and the
+   * mobile CSS repeated the same query. A table in a 480px panel on a 1920px
+   * screen stayed an unreadable table; the same table full-width on a tablet
+   * became cards for no reason. `_tab-bar.scss` states the rule the library
+   * keeps everywhere else: container width is the only axis.
+   *
+   * Hysteretic via the shared `foldAt`: switching to cards makes the content
+   * taller, which can bring a scrollbar in and hand ~15px of width back —
+   * enough to cross the threshold again and flip forever.
+   */
+  protected readonly isNarrow = foldAt(this.width, CARDS_AT);
   private readonly injectedLabels = inject(FOLD_DATA_TABLE_LABELS);
 
   /** Effective labels — the app-wide (or English) set, with the `labels` input on top. */
@@ -140,24 +157,6 @@ export class FoldDataTableComponent<T> {
   }));
 
   constructor() {
-    // Track the same 700px breakpoint the mobile CSS uses, so `mobileLayout=
-    // "custom"` only builds its card list when the cards are actually shown.
-    // SSR / no matchMedia → false (desktop-first; the client corrects on hydration).
-    if (
-      typeof window !== "undefined" &&
-      typeof window.matchMedia === "function"
-    ) {
-      const mq = window.matchMedia("(max-width: 700px)");
-      this.isNarrow.set(mq.matches);
-      const onChange = (e: MediaQueryListEvent): void => {
-        this.isNarrow.set(e.matches);
-      };
-      mq.addEventListener("change", onChange);
-      this.destroyRef.onDestroy(() => {
-        mq.removeEventListener("change", onChange);
-      });
-    }
-
     // Dev guard: `truncate` clips against the column `width`; without one it
     // silently won't truncate. Warn so the misuse surfaces at authoring time.
     effect(() => {

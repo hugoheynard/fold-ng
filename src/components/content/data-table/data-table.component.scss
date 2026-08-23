@@ -255,10 +255,20 @@
   margin-top: var(--fold-space-xs);
 }
 
-/* The custom mobile-card list is desktop-hidden; it takes over on narrow
-   screens only when `mobileLayout="custom"` (see the media query below). */
+/* The custom card list is hidden until the table's own box is narrow. Keyed on
+   `.folddt--narrow` — the class the measured width posts — and NOT on a media
+   query: the window is the wrong box, and two gates that had to agree were one
+   gate too many. */
 .folddt-cardlist {
   display: none;
+}
+.folddt--custom.folddt--narrow .folddt {
+  display: none;
+}
+.folddt--custom.folddt--narrow .folddt-cardlist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-space-sm);
 }
 
 /* ── Selection (controlled) — the checkbox is a fold-checkbox (size="sm"). ── */
@@ -476,13 +486,5 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-  }
-  .folddt--custom .folddt {
-    display: none;
-  }
-  .folddt--custom .folddt-cardlist {
-    display: flex;
-    flex-direction: column;
-    gap: var(--fold-space-sm);
   }
 }
