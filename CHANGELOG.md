@@ -76,6 +76,12 @@ All notable changes to **fold-ng** are documented here. The format follows
   cinq, toujours ensemble avec une taille fluide. Un registre d'affichage
   cohérent que personne n'avait nommé.
 
+- **Un rôle sémantique que rien ne peint est un rôle mort.** Le contrat
+  vérifiait l'orphelinat dans un seul sens — une primitive que rien ne pointe
+  échoue depuis longtemps, mais un rôle que les cinq thèmes déclarent et
+  qu'aucun composant ne peint ne regardait personne. Sur 45 rôles, il y en
+  avait exactement un.
+
 - **`chrome-contrast.spec.ts`** — douze paires de contraste, chacune un échec
   mesuré avant la refonte, plus deux invariants structurels. Les alphas sont
   compositées sur le fond qu'elles rencontrent vraiment : mesurer un
@@ -117,6 +123,14 @@ All notable changes to **fold-ng** are documented here. The format follows
   suivre, c'est exactement le trou.
 
 ### Fixed
+
+- **Le header et les rails du `fold-app-shell` peignent enfin leur fond.**
+  `--fold-color-bg-header` était déclaré par les cinq thèmes et consommé par
+  **zéro composant** : le header rendait transparent sur le `:host` du shell,
+  qui peint `bg-page` — résolu **hors** de la région chrome. Sous navi, du
+  texte clair de chrome sur un fond paper ; idem pour toute bande de rail que
+  le `fold-menu` ne recouvre pas. Antérieur à navi 2 — invisible tant que la
+  page et le chrome partageaient la même polarité.
 
 - **`--fold-font-mono` existe.** Neuf déclarations de la galerie le lisaient,
   aucune ne le déclarait : il ne rendait que par son fallback. Quatorze autres
