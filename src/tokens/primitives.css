@@ -85,10 +85,10 @@
   /* Graphite — the navi chrome (low-chroma blue-graphite). `950` is also the
      DARK ink every theme puts on a light status fill: amber and green are too
      bright to carry white, and a near-black reads softer than pure black. */
-  --fold-ref-graphite-950: #1a2336; /* header — the deepest chrome surface */
-  --fold-ref-graphite-900: #1f2a40; /* rail 1 · app menu                   */
-  --fold-ref-graphite-850: #243049; /* rail 2 · workspace                  */
-  --fold-ref-graphite-800: #2d3a56; /* raised / hover on the chrome        */
+  --fold-ref-graphite-950: #141b2b; /* header — the deepest chrome surface */
+  --fold-ref-graphite-900: #1a2336; /* rail 1 · app menu                   */
+  --fold-ref-graphite-850: #1f2a40; /* rail 2 · workspace                  */
+  --fold-ref-graphite-800: #29344e; /* raised / hover on the chrome        */
 
   /* Paper — the navi page (cool white, three real steps of depth). */
   --fold-ref-paper-0: #ffffff; /* card                                     */
