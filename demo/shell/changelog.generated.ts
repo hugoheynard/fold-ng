@@ -42,6 +42,1552 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.13.0",
+    date: "2026-08-23",
+    unreleased: false,
+    counts: {
+      Changed: 12,
+      Added: 7,
+      Fixed: 9,
+    },
+    breaking: 9,
+    groups: [
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "brand",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "on-brand",
+              },
+              {
+                kind: "text",
+                value: " entrent au catalogue (48 rôles).",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "La marque IDENTIFIE, donc contrairement à ",
+              },
+              {
+                kind: "code",
+                value: "primary",
+              },
+              {
+                kind: "text",
+                value:
+                  " elle ne doit pas basculer de polarité : une marque teal sur la page et bleu pâle sur le rail a cessé d'être la marque. ",
+              },
+              {
+                kind: "code",
+                value: "primary",
+              },
+              {
+                kind: "text",
+                value:
+                  " faisait deux métiers contradictoires — porter la marque ET les affordances de premier plan, dont la seconde doit s'éclaircir sur un chrome sombre. Un sous-bloc scopé ne peut ",
+              },
+              {
+                kind: "strong",
+                value: "jamais",
+              },
+              {
+                kind: "text",
+                value: " les redéclarer, et un test le vérifie.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " : ",
+              },
+              {
+                kind: "code",
+                value: "narrowLayout",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "cardsAt",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "rowCardChrome",
+              },
+              {
+                kind: "text",
+                value: ", et ",
+              },
+              {
+                kind: "code",
+                value: "mobileLayout",
+              },
+              {
+                kind: "text",
+                value: " déprécié",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "(retiré avant la 1.0). La bascule se décide sur la largeur du ",
+              },
+              {
+                kind: "strong",
+                value: "conteneur",
+              },
+              {
+                kind: "text",
+                value:
+                  " (600px par défaut), pas sur la fenêtre : une table dans un panneau de 480px sur un écran de 1920 restait une table illisible. ",
+              },
+              {
+                kind: "code",
+                value: "custom",
+              },
+              {
+                kind: "text",
+                value: " était une redondance — projeter un ",
+              },
+              {
+                kind: "code",
+                value: "foldRowCard",
+              },
+              {
+                kind: "text",
+                value: " disait déjà tout.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "surface-band",
+              },
+              {
+                kind: "text",
+                value: " entre au catalogue (46 rôles).",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Une bande ne monte pas, elle ",
+              },
+              {
+                kind: "strong",
+                value: "s'écarte",
+              },
+              {
+                kind: "text",
+                value: ", et la direction dépend de la polarité du thème. ",
+              },
+              {
+                kind: "code",
+                value: "fold-card",
+              },
+              {
+                kind: "text",
+                value: " la codait en dur (",
+              },
+              {
+                kind: "code",
+                value: "surface-hover",
+              },
+              {
+                kind: "text",
+                value: ", et ",
+              },
+              {
+                kind: "code",
+                value: "surface-card",
+              },
+              {
+                kind: "text",
+                value:
+                  " en sunken) — une hypothèse de polarité posée dans un composant. Sur navi la bande valait la couleur de la page sur une carte blanche (1,09:1) ; sur le chrome navi elle valait ",
+              },
+              {
+                kind: "strong",
+                value: "exactement",
+              },
+              {
+                kind: "text",
+                value:
+                  " le corps de la carte (1,00:1). Les quatre thèmes non modifiés reprennent la valeur qu'ils avaient déjà : le rendu ne bouge pas, seul le rôle devient explicite. Un thème maison doit le déclarer.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Les bordures de navi descendent d'un cran",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "paper-300",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "paper-200",
+              },
+              {
+                kind: "text",
+                value: "). Sur un fond clair la profondeur vient du ",
+              },
+              {
+                kind: "strong",
+                value: "contour",
+              },
+              {
+                kind: "text",
+                value:
+                  ", pas du remplissage : il reste moins de 10% de luminance entre le blanc et une page claire, et trois niveaux n'y tiennent pas. ",
+              },
+              {
+                kind: "code",
+                value: "surface-sunken",
+              },
+              {
+                kind: "text",
+                value: " ne bouge pas.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "justify",
+              },
+              {
+                kind: "text",
+                value: " sépare la répartition de la densité.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "size",
+              },
+              {
+                kind: "text",
+                value:
+                  " se documentait « pure padding/typography » et décidait en douce du modèle de répartition : ",
+              },
+              {
+                kind: "code",
+                value: "compact",
+              },
+              {
+                kind: "text",
+                value: " justifiait les onglets, ",
+              },
+              {
+                kind: "code",
+                value: "comfortable",
+              },
+              {
+                kind: "text",
+                value: " les calait à gauche. Une barre ",
+              },
+              {
+                kind: "code",
+                value: "compact",
+              },
+              {
+                kind: "text",
+                value: " épouse maintenant son contenu ; ",
+              },
+              {
+                kind: "code",
+                value: 'justify="stretch"',
+              },
+              {
+                kind: "text",
+                value: " restaure l'ancien comportement.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "FoldNavLayoutContext",
+              },
+              {
+                kind: "text",
+                value: " gagne ",
+              },
+              {
+                kind: "code",
+                value: "barCollapsed",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Le contexte ne parlait que dans un sens : la barre savait tout du layout, le layout rien de la barre. ",
+              },
+              {
+                kind: "code",
+                value: "collapsed",
+              },
+              {
+                kind: "text",
+                value:
+                  " appartient à la barre et la largeur de piste au layout, et le JSDoc disait d'aller poser ",
+              },
+              {
+                kind: "code",
+                value: "--fold-nav-layout-rail-width",
+              },
+              {
+                kind: "text",
+                value:
+                  " à la main, à chaque usage. Une implémentation maison du token doit exposer ",
+              },
+              {
+                kind: "code",
+                value: "barCollapsed",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "BREAKING — quatre rôles s'ajoutent au catalogue de couleurs",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "on-info",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "on-warning",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "on-alert",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "on-success",
+              },
+              {
+                kind: "text",
+                value:
+                  " (41 → 45). Un thème maison doit les déclarer, sinon le test de parité échoue. Ils ferment un ",
+              },
+              {
+                kind: "strong",
+                value: "P0",
+              },
+              {
+                kind: "text",
+                value: " indépendant de navi : ",
+              },
+              {
+                kind: "code",
+                value: 'emphasis="solid"',
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: 'intent="warning"',
+              },
+              {
+                kind: "text",
+                value: " peignait ",
+              },
+              {
+                kind: "code",
+                value: "on-primary",
+              },
+              {
+                kind: "text",
+                value: " — du blanc — sur de l'ambre, à ",
+              },
+              {
+                kind: "strong",
+                value: "2,4:1 sur umbra et 3,3:1 sur les quatre autres",
+              },
+              {
+                kind: "text",
+                value: ". Même défaut sur la bulle compteur de ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-tile",
+              },
+              {
+                kind: "text",
+                value:
+                  ". La combinaison est exprimable depuis que emphasis et intent sont deux axes indépendants ; rien ne la testait, parce que le catalogue n'avait pas d'encre pour un remplissage de statut.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — les primitives ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-navy-*",
+              },
+              {
+                kind: "text",
+                value: " (9) et ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-ivory-50",
+              },
+              {
+                kind: "text",
+                value: " sont supprimées",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ", remplacées par les familles ",
+              },
+              {
+                kind: "code",
+                value: "graphite",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "paper",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "signal",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "navyink",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Une app qui référençait une primitive navi directement doit migrer.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "--fold-shadow-*",
+              },
+              {
+                kind: "text",
+                value: " peut être redéclarée par un thème.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "L'invariant disait « seul le rayon varie » et rangeait l'ombre avec les mesures. La vraie ligne : un thème peut changer ce à quoi une surface ",
+              },
+              {
+                kind: "strong",
+                value: "ressemble",
+              },
+              {
+                kind: "text",
+                value: ", jamais où elle ",
+              },
+              {
+                kind: "strong",
+                value: "se trouve",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Une ombre ne déplace pas une boîte. Un thème maison qui héritait des ombres de base les garde.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "navi 2 — « Graphite & Signal ».",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "navi avait deux polarités et un seul jeu de rôles : son sous-bloc chrome en déclarait ",
+              },
+              {
+                kind: "strong",
+                value: "17 sur 45",
+              },
+              {
+                kind: "text",
+                value:
+                  " et héritait les 28 autres de la page. Le givre blanc de la page posé sur le rail sombre rendait une infobulle à ",
+              },
+              {
+                kind: "strong",
+                value: "1,9:1",
+              },
+              {
+                kind: "text",
+                value: ". Huit échecs WCAG mesurés sont fermés ; ",
+              },
+              {
+                kind: "code",
+                value: "card",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "sunken",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "page",
+              },
+              {
+                kind: "text",
+                value:
+                  " valaient blanc, blanc et ivoire — une table imbriquée dans une carte n'avait aucun bord — et font maintenant trois marches distinctes. Le rayon passe de 1/2/3/4px à 2/4/6/8px : à 1px un coin est un artefact de rendu, pas une intention.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING — ",
+              },
+              {
+                kind: "code",
+                value: "--fold-text-md",
+              },
+              {
+                kind: "text",
+                value: " vaut 13px ; le corps de texte s'appelle ",
+              },
+              {
+                kind: "code",
+                value: "--fold-text-base",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Un consommateur non migré rétrécit d'un cran ",
+              },
+              {
+                kind: "strong",
+                value: "en silence",
+              },
+              {
+                kind: "text",
+                value: " : c'est un rechercher/remplacer, ",
+              },
+              {
+                kind: "code",
+                value: "--fold-text-md",
+              },
+              {
+                kind: "text",
+                value: " → ",
+              },
+              {
+                kind: "code",
+                value: "--fold-text-base",
+              },
+              {
+                kind: "text",
+                value: ", à faire avant de monter de version.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Le bouton ",
+              },
+              {
+                kind: "code",
+                value: "lg",
+              },
+              {
+                kind: "text",
+                value: " cesse d'être un ",
+              },
+              {
+                kind: "code",
+                value: "md",
+              },
+              {
+                kind: "text",
+                value: " déguisé.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Les deux préréglages nommaient littéralement la même taille — l'échelle n'avait aucune marche entre le corps et 20px à saisir. ",
+              },
+              {
+                kind: "code",
+                value: "lg",
+              },
+              {
+                kind: "text",
+                value: " rend maintenant en ",
+              },
+              {
+                kind: "code",
+                value: "--fold-text-lg",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Un système typographique, au contrat.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "La typo était la moitié manquante du design system : cinq tailles, et graisse, interligne, interlettrage et famille écrits en dur composant par composant — 74, 25, 22 déclarations, pour 4, 9 et 11 valeurs distinctes. Personne n'avait décidé qu'il y aurait onze interlettrages ; ils se sont accumulés. Quatre échelles nouvelles, toutes dans le test de contrat au même titre que la couleur, donc une marche ne peut plus naître ou disparaître sans que le catalogue le dise : - ",
+              },
+              {
+                kind: "code",
+                value: "--fold-font-sans",
+              },
+              {
+                kind: "text",
+                value: " · ",
+              },
+              {
+                kind: "code",
+                value: "--fold-font-mono",
+              },
+              {
+                kind: "text",
+                value: " — deux fontes, pas de ",
+              },
+              {
+                kind: "code",
+                value: "display",
+              },
+              {
+                kind: "text",
+                value: " : rien n'en rend une. Elles restent ",
+              },
+              {
+                kind: "strong",
+                value: "hors de l'axe de thème",
+              },
+              {
+                kind: "text",
+                value:
+                  " : changer de fonte re-flow une page, et seul le radius peut varier par thème. - ",
+              },
+              {
+                kind: "code",
+                value: "--fold-text-2xs … 2xl",
+              },
+              {
+                kind: "text",
+                value:
+                  " — l'échelle s'étend vers le bas et vers l'intérieur (10 · 11 · 12 · 13 · 14 · 16 · 20 · 24), là où le code avait des littéraux. Elle s'arrête à 24px parce que rien, ni dans la librairie ni dans la galerie, ne rend plus gros. - ",
+              },
+              {
+                kind: "code",
+                value: "--fold-weight-regular|medium|semibold|bold|extrabold",
+              },
+              {
+                kind: "text",
+                value: " - ",
+              },
+              {
+                kind: "code",
+                value: "--fold-leading-none|tight|snug|normal|relaxed",
+              },
+              {
+                kind: "text",
+                value: " - ",
+              },
+              {
+                kind: "code",
+                value:
+                  "--fold-tracking-tightest|tighter|tight|normal|wide|caps",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "extrabold",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "tightest",
+              },
+              {
+                kind: "text",
+                value:
+                  " viennent de la galerie : c'est elle, pas la librairie, qui rend des titres hero — 800 sur treize sites, -0.04em sur cinq, toujours ensemble avec une taille fluide. Un registre d'affichage cohérent que personne n'avait nommé.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Un rôle sémantique que rien ne peint est un rôle mort.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Le contrat vérifiait l'orphelinat dans un seul sens — une primitive que rien ne pointe échoue depuis longtemps, mais un rôle que les cinq thèmes déclarent et qu'aucun composant ne peint ne regardait personne. Sur 45 rôles, il y en avait exactement un.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "depth-contrast.spec.ts",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— 4,5:1 entre deux ",
+              },
+              {
+                kind: "strong",
+                value: "surfaces",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne veut rien dire : personne ne lit un contour. Deux planchers, par le travail que fait la séparation — ",
+              },
+              {
+                kind: "strong",
+                value: "structure",
+              },
+              {
+                kind: "text",
+                value: " (contour de carte, cadre de panneau) ≥ 1,25:1 et ",
+              },
+              {
+                kind: "strong",
+                value: "subdivision",
+              },
+              {
+                kind: "text",
+                value: " (bande, séparateur) ≥ 1,15:1. ",
+              },
+              {
+                kind: "code",
+                value: "lumen",
+              },
+              {
+                kind: "text",
+                value:
+                  " est exempté avec sa raison, et sa valeur épinglée plutôt que passée sous silence.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "chrome-contrast.spec.ts",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— douze paires de contraste, chacune un échec mesuré avant la refonte, plus deux invariants structurels. Les alphas sont compositées sur le fond qu'elles rencontrent vraiment : mesurer un ",
+              },
+              {
+                kind: "code",
+                value: "color-mix(…, transparent)",
+              },
+              {
+                kind: "text",
+                value:
+                  " contre rien, c'est comment une surface translucide passe un test qu'elle devrait échouer. Rejoué sur l'ancien navi : 10 échecs sur 14.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "status-ink-contrast.spec.ts",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— chaque encre de statut sur son propre fond, à 4,5:1, sur les cinq thèmes. Mesurer plutôt que décréter a payé : ",
+              },
+              {
+                kind: "code",
+                value: "bubbly",
+              },
+              {
+                kind: "text",
+                value: " type ",
+              },
+              {
+                kind: "code",
+                value: "info",
+              },
+              {
+                kind: "text",
+                value:
+                  " en azure et non en violet, donc le blanc y tombe à 2,8:1 et il prend l'encre sombre là où les quatre autres prennent le blanc.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Un sous-bloc de thème scopé doit être CLOS.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Le test de parité dédupliquait les sélecteurs ",
+              },
+              {
+                kind: "code",
+                value: "[data-theme]",
+              },
+              {
+                kind: "text",
+                value:
+                  " et ne gardait que le bloc de tête — le sous-bloc chrome de navi n'était vérifié par rien, et son commentaire l'assumait. Une famille se redéclare désormais entière : prendre ",
+              },
+              {
+                kind: "code",
+                value: "primary",
+              },
+              {
+                kind: "text",
+                value: " sans ",
+              },
+              {
+                kind: "code",
+                value: "on-primary",
+              },
+              {
+                kind: "text",
+                value:
+                  ", c'est poser sur le nouveau remplissage l'encre prévue pour l'autre polarité.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "pnpm run lint:typography",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— jumeau de ",
+              },
+              {
+                kind: "code",
+                value: "lint:spacing",
+              },
+              {
+                kind: "text",
+                value:
+                  ", branché en pre-push et dans les deux workflows. Aucun ",
+              },
+              {
+                kind: "code",
+                value: "font-size",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "font-weight",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "line-height",
+              },
+              {
+                kind: "text",
+                value: " ou ",
+              },
+              {
+                kind: "code",
+                value: "letter-spacing",
+              },
+              {
+                kind: "text",
+                value: " littéral sous ",
+              },
+              {
+                kind: "code",
+                value: "src/components",
+              },
+              {
+                kind: "text",
+                value: ". Porte dure d'emblée : le solde est à zéro, ",
+              },
+              {
+                kind: "strong",
+                value: "galerie comprise",
+              },
+              {
+                kind: "text",
+                value:
+                  " — elle en portait 276 à elle seule, plus que la librairie entière — et le garde-fou lit aussi les styles inline des templates. Trois exceptions, chacune pour une raison : les huit tailles qui restent des littéraux sont de la ",
+              },
+              {
+                kind: "strong",
+                value: "géométrie de composant",
+              },
+              {
+                kind: "text",
+                value:
+                  ", pas du texte (les initiales d'un avatar suivent son diamètre) ; ",
+              },
+              {
+                kind: "code",
+                value: "clamp()",
+              },
+              {
+                kind: "text",
+                value: " est du ",
+              },
+              {
+                kind: "strong",
+                value: "texte fluide",
+              },
+              {
+                kind: "text",
+                value:
+                  ", une expression qui balaie l'échelle plutôt qu'une marche dessus ; et un commentaire n'est pas du code. Les indirections Sass sont ",
+              },
+              {
+                kind: "strong",
+                value: "suivies, pas crues",
+              },
+              {
+                kind: "text",
+                value: " : ",
+              },
+              {
+                kind: "code",
+                value: "_field-box.scss",
+              },
+              {
+                kind: "text",
+                value: " route ses tailles par une map, donc ",
+              },
+              {
+                kind: "code",
+                value: "font-size: map.get($s, font)",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne porte aucun littéral — il vit à l'entrée de map, qu'aucun motif ",
+              },
+              {
+                kind: "code",
+                value: "font-size:",
+              },
+              {
+                kind: "text",
+                value: " n'aurait jamais vue. Chaque ",
+              },
+              {
+                kind: "code",
+                value: "map.get(…, clé)",
+              },
+              {
+                kind: "text",
+                value: " et chaque ",
+              },
+              {
+                kind: "code",
+                value: "$variable",
+              },
+              {
+                kind: "text",
+                value:
+                  " est résolu contre les liaisons du fichier et vérifié là-bas, et une indirection qui ne résout nulle part est elle-même un signalement : une valeur qu'on ne peut pas suivre, c'est exactement le trou.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Un clic hors tuile ferme le ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-launcher",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Le scrim portait bien ",
+              },
+              {
+                kind: "code",
+                value: '(click)="close()"',
+              },
+              {
+                kind: "text",
+                value: " et ne pouvait jamais se déclencher : ",
+              },
+              {
+                kind: "code",
+                value: ".nl-dialog",
+              },
+              {
+                kind: "text",
+                value: " est ",
+              },
+              {
+                kind: "code",
+                value: "position: fixed; inset: 0",
+              },
+              {
+                kind: "text",
+                value:
+                  " par-dessus lui. Le test qui le couvrait cliquait le scrim directement et passait au vert depuis toujours — jsdom n'a pas de mise en page, il n'a jamais vu le recouvrement.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Le mode cartes de ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " rend une vraie liste.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "auto-cards",
+              },
+              {
+                kind: "text",
+                value: " était une réécriture CSS du tableau (",
+              },
+              {
+                kind: "code",
+                value: "display: block",
+              },
+              {
+                kind: "text",
+                value: " sur le ",
+              },
+              {
+                kind: "code",
+                value: "<tr>",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "flex",
+              },
+              {
+                kind: "text",
+                value: " sur les cellules) — ce qui ",
+              },
+              {
+                kind: "strong",
+                value: "retire le rôle implicite",
+              },
+              {
+                kind: "text",
+                value:
+                  " des éléments de tableau : la table cessait d'être une table sans devenir une liste, et le ",
+              },
+              {
+                kind: "code",
+                value: "<thead>",
+              },
+              {
+                kind: "text",
+                value: " restait en en-têtes orphelins. Une ",
+              },
+              {
+                kind: "code",
+                value: "<ul>/<li>",
+              },
+              {
+                kind: "text",
+                value:
+                  " maintenant, avec une coquille commune (contour, ton, sélection) et un gabarit par défaut en ",
+              },
+              {
+                kind: "code",
+                value: "<dl>",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Le zébrage se voit sur navi",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— 1,07 → 1,15:1. Et les diviseurs de ligne disparaissent dès que le zébrage est actif : la rayure porte déjà la séparation.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "Une barre d'onglets repliée défile, et son libellé actif n'est plus rogné.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Le repli et le défilement s'excluaient : passé une douzaine d'items, le premier écrasé était l'item actif, le seul qui garde son libellé. L'infobulle d'un item icône passe dans le ",
+              },
+              {
+                kind: "strong",
+                value: "top layer",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "popover",
+              },
+              {
+                kind: "text",
+                value:
+                  "), donc elle échappe au débordement du scroller sans qu'il faille lui réserver de la place.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "La typographie de la barre répond à ",
+              },
+              {
+                kind: "code",
+                value: "size",
+              },
+              {
+                kind: "text",
+                value: " seul.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "L'orientation pilotait taille ET graisse, donc franchir ",
+              },
+              {
+                kind: "code",
+                value: "foldAt",
+              },
+              {
+                kind: "text",
+                value: " avec ",
+              },
+              {
+                kind: "code",
+                value: 'direction="auto"',
+              },
+              {
+                kind: "text",
+                value:
+                  " recomposait les libellés au lieu de déplacer la barre.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: 'background="surface"',
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: 'activeStyle="fill"',
+              },
+              {
+                kind: "text",
+                value: " : la pilule active n'est plus rognée",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "contre l'arête basse du bandeau.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Le gap d'un ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-layout",
+              },
+              {
+                kind: "text",
+                value: " suit sa propre largeur, pas la fenêtre.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Il tenait sur ",
+              },
+              {
+                kind: "code",
+                value: "@media (max-width: 640px)",
+              },
+              {
+                kind: "text",
+                value:
+                  " pendant que le pli tenait sur la largeur du conteneur : un layout étroit sur grand écran gardait 16px alors qu'il était replié.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Le header et les rails du ",
+              },
+              {
+                kind: "code",
+                value: "fold-app-shell",
+              },
+              {
+                kind: "text",
+                value: " peignent enfin leur fond.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "--fold-color-bg-header",
+              },
+              {
+                kind: "text",
+                value: " était déclaré par les cinq thèmes et consommé par ",
+              },
+              {
+                kind: "strong",
+                value: "zéro composant",
+              },
+              {
+                kind: "text",
+                value: " : le header rendait transparent sur le ",
+              },
+              {
+                kind: "code",
+                value: ":host",
+              },
+              {
+                kind: "text",
+                value: " du shell, qui peint ",
+              },
+              {
+                kind: "code",
+                value: "bg-page",
+              },
+              {
+                kind: "text",
+                value: " — résolu ",
+              },
+              {
+                kind: "strong",
+                value: "hors",
+              },
+              {
+                kind: "text",
+                value:
+                  " de la région chrome. Sous navi, du texte clair de chrome sur un fond paper ; idem pour toute bande de rail que le ",
+              },
+              {
+                kind: "code",
+                value: "fold-menu",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne recouvre pas. Antérieur à navi 2 — invisible tant que la page et le chrome partageaient la même polarité.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "--fold-font-mono",
+              },
+              {
+                kind: "text",
+                value: " existe.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Neuf déclarations de la galerie le lisaient, aucune ne le déclarait : il ne rendait que par son fallback. Quatorze autres recopiaient la pile à la main.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.12.1",
     date: "2026-08-22",
     unreleased: false,
@@ -15699,7 +17245,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.12.1...HEAD [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.13.0...HEAD [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -15711,4 +17257,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.12.1";
+export const PUBLISHED_VERSION = "0.13.0";

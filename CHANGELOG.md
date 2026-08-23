@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.13.0] - 2026-08-23
+
 ### Changed
 
 - **BREAKING — `brand` / `on-brand` entrent au catalogue (48 rôles).** La
@@ -1845,7 +1849,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.12.1...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0
 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1
 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0
 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1
