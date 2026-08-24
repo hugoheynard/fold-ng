@@ -51,17 +51,32 @@
   gap: var(--fold-space-md);
   min-width: 0;
 }
-/* A real section heading (h2): a proper title under the page's h1 — not the
-   old decorative eyebrow. Reset the UA margin/size. */
+/* The heading (a real h2 — the register below is a skin, not semantics). Reset
+   the UA margin/size; the register itself is set per `titleVariant`. */
 .section-title {
   margin: 0;
   display: inline-flex;
   align-items: center;
   gap: var(--fold-space-sm);
   min-width: 0;
+  line-height: var(--fold-leading-snug);
+}
+/* Default: the micro-label register — the same face, size, weight and tracking
+   a data-table column head and a fold-element-title eyebrow already wear. A
+   section title labels the block under it; at page scale a stack of base-size
+   headings competes with the content it is meant to label. */
+:host([data-title-variant="eyebrow"]) .section-title {
+  font-family: var(--fold-font-label);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
+  text-transform: uppercase;
+  color: var(--fold-color-text-muted);
+}
+/* Opt out: a plain title, for a section that really is a chapter. */
+:host([data-title-variant="heading"]) .section-title {
   font-size: var(--fold-text-base);
   font-weight: var(--fold-weight-semibold);
-  line-height: var(--fold-leading-snug);
   color: var(--fold-color-text);
 }
 /* Leading icon — its tint is fold-icon's own `tone` input (forwarded from
@@ -97,17 +112,6 @@
 }
 .section-subtitle > * {
   margin: 0;
-}
-
-/* `eyebrow` — the h2 wears the micro-label register. Semantics unchanged: it is
-   the same heading, with the same aria-level and the same region name. */
-:host([data-eyebrow]) .section-title {
-  font-family: var(--fold-font-label);
-  font-size: var(--fold-text-2xs);
-  font-weight: var(--fold-weight-bold);
-  letter-spacing: var(--fold-tracking-caps);
-  text-transform: uppercase;
-  color: var(--fold-color-text-muted);
 }
 
 /* `separator` — the head closes on a hairline, with its own breathing room

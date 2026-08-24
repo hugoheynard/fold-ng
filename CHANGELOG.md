@@ -18,11 +18,9 @@ All notable changes to **fold-ng** are documented here. The format follows
   le dire sans elle obligeait à entrer dans les entrailles de trois composants —
   avec la dérive garantie le jour où un quatrième rejoint le registre.
 
-- **`fold-page-section` gagne `[sectionSubtitle]`, `eyebrow` et `separator`** —
-  les trois pendants exacts de ce que `fold-page-layout` a reçu, pour la même
-  raison : une section d'écran dense est une petite page. `eyebrow` est une
-  **peau**, jamais une sémantique : le titre reste le même `h2`, avec le même
-  `aria-level` et le même nom de région.
+- **`fold-page-section` gagne `[sectionSubtitle]`, `titleVariant` et
+  `separator`** — les pendants exacts de ce que `fold-page-layout` a reçu, pour
+  la même raison : une section d'écran dense est une petite page.
 
 - **Les bandes montent d'un cran : `fold-page-layout[headerBand]` et
   `fold-aside-layout[band]`.** Une en-tête de page et un rail collant peuvent
@@ -50,6 +48,24 @@ All notable changes to **fold-ng** are documented here. The format follows
   le bord, même mécanisme et même variable que `fold-page-section[bleed]`. C'est
   le compagnon de `band` : un rail bandé tenu à distance du bord par une
   gouttière est exactement la carte flottante que la bande sert à remplacer.
+
+### Changed
+
+- **BREAKING (visuel) — un titre de `fold-page-section` porte le registre
+  MICRO-LIBELLÉ par défaut** : 2xs, gras, capitales, tracé, dans
+  `--fold-font-label`. Un titre de section est un **libellé du bloc qui le
+  suit** ; à l'échelle d'une page, une pile de titres en taille de corps entre en
+  concurrence avec le contenu même qu'elle est censée étiqueter. C'est le
+  registre que portent déjà une en-tête de colonne de tableau et un eyebrow de
+  `fold-element-title`, donc les trois s'accordent.
+
+  C'est une **peau**, jamais une sémantique : le titre reste le même `h2`, avec
+  le même `aria-level` et le même nom de région dans les deux registres — un
+  test le vérifie explicitement, parce qu'un titre qui cesserait d'être un titre
+  pour ressembler à un libellé coûterait son plan à la page sans que rien ne le
+  dise.
+
+  Pour retrouver l'ancien rendu : `titleVariant="heading"`.
 
 ### Fixed
 

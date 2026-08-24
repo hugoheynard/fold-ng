@@ -314,7 +314,10 @@ export {
   FoldPageLayoutComponent,
   FoldPageTitleDirective,
 } from "./components/layout/page-layout/page-layout.component";
-export { FoldPageSectionComponent } from "./components/layout/page-section/page-section.component";
+export {
+  FoldPageSectionComponent,
+  type FoldSectionTitleVariant,
+} from "./components/layout/page-section/page-section.component";
 export { FoldHeroSectionComponent } from "./components/layout/hero-section/hero-section.component";
 export { FoldPaginatorComponent } from "./components/content/paginator/paginator.component";
 export type { FoldPageItem } from "./components/content/paginator/paginator.component";

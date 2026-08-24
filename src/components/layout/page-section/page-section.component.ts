@@ -6,6 +6,10 @@ import {
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldIdService } from "../../../a11y/id.service";
 
+/** The register a {@link FoldPageSectionComponent} title wears. A skin over the
+ *  same `h2`, never a change of heading semantics. */
+export type FoldSectionTitleVariant = "eyebrow" | "heading";
+
 /**
  * `<fold-page-section>` — a titled, semantic **`<section>`** grouping of page
  * content inside a {@link FoldPageLayoutComponent}: a `title` + optional
@@ -69,7 +73,7 @@ import { FoldIdService } from "../../../a11y/id.service";
   host: {
     "[class.stack]": "stack()",
     "[class.is-bleed]": "bleed()",
-    "[attr.data-eyebrow]": "eyebrow() ? '' : null",
+    "[attr.data-title-variant]": "titleVariant()",
     "[attr.data-separator]": "separator() ? '' : null",
     // `title` is a heading input — strip the reflected native attribute so it
     // never doubles as a browser tooltip.
@@ -89,17 +93,19 @@ export class FoldPageSectionComponent {
   /** A one-line description under the title. */
   readonly description = input<string>();
   /**
-   * Wear the micro-label register — 2xs, bold, uppercase, tracked, in
-   * `--fold-font-label`: the same face and rhythm a table column head and a
-   * `fold-element-title` eyebrow already share.
+   * Which register the title wears — a **skin**, never a change of semantics.
+   * The heading is the same `h2` either way, with the same `aria-level` and the
+   * same region name; only its face changes.
    *
-   * Off by default, and the default stays a real `h2`: a section title IS a
-   * heading, and the eyebrow look is a *skin* over it, never a change of
-   * semantics — the `aria-level` and the region name are identical either way.
-   * Reach for it on a dense back-office form, where a stack of base-size
-   * headings competes with the fields it is supposed to label.
+   * - `eyebrow` (default) — the micro-label register: 2xs, bold, uppercase,
+   *   tracked, in `--fold-font-label`, exactly what a data-table column head and
+   *   a `fold-element-title` eyebrow already wear. A section title is a **label
+   *   for the block below it**, and at page scale a stack of base-size headings
+   *   competes with the very content it is supposed to label.
+   * - `heading` — a plain base-size title, for a page where a section really is
+   *   a chapter and its title should read as prose.
    */
-  readonly eyebrow = input(false, { transform: booleanAttribute });
+  readonly titleVariant = input<FoldSectionTitleVariant>("eyebrow");
   /**
    * Close the section head on a hairline — the same gesture as
    * `fold-page-layout`'s `separator`, for the same reason: when the body runs

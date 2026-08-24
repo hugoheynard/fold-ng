@@ -594,13 +594,13 @@
 #### FoldPageSectionComponent
 - bleed: InputSignalWithTransform<boolean, unknown>
 - description: InputSignal<string | undefined>
-- eyebrow: InputSignalWithTransform<boolean, unknown>
 - headingLevel: InputSignal<number>
 - icon: InputSignal<FoldIconName | undefined>
 - iconTone: InputSignal<FoldIconTone>
 - separator: InputSignalWithTransform<boolean, unknown>
 - stack: InputSignalWithTransform<boolean, unknown>
 - title: InputSignal<string | undefined>
+- titleVariant: InputSignal<FoldSectionTitleVariant>
 
 #### FoldPageTitleDirective
 - (no input·model·output bindings)
@@ -1045,6 +1045,7 @@
 - foldRegexRule (function)
 - foldResolvePalette (function)
 - FoldScrollAxis (type)
+- FoldSectionTitleVariant (type)
 - FoldSelectItem (type)
 - FoldSelectOption (interface)
 - FoldSelectOptionGroup (interface)

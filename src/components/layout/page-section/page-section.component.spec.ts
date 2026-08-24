@@ -1,7 +1,10 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldPageSectionComponent } from "./page-section.component";
+import {
+  FoldPageSectionComponent,
+  type FoldSectionTitleVariant,
+} from "./page-section.component";
 
 @Component({
   standalone: true,
@@ -61,18 +64,18 @@ describe("FoldPageSectionComponent", () => {
     expect(subtitleAt).toBeLessThan(descAt);
   });
 
-  it("flags the eyebrow skin and the head rule only when asked", () => {
+  it("wears the micro-label register by DEFAULT, and can opt out", () => {
     @Component({
       standalone: true,
       imports: [FoldPageSectionComponent],
       template: `<fold-page-section
         title="Identité"
-        [eyebrow]="eyebrow()"
+        [titleVariant]="variant()"
         [separator]="separator()"
       />`,
     })
     class SkinHost {
-      readonly eyebrow = signal(false);
+      readonly variant = signal<FoldSectionTitleVariant>("eyebrow");
       readonly separator = signal(false);
     }
 
@@ -81,19 +84,49 @@ describe("FoldPageSectionComponent", () => {
     const host = (fixture.nativeElement as HTMLElement).querySelector(
       "fold-page-section",
     )!;
-    expect(host.hasAttribute("data-eyebrow")).toBe(false);
+    // The DEFAULT is the label register — asserted with nothing set, because
+    // that is the claim: a section title is a label for the block below it.
+    expect(host.getAttribute("data-title-variant")).toBe("eyebrow");
     expect(host.hasAttribute("data-separator")).toBe(false);
-    fixture.componentInstance.eyebrow.set(true);
+    fixture.componentInstance.variant.set("heading");
     fixture.componentInstance.separator.set(true);
     fixture.detectChanges();
-    expect(host.hasAttribute("data-eyebrow")).toBe(true);
+    expect(host.getAttribute("data-title-variant")).toBe("heading");
     expect(host.hasAttribute("data-separator")).toBe(true);
-    // The eyebrow is a SKIN: the heading semantics are untouched.
-    const heading = host.querySelector(".section-title")!;
-    expect(heading.tagName).toBe("H2");
-    expect(host.querySelector("section")?.getAttribute("aria-labelledby")).toBe(
-      heading.id,
-    );
+  });
+
+  it("keeps the heading semantics in EITHER register — it is a skin", () => {
+    // The register changes the face and nothing else: same h2, same aria-level,
+    // same region name. A title that stopped being a heading to look like a
+    // label would have quietly cost the page its outline.
+    @Component({
+      standalone: true,
+      imports: [FoldPageSectionComponent],
+      template: `<fold-page-section
+        title="Identité"
+        [titleVariant]="variant()"
+      />`,
+    })
+    class SemanticsHost {
+      readonly variant = signal<FoldSectionTitleVariant>("eyebrow");
+    }
+
+    const fixture = TestBed.createComponent(SemanticsHost);
+    const root = fixture.nativeElement as HTMLElement;
+    for (const variant of ["eyebrow", "heading"] as const) {
+      fixture.componentInstance.variant.set(variant);
+      fixture.detectChanges();
+      expect(
+        root
+          .querySelector("fold-page-section")
+          ?.getAttribute("data-title-variant"),
+      ).toBe(variant);
+      const heading = root.querySelector(".section-title")!;
+      expect(heading.tagName).toBe("H2");
+      expect(
+        root.querySelector("section")?.getAttribute("aria-labelledby"),
+      ).toBe(heading.id);
+    }
   });
 
   it("renders the title as a real <h2> and projects content + actions", () => {

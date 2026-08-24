@@ -9,6 +9,7 @@ import {
   type FoldIconTone,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
+  type FoldSectionTitleVariant,
   FoldSliderComponent,
 } from "../../../src/public-api";
 
@@ -46,12 +47,13 @@ export default class PageSectionPage {
   protected readonly showSubtitle = signal(false);
   protected readonly showDesc = signal(true);
   protected readonly showActions = signal(true);
-  /**
-   * The micro-label skin, and the hairline closing the head. Both off by
-   * default: the plain h2 is the register a section title wears until a dense
-   * back-office asks otherwise.
-   */
-  protected readonly eyebrow = signal(false);
+  /** The register the title wears — a skin over the same h2. */
+  protected readonly titleVariant = signal<FoldSectionTitleVariant>("eyebrow");
+  protected readonly titleVariants = [
+    "eyebrow",
+    "heading",
+  ] as const satisfies readonly FoldSectionTitleVariant[];
+  /** The hairline closing the head off from the body. */
   protected readonly separator = signal(false);
   /** The two orthogonal body helpers. `stack` defaults on so the section shows
    *  more than one gap out of the box — the bigger head↔body gap plus the even
@@ -79,8 +81,8 @@ export default class PageSectionPage {
     if (this.showDesc()) {
       attrs.push('description="Charged on renewal."');
     }
-    if (this.eyebrow()) {
-      attrs.push("eyebrow");
+    if (this.titleVariant() !== "eyebrow") {
+      attrs.push(`titleVariant="${this.titleVariant()}"`);
     }
     if (this.separator()) {
       attrs.push("separator");

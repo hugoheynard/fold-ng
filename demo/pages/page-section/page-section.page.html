@@ -51,14 +51,6 @@
         <button
           type="button"
           class="ps-chip"
-          [class.is-on]="eyebrow()"
-          (click)="eyebrow.set(!eyebrow())"
-        >
-          eyebrow
-        </button>
-        <button
-          type="button"
-          class="ps-chip"
           [class.is-on]="separator()"
           (click)="separator.set(!separator())"
         >
@@ -73,6 +65,30 @@
           sectionActions
         </button>
       </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">titleVariant</span>
+      <div class="ss-seg">
+        @for (v of titleVariants; track v) {
+        <button
+          type="button"
+          [class.is-on]="titleVariant() === v"
+          (click)="titleVariant.set(v)"
+        >
+          {{ v }}
+        </button>
+        }
+      </div>
+      <p class="ps-hint">
+        <strong>eyebrow</strong> is the default — a section title is a
+        <em>label for the block below it</em>, and at page scale a stack of
+        base-size headings competes with the very content it labels. It is a
+        <strong>skin</strong>: the heading stays the same
+        <code>&lt;h2&gt;</code>, with the same <code>aria-level</code> and the
+        same region name, in either register. The face comes from
+        <code>--fold-font-label</code>, shared with a data-table column head.
+      </p>
     </div>
 
     @if (showIcon()) {
@@ -168,7 +184,7 @@
           [icon]="showIcon() ? 'briefcase' : undefined"
           [iconTone]="iconTone()"
           [description]="showDesc() ? 'Charged on renewal.' : undefined"
-          [eyebrow]="eyebrow()"
+          [titleVariant]="titleVariant()"
           [separator]="separator()"
           [stack]="stack()"
           [bleed]="bleed()"
