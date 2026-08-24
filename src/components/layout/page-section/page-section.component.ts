@@ -1,4 +1,10 @@
-import { booleanAttribute, Component, inject, input } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  inject,
+  input,
+  model,
+} from "@angular/core";
 import {
   FoldIconComponent,
   type FoldIconTone,
@@ -75,6 +81,8 @@ export type FoldSectionTitleVariant = "eyebrow" | "heading";
     "[class.is-bleed]": "bleed()",
     "[attr.data-title-variant]": "titleVariant()",
     "[attr.data-separator]": "separator() ? '' : null",
+    "[attr.data-collapsible]": "collapsible() ? '' : null",
+    "[attr.data-open]": "collapsible() && !open() ? null : ''",
     // `title` is a heading input — strip the reflected native attribute so it
     // never doubles as a browser tooltip.
     "[attr.title]": "null",
@@ -112,6 +120,33 @@ export class FoldPageSectionComponent {
    * flush against the head, the head reads as its first row.
    */
   readonly separator = input(false, { transform: booleanAttribute });
+
+  /**
+   * Let the reader fold the section's **body** away.
+   *
+   * What collapses is the body, and nothing else: the title, its subtitle, its
+   * description and its `[sectionActions]` stay in place. That line is the whole
+   * difference between folding and hiding — a tab hid the section's STATE along
+   * with its fields, so you could not tell what was missing without opening
+   * every one. Folded here, the section still says what it is and what it is
+   * doing; you just stop looking at its inputs.
+   *
+   * Consequences of that rule, both deliberate: the actions remain clickable
+   * while folded (a section can be saved without unfolding it), and the toggle
+   * is the TITLE, not the whole header — a button around the header would have
+   * swallowed those actions into itself.
+   */
+  readonly collapsible = input(false, { transform: booleanAttribute });
+
+  /**
+   * Whether the body is showing. Two-way, and **open by default**: a section
+   * that starts folded is a section someone has to discover.
+   */
+  readonly open = model(true);
+
+  protected toggle(): void {
+    this.open.update((value) => !value);
+  }
   /** Heading depth exposed to assistive tech (`aria-level`) — set it so sections
    *  nest correctly under the page's `<h1>` (2 by default). */
   readonly headingLevel = input(2);
@@ -127,4 +162,8 @@ export class FoldPageSectionComponent {
    *  `aria-labelledby` (only when there's a title). */
   protected readonly headingId =
     inject(FoldIdService).next("fold-page-section");
+
+  /** Body id, so the title button can point `aria-controls` at it. Derived from
+   *  the heading's so the two always name the same section. */
+  protected readonly bodyId = `${this.headingId}-body`;
 }

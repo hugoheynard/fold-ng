@@ -138,3 +138,44 @@
   flex-direction: column;
   gap: var(--fold-page-section-gap, var(--fold-space-lg));
 }
+
+/* ── Repliable ───────────────────────────────────────────────────────────────
+   Le titre devient le bouton. Il hérite tout de `.section-title` — c'est le même
+   titre, dans le même registre — et n'ajoute que ce qu'un bouton doit avoir :
+   une cible, un curseur, un focus visible. */
+.section-toggle {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  min-width: 0;
+  cursor: pointer;
+  border-radius: var(--fold-radius-sm);
+}
+.section-toggle:focus-visible {
+  outline: 2px solid var(--fold-color-primary-border);
+  outline-offset: 2px;
+}
+
+/* Le chevron pointe vers le bas quand c'est ouvert, vers la droite quand c'est
+   replié — la direction dit où va le contenu, pas où est le bouton. */
+.section-chevron {
+  flex: none;
+  transition: transform var(--fold-motion-fast);
+}
+:host([data-collapsible]:not([data-open])) .section-chevron {
+  transform: rotate(-90deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-chevron {
+    transition: none;
+  }
+}
+
+/* Replié, le filet de l'en-tête n'a plus rien à séparer : il fermerait une
+   section sur du vide. */
+:host([data-separator][data-collapsible]:not([data-open])) .section-head {
+  padding-block-end: 0;
+  border-block-end: 0;
+}

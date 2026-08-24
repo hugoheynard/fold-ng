@@ -8,10 +8,34 @@
             [id]="headingId"
             [attr.aria-level]="headingLevel() === 2 ? null : headingLevel()"
           >
-            @if (icon(); as ic) {
-              <fold-icon [name]="ic" size="sm" [tone]="iconTone()" />
+            @if (collapsible()) {
+              <!-- Le bouton est le TITRE, pas l'en-tête : un bouton autour de
+                   l'en-tête aurait avalé `[sectionActions]` — « Enregistrer »
+                   dans un `<button>` est inerte, et invalide. -->
+              <button
+                type="button"
+                class="section-toggle"
+                [attr.aria-expanded]="open()"
+                [attr.aria-controls]="bodyId"
+                (click)="toggle()"
+              >
+                <fold-icon
+                  class="section-chevron"
+                  name="chevron-down"
+                  size="sm"
+                  aria-hidden="true"
+                />
+                @if (icon(); as ic) {
+                  <fold-icon [name]="ic" size="sm" [tone]="iconTone()" />
+                }
+                <span class="section-title-text">{{ t }}</span>
+              </button>
+            } @else {
+              @if (icon(); as ic) {
+                <fold-icon [name]="ic" size="sm" [tone]="iconTone()" />
+              }
+              <span class="section-title-text">{{ t }}</span>
             }
-            <span class="section-title-text">{{ t }}</span>
           </h2>
           <div class="section-actions">
             <ng-content select="[sectionActions]" />
@@ -30,5 +54,9 @@
        an icon tile) INSTEAD of `title` when the default h2 isn't enough. The
        parent owns its heading semantics. -->
   <ng-content select="[sectionHeader]" />
-  <div class="section-body"><ng-content /></div>
+  <!-- Seul le CORPS se replie. Le titre, son sous-titre, sa description et ses
+       actions restent en place : c'est ce qui sépare replier de cacher. -->
+  <div class="section-body" [id]="bodyId" [hidden]="collapsible() && !open()">
+    <ng-content />
+  </div>
 </section>

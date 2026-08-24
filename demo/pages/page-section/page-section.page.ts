@@ -55,6 +55,8 @@ export default class PageSectionPage {
   ] as const satisfies readonly FoldSectionTitleVariant[];
   /** The hairline closing the head off from the body. */
   protected readonly separator = signal(false);
+  /** Fold the BODY away — never the head. */
+  protected readonly collapsible = signal(false);
   /** The two orthogonal body helpers. `stack` defaults on so the section shows
    *  more than one gap out of the box — the bigger head↔body gap plus the even
    *  gaps between fields. */
@@ -86,6 +88,9 @@ export default class PageSectionPage {
     }
     if (this.separator()) {
       attrs.push("separator");
+    }
+    if (this.collapsible()) {
+      attrs.push("collapsible");
     }
     if (this.stack()) {
       attrs.push("stack");

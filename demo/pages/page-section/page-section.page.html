@@ -59,6 +59,14 @@
         <button
           type="button"
           class="ps-chip"
+          [class.is-on]="collapsible()"
+          (click)="collapsible.set(!collapsible())"
+        >
+          collapsible
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
           [class.is-on]="showActions()"
           (click)="showActions.set(!showActions())"
         >
@@ -138,6 +146,14 @@
         </button>
       </div>
       <p class="ps-hint">
+        <strong>collapsible</strong> folds the <em>body</em> and nothing else:
+        the title, its subtitle, its description and its actions stay put. That
+        line is the difference between folding and <em>hiding</em> — a tab hid
+        the section's state along with its fields, so you could not tell what
+        was missing without opening every one. Folded, a section still says what
+        it is and what it is doing; the actions even stay clickable.
+      </p>
+      <p class="ps-hint">
         <strong>stack</strong> — lay the body out as evenly-spaced fields on the
         section gap (a form); off, the body is free-flow content that keeps its
         own spacing. <strong>bleed</strong> — break the section out of the page
@@ -186,6 +202,7 @@
           [description]="showDesc() ? 'Charged on renewal.' : undefined"
           [titleVariant]="titleVariant()"
           [separator]="separator()"
+          [collapsible]="collapsible()"
           [stack]="stack()"
           [bleed]="bleed()"
           [headingLevel]="headingLevel()"

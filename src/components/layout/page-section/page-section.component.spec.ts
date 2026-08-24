@@ -231,4 +231,87 @@ describe("FoldPageSectionComponent", () => {
     expect(root.querySelector("h2.section-title")).toBeNull();
     expect(root.querySelector(".body-item")).not.toBeNull();
   });
+
+  it("folds only the BODY — the head keeps saying what the section is doing", () => {
+    // La ligne qui sépare replier de cacher. Un onglet cachait l'ÉTAT avec les
+    // champs, donc on ne pouvait pas savoir ce qui manquait sans tout ouvrir.
+    @Component({
+      standalone: true,
+      imports: [FoldPageSectionComponent],
+      template: `<fold-page-section
+        title="Identité"
+        description="Le strict nécessaire."
+        collapsible
+        [(open)]="open"
+      >
+        <button sectionActions class="act">Enregistrer</button>
+        <span sectionSubtitle class="facts">3 champs</span>
+        <div class="body-item">Champs</div>
+      </fold-page-section>`,
+    })
+    class FoldHost {
+      readonly open = signal(true);
+    }
+
+    const fixture = TestBed.createComponent(FoldHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    const body = root.querySelector<HTMLElement>(".section-body")!;
+    const toggle = root.querySelector<HTMLButtonElement>(".section-toggle")!;
+
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
+    expect(body.hidden).toBe(false);
+
+    toggle.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.open()).toBe(false);
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    expect(body.hidden).toBe(true);
+    // …et TOUT le reste est encore là.
+    expect(root.querySelector(".section-title-text")?.textContent).toBe(
+      "Identité",
+    );
+    expect(root.querySelector(".section-subtitle .facts")).not.toBeNull();
+    expect(root.querySelector(".section-desc")).not.toBeNull();
+    expect(root.querySelector(".section-actions .act")).not.toBeNull();
+  });
+
+  it("keeps the actions OUTSIDE the toggle, so they stay clickable folded", () => {
+    // Un bouton autour de l'en-tête aurait imbriqué « Enregistrer » dans un
+    // `<button>` : inerte, et invalide.
+    const { root } = render();
+    const toggle = root.querySelector(".section-toggle");
+    expect(toggle).toBeNull(); // pas repliable ici
+    expect(root.querySelector(".section-actions .act")).not.toBeNull();
+  });
+
+  it("is open by default — a section that starts folded has to be discovered", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPageSectionComponent],
+      template: `<fold-page-section title="X" collapsible>
+        <div class="body-item">Champs</div>
+      </fold-page-section>`,
+    })
+    class DefaultHost {}
+
+    const fixture = TestBed.createComponent(DefaultHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector<HTMLElement>(".section-body")!.hidden).toBe(
+      false,
+    );
+    expect(
+      root.querySelector(".section-toggle")?.getAttribute("aria-expanded"),
+    ).toBe("true");
+  });
+
+  it("does not turn the title into a button unless asked", () => {
+    const { root } = render();
+    expect(root.querySelector(".section-toggle")).toBeNull();
+    expect(root.querySelector<HTMLElement>(".section-body")!.hidden).toBe(
+      false,
+    );
+  });
 });

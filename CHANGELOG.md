@@ -18,6 +18,20 @@ All notable changes to **fold-ng** are documented here. The format follows
   le dire sans elle obligeait à entrer dans les entrailles de trois composants —
   avec la dérive garantie le jour où un quatrième rejoint le registre.
 
+- **`fold-page-section` gagne `collapsible` + `[(open)]`** — replier le CORPS
+  d'une section, et rien d'autre. Le titre, son sous-titre, sa description et
+  ses `[sectionActions]` restent en place, et c'est toute la différence entre
+  replier et **cacher** : un onglet cachait l'ÉTAT avec les champs, donc on ne
+  pouvait pas savoir ce qui manquait sans tout ouvrir. Replié, la section dit
+  encore ce qu'elle est et ce qu'elle fait — et ses actions restent cliquables,
+  donc elle s'enregistre sans se déplier.
+
+  Deux conséquences de cette règle, toutes deux voulues : le bouton est le
+  TITRE et non l'en-tête (un bouton autour de l'en-tête aurait imbriqué
+  « Enregistrer » dans un `<button>` — inerte, et invalide), et l'état par
+  défaut est **ouvert**, parce qu'une section qui démarre repliée est une
+  section qu'il faut découvrir.
+
 - **`fold-page-section` gagne `[sectionSubtitle]`, `titleVariant` et
   `separator`** — les pendants exacts de ce que `fold-page-layout` a reçu, pour
   la même raison : une section d'écran dense est une petite page.
