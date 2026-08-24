@@ -77,3 +77,37 @@
     transition: none;
   }
 }
+
+/* A status dot on a segment — "look here", never *what*: the words that say what
+   live beside the control. Sized off the label so it tracks the `size` presets
+   instead of pinning a px. */
+.vt-dot {
+  flex: none;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-text-faded);
+}
+.vt-dot.warning {
+  background: var(--fold-color-warning);
+}
+.vt-dot.alert {
+  background: var(--fold-color-alert);
+}
+.vt-dot.success {
+  background: var(--fold-color-success);
+}
+/* On the selected segment the ground changes under the dot; keep it legible by
+   inheriting the segment's own ink for the neutral case. */
+.vt-btn.is-on .vt-dot {
+  background: currentColor;
+}
+.vt-btn.is-on .vt-dot.warning {
+  background: var(--fold-color-warning);
+}
+.vt-btn.is-on .vt-dot.alert {
+  background: var(--fold-color-alert);
+}
+.vt-btn.is-on .vt-dot.success {
+  background: var(--fold-color-success);
+}

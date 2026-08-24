@@ -49,6 +49,12 @@ All notable changes to **fold-ng** are documented here. The format follows
   le compagnon de `band` : un rail bandé tenu à distance du bord par une
   gouttière est exactement la carte flottante que la bande sert à remplacer.
 
+- **`fold-view-toggle` : un segment peut porter un point d'état** (`dot` +
+  `dotLabel` sur une option). Un point dit « regarde ici », jamais _quoi_ — il
+  est donc `aria-hidden`, et son sens rejoint le **nom accessible** du segment
+  au lieu de disparaître. Sans ça, un lecteur d'écran entendait « EN » là où un
+  œil voyait « EN, il manque quelque chose ».
+
 ### Changed
 
 - **BREAKING (visuel) — un `foldButton` est SOLIDE par défaut** (`emphasis`

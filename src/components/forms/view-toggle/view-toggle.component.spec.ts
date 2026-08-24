@@ -118,4 +118,44 @@ describe("FoldViewToggleComponent", () => {
     r.fixture.detectChanges();
     expect(r.value()).toBe("cards");
   });
+
+  it("renders a status dot on a segment, and names it for assistive tech", () => {
+    // A dot says "look here", never *what* — so it is aria-hidden, and its
+    // meaning joins the segment's accessible name instead. Without that, a
+    // screen-reader user hears "English" where a sighted user sees "English,
+    // something is missing".
+    @Component({
+      standalone: true,
+      imports: [FoldViewToggleComponent],
+      template: `<fold-view-toggle
+        ariaLabel="Langue"
+        [options]="options"
+        [value]="'fr'"
+      />`,
+    })
+    class DotHost {
+      readonly options = [
+        { value: "fr", label: "FR" },
+        {
+          value: "en",
+          label: "EN",
+          dot: "warning" as const,
+          dotLabel: "incomplet",
+        },
+      ];
+    }
+
+    const fixture = TestBed.createComponent(DotHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    const segments = [...root.querySelectorAll<HTMLElement>(".vt-btn")];
+    expect(segments[0]?.querySelector(".vt-dot")).toBeNull();
+    const dot = segments[1]?.querySelector(".vt-dot");
+    expect(dot).not.toBeNull();
+    expect(dot?.classList.contains("warning")).toBe(true);
+    expect(dot?.getAttribute("aria-hidden")).toBe("true");
+    expect(segments[1]?.getAttribute("aria-label")).toBe("EN — incomplet");
+    // …and a segment without a dot keeps its plain name.
+    expect(segments[0]?.getAttribute("aria-label")).toBe("FR");
+  });
 });

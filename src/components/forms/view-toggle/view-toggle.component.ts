@@ -12,6 +12,13 @@ import {
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
+/**
+ * A status marker on a segment — a small dot before its label, for a choice that
+ * needs attention. `warning` (amber) is the common case: this option is
+ * reachable and usable, but something behind it is incomplete.
+ */
+export type FoldViewToggleDot = "neutral" | "warning" | "alert" | "success";
+
 /** One segment of a {@link FoldViewToggleComponent}. */
 export interface FoldViewToggleOption {
   /** The value emitted when this segment is chosen. */
@@ -24,6 +31,17 @@ export interface FoldViewToggleOption {
   readonly ariaLabel?: string;
   /** Disable this segment. */
   readonly disabled?: boolean;
+  /**
+   * A status dot before the label — see {@link FoldViewToggleDot}.
+   *
+   * It is **decorative on its own**: a dot says "look here", never *what*. Say
+   * what, in words, beside the control — the toggle's job is the choice, not the
+   * explanation. `dotLabel` names it for assistive tech when the words alone
+   * would not reach a screen reader in time.
+   */
+  readonly dot?: FoldViewToggleDot;
+  /** Accessible name for the {@link dot}, appended to the segment's name. */
+  readonly dotLabel?: string;
 }
 
 /**
@@ -152,5 +170,19 @@ export class FoldViewToggleComponent {
         "[role='radio']",
       );
     buttons.item(index)?.focus();
+  }
+
+  /**
+   * The segment's accessible name — its own, plus the dot's meaning when it
+   * carries one. A dot is decorative in the DOM (`aria-hidden`), so without this
+   * a screen-reader user hears "English" where a sighted user sees "English,
+   * something is missing".
+   */
+  protected segmentName(option: FoldViewToggleOption): string | null {
+    const base = option.ariaLabel ?? option.label ?? null;
+    if (option.dotLabel === undefined) {
+      return base;
+    }
+    return base === null ? option.dotLabel : `${base} — ${option.dotLabel}`;
   }
 }

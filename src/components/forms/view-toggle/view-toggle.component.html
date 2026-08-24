@@ -12,12 +12,15 @@
       [class.is-on]="value() === option.value"
       [class.icon-only]="iconOnly() || !option.label"
       [attr.aria-checked]="value() === option.value"
-      [attr.aria-label]="option.ariaLabel ?? option.label ?? null"
+      [attr.aria-label]="segmentName(option)"
       [attr.tabindex]="rovingValue() === option.value ? 0 : -1"
       [disabled]="option.disabled || null"
       [attr.title]="iconOnly() ? (option.label ?? option.ariaLabel) : null"
       (click)="select(option)"
     >
+      @if (option.dot; as dot) {
+        <span class="vt-dot" [class]="dot" aria-hidden="true"></span>
+      }
       @if (option.icon) {
         <fold-icon [name]="option.icon" size="sm" aria-hidden="true" />
       }
