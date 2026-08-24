@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.16.0] - 2026-08-24
+
 ### Added
 
 - **`fold-page-layout` a un créneau `[pageSubtitle]`** — la ligne posée SERRÉE
@@ -1951,7 +1955,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.15.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0
 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0
 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0
 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0
