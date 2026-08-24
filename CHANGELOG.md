@@ -51,6 +51,18 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING (visuel) — un `foldButton` est SOLIDE par défaut** (`emphasis`
+  passe de `soft` à `solid` ; `intent` reste `primary`). Le défaut, c'est ce
+  qu'une app écrit quand elle n'écrit rien — et ce qu'elle écrit le plus, c'est
+  **l'action principale** de l'écran, celle qu'elle veut qu'on presse. Avec un
+  défaut teinté, le bouton le plus fort d'une page était celui que quelqu'un
+  avait pensé à baliser : l'emphase suivait l'effort de rédaction plutôt que
+  l'importance. `soft` et `outline` se demandent maintenant exprès, pour les
+  actions qui accompagnent celle-là.
+
+  Rien ne verrouillait ce défaut : les vingt tests du bouton passaient à
+  l'identique avant et après le basculement. Un test le tient désormais.
+
 - **BREAKING (visuel) — un titre de `fold-page-section` porte le registre
   MICRO-LIBELLÉ par défaut** : 2xs, gras, capitales, tracé, dans
   `--fold-font-label`. Un titre de section est un **libellé du bloc qui le

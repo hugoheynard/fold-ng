@@ -234,4 +234,25 @@ describe("foldButton class merging", () => {
     expect(el.classList.contains("consumer-class")).toBe(true);
     expect(el.classList.contains("outline")).toBe(true);
   });
+
+  it("defaults to a SOLID accent button — the primary action", () => {
+    // The default is what an app writes when it writes nothing, and what it
+    // writes most is the one action it wants pressed. Nothing locked this
+    // before, so the default could drift without a single test noticing.
+    @Component({
+      standalone: true,
+      imports: [FoldButtonComponent],
+      template: `<button foldButton>Save</button>`,
+    })
+    class BareHost {}
+
+    const fixture = TestBed.createComponent(BareHost);
+    fixture.detectChanges();
+    const button = (fixture.nativeElement as HTMLElement).querySelector(
+      "button",
+    )!;
+    expect(button.classList.contains("solid")).toBe(true);
+    expect(button.classList.contains("primary")).toBe(true);
+    expect(button.classList.contains("soft")).toBe(false);
+  });
 });

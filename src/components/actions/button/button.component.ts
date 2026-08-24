@@ -85,10 +85,17 @@ export class FoldButtonComponent {
     this.host.nativeElement.tagName.toLowerCase() === "button";
 
   /**
-   * Fill level — `soft` (default, tinted surface) · `solid` (filled) · `outline`
+   * Fill level — `solid` (default, filled) · `soft` (tinted surface) · `outline`
    * (transparent + hairline). The *how loud* axis; pair with {@link intent}.
+   *
+   * The default is `solid` because the default is what an app writes when it
+   * writes nothing, and what it writes most is the **primary action** of a
+   * screen — the one thing it wants pressed. A tinted default made the loudest
+   * button on a page the one someone had remembered to mark up, so emphasis
+   * tracked authoring effort rather than importance. Reach for `soft` and
+   * `outline` deliberately, for the actions that accompany that one.
    */
-  readonly emphasis = input<FoldButtonEmphasis>("soft");
+  readonly emphasis = input<FoldButtonEmphasis>("solid");
 
   /**
    * Semantic intent — `primary` (default, accent) · `neutral` · `warning` ·
