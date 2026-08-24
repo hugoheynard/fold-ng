@@ -1,4 +1,10 @@
-import { Component, contentChild, Directive, input } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  contentChild,
+  Directive,
+  input,
+} from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
@@ -55,6 +61,12 @@ export class FoldPageTitleDirective {}
  *   string won't do (an avatar, a two-tone title). Its presence alone switches
  *   the header on.
  * - `[titleBadge]` → an inline pill beside the title (e.g. a status/kind badge).
+ * - `[pageSubtitle]` → the line **directly under the title**, set tight against
+ *   it: the page's identifying FACTS (a reference, a category, a count), not
+ *   prose. It is a different register from `[description]` and that is the whole
+ *   reason it exists — a facts line pushed into the description slot reads with
+ *   a paragraph's spacing, which is a paragraph's promise. Both can appear: the
+ *   facts sit tight, the prose gets its own room below.
  * - `p[description]` → the intro under the title. A **slot**, not a string
  *   input: a description that needs a `<code>`, a link or a second sentence is
  *   the common case, not the exception. It must be a `<p description>` — the
@@ -95,7 +107,11 @@ export class FoldPageTitleDirective {}
   imports: [FoldIconComponent],
   // `title` is a heading input — strip the native attribute a static
   // `title="…"` leaves behind, so it never doubles as a browser tooltip.
-  host: { "[attr.title]": "null", "[attr.data-scroll]": "scroll()" },
+  host: {
+    "[attr.title]": "null",
+    "[attr.data-scroll]": "scroll()",
+    "[attr.data-separator]": "separator() ? '' : null",
+  },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
 })
@@ -106,6 +122,17 @@ export class FoldPageLayoutComponent {
   readonly title = input<string>();
   /** An optional leading icon shown beside the title. */
   readonly icon = input<FoldIconName>();
+
+  /**
+   * Draw a hairline rule under the header, closing it off from the body.
+   *
+   * Off by default: on a page whose body is a stack of cards, the header is
+   * already separated by the page rhythm and a rule would just add ink. Turn it
+   * on when the body runs flush against the header — a form, a table, sections
+   * with no surface of their own — and the header would otherwise read as the
+   * first row of the content.
+   */
+  readonly separator = input(false, { transform: booleanAttribute });
 
   /**
    * Who owns the page's scroll:

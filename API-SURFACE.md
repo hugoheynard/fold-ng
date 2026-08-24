@@ -585,6 +585,7 @@
 #### FoldPageLayoutComponent
 - icon: InputSignal<FoldIconName | undefined>
 - scroll: InputSignal<"flow" | "own">
+- separator: InputSignalWithTransform<boolean, unknown>
 - title: InputSignal<string | undefined>
 
 #### FoldPageSectionComponent

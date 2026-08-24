@@ -11,6 +11,7 @@ import {
   imports: [FoldPageLayoutComponent],
   template: `<fold-page-layout [title]="title()" [icon]="icon()">
     <nav pageEyebrow class="crumbs">Produits / Tartes</nav>
+    <span pageSubtitle class="facts">REF-001 · Pro</span>
     <p description class="desc">Abonnement <code>pro</code></p>
     <button pageActions class="act">Export</button>
     <span titleBadge class="kind">Directive</span>
@@ -97,6 +98,50 @@ describe("FoldPageLayoutComponent", () => {
     expect(root.querySelector(".page-head")).toBeNull();
     expect(root.querySelector(".lone")).toBeNull();
     expect(root.querySelector(".page-body .body-item")).not.toBeNull();
+  });
+
+  it("projects [pageSubtitle] between the title and the description", () => {
+    const { root } = render();
+    const column = root.querySelector(".page-head-text")!;
+    const kids = [...column.children];
+    const at = (sel: string) => kids.indexOf(root.querySelector(sel)!);
+    expect(root.querySelector(".page-subtitle .facts")).not.toBeNull();
+    // The order IS the contract: facts sit tight under the title, prose below.
+    expect(at(".page-title")).toBeLessThan(at(".page-subtitle"));
+    expect(at(".page-subtitle")).toBeLessThan(at(".page-desc"));
+  });
+
+  it("keeps [pageSubtitle] and p[description] in their own slots", () => {
+    // The two registers must not swallow each other: a facts line pushed into
+    // the description slot would read with a paragraph's spacing.
+    const { root } = render();
+    expect(root.querySelector(".page-desc .facts")).toBeNull();
+    expect(root.querySelector(".page-subtitle .desc")).toBeNull();
+  });
+
+  it("flags the header rule only on [separator]", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPageLayoutComponent],
+      template: `<fold-page-layout title="Facturation" [separator]="on()"
+        >Body</fold-page-layout
+      >`,
+    })
+    class SeparatorHost {
+      readonly on = signal(false);
+    }
+
+    const fixture = TestBed.createComponent(SeparatorHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-page-layout",
+    );
+    // `data-separator` is the contract the CSS keys off — jsdom computes no
+    // border, so assert the attribute rather than a style that isn't there.
+    expect(host?.hasAttribute("data-separator")).toBe(false);
+    fixture.componentInstance.on.set(true);
+    fixture.detectChanges();
+    expect(host?.hasAttribute("data-separator")).toBe(true);
   });
 
   it("omits the header when there is no title — the body takes over", () => {

@@ -61,7 +61,10 @@ export default class PageLayoutPage {
   protected readonly showIcon = signal(true);
   protected readonly showEyebrow = signal(false);
   protected readonly showBadge = signal(false);
+  protected readonly showSubtitle = signal(false);
   protected readonly showDesc = signal(true);
+  /** The hairline closing the header off from the body. */
+  protected readonly separator = signal(false);
   protected readonly showActions = signal(true);
   /**
    * The eyebrow's trail — ancestors ONLY (`[currentPage]="false"`), because the
@@ -142,7 +145,8 @@ export default class PageLayoutPage {
       );
     } else {
       const icon = this.showIcon() ? ' icon="grid"' : "";
-      lines.push(`<fold-page-layout${icon} title="Billing">`);
+      const rule = this.separator() ? " separator" : "";
+      lines.push(`<fold-page-layout${icon} title="Billing"${rule}>`);
     }
     if (this.showEyebrow()) {
       lines.push(
@@ -151,6 +155,11 @@ export default class PageLayoutPage {
     }
     if (this.showBadge()) {
       lines.push('  <fold-badge titleBadge content="Pro" variant="accent" />');
+    }
+    if (this.showSubtitle()) {
+      lines.push(
+        "  <span pageSubtitle>ACME-4821 · Annual plan · 12 seats</span>",
+      );
     }
     if (this.showDesc()) {
       lines.push(

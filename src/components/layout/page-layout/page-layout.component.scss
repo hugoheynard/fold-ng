@@ -49,6 +49,14 @@
   justify-content: space-between;
   gap: var(--fold-space-lg);
 }
+/* `separator`: the header closes on a hairline. The padding under the text is
+   the header's own breathing room before the rule — the page rhythm
+   (--fold-page-gap) still applies BELOW it, so the rule sits with the header,
+   not floating midway to the body. */
+:host([data-separator]) .page-head {
+  padding-block-end: var(--fold-space-lg);
+  border-block-end: 1px solid var(--fold-color-border);
+}
 .page-head-text {
   display: flex;
   flex-direction: column;
@@ -91,6 +99,28 @@
 .page-title-badge:empty {
   display: none;
 }
+/* The facts line, set TIGHT under the title — a reference, a category, a count.
+   It carries its typography (small, muted, snug leading) because a facts line is
+   text, unlike the eyebrow above. What it must NOT carry is a paragraph's
+   spacing: that is the difference between this slot and the description, and the
+   reason both exist. Empty → no box, no gap. */
+.page-subtitle {
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-snug);
+  color: var(--fold-color-text-muted);
+}
+.page-subtitle:empty {
+  display: none;
+}
+.page-subtitle > * {
+  margin: 0;
+}
+/* Facts THEN prose: two registers stacked. Give the prose a hair more room so
+   it doesn't read as a third line of facts. */
+.page-subtitle:not(:empty) + .page-desc {
+  margin-block-start: var(--fold-space-xs);
+}
+
 /* The description slot carries the typography so the consumer owns only the
    markup: a plain <p>, or one with <code>/<a> inside, reads the same either
    way. Empty (nothing projected) → no box, no gap under the title.

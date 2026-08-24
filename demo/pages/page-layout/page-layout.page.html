@@ -4,10 +4,12 @@
   <p description>
     The vertical scaffold every page wraps its content in: an optional
     <code>icon</code> + <code>title</code> header with
-    <code>[pageEyebrow]</code>, <code>[description]</code> and
-    <code>[pageActions]</code> slots, then a body that stacks its children on a
-    steady rhythm. <strong>It owns the page gutter, not the width</strong> — it
-    fills whatever it is given, supplying the themed margins via one token,
+    <code>[pageEyebrow]</code>, <code>[pageSubtitle]</code>,
+    <code>[description]</code> and <code>[pageActions]</code> slots, then a body
+    that stacks its children on a steady rhythm. The header can close on a
+    hairline (<code>separator</code>) when the body runs flush against it.
+    <strong>It owns the page gutter, not the width</strong> — it fills whatever
+    it is given, supplying the themed margins via one token,
     <code>--fold-page-gutter</code>. Narrowing a block to a readable measure is
     the content's job, never the page's. This very page is a
     <code>fold-page-layout</code>.
@@ -78,10 +80,26 @@
         <button
           type="button"
           class="pl-chip"
+          [class.is-on]="showSubtitle()"
+          (click)="showSubtitle.set(!showSubtitle())"
+        >
+          pageSubtitle
+        </button>
+        <button
+          type="button"
+          class="pl-chip"
           [class.is-on]="showDesc()"
           (click)="showDesc.set(!showDesc())"
         >
           description
+        </button>
+        <button
+          type="button"
+          class="pl-chip"
+          [class.is-on]="separator()"
+          (click)="separator.set(!separator())"
+        >
+          separator
         </button>
         <button
           type="button"
@@ -193,6 +211,7 @@
           [class.pl-show-gap]="showGap() && !hideBands()"
           [icon]="headerMode() === 'title' && showIcon() ? 'grid' : undefined"
           [title]="headerMode() === 'title' ? 'Billing' : undefined"
+          [separator]="separator()"
         >
           @if (headerMode() === "custom") {
           <span pageTitle class="pl-custom-title">
@@ -211,6 +230,14 @@
           />
           } @if (showBadge()) {
           <fold-badge titleBadge content="Pro" variant="accent" radius="pill" />
+          } @if (showSubtitle()) {
+          <span pageSubtitle class="pl-facts">
+            <span class="pl-facts-ref">ACME-4821</span>
+            <span class="pl-facts-sep" aria-hidden="true">·</span>
+            <span>Annual plan</span>
+            <span class="pl-facts-sep" aria-hidden="true">·</span>
+            <span>12 seats</span>
+          </span>
           } @if (showDesc()) {
           <p description>Your company subscription and payment methods.</p>
           } @if (showActions()) {

@@ -222,3 +222,19 @@
 .pl-close {
   margin-top: 8px;
 }
+
+/* The facts line in [pageSubtitle] — a reference, a plan, a count. The slot
+   already carries size and colour; only the rhythm is the demo's. */
+.pl-facts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fold-space-sm);
+}
+.pl-facts-ref {
+  font-family: var(--fold-font-mono);
+  white-space: nowrap;
+}
+.pl-facts-sep {
+  color: var(--fold-color-text-faded);
+}

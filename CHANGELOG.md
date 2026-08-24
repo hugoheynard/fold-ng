@@ -23,6 +23,21 @@ _Nothing yet._
   peint en haut à DROITE alors qu'il désigne le haut de la hiérarchie. Il y
   était faute de place pour l'écrire ailleurs.
 
+- **`fold-page-layout` a un créneau `[pageSubtitle]`** — la ligne posée SERRÉE
+  sous le titre : les faits qui identifient la page (une référence, une famille,
+  un compte), pas de la prose. C'est un autre registre que `[description]`, et
+  c'est toute la raison d'être du créneau : une ligne de faits poussée dans la
+  description se lit avec l'espacement d'un paragraphe — et l'espacement d'un
+  paragraphe est une promesse de paragraphe. Les deux cohabitent : les faits
+  serrés, la prose avec sa propre respiration en dessous.
+
+- **`fold-page-layout` gagne `separator`** — l'en-tête se ferme sur un filet.
+  Éteint par défaut : sur une page dont le corps est une pile de cartes, le
+  rythme de page sépare déjà, et le filet n'ajouterait que de l'encre. On
+  l'allume quand le corps arrive au ras de l'en-tête — un formulaire, un
+  tableau, des sections sans surface propre — là où l'en-tête se lirait sinon
+  comme la première ligne du contenu.
+
 - **`fold-breadcrumb` gagne `[currentPage]`** (défaut `true`, aucun changement).
   À `false`, le fil ne nomme que les **ancêtres** : le dernier maillon se
   comporte comme les autres — lien s'il porte une cible, texte sinon — et plus
