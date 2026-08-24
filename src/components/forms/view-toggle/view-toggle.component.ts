@@ -83,9 +83,18 @@ export class FoldViewToggleComponent {
   readonly ariaLabel = input<string>();
   /** Size preset. @default 'md' */
   readonly size = input<"sm" | "md">("md");
-  /** How the selected segment reads: a neutral `raised` chip, or an `accent`
-   *  brand tint. @default 'raised' */
-  readonly activeStyle = input<"raised" | "accent">("raised");
+  /**
+   * How the selected segment reads: an `accent` brand tint (default) or a
+   * neutral `raised` chip.
+   *
+   * The accent is the default for the same reason a button is solid by default:
+   * a segmented control exists to show **which one is chosen**, and the chosen
+   * one should be the loudest thing in the control. A neutral chip left that
+   * distinction to a faint elevation — legible on a card, easy to lose on a
+   * dense screen, and gone entirely under `forced-colors`. Reach for `raised`
+   * when the toggle sits next to something more important than itself.
+   */
+  readonly activeStyle = input<"raised" | "accent">("accent");
   /** Hide visible labels, keeping icons only (labels stay as accessible names). */
   readonly iconOnly = input(false, { transform: booleanAttribute });
 

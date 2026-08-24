@@ -57,6 +57,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
+- **BREAKING (visuel) — le segment choisi d'un `fold-view-toggle` porte
+  l'ACCENT** (`activeStyle` passe de `raised` à `accent`). Même raison que le
+  bouton solide : un contrôle segmenté existe pour montrer **lequel est
+  choisi**, et le choisi doit être la chose la plus forte du contrôle. La puce
+  neutre confiait cette distinction à une élévation ténue — lisible sur une
+  carte, facile à perdre sur un écran dense, et absente sous `forced-colors`.
+  Rien ne verrouillait ce défaut non plus.
+
 - **BREAKING (visuel) — un `foldButton` est SOLIDE par défaut** (`emphasis`
   passe de `soft` à `solid` ; `intent` reste `primary`). Le défaut, c'est ce
   qu'une app écrit quand elle n'écrit rien — et ce qu'elle écrit le plus, c'est

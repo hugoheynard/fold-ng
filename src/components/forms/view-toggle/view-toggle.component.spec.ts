@@ -158,4 +158,27 @@ describe("FoldViewToggleComponent", () => {
     // …and a segment without a dot keeps its plain name.
     expect(segments[0]?.getAttribute("aria-label")).toBe("FR");
   });
+
+  it("marks the selected segment with the ACCENT by default", () => {
+    // A segmented control exists to show which one is chosen; the chosen one
+    // should be the loudest thing in it. Nothing locked this default before.
+    @Component({
+      standalone: true,
+      imports: [FoldViewToggleComponent],
+      template: `<fold-view-toggle
+        ariaLabel="View"
+        [options]="[{ value: 'a', label: 'A' }]"
+        [value]="'a'"
+      />`,
+    })
+    class BareHost {}
+
+    const fixture = TestBed.createComponent(BareHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-view-toggle",
+    )!;
+    expect(host.classList.contains("a-accent")).toBe(true);
+    expect(host.classList.contains("a-raised")).toBe(false);
+  });
 });
