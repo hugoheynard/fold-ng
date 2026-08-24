@@ -4,12 +4,17 @@
   display: block;
 }
 /* `bleed` — span the page layout edge-to-edge. Cancels *exactly* the gutter
-   fold-page-layout pads with (the same --fold-page-gutter token), so the section
+   fold-page-layout PAYS (`--fold-page-gutter-effective`, which the page
+   re-points when it halves its inset on a narrow viewport), so the section
    reaches the layout's padding edge and no further: flush at every breakpoint,
-   never an overflow. Only meaningful inside fold-page-layout (the fallback keeps
-   a stray use from exploding). */
+   never an overflow. It used to cancel the authored `--fold-page-gutter`, which
+   is not the same number below 640px — the section hung half a gutter off each
+   edge exactly where there was least room. The double fallback keeps a stray
+   use outside a page-layout from exploding. */
 :host(.is-bleed) {
-  margin-inline: calc(-1 * var(--fold-page-gutter, 32px));
+  margin-inline: calc(
+    -1 * var(--fold-page-gutter-effective, var(--fold-page-gutter, 32px))
+  );
 }
 /* A bleed band at an *edge* of the page also swallows the page's block padding
    so it sits flush to the very top/bottom — a hero as the first band, a footer

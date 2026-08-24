@@ -46,7 +46,22 @@ All notable changes to **fold-ng** are documented here. The format follows
   comme une bande mais comme une carte flottante. L'espace passe à l'intérieur,
   donc le contenu se lit à la même largeur dans les deux cas.
 
+- **`fold-aside-layout[bleed]`** — sortir de la gouttière de page et atteindre
+  le bord, même mécanisme et même variable que `fold-page-section[bleed]`. C'est
+  le compagnon de `band` : un rail bandé tenu à distance du bord par une
+  gouttière est exactement la carte flottante que la bande sert à remplacer.
+
 ### Fixed
+
+- **Un `bleed` annule désormais la gouttière que la page PAYE, pas celle qu'on
+  lui a demandée.** Sous 640px, `fold-page-layout` réduit son inset de moitié —
+  et `fold-page-section[bleed]`, épinglé au token écrit, continuait d'annuler la
+  valeur entière : la section débordait d'une demi-gouttière de chaque côté,
+  précisément là où il y avait le moins de place. La page publie maintenant
+  `--fold-page-gutter-effective` et tout ce qui annule lit celle-là. Le bug était
+  invisible partout : aucune requête média ne s'évalue en test unitaire, et le
+  symptôme est un débordement horizontal. Un test de contrat sur les sources
+  tient l'invariant.
 
 - **`fold-page-layout` : les actions s'alignent sur la rangée du TITRE.** Elles
   se calaient en haut de la colonne de texte ; depuis que `[pageEyebrow]`

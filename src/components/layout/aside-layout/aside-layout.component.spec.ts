@@ -170,4 +170,27 @@ describe("FoldAsideLayoutComponent", () => {
     fixture.detectChanges();
     expect(host.getAttribute("data-band")).toBe("both");
   });
+
+  it("flags the bleed only on [bleed]", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldAsideLayoutComponent],
+      template: `<fold-aside-layout [bleed]="on()">
+        <div>Centre</div>
+      </fold-aside-layout>`,
+    })
+    class BleedHost {
+      readonly on = signal(false);
+    }
+
+    const fixture = TestBed.createComponent(BleedHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-aside-layout",
+    )!;
+    expect(host.classList.contains("is-bleed")).toBe(false);
+    fixture.componentInstance.on.set(true);
+    fixture.detectChanges();
+    expect(host.classList.contains("is-bleed")).toBe(true);
+  });
 });

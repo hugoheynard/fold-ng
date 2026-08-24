@@ -5,6 +5,17 @@
   container-type: inline-size;
 }
 
+/* `bleed` — span the page layout edge-to-edge. Same mechanism, same variable
+   and same reason as `fold-page-section[bleed]`: cancel the gutter the page
+   PAYS, never the one it was asked for, so the two stay in lockstep at every
+   breakpoint. The double fallback keeps a stray use outside a page-layout from
+   exploding. */
+:host(.is-bleed) {
+  margin-inline: calc(
+    -1 * var(--fold-page-gutter-effective, var(--fold-page-gutter, 32px))
+  );
+}
+
 .al-grid {
   display: grid;
   grid-template-columns: var(--fold-aside-layout-center-width, minmax(0, 1fr));

@@ -79,6 +79,7 @@ export type FoldAsideBand = "none" | "left" | "right" | "both";
     "[style.--fold-aside-layout-top]": "topOffsetCss()",
     "[class.stack-left-first]": "stackLeftFirst()",
     "[attr.data-band]": "band() === 'none' ? null : band()",
+    "[class.is-bleed]": "bleed()",
   },
 })
 export class FoldAsideLayoutComponent {
@@ -108,6 +109,19 @@ export class FoldAsideLayoutComponent {
    * so the band keeps only its ground and its padding.
    */
   readonly band = input<FoldAsideBand>("none");
+
+  /**
+   * Break out of the page gutter to span the layout edge-to-edge — it cancels
+   * `--fold-page-gutter-effective`, the gutter a `fold-page-layout` actually
+   * pays, so it stays flush at every breakpoint (including below 640px, where
+   * the page halves its inset). Only meaningful inside a `fold-page-layout`.
+   *
+   * Reach for it when the rails carry a `band`: a banded rail held off the page
+   * edge by a gutter is the floating card the band exists to replace. Set
+   * `--fold-aside-layout-pad: 0` with it, or the layout pays an inset of its
+   * own on top of the one you just cancelled.
+   */
+  readonly bleed = input(false, { transform: booleanAttribute });
   /**
    * Accessible label for the left rail. Set it and the rail is exposed as a
    * labelled `complementary` landmark; leave it unset and the rail is a plain

@@ -29,6 +29,8 @@ export default class AsideLayoutPage {
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
   protected readonly aslOffset = signal(8);
+  /** Break out of the page gutter — the companion of `band`. */
+  protected readonly aslBleed = signal(false);
   /** Which rail sits on the band ground — an elevation, not a surface. */
   protected readonly aslBand = signal<FoldAsideBand>("none");
   protected readonly bands = [

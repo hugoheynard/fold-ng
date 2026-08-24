@@ -48,6 +48,32 @@
       </div>
     </div>
     <div class="np-field" params>
+      <span class="gal-tag">bleed</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!aslBleed()"
+          (click)="aslBleed.set(false)"
+        >
+          in the gutter
+        </button>
+        <button
+          type="button"
+          [class.is-on]="aslBleed()"
+          (click)="aslBleed.set(true)"
+        >
+          bleed
+        </button>
+      </div>
+      <p class="asl-hint">
+        Cancels <code>--fold-page-gutter-effective</code> — the gutter a
+        <code>fold-page-layout</code> actually <em>pays</em>, which is half the
+        authored token below 640px. Pair it with <code>band</code>: a banded
+        rail held off the page edge by a gutter is the floating card the band
+        exists to replace.
+      </p>
+    </div>
+    <div class="np-field" params>
       <span class="gal-tag">band</span>
       <div class="ss-seg">
         @for (b of bands; track b) {
@@ -109,6 +135,7 @@
       [class.is-equal]="aslEqual()"
       [topOffset]="aslOffset()"
       [band]="aslBand()"
+      [bleed]="aslBleed()"
       [style.--fold-aside-layout-rail-width]="
         aslEqual() ? null : aslRailWidth() + 'px'
       "
