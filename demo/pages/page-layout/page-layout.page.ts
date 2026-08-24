@@ -65,6 +65,8 @@ export default class PageLayoutPage {
   protected readonly showDesc = signal(true);
   /** The hairline closing the header off from the body. */
   protected readonly separator = signal(false);
+  /** The header on the band ground — an elevation, not a surface. */
+  protected readonly headerBand = signal(false);
   protected readonly showActions = signal(true);
   /**
    * The eyebrow's trail — ancestors ONLY (`[currentPage]="false"`), because the
@@ -146,7 +148,8 @@ export default class PageLayoutPage {
     } else {
       const icon = this.showIcon() ? ' icon="grid"' : "";
       const rule = this.separator() ? " separator" : "";
-      lines.push(`<fold-page-layout${icon} title="Billing"${rule}>`);
+      const band = this.headerBand() ? " headerBand" : "";
+      lines.push(`<fold-page-layout${icon} title="Billing"${rule}${band}>`);
     }
     if (this.showEyebrow()) {
       lines.push(

@@ -3,7 +3,10 @@ import { join } from "node:path";
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldAsideLayoutComponent } from "./aside-layout.component";
+import {
+  FoldAsideLayoutComponent,
+  type FoldAsideBand,
+} from "./aside-layout.component";
 
 @Component({
   standalone: true,
@@ -136,5 +139,35 @@ describe("FoldAsideLayoutComponent", () => {
     expect(scss).toMatch(/\.al-center\b/);
     expect(scss).toMatch(/\.al-aside\b/);
     expect(scss).not.toContain("::ng-deep");
+  });
+
+  it("stamps the banded side, and nothing at all on `none`", () => {
+    // The attribute carries the SIDE — the CSS closes the gutter and pays the
+    // centre back on that side only, so a boolean would not be enough to say
+    // which edge moved.
+    @Component({
+      standalone: true,
+      imports: [FoldAsideLayoutComponent],
+      template: `<fold-aside-layout [band]="band()">
+        <div asideRight>Rail</div>
+        <div>Centre</div>
+      </fold-aside-layout>`,
+    })
+    class BandHost {
+      readonly band = signal<FoldAsideBand>("none");
+    }
+
+    const fixture = TestBed.createComponent(BandHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-aside-layout",
+    )!;
+    expect(host.hasAttribute("data-band")).toBe(false);
+    fixture.componentInstance.band.set("right");
+    fixture.detectChanges();
+    expect(host.getAttribute("data-band")).toBe("right");
+    fixture.componentInstance.band.set("both");
+    fixture.detectChanges();
+    expect(host.getAttribute("data-band")).toBe("both");
   });
 });

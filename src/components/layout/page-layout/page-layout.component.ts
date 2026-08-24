@@ -111,6 +111,7 @@ export class FoldPageTitleDirective {}
     "[attr.title]": "null",
     "[attr.data-scroll]": "scroll()",
     "[attr.data-separator]": "separator() ? '' : null",
+    "[attr.data-header-band]": "headerBand() ? '' : null",
   },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
@@ -133,6 +134,26 @@ export class FoldPageLayoutComponent {
    * first row of the content.
    */
   readonly separator = input(false, { transform: booleanAttribute });
+
+  /**
+   * Paint the header on the **band** ground — `--fold-color-surface-band`, one
+   * step away from the page in whichever direction the theme's polarity
+   * dictates (darker on a light theme, lighter on a dark one). The band spans
+   * the layout edge-to-edge: it cancels the page gutter and the top padding
+   * exactly, the same way a `fold-page-section[bleed]` does, so it stays flush
+   * at every breakpoint.
+   *
+   * This is an **elevation**, not a surface. `foldSurface` re-points *ink* and
+   * never paints a ground (see `docs/surfaces.md`), and `chrome` / `accent` are
+   * identities — "the header is furniture, not content" is neither. It is the
+   * same gesture `fold-card` makes with `raisedBands`, and it names the same
+   * role, so a header band and a card's header band always agree.
+   *
+   * Pair it with `separator` when the band's own edge isn't enough — on a theme
+   * whose band barely departs from the page, the hairline is what makes the
+   * header end somewhere.
+   */
+  readonly headerBand = input(false, { transform: booleanAttribute });
 
   /**
    * Who owns the page's scroll:

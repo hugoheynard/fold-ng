@@ -83,6 +83,18 @@
 .page-eyebrow {
   margin-block-end: var(--fold-space-xs);
 }
+/* `headerBand` — the header sits on the band ground and spans the layout
+   edge-to-edge. It cancels EXACTLY what the page pads with (the same two
+   tokens), then pays that padding back on the inside, so the text column does
+   not move when the band is switched on and the band stays flush at every
+   breakpoint. Same mechanism as `fold-page-section[bleed]`, same tokens. */
+:host([data-header-band]) .page-head {
+  background: var(--fold-color-surface-band);
+  margin-inline: calc(-1 * var(--fold-page-gutter, 32px));
+  margin-block-start: calc(-1 * var(--fold-page-pad-top, 28px));
+  padding-inline: var(--fold-page-gutter, 32px);
+  padding-block: var(--fold-page-pad-top, 28px) var(--fold-space-lg);
+}
 /* The rule keys off the header, not the row, so it spans the full width under
    both. */
 .page-eyebrow:empty {
@@ -193,6 +205,12 @@
    `calc(-1 * …)`) stays in lockstep at every width. */
 @mixin page-narrow-gutter {
   :host {
+    padding-inline: calc(var(--fold-page-gutter, 32px) / 2);
+  }
+  /* The band cancels what the page ACTUALLY pads with, which is half here — a
+     band that kept cancelling the full token would hang 16px off each edge. */
+  :host([data-header-band]) .page-head {
+    margin-inline: calc(-1 * var(--fold-page-gutter, 32px) / 2);
     padding-inline: calc(var(--fold-page-gutter, 32px) / 2);
   }
 }

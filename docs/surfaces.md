@@ -182,6 +182,23 @@ _Enforced:_ `tokens.contract.spec.ts › no orphan roles`.
 
 ---
 
+## Not a surface: elevation
+
+`surface` is an **identity** axis — `chrome` is "app furniture", `accent` is "the
+brand ground". A header band, a banded rail, a card's header band are none of
+those: they are one step **away from their container**, and which direction that
+is depends on the theme's polarity. That is `--fold-color-surface-band`, a plain
+role a component paints, not a `data-surface` stamp.
+
+Three components consume it, and they all mean the same thing:
+`fold-card[raisedBands]`, `fold-page-layout[headerBand]`, `fold-aside-layout[band]`.
+
+Keep the two apart. A `surface="raised"` would have blurred them — and, per the
+rule above, a surface resolves ink and never paints a ground, so it could not
+have done the job it names.
+
+---
+
 ## Gotchas
 
 - **`[data-surface="accent"] *` touches every descendant.** It's the price of the

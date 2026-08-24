@@ -47,6 +47,28 @@
         </button>
       </div>
     </div>
+    <div class="np-field" params>
+      <span class="gal-tag">band</span>
+      <div class="ss-seg">
+        @for (b of bands; track b) {
+        <button
+          type="button"
+          [class.is-on]="aslBand() === b"
+          (click)="aslBand.set(b)"
+        >
+          {{ b }}
+        </button>
+        }
+      </div>
+      <p class="asl-hint">
+        A banded rail sits on <code>--fold-color-surface-band</code> — one step
+        away from the page, in whichever direction the theme's polarity
+        dictates. It <strong>closes the column gutter</strong> and separates
+        with a hairline: a ground held 28px from the content it accompanies
+        reads as a floating card, not as a band. The space moves inside, so the
+        centre reads the same width either way.
+      </p>
+    </div>
     <fold-slider
       params
       label="offset"
@@ -86,6 +108,7 @@
       class="asl-real"
       [class.is-equal]="aslEqual()"
       [topOffset]="aslOffset()"
+      [band]="aslBand()"
       [style.--fold-aside-layout-rail-width]="
         aslEqual() ? null : aslRailWidth() + 'px'
       "

@@ -29,6 +29,7 @@
 #### FoldAsideLayoutComponent
 - asideLeftLabel: InputSignal<string | undefined>
 - asideRightLabel: InputSignal<string | undefined>
+- band: InputSignal<FoldAsideBand>
 - stackLeftFirst: InputSignalWithTransform<boolean, unknown>
 - topOffset: InputSignal<string | number | undefined>
 
@@ -583,6 +584,7 @@
 - value: InputSignal<T> — required
 
 #### FoldPageLayoutComponent
+- headerBand: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName | undefined>
 - scroll: InputSignal<"flow" | "own">
 - separator: InputSignalWithTransform<boolean, unknown>
@@ -904,6 +906,7 @@
 - foldAddMinutes (function)
 - foldAddMonths (function)
 - FoldAgendaOptions (interface)
+- FoldAsideBand (type)
 - FoldAutoPaletteName (type)
 - FoldAvatarListItem (interface)
 - FoldAvatarRing (type)

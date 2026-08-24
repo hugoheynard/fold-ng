@@ -24,6 +24,28 @@ All notable changes to **fold-ng** are documented here. The format follows
   **peau**, jamais une sémantique : le titre reste le même `h2`, avec le même
   `aria-level` et le même nom de région.
 
+- **Les bandes montent d'un cran : `fold-page-layout[headerBand]` et
+  `fold-aside-layout[band]`.** Une en-tête de page et un rail collant peuvent
+  enfin se poser sur `--fold-color-surface-band` — le rôle qui existait déjà et
+  que `fold-card` consomme par `raisedBands` : « un pas À L'ÉCART de son
+  conteneur, dans le sens que la polarité du thème impose ». Clair il fonce,
+  sombre il éclaircit ; le composant nomme le rôle et n'a jamais à savoir dans
+  quel sens.
+
+  **Ce n'est pas une `surface`, et c'est le point.** L'axe `surface` est une
+  IDENTITÉ (`chrome`, `accent`) et il repointe l'encre sans jamais peindre de
+  fond (`docs/surfaces.md`) ; « l'en-tête est du mobilier, pas du contenu » n'est
+  ni l'un ni l'autre — c'est une élévation. Un `surface="raised"` aurait mélangé
+  les deux axes et aurait menti sur ce qu'il fait.
+
+  Deux détails qui ne sont pas de la décoration : la bande d'en-tête **annule
+  exactement** ce que la page marge (les deux mêmes tokens, moitié à l'étroit),
+  puis rembourse ce padding à l'intérieur — la colonne de texte ne bouge pas
+  quand on l'allume. Et un rail bandé **ferme la gouttière de colonne** au profit
+  d'un filet : un fond tenu à 28px du contenu qu'il accompagne ne se lit pas
+  comme une bande mais comme une carte flottante. L'espace passe à l'intérieur,
+  donc le contenu se lit à la même largeur dans les deux cas.
+
 ### Fixed
 
 - **`fold-page-layout` : les actions s'alignent sur la rangée du TITRE.** Elles

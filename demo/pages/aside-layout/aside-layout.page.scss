@@ -80,3 +80,11 @@
   background: var(--fold-color-primary);
   color: var(--fold-color-on-primary);
 }
+
+/* The band control's explainer — same register as the other playground hints. */
+.asl-hint {
+  margin: var(--fold-space-sm) 0 0;
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-normal);
+  color: var(--fold-color-text-muted);
+}

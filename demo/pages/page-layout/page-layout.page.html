@@ -104,6 +104,14 @@
         <button
           type="button"
           class="pl-chip"
+          [class.is-on]="headerBand()"
+          (click)="headerBand.set(!headerBand())"
+        >
+          headerBand
+        </button>
+        <button
+          type="button"
+          class="pl-chip"
           [class.is-on]="showActions()"
           (click)="showActions.set(!showActions())"
         >
@@ -212,6 +220,7 @@
           [icon]="headerMode() === 'title' && showIcon() ? 'grid' : undefined"
           [title]="headerMode() === 'title' ? 'Billing' : undefined"
           [separator]="separator()"
+          [headerBand]="headerBand()"
         >
           @if (headerMode() === "custom") {
           <span pageTitle class="pl-custom-title">

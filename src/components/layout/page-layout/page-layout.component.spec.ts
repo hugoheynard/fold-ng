@@ -158,6 +158,29 @@ describe("FoldPageLayoutComponent", () => {
     expect(host?.hasAttribute("data-separator")).toBe(true);
   });
 
+  it("flags the header band only on [headerBand]", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPageLayoutComponent],
+      template: `<fold-page-layout title="Facturation" [headerBand]="on()"
+        >Body</fold-page-layout
+      >`,
+    })
+    class BandHost {
+      readonly on = signal(false);
+    }
+
+    const fixture = TestBed.createComponent(BandHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-page-layout",
+    );
+    expect(host?.hasAttribute("data-header-band")).toBe(false);
+    fixture.componentInstance.on.set(true);
+    fixture.detectChanges();
+    expect(host?.hasAttribute("data-header-band")).toBe(true);
+  });
+
   it("omits the header when there is no title — the body takes over", () => {
     const { fixture, root } = render();
     fixture.componentInstance.title.set(undefined);

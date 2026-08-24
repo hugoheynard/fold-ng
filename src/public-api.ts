@@ -305,7 +305,10 @@ export type {
   // nothing. Shipped that way in 0.11.0; caught by the first real consumer.
   FoldCustomIcons,
 } from "./components/foundations/icon/builtin-icons";
-export { FoldAsideLayoutComponent } from "./components/layout/aside-layout/aside-layout.component";
+export {
+  FoldAsideLayoutComponent,
+  type FoldAsideBand,
+} from "./components/layout/aside-layout/aside-layout.component";
 export { FoldNavLayoutComponent } from "./components/layout/nav-layout/nav-layout.component";
 export {
   FoldPageLayoutComponent,

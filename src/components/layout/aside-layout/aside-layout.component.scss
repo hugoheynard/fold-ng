@@ -94,6 +94,42 @@
   );
 }
 
+/* ── Banded rails ────────────────────────────────────────────────────────────
+   A rail on the band ground (`--fold-color-surface-band` — one step away from
+   the page, in whichever direction the theme's polarity dictates).
+
+   The column gutter CLOSES on the banded side and a hairline takes its place:
+   a ground held 28px away from the content it accompanies doesn't read as a
+   band, it reads as a floating card. The space moves inside — the rail pays its
+   own padding, the centre pays the matching inset — so the content reads the
+   same width whether the band is on or off. */
+:host([data-band]) .al-grid {
+  column-gap: 0;
+}
+:host([data-band="left"]) .al-aside-left,
+:host([data-band="right"]) .al-aside-right,
+:host([data-band="both"]) .al-aside {
+  background: var(--fold-color-surface-band);
+  padding: var(--fold-aside-layout-band-pad, var(--fold-space-xl));
+}
+:host([data-band="left"]) .al-aside-left,
+:host([data-band="both"]) .al-aside-left {
+  border-inline-end: 1px solid var(--fold-color-border-subtle);
+}
+:host([data-band="right"]) .al-aside-right,
+:host([data-band="both"]) .al-aside-right {
+  border-inline-start: 1px solid var(--fold-color-border-subtle);
+}
+/* The centre pays back what the closed gutter took, on the banded side only. */
+:host([data-band="left"]) .al-center,
+:host([data-band="both"]) .al-center {
+  padding-inline-start: var(--fold-aside-layout-gap, 28px);
+}
+:host([data-band="right"]) .al-center,
+:host([data-band="both"]) .al-center {
+  padding-inline-end: var(--fold-aside-layout-gap, 28px);
+}
+
 /* Collapse to a single column: centre first, then the rails; un-stick. */
 @container (max-width: 1040px) {
   .al-grid,
@@ -108,6 +144,20 @@
        height again instead of an internal scroll. */
     max-height: none;
     overflow: visible;
+  }
+  /* One column: there is nothing left to separate, so the band keeps only its
+     ground and its padding — a hairline against a sibling ABOVE it would be a
+     rule across the page, and the centre owes nothing back to a closed gutter
+     that no longer exists. */
+  :host([data-band]) .al-aside,
+  :host([data-band]) .al-center {
+    border-inline: 0;
+    padding-inline: 0;
+  }
+  :host([data-band="left"]) .al-aside-left,
+  :host([data-band="right"]) .al-aside-right,
+  :host([data-band="both"]) .al-aside {
+    padding: var(--fold-aside-layout-band-pad, var(--fold-space-xl));
   }
   .al-center {
     order: 1;

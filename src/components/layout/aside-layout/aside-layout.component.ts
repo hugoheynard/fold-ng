@@ -1,5 +1,9 @@
 import { booleanAttribute, Component, computed, input } from "@angular/core";
 
+/** Which rail(s) sit on the band ground. A side, never a bare boolean: a band
+ *  has a side, and `band` alone would not say which. */
+export type FoldAsideBand = "none" | "left" | "right" | "both";
+
 /**
  * `<fold-aside-layout>` — a centered, self-scrolling content column flanked by
  * up to two sticky side rails. The detail-page archetype: a stack of
@@ -74,6 +78,7 @@ import { booleanAttribute, Component, computed, input } from "@angular/core";
   host: {
     "[style.--fold-aside-layout-top]": "topOffsetCss()",
     "[class.stack-left-first]": "stackLeftFirst()",
+    "[attr.data-band]": "band() === 'none' ? null : band()",
   },
 })
 export class FoldAsideLayoutComponent {
@@ -84,6 +89,25 @@ export class FoldAsideLayoutComponent {
    * companion rail (a timeline, history) where the content should come first.
    */
   readonly stackLeftFirst = input(false, { transform: booleanAttribute });
+
+  /**
+   * Which rail(s) sit on the **band** ground — `--fold-color-surface-band`, one
+   * step away from the page in whichever direction the theme's polarity
+   * dictates. It is the same role, and the same gesture, as `fold-card`'s
+   * `raisedBands` and `fold-page-layout`'s `headerBand`.
+   *
+   * A banded rail **closes the column gutter** and separates with a hairline
+   * instead. That is not decoration: a ground held 28px away from the content
+   * it accompanies does not read as a band, it reads as a floating card. The
+   * reading space moves inside — the rail pays its own padding
+   * (`--fold-aside-layout-band-pad`), and the centre pays the matching inset on
+   * that side — so switching the band on does not change how wide the content
+   * reads.
+   *
+   * Once the layout collapses to one column there are no columns to separate,
+   * so the band keeps only its ground and its padding.
+   */
+  readonly band = input<FoldAsideBand>("none");
   /**
    * Accessible label for the left rail. Set it and the rail is exposed as a
    * labelled `complementary` landmark; leave it unset and the rail is a plain

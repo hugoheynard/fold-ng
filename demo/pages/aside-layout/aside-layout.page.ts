@@ -1,6 +1,7 @@
 import { Component, computed, signal, ViewEncapsulation } from "@angular/core";
 import {
   FoldAsideLayoutComponent,
+  type FoldAsideBand,
   FoldCardComponent,
   FoldPageLayoutComponent,
   FoldSliderComponent,
@@ -28,6 +29,14 @@ export default class AsideLayoutPage {
   protected readonly aslLeft = signal(false);
   protected readonly aslEqual = signal(false);
   protected readonly aslOffset = signal(8);
+  /** Which rail sits on the band ground — an elevation, not a surface. */
+  protected readonly aslBand = signal<FoldAsideBand>("none");
+  protected readonly bands = [
+    "none",
+    "left",
+    "right",
+    "both",
+  ] as const satisfies readonly FoldAsideBand[];
   /** asideLeft / asideRight rail widths (real px) — slide to 0 or wide to see limits. */
   protected readonly aslRailWidth = signal(220);
   protected readonly aslSideWidth = signal(300);
