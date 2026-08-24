@@ -65,6 +65,8 @@ export default class PageLayoutPage {
   protected readonly showDesc = signal(true);
   /** The hairline closing the header off from the body. */
   protected readonly separator = signal(false);
+  /** The header's REACH — edge-to-edge — independent of its ground. */
+  protected readonly headerBleed = signal(false);
   /** The header on the band ground — an elevation, not a surface. */
   protected readonly headerBand = signal(false);
   protected readonly showActions = signal(true);
@@ -148,8 +150,11 @@ export default class PageLayoutPage {
     } else {
       const icon = this.showIcon() ? ' icon="grid"' : "";
       const rule = this.separator() ? " separator" : "";
+      const bleed = this.headerBleed() ? " headerBleed" : "";
       const band = this.headerBand() ? " headerBand" : "";
-      lines.push(`<fold-page-layout${icon} title="Billing"${rule}${band}>`);
+      lines.push(
+        `<fold-page-layout${icon} title="Billing"${rule}${bleed}${band}>`,
+      );
     }
     if (this.showEyebrow()) {
       lines.push(

@@ -586,6 +586,7 @@
 
 #### FoldPageLayoutComponent
 - headerBand: InputSignalWithTransform<boolean, unknown>
+- headerBleed: InputSignalWithTransform<boolean, unknown>
 - icon: InputSignal<FoldIconName | undefined>
 - scroll: InputSignal<"flow" | "own">
 - separator: InputSignalWithTransform<boolean, unknown>

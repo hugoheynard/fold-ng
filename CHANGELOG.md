@@ -22,6 +22,12 @@ All notable changes to **fold-ng** are documented here. The format follows
   `separator`** — les pendants exacts de ce que `fold-page-layout` a reçu, pour
   la même raison : une section d'écran dense est une petite page.
 
+- **`fold-page-layout` sépare la PORTÉE de l'en-tête de son SOL** :
+  `headerBleed` (aller bord à bord) et `headerBand` (peindre la bande) sont deux
+  entrées, plus une seule. `headerBand` faisait les deux, donc un simple filet
+  pleine largeur sous l'en-tête — traitement courant et discret — obligeait à
+  peindre une bande. On ne pouvait pas demander la portée sans l'encre.
+
 - **Les bandes montent d'un cran : `fold-page-layout[headerBand]` et
   `fold-aside-layout[band]`.** Une en-tête de page et un rail collant peuvent
   enfin se poser sur `--fold-color-surface-band` — le rôle qui existait déjà et

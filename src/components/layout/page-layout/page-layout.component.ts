@@ -112,6 +112,7 @@ export class FoldPageTitleDirective {}
     "[attr.data-scroll]": "scroll()",
     "[attr.data-separator]": "separator() ? '' : null",
     "[attr.data-header-band]": "headerBand() ? '' : null",
+    "[attr.data-header-bleed]": "headerBleed() ? '' : null",
   },
   templateUrl: "./page-layout.component.html",
   styleUrl: "./page-layout.component.scss",
@@ -136,12 +137,23 @@ export class FoldPageLayoutComponent {
   readonly separator = input(false, { transform: booleanAttribute });
 
   /**
+   * Break the header out of the page gutter so it spans the layout
+   * edge-to-edge. It cancels `--fold-page-gutter-effective` — the gutter the
+   * page actually pays — and pays it back as inner padding, so the text column
+   * does not move.
+   *
+   * **Orthogonal to `headerBand`**, and that is the point: the reach and the
+   * ground are two decisions. A full-width rule under the header (with
+   * `separator`) is a common, quiet treatment that has nothing to do with
+   * painting a band; requiring the band to get the reach forced ink on a page
+   * that only wanted a line.
+   */
+  readonly headerBleed = input(false, { transform: booleanAttribute });
+
+  /**
    * Paint the header on the **band** ground — `--fold-color-surface-band`, one
    * step away from the page in whichever direction the theme's polarity
-   * dictates (darker on a light theme, lighter on a dark one). The band spans
-   * the layout edge-to-edge: it cancels the page gutter and the top padding
-   * exactly, the same way a `fold-page-section[bleed]` does, so it stays flush
-   * at every breakpoint.
+   * dictates (darker on a light theme, lighter on a dark one).
    *
    * This is an **elevation**, not a surface. `foldSurface` re-points *ink* and
    * never paints a ground (see `docs/surfaces.md`), and `chrome` / `accent` are
@@ -149,9 +161,10 @@ export class FoldPageLayoutComponent {
    * same gesture `fold-card` makes with `raisedBands`, and it names the same
    * role, so a header band and a card's header band always agree.
    *
-   * Pair it with `separator` when the band's own edge isn't enough — on a theme
-   * whose band barely departs from the page, the hairline is what makes the
-   * header end somewhere.
+   * It flushes to the page's **top** edge on its own — a ground that starts
+   * below the page padding reads as a floating strip rather than as the page's
+   * head. For its horizontal reach, add `headerBleed`; for a closing hairline,
+   * `separator`. Three attributes, three decisions.
    */
   readonly headerBand = input(false, { transform: booleanAttribute });
 

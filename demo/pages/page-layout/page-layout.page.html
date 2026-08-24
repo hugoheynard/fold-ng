@@ -104,6 +104,14 @@
         <button
           type="button"
           class="pl-chip"
+          [class.is-on]="headerBleed()"
+          (click)="headerBleed.set(!headerBleed())"
+        >
+          headerBleed
+        </button>
+        <button
+          type="button"
+          class="pl-chip"
           [class.is-on]="headerBand()"
           (click)="headerBand.set(!headerBand())"
         >
@@ -220,6 +228,7 @@
           [icon]="headerMode() === 'title' && showIcon() ? 'grid' : undefined"
           [title]="headerMode() === 'title' ? 'Billing' : undefined"
           [separator]="separator()"
+          [headerBleed]="headerBleed()"
           [headerBand]="headerBand()"
         >
           @if (headerMode() === "custom") {

@@ -91,17 +91,28 @@
 .page-eyebrow {
   margin-block-end: var(--fold-space-xs);
 }
-/* `headerBand` — the header sits on the band ground and spans the layout
-   edge-to-edge. It cancels EXACTLY what the page pads with (the same two
-   tokens), then pays that padding back on the inside, so the text column does
-   not move when the band is switched on and the band stays flush at every
-   breakpoint. Same mechanism as `fold-page-section[bleed]`, same tokens. */
+/* `headerBleed` — the header spans the layout edge-to-edge. It cancels EXACTLY
+   what the page pays (`--fold-page-gutter-effective`, halved on a narrow
+   viewport) and pays it back inside, so the text column does not move when the
+   bleed is switched on. Same mechanism as `fold-page-section[bleed]`, same
+   variable.
+
+   Separate from the band on purpose: the reach and the ground are two
+   decisions. A full-width hairline under the header wants the reach and no ink
+   at all. */
+:host([data-header-bleed]) .page-head {
+  margin-inline: calc(-1 * var(--fold-page-gutter-effective));
+  padding-inline: var(--fold-page-gutter-effective);
+}
+/* `headerBand` — the header sits on the band ground. It flushes to the page's
+   TOP edge on its own: a ground that starts below the page padding reads as a
+   floating strip rather than as the page's head. Its horizontal reach is
+   `headerBleed`'s business, not this rule's. */
 :host([data-header-band]) .page-head {
   background: var(--fold-color-surface-band);
-  margin-inline: calc(-1 * var(--fold-page-gutter-effective));
   margin-block-start: calc(-1 * var(--fold-page-pad-top, 28px));
-  padding-inline: var(--fold-page-gutter-effective);
-  padding-block: var(--fold-page-pad-top, 28px) var(--fold-space-lg);
+  padding-block-start: var(--fold-page-pad-top, 28px);
+  padding-block-end: var(--fold-space-lg);
 }
 /* The rule keys off the header, not the row, so it spans the full width under
    both. */

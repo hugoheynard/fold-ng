@@ -158,27 +158,45 @@ describe("FoldPageLayoutComponent", () => {
     expect(host?.hasAttribute("data-separator")).toBe(true);
   });
 
-  it("flags the header band only on [headerBand]", () => {
+  it("keeps the header's REACH and its GROUND as two independent flags", () => {
+    // The whole point of the split: a full-width hairline under the header
+    // (bleed + separator) must not force a painted band. Coupling them put ink
+    // on a page that only wanted a line.
     @Component({
       standalone: true,
       imports: [FoldPageLayoutComponent],
-      template: `<fold-page-layout title="Facturation" [headerBand]="on()"
+      template: `<fold-page-layout
+        title="Facturation"
+        [headerBleed]="bleed()"
+        [headerBand]="band()"
         >Body</fold-page-layout
       >`,
     })
     class BandHost {
-      readonly on = signal(false);
+      readonly bleed = signal(false);
+      readonly band = signal(false);
     }
 
     const fixture = TestBed.createComponent(BandHost);
     fixture.detectChanges();
     const host = (fixture.nativeElement as HTMLElement).querySelector(
       "fold-page-layout",
-    );
-    expect(host?.hasAttribute("data-header-band")).toBe(false);
-    fixture.componentInstance.on.set(true);
+    )!;
+    expect(host.hasAttribute("data-header-bleed")).toBe(false);
+    expect(host.hasAttribute("data-header-band")).toBe(false);
+
+    // Reach alone — no ground.
+    fixture.componentInstance.bleed.set(true);
     fixture.detectChanges();
-    expect(host?.hasAttribute("data-header-band")).toBe(true);
+    expect(host.hasAttribute("data-header-bleed")).toBe(true);
+    expect(host.hasAttribute("data-header-band")).toBe(false);
+
+    // Ground alone — no reach.
+    fixture.componentInstance.bleed.set(false);
+    fixture.componentInstance.band.set(true);
+    fixture.detectChanges();
+    expect(host.hasAttribute("data-header-bleed")).toBe(false);
+    expect(host.hasAttribute("data-header-band")).toBe(true);
   });
 
   it("omits the header when there is no title — the body takes over", () => {
