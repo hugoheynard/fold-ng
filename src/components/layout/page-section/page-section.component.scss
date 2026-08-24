@@ -75,6 +75,44 @@
   align-items: center;
   gap: var(--fold-space-sm);
 }
+/* The facts line, set TIGHT under the title — the same register (and the same
+   reason) as fold-page-layout's [pageSubtitle]: an identifying line is not a
+   paragraph, and a paragraph's spacing would detach it from the title it
+   identifies. Empty → no box, no gap. */
+.section-subtitle {
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-snug);
+  color: var(--fold-color-text-muted);
+  /* The head stacks on --fold-space-sm; pull the facts back up against the
+     title so they read as ONE block, and let the description keep the rhythm. */
+  margin-block-start: calc(-1 * var(--fold-space-xs));
+}
+.section-subtitle:empty {
+  display: none;
+}
+.section-subtitle > * {
+  margin: 0;
+}
+
+/* `eyebrow` — the h2 wears the micro-label register. Semantics unchanged: it is
+   the same heading, with the same aria-level and the same region name. */
+:host([data-eyebrow]) .section-title {
+  font-family: var(--fold-font-label);
+  font-size: var(--fold-text-2xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
+  text-transform: uppercase;
+  color: var(--fold-color-text-muted);
+}
+
+/* `separator` — the head closes on a hairline, with its own breathing room
+   above the rule. The section rhythm still applies BELOW it, so the rule stays
+   with the head rather than floating midway to the body. */
+:host([data-separator]) .section-head {
+  padding-block-end: var(--fold-space-sm);
+  border-block-end: 1px solid var(--fold-color-border);
+}
+
 .section-desc {
   margin: 0;
   font-size: var(--fold-text-sm);

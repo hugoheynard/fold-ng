@@ -149,10 +149,15 @@ export const FOLD_RADIUS_TOKENS = [
 export type FoldRadiusToken = (typeof FOLD_RADIUS_TOKENS)[number];
 
 /**
- * Font-family scale (`--fold-font-*`). Two faces only — the base and the
- * tabular/code one. No `display` face: nothing renders one.
+ * Font-family scale (`--fold-font-*`). Two faces — the base and the tabular/code
+ * one — plus one **role**: `label`, the micro-label register (a section title in
+ * `eyebrow` skin, a data-table column head, an `element-title` eyebrow). No
+ * `display` face: nothing renders one.
+ *
+ * `label` is a role, not a face: it defaults to `inherit`, so it changes nothing
+ * until a host names a face for it.
  */
-export const FOLD_FONT_TOKENS = ["sans", "mono"] as const;
+export const FOLD_FONT_TOKENS = ["sans", "mono", "label"] as const;
 
 export type FoldFontToken = (typeof FOLD_FONT_TOKENS)[number];
 

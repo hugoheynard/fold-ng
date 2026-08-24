@@ -69,6 +69,8 @@ import { FoldIdService } from "../../../a11y/id.service";
   host: {
     "[class.stack]": "stack()",
     "[class.is-bleed]": "bleed()",
+    "[attr.data-eyebrow]": "eyebrow() ? '' : null",
+    "[attr.data-separator]": "separator() ? '' : null",
     // `title` is a heading input — strip the reflected native attribute so it
     // never doubles as a browser tooltip.
     "[attr.title]": "null",
@@ -86,6 +88,24 @@ export class FoldPageSectionComponent {
   readonly iconTone = input<FoldIconTone>("secondary");
   /** A one-line description under the title. */
   readonly description = input<string>();
+  /**
+   * Wear the micro-label register — 2xs, bold, uppercase, tracked, in
+   * `--fold-font-label`: the same face and rhythm a table column head and a
+   * `fold-element-title` eyebrow already share.
+   *
+   * Off by default, and the default stays a real `h2`: a section title IS a
+   * heading, and the eyebrow look is a *skin* over it, never a change of
+   * semantics — the `aria-level` and the region name are identical either way.
+   * Reach for it on a dense back-office form, where a stack of base-size
+   * headings competes with the fields it is supposed to label.
+   */
+  readonly eyebrow = input(false, { transform: booleanAttribute });
+  /**
+   * Close the section head on a hairline — the same gesture as
+   * `fold-page-layout`'s `separator`, for the same reason: when the body runs
+   * flush against the head, the head reads as its first row.
+   */
+  readonly separator = input(false, { transform: booleanAttribute });
   /** Heading depth exposed to assistive tech (`aria-level`) — set it so sections
    *  nest correctly under the page's `<h1>` (2 by default). */
   readonly headingLevel = input(2);

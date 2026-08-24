@@ -66,17 +66,31 @@ describe("FoldPageLayoutComponent", () => {
     ).not.toBeNull();
   });
 
-  it("projects [pageEyebrow] above the title, inside the header text column", () => {
+  it("projects [pageEyebrow] above the title, spanning the whole header", () => {
     const { root } = render();
-    const eyebrow = root.querySelector(".page-head-text .page-eyebrow .crumbs");
-    expect(eyebrow).not.toBeNull();
-    // ABOVE the title — the order is the whole point of the slot, so assert it
-    // rather than trust the template's reading order.
-    const column = root.querySelector(".page-head-text")!;
-    const kids = [...column.children];
-    expect(kids.indexOf(root.querySelector(".page-eyebrow")!)).toBeLessThan(
-      kids.indexOf(root.querySelector(".page-title")!),
-    );
+    expect(root.querySelector(".page-eyebrow .crumbs")).not.toBeNull();
+    // ABOVE the title AND a direct child of the header — asserting the order
+    // alone proves nothing: an eyebrow moved elsewhere indexes to -1, which is
+    // "less than" everything. Pin the position first, then the order.
+    const head = root.querySelector(".page-head")!;
+    const kids = [...head.children];
+    const eyebrowAt = kids.indexOf(root.querySelector(".page-eyebrow")!);
+    const rowAt = kids.indexOf(root.querySelector(".page-head-row")!);
+    expect(eyebrowAt).toBeGreaterThanOrEqual(0);
+    expect(rowAt).toBeGreaterThanOrEqual(0);
+    expect(eyebrowAt).toBeLessThan(rowAt);
+  });
+
+  it("aligns [pageActions] on the title row, not on the eyebrow", () => {
+    // The actions top-align against their flex row. If the eyebrow sat inside
+    // that row's text column, they would ride up level with the breadcrumb —
+    // which is exactly what happened before this structure. So assert that the
+    // actions share a row with the TITLE, and that the eyebrow is outside it.
+    const { root } = render();
+    const row = root.querySelector(".page-head-row")!;
+    expect(row.contains(root.querySelector(".page-title")!)).toBe(true);
+    expect(row.contains(root.querySelector(".page-actions")!)).toBe(true);
+    expect(row.contains(root.querySelector(".page-eyebrow")!)).toBe(false);
   });
 
   it("does not switch the header on for an eyebrow alone", () => {

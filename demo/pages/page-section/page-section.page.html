@@ -3,10 +3,11 @@
   <gal-composed-of [ids]="['element-title']" />
   <p description>
     A titled, semantic <code>&lt;section&gt;</code> grouping of page content — a
-    real <code>&lt;h2&gt;</code> title + description + actions, plus the
-    <code>stack</code> and <code>bleed</code> helpers. It is
-    <strong>not a box</strong>: the title is a genuine heading and the region is
-    a <code>&lt;section&gt;</code>. For a card, wrap the content in a
+    real <code>&lt;h2&gt;</code> title + <code>[sectionSubtitle]</code> +
+    description + actions, plus the <code>eyebrow</code>,
+    <code>separator</code>, <code>stack</code> and <code>bleed</code> helpers.
+    It is <strong>not a box</strong>: the title is a genuine heading and the
+    region is a <code>&lt;section&gt;</code>. For a card, wrap the content in a
     <code>fold-card</code>.
   </p>
 
@@ -34,10 +35,34 @@
         <button
           type="button"
           class="ps-chip"
+          [class.is-on]="showSubtitle()"
+          (click)="showSubtitle.set(!showSubtitle())"
+        >
+          sectionSubtitle
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
           [class.is-on]="showDesc()"
           (click)="showDesc.set(!showDesc())"
         >
           description
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="eyebrow()"
+          (click)="eyebrow.set(!eyebrow())"
+        >
+          eyebrow
+        </button>
+        <button
+          type="button"
+          class="ps-chip"
+          [class.is-on]="separator()"
+          (click)="separator.set(!separator())"
+        >
+          separator
         </button>
         <button
           type="button"
@@ -143,6 +168,8 @@
           [icon]="showIcon() ? 'briefcase' : undefined"
           [iconTone]="iconTone()"
           [description]="showDesc() ? 'Charged on renewal.' : undefined"
+          [eyebrow]="eyebrow()"
+          [separator]="separator()"
           [stack]="stack()"
           [bleed]="bleed()"
           [headingLevel]="headingLevel()"
@@ -150,7 +177,13 @@
           [style.--ps-gap-num]="sectionGap()"
           [style.--ps-gap-num-first]="sectionGap() + 12"
         >
-          @if (showActions()) {
+          @if (showSubtitle()) {
+          <span sectionSubtitle class="ps-facts">
+            <span class="ps-facts-ref">VISA-4242</span>
+            <span class="ps-facts-sep" aria-hidden="true">·</span>
+            <span>2 methods</span>
+          </span>
+          } @if (showActions()) {
           <button
             foldButton
             sectionActions

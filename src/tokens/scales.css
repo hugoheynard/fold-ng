@@ -45,6 +45,20 @@
   --fold-font-sans: system-ui, -apple-system, sans-serif;
   --fold-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
+  /* The MICRO-LABEL face — the one role the library does name a face for:
+     the 2xs / bold / uppercase / tracked labels that title a section, head a
+     table column, or sit as an eyebrow. It defaults to `inherit`, so out of the
+     box nothing changes and the rule above still holds: a component wears
+     whatever face its host sets.
+
+     It exists because that role is where a host most often wants a DIFFERENT
+     face from its running text — a monospace label reads as a system utterance
+     rather than as prose, and it is exactly the register those three components
+     already share (same size, same weight, same tracking). One declaration
+     retunes all three; without it a host has to reach into three components'
+     internals and would drift the day a fourth joins the register. */
+  --fold-font-label: inherit;
+
   /* Type scale — absolute px (the app root is 14px, so rem would render ~12%
      small; px is root-independent).
 

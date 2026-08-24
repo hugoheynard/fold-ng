@@ -43,7 +43,18 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+/* The header is a COLUMN: the eyebrow row, then the title row. The eyebrow
+   spans the full width above everything — it must not sit inside the text
+   column, or the actions would top-align with the breadcrumb instead of the
+   title. */
 .page-head {
+  display: flex;
+  flex-direction: column;
+}
+/* The title row proper: the text column grows, the actions sit at its end and
+   align on the TITLE's line — `flex-start` measures from the top of the text
+   column, whose first child is the h1. */
+.page-head-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -72,6 +83,8 @@
 .page-eyebrow {
   margin-block-end: var(--fold-space-xs);
 }
+/* The rule keys off the header, not the row, so it spans the full width under
+   both. */
 .page-eyebrow:empty {
   display: none;
 }
@@ -162,7 +175,7 @@
    (@media, the running app) and an ancestor container (@container, the gallery's
    responsive preview) — same rationale as app-shell. */
 @mixin page-head-stack {
-  .page-head {
+  .page-head-row {
     flex-direction: column;
     align-items: stretch;
     gap: var(--fold-space-md);

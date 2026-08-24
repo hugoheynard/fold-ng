@@ -53,7 +53,13 @@ hairlines are out of scope). Wired into pre-push + CI. The burn-down is drained
 1.6 **Typography has four scales, and a gate.** `--fold-text-*` (`2xs 10 · xs 11
 · sm 12 · md 13 · base 14 · lg 16 · xl 20 · 2xl 24` — `base` names the reference
 step, so it sits above `md`), `--fold-weight-*`, `--fold-leading-*`,
-`--fold-tracking-*`, plus `--fold-font-sans|mono`. _Enforced:_
+`--fold-tracking-*`, plus `--fold-font-sans|mono` — and one **role** face,
+`--fold-font-label`, worn by the micro-label register (a `page-section` in
+`eyebrow` skin, a data-table column head, an `element-title` eyebrow). It
+defaults to `inherit`, so a component still adopts its host's face until the
+host names one; the role token exists because that is where a host most often
+wants a _different_ face, and reaching into three components' internals to say
+so would drift the day a fourth joins. _Enforced:_
 `pnpm run lint:typography` — no bare `font-size` / `font-weight` /
 `line-height` / `letter-spacing` under `src/components` **or `demo/`**, Sass
 indirections followed. Three carve-outs, each with its reason in the script:

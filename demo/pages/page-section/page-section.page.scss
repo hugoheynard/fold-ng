@@ -103,3 +103,19 @@
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
 }
+
+/* The facts line in [sectionSubtitle] — the slot carries size and colour; only
+   the rhythm is the demo's. */
+.ps-facts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fold-space-sm);
+}
+.ps-facts-ref {
+  font-family: var(--fold-font-mono);
+  white-space: nowrap;
+}
+.ps-facts-sep {
+  color: var(--fold-color-text-faded);
+}

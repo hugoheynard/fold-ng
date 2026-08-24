@@ -591,9 +591,11 @@
 #### FoldPageSectionComponent
 - bleed: InputSignalWithTransform<boolean, unknown>
 - description: InputSignal<string | undefined>
+- eyebrow: InputSignalWithTransform<boolean, unknown>
 - headingLevel: InputSignal<number>
 - icon: InputSignal<FoldIconName | undefined>
 - iconTone: InputSignal<FoldIconTone>
+- separator: InputSignalWithTransform<boolean, unknown>
 - stack: InputSignalWithTransform<boolean, unknown>
 - title: InputSignal<string | undefined>
 

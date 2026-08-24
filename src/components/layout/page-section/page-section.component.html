@@ -18,6 +18,9 @@
           </div>
         </div>
       }
+      <div class="section-subtitle">
+        <ng-content select="[sectionSubtitle]" />
+      </div>
       @if (description()) {
         <p class="section-desc">{{ description() }}</p>
       }

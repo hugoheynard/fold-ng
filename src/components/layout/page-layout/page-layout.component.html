@@ -1,23 +1,28 @@
 @if (title() || customTitle()) {
   <header class="page-head">
-    <div class="page-head-text">
-      <div class="page-eyebrow"><ng-content select="[pageEyebrow]" /></div>
-      <h1 class="page-title">
-        @if (title(); as t) {
-          @if (icon(); as ic) {
-            <fold-icon class="page-icon" [name]="ic" [size]="22" />
+    <!-- The eyebrow sits ABOVE the whole row, not inside the text column: the
+         actions align on the TITLE's line, and a breadcrumb over the title must
+         not drag them up with it. -->
+    <div class="page-eyebrow"><ng-content select="[pageEyebrow]" /></div>
+    <div class="page-head-row">
+      <div class="page-head-text">
+        <h1 class="page-title">
+          @if (title(); as t) {
+            @if (icon(); as ic) {
+              <fold-icon class="page-icon" [name]="ic" [size]="22" />
+            }
+            <span>{{ t }}</span>
           }
-          <span>{{ t }}</span>
-        }
-        <ng-content select="[pageTitle]" />
-        <span class="page-title-badge"
-          ><ng-content select="[titleBadge]"
-        /></span>
-      </h1>
-      <div class="page-subtitle"><ng-content select="[pageSubtitle]" /></div>
-      <div class="page-desc"><ng-content select="p[description]" /></div>
+          <ng-content select="[pageTitle]" />
+          <span class="page-title-badge"
+            ><ng-content select="[titleBadge]"
+          /></span>
+        </h1>
+        <div class="page-subtitle"><ng-content select="[pageSubtitle]" /></div>
+        <div class="page-desc"><ng-content select="p[description]" /></div>
+      </div>
+      <div class="page-actions"><ng-content select="[pageActions]" /></div>
     </div>
-    <div class="page-actions"><ng-content select="[pageActions]" /></div>
   </header>
 }
 <div class="page-body"><ng-content /></div>

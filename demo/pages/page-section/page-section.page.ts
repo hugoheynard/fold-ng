@@ -43,8 +43,16 @@ export default class PageSectionPage {
     "muted",
     "faded",
   ] as const satisfies readonly FoldIconTone[];
+  protected readonly showSubtitle = signal(false);
   protected readonly showDesc = signal(true);
   protected readonly showActions = signal(true);
+  /**
+   * The micro-label skin, and the hairline closing the head. Both off by
+   * default: the plain h2 is the register a section title wears until a dense
+   * back-office asks otherwise.
+   */
+  protected readonly eyebrow = signal(false);
+  protected readonly separator = signal(false);
   /** The two orthogonal body helpers. `stack` defaults on so the section shows
    *  more than one gap out of the box — the bigger head↔body gap plus the even
    *  gaps between fields. */
@@ -71,6 +79,12 @@ export default class PageSectionPage {
     if (this.showDesc()) {
       attrs.push('description="Charged on renewal."');
     }
+    if (this.eyebrow()) {
+      attrs.push("eyebrow");
+    }
+    if (this.separator()) {
+      attrs.push("separator");
+    }
     if (this.stack()) {
       attrs.push("stack");
     }
@@ -86,6 +100,9 @@ export default class PageSectionPage {
       : ["<fold-page-section>"];
 
     const body: string[] = [];
+    if (this.showSubtitle()) {
+      body.push("  <span sectionSubtitle>VISA-4242 · 2 methods</span>");
+    }
     if (this.showActions()) {
       body.push("  <button sectionActions>Add</button>");
     }

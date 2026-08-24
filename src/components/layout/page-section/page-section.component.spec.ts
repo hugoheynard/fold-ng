@@ -8,6 +8,7 @@ import { FoldPageSectionComponent } from "./page-section.component";
   imports: [FoldPageSectionComponent],
   template: `<fold-page-section [title]="title()" [description]="description()">
     <button sectionActions class="act">Add</button>
+    <span sectionSubtitle class="facts">3 rows · 2 flagged</span>
     <div class="body-item">Rows</div>
   </fold-page-section>`,
 })
@@ -37,6 +38,64 @@ function render() {
 }
 
 describe("FoldPageSectionComponent", () => {
+  it("projects [sectionSubtitle] under the title, outside the description", () => {
+    const { fixture, root } = render();
+    fixture.componentInstance.description.set("Prose under the facts.");
+    fixture.detectChanges();
+    expect(root.querySelector(".section-subtitle .facts")).not.toBeNull();
+    // The two registers must not swallow each other.
+    expect(root.querySelector(".section-desc .facts")).toBeNull();
+    // Between the title row and the description — and a direct child of the
+    // head, because an element moved out of it indexes to -1, which compares
+    // "less than" everything and would let the assertion pass on a broken DOM.
+    const head = root.querySelector(".section-head")!;
+    const kids = [...head.children];
+    const subtitleAt = kids.indexOf(root.querySelector(".section-subtitle")!);
+    const rowAt = kids.indexOf(root.querySelector(".section-head-row")!);
+    expect(subtitleAt).toBeGreaterThanOrEqual(0);
+    expect(rowAt).toBeGreaterThanOrEqual(0);
+    const descAt = kids.indexOf(root.querySelector(".section-desc")!);
+    expect(descAt).toBeGreaterThanOrEqual(0);
+    // title row → facts → prose. Three registers, one order.
+    expect(rowAt).toBeLessThan(subtitleAt);
+    expect(subtitleAt).toBeLessThan(descAt);
+  });
+
+  it("flags the eyebrow skin and the head rule only when asked", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldPageSectionComponent],
+      template: `<fold-page-section
+        title="Identité"
+        [eyebrow]="eyebrow()"
+        [separator]="separator()"
+      />`,
+    })
+    class SkinHost {
+      readonly eyebrow = signal(false);
+      readonly separator = signal(false);
+    }
+
+    const fixture = TestBed.createComponent(SkinHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-page-section",
+    )!;
+    expect(host.hasAttribute("data-eyebrow")).toBe(false);
+    expect(host.hasAttribute("data-separator")).toBe(false);
+    fixture.componentInstance.eyebrow.set(true);
+    fixture.componentInstance.separator.set(true);
+    fixture.detectChanges();
+    expect(host.hasAttribute("data-eyebrow")).toBe(true);
+    expect(host.hasAttribute("data-separator")).toBe(true);
+    // The eyebrow is a SKIN: the heading semantics are untouched.
+    const heading = host.querySelector(".section-title")!;
+    expect(heading.tagName).toBe("H2");
+    expect(host.querySelector("section")?.getAttribute("aria-labelledby")).toBe(
+      heading.id,
+    );
+  });
+
   it("renders the title as a real <h2> and projects content + actions", () => {
     const { root } = render();
     const h2 = root.querySelector("h2.section-title");

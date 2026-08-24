@@ -6,7 +6,32 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`--fold-font-label`** — la face du registre **micro-libellé** : les libellés
+  2xs / gras / capitales / tracés qui titrent une section, coiffent une colonne
+  de tableau ou servent d'eyebrow. Elle vaut `inherit` par défaut, donc rien ne
+  change tant qu'un hôte ne la nomme pas — la règle « un composant porte la face
+  de son hôte » tient toujours. Elle existe parce que c'est précisément le rôle
+  où un hôte veut souvent une AUTRE face que son texte courant (un libellé
+  monospace se lit comme une parole du système, pas comme de la prose), et que
+  le dire sans elle obligeait à entrer dans les entrailles de trois composants —
+  avec la dérive garantie le jour où un quatrième rejoint le registre.
+
+- **`fold-page-section` gagne `[sectionSubtitle]`, `eyebrow` et `separator`** —
+  les trois pendants exacts de ce que `fold-page-layout` a reçu, pour la même
+  raison : une section d'écran dense est une petite page. `eyebrow` est une
+  **peau**, jamais une sémantique : le titre reste le même `h2`, avec le même
+  `aria-level` et le même nom de région.
+
+### Fixed
+
+- **`fold-page-layout` : les actions s'alignent sur la rangée du TITRE.** Elles
+  se calaient en haut de la colonne de texte ; depuis que `[pageEyebrow]`
+  existe, cette colonne commence par le fil d'Ariane — et les actions
+  remontaient se coller à lui. L'eyebrow sort donc de la colonne et coiffe
+  l'en-tête entier : c'est sa place logique (il désigne la page, pas le titre) et
+  la rangée titre + actions redevient une vraie rangée.
 
 ## [0.16.0] - 2026-08-24
 
