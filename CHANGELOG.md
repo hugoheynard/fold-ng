@@ -6,22 +6,7 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
-
-## [0.15.0] - 2026-08-24
-
 ### Added
-
-- **`fold-page-layout` a un créneau `[pageEyebrow]`** — la rangée AU-DESSUS du
-  titre, pour un fil d'Ariane, un lien de retour, une étiquette de rubrique.
-  C'est le seul créneau d'en-tête dont la mise en page ne restyle pas le
-  contenu : un fil et une étiquette n'ont rien de typographique en commun, donc
-  ce qu'on y projette garde son visage. Un eyebrow seul **n'allume pas**
-  l'en-tête — une étiquette sans titre n'étiquette rien.
-
-  Ce que ça remplace : un lien « ← Retour » projeté dans `[pageActions]`, donc
-  peint en haut à DROITE alors qu'il désigne le haut de la hiérarchie. Il y
-  était faute de place pour l'écrire ailleurs.
 
 - **`fold-page-layout` a un créneau `[pageSubtitle]`** — la ligne posée SERRÉE
   sous le titre : les faits qui identifient la page (une référence, une famille,
@@ -37,6 +22,21 @@ _Nothing yet._
   l'allume quand le corps arrive au ras de l'en-tête — un formulaire, un
   tableau, des sections sans surface propre — là où l'en-tête se lirait sinon
   comme la première ligne du contenu.
+
+## [0.15.0] - 2026-08-24
+
+### Added
+
+- **`fold-page-layout` a un créneau `[pageEyebrow]`** — la rangée AU-DESSUS du
+  titre, pour un fil d'Ariane, un lien de retour, une étiquette de rubrique.
+  C'est le seul créneau d'en-tête dont la mise en page ne restyle pas le
+  contenu : un fil et une étiquette n'ont rien de typographique en commun, donc
+  ce qu'on y projette garde son visage. Un eyebrow seul **n'allume pas**
+  l'en-tête — une étiquette sans titre n'étiquette rien.
+
+  Ce que ça remplace : un lien « ← Retour » projeté dans `[pageActions]`, donc
+  peint en haut à DROITE alors qu'il désigne le haut de la hiérarchie. Il y
+  était faute de place pour l'écrire ailleurs.
 
 - **`fold-breadcrumb` gagne `[currentPage]`** (défaut `true`, aucun changement).
   À `false`, le fil ne nomme que les **ancêtres** : le dernier maillon se
