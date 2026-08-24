@@ -53,6 +53,15 @@
 }
 
 // ─── accent active style — the selected segment tints with the brand ───
+/* `solid` (default) — filled with the accent. The chosen segment is the loudest
+   thing in the control, which is the control's whole job. */
+:host(.a-solid) .vt-btn.is-on {
+  background: var(--fold-color-primary);
+  color: var(--fold-color-on-primary);
+  box-shadow: none;
+}
+/* `accent` — a tinted surface: present, quieter, and it keeps the segment's own
+   ink readable when the toggle sits amid a lot of other colour. */
 :host(.a-accent) .vt-btn.is-on {
   background: var(--fold-color-primary-surface);
   color: var(--fold-color-primary-text);
@@ -100,6 +109,15 @@
 /* On the selected segment the ground changes under the dot; keep it legible by
    inheriting the segment's own ink for the neutral case. */
 .vt-btn.is-on .vt-dot {
+  background: currentColor;
+}
+/* On a SOLID segment the ground is the accent itself, and a status dot painted
+   in its own hue can land within a hair of it — an amber dot on a warm accent
+   disappears. The segment's ink is the one colour guaranteed to read there. */
+:host(.a-solid) .vt-btn.is-on .vt-dot,
+:host(.a-solid) .vt-btn.is-on .vt-dot.warning,
+:host(.a-solid) .vt-btn.is-on .vt-dot.alert,
+:host(.a-solid) .vt-btn.is-on .vt-dot.success {
   background: currentColor;
 }
 .vt-btn.is-on .vt-dot.warning {

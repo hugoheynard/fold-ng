@@ -44,6 +44,9 @@ export interface FoldViewToggleOption {
   readonly dotLabel?: string;
 }
 
+/** How a {@link FoldViewToggleComponent} paints its selected segment. */
+export type FoldViewToggleActiveStyle = "solid" | "accent" | "raised";
+
 /**
  * `<fold-view-toggle>` — a compact **segmented single-select** (Cards / Table, a
  * density switch, a chart mode…). Generic and zero-domain: pass `options` and
@@ -84,17 +87,20 @@ export class FoldViewToggleComponent {
   /** Size preset. @default 'md' */
   readonly size = input<"sm" | "md">("md");
   /**
-   * How the selected segment reads: an `accent` brand tint (default) or a
-   * neutral `raised` chip.
+   * How the selected segment reads:
+   * - `solid` (default) — filled with the accent, label in the on-accent ink.
+   * - `accent` — a tinted accent surface: present, quieter, and it keeps the
+   *   segment's ink readable next to a lot of other colour.
+   * - `raised` — a neutral chip lifted by a shadow.
    *
-   * The accent is the default for the same reason a button is solid by default:
-   * a segmented control exists to show **which one is chosen**, and the chosen
-   * one should be the loudest thing in the control. A neutral chip left that
-   * distinction to a faint elevation — legible on a card, easy to lose on a
-   * dense screen, and gone entirely under `forced-colors`. Reach for `raised`
-   * when the toggle sits next to something more important than itself.
+   * `solid` is the default for the same reason a button is: a segmented control
+   * exists to show **which one is chosen**, and the chosen one should be the
+   * loudest thing in the control. The tint reads well on a calm card and thins
+   * out on a dense screen; the neutral chip left the distinction to an elevation
+   * that disappears entirely under `forced-colors`. Reach for `accent` or
+   * `raised` when the toggle sits beside something more important than itself.
    */
-  readonly activeStyle = input<"raised" | "accent">("accent");
+  readonly activeStyle = input<FoldViewToggleActiveStyle>("solid");
   /** Hide visible labels, keeping icons only (labels stay as accessible names). */
   readonly iconOnly = input(false, { transform: booleanAttribute });
 

@@ -3,6 +3,7 @@ import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import {
   FoldViewToggleComponent,
+  type FoldViewToggleActiveStyle,
   type FoldViewToggleOption,
 } from "./view-toggle.component";
 
@@ -18,7 +19,7 @@ import {
 })
 class HostComponent {
   readonly value = signal("cards");
-  readonly active = signal<"raised" | "accent">("raised");
+  readonly active = signal<FoldViewToggleActiveStyle>("raised");
   readonly options = signal<readonly FoldViewToggleOption[]>([
     { value: "cards", label: "Cards", icon: "grid" },
     { value: "table", label: "Table", icon: "list" },
@@ -110,6 +111,9 @@ describe("FoldViewToggleComponent", () => {
     r.active.set("accent");
     r.fixture.detectChanges();
     expect(r.toggle().classList).toContain("a-accent");
+    r.active.set("solid");
+    r.fixture.detectChanges();
+    expect(r.toggle().classList).toContain("a-solid");
   });
 
   it("does not select a disabled segment on click", () => {
@@ -159,7 +163,7 @@ describe("FoldViewToggleComponent", () => {
     expect(segments[0]?.getAttribute("aria-label")).toBe("FR");
   });
 
-  it("marks the selected segment with the ACCENT by default", () => {
+  it("fills the selected segment SOLID by default", () => {
     // A segmented control exists to show which one is chosen; the chosen one
     // should be the loudest thing in it. Nothing locked this default before.
     @Component({
@@ -178,7 +182,20 @@ describe("FoldViewToggleComponent", () => {
     const host = (fixture.nativeElement as HTMLElement).querySelector(
       "fold-view-toggle",
     )!;
-    expect(host.classList.contains("a-accent")).toBe(true);
+    expect(host.classList.contains("a-solid")).toBe(true);
+    expect(host.classList.contains("a-accent")).toBe(false);
     expect(host.classList.contains("a-raised")).toBe(false);
+  });
+
+  it("offers three active styles, and stamps the chosen one", () => {
+    // Trois registres pour un même état : plein, teinté, neutre. Le teinté se
+    // perdait sur un écran chargé, le neutre disparaît sous `forced-colors` —
+    // aucun ne convient partout, donc le choix est une entrée.
+    const r = render();
+    for (const style of ["solid", "accent", "raised"] as const) {
+      r.active.set(style);
+      r.fixture.detectChanges();
+      expect(r.toggle().classList).toContain(`a-${style}`);
+    }
   });
 });

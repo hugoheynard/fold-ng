@@ -858,7 +858,7 @@
 - sticky: InputSignalWithTransform<boolean, unknown>
 
 #### FoldViewToggleComponent
-- activeStyle: InputSignal<"accent" | "raised">
+- activeStyle: InputSignal<FoldViewToggleActiveStyle>
 - ariaLabel: InputSignal<string | undefined>
 - iconOnly: InputSignalWithTransform<boolean, unknown>
 - options: InputSignal<readonly FoldViewToggleOption[]> — required
@@ -1086,6 +1086,8 @@
 - foldTrackingVar (function)
 - FoldViewNavItem (type)
 - foldViewTitle (function)
+- FoldViewToggleActiveStyle (type)
+- FoldViewToggleDot (type)
 - FoldViewToggleOption (interface)
 - FoldWeekday (type)
 - foldWeekdayIndex (function)

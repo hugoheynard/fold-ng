@@ -63,13 +63,22 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Changed
 
-- **BREAKING (visuel) — le segment choisi d'un `fold-view-toggle` porte
-  l'ACCENT** (`activeStyle` passe de `raised` à `accent`). Même raison que le
-  bouton solide : un contrôle segmenté existe pour montrer **lequel est
-  choisi**, et le choisi doit être la chose la plus forte du contrôle. La puce
-  neutre confiait cette distinction à une élévation ténue — lisible sur une
-  carte, facile à perdre sur un écran dense, et absente sous `forced-colors`.
-  Rien ne verrouillait ce défaut non plus.
+- **BREAKING (visuel) — le segment choisi d'un `fold-view-toggle` est PLEIN**
+  (`activeStyle` passe de `raised` à `solid`, et gagne au passage la valeur
+  `accent`). Même raison que le bouton solide : un contrôle segmenté existe pour
+  montrer **lequel est choisi**, et le choisi doit être la chose la plus forte
+  du contrôle.
+
+  Trois registres, parce qu'aucun ne convient partout : `solid` (rempli),
+  `accent` (teinté — présent, plus discret, et il garde l'encre du segment
+  lisible au milieu de beaucoup de couleur), `raised` (puce neutre). La puce
+  confiait la distinction à une élévation qui disparaît entièrement sous
+  `forced-colors`. Rien ne verrouillait ce défaut non plus.
+
+  Un détail que le plein impose : sur un fond d'accent, un point d'état peint
+  dans sa propre teinte peut tomber à un cheveu du fond — un point ambre sur un
+  accent chaud s'efface. Sur `solid`, le point prend donc l'encre du segment,
+  la seule garantie d'y être lisible.
 
 - **BREAKING (visuel) — un `foldButton` est SOLIDE par défaut** (`emphasis`
   passe de `soft` à `solid` ; `intent` reste `primary`). Le défaut, c'est ce
