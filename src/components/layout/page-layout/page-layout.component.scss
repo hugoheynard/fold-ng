@@ -55,6 +55,18 @@
   gap: var(--fold-space-xs);
   min-width: 0;
 }
+/* The row ABOVE the title — a breadcrumb trail, a back link, a kicker label.
+   It is the only header row whose content the layout does not style: a trail and
+   a kicker have nothing typographic in common, so what you project keeps its own
+   face. Empty (nothing projected) → no box, no gap. It gets a hair more room
+   than the .page-head-text gap gives it: a trail reads as *context*, and sitting
+   4px off the title made it read as part of it. */
+.page-eyebrow {
+  margin-block-end: var(--fold-space-xs);
+}
+.page-eyebrow:empty {
+  display: none;
+}
 .page-title {
   margin: 0;
   display: flex;

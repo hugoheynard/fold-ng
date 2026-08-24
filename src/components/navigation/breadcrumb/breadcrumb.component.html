@@ -1,7 +1,7 @@
 <ol class="bc-list">
   @for (item of items(); track $index; let last = $last) {
     <li class="bc-item">
-      @if (last) {
+      @if (last && currentPage()) {
         <span class="bc-node bc-current" aria-current="page">{{
           item.label
         }}</span>

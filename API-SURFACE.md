@@ -75,6 +75,7 @@
 
 #### FoldBreadcrumbComponent
 - ariaLabel: InputSignal<string>
+- currentPage: InputSignal<boolean>
 - items: InputSignal<readonly FoldBreadcrumbItem[]> — required
 
 #### FoldButtonComponent

@@ -42,6 +42,14 @@ export class FoldPageTitleDirective {}
  *
  * Content projection:
  * - default slot → the page body (sections, cards, banners…).
+ * - `[pageEyebrow]` → the row **above** the title: a {@link FoldBreadcrumbComponent}
+ *   trail, a {@link FoldBackLinkComponent}, a kicker label. It is the one header
+ *   row the layout does not restyle — a trail and a kicker share no typography,
+ *   so what you project keeps its own face. A breadcrumb placed here should name
+ *   the **ancestors only** (`[currentPage]="false"`): the page's own `<h1>` is
+ *   the current page, and repeating it in the trail is noise. Projecting an
+ *   eyebrow alone does **not** switch the header on — an eyebrow without a title
+ *   is a label with nothing to label.
  * - `[pageTitle]` ({@link FoldPageTitleDirective}) → a custom title, rendered
  *   inside the `<h1>` in place of the `icon` + `title` inputs, for when a plain
  *   string won't do (an avatar, a two-tone title). Its presence alone switches

@@ -74,6 +74,57 @@ describe("FoldBreadcrumbComponent", () => {
     expect(links[1]?.getAttribute("href")).toBe("https://example.com/cat");
   });
 
+  it('names ancestors only on [currentPage]="false" — no aria-current at all', () => {
+    // The shape a trail takes above an <h1>: the last crumb is the FAMILY, not
+    // the page, so it must keep linking and must not claim to be current.
+    @Component({
+      standalone: true,
+      imports: [FoldBreadcrumbComponent],
+      template: `<fold-breadcrumb [items]="items" [currentPage]="false" />`,
+    })
+    class TrailHost {
+      readonly items: readonly FoldBreadcrumbItem[] = [
+        { label: "Produits", routerLink: "/produits" },
+        { label: "Tartes", routerLink: "/produits/tartes" },
+      ];
+    }
+
+    const fixture = TestBed.createComponent(TrailHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector(".bc-current")).toBeNull();
+    expect(host.querySelector("[aria-current]")).toBeNull();
+    // …and the trailing crumb is still a link, since it carries a target.
+    const links = [...host.querySelectorAll<HTMLAnchorElement>("a.bc-link")];
+    expect(links.length).toBe(2);
+    expect(links[1]?.getAttribute("href")).toBe("/produits/tartes");
+  });
+
+  it('renders a target-less trailing crumb as plain text on [currentPage]="false"', () => {
+    // A family with no page of its own: a step, not a link, and still not
+    // "current" — the fallback must not quietly re-enter the current-page branch.
+    @Component({
+      standalone: true,
+      imports: [FoldBreadcrumbComponent],
+      template: `<fold-breadcrumb [items]="items" [currentPage]="false" />`,
+    })
+    class DeadEndHost {
+      readonly items: readonly FoldBreadcrumbItem[] = [
+        { label: "Produits", routerLink: "/produits" },
+        { label: "Tartes" },
+      ];
+    }
+
+    const fixture = TestBed.createComponent(DeadEndHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const nodes = [...host.querySelectorAll<HTMLElement>(".bc-node")];
+    expect(nodes.length).toBe(2);
+    expect(nodes[1]?.tagName).toBe("SPAN");
+    expect(nodes[1]?.classList.contains("bc-current")).toBe(false);
+    expect(nodes[1]?.hasAttribute("aria-current")).toBe(false);
+  });
+
   it("renders a link-less crumb as plain text (neither routerLink nor href)", () => {
     const r = render();
     r.items.set([{ label: "Step" }, { label: "Now" }]);

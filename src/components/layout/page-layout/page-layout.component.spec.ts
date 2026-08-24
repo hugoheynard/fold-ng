@@ -10,6 +10,7 @@ import {
   standalone: true,
   imports: [FoldPageLayoutComponent],
   template: `<fold-page-layout [title]="title()" [icon]="icon()">
+    <nav pageEyebrow class="crumbs">Produits / Tartes</nav>
     <p description class="desc">Abonnement <code>pro</code></p>
     <button pageActions class="act">Export</button>
     <span titleBadge class="kind">Directive</span>
@@ -62,6 +63,40 @@ describe("FoldPageLayoutComponent", () => {
     expect(
       root.querySelector(".page-title .page-title-badge .kind"),
     ).not.toBeNull();
+  });
+
+  it("projects [pageEyebrow] above the title, inside the header text column", () => {
+    const { root } = render();
+    const eyebrow = root.querySelector(".page-head-text .page-eyebrow .crumbs");
+    expect(eyebrow).not.toBeNull();
+    // ABOVE the title — the order is the whole point of the slot, so assert it
+    // rather than trust the template's reading order.
+    const column = root.querySelector(".page-head-text")!;
+    const kids = [...column.children];
+    expect(kids.indexOf(root.querySelector(".page-eyebrow")!)).toBeLessThan(
+      kids.indexOf(root.querySelector(".page-title")!),
+    );
+  });
+
+  it("does not switch the header on for an eyebrow alone", () => {
+    // An eyebrow is a label; with no title there is nothing to label, and a
+    // lone trail floating where a header should be is worse than no header.
+    @Component({
+      standalone: true,
+      imports: [FoldPageLayoutComponent],
+      template: `<fold-page-layout>
+        <nav pageEyebrow class="lone">Produits</nav>
+        <div class="body-item">Body</div>
+      </fold-page-layout>`,
+    })
+    class EyebrowOnlyHost {}
+
+    const fixture = TestBed.createComponent(EyebrowOnlyHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector(".page-head")).toBeNull();
+    expect(root.querySelector(".lone")).toBeNull();
+    expect(root.querySelector(".page-body .body-item")).not.toBeNull();
   });
 
   it("omits the header when there is no title — the body takes over", () => {

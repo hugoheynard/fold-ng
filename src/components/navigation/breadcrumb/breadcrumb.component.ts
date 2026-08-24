@@ -5,8 +5,9 @@ import { FoldIconComponent } from "../../foundations/icon/icon.component";
 /**
  * One crumb in a {@link FoldBreadcrumbComponent} trail. A crumb links via **either**
  * an Angular `routerLink` (in-app) **or** a plain `href` (external / a non-router
- * app); give neither for a non-interactive step. The **last** item is always
- * rendered as the current page (never a link), whatever it carries.
+ * app); give neither for a non-interactive step. The **last** item is rendered as
+ * the current page (never a link) unless the trail declares
+ * `[currentPage]="false"` — see {@link FoldBreadcrumbComponent.currentPage}.
  */
 export interface FoldBreadcrumbItem {
   /** The crumb's visible text. */
@@ -24,7 +25,8 @@ export interface FoldBreadcrumbItem {
  * works in a router app and degrades to plain anchors without one (importing it
  * never forces `@angular/router` — `RouterLink` is only instantiated on a crumb
  * that actually sets `routerLink`). The last item renders as the current page
- * (`aria-current="page"`), not a link. Chevron separators are decorative.
+ * (`aria-current="page"`), not a link — unless the trail names ancestors ONLY,
+ * for which see {@link currentPage}. Chevron separators are decorative.
  *
  * ```html
  * <fold-breadcrumb
@@ -55,4 +57,19 @@ export class FoldBreadcrumbComponent {
   readonly items = input.required<readonly FoldBreadcrumbItem[]>();
   /** Accessible name of the navigation landmark. @default 'Breadcrumb' */
   readonly ariaLabel = input("Breadcrumb");
+  /**
+   * Does the last crumb stand for the **current page**?
+   *
+   * `true` (default) — the trail ends *on* the page you are reading: the last
+   * crumb is emphasised, never a link, and carries `aria-current="page"`.
+   *
+   * `false` — the trail names the **ancestors only**, and the page's own `<h1>`
+   * is the current page (the shape a breadcrumb takes when it sits above a
+   * title, e.g. in `fold-page-layout`'s `[pageEyebrow]`). The last crumb then
+   * behaves like any other: a link when it carries a target, plain text when it
+   * does not, and no `aria-current` anywhere — because claiming a parent is the
+   * current page tells a screen reader something untrue, and repeating the
+   * heading as a final crumb is noise a sighted reader has to skip.
+   */
+  readonly currentPage = input(true);
 }

@@ -4,10 +4,10 @@
   <p description>
     The vertical scaffold every page wraps its content in: an optional
     <code>icon</code> + <code>title</code> header with
-    <code>[description]</code> and <code>[pageActions]</code> slots, then a body
-    that stacks its children on a steady rhythm.
-    <strong>It owns the page gutter, not the width</strong> — it fills whatever
-    it is given, supplying the themed margins via one token,
+    <code>[pageEyebrow]</code>, <code>[description]</code> and
+    <code>[pageActions]</code> slots, then a body that stacks its children on a
+    steady rhythm. <strong>It owns the page gutter, not the width</strong> — it
+    fills whatever it is given, supplying the themed margins via one token,
     <code>--fold-page-gutter</code>. Narrowing a block to a readable measure is
     the content's job, never the page's. This very page is a
     <code>fold-page-layout</code>.
@@ -59,6 +59,14 @@
           icon
         </button>
         }
+        <button
+          type="button"
+          class="pl-chip"
+          [class.is-on]="showEyebrow()"
+          (click)="showEyebrow.set(!showEyebrow())"
+        >
+          pageEyebrow
+        </button>
         <button
           type="button"
           class="pl-chip"
@@ -194,6 +202,13 @@
               <span class="pl-custom-title-sub">· Workspace</span></span
             >
           </span>
+          } @if (showEyebrow()) {
+          <fold-breadcrumb
+            pageEyebrow
+            [currentPage]="false"
+            [items]="trail"
+            ariaLabel="Billing trail"
+          />
           } @if (showBadge()) {
           <fold-badge titleBadge content="Pro" variant="accent" radius="pill" />
           } @if (showDesc()) {

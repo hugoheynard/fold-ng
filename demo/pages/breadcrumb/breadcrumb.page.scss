@@ -2,3 +2,13 @@
 :host {
   display: block;
 }
+
+/* The heading the ancestors-only trail sits above — it is the demo's point that
+   the trail and the heading are two different statements. */
+.bc-demo-title {
+  margin: var(--fold-space-xs) 0 var(--fold-space-sm);
+  font-size: var(--fold-text-lg);
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-tighter);
+  color: var(--fold-color-text);
+}

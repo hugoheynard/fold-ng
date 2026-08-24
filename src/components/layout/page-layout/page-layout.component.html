@@ -1,6 +1,7 @@
 @if (title() || customTitle()) {
   <header class="page-head">
     <div class="page-head-text">
+      <div class="page-eyebrow"><ng-content select="[pageEyebrow]" /></div>
       <h1 class="page-title">
         @if (title(); as t) {
           @if (icon(); as ic) {

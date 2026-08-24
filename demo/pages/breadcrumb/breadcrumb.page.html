@@ -24,6 +24,24 @@
     <fold-breadcrumb [items]="linked" ariaLabel="Linked breadcrumb" />
   </fold-page-section>
 
+  <fold-page-section
+    title="Ancestors only"
+    description="[currentPage]=&quot;false&quot; — the trail names where the page lives, and the page's own &lt;h1&gt; is the current page. The last crumb keeps linking, and no aria-current is claimed anywhere. This is the shape a trail takes in fold-page-layout's [pageEyebrow]."
+  >
+    <fold-breadcrumb
+      [items]="ancestors"
+      [currentPage]="false"
+      ariaLabel="Ancestor trail"
+    />
+    <h2 class="bc-demo-title">Tarte au citron meringuée</h2>
+    <p class="gal-body">
+      Read the two together: the trail says <em>where</em>, the heading says
+      <em>what</em>. With the default <code>[currentPage]="true"</code> the
+      product name would appear twice — once as a crumb a screen reader
+      announces as the current page, once as the heading that actually is.
+    </p>
+  </fold-page-section>
+
   <fold-page-section title="Usage" icon="code">
     <div class="code-block">
       <div class="code-top"><span class="code-lang">html</span></div>

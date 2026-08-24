@@ -6,7 +6,27 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-page-layout` a un créneau `[pageEyebrow]`** — la rangée AU-DESSUS du
+  titre, pour un fil d'Ariane, un lien de retour, une étiquette de rubrique.
+  C'est le seul créneau d'en-tête dont la mise en page ne restyle pas le
+  contenu : un fil et une étiquette n'ont rien de typographique en commun, donc
+  ce qu'on y projette garde son visage. Un eyebrow seul **n'allume pas**
+  l'en-tête — une étiquette sans titre n'étiquette rien.
+
+  Ce que ça remplace : un lien « ← Retour » projeté dans `[pageActions]`, donc
+  peint en haut à DROITE alors qu'il désigne le haut de la hiérarchie. Il y
+  était faute de place pour l'écrire ailleurs.
+
+- **`fold-breadcrumb` gagne `[currentPage]`** (défaut `true`, aucun changement).
+  À `false`, le fil ne nomme que les **ancêtres** : le dernier maillon se
+  comporte comme les autres — lien s'il porte une cible, texte sinon — et plus
+  rien ne porte `aria-current`. C'est la forme qu'un fil prend au-dessus d'un
+  `<h1>` : le titre de la page EST la page courante. Sans ça, un fil posé dans
+  `[pageEyebrow]` devait soit répéter le titre en dernier maillon (du bruit que
+  l'œil saute), soit désigner la famille comme page courante — ce qui raconte au
+  lecteur d'écran quelque chose de faux.
 
 ## [0.14.0] - 2026-08-23
 

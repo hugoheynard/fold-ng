@@ -29,6 +29,15 @@ export default class BreadcrumbPage {
     { label: "Navigation", routerLink: "/menu" },
     { label: "Breadcrumb" },
   ];
+  /**
+   * An ancestors-only trail — the shape a breadcrumb takes when it sits above a
+   * heading. The last crumb is the FAMILY, so it keeps its link and claims no
+   * `aria-current`.
+   */
+  protected readonly ancestors: readonly FoldBreadcrumbItem[] = [
+    { label: "Home", routerLink: "/home" },
+    { label: "Navigation", routerLink: "/menu" },
+  ];
   /** href crumbs → works without the router (external / non-router apps). */
   protected readonly linked: readonly FoldBreadcrumbItem[] = [
     { label: "example.com", href: "https://example.com" },
@@ -45,5 +54,15 @@ export default class BreadcrumbPage {
 />
 
 <!-- href crumbs work without the router (external / non-router apps) -->
-<fold-breadcrumb [items]="[{ label: 'Docs', href: '/docs' }, { label: 'Here' }]" />`;
+<fold-breadcrumb [items]="[{ label: 'Docs', href: '/docs' }, { label: 'Here' }]" />
+
+<!-- Above an <h1>: name the ancestors ONLY. The last crumb stays a link and
+     nothing claims aria-current — the heading is the current page. -->
+<fold-breadcrumb
+  [currentPage]="false"
+  [items]="[
+    { label: 'Produits', routerLink: '/produits' },
+    { label: 'Tartes', routerLink: '/produits?famille=tartes' },
+  ]"
+/>`;
 }

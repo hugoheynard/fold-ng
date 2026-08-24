@@ -14,6 +14,7 @@ import { RouterLink } from "@angular/router";
 import {
   FoldAvatarComponent,
   FoldBadgeComponent,
+  FoldBreadcrumbComponent,
   FoldButtonComponent,
   FoldCalloutComponent,
   FoldCardComponent,
@@ -21,6 +22,7 @@ import {
   FoldPageSectionComponent,
   FoldPageTitleDirective,
   FoldSliderComponent,
+  type FoldBreadcrumbItem,
 } from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 import { KindBadgeComponent } from "../../components/kind-badge.component";
@@ -42,6 +44,7 @@ type HeaderMode = "title" | "custom";
     FoldCardComponent,
     FoldAvatarComponent,
     FoldBadgeComponent,
+    FoldBreadcrumbComponent,
     FoldButtonComponent,
     FoldCalloutComponent,
     FoldSliderComponent,
@@ -56,9 +59,18 @@ export default class PageLayoutPage {
   protected readonly headerMode = signal<HeaderMode>("title");
   /** Header slots, toggled independently so the anatomy is explorable. */
   protected readonly showIcon = signal(true);
+  protected readonly showEyebrow = signal(false);
   protected readonly showBadge = signal(false);
   protected readonly showDesc = signal(true);
   protected readonly showActions = signal(true);
+  /**
+   * The eyebrow's trail — ancestors ONLY (`[currentPage]="false"`), because the
+   * page's `<h1>` right underneath is the current page.
+   */
+  protected readonly trail: readonly FoldBreadcrumbItem[] = [
+    { label: "Workspace", routerLink: "/home" },
+    { label: "Settings", routerLink: "/menu" },
+  ];
   /** The full-bleed band section — cancels the gutter to span edge-to-edge. */
   protected readonly showBleed = signal(true);
   /** Overlay the vertical `--fold-page-gap` as a band in each stack gap. */
@@ -131,6 +143,11 @@ export default class PageLayoutPage {
     } else {
       const icon = this.showIcon() ? ' icon="grid"' : "";
       lines.push(`<fold-page-layout${icon} title="Billing">`);
+    }
+    if (this.showEyebrow()) {
+      lines.push(
+        '  <fold-breadcrumb pageEyebrow [currentPage]="false" [items]="trail" />',
+      );
     }
     if (this.showBadge()) {
       lines.push('  <fold-badge titleBadge content="Pro" variant="accent" />');
