@@ -352,6 +352,7 @@
 - direction: InputSignal<FoldFieldsetDirection>
 - disabled: InputSignalWithTransform<boolean, unknown>
 - hint: InputSignal<string>
+- hintPosition: InputSignal<FoldFieldsetHintPosition>
 - legend: InputSignal<string>
 - legendVariant: InputSignal<FoldFieldsetLegendVariant>
 - optional: InputSignalWithTransform<boolean, unknown>
@@ -996,6 +997,7 @@
 - foldEventsOnDay (function)
 - FoldFieldsetAppearance (type)
 - FoldFieldsetDirection (type)
+- FoldFieldsetHintPosition (type)
 - FoldFieldsetLegendVariant (type)
 - foldFilterBySource (function)
 - FoldFontToken (type)

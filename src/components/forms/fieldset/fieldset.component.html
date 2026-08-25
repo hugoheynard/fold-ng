@@ -11,9 +11,12 @@
       @if (optional()) {
         <span class="fs-opt">({{ optionalWord() }})</span>
       }
+      @if (hint() !== "" && hintPosition() === "inline") {
+        <span class="fs-hint-inline" [id]="hintId">{{ hint() }}</span>
+      }
     </legend>
   }
-  @if (hint() !== "") {
+  @if (hint() !== "" && (hintPosition() === "under" || legend() === "")) {
     <p class="fs-hint" [id]="hintId">{{ hint() }}</p>
   }
   <ng-content />

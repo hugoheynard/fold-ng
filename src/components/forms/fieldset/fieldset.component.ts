@@ -34,6 +34,19 @@ export type FoldFieldsetAppearance = "plain" | "border";
 export type FoldFieldsetLegendVariant = "eyebrow" | "heading";
 
 /**
+ * Where the {@link FoldFieldsetComponent.hint} sits.
+ *
+ * - `under` — its own line below the legend. Room for a sentence; the default,
+ *   because an instruction long enough to be worth writing rarely fits beside
+ *   a name.
+ * - `inline` — on the legend's line, right after it. For the short parenthetical
+ *   that qualifies the name rather than instructing ("lieux difficiles à
+ *   localiser"). Beyond a few words it pushes the legend around and wraps
+ *   badly — that is what `under` is for.
+ */
+export type FoldFieldsetHintPosition = "under" | "inline";
+
+/**
  * A named group of form controls — the `<fieldset>` / `<legend>` pair, with its
  * browser styling neutralised and its rhythm on the token scale.
  *
@@ -136,6 +149,17 @@ export class FoldFieldsetComponent {
 
   /** The word inside the optional marker. @default 'optional' */
   readonly optionalLabel = input<string | undefined>();
+
+  /**
+   * Where the hint sits. @default 'under'
+   *
+   * `aria-describedby` points at it either way — the position is where the eye
+   * finds it, never whether it is announced.
+   *
+   * Falls back to `under` when there is no legend: `inline` means "on the
+   * legend's line", and there is no line to sit on.
+   */
+  readonly hintPosition = input<FoldFieldsetHintPosition>("under");
 
   /**
    * Disables **every control inside the group** — the native element's unique

@@ -60,6 +60,22 @@
   color: var(--fold-color-text);
 }
 
+/* En ligne, l'indice n'est plus une instruction mais une incise : il suit le nom
+   sur la même ligne et abandonne, comme la parenthèse « optionnel », les
+   capitales et le tracé du registre eyebrow — sinon il se lirait comme une
+   seconde moitié du nom.
+
+   Il ne porte PAS `.fs-hint` : celui-ci fixe une taille, et une incise doit
+   suivre celle de la légende qui l'accueille — sm à côté d'un eyebrow en xs
+   se lirait comme le titre, et le nom comme la note. */
+.fs-hint-inline {
+  margin-inline-start: var(--fold-space-xs);
+  font-weight: var(--fold-weight-regular);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--fold-color-text-muted);
+}
+
 /* Le marqueur « optionnel » : même traitement que celui d'un libellé de champ,
    parce que c'est la même information. Il ne prend PAS les capitales du registre
    eyebrow — c'est une parenthèse, pas une part du nom. */

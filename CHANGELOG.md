@@ -30,9 +30,13 @@ border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
   - `disabled` — le **super-pouvoir** du `fieldset`, que rien d'autre en HTML
     n'a : il désactive TOUS les contrôles qu'il contient, en un attribut, sans
     câblage par contrôle. (La première `<legend>` en est exemptée par la spec.)
-  - `hint` — l'instruction du groupe (« au moins un jour »), rendue sous la
-    légende **et** pointée par `aria-describedby`. Un indice seulement peint est
-    un indice que la moitié des lecteurs n'aura jamais.
+  - `hint` — l'instruction du groupe (« au moins un jour »), pointée par
+    `aria-describedby`. Un indice seulement peint est un indice que la moitié
+    des lecteurs n'aura jamais. `hintPosition` la place `under` (défaut, sa
+    propre ligne : de la place pour une phrase) ou `inline` (sur la ligne de la
+    légende, pour l'incise courte qui qualifie le nom au lieu d'instruire).
+    L'annonce ne dépend pas de la position — seul l'œil change de chemin. Sans
+    légende, `inline` retombe sur `under` : il n'y a pas de ligne où se poser.
   - `ariaLabel` — nomme un groupe qui ne doit pas afficher de légende visible.
     Ignoré si `legend` est renseigné : deux noms pour un groupe, c'est ainsi
     qu'ils divergent.

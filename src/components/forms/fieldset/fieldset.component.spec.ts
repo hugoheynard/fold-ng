@@ -5,6 +5,7 @@ import {
   FoldFieldsetComponent,
   type FoldFieldsetAppearance,
   type FoldFieldsetDirection,
+  type FoldFieldsetHintPosition,
   type FoldFieldsetLegendVariant,
 } from "./fieldset.component";
 
@@ -14,12 +15,13 @@ import {
   template: `<fold-fieldset
     [legend]="legend()"
     [ariaLabel]="ariaLabel()"
-    [hint]="hint()"
     [disabled]="disabled()"
     [direction]="direction()"
     [appearance]="appearance()"
     [legendVariant]="legendVariant()"
     [optional]="optional()"
+    [hint]="hint()"
+    [hintPosition]="hintPosition()"
   >
     <input class="member" />
     <input class="member" />
@@ -29,6 +31,7 @@ class HostComponent {
   readonly legend = signal("Allergènes");
   readonly ariaLabel = signal("");
   readonly hint = signal("");
+  readonly hintPosition = signal<FoldFieldsetHintPosition>("under");
   readonly disabled = signal(false);
   readonly direction = signal<FoldFieldsetDirection>("vertical");
   readonly appearance = signal<FoldFieldsetAppearance>("plain");
@@ -181,5 +184,33 @@ describe("FoldFieldsetComponent", () => {
     expect(root.querySelector(".fs-opt")?.textContent?.trim()).toBe(
       "(optional)",
     );
+  });
+
+  it("puts an inline hint ON the legend line, still described", () => {
+    // Deux positions, une seule promesse d'accessibilité : `aria-describedby`
+    // suit l'indice où qu'il aille. La position dit où l'œil le trouve, jamais
+    // s'il est annoncé.
+    const { fixture, host, root } = render();
+    host.hint.set("lieux difficiles à localiser");
+    host.hintPosition.set("inline");
+    fixture.detectChanges();
+
+    const inline = root.querySelector(".fs-hint-inline");
+    expect(inline?.closest("legend")).not.toBeNull();
+    expect(root.querySelector("p.fs-hint")).toBeNull();
+    expect(
+      root.querySelector("fieldset")?.getAttribute("aria-describedby"),
+    ).toBe(inline?.id);
+  });
+
+  it("falls back to `under` when there is no legend to sit on", () => {
+    const { fixture, host, root } = render();
+    host.hint.set("Au moins un jour");
+    host.hintPosition.set("inline");
+    host.legend.set("");
+    fixture.detectChanges();
+
+    expect(root.querySelector(".fs-hint-inline")).toBeNull();
+    expect(root.querySelector("p.fs-hint")).not.toBeNull();
   });
 });
