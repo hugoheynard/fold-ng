@@ -346,6 +346,11 @@
 #### FoldFieldListComponent
 - (no input·model·output bindings)
 
+#### FoldFieldsetComponent
+- appearance: InputSignal<FoldFieldsetAppearance>
+- direction: InputSignal<FoldFieldsetDirection>
+- legend: InputSignal<string>
+
 #### FoldFileDropzoneComponent
 - accept: InputSignal<string>
 - busy: InputSignal<boolean>
@@ -983,6 +988,8 @@
 - foldEndOfMonth (function)
 - foldEventsInRange (function)
 - foldEventsOnDay (function)
+- FoldFieldsetAppearance (type)
+- FoldFieldsetDirection (type)
 - foldFilterBySource (function)
 - FoldFontToken (type)
 - foldFontVar (function)

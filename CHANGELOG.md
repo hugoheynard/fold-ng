@@ -8,6 +8,35 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`fold-fieldset`** — le groupe NOMMÉ de contrôles : la paire
+  `<fieldset>`/`<legend>`, son habillage navigateur neutralisé et son rythme sur
+  l'échelle des tokens.
+
+  Il existe parce que la paire native est inutilisable telle quelle : chaque
+  appelant réécrit les six mêmes lignes pour la défaire (`margin: 0; padding: 0;
+border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
+  écrit **cinq fois, au caractère près**, dans deux applications. Une répétition
+  aussi exacte n'est pas une coïncidence, c'est un composant manquant.
+
+  Ce n'est ni une carte ni une section : `fold-card` est une surface,
+  `fold-page-section` un chapitre de page ; ceci est le **groupement
+  accessible** des contrôles qui répondent à une seule question. C'est le
+  `<legend>` qui nomme le groupe à un lecteur d'écran — et c'est toute la raison
+  de prendre un `fieldset` plutôt qu'un `div` : un titre au-dessus d'un `div`
+  aurait exactement la même allure et n'annoncerait rien.
+
+  Trois entrées : `legend` (vide = **aucun** `<legend>` rendu, parce qu'un
+  légende vide est pire qu'absente — elle donne au lecteur d'écran un groupe au
+  nom blanc), `direction` (`vertical` par défaut, `horizontal`), et `appearance`
+  (`plain` par défaut, `border` pour le groupe encadré qui doit se distinguer de
+  ses pairs d'un coup d'œil). `--fold-fieldset-gap` thème l'écart entre membres.
+
+  ⚠️ Une finesse que les cinq versions manuscrites avaient toutes redécouverte à
+  leurs dépens : **la légende n'est pas un élément flex**. La boîte flex d'un
+  `fieldset` est sa boîte de contenu anonyme, et la légende rendue vit en
+  dehors — le `gap` ne l'atteint donc jamais, et son espace en dessous doit être
+  sa propre marge.
+
 - **`--fold-font-label`** — la face du registre **micro-libellé** : les libellés
   2xs / gras / capitales / tracés qui titrent une section, coiffent une colonne
   de tableau ou servent d'eyebrow. Elle vaut `inherit` par défaut, donc rien ne

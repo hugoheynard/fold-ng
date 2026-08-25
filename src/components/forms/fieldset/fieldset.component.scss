@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* The whole point of the component: the native pair ships with a margin, a
+   padding and an inset 3D border that every consumer undoes by hand. It is
+   undone once, here. */
+.fs-box {
+  display: flex;
+  min-width: 0;
+  gap: var(--fold-fieldset-gap, var(--fold-space-sm));
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fs-box.vertical {
+  flex-direction: column;
+}
+
+.fs-box.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* The legend is NOT a flex item — a fieldset's flex box is its anonymous content
+   box, and the rendered legend sits outside it. So `gap` never reaches it, and
+   its space below has to be its own margin. Every hand-rolled version in the
+   wild had discovered this the hard way and written the same margin. */
+.fs-legend {
+  padding: 0;
+  margin-block-end: var(--fold-space-xs);
+  font-family: var(--fold-font-label);
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-semibold);
+  letter-spacing: var(--fold-tracking-wide);
+  text-transform: uppercase;
+  color: var(--fold-color-text-muted);
+}
+
+.fs-box.border {
+  padding: var(--fold-space-md);
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-md);
+}
+
+/* The notch: a bordered group's legend interrupts its own top rule. That is the
+   fieldset's one native trick worth keeping — it ties the name to the box
+   without a second colour or a heavier weight. The inline padding is what opens
+   the gap in the rule, so it belongs to the bordered case only. */
+.fs-box.border .fs-legend {
+  padding-inline: var(--fold-space-xs);
+  margin-block-end: 0;
+}

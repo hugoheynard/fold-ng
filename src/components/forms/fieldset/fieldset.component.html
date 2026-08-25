@@ -1,0 +1,6 @@
+<fieldset class="fs-box" [class]="[direction(), appearance()]">
+  @if (legend() !== "") {
+    <legend class="fs-legend">{{ legend() }}</legend>
+  }
+  <ng-content />
+</fieldset>

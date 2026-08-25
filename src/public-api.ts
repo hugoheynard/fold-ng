@@ -262,6 +262,11 @@ export type {
   FoldViewToggleDot,
 } from "./components/forms/view-toggle/view-toggle.component";
 export { FoldCheckboxComponent } from "./components/forms/checkbox/checkbox.component";
+export { FoldFieldsetComponent } from "./components/forms/fieldset/fieldset.component";
+export type {
+  FoldFieldsetAppearance,
+  FoldFieldsetDirection,
+} from "./components/forms/fieldset/fieldset.component";
 export { FoldSliderComponent } from "./components/forms/slider/slider.component";
 export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";
 export type { FoldRangeValue } from "./components/forms/slider/range-slider.component";

@@ -148,6 +148,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "password", label: "password field" },
       { id: "view-toggle", label: "view-toggle" },
       { id: "checkbox", label: "checkbox" },
+      { id: "fieldset", label: "fieldset" },
       { id: "slider", label: "slider · range" },
       { id: "form-layout", label: "form layout" },
       { id: "dropzone", label: "file dropzone" },

@@ -41,6 +41,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
     import("./pages/calendar-timegrid/calendar-timegrid.page"),
   "calendar-dates": () => import("./pages/calendar-dates/calendar-dates.page"),
   checkbox: () => import("./pages/checkbox/checkbox.page"),
+  fieldset: () => import("./pages/fieldset/fieldset.page"),
   paginator: () => import("./pages/paginator/paginator.page"),
   slider: () => import("./pages/slider/slider.page"),
   "form-layout": () => import("./pages/form-layout/form-layout.page"),

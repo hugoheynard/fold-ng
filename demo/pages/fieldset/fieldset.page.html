@@ -1,0 +1,128 @@
+<fold-page-layout title="fieldset">
+  <p description>
+    fold-fieldset — a named group of form controls. A real
+    <code>&lt;fieldset&gt;</code> / <code>&lt;legend&gt;</code> pair with its
+    browser styling neutralised and its rhythm on the token scale. Reach for it
+    whenever several controls answer <em>one</em> question: the legend names the
+    group to a screen reader, which a heading above a <code>&lt;div&gt;</code>
+    would look identical to and announce nothing of.
+  </p>
+  <gal-kind-badge titleBadge kind="component" />
+
+  <div class="gal-row gal-row--wide">
+    <!-- ── appearance ── -->
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">appearance · plain</span>
+      <fold-card surface="sunken">
+        <fold-fieldset legend="Allergènes">
+          <fold-checkbox label="Gluten" [(checked)]="gluten" />
+          <fold-checkbox label="Fruits à coque" [(checked)]="nuts" />
+          <fold-checkbox label="Œufs" [(checked)]="eggs" />
+        </fold-fieldset>
+      </fold-card>
+    </div>
+
+    <div class="gal-cell" style="max-width: 320px">
+      <span class="gal-tag">appearance · border</span>
+      <fold-card surface="sunken">
+        <fold-fieldset legend="Allergènes" appearance="border">
+          <fold-checkbox label="Gluten" [(checked)]="gluten" />
+          <fold-checkbox label="Fruits à coque" [(checked)]="nuts" />
+          <fold-checkbox label="Œufs" [(checked)]="eggs" />
+        </fold-fieldset>
+      </fold-card>
+    </div>
+  </div>
+
+  <!-- ── direction ── -->
+  <div class="gal-cell" style="max-width: 660px">
+    <span class="gal-tag">direction · horizontal</span>
+    <fold-card surface="sunken">
+      <fold-fieldset legend="Portée du référentiel" direction="horizontal">
+        <fold-checkbox label="UE / France" [checked]="true" />
+        <fold-checkbox label="Monde" />
+      </fold-fieldset>
+    </fold-card>
+  </div>
+
+  <!-- ── no legend ── -->
+  <div class="gal-cell" style="max-width: 660px">
+    <span class="gal-tag">no legend · a group already named by its parent</span>
+    <fold-card surface="sunken">
+      <fold-fieldset legend="Créneaux" appearance="border">
+        <fold-checkbox
+          label="Le même créneau tous les jours"
+          [checked]="true"
+        />
+        <!-- The nested group inherits its name from the one above: a second
+             legend would announce a redundant one. -->
+        <fold-fieldset>
+          <fold-checkbox label="Lundi" />
+          <fold-checkbox label="Mardi" />
+        </fold-fieldset>
+      </fold-fieldset>
+    </fold-card>
+  </div>
+
+  <dev-playground [code]="playgroundCode()" stage>
+    <div class="np-field" params>
+      <span class="gal-tag">legend</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgLegend() !== ''"
+          (click)="toggleLegend()"
+        >
+          named
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgLegend() === ''"
+          (click)="toggleLegend()"
+        >
+          none
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">direction</span>
+      <div class="ss-seg">
+        @for (value of directions; track value) {
+        <button
+          type="button"
+          [class.is-on]="pgDirection() === value"
+          (click)="pgDirection.set(value)"
+        >
+          {{ value }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">appearance</span>
+      <div class="ss-seg">
+        @for (value of appearances; track value) {
+        <button
+          type="button"
+          [class.is-on]="pgAppearance() === value"
+          (click)="pgAppearance.set(value)"
+        >
+          {{ value }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <fold-fieldset
+      [legend]="pgLegend()"
+      [direction]="pgDirection()"
+      [appearance]="pgAppearance()"
+    >
+      <fold-checkbox label="Gluten" [(checked)]="gluten" />
+      <fold-checkbox label="Fruits à coque" [(checked)]="nuts" />
+      <fold-checkbox label="Œufs" [(checked)]="eggs" />
+    </fold-fieldset>
+  </dev-playground>
+</fold-page-layout>
