@@ -19,6 +19,20 @@ export type FoldFieldsetDirection = "vertical" | "horizontal";
 export type FoldFieldsetAppearance = "plain" | "border";
 
 /**
+ * Which register the legend wears — the same two words `fold-page-section`
+ * uses for its title, and deliberately so: a reader meets one vocabulary for
+ * "small and above the thing" versus "reads as prose", not one per component.
+ *
+ * - `eyebrow` — small, uppercase, tracked, muted. The group is a **part of a
+ *   form**, and its name should sit above the controls without competing with
+ *   them.
+ * - `heading` — plain, at the size of a field's own label. The group **is** one
+ *   thing in the form's eyes ("Créneaux de livraison"), so its name reads at
+ *   the same weight as the labels around it.
+ */
+export type FoldFieldsetLegendVariant = "eyebrow" | "heading";
+
+/**
  * A named group of form controls — the `<fieldset>` / `<legend>` pair, with its
  * browser styling neutralised and its rhythm on the token scale.
  *
@@ -109,6 +123,16 @@ export class FoldFieldsetComponent {
    * is purely visual.
    */
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  /**
+   * Which register the legend wears. @default 'eyebrow'
+   *
+   * Both exist in real forms and they say different things — see
+   * {@link FoldFieldsetLegendVariant}. Getting this wrong is not a cosmetic
+   * miss: an eyebrow over a group that is really one field makes the form look
+   * like it has more sections than it has questions.
+   */
+  readonly legendVariant = input<FoldFieldsetLegendVariant>("eyebrow");
 
   /** How the members flow. @default 'vertical' */
   readonly direction = input<FoldFieldsetDirection>("vertical");

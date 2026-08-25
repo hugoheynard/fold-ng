@@ -41,6 +41,22 @@ border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
     aucun est pire qu'un groupe muet. C'est le cas imbriqué, déjà nommé par son
     parent.
 
+  `legendVariant` porte les **deux registres** que les formulaires réels
+  emploient — les mêmes mots que le `titleVariant` d'un `fold-page-section`, et
+  délibérément : on rencontre UN vocabulaire pour « petit et au-dessus » contre
+  « se lit comme de la prose », pas un par composant.
+
+  - `eyebrow` (défaut) — petit, capitales, tracé, atténué : le groupe est une
+    **partie d'un formulaire**, son nom se pose au-dessus sans disputer
+    l'attention aux contrôles.
+  - `heading` — au poids du libellé d'un champ : le groupe **est** une seule
+    chose aux yeux du formulaire (« Heures de retrait »), son nom se lit donc
+    comme les libellés qui l'entourent.
+
+  Ce n'est pas un réglage cosmétique : un eyebrow au-dessus d'un groupe qui est
+  en réalité UN champ fait paraître au formulaire plus de sections qu'il n'a de
+  questions.
+
   Plus `direction` (`vertical` par défaut, `horizontal`) et `appearance`
   (`plain` par défaut, `border` pour le groupe encadré qui doit se distinguer de
   ses pairs d'un coup d'œil). `--fold-fieldset-gap` thème l'écart entre membres.

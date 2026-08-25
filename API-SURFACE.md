@@ -353,6 +353,7 @@
 - disabled: InputSignalWithTransform<boolean, unknown>
 - hint: InputSignal<string>
 - legend: InputSignal<string>
+- legendVariant: InputSignal<FoldFieldsetLegendVariant>
 
 #### FoldFileDropzoneComponent
 - accept: InputSignal<string>
@@ -993,6 +994,7 @@
 - foldEventsOnDay (function)
 - FoldFieldsetAppearance (type)
 - FoldFieldsetDirection (type)
+- FoldFieldsetLegendVariant (type)
 - foldFilterBySource (function)
 - FoldFontToken (type)
 - foldFontVar (function)

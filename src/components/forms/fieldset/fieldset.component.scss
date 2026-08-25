@@ -32,12 +32,27 @@
 .fs-legend {
   padding: 0;
   margin-block-end: var(--fold-space-xs);
+}
+
+/* Le registre micro-libellé : le nom se pose AU-DESSUS du groupe sans lui
+   disputer l'attention. Défaut, parce qu'un fieldset sert le plus souvent à
+   ranger plusieurs questions ensemble. */
+.fs-box.eyebrow .fs-legend {
   font-family: var(--fold-font-label);
   font-size: var(--fold-text-xs);
   font-weight: var(--fold-weight-semibold);
   letter-spacing: var(--fold-tracking-wide);
   text-transform: uppercase;
   color: var(--fold-color-text-muted);
+}
+
+/* Le registre libellé-de-champ : le groupe EST une seule chose aux yeux du
+   formulaire (« Créneaux de livraison »), son nom se lit donc au même poids que
+   les libellés qui l'entourent. */
+.fs-box.heading .fs-legend {
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
+  color: var(--fold-color-text);
 }
 
 /* L'instruction du groupe : elle vit dans le flux, donc elle EST un membre flex

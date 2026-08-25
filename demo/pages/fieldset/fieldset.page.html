@@ -34,6 +34,19 @@
     </div>
   </div>
 
+  <!-- ── legend register ── -->
+  <div class="gal-cell" style="max-width: 660px">
+    <span class="gal-tag"
+      >legendVariant · heading (the group IS one field)</span
+    >
+    <fold-card surface="sunken">
+      <fold-fieldset legend="Heures de retrait" legendVariant="heading">
+        <fold-checkbox label="Matin" [checked]="true" />
+        <fold-checkbox label="Après-midi" />
+      </fold-fieldset>
+    </fold-card>
+  </div>
+
   <!-- ── direction ── -->
   <div class="gal-cell" style="max-width: 660px">
     <span class="gal-tag">direction · horizontal</span>
@@ -120,6 +133,21 @@
     </div>
 
     <div class="np-field" params>
+      <span class="gal-tag">legendVariant</span>
+      <div class="ss-seg">
+        @for (value of legendVariants; track value) {
+        <button
+          type="button"
+          [class.is-on]="pgLegendVariant() === value"
+          (click)="pgLegendVariant.set(value)"
+        >
+          {{ value }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="np-field" params>
       <span class="gal-tag">hint</span>
       <div class="ss-seg">
         <button
@@ -165,6 +193,7 @@
       [appearance]="pgAppearance()"
       [hint]="pgHint()"
       [disabled]="pgDisabled()"
+      [legendVariant]="pgLegendVariant()"
     >
       <fold-checkbox label="Gluten" [(checked)]="gluten" />
       <fold-checkbox label="Fruits à coque" [(checked)]="nuts" />

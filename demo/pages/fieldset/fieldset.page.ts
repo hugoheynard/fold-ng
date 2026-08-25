@@ -8,6 +8,7 @@ import {
   FoldPageLayoutComponent,
   type FoldFieldsetAppearance,
   type FoldFieldsetDirection,
+  type FoldFieldsetLegendVariant,
 } from "../../../src/public-api";
 
 /** `/fieldset` — the `fold-fieldset` gallery page (legend, direction, appearance). */
@@ -36,6 +37,12 @@ export default class FieldsetPage {
   protected readonly pgAppearance = signal<FoldFieldsetAppearance>("plain");
   protected readonly pgHint = signal("");
   protected readonly pgDisabled = signal(false);
+  protected readonly pgLegendVariant =
+    signal<FoldFieldsetLegendVariant>("eyebrow");
+  protected readonly legendVariants: readonly FoldFieldsetLegendVariant[] = [
+    "eyebrow",
+    "heading",
+  ];
 
   protected readonly directions: readonly FoldFieldsetDirection[] = [
     "vertical",
@@ -56,6 +63,9 @@ export default class FieldsetPage {
     }
     if (this.pgAppearance() !== "plain") {
       lines.push(`  appearance="${this.pgAppearance()}"`);
+    }
+    if (this.pgLegendVariant() !== "eyebrow") {
+      lines.push(`  legendVariant="${this.pgLegendVariant()}"`);
     }
     if (this.pgHint() !== "") {
       lines.push(`  hint="${this.pgHint()}"`);

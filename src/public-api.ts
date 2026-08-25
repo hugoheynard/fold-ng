@@ -266,6 +266,7 @@ export { FoldFieldsetComponent } from "./components/forms/fieldset/fieldset.comp
 export type {
   FoldFieldsetAppearance,
   FoldFieldsetDirection,
+  FoldFieldsetLegendVariant,
 } from "./components/forms/fieldset/fieldset.component";
 export { FoldSliderComponent } from "./components/forms/slider/slider.component";
 export { FoldRangeSliderComponent } from "./components/forms/slider/range-slider.component";

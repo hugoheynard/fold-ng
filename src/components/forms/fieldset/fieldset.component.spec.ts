@@ -5,6 +5,7 @@ import {
   FoldFieldsetComponent,
   type FoldFieldsetAppearance,
   type FoldFieldsetDirection,
+  type FoldFieldsetLegendVariant,
 } from "./fieldset.component";
 
 @Component({
@@ -17,6 +18,7 @@ import {
     [disabled]="disabled()"
     [direction]="direction()"
     [appearance]="appearance()"
+    [legendVariant]="legendVariant()"
   >
     <input class="member" />
     <input class="member" />
@@ -29,6 +31,7 @@ class HostComponent {
   readonly disabled = signal(false);
   readonly direction = signal<FoldFieldsetDirection>("vertical");
   readonly appearance = signal<FoldFieldsetAppearance>("plain");
+  readonly legendVariant = signal<FoldFieldsetLegendVariant>("eyebrow");
 }
 
 function render() {
@@ -146,5 +149,19 @@ describe("FoldFieldsetComponent", () => {
     fixture.detectChanges();
     const fieldset = root.querySelector("fieldset");
     expect(fieldset?.hasAttribute("aria-label")).toBe(false);
+  });
+
+  it("carries the legend register as a class too — eyebrow by default", () => {
+    // Two registers exist in real forms and they say different things: an
+    // eyebrow over a group that is really ONE field makes a form look like it
+    // has more sections than it has questions.
+    const { fixture, host, root } = render();
+    const box = root.querySelector(".fs-box");
+    expect(box?.classList.contains("eyebrow")).toBe(true);
+
+    host.legendVariant.set("heading");
+    fixture.detectChanges();
+    expect(box?.classList.contains("heading")).toBe(true);
+    expect(box?.classList.contains("eyebrow")).toBe(false);
   });
 });
