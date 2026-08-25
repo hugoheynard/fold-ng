@@ -348,7 +348,10 @@
 
 #### FoldFieldsetComponent
 - appearance: InputSignal<FoldFieldsetAppearance>
+- ariaLabel: InputSignal<string>
 - direction: InputSignal<FoldFieldsetDirection>
+- disabled: InputSignalWithTransform<boolean, unknown>
+- hint: InputSignal<string>
 - legend: InputSignal<string>
 
 #### FoldFileDropzoneComponent

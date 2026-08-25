@@ -34,6 +34,8 @@ export default class FieldsetPage {
   protected readonly pgLegend = signal("Allergènes");
   protected readonly pgDirection = signal<FoldFieldsetDirection>("vertical");
   protected readonly pgAppearance = signal<FoldFieldsetAppearance>("plain");
+  protected readonly pgHint = signal("");
+  protected readonly pgDisabled = signal(false);
 
   protected readonly directions: readonly FoldFieldsetDirection[] = [
     "vertical",
@@ -55,11 +57,23 @@ export default class FieldsetPage {
     if (this.pgAppearance() !== "plain") {
       lines.push(`  appearance="${this.pgAppearance()}"`);
     }
+    if (this.pgHint() !== "") {
+      lines.push(`  hint="${this.pgHint()}"`);
+    }
+    if (this.pgDisabled()) {
+      lines.push('  [disabled]="true"');
+    }
     lines.push(">", '  <fold-checkbox label="Gluten" />', "</fold-fieldset>");
     return lines.join("\n");
   });
 
   protected toggleLegend(): void {
     this.pgLegend.update((value) => (value === "" ? "Allergènes" : ""));
+  }
+
+  protected toggleHint(): void {
+    this.pgHint.update((value) =>
+      value === "" ? "Cochez tout ce qui s'applique" : "",
+    );
   }
 }

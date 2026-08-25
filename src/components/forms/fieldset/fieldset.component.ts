@@ -1,4 +1,11 @@
-import { Component, input } from "@angular/core";
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  inject,
+  input,
+} from "@angular/core";
+import { FoldIdService } from "../../../a11y/id.service";
 
 /** How the group's members are laid out. */
 export type FoldFieldsetDirection = "vertical" | "horizontal";
@@ -24,9 +31,23 @@ export type FoldFieldsetAppearance = "plain" | "border";
  *
  * **Not a card, and not a section.** `fold-card` is a surface, `fold-page-section`
  * is a chapter of a page; this is the *accessible grouping* of controls that
- * answer one question. The `<legend>` names the group to a screen reader, which
- * is the whole reason to reach for a fieldset instead of a `div` — a heading
- * would look identical and announce nothing.
+ * answer one question.
+ *
+ * ## What the native element buys, and what this keeps
+ *
+ * - The **legend names the group**: assistive tech announces it with each
+ *   control inside, so "Gluten" is heard as "Allergens, Gluten". A heading over
+ *   a `<div>` looks identical and announces nothing — that is the whole reason
+ *   to reach for a fieldset.
+ * - {@link disabled} is the element's **unique superpower**: a disabled
+ *   `<fieldset>` disables *every* control it contains, in one attribute, with
+ *   no per-control wiring. Nothing else in HTML does this. (Per spec the first
+ *   `<legend>` is exempt — controls inside it stay live.)
+ * - {@link hint} is wired through `aria-describedby`, so the group's
+ *   instruction ("pick at least one") is read out rather than merely printed.
+ * - {@link ariaLabel} names a group that must not show a visible legend. A
+ *   group with **neither** is deliberately allowed and deliberately silent:
+ *   that is the nested case, where the parent already named it.
  *
  * `--fold-fieldset-gap` themes the space between members (default
  * `--fold-space-sm`).
@@ -40,7 +61,11 @@ export type FoldFieldsetAppearance = "plain" | "border";
  *   <fold-checkbox label="Fruits à coque" />
  * </fold-fieldset>
  *
- * <fold-fieldset legend="Créneaux" direction="horizontal">…</fold-fieldset>
+ * <fold-fieldset
+ *   legend="Créneaux"
+ *   hint="Au moins un jour"
+ *   [disabled]="!enabled()"
+ * >…</fold-fieldset>
  * ```
  */
 @Component({
@@ -50,19 +75,62 @@ export type FoldFieldsetAppearance = "plain" | "border";
   styleUrl: "./fieldset.component.scss",
 })
 export class FoldFieldsetComponent {
+  private readonly ids = inject(FoldIdService);
+
   /**
    * The group's name, rendered as its `<legend>`.
    *
-   * Optional, and empty by default, because a fieldset nested inside another
-   * already-named group would otherwise announce a second, redundant name. When
-   * it is empty no `<legend>` is rendered at all — an empty one is worse than
-   * none, it gives a screen reader a group with a blank name.
+   * Empty renders **no** `<legend>` at all — an empty one is worse than none,
+   * it hands a screen reader a group with a blank name.
    */
   readonly legend = input("");
+
+  /**
+   * The group's name when it must not be shown.
+   *
+   * Ignored when {@link legend} is set: two names for one group is how they
+   * drift apart. Reach for it when a visible heading outside the group already
+   * says it, and repeating it would read twice.
+   */
+  readonly ariaLabel = input("");
+
+  /**
+   * An instruction for the group as a whole — « pick at least one », « optional ».
+   *
+   * Rendered under the legend AND pointed at by `aria-describedby`, so it is
+   * heard and not only seen. A hint that is only painted is a hint that half
+   * the readers never get.
+   */
+  readonly hint = input("");
+
+  /**
+   * Disables **every control inside the group** — the native element's unique
+   * capability, and the reason to prefer it over a `div` even when the grouping
+   * is purely visual.
+   */
+  readonly disabled = input(false, { transform: booleanAttribute });
 
   /** How the members flow. @default 'vertical' */
   readonly direction = input<FoldFieldsetDirection>("vertical");
 
   /** Whether the group draws its boundary. @default 'plain' */
   readonly appearance = input<FoldFieldsetAppearance>("plain");
+
+  /** Unique, SSR-safe id for the hint (see {@link FoldIdService}). */
+  protected readonly hintId = this.ids.next("fold-fieldset-hint");
+
+  /** `aria-describedby` target — the hint when there is one, else nothing. */
+  protected readonly describedBy = computed(() =>
+    this.hint() === "" ? null : this.hintId,
+  );
+
+  /**
+   * The accessible name to set when no `<legend>` is rendered.
+   *
+   * `null` rather than `""` so the attribute is **absent**: an empty
+   * `aria-label` on a group is a group that claims a name and gives none.
+   */
+  protected readonly label = computed(() =>
+    this.legend() !== "" || this.ariaLabel() === "" ? null : this.ariaLabel(),
+  );
 }

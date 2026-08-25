@@ -38,7 +38,11 @@
   <div class="gal-cell" style="max-width: 660px">
     <span class="gal-tag">direction · horizontal</span>
     <fold-card surface="sunken">
-      <fold-fieldset legend="Portée du référentiel" direction="horizontal">
+      <fold-fieldset
+        legend="Portée du référentiel"
+        direction="horizontal"
+        hint="Un seul référentiel à la fois."
+      >
         <fold-checkbox label="UE / France" [checked]="true" />
         <fold-checkbox label="Monde" />
       </fold-fieldset>
@@ -115,10 +119,52 @@
       </div>
     </div>
 
+    <div class="np-field" params>
+      <span class="gal-tag">hint</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="pgHint() === ''"
+          (click)="toggleHint()"
+        >
+          none
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgHint() !== ''"
+          (click)="toggleHint()"
+        >
+          described
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">disabled</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!pgDisabled()"
+          (click)="pgDisabled.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="pgDisabled()"
+          (click)="pgDisabled.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+
     <fold-fieldset
       [legend]="pgLegend()"
       [direction]="pgDirection()"
       [appearance]="pgAppearance()"
+      [hint]="pgHint()"
+      [disabled]="pgDisabled()"
     >
       <fold-checkbox label="Gluten" [(checked)]="gluten" />
       <fold-checkbox label="Fruits à coque" [(checked)]="nuts" />

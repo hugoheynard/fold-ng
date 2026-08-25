@@ -40,6 +40,23 @@
   color: var(--fold-color-text-muted);
 }
 
+/* L'instruction du groupe : elle vit dans le flux, donc elle EST un membre flex
+   — contrairement à la légende. Sa marge est celle du gap, rien de plus. */
+.fs-hint {
+  margin: 0;
+  font-size: var(--fold-text-sm);
+  line-height: var(--fold-leading-snug);
+  color: var(--fold-color-text-muted);
+}
+
+/* Désactivé, le groupe ne peint QUE son curseur : chaque contrôle du paquet
+   porte déjà son propre état désactivé, et un voile d'opacité par-dessus les
+   assombrirait deux fois — en cassant au passage les contrastes que chacun
+   garantit. Le travail de l'attribut est fonctionnel, pas décoratif. */
+.fs-box:disabled {
+  cursor: not-allowed;
+}
+
 .fs-box.border {
   padding: var(--fold-space-md);
   border: 1px solid var(--fold-color-border);

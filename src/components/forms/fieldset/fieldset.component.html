@@ -1,6 +1,15 @@
-<fieldset class="fs-box" [class]="[direction(), appearance()]">
+<fieldset
+  class="fs-box"
+  [class]="[direction(), appearance()]"
+  [disabled]="disabled()"
+  [attr.aria-label]="label()"
+  [attr.aria-describedby]="describedBy()"
+>
   @if (legend() !== "") {
     <legend class="fs-legend">{{ legend() }}</legend>
+  }
+  @if (hint() !== "") {
+    <p class="fs-hint" [id]="hintId">{{ hint() }}</p>
   }
   <ng-content />
 </fieldset>

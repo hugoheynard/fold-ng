@@ -12,6 +12,9 @@ import {
   imports: [FoldFieldsetComponent],
   template: `<fold-fieldset
     [legend]="legend()"
+    [ariaLabel]="ariaLabel()"
+    [hint]="hint()"
+    [disabled]="disabled()"
     [direction]="direction()"
     [appearance]="appearance()"
   >
@@ -21,6 +24,9 @@ import {
 })
 class HostComponent {
   readonly legend = signal("Allergènes");
+  readonly ariaLabel = signal("");
+  readonly hint = signal("");
+  readonly disabled = signal(false);
   readonly direction = signal<FoldFieldsetDirection>("vertical");
   readonly appearance = signal<FoldFieldsetAppearance>("plain");
 }
@@ -79,5 +85,66 @@ describe("FoldFieldsetComponent", () => {
     expect(box?.classList.contains("horizontal")).toBe(true);
     expect(box?.classList.contains("border")).toBe(true);
     expect(box?.classList.contains("vertical")).toBe(false);
+  });
+
+  it("disables every control it contains — the element's whole superpower", () => {
+    // Nothing else in HTML does this. If it ever stopped working the controls
+    // would still LOOK grouped and would still be clickable, which is the worst
+    // of both: a group that says it is off and answers anyway.
+    //
+    // Asserted with `:disabled`, NOT with `input.disabled`. The IDL property
+    // reflects the control's OWN attribute and stays `false` inside a disabled
+    // fieldset; only the pseudo-class knows about the ancestor. Reading the
+    // property here would have made this test pass on a component that had
+    // stopped disabling anything.
+    const { fixture, host, root } = render();
+    const members = () =>
+      [...root.querySelectorAll<HTMLInputElement>(".member")].map((input) =>
+        input.matches(":disabled"),
+      );
+
+    expect(members()).toEqual([false, false]);
+    host.disabled.set(true);
+    fixture.detectChanges();
+    expect(root.querySelector("fieldset")?.disabled).toBe(true);
+    expect(members()).toEqual([true, true]);
+  });
+
+  it("reads the hint out — `aria-describedby`, not just ink", () => {
+    const { fixture, host, root } = render();
+    const fieldset = root.querySelector("fieldset");
+    expect(fieldset?.getAttribute("aria-describedby")).toBeNull();
+
+    host.hint.set("Au moins un jour");
+    fixture.detectChanges();
+    const hint = root.querySelector(".fs-hint");
+    expect(hint?.textContent?.trim()).toBe("Au moins un jour");
+    expect(fieldset?.getAttribute("aria-describedby")).toBe(hint?.id);
+  });
+
+  it("names a legend-less group with `ariaLabel`, and never twice", () => {
+    // Two names for one group is how they drift apart: the visible legend wins,
+    // and the aria one is dropped rather than layered on top of it.
+    const { fixture, host, root } = render();
+    const fieldset = root.querySelector("fieldset");
+
+    host.legend.set("");
+    host.ariaLabel.set("Allergènes");
+    fixture.detectChanges();
+    expect(fieldset?.getAttribute("aria-label")).toBe("Allergènes");
+
+    host.legend.set("Allergènes");
+    fixture.detectChanges();
+    expect(fieldset?.getAttribute("aria-label")).toBeNull();
+  });
+
+  it("leaves an unnamed group truly unnamed — no empty `aria-label`", () => {
+    // A group that claims a name and gives none is worse than one that claims
+    // nothing: a screen reader announces the boundary and then falls silent.
+    const { fixture, host, root } = render();
+    host.legend.set("");
+    fixture.detectChanges();
+    const fieldset = root.querySelector("fieldset");
+    expect(fieldset?.hasAttribute("aria-label")).toBe(false);
   });
 });

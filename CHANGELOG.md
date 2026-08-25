@@ -25,9 +25,23 @@ border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
   de prendre un `fieldset` plutôt qu'un `div` : un titre au-dessus d'un `div`
   aurait exactement la même allure et n'annoncerait rien.
 
-  Trois entrées : `legend` (vide = **aucun** `<legend>` rendu, parce qu'un
-  légende vide est pire qu'absente — elle donne au lecteur d'écran un groupe au
-  nom blanc), `direction` (`vertical` par défaut, `horizontal`), et `appearance`
+  **Ce que l'élément natif achète, et que le composant garde** :
+
+  - `disabled` — le **super-pouvoir** du `fieldset`, que rien d'autre en HTML
+    n'a : il désactive TOUS les contrôles qu'il contient, en un attribut, sans
+    câblage par contrôle. (La première `<legend>` en est exemptée par la spec.)
+  - `hint` — l'instruction du groupe (« au moins un jour »), rendue sous la
+    légende **et** pointée par `aria-describedby`. Un indice seulement peint est
+    un indice que la moitié des lecteurs n'aura jamais.
+  - `ariaLabel` — nomme un groupe qui ne doit pas afficher de légende visible.
+    Ignoré si `legend` est renseigné : deux noms pour un groupe, c'est ainsi
+    qu'ils divergent.
+  - `legend` vide **et** `ariaLabel` vide = groupe volontairement sans nom, et
+    sans `aria-label` vide non plus — un groupe qui réclame un nom et n'en donne
+    aucun est pire qu'un groupe muet. C'est le cas imbriqué, déjà nommé par son
+    parent.
+
+  Plus `direction` (`vertical` par défaut, `horizontal`) et `appearance`
   (`plain` par défaut, `border` pour le groupe encadré qui doit se distinguer de
   ses pairs d'un coup d'œil). `--fold-fieldset-gap` thème l'écart entre membres.
 
@@ -36,6 +50,12 @@ border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
   `fieldset` est sa boîte de contenu anonyme, et la légende rendue vit en
   dehors — le `gap` ne l'atteint donc jamais, et son espace en dessous doit être
   sa propre marge.
+
+  ⚠️ Deuxième finesse, trouvée en écrivant le test : **`input.disabled` ne dit
+  pas la vérité** dans un `fieldset` désactivé. La propriété IDL ne reflète que
+  l'attribut PROPRE du contrôle et reste `false` ; seule la pseudo-classe
+  `:disabled` connaît l'ancêtre. Un test écrit sur la propriété serait passé au
+  vert sur un composant qui ne désactivait plus rien.
 
 - **`--fold-font-label`** — la face du registre **micro-libellé** : les libellés
   2xs / gras / capitales / tracés qui titrent une section, coiffent une colonne
