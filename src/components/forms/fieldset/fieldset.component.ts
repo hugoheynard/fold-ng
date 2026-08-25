@@ -6,6 +6,7 @@ import {
   input,
 } from "@angular/core";
 import { FoldIdService } from "../../../a11y/id.service";
+import { FOLD_COMMON_LABELS } from "../common-labels";
 
 /** How the group's members are laid out. */
 export type FoldFieldsetDirection = "vertical" | "horizontal";
@@ -59,6 +60,9 @@ export type FoldFieldsetLegendVariant = "eyebrow" | "heading";
  *   `<legend>` is exempt — controls inside it stay live.)
  * - {@link hint} is wired through `aria-describedby`, so the group's
  *   instruction ("pick at least one") is read out rather than merely printed.
+ * - {@link optional} marks the **whole group** optional — a GPS point is two
+ *   fields that are either both given or both skipped, and saying "optional"
+ *   on each of them would say something else.
  * - {@link ariaLabel} names a group that must not show a visible legend. A
  *   group with **neither** is deliberately allowed and deliberately silent:
  *   that is the nested case, where the parent already named it.
@@ -118,6 +122,20 @@ export class FoldFieldsetComponent {
   readonly hint = input("");
 
   /**
+   * A lighter `(optional)` marker after the legend — the same one a
+   * {@link FoldLabelComponent} puts after a field's label, and the same word
+   * from the same provider.
+   *
+   * It exists because a group can be optional as a whole while none of its
+   * members is: a GPS point is two fields that are either both given or both
+   * skipped. Saying "optional" on each of them would say something else.
+   */
+  readonly optional = input(false, { transform: booleanAttribute });
+
+  /** The word inside the optional marker. @default 'optional' */
+  readonly optionalLabel = input<string | undefined>();
+
+  /**
    * Disables **every control inside the group** — the native element's unique
    * capability, and the reason to prefer it over a `div` even when the grouping
    * is purely visual.
@@ -139,6 +157,13 @@ export class FoldFieldsetComponent {
 
   /** Whether the group draws its boundary. @default 'plain' */
   readonly appearance = input<FoldFieldsetAppearance>("plain");
+
+  private readonly common = inject(FOLD_COMMON_LABELS);
+
+  /** English default ← app-wide provider ← this instance's own input. */
+  protected readonly optionalWord = computed(
+    () => this.optionalLabel() ?? this.common.optional,
+  );
 
   /** Unique, SSR-safe id for the hint (see {@link FoldIdService}). */
   protected readonly hintId = this.ids.next("fold-fieldset-hint");

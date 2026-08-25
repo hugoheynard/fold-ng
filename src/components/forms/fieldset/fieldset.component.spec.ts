@@ -19,6 +19,7 @@ import {
     [direction]="direction()"
     [appearance]="appearance()"
     [legendVariant]="legendVariant()"
+    [optional]="optional()"
   >
     <input class="member" />
     <input class="member" />
@@ -32,6 +33,7 @@ class HostComponent {
   readonly direction = signal<FoldFieldsetDirection>("vertical");
   readonly appearance = signal<FoldFieldsetAppearance>("plain");
   readonly legendVariant = signal<FoldFieldsetLegendVariant>("eyebrow");
+  readonly optional = signal(false);
 }
 
 function render() {
@@ -163,5 +165,21 @@ describe("FoldFieldsetComponent", () => {
     fixture.detectChanges();
     expect(box?.classList.contains("heading")).toBe(true);
     expect(box?.classList.contains("eyebrow")).toBe(false);
+  });
+
+  it("marks the WHOLE group optional, once", () => {
+    // A GPS point is two fields that are either both given or both skipped.
+    // An `(optional)` on each of them would say something else — that either
+    // one could be left out on its own.
+    const { fixture, host, root } = render();
+    expect(root.querySelector(".fs-opt")).toBeNull();
+
+    host.optional.set(true);
+    fixture.detectChanges();
+    expect(root.querySelectorAll(".fs-opt")).toHaveLength(1);
+    expect(root.querySelector("legend")?.textContent).toContain("Allergènes");
+    expect(root.querySelector(".fs-opt")?.textContent?.trim()).toBe(
+      "(optional)",
+    );
   });
 });

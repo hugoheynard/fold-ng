@@ -6,7 +6,12 @@
   [attr.aria-describedby]="describedBy()"
 >
   @if (legend() !== "") {
-    <legend class="fs-legend">{{ legend() }}</legend>
+    <legend class="fs-legend">
+      {{ legend() }}
+      @if (optional()) {
+        <span class="fs-opt">({{ optionalWord() }})</span>
+      }
+    </legend>
   }
   @if (hint() !== "") {
     <p class="fs-hint" [id]="hintId">{{ hint() }}</p>

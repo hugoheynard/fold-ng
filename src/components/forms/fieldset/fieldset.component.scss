@@ -55,6 +55,17 @@
   color: var(--fold-color-text);
 }
 
+/* Le marqueur « optionnel » : même traitement que celui d'un libellé de champ,
+   parce que c'est la même information. Il ne prend PAS les capitales du registre
+   eyebrow — c'est une parenthèse, pas une part du nom. */
+.fs-opt {
+  margin-inline-start: var(--fold-space-xs);
+  font-weight: var(--fold-weight-medium);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--fold-color-text-faded);
+}
+
 /* L'instruction du groupe : elle vit dans le flux, donc elle EST un membre flex
    — contrairement à la légende. Sa marge est celle du gap, rien de plus. */
 .fs-hint {

@@ -354,6 +354,8 @@
 - hint: InputSignal<string>
 - legend: InputSignal<string>
 - legendVariant: InputSignal<FoldFieldsetLegendVariant>
+- optional: InputSignalWithTransform<boolean, unknown>
+- optionalLabel: InputSignal<string | undefined>
 
 #### FoldFileDropzoneComponent
 - accept: InputSignal<string>

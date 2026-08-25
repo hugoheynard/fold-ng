@@ -57,6 +57,13 @@ border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
   en réalité UN champ fait paraître au formulaire plus de sections qu'il n'a de
   questions.
 
+  `optional` marque le groupe ENTIER — même parenthèse, même mot et même
+  fournisseur (`FOLD_COMMON_LABELS`) que le marqueur d'un libellé de champ. Il
+  existe parce qu'un groupe peut être facultatif quand aucun de ses membres ne
+  l'est : un point GPS, ce sont deux champs qu'on donne ensemble ou pas du
+  tout, et écrire « optionnel » sur chacun dirait autre chose — que l'un
+  pourrait manquer sans l'autre.
+
   Plus `direction` (`vertical` par défaut, `horizontal`) et `appearance`
   (`plain` par défaut, `border` pour le groupe encadré qui doit se distinguer de
   ses pairs d'un coup d'œil). `--fold-fieldset-gap` thème l'écart entre membres.
