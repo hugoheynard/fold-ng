@@ -67,8 +67,10 @@ export type FoldFieldsetLegendVariant = "eyebrow" | "heading";
  *   group with **neither** is deliberately allowed and deliberately silent:
  *   that is the nested case, where the parent already named it.
  *
- * `--fold-fieldset-gap` themes the space between members (default
- * `--fold-space-sm`).
+ * `--fold-fieldset-gap` themes the space between members. It defaults to the
+ * **form rhythm** (`--fold-space-md`): a field is a label, a box and sometimes
+ * a hint, and it needs air that three checkboxes do not. Compact groups —
+ * checkboxes, time rows, radios — tighten it.
  *
  * @selector `fold-fieldset`
  *

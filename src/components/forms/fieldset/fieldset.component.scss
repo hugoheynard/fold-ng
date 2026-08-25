@@ -9,7 +9,12 @@
 .fs-box {
   display: flex;
   min-width: 0;
-  gap: var(--fold-fieldset-gap, var(--fold-space-sm));
+  /* Le rythme d'un FORMULAIRE : un champ, c'est un libellé, une boîte et
+     parfois un indice — il lui faut l'air que trois cases à cocher n'exigent
+     pas. C'est le cas majoritaire et le plus « par défaut » : un groupe qu'on
+     n'a pas réglé empile des champs. Les groupes compacts (cases, lignes
+     horaires, boutons radio) resserrent avec `--fold-fieldset-gap`. */
+  gap: var(--fold-fieldset-gap, var(--fold-space-md));
   margin: 0;
   padding: 0;
   border: 0;

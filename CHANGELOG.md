@@ -66,7 +66,11 @@ border: 0`, puis flex + gap, puis `legend { padding: 0 }`). Ce reset avait été
 
   Plus `direction` (`vertical` par défaut, `horizontal`) et `appearance`
   (`plain` par défaut, `border` pour le groupe encadré qui doit se distinguer de
-  ses pairs d'un coup d'œil). `--fold-fieldset-gap` thème l'écart entre membres.
+  ses pairs d'un coup d'œil). `--fold-fieldset-gap` thème l'écart entre membres. Il vaut par défaut le
+  **rythme d'un formulaire** (`--fold-space-md`) : un champ, c'est un libellé,
+  une boîte et parfois un indice — il lui faut l'air que trois cases à cocher
+  n'exigent pas. Un groupe qu'on n'a pas réglé empile des champs ; les groupes
+  compacts (cases, lignes horaires, boutons radio) resserrent.
 
   ⚠️ Une finesse que les cinq versions manuscrites avaient toutes redécouverte à
   leurs dépens : **la légende n'est pas un élément flex**. La boîte flex d'un
