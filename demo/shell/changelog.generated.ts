@@ -42,6 +42,1287 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.17.0",
+    date: "2026-08-26",
+    unreleased: false,
+    counts: {
+      Added: 8,
+      Changed: 3,
+      Fixed: 2,
+    },
+    breaking: 3,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-fieldset",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— le groupe NOMMÉ de contrôles : la paire ",
+              },
+              {
+                kind: "code",
+                value: "<fieldset>",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "<legend>",
+              },
+              {
+                kind: "text",
+                value:
+                  ", son habillage navigateur neutralisé et son rythme sur l'échelle des tokens. Il existe parce que la paire native est inutilisable telle quelle : chaque appelant réécrit les six mêmes lignes pour la défaire (",
+              },
+              {
+                kind: "code",
+                value: "margin: 0; padding: 0; border: 0",
+              },
+              {
+                kind: "text",
+                value: ", puis flex + gap, puis ",
+              },
+              {
+                kind: "code",
+                value: "legend { padding: 0 }",
+              },
+              {
+                kind: "text",
+                value: "). Ce reset avait été écrit ",
+              },
+              {
+                kind: "strong",
+                value: "cinq fois, au caractère près",
+              },
+              {
+                kind: "text",
+                value:
+                  ", dans deux applications. Une répétition aussi exacte n'est pas une coïncidence, c'est un composant manquant. Ce n'est ni une carte ni une section : ",
+              },
+              {
+                kind: "code",
+                value: "fold-card",
+              },
+              {
+                kind: "text",
+                value: " est une surface, ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value: " un chapitre de page ; ceci est le ",
+              },
+              {
+                kind: "strong",
+                value: "groupement accessible",
+              },
+              {
+                kind: "text",
+                value:
+                  " des contrôles qui répondent à une seule question. C'est le ",
+              },
+              {
+                kind: "code",
+                value: "<legend>",
+              },
+              {
+                kind: "text",
+                value:
+                  " qui nomme le groupe à un lecteur d'écran — et c'est toute la raison de prendre un ",
+              },
+              {
+                kind: "code",
+                value: "fieldset",
+              },
+              {
+                kind: "text",
+                value: " plutôt qu'un ",
+              },
+              {
+                kind: "code",
+                value: "div",
+              },
+              {
+                kind: "text",
+                value: " : un titre au-dessus d'un ",
+              },
+              {
+                kind: "code",
+                value: "div",
+              },
+              {
+                kind: "text",
+                value:
+                  " aurait exactement la même allure et n'annoncerait rien. ",
+              },
+              {
+                kind: "strong",
+                value:
+                  "Ce que l'élément natif achète, et que le composant garde",
+              },
+              {
+                kind: "text",
+                value: " : - ",
+              },
+              {
+                kind: "code",
+                value: "disabled",
+              },
+              {
+                kind: "text",
+                value: " — le ",
+              },
+              {
+                kind: "strong",
+                value: "super-pouvoir",
+              },
+              {
+                kind: "text",
+                value: " du ",
+              },
+              {
+                kind: "code",
+                value: "fieldset",
+              },
+              {
+                kind: "text",
+                value:
+                  ", que rien d'autre en HTML n'a : il désactive TOUS les contrôles qu'il contient, en un attribut, sans câblage par contrôle. (La première ",
+              },
+              {
+                kind: "code",
+                value: "<legend>",
+              },
+              {
+                kind: "text",
+                value: " en est exemptée par la spec.) - ",
+              },
+              {
+                kind: "code",
+                value: "hint",
+              },
+              {
+                kind: "text",
+                value:
+                  " — l'instruction du groupe (« au moins un jour »), pointée par ",
+              },
+              {
+                kind: "code",
+                value: "aria-describedby",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Un indice seulement peint est un indice que la moitié des lecteurs n'aura jamais. ",
+              },
+              {
+                kind: "code",
+                value: "hintPosition",
+              },
+              {
+                kind: "text",
+                value: " la place ",
+              },
+              {
+                kind: "code",
+                value: "under",
+              },
+              {
+                kind: "text",
+                value:
+                  " (défaut, sa propre ligne : de la place pour une phrase) ou ",
+              },
+              {
+                kind: "code",
+                value: "inline",
+              },
+              {
+                kind: "text",
+                value:
+                  " (sur la ligne de la légende, pour l'incise courte qui qualifie le nom au lieu d'instruire). L'annonce ne dépend pas de la position — seul l'œil change de chemin. Sans légende, ",
+              },
+              {
+                kind: "code",
+                value: "inline",
+              },
+              {
+                kind: "text",
+                value: " retombe sur ",
+              },
+              {
+                kind: "code",
+                value: "under",
+              },
+              {
+                kind: "text",
+                value: " : il n'y a pas de ligne où se poser. - ",
+              },
+              {
+                kind: "code",
+                value: "ariaLabel",
+              },
+              {
+                kind: "text",
+                value:
+                  " — nomme un groupe qui ne doit pas afficher de légende visible. Ignoré si ",
+              },
+              {
+                kind: "code",
+                value: "legend",
+              },
+              {
+                kind: "text",
+                value:
+                  " est renseigné : deux noms pour un groupe, c'est ainsi qu'ils divergent. - ",
+              },
+              {
+                kind: "code",
+                value: "legend",
+              },
+              {
+                kind: "text",
+                value: " vide ",
+              },
+              {
+                kind: "strong",
+                value: "et",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "ariaLabel",
+              },
+              {
+                kind: "text",
+                value: " vide = groupe volontairement sans nom, et sans ",
+              },
+              {
+                kind: "code",
+                value: "aria-label",
+              },
+              {
+                kind: "text",
+                value:
+                  " vide non plus — un groupe qui réclame un nom et n'en donne aucun est pire qu'un groupe muet. C'est le cas imbriqué, déjà nommé par son parent. ",
+              },
+              {
+                kind: "code",
+                value: "legendVariant",
+              },
+              {
+                kind: "text",
+                value: " porte les ",
+              },
+              {
+                kind: "strong",
+                value: "deux registres",
+              },
+              {
+                kind: "text",
+                value:
+                  " que les formulaires réels emploient — les mêmes mots que le ",
+              },
+              {
+                kind: "code",
+                value: "titleVariant",
+              },
+              {
+                kind: "text",
+                value: " d'un ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value:
+                  ", et délibérément : on rencontre UN vocabulaire pour « petit et au-dessus » contre « se lit comme de la prose », pas un par composant. - ",
+              },
+              {
+                kind: "code",
+                value: "eyebrow",
+              },
+              {
+                kind: "text",
+                value:
+                  " (défaut) — petit, capitales, tracé, atténué : le groupe est une ",
+              },
+              {
+                kind: "strong",
+                value: "partie d'un formulaire",
+              },
+              {
+                kind: "text",
+                value:
+                  ", son nom se pose au-dessus sans disputer l'attention aux contrôles. - ",
+              },
+              {
+                kind: "code",
+                value: "heading",
+              },
+              {
+                kind: "text",
+                value: " — au poids du libellé d'un champ : le groupe ",
+              },
+              {
+                kind: "strong",
+                value: "est",
+              },
+              {
+                kind: "text",
+                value:
+                  " une seule chose aux yeux du formulaire (« Heures de retrait »), son nom se lit donc comme les libellés qui l'entourent. Ce n'est pas un réglage cosmétique : un eyebrow au-dessus d'un groupe qui est en réalité UN champ fait paraître au formulaire plus de sections qu'il n'a de questions. ",
+              },
+              {
+                kind: "code",
+                value: "optional",
+              },
+              {
+                kind: "text",
+                value:
+                  " marque le groupe ENTIER — même parenthèse, même mot et même fournisseur (",
+              },
+              {
+                kind: "code",
+                value: "FOLD_COMMON_LABELS",
+              },
+              {
+                kind: "text",
+                value:
+                  ") que le marqueur d'un libellé de champ. Il existe parce qu'un groupe peut être facultatif quand aucun de ses membres ne l'est : un point GPS, ce sont deux champs qu'on donne ensemble ou pas du tout, et écrire « optionnel » sur chacun dirait autre chose — que l'un pourrait manquer sans l'autre. Plus ",
+              },
+              {
+                kind: "code",
+                value: "direction",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "vertical",
+              },
+              {
+                kind: "text",
+                value: " par défaut, ",
+              },
+              {
+                kind: "code",
+                value: "horizontal",
+              },
+              {
+                kind: "text",
+                value: ") et ",
+              },
+              {
+                kind: "code",
+                value: "appearance",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "plain",
+              },
+              {
+                kind: "text",
+                value: " par défaut, ",
+              },
+              {
+                kind: "code",
+                value: "border",
+              },
+              {
+                kind: "text",
+                value:
+                  " pour le groupe encadré qui doit se distinguer de ses pairs d'un coup d'œil). ",
+              },
+              {
+                kind: "code",
+                value: "--fold-fieldset-gap",
+              },
+              {
+                kind: "text",
+                value: " thème l'écart entre membres. Il vaut par défaut le ",
+              },
+              {
+                kind: "strong",
+                value: "rythme d'un formulaire",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "--fold-space-md",
+              },
+              {
+                kind: "text",
+                value:
+                  ") : un champ, c'est un libellé, une boîte et parfois un indice — il lui faut l'air que trois cases à cocher n'exigent pas. Un groupe qu'on n'a pas réglé empile des champs ; les groupes compacts (cases, lignes horaires, boutons radio) resserrent. ⚠️ Une finesse que les cinq versions manuscrites avaient toutes redécouverte à leurs dépens : ",
+              },
+              {
+                kind: "strong",
+                value: "la légende n'est pas un élément flex",
+              },
+              {
+                kind: "text",
+                value: ". La boîte flex d'un ",
+              },
+              {
+                kind: "code",
+                value: "fieldset",
+              },
+              {
+                kind: "text",
+                value:
+                  " est sa boîte de contenu anonyme, et la légende rendue vit en dehors — le ",
+              },
+              {
+                kind: "code",
+                value: "gap",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne l'atteint donc jamais, et son espace en dessous doit être sa propre marge. ⚠️ Deuxième finesse, trouvée en écrivant le test : ",
+              },
+              {
+                kind: "strong",
+                value: "`input.disabled` ne dit pas la vérité",
+              },
+              {
+                kind: "text",
+                value: " dans un ",
+              },
+              {
+                kind: "code",
+                value: "fieldset",
+              },
+              {
+                kind: "text",
+                value:
+                  " désactivé. La propriété IDL ne reflète que l'attribut PROPRE du contrôle et reste ",
+              },
+              {
+                kind: "code",
+                value: "false",
+              },
+              {
+                kind: "text",
+                value: " ; seule la pseudo-classe ",
+              },
+              {
+                kind: "code",
+                value: ":disabled",
+              },
+              {
+                kind: "text",
+                value:
+                  " connaît l'ancêtre. Un test écrit sur la propriété serait passé au vert sur un composant qui ne désactivait plus rien.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "--fold-font-label",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— la face du registre ",
+              },
+              {
+                kind: "strong",
+                value: "micro-libellé",
+              },
+              {
+                kind: "text",
+                value:
+                  " : les libellés 2xs / gras / capitales / tracés qui titrent une section, coiffent une colonne de tableau ou servent d'eyebrow. Elle vaut ",
+              },
+              {
+                kind: "code",
+                value: "inherit",
+              },
+              {
+                kind: "text",
+                value:
+                  " par défaut, donc rien ne change tant qu'un hôte ne la nomme pas — la règle « un composant porte la face de son hôte » tient toujours. Elle existe parce que c'est précisément le rôle où un hôte veut souvent une AUTRE face que son texte courant (un libellé monospace se lit comme une parole du système, pas comme de la prose), et que le dire sans elle obligeait à entrer dans les entrailles de trois composants — avec la dérive garantie le jour où un quatrième rejoint le registre.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value: " gagne ",
+              },
+              {
+                kind: "code",
+                value: "collapsible",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "[(open)]",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— replier le CORPS d'une section, et rien d'autre. Le titre, son sous-titre, sa description et ses ",
+              },
+              {
+                kind: "code",
+                value: "[sectionActions]",
+              },
+              {
+                kind: "text",
+                value:
+                  " restent en place, et c'est toute la différence entre replier et ",
+              },
+              {
+                kind: "strong",
+                value: "cacher",
+              },
+              {
+                kind: "text",
+                value:
+                  " : un onglet cachait l'ÉTAT avec les champs, donc on ne pouvait pas savoir ce qui manquait sans tout ouvrir. Replié, la section dit encore ce qu'elle est et ce qu'elle fait — et ses actions restent cliquables, donc elle s'enregistre sans se déplier. Deux conséquences de cette règle, toutes deux voulues : le bouton est le TITRE et non l'en-tête (un bouton autour de l'en-tête aurait imbriqué « Enregistrer » dans un ",
+              },
+              {
+                kind: "code",
+                value: "<button>",
+              },
+              {
+                kind: "text",
+                value: " — inerte, et invalide), et l'état par défaut est ",
+              },
+              {
+                kind: "strong",
+                value: "ouvert",
+              },
+              {
+                kind: "text",
+                value:
+                  ", parce qu'une section qui démarre repliée est une section qu'il faut découvrir.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value: " gagne ",
+              },
+              {
+                kind: "code",
+                value: "[sectionSubtitle]",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "titleVariant",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "separator",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— les pendants exacts de ce que ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value:
+                  " a reçu, pour la même raison : une section d'écran dense est une petite page.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " sépare la PORTÉE de l'en-tête de son SOL",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ": ",
+              },
+              {
+                kind: "code",
+                value: "headerBleed",
+              },
+              {
+                kind: "text",
+                value: " (aller bord à bord) et ",
+              },
+              {
+                kind: "code",
+                value: "headerBand",
+              },
+              {
+                kind: "text",
+                value:
+                  " (peindre la bande) sont deux entrées, plus une seule. ",
+              },
+              {
+                kind: "code",
+                value: "headerBand",
+              },
+              {
+                kind: "text",
+                value:
+                  " faisait les deux, donc un simple filet pleine largeur sous l'en-tête — traitement courant et discret — obligeait à peindre une bande. On ne pouvait pas demander la portée sans l'encre.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Les bandes montent d'un cran : ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout[headerBand]",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "fold-aside-layout[band]",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Une en-tête de page et un rail collant peuvent enfin se poser sur ",
+              },
+              {
+                kind: "code",
+                value: "--fold-color-surface-band",
+              },
+              {
+                kind: "text",
+                value: " — le rôle qui existait déjà et que ",
+              },
+              {
+                kind: "code",
+                value: "fold-card",
+              },
+              {
+                kind: "text",
+                value: " consomme par ",
+              },
+              {
+                kind: "code",
+                value: "raisedBands",
+              },
+              {
+                kind: "text",
+                value:
+                  " : « un pas À L'ÉCART de son conteneur, dans le sens que la polarité du thème impose ». Clair il fonce, sombre il éclaircit ; le composant nomme le rôle et n'a jamais à savoir dans quel sens. ",
+              },
+              {
+                kind: "strong",
+                value: "Ce n'est pas une `surface`, et c'est le point.",
+              },
+              {
+                kind: "text",
+                value: " L'axe ",
+              },
+              {
+                kind: "code",
+                value: "surface",
+              },
+              {
+                kind: "text",
+                value: " est une IDENTITÉ (",
+              },
+              {
+                kind: "code",
+                value: "chrome",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "accent",
+              },
+              {
+                kind: "text",
+                value: ") et il repointe l'encre sans jamais peindre de fond (",
+              },
+              {
+                kind: "code",
+                value: "docs/surfaces.md",
+              },
+              {
+                kind: "text",
+                value:
+                  ") ; « l'en-tête est du mobilier, pas du contenu » n'est ni l'un ni l'autre — c'est une élévation. Un ",
+              },
+              {
+                kind: "code",
+                value: 'surface="raised"',
+              },
+              {
+                kind: "text",
+                value:
+                  " aurait mélangé les deux axes et aurait menti sur ce qu'il fait. Deux détails qui ne sont pas de la décoration : la bande d'en-tête ",
+              },
+              {
+                kind: "strong",
+                value: "annule exactement",
+              },
+              {
+                kind: "text",
+                value:
+                  " ce que la page marge (les deux mêmes tokens, moitié à l'étroit), puis rembourse ce padding à l'intérieur — la colonne de texte ne bouge pas quand on l'allume. Et un rail bandé ",
+              },
+              {
+                kind: "strong",
+                value: "ferme la gouttière de colonne",
+              },
+              {
+                kind: "text",
+                value:
+                  " au profit d'un filet : un fond tenu à 28px du contenu qu'il accompagne ne se lit pas comme une bande mais comme une carte flottante. L'espace passe à l'intérieur, donc le contenu se lit à la même largeur dans les deux cas.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-aside-layout[bleed]",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— sortir de la gouttière de page et atteindre le bord, même mécanisme et même variable que ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section[bleed]",
+              },
+              {
+                kind: "text",
+                value: ". C'est le compagnon de ",
+              },
+              {
+                kind: "code",
+                value: "band",
+              },
+              {
+                kind: "text",
+                value:
+                  " : un rail bandé tenu à distance du bord par une gouttière est exactement la carte flottante que la bande sert à remplacer.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-view-toggle",
+              },
+              {
+                kind: "text",
+                value: " : un segment peut porter un point d'état",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "dot",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "dotLabel",
+              },
+              {
+                kind: "text",
+                value:
+                  " sur une option). Un point dit « regarde ici », jamais _quoi_ — il est donc ",
+              },
+              {
+                kind: "code",
+                value: "aria-hidden",
+              },
+              {
+                kind: "text",
+                value: ", et son sens rejoint le ",
+              },
+              {
+                kind: "strong",
+                value: "nom accessible",
+              },
+              {
+                kind: "text",
+                value:
+                  " du segment au lieu de disparaître. Sans ça, un lecteur d'écran entendait « EN » là où un œil voyait « EN, il manque quelque chose ».",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING (visuel) — le segment choisi d'un ",
+              },
+              {
+                kind: "code",
+                value: "fold-view-toggle",
+              },
+              {
+                kind: "text",
+                value: " est PLEIN",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "activeStyle",
+              },
+              {
+                kind: "text",
+                value: " passe de ",
+              },
+              {
+                kind: "code",
+                value: "raised",
+              },
+              {
+                kind: "text",
+                value: " à ",
+              },
+              {
+                kind: "code",
+                value: "solid",
+              },
+              {
+                kind: "text",
+                value: ", et gagne au passage la valeur ",
+              },
+              {
+                kind: "code",
+                value: "accent",
+              },
+              {
+                kind: "text",
+                value:
+                  "). Même raison que le bouton solide : un contrôle segmenté existe pour montrer ",
+              },
+              {
+                kind: "strong",
+                value: "lequel est choisi",
+              },
+              {
+                kind: "text",
+                value:
+                  ", et le choisi doit être la chose la plus forte du contrôle. Trois registres, parce qu'aucun ne convient partout : ",
+              },
+              {
+                kind: "code",
+                value: "solid",
+              },
+              {
+                kind: "text",
+                value: " (rempli), ",
+              },
+              {
+                kind: "code",
+                value: "accent",
+              },
+              {
+                kind: "text",
+                value:
+                  " (teinté — présent, plus discret, et il garde l'encre du segment lisible au milieu de beaucoup de couleur), ",
+              },
+              {
+                kind: "code",
+                value: "raised",
+              },
+              {
+                kind: "text",
+                value:
+                  " (puce neutre). La puce confiait la distinction à une élévation qui disparaît entièrement sous ",
+              },
+              {
+                kind: "code",
+                value: "forced-colors",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Rien ne verrouillait ce défaut non plus. Un détail que le plein impose : sur un fond d'accent, un point d'état peint dans sa propre teinte peut tomber à un cheveu du fond — un point ambre sur un accent chaud s'efface. Sur ",
+              },
+              {
+                kind: "code",
+                value: "solid",
+              },
+              {
+                kind: "text",
+                value:
+                  ", le point prend donc l'encre du segment, la seule garantie d'y être lisible.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING (visuel) — un ",
+              },
+              {
+                kind: "code",
+                value: "foldButton",
+              },
+              {
+                kind: "text",
+                value: " est SOLIDE par défaut",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "emphasis",
+              },
+              {
+                kind: "text",
+                value: " passe de ",
+              },
+              {
+                kind: "code",
+                value: "soft",
+              },
+              {
+                kind: "text",
+                value: " à ",
+              },
+              {
+                kind: "code",
+                value: "solid",
+              },
+              {
+                kind: "text",
+                value: " ; ",
+              },
+              {
+                kind: "code",
+                value: "intent",
+              },
+              {
+                kind: "text",
+                value: " reste ",
+              },
+              {
+                kind: "code",
+                value: "primary",
+              },
+              {
+                kind: "text",
+                value:
+                  "). Le défaut, c'est ce qu'une app écrit quand elle n'écrit rien — et ce qu'elle écrit le plus, c'est ",
+              },
+              {
+                kind: "strong",
+                value: "l'action principale",
+              },
+              {
+                kind: "text",
+                value:
+                  " de l'écran, celle qu'elle veut qu'on presse. Avec un défaut teinté, le bouton le plus fort d'une page était celui que quelqu'un avait pensé à baliser : l'emphase suivait l'effort de rédaction plutôt que l'importance. ",
+              },
+              {
+                kind: "code",
+                value: "soft",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "outline",
+              },
+              {
+                kind: "text",
+                value:
+                  " se demandent maintenant exprès, pour les actions qui accompagnent celle-là. Rien ne verrouillait ce défaut : les vingt tests du bouton passaient à l'identique avant et après le basculement. Un test le tient désormais.",
+              },
+            ],
+            breaking: true,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "BREAKING (visuel) — un titre de ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value: " porte le registre MICRO-LIBELLÉ par défaut",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ": 2xs, gras, capitales, tracé, dans ",
+              },
+              {
+                kind: "code",
+                value: "--fold-font-label",
+              },
+              {
+                kind: "text",
+                value: ". Un titre de section est un ",
+              },
+              {
+                kind: "strong",
+                value: "libellé du bloc qui le suit",
+              },
+              {
+                kind: "text",
+                value:
+                  " ; à l'échelle d'une page, une pile de titres en taille de corps entre en concurrence avec le contenu même qu'elle est censée étiqueter. C'est le registre que portent déjà une en-tête de colonne de tableau et un eyebrow de ",
+              },
+              {
+                kind: "code",
+                value: "fold-element-title",
+              },
+              {
+                kind: "text",
+                value: ", donc les trois s'accordent. C'est une ",
+              },
+              {
+                kind: "strong",
+                value: "peau",
+              },
+              {
+                kind: "text",
+                value: ", jamais une sémantique : le titre reste le même ",
+              },
+              {
+                kind: "code",
+                value: "h2",
+              },
+              {
+                kind: "text",
+                value: ", avec le même ",
+              },
+              {
+                kind: "code",
+                value: "aria-level",
+              },
+              {
+                kind: "text",
+                value:
+                  " et le même nom de région dans les deux registres — un test le vérifie explicitement, parce qu'un titre qui cesserait d'être un titre pour ressembler à un libellé coûterait son plan à la page sans que rien ne le dise. Pour retrouver l'ancien rendu : ",
+              },
+              {
+                kind: "code",
+                value: 'titleVariant="heading"',
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: true,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Un ",
+              },
+              {
+                kind: "code",
+                value: "bleed",
+              },
+              {
+                kind: "text",
+                value:
+                  " annule désormais la gouttière que la page PAYE, pas celle qu'on lui a demandée.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Sous 640px, ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " réduit son inset de moitié — et ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section[bleed]",
+              },
+              {
+                kind: "text",
+                value:
+                  ", épinglé au token écrit, continuait d'annuler la valeur entière : la section débordait d'une demi-gouttière de chaque côté, précisément là où il y avait le moins de place. La page publie maintenant ",
+              },
+              {
+                kind: "code",
+                value: "--fold-page-gutter-effective",
+              },
+              {
+                kind: "text",
+                value:
+                  " et tout ce qui annule lit celle-là. Le bug était invisible partout : aucune requête média ne s'évalue en test unitaire, et le symptôme est un débordement horizontal. Un test de contrat sur les sources tient l'invariant.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-page-layout",
+              },
+              {
+                kind: "text",
+                value: " : les actions s'alignent sur la rangée du TITRE.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Elles se calaient en haut de la colonne de texte ; depuis que ",
+              },
+              {
+                kind: "code",
+                value: "[pageEyebrow]",
+              },
+              {
+                kind: "text",
+                value:
+                  " existe, cette colonne commence par le fil d'Ariane — et les actions remontaient se coller à lui. L'eyebrow sort donc de la colonne et coiffe l'en-tête entier : c'est sa place logique (il désigne la page, pas le titre) et la rangée titre + actions redevient une vraie rangée.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.16.0",
     date: "2026-08-24",
     unreleased: false,
@@ -17822,7 +19103,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.16.0...HEAD [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.17.0...HEAD [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -17834,4 +19115,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.16.0";
+export const PUBLISHED_VERSION = "0.17.0";
