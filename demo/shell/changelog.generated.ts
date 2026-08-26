@@ -42,6 +42,188 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.17.1",
+    date: "2026-08-26",
+    unreleased: false,
+    counts: {
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value:
+                  " : le mode cartes ne rendait RIEN avec l'API documentée.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: 'narrowLayout="cards"',
+              },
+              {
+                kind: "text",
+                value: " plus un ",
+              },
+              {
+                kind: "code",
+                value: "foldRowCard",
+              },
+              {
+                kind: "text",
+                value:
+                  " projeté — la forme que la 0.13.0 a introduite et que le JSDoc recommande — laissait un espace blanc à la place du tableau. Le gabarit basculait bien : ",
+              },
+              {
+                kind: "code",
+                value: "@if (!cardMode())",
+              },
+              {
+                kind: "text",
+                value: " retirait le ",
+              },
+              {
+                kind: "code",
+                value: "<table>",
+              },
+              {
+                kind: "text",
+                value:
+                  " et construisait la liste, cartes remplies du contenu du consommateur. La feuille de style, elle, gardait une ",
+              },
+              {
+                kind: "strong",
+                value: "seconde porte",
+              },
+              {
+                kind: "text",
+                value: " — ",
+              },
+              {
+                kind: "code",
+                value: ".folddt--custom.folddt--narrow",
+              },
+              {
+                kind: "text",
+                value: " — dont les classes venaient de l'entrée ",
+              },
+              {
+                kind: "strong",
+                value: "dépréciée",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "mobileLayout",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Sur la nouvelle API cette paire ne se posait jamais, et la liste restait ",
+              },
+              {
+                kind: "code",
+                value: "display: none",
+              },
+              {
+                kind: "text",
+                value: ". Le tableau était parti, les cartes étaient cachées. ",
+              },
+              {
+                kind: "code",
+                value: "auto-cards",
+              },
+              {
+                kind: "text",
+                value: " était atteint pour la même raison : ",
+              },
+              {
+                kind: "code",
+                value: ".folddt--cards",
+              },
+              {
+                kind: "text",
+                value: " n'avait aucune règle en face. Seul ",
+              },
+              {
+                kind: "code",
+                value: 'mobileLayout="custom"',
+              },
+              {
+                kind: "text",
+                value:
+                  ", le chemin déprécié, fonctionnait. La correction retire la porte plutôt que de la réparer : la liste n'est dans l'arbre QUE en mode cartes, donc sa présence suffit. Ce fichier disait déjà « two gates that had to agree were one gate too many » — et en gardait deux. Les classes ",
+              },
+              {
+                kind: "code",
+                value: "folddt--cards",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "folddt--custom",
+              },
+              {
+                kind: "text",
+                value:
+                  ", qui ne stylaient plus rien, disparaissent avec. Aucun cas ne l'avait vu : les huit cas « mobile layout » pilotaient tous ",
+              },
+              {
+                kind: "code",
+                value: "mobileLayout",
+              },
+              {
+                kind: "text",
+                value: ". Un cas pilote désormais ",
+              },
+              {
+                kind: "code",
+                value: "narrowLayout",
+              },
+              {
+                kind: "text",
+                value: ", et un autre lit la ",
+              },
+              {
+                kind: "strong",
+                value: "feuille de style",
+              },
+              {
+                kind: "text",
+                value:
+                  " — le DOM n'a jamais été le problème, et jsdom n'applique pas les styles d'un composant, si bien qu'un ",
+              },
+              {
+                kind: "code",
+                value: "getComputedStyle",
+              },
+              {
+                kind: "text",
+                value: " y passe au vert sur une liste cachée.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.17.0",
     date: "2026-08-26",
     unreleased: false,
@@ -19103,7 +19285,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.17.0...HEAD [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.17.1...HEAD [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -19115,4 +19297,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.17.0";
+export const PUBLISHED_VERSION = "0.17.1";

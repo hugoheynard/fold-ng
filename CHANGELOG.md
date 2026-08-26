@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.17.1] - 2026-08-26
+
 ### Fixed
 
 - **`fold-data-table` : le mode cartes ne rendait RIEN avec l'API documentée.**
@@ -2200,7 +2204,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.17.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1
 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0
 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0
 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0
