@@ -256,12 +256,20 @@
   margin-top: var(--fold-space-xs);
 }
 
-/* The custom card list is hidden until the table's own box is narrow. Keyed on
-   `.folddt--narrow` — the class the measured width posts — and NOT on a media
-   query: the window is the wrong box, and two gates that had to agree were one
-   gate too many. */
+/* The card list is **only in the tree in card mode** — the `@if (!cardMode())`
+   in the template is the switch, and there is no second one here.
+
+   There WAS one, and it disagreed: the list was hidden until
+   `.folddt--custom.folddt--narrow` matched, a class pair posted from the
+   DEPRECATED `mobileLayout` input. With the documented API — `narrowLayout` plus
+   a projected `foldRowCard` — the cards were built, filled, and hidden, while
+   the table had already been removed. The consumer got a blank space.
+
+   Two gates that must agree is one gate too many; this file said so and kept
+   two anyway. */
 .folddt-cardlist {
-  display: none;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -315,15 +323,6 @@
   border-radius: 0;
   box-shadow: none;
 }
-.folddt--custom.folddt--narrow .folddt {
-  display: none;
-}
-.folddt--custom.folddt--narrow .folddt-cardlist {
-  display: flex;
-  flex-direction: column;
-  gap: var(--fold-space-sm);
-}
-
 /* ── Selection (controlled) — the checkbox is a fold-checkbox (size="sm"). ── */
 .folddt-select-h,
 .folddt-cell--select {

@@ -6,7 +6,35 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-data-table` : le mode cartes ne rendait RIEN avec l'API documentée.**
+  `narrowLayout="cards"` plus un `foldRowCard` projeté — la forme que la 0.13.0
+  a introduite et que le JSDoc recommande — laissait un espace blanc à la place
+  du tableau.
+
+  Le gabarit basculait bien : `@if (!cardMode())` retirait le `<table>` et
+  construisait la liste, cartes remplies du contenu du consommateur. La feuille
+  de style, elle, gardait une **seconde porte** — `.folddt--custom.folddt--narrow`
+  — dont les classes venaient de l'entrée **dépréciée** `mobileLayout`. Sur la
+  nouvelle API cette paire ne se posait jamais, et la liste restait
+  `display: none`. Le tableau était parti, les cartes étaient cachées.
+
+  `auto-cards` était atteint pour la même raison : `.folddt--cards` n'avait
+  aucune règle en face. Seul `mobileLayout="custom"`, le chemin déprécié,
+  fonctionnait.
+
+  La correction retire la porte plutôt que de la réparer : la liste n'est dans
+  l'arbre QUE en mode cartes, donc sa présence suffit. Ce fichier disait déjà
+  « two gates that had to agree were one gate too many » — et en gardait deux.
+  Les classes `folddt--cards` et `folddt--custom`, qui ne stylaient plus rien,
+  disparaissent avec.
+
+  Aucun cas ne l'avait vu : les huit cas « mobile layout » pilotaient tous
+  `mobileLayout`. Un cas pilote désormais `narrowLayout`, et un autre lit la
+  **feuille de style** — le DOM n'a jamais été le problème, et jsdom n'applique
+  pas les styles d'un composant, si bien qu'un `getComputedStyle` y passe au
+  vert sur une liste cachée.
 
 ## [0.17.0] - 2026-08-26
 

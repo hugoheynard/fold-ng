@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { Component, signal } from "@angular/core";
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
 import { describe, it, expect, vi, afterEach } from "vitest";
@@ -389,6 +391,7 @@ describe("FoldDataTableComponent — selection + polish", () => {
       [rows]="rows"
       [rowKey]="rowKey"
       [mobileLayout]="mobileLayout()"
+      [narrowLayout]="narrowLayout()"
       [rowCardChrome]="rowCardChrome()"
     >
       <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
@@ -406,6 +409,7 @@ class MobileHostComponent {
   ];
   readonly rowKey = (row: { id: string }): string => row.id;
   readonly mobileLayout = signal<"scroll" | "auto-cards" | "custom">("scroll");
+  readonly narrowLayout = signal<"scroll" | "cards">("scroll");
   readonly rowCardChrome = signal<"shell" | "none">("shell");
 }
 
@@ -480,12 +484,10 @@ describe("FoldDataTableComponent — mobile layout", () => {
     };
   }
 
-  it("defaults to scroll — tabular, no imposed card transform, no custom list", () => {
+  it("defaults to scroll — tabular, no imposed card transform, no card list", () => {
     const { el } = mobileSetup();
-    expect(el.querySelector(".folddt--cards")).toBeNull();
-    expect(el.querySelector(".folddt--custom")).toBeNull();
     expect(el.querySelector("table.folddt")).not.toBeNull();
-    // The foldRowCard template stays inert unless mobileLayout="custom".
+    // The foldRowCard template stays inert until a layout asks for cards.
     expect(el.querySelector(".folddt-cardlist")).toBeNull();
   });
 
@@ -493,8 +495,8 @@ describe("FoldDataTableComponent — mobile layout", () => {
     const { fixture, host, el } = mobileSetup();
     host.mobileLayout.set("auto-cards");
     fixture.detectChanges();
-    expect(el.querySelector(".folddt--cards")).not.toBeNull();
-    expect(el.querySelector(".folddt--custom")).toBeNull();
+    expect(el.querySelector(".folddt-cardlist")).not.toBeNull();
+    expect(el.querySelector("table.folddt")).toBeNull();
   });
 
   it("card mode renders a real LIST, with no table left in the tree", () => {
@@ -566,11 +568,78 @@ describe("FoldDataTableComponent — mobile layout", () => {
     expect(el.querySelectorAll(".my-card").length).toBe(2);
   });
 
+  /**
+   * The documented API — `narrowLayout="cards"` plus a projected `foldRowCard`.
+   *
+   * It rendered NOTHING. The template switched to cards and dropped the table;
+   * the stylesheet kept a second gate, `.folddt--custom.folddt--narrow`, whose
+   * classes came from the DEPRECATED `mobileLayout`. So the cards were built,
+   * filled with the consumer's template, and hidden — a blank space where the
+   * table used to be.
+   *
+   * Every mobile case here drove `mobileLayout`, which is why nothing caught
+   * it. This one drives the API the docs recommend.
+   */
+  it("narrowLayout=cards renders the cards, and they are VISIBLE", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.narrowLayout.set("cards");
+    fixture.detectChanges();
+
+    const list = el.querySelector("ul.folddt-cardlist");
+    expect(list).not.toBeNull();
+    expect(el.querySelector("table.folddt")).toBeNull();
+    expect(el.querySelectorAll(".folddt-card .my-card").length).toBe(2);
+  });
+
+  /**
+   * The DOM was never the problem — the STYLESHEET was, and jsdom applies no
+   * component styles, so `getComputedStyle` here would pass on a hidden list.
+   * (It did. Twice.) This reads the compiled stylesheet instead.
+   *
+   * The rule it enforces: nothing may gate `.folddt-cardlist` on a second
+   * condition. The template already decides, once, with `@if (!cardMode())` —
+   * a stylesheet that decides again is a gate that can disagree, and it did.
+   */
+  it("does not gate the card list on anything but its own presence", () => {
+    {
+      // Chemin depuis la RACINE du dépôt : sous vitest/jsdom, `import.meta.url`
+      // n'est pas une URL `file:`, et `readFileSync` la refuse.
+      const sheet = readFileSync(
+        "src/components/content/data-table/data-table.component.scss",
+        "utf8",
+        // Commentaires retirés d'abord : ce paragraphe-ci CITE la règle
+        // supprimée, et un découpage naïf la reprendrait pour un sélecteur.
+      ).replace(/\/\*[\s\S]*?\*\//gu, "");
+      for (const rule of sheet.split("}")) {
+        if (!rule.includes(".folddt-cardlist")) {
+          continue;
+        }
+        const [selector = "", body = ""] = rule.split("{");
+        expect(body, `\`${selector.trim()}\` hides the card list`).not.toMatch(
+          /display\s*:\s*none/u,
+        );
+        expect(
+          selector,
+          `\`${selector.trim()}\` gates the card list on a modifier class`,
+        ).not.toMatch(/\.folddt--/u);
+      }
+    }
+  });
+
+  it("narrowLayout=cards keeps the table on a wide container", () => {
+    const { fixture, host, el } = mobileSetup(false);
+    host.narrowLayout.set("cards");
+    fixture.detectChanges();
+
+    expect(el.querySelector("table.folddt")).not.toBeNull();
+    expect(el.querySelector("ul.folddt-cardlist")).toBeNull();
+  });
+
   it("custom mode renders the parent foldRowCard once per row (narrow)", () => {
     const { fixture, host, el } = mobileSetup(true);
     host.mobileLayout.set("custom");
     fixture.detectChanges();
-    expect(el.querySelector(".folddt--custom")).not.toBeNull();
+    expect(el.querySelector(".folddt-cardlist")).not.toBeNull();
     const cards = el.querySelectorAll(".folddt-card .my-card");
     expect(cards.length).toBe(2);
     expect(cards[0]!.textContent).toBe("0:Alice");
@@ -581,9 +650,10 @@ describe("FoldDataTableComponent — mobile layout", () => {
     const { fixture, host, el } = mobileSetup(false);
     host.mobileLayout.set("custom");
     fixture.detectChanges();
-    // The mode class is still set (the CSS owns the mobile swap), but the
-    // per-row cards are not built on desktop — no wasted rendering.
-    expect(el.querySelector(".folddt--custom")).not.toBeNull();
+    // A wide container keeps the table, whatever the layout asked for — the
+    // per-row cards are not built on desktop, so nothing is rendered for
+    // nothing.
+    expect(el.querySelector("table.folddt")).not.toBeNull();
     expect(el.querySelector(".folddt-cardlist")).toBeNull();
   });
 });
