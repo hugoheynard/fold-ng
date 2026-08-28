@@ -37,9 +37,204 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     version: "Unreleased",
     date: null,
     unreleased: true,
-    counts: {},
+    counts: {
+      Added: 1,
+      Changed: 1,
+    },
     breaking: 0,
-    groups: [],
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-app-shell",
+              },
+              {
+                kind: "text",
+                value: " : la bande ",
+              },
+              {
+                kind: "code",
+                value: "subheader",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  ", sous la barre d'en-tête — une sous-barre de navigation, un ruban de contexte, une rangée de filtres. Elle suit ",
+              },
+              {
+                kind: "strong",
+                value: "exactement la règle de placement de l'en-tête",
+              },
+              {
+                kind: "text",
+                value: " : ",
+              },
+              {
+                kind: "code",
+                value: 'subheaderLayout="inset"',
+              },
+              {
+                kind: "text",
+                value:
+                  " (par défaut) la pose au-dessus de la colonne de contenu, les rails montant à son flanc ; ",
+              },
+              {
+                kind: "code",
+                value: '"full"',
+              },
+              {
+                kind: "text",
+                value:
+                  " l'étire sur toutes les colonnes, au-dessus des rails. Deux réglages de hauteur l'accompagnent, ",
+              },
+              {
+                kind: "code",
+                value: "subheaderHeight",
+              },
+              {
+                kind: "text",
+                value: " (52) et ",
+              },
+              {
+                kind: "code",
+                value: "subheaderHeightMobile",
+              },
+              {
+                kind: "text",
+                value: " (48), avec leurs variables ",
+              },
+              {
+                kind: "code",
+                value: "--fold-shell-subheader-height*",
+              },
+              {
+                kind: "text",
+                value:
+                  " — la même paire entrée typée / variable CSS que le reste de la coque. Comme le pied, elle est ",
+              },
+              {
+                kind: "strong",
+                value: "auto-effaçante",
+              },
+              {
+                kind: "text",
+                value:
+                  " : sans rien de projeté, elle ne réclame aucune rangée. Elle est rendue en ",
+              },
+              {
+                kind: "code",
+                value: "<div>",
+              },
+              {
+                kind: "text",
+                value: " nu — ",
+              },
+              {
+                kind: "code",
+                value: "<header>",
+              },
+              {
+                kind: "text",
+                value: " est déjà pris, et la sémantique de la bande (un ",
+              },
+              {
+                kind: "code",
+                value: "<nav>",
+              },
+              {
+                kind: "text",
+                value:
+                  ", une barre d'outils) appartient à ce que l'application y projette. Le tiroir mobile et son voile descendent maintenant de ",
+              },
+              {
+                kind: "code",
+                value: "--fold-shell-chrome-offset",
+              },
+              {
+                kind: "text",
+                value:
+                  " : l'en-tête, plus la bande quand il y en a une. Sans ça, la navigation mobile se serait glissée ",
+              },
+              {
+                kind: "strong",
+                value: "par-dessus",
+              },
+              {
+                kind: "text",
+                value: " la sous-barre.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-app-shell",
+              },
+              {
+                kind: "text",
+                value:
+                  " : les rangées de la grille sont générées, plus écrites à la main.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Trois bandes optionnellement pleine largeur font dix-huit états ; l'en-tête et le pied à eux seuls occupaient déjà quatre blocs ",
+              },
+              {
+                kind: "code",
+                value: "grid-template-areas",
+              },
+              {
+                kind: "text",
+                value:
+                  ", et ajouter la sous-barre les aurait portés à dix-huit blocs copiés-collés. Une boucle les émet depuis les deux mêmes faits que portent déjà les classes de l'hôte. Chaque sélecteur généré est ",
+              },
+              {
+                kind: "strong",
+                value: "exact",
+              },
+              {
+                kind: "text",
+                value: " — une bande encastrée nomme son ",
+              },
+              {
+                kind: "code",
+                value: ":not(.*-full)",
+              },
+              {
+                kind: "text",
+                value: ", une bande absente son ",
+              },
+              {
+                kind: "code",
+                value: ":not(:has([…]))",
+              },
+              {
+                kind: "text",
+                value:
+                  " — si bien que deux règles ne peuvent plus viser la même coque : la cascade ne départage plus rien, l'ordre des sources non plus. C'est aussi ce qui permet à la version étroite de ré-émettre le même jeu et de gagner simplement en venant après. Aucun changement de rendu : les quatre combinaisons existantes produisent les mêmes rangées qu'avant.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
   },
   {
     version: "0.17.1",

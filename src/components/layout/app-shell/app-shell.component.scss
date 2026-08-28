@@ -163,9 +163,14 @@ $fold-sub-states: (
   full: ":has([subheader]).subheader-full",
 );
 /* `footerBehavior="scroll"` puts the footer inside the content scroll, so it
-   claims no row — it reads as absent here, whatever `footerLayout` says. */
+   claims no row — it reads as absent, whatever `footerLayout` says. That gives
+   the absent case TWO shapes, listed as two keys rather than folded into one
+   `:where(a, b)`: a comma inside `:host()` goes through Angular's emulated-
+   encapsulation rewriter, and that is not a bet worth taking on the selector
+   that decides the default grid. */
 $fold-footer-states: (
-  none: ":where(.footer-scroll, :not(:has([footer])))",
+  none: ":not(.footer-scroll):not(:has([footer]))",
+  none-scroll: ".footer-scroll",
   inset: ":not(.footer-scroll):has([footer]):not(.footer-full)",
   full: ":not(.footer-scroll):has([footer]).footer-full",
 );
@@ -174,8 +179,13 @@ $fold-footer-states: (
   @each $header, $header-sel in $fold-header-states {
     @each $sub, $sub-sel in $fold-sub-states {
       @each $footer, $footer-sel in $fold-footer-states {
+        /* Both absent shapes lay out identically — no footer row at all. */
+        $rows-for: $footer;
+        @if $footer == none-scroll {
+          $rows-for: none;
+        }
         :host(#{$header-sel}#{$sub-sel}#{$footer-sel}) {
-          @include fold-band-tracks($header, $sub, $footer, $narrow);
+          @include fold-band-tracks($header, $sub, $rows-for, $narrow);
         }
       }
     }
