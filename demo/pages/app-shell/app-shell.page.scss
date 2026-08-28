@@ -110,3 +110,34 @@
   color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
+
+/* The sub-bar projected into the shell's `subheader` slot — a second register of
+   navigation under the header. It paints its own ground over the band's chrome
+   default, which is exactly what a projected band is expected to do. */
+.sp-subbar {
+  display: flex;
+  align-items: stretch;
+  gap: var(--fold-space-xs);
+  height: 100%;
+  padding: 0 var(--fold-space-lg);
+  background: var(--fold-color-bg-header);
+  border-bottom: 1px solid var(--fold-color-border);
+  overflow-x: auto;
+}
+
+.sp-subbar button {
+  flex: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 0 var(--fold-space-md);
+  background: none;
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-sm);
+  font-weight: var(--fold-weight-semibold);
+  cursor: pointer;
+}
+
+.sp-subbar button.is-on {
+  border-bottom-color: var(--fold-color-primary);
+  color: var(--fold-color-text);
+}

@@ -14,6 +14,7 @@ import { FoldAppShellComponent } from "./app-shell.component";
     <nav railPrimary data-t="rp">rail one</nav>
     <nav railSecondary data-t="rs">rail two</nav>
     <div header data-t="hd">header</div>
+    <nav subheader data-t="sh">sub-bar</nav>
     <div data-t="content">page</div>
     <div footer data-t="ft">player</div>
   </fold-app-shell>`,
@@ -35,12 +36,23 @@ class SizedHostComponent {
   imports: [FoldAppShellComponent],
   template: `<fold-app-shell
     [headerLayout]="layout()"
+    [subheaderLayout]="subheader()"
     [footerLayout]="footer()"
   />`,
 })
 class LayoutHostComponent {
   readonly layout = signal<"inset" | "full">("inset");
+  readonly subheader = signal<"inset" | "full">("inset");
   readonly footer = signal<"inset" | "full">("inset");
+}
+
+@Component({
+  standalone: true,
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell [subheaderHeight]="height()" />`,
+})
+class SubheaderSizedHostComponent {
+  readonly height = signal<number | undefined>(64);
 }
 
 @Component({
@@ -68,6 +80,7 @@ describe("FoldAppShellComponent", () => {
       "rail-primary",
       "rail-secondary",
       "header",
+      "subheader",
       "content",
       "footer",
     ]) {
@@ -80,6 +93,7 @@ describe("FoldAppShellComponent", () => {
     expect(host.querySelector(".rail-primary [data-t='rp']")).not.toBeNull();
     expect(host.querySelector(".rail-secondary [data-t='rs']")).not.toBeNull();
     expect(host.querySelector(".header [data-t='hd']")).not.toBeNull();
+    expect(host.querySelector(".subheader [data-t='sh']")).not.toBeNull();
     expect(host.querySelector(".footer [data-t='ft']")).not.toBeNull();
     // Unattributed content falls through to the default (content) slot.
     expect(host.querySelector(".content [data-t='content']")).not.toBeNull();
@@ -139,7 +153,56 @@ describe("FoldAppShellComponent", () => {
     const host = setup();
     const shell = host.querySelector("fold-app-shell") ?? host;
     expect(shell.classList.contains("header-full")).toBe(false);
+    expect(shell.classList.contains("subheader-full")).toBe(false);
     expect(shell.classList.contains("footer-full")).toBe(false);
+  });
+
+  it('toggles the subheader-full class from subheaderLayout="full"', () => {
+    const fixture = TestBed.createComponent(LayoutHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "fold-app-shell",
+    ) as HTMLElement;
+
+    fixture.componentInstance.subheader.set("full");
+    fixture.detectChanges();
+    expect(shell.classList.contains("subheader-full")).toBe(true);
+
+    fixture.componentInstance.subheader.set("inset");
+    fixture.detectChanges();
+    expect(shell.classList.contains("subheader-full")).toBe(false);
+  });
+
+  it("maps subheaderHeight to its CSS variable, and clears it again", () => {
+    const fixture = TestBed.createComponent(SubheaderSizedHostComponent);
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector(
+      "fold-app-shell",
+    ) as HTMLElement;
+
+    expect(shell.style.getPropertyValue("--fold-shell-subheader-height")).toBe(
+      "64px",
+    );
+
+    fixture.componentInstance.height.set(undefined);
+    fixture.detectChanges();
+    expect(shell.style.getPropertyValue("--fold-shell-subheader-height")).toBe(
+      "",
+    );
+  });
+
+  it("stamps the subheader band even when nothing is projected into it", () => {
+    // The row it claims is gated in CSS on `:has([subheader])`, not on the
+    // element's presence — jsdom applies no stylesheet, so the collapse itself
+    // is the gallery's to show; what the DOM can prove is that the band is
+    // always there for the `:has()` to be asked about.
+    const fixture = TestBed.createComponent(LayoutHostComponent);
+    fixture.detectChanges();
+    const band = fixture.nativeElement.querySelector(
+      ".subheader",
+    ) as HTMLElement;
+    expect(band).not.toBeNull();
+    expect(band.querySelector("[subheader]")).toBeNull();
   });
 
   it('toggles the header-full class from headerLayout="full"', () => {

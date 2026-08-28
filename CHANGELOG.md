@@ -6,7 +6,45 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-app-shell` : la bande `subheader`**, sous la barre d'en-tête — une
+  sous-barre de navigation, un ruban de contexte, une rangée de filtres.
+
+  Elle suit **exactement la règle de placement de l'en-tête** :
+  `subheaderLayout="inset"` (par défaut) la pose au-dessus de la colonne de
+  contenu, les rails montant à son flanc ; `"full"` l'étire sur toutes les
+  colonnes, au-dessus des rails. Deux réglages de hauteur l'accompagnent,
+  `subheaderHeight` (52) et `subheaderHeightMobile` (48), avec leurs variables
+  `--fold-shell-subheader-height*` — la même paire entrée typée / variable CSS
+  que le reste de la coque.
+
+  Comme le pied, elle est **auto-effaçante** : sans rien de projeté, elle ne
+  réclame aucune rangée. Elle est rendue en `<div>` nu — `<header>` est déjà
+  pris, et la sémantique de la bande (un `<nav>`, une barre d'outils) appartient
+  à ce que l'application y projette.
+
+  Le tiroir mobile et son voile descendent maintenant de
+  `--fold-shell-chrome-offset` : l'en-tête, plus la bande quand il y en a une.
+  Sans ça, la navigation mobile se serait glissée **par-dessus** la sous-barre.
+
+### Changed
+
+- **`fold-app-shell` : les rangées de la grille sont générées, plus écrites à la
+  main.** Trois bandes optionnellement pleine largeur font dix-huit états ;
+  l'en-tête et le pied à eux seuls occupaient déjà quatre blocs
+  `grid-template-areas`, et ajouter la sous-barre les aurait portés à dix-huit
+  blocs copiés-collés.
+
+  Une boucle les émet depuis les deux mêmes faits que portent déjà les classes
+  de l'hôte. Chaque sélecteur généré est **exact** — une bande encastrée nomme
+  son `:not(.*-full)`, une bande absente son `:not(:has([…]))` — si bien que
+  deux règles ne peuvent plus viser la même coque : la cascade ne départage plus
+  rien, l'ordre des sources non plus. C'est aussi ce qui permet à la version
+  étroite de ré-émettre le même jeu et de gagner simplement en venant après.
+
+  Aucun changement de rendu : les quatre combinaisons existantes produisent les
+  mêmes rangées qu'avant.
 
 ## [0.17.1] - 2026-08-26
 

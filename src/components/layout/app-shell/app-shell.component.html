@@ -42,6 +42,18 @@
   <ng-content select="[header]" />
 </header>
 
+<!-- The band under the header: a nav sub-bar, a filter strip, a context ribbon.
+     A plain <div> on purpose — <header> is taken, and the band's own semantics
+     (a <nav>, a toolbar) belong to what the app projects into it. Like the
+     footer, it claims a grid row only when something is actually projected. -->
+<div
+  class="subheader"
+  foldSurface="chrome"
+  [attr.inert]="drawerOpen() ? '' : null"
+>
+  <ng-content select="[subheader]" />
+</div>
+
 <!-- One footer, stamped in one of two positions — a grid row (pinned, always in
      sight) or inside the content scroll (revealed on the way down). A single
      <ng-content> in a template avoids duplicate-selector projection loss. -->

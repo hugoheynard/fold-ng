@@ -1,3 +1,5 @@
+@use "sass:list";
+
 :host {
   display: grid;
   height: 100%;
@@ -18,13 +20,21 @@
     auto
     auto
     minmax(0, 1fr);
-  /* Two rows by default — a fixed-height header and a 1fr content region. A
-     projected footer adds a third row (below); with no footer there is no row
-     at all (see the `:has([footer])` gate), so an empty slot never leaves a gap. */
-  grid-template-rows: var(--fold-shell-header-height, 56px) 1fr;
-  grid-template-areas:
-    "rail-primary rail-secondary header"
-    "rail-primary rail-secondary content";
+  /* The rows themselves are generated per band combination — see the band grid
+     below. Only the columns are fixed here, because they never vary. */
+}
+
+/* How far down the chrome reaches on mobile: the header, plus the subheader
+   band when one is projected. The drawer and its scrim both hang from it, so a
+   shell with a sub-bar never has its own nav slide up over it. */
+:host {
+  --fold-shell-chrome-offset: var(--fold-shell-header-height-mobile, 52px);
+}
+:host(:has([subheader])) {
+  --fold-shell-chrome-offset: calc(
+    var(--fold-shell-header-height-mobile, 52px) +
+      var(--fold-shell-subheader-height-mobile, 48px)
+  );
 }
 
 /* Skip-link — the first Tab stop. Off-screen (not display:none, which drops it
@@ -56,47 +66,123 @@
   }
 }
 
-/* headerLayout="full" — header spans every column, above the rails, instead of
-   sitting over the content column with the rails climbing its side. */
-:host(.header-full) {
-  grid-template-areas:
-    "header       header         header"
-    "rail-primary rail-secondary content";
+/* ── The band grid ─────────────────────────────────────────────────────────
+   Three chrome bands can sit around the content — header, subheader, footer —
+   and each is either `inset` (it sits over the content column, the rails
+   climbing its side) or `full` (it spans every column). Two of the three are
+   also optional, so the states multiply: header × footer alone already took the
+   four hand-written `grid-template-areas` blocks that used to live here, and
+   adding the subheader would have made eighteen.
+
+   They are generated instead, from the same two facts the host classes already
+   carry. Every generated selector is EXACT — an inset band names
+   `:not(.*-full)`, an absent one names `:not(:has([…]))` — so no two ever match
+   the same shell, and nothing here rides on source order or specificity. That
+   is what lets the narrow collapse re-emit the very same set and win simply by
+   coming later. */
+
+/* One row of the area map: a full band spans the three columns, an inset one
+   only the content column. Narrow is a single column, so the question is moot. */
+@function fold-band($name, $mode, $narrow) {
+  @if $narrow {
+    @return "#{$name}";
+  }
+  @if $mode == full {
+    @return "#{$name} #{$name} #{$name}";
+  }
+  @return "rail-primary rail-secondary #{$name}";
 }
 
-/* A projected footer adds a third, content-sized (`auto`) row that collapses to
-   nothing when the slot is empty. Gated on `:has([footer])` so an absent footer
-   leaves *no row* — the `<footer>` element is always stamped, so without the
-   gate an empty one would still claim a track. Also gated on `:not(.footer-scroll)`: in
-   scroll mode the footer lives inside the content scroll (below), so there is no
-   grid row for it. `footerLayout="full"` spans it across every column (the usual
-   player-bar look); the four header×footer combinations each name their own
-   areas, and the more-specific selector wins when both are full. */
-:host(:not(.footer-scroll):has([footer])) {
-  grid-template-rows: var(--fold-shell-header-height, 56px) 1fr auto;
-  grid-template-areas:
-    "rail-primary rail-secondary header"
-    "rail-primary rail-secondary content"
-    "rail-primary rail-secondary footer";
+/* The height of one band, wide or narrow. */
+@function fold-band-height($wide, $narrow-height, $narrow) {
+  @if $narrow {
+    @return $narrow-height;
+  }
+  @return $wide;
 }
-:host(.header-full:not(.footer-scroll):has([footer])) {
-  grid-template-areas:
-    "header       header         header"
-    "rail-primary rail-secondary content"
-    "rail-primary rail-secondary footer";
+
+/* The rows and areas for one combination. `$sub` / `$footer` are
+   `none | inset | full`; an absent band contributes no track at all, so an
+   empty slot never leaves a gap. */
+@mixin fold-band-tracks($header, $sub, $footer, $narrow) {
+  $rows: fold-band-height(
+    var(--fold-shell-header-height, 56px),
+    var(--fold-shell-header-height-mobile, 52px),
+    $narrow
+  );
+  $areas: fold-band(header, $header, $narrow);
+
+  @if $sub != none {
+    $rows: list.append(
+      $rows,
+      fold-band-height(
+        var(--fold-shell-subheader-height, 52px),
+        var(--fold-shell-subheader-height-mobile, 48px),
+        $narrow
+      ),
+      $separator: space
+    );
+    $areas: list.append(
+      $areas,
+      fold-band(subheader, $sub, $narrow),
+      $separator: space
+    );
+  }
+
+  $rows: list.append($rows, 1fr, $separator: space);
+  $areas: list.append(
+    $areas,
+    fold-band(content, inset, $narrow),
+    $separator: space
+  );
+
+  @if $footer != none {
+    /* The footer row is content-sized (`auto`) — a player bar sizes itself. */
+    $rows: list.append($rows, auto, $separator: space);
+    $areas: list.append(
+      $areas,
+      fold-band(footer, $footer, $narrow),
+      $separator: space
+    );
+  }
+
+  @if $narrow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  grid-template-rows: $rows;
+  grid-template-areas: $areas;
 }
-:host(.footer-full:not(.footer-scroll):has([footer])) {
-  grid-template-areas:
-    "rail-primary rail-secondary header"
-    "rail-primary rail-secondary content"
-    "footer       footer         footer";
+
+$fold-header-states: (
+  inset: ":not(.header-full)",
+  full: ".header-full",
+);
+$fold-sub-states: (
+  none: ":not(:has([subheader]))",
+  inset: ":has([subheader]):not(.subheader-full)",
+  full: ":has([subheader]).subheader-full",
+);
+/* `footerBehavior="scroll"` puts the footer inside the content scroll, so it
+   claims no row — it reads as absent here, whatever `footerLayout` says. */
+$fold-footer-states: (
+  none: ":where(.footer-scroll, :not(:has([footer])))",
+  inset: ":not(.footer-scroll):has([footer]):not(.footer-full)",
+  full: ":not(.footer-scroll):has([footer]).footer-full",
+);
+
+@mixin fold-band-grid($narrow: false) {
+  @each $header, $header-sel in $fold-header-states {
+    @each $sub, $sub-sel in $fold-sub-states {
+      @each $footer, $footer-sel in $fold-footer-states {
+        :host(#{$header-sel}#{$sub-sel}#{$footer-sel}) {
+          @include fold-band-tracks($header, $sub, $footer, $narrow);
+        }
+      }
+    }
+  }
 }
-:host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
-  grid-template-areas:
-    "header       header         header"
-    "rail-primary rail-secondary content"
-    "footer       footer         footer";
-}
+
+@include fold-band-grid;
 
 /* Each region is a named surface (`foldSurface` in the template) and paints its
    own ground. `[data-surface]` resolves the surface's TEXT — it deliberately
@@ -120,6 +206,14 @@
 }
 .header {
   grid-area: header;
+  min-width: 0;
+  background: var(--fold-color-bg-header);
+}
+/* The band under the header — a nav sub-bar, a filter strip, a context ribbon.
+   Chrome ground like the header and the footer; a projected band that wants its
+   own tone paints over it, the same way a projected header does. */
+.subheader {
+  grid-area: subheader;
   min-width: 0;
   background: var(--fold-color-bg-header);
 }
@@ -209,6 +303,7 @@
 .rail-primary:has([data-elevated]),
 .rail-secondary:has([data-elevated]),
 .header:has([data-elevated]),
+.subheader:has([data-elevated]),
 .footer:has([data-elevated]),
 .content:has([data-elevated]) {
   padding: var(--fold-surface-inset, var(--fold-space-md));
@@ -218,29 +313,11 @@
    the viewport (@media, the app) and container (@container, an embedded preview)
    paths via a mixin so the two never drift. The secondary rail drops out; the
    primary rail becomes an off-canvas drawer the `mobile-nav-open` class slides
-   in over a scrim. Every layout class collapses to the same stack; the
-   with-footer selectors mirror the base ones at matching specificity so they
-   win in source order over their wider-viewport counterparts. */
+   in over a scrim. The band grid is re-emitted in its narrow form — the same
+   exact selectors, so each one simply overrides its wide counterpart by coming
+   later; `inset` and `full` stop meaning anything in a single column. */
 @mixin narrow-collapse {
-  :host,
-  :host(.header-full) {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--fold-shell-header-height-mobile, 52px) 1fr;
-    grid-template-areas:
-      "header"
-      "content";
-  }
-  :host(:not(.footer-scroll):has([footer])),
-  :host(.header-full:not(.footer-scroll):has([footer])),
-  :host(.footer-full:not(.footer-scroll):has([footer])),
-  :host(.header-full.footer-full:not(.footer-scroll):has([footer])) {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: var(--fold-shell-header-height-mobile, 52px) 1fr auto;
-    grid-template-areas:
-      "header"
-      "content"
-      "footer";
-  }
+  @include fold-band-grid($narrow: true);
   /* Both rails are gone on mobile by default. In `drawer` mode the primary
      comes back as an off-canvas drawer (below); in `none` mode it stays hidden
      and the app composes its own launcher. */
@@ -257,7 +334,7 @@
   :host(.mobile-drawer) .rail-primary {
     display: block;
     position: absolute;
-    top: var(--fold-shell-header-height-mobile, 52px);
+    top: var(--fold-shell-chrome-offset);
     bottom: 0;
     left: 0;
     z-index: 41;
@@ -278,7 +355,7 @@
      dismiss click. Only in the DOM while the drawer is open (see template). */
   .mobile-scrim {
     position: absolute;
-    inset: var(--fold-shell-header-height-mobile, 52px) 0 0 0;
+    inset: var(--fold-shell-chrome-offset) 0 0 0;
     z-index: 40;
     border: 0;
     padding: 0;

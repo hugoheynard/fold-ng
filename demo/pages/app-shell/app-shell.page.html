@@ -1,14 +1,15 @@
 <fold-page-layout title="app-shell" icon="grid">
   <p description>
     The application frame: a primary icon rail, an optional secondary rail, a
-    header band, the content area and a self-collapsing footer, wired as one
-    responsive scaffold. It folds on its own width via container queries — the
-    secondary rail collapses first, then the primary — so the same markup serves
-    desktop, tablet and mobile. Header + footer layout (inset or full), footer
-    behaviour (pinned player-bar or scroll-to-reveal legal footer), rail width
-    and header height are inputs; everything else is a design token you can
-    override. Regions float per-surface with <code>foldElevated</code> — the
-    shell owns structure, not skin.
+    header band, a self-collapsing sub-bar under it, the content area and a
+    self-collapsing footer, wired as one responsive scaffold. It folds on its
+    own width via container queries — the secondary rail collapses first, then
+    the primary — so the same markup serves desktop, tablet and mobile. Header +
+    footer layout (inset or full), footer behaviour (pinned player-bar or
+    scroll-to-reveal legal footer), rail width and header height are inputs;
+    everything else is a design token you can override. Regions float
+    per-surface with <code>foldElevated</code> — the shell owns structure, not
+    skin.
   </p>
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['nav-launcher']" />
@@ -57,6 +58,33 @@
           (click)="setHeaderLayout('full')"
         >
           full
+        </button>
+      </div>
+    </div>
+
+    <div class="np-field" params>
+      <span class="gal-tag">subheaderLayout</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="shellSubheader() && shellSubheaderLayout() === 'inset'"
+          (click)="shellSubheader.set(true); setSubheaderLayout('inset')"
+        >
+          inset
+        </button>
+        <button
+          type="button"
+          [class.is-on]="shellSubheader() && shellSubheaderLayout() === 'full'"
+          (click)="shellSubheader.set(true); setSubheaderLayout('full')"
+        >
+          full
+        </button>
+        <button
+          type="button"
+          [class.is-on]="!shellSubheader()"
+          (click)="shellSubheader.set(false)"
+        >
+          none
         </button>
       </div>
     </div>
@@ -132,6 +160,7 @@
       <fold-app-shell
         #previewShell="foldAppShell"
         [headerLayout]="shellHeaderLayout()"
+        [subheaderLayout]="shellSubheaderLayout()"
         [footerLayout]="shellFooterLayout()"
         [footerBehavior]="shellFooterBehavior()"
         [railWidth]="shellRailWidth()"
@@ -220,6 +249,20 @@
             </button>
           </div>
         </div>
+        @if (shellSubheader()) {
+        <nav subheader class="sp-subbar" aria-label="Section">
+          @for (t of subNav; track t) {
+          <button
+            type="button"
+            [class.is-on]="subNavActive() === t"
+            (click)="subNavActive.set(t)"
+          >
+            {{ t }}
+          </button>
+          }
+        </nav>
+        }
+
         <div class="sp-content">
           @for (b of previewBlocks; track b) {
           <div class="sp-block"></div>

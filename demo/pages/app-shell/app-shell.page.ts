@@ -48,6 +48,9 @@ export default class AppShellPage {
   protected readonly elevatedSecondary = signal(false);
   protected readonly elevatedHeader = signal(false);
   protected readonly shellHeaderLayout = signal<"inset" | "full">("inset");
+  protected readonly shellSubheaderLayout = signal<"inset" | "full">("inset");
+  /** Toggles the projected sub-bar so its self-collapse is visible live. */
+  protected readonly shellSubheader = signal(true);
   protected readonly shellFooterLayout = signal<"inset" | "full">("full");
   protected readonly shellFooterBehavior = signal<"pinned" | "scroll">(
     "pinned",
@@ -59,6 +62,9 @@ export default class AppShellPage {
 
   protected setHeaderLayout(value: "inset" | "full"): void {
     this.shellHeaderLayout.set(value);
+  }
+  protected setSubheaderLayout(value: "inset" | "full"): void {
+    this.shellSubheaderLayout.set(value);
   }
   protected setFooterLayout(value: "inset" | "full"): void {
     this.shellFooterLayout.set(value);
@@ -72,6 +78,9 @@ export default class AppShellPage {
     [
       "<fold-app-shell",
       `  headerLayout="${this.shellHeaderLayout()}"`,
+      ...(this.shellSubheader()
+        ? [`  subheaderLayout="${this.shellSubheaderLayout()}"`]
+        : []),
       ...(this.shellFooter()
         ? [
             `  footerLayout="${this.shellFooterLayout()}"`,
@@ -84,6 +93,9 @@ export default class AppShellPage {
       `  <fold-menu railPrimary${this.elevatedPrimary() ? " foldElevated" : ""}>…</fold-menu>`,
       `  <fold-menu railSecondary${this.elevatedSecondary() ? " foldElevated" : ""}>…</fold-menu>`,
       `  <header header${this.elevatedHeader() ? " foldElevated" : ""}>…</header>`,
+      ...(this.shellSubheader()
+        ? ["  <nav subheader>…</nav>"]
+        : ["  <!-- no subheader → the band collapses -->"]),
       "  <!-- untagged content → the main area -->",
       "  <main>…</main>",
       ...(this.shellFooter()
@@ -115,6 +127,11 @@ export default class AppShellPage {
     { id: "contracts", icon: "contracts", label: "Contracts" },
     { id: "music", icon: "music", label: "Music" },
   ] as const;
+  /** The sub-bar's own tabs — the band under the header, its second register of
+   *  navigation (the rail says *where*, the sub-bar says *which view of it*). */
+  protected readonly subNav = ["Overview", "Activity", "Members", "Settings"];
+  protected readonly subNavActive = signal("Overview");
+
   /** The app-shell preview's own primary-rail selection. */
   protected readonly previewNav = signal<string>("home");
 

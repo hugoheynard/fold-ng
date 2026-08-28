@@ -25,6 +25,9 @@
 - railWidth: InputSignal<number | undefined>
 - scroll: InputSignal<"scroll" | "stage">
 - skipLinkLabel: InputSignal<string>
+- subheaderHeight: InputSignal<number | undefined>
+- subheaderHeightMobile: InputSignal<number | undefined>
+- subheaderLayout: InputSignal<"inset" | "full">
 
 #### FoldAsideLayoutComponent
 - asideLeftLabel: InputSignal<string | undefined>

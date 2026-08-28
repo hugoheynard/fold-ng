@@ -43,6 +43,8 @@ const MOBILE_BREAKPOINT = 768;
  * ┌────────┬──────────────┬─────────────────────┐
  * │  rail  │ rail          │ header              │  ← header row (fixed height)
  * │ primary│ secondary     ├─────────────────────┤
+ * │        │               │ subheader           │  ← optional band (0 when empty)
+ * │        │               ├─────────────────────┤
  * │ (auto, │ (auto width,  │ content             │  ← content row (1fr)
  * │  self- │  self-        │ (position: relative │
  * │  sized)│  collapsing)  │  anchor for panels) │
@@ -66,6 +68,7 @@ const MOBILE_BREAKPOINT = 768;
  * |------------------|-------------------------------------------|
  * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--fold-shell-rail-width`). At ≤768px it becomes the mobile drawer (see `mobileNavOpen`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
+ * | `subheader`      | The band **under** the header — a nav sub-bar, a filter strip, a context ribbon. Same placement rule as the header (`subheaderLayout`: over the content column, or full width above the rails), and like the footer it is **self-collapsing**: an empty slot claims no row. Rendered as a plain `<div>`, so the band brings its own semantics (a `<nav>`, a toolbar). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
  * | *(default)*      | The content region — routed pages, floating panels, overlays, banners. Rendered as the document's single `<main>`. **Full-bleed**: the shell adds no gutter, so a page can paint edge-to-edge (a full-width banner, a hero, a bleeding panel). Want the themed page gutter? Wrap the page in `fold-page-layout` — padding is *its* job, not the shell's. |
  * | `footer`         | Bottom bar — a player / status strip (`footerBehavior="pinned"`, always in sight) or a legal / support footer (`footerBehavior="scroll"`, revealed at the end of the content). Rendered as `<footer>` (the document's `contentinfo` landmark). **Content-sized and self-collapsing**: an empty slot takes no space (unlike the fixed-height header). Content column, or full-width — see `footerLayout`. |
@@ -76,11 +79,14 @@ const MOBILE_BREAKPOINT = 768;
  * | `railWidth`          | `--fold-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
  * | `headerHeight`       | `--fold-shell-header-height`        | `56px`  | Header row height.         |
  * | `headerHeightMobile` | `--fold-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
+ * | `subheaderHeight`    | `--fold-shell-subheader-height`     | `52px`  | Subheader band height.     |
+ * | `subheaderHeightMobile` | `--fold-shell-subheader-height-mobile` | `48px` | Subheader height at ≤768px. |
  *
  * ## Layout knobs
  * | Input          | Values                | Default   | Meaning                                    |
  * |----------------|-----------------------|-----------|--------------------------------------------|
  * | `headerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = header sits over the content column (rails climb its side); `full` = header spans the full width, above the rails. |
+ * | `subheaderLayout` | `"inset" \| "full"` | `"inset"` | Same two positions as the header, for the band under it. Pair it with `headerLayout` — a `full` header over an `inset` sub-bar leaves the rails climbing only half the chrome. |
  * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
  * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset). A short page still pushes it to the bottom (the content grows to fill), and a tall page reveals it below the fold; you never manage that. |
  * | `scroll`       | `"scroll" \| "stage"` | `"scroll"`| **Who owns the content scroll.** `scroll` (default) = the shell's content region owns the scroll; pages flow inside it (`fold-page-layout scroll="flow"`), the chrome stays put, a `scroll` footer sits at the true end. `stage` = the content region is a fixed-height stage that does *not* scroll — the page fills it and scrolling happens inside `[foldScrollRegion]` areas (a mail-style split view). See `docs/scroll.md`. |
@@ -144,6 +150,7 @@ const MOBILE_BREAKPOINT = 768;
  *   <app-menu railPrimary foldElevated /><!-- a floating rail; drop it for flat -->
  *   <app-workspace-rail railSecondary />
  *   <app-header header /><!-- its hamburger toggles navOpen at ≤768px -->
+ *   <app-nav-bar subheader /><!-- optional; omit it and the band collapses -->
  *   <router-outlet />
  *   <!-- panels / overlays / banners also go in the default slot -->
  *   <app-player footer /><!-- optional; omit it and the footer row collapses -->
@@ -159,7 +166,11 @@ const MOBILE_BREAKPOINT = 768;
     "[style.--fold-shell-rail-width]": "railWidthVar()",
     "[style.--fold-shell-header-height]": "headerHeightVar()",
     "[style.--fold-shell-header-height-mobile]": "headerHeightMobileVar()",
+    "[style.--fold-shell-subheader-height]": "subheaderHeightVar()",
+    "[style.--fold-shell-subheader-height-mobile]":
+      "subheaderHeightMobileVar()",
     "[class.header-full]": 'headerLayout() === "full"',
+    "[class.subheader-full]": 'subheaderLayout() === "full"',
     "[class.footer-full]": 'footerLayout() === "full"',
     "[class.footer-scroll]": 'footerBehavior() === "scroll"',
     "[class.mobile-drawer]": 'mobileNav() === "drawer"',
@@ -177,9 +188,15 @@ export class FoldAppShellComponent {
   readonly headerHeight = input<number>();
   /** Header height at ≤768px in px. Omit to inherit `--fold-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
+  /** Subheader band height in px. Omit to inherit `--fold-shell-subheader-height` (52). */
+  readonly subheaderHeight = input<number>();
+  /** Subheader band height at ≤768px in px. Omit to inherit `--fold-shell-subheader-height-mobile` (48). */
+  readonly subheaderHeightMobile = input<number>();
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
   readonly headerLayout = input<"inset" | "full">("inset");
+  /** `"full"` spans the subheader band across every column, above the rails, in step with a `"full"` header; `"inset"` (default) keeps it over the content column. The band claims a row only when something is projected into it. */
+  readonly subheaderLayout = input<"inset" | "full">("inset");
   /** `"full"` spans the footer across every column, below the rails (the usual player-bar look); `"inset"` (default) keeps it under the content column. The footer row is content-sized and collapses to `0` when the slot is empty. Ignored when `footerBehavior="scroll"`. */
   readonly footerLayout = input<"inset" | "full">("inset");
   /** `"pinned"` (default) keeps the footer always in sight as a fixed row (a player / status bar); `"scroll"` lets it flow at the end of the content, revealed when you scroll to the bottom (a legal / support footer). `scroll` is inset-only and makes the shell own the content scroll — project flow content, not a page that manages its own full-height scroll. */
@@ -337,6 +354,12 @@ export class FoldAppShellComponent {
   );
   protected readonly headerHeightMobileVar = computed(() =>
     pxVar(this.headerHeightMobile()),
+  );
+  protected readonly subheaderHeightVar = computed(() =>
+    pxVar(this.subheaderHeight()),
+  );
+  protected readonly subheaderHeightMobileVar = computed(() =>
+    pxVar(this.subheaderHeightMobile()),
   );
 }
 
