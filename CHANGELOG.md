@@ -6,7 +6,27 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-element-title` : la variante `caps`** — les capitales à la taille et à
+  l'encre du titre, pour une RÉGION qui s'annonce : un puits, un rail, une
+  bande.
+
+  `eyebrow` chuchote au-dessus d'une chose, `caps` NOMME la chose — d'où
+  l'encre pleine et non la teinte atténuée. Elle comblait un trou réel : entre
+  un sur-titre de 10 px et un titre en bas de casse, il n'existait aucun
+  registre pour la tête d'une section qui doit se lire d'un bout de l'écran à
+  l'autre.
+
+  ⚠️ Son interlettrage reste **positif** (`--fold-tracking-caps`). Des capitales
+  ont besoin d'air entre les fûts : le resserrement qui flatte une grande ligne
+  d'affichage les soude à cette taille-là. C'est un défaut qui ne se voit que
+  sur fond clair — sur un fond sombre, la halation du texte le rattrape — et
+  qui fait donc rendre deux titres différemment pour des règles identiques.
+
+  Le glyphe de tête y reste **plein**, sans la tuile de 40 px du variant
+  `title` : une tuile à côté d'une ligne de capitales de 14 px pèserait plus
+  lourd que les mots qu'elle introduit.
 
 ## [0.18.0] - 2026-08-28
 

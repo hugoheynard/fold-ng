@@ -30,6 +30,16 @@
   font-size: var(--fold-text-xs);
   color: var(--fold-color-text-secondary);
 }
+/* `caps` — the size and ink of a title, set in capitals.
+   ⚠️ The tracking stays POSITIVE (`tracking-caps`). Capitals need air between
+   the stems; the tightening that flatters a large display line closes them up
+   at this size, and the word solders shut. */
+:host(.v-caps) .et-label {
+  font-size: var(--fold-text-base);
+  font-weight: var(--fold-weight-extrabold);
+  letter-spacing: var(--fold-tracking-caps);
+  color: var(--fold-color-text);
+}
 :host(.v-title) .et-label {
   font-size: var(--fold-text-base);
   letter-spacing: var(--fold-tracking-normal);

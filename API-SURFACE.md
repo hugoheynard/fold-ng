@@ -326,7 +326,7 @@
 - level: InputSignal<number>
 - subtitle: InputSignal<string | undefined>
 - title: InputSignal<string> — required
-- variant: InputSignal<"eyebrow" | "bar" | "title">
+- variant: InputSignal<"eyebrow" | "bar" | "title" | "caps">
 
 #### FoldElevatedDirective
 - foldElevated: InputSignalWithTransform<boolean, unknown>

@@ -13,6 +13,10 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  * - `title` — normal-case, `text-md`, primary. A card/panel heading; a leading
  *   `icon` renders in a tile whose tone is set by `iconTone`
  *   (`neutral` raised · `primary` filled brand · `faded` dim).
+ * - `caps` — uppercase at the title's size and in primary ink. The register for
+ *   a REGION that announces itself: a well, a rail, a band. `eyebrow` whispers
+ *   above a thing, `caps` names the thing — which is why it takes the full text
+ *   colour and not the muted one.
  *
  * A trailing action (edit/add button, lock badge) projects into `[titleAction]`,
  * right-aligned. The title — not the action — is the heading for assistive tech.
@@ -23,6 +27,7 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  * ```html
  * <fold-element-title title="Documents" variant="bar" />
  * <fold-element-title variant="title" icon="company" title="Contexte" subtitle="Activité de l'espace" />
+ * <fold-element-title variant="caps" title="Mes suivis" subtitle="3 en cours" />
  * <fold-element-title title="Poste">
  *   <button titleAction (click)="edit()">✎</button>
  * </fold-element-title>
@@ -35,6 +40,7 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
   host: {
     "[class.v-bar]": "variant() === 'bar'",
     "[class.v-title]": "variant() === 'title'",
+    "[class.v-caps]": "variant() === 'caps'",
     "[class.it-primary]": "iconTone() === 'primary'",
     "[class.it-faded]": "iconTone() === 'faded'",
     // `title` is a heading input — strip the reflected native attribute so it
@@ -53,8 +59,9 @@ export class FoldElementTitleComponent {
   readonly title = input.required<string>();
   /** Optional secondary line under the title. */
   readonly subtitle = input<string>();
-  /** Emphasis — `eyebrow` (10px muted), `bar` (11px secondary), `title` (text-md, normal-case). */
-  readonly variant = input<"eyebrow" | "bar" | "title">("eyebrow");
+  /** Emphasis — `eyebrow` (10px muted), `bar` (11px secondary), `title` (text-md,
+   *  normal-case), `caps` (title-size uppercase, primary ink). */
+  readonly variant = input<"eyebrow" | "bar" | "title" | "caps">("eyebrow");
   /** Heading outline depth exposed to assistive tech (`aria-level`). */
   readonly level = input(2);
   /** Optional `id` on the heading span, so a container can name a region with
