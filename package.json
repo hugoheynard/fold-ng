@@ -1,6 +1,6 @@
 {
   "name": "fold-ng",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "Accessible, dark-first Angular 22 UI component library & design system — signals-first, standalone, zoneless, SSR-ready. Design tokens + WCAG-minded components, themeable to the bone.",
   "keywords": [
     "angular",

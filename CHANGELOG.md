@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.20.0] - 2026-08-29
+
 ### Added
 
 - **`fold-data-table` : le tiroir de détail**, ouvert EN PLACE sous sa propre
@@ -2300,7 +2304,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.19.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0
 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0
 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0
 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1

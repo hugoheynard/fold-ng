@@ -42,6 +42,150 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.20.0",
+    date: "2026-08-29",
+    unreleased: false,
+    counts: {
+      Added: 1,
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " : le tiroir de détail",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  ", ouvert EN PLACE sous sa propre ligne. On projette un ",
+              },
+              {
+                kind: "code",
+                value: "<ng-template foldRowDetail let-row>",
+              },
+              {
+                kind: "text",
+                value:
+                  " et la table fait le reste : une colonne de bascule en fin de rangée, un tiroir pleine largeur sous la ligne, et — en vue étroite — le même tiroir DANS la carte. Sa présence est l'interrupteur : une table sans gabarit de détail se comporte exactement comme avant. ",
+              },
+              {
+                kind: "code",
+                value: "[(expanded)]",
+              },
+              {
+                kind: "text",
+                value: " est un modèle à double sens, comme ",
+              },
+              {
+                kind: "code",
+                value: "selected",
+              },
+              {
+                kind: "text",
+                value: " ; ",
+              },
+              {
+                kind: "code",
+                value: "expandMode",
+              },
+              {
+                kind: "text",
+                value: " décide si ouvrir une ligne ferme les autres — ",
+              },
+              {
+                kind: "code",
+                value: "single",
+              },
+              {
+                kind: "text",
+                value:
+                  " par défaut, parce qu'un tiroir se lit et ne se compare pas, et que deux tiroirs ouverts chassent le reste de la liste hors de l'écran. Pourquoi en place plutôt qu'un panneau : on ouvre une ligne pour regarder une chose, pas pour quitter l'endroit qu'on a mis du temps à trouver. C'est aussi pourquoi la vue en cartes garde le tiroir dans la carte au lieu de basculer vers une autre surface — même promesse, même geste, quelle que soit la largeur. Le bouton porte ",
+              },
+              {
+                kind: "code",
+                value: "aria-expanded",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "strong",
+                value: "pointe",
+              },
+              {
+                kind: "text",
+                value: " son tiroir par ",
+              },
+              {
+                kind: "code",
+                value: "aria-controls",
+              },
+              {
+                kind: "text",
+                value:
+                  " : sans lui, un lecteur d'écran annonce « développé » sans dire ce qui s'est ouvert. La colonne de bascule a un en-tête vide à l'œil seulement — le libellé reste dans l'arbre, sinon la dernière colonne s'annonce « colonne 8 ».",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value:
+                  "Navigation clavier : les flèches enjambent un tiroir ouvert.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Les aides de focus prenaient le frère IMMÉDIAT ; avec un tiroir intercalé, la flèche visait une rangée sans ",
+              },
+              {
+                kind: "code",
+                value: "tabindex",
+              },
+              {
+                kind: "text",
+                value:
+                  " et le focus ne bougeait plus — la navigation semblait se bloquer exactement sur les lignes qu'on venait d'ouvrir. ",
+              },
+              {
+                kind: "code",
+                value: "Fin",
+              },
+              {
+                kind: "text",
+                value:
+                  " avait le même défaut quand la dernière ligne était ouverte.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.19.0",
     date: "2026-08-28",
     unreleased: false,
@@ -19579,7 +19723,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.19.0...HEAD [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.20.0...HEAD [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -19591,4 +19735,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.19.0";
+export const PUBLISHED_VERSION = "0.20.0";
