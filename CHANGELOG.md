@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.22.1] - 2026-08-29
+
 ### Fixed
 
 - **`--fold-data-table-detail-padding` n'avait aucun effet en vue tableau.** La
@@ -2341,7 +2345,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.22.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.22.1...HEAD
+[0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1
 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0
 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0
 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0
