@@ -6,7 +6,17 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`--fold-data-table-detail-padding` n'avait aucun effet en vue tableau.** La
+  règle qui peint la rangée du tiroir portait aussi `padding: 0`, et comme elle
+  est plus spécifique que `.folddt-detail`, elle gagnait : le tiroir restait
+  plat quoi que l'appelant demande. Le jeton ne fonctionnait qu'en vue carte,
+  là où cette règle ne s'applique pas.
+
+  Le zéro s'y était mis pour neutraliser le rembourrage de cellule — qui
+  n'existe pas ici : la cellule du tiroir porte `folddt-detail`, jamais
+  `folddt-cell`.
 
 ## [0.22.0] - 2026-08-29
 

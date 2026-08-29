@@ -504,8 +504,13 @@
    Une rangée pleine largeur sous la sienne, creusée d'un cran : le tiroir se
    distingue de la ligne sans se détacher d'elle. Rien ici ne met en forme le
    CONTENU — il appartient au gabarit projeté, qui porte son encapsulation. */
+/* ⚠️ NE PAS y remettre `padding: 0`. Ce sélecteur est plus spécifique que
+   `.folddt-detail`, donc il gagnait sur le rembourrage thémable et le tiroir
+   restait plat quoi que l'appelant demande — le jeton ne marchait qu'en vue
+   carte, là où cette règle ne s'applique pas. Le zéro s'y était mis pour
+   neutraliser le rembourrage de cellule, qui n'existe pas ici : la cellule du
+   tiroir porte `folddt-detail`, jamais `folddt-cell`. */
 .folddt-detail-row > .folddt-detail {
-  padding: 0;
   border-top: 0;
   background: var(
     --fold-data-table-detail-bg,
