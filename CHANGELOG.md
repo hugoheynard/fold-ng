@@ -41,6 +41,17 @@ _Nothing yet._
   échelle, et une app qui écraserait la taille d'ici aplatirait `sm`/`md`/`lg`
   en un seul bouton portant trois noms.
 
+- **`FoldTableColumn.numeric`** — la colonne tient des NOMBRES, et deux choses
+  suivent : chiffres tabulaires et alignement à droite. C'est la même chose dite
+  deux fois, d'où un drapeau et non deux propriétés — des chiffres
+  proportionnels alignés à droite ne s'alignent toujours pas sous eux-mêmes, et
+  des chiffres tabulaires en drapeau à gauche perdent leur raison d'être.
+
+  Une colonne de montants en chiffres proportionnels oblige l'œil à lire chaque
+  ligne au lieu de balayer la colonne — ce qui est la seule raison de mettre des
+  nombres dans un tableau. L'en-tête suit sans qu'on le lui dise ; un `align`
+  écrit à la main gagne toujours.
+
 - **`FoldTableColumn.value`** — une colonne qui ne fait qu'afficher un champ le
   DIT, au lieu de réclamer un `<ng-template foldCell>` pour une interpolation.
 

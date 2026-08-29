@@ -105,7 +105,7 @@ export default class DataTablePage {
     { key: "name", label: "Member", sortable: true },
     { key: "role", label: "Role", value: (m) => m.role },
     { key: "status", label: "Status" },
-    { key: "tenure", label: "Months", sortable: true, align: "right" },
+    { key: "tenure", label: "Months", sortable: true, numeric: true },
   ];
 
   protected readonly rowKey = (row: Member): string => row.id;

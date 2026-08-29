@@ -844,6 +844,40 @@ class DetailHost {
   readonly open = signal<ReadonlySet<string | number>>(new Set());
 }
 
+@Component({
+  standalone: true,
+  imports: [FoldDataTableComponent],
+  template: `<fold-data-table [columns]="columns" [rows]="rows" />`,
+})
+class NumericHost {
+  readonly columns: FoldTableColumn<Row>[] = [
+    { key: "name", label: "Nom", value: (r) => r.name },
+    { key: "plain", label: "Montant", numeric: true, value: () => "1 240,00" },
+  ];
+  readonly rows: Row[] = [{ id: "a", name: "Alice", tone: null }];
+}
+
+describe("FoldDataTableComponent — numeric columns", () => {
+  it("marks the cell so it gets tabular figures and the right edge", () => {
+    // Des montants en chiffres proportionnels ne s'alignent pas sous eux-mêmes :
+    // l'œil doit lire chaque ligne au lieu de balayer la colonne, ce qui est la
+    // seule raison de mettre des nombres dans un tableau.
+    const fixture = TestBed.createComponent(NumericHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const cells = Array.from(el.querySelectorAll("td.folddt-cell"));
+    expect(cells[0]?.classList.contains("is-numeric")).toBe(true);
+  });
+
+  it("aligns its header the same way, without being told twice", () => {
+    const fixture = TestBed.createComponent(NumericHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const heads = Array.from(el.querySelectorAll("thead .folddt-th-plain"));
+    expect(heads.at(-1)?.classList.contains("is-numeric")).toBe(true);
+  });
+});
+
 describe("FoldDataTableComponent — row detail", () => {
   function render() {
     const fixture = TestBed.createComponent(DetailHost);

@@ -128,9 +128,13 @@
 .folddt-th-sort:hover {
   color: var(--fold-color-text);
 }
+/* A numeric column's header follows its cells to the right edge — being told
+   once is the point of the flag. */
+.folddt-th-sort.is-numeric,
 .folddt-th-sort.right {
   justify-content: flex-end;
 }
+.folddt-th-plain.is-numeric,
 .folddt-th-plain.right {
   justify-content: flex-end;
   width: 100%;
@@ -212,6 +216,14 @@
   text-align: left;
   white-space: nowrap;
   vertical-align: middle;
+}
+/* A numeric column: tabular figures, and right-aligned by consequence. Declared
+   BEFORE the explicit alignments so an author who says `align` still wins —
+   `numeric` states what the column holds, `align` states where to put it, and
+   the more specific intent is the one written by hand. */
+.folddt-cell.is-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 .folddt-cell.right {
   text-align: right;
@@ -495,6 +507,10 @@
   margin: var(--fold-space-xs) 0 0;
   color: var(--fold-color-text);
   font-size: var(--fold-text-sm);
+}
+.folddt-card-grid dd.is-numeric {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 .folddt-card-grid dd.right {
   font-variant-numeric: tabular-nums;

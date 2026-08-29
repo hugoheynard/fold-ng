@@ -50,6 +50,7 @@
                   <button
                     type="button"
                     class="folddt-th-sort"
+                    [class.is-numeric]="col.numeric"
                     [class.right]="col.align === 'right'"
                     [class.center]="col.align === 'center'"
                     [attr.aria-label]="l().sortBy(col.label)"
@@ -66,6 +67,7 @@
                 } @else {
                   <span
                     class="folddt-th-plain"
+                    [class.is-numeric]="col.numeric"
                     [class.right]="col.align === 'right'"
                     [class.center]="col.align === 'center'"
                     >{{ col.label }}</span
@@ -115,6 +117,7 @@
                   <th
                     scope="row"
                     class="folddt-cell is-primary"
+                    [class.is-numeric]="col.numeric"
                     [class.right]="col.align === 'right'"
                     [class.center]="col.align === 'center'"
                     [class.truncate]="col.truncate"
@@ -133,6 +136,7 @@
                 } @else {
                   <td
                     class="folddt-cell"
+                    [class.is-numeric]="col.numeric"
                     [class.right]="col.align === 'right'"
                     [class.center]="col.align === 'center'"
                     [class.truncate]="col.truncate"
@@ -265,7 +269,10 @@
                        what puts the label ABOVE its value in one grid cell. -->
                   <div class="folddt-card-pair">
                     <dt>{{ col.label }}</dt>
-                    <dd [class.right]="col.align === 'right'">
+                    <dd
+                      [class.is-numeric]="col.numeric"
+                      [class.right]="col.align === 'right'"
+                    >
                       @if (cellTemplate(col.key); as cell) {
                         <ng-container
                           [ngTemplateOutlet]="cell"

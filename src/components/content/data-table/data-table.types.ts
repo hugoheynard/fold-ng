@@ -36,8 +36,23 @@ export interface FoldTableColumn<T = unknown> {
   readonly label: string;
   /** Renders a sort button in the header; emits `sortChange` with `key`. */
   readonly sortable?: boolean;
-  /** Text alignment of the header + cells. Default left; `right` for numeric. */
+  /** Text alignment of the header + cells. Default left. An explicit value wins
+   *  over the right alignment {@link FoldTableColumn.numeric} implies. */
   readonly align?: "right" | "center";
+  /**
+   * The column holds NUMBERS — amounts, counts, durations.
+   *
+   * Two things follow, and they are the same thing said twice: the cells get
+   * tabular figures, and they align right. A column of amounts set in
+   * proportional figures does not line up under itself, so the eye has to read
+   * every row instead of scanning the column — which is the only reason one
+   * puts numbers in a table at all.
+   *
+   * It is a flag and not two properties because they are never wanted apart:
+   * right-aligned proportional digits still fail to line up, and tabular digits
+   * ragged on the left defeat their own purpose.
+   */
+  readonly numeric?: boolean;
   /** Optional fixed column width (any CSS length). */
   readonly width?: string;
   /** Clip overflowing text to one line with an ellipsis (pair with `width`).
