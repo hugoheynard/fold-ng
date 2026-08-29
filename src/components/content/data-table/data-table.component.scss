@@ -145,6 +145,17 @@
   color: var(--fold-color-primary-text);
 }
 
+/* The body's three surfaces are themable, and they move TOGETHER: a table drawn
+   on paper wants the interaction to recess a row, one drawn on the page wants
+   it to lift. Only the app knows which way its paper runs, so it says so here
+   rather than fighting the cascade from outside.
+
+   `--fold-data-table-row-bg` defaults to nothing at all — the table takes the
+   colour of whatever it was dropped on, which is what a table inside a card
+   should do. */
+.folddt-row .folddt-cell {
+  background: var(--fold-data-table-row-bg, transparent);
+}
 .folddt-row {
   transition: background var(--fold-motion-fast);
 }
@@ -180,7 +191,10 @@
 
 /* Hover (default on) — wins over zebra + tone tint. */
 .folddt--hover .folddt-row:hover .folddt-cell {
-  background: var(--fold-color-surface-raised);
+  background: var(
+    --fold-data-table-row-hover-bg,
+    var(--fold-color-surface-raised)
+  );
 }
 .folddt--hover .folddt-row.tone-warning:hover .folddt-cell {
   background: color-mix(in srgb, var(--fold-color-warning) 16%, transparent);
@@ -493,7 +507,10 @@
 .folddt-detail-row > .folddt-detail {
   padding: 0;
   border-top: 0;
-  background: var(--fold-color-surface-sunken);
+  background: var(
+    --fold-data-table-detail-bg,
+    var(--fold-color-surface-sunken)
+  );
   box-shadow: inset 0 1px 0 var(--fold-color-border-subtle);
 }
 
@@ -510,7 +527,10 @@
 .folddt-cardlist .folddt-detail {
   margin-top: var(--fold-space-sm);
   border-radius: var(--fold-radius-md);
-  background: var(--fold-color-surface-sunken);
+  background: var(
+    --fold-data-table-detail-bg,
+    var(--fold-color-surface-sunken)
+  );
   padding: var(--fold-space-md);
 }
 

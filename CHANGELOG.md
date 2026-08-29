@@ -6,7 +6,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **Les trois surfaces du corps de `fold-data-table` se thèment** —
+  `--fold-data-table-row-bg`, `--fold-data-table-row-hover-bg`,
+  `--fold-data-table-detail-bg`.
+
+  Elles vont ensemble : une table dessinée sur du papier veut que
+  l'interaction CREUSE une rangée, une table posée sur la page veut qu'elle la
+  LÈVE. Le sens dépend de la façon dont le papier de l'app est étagé, et
+  l'app est seule à le savoir — mieux vaut qu'elle le dise que de la voir
+  batailler contre la cascade depuis l'extérieur.
+
+  Le défaut de `row-bg` est l'absence de fond : la table prend la couleur de ce
+  sur quoi on l'a posée, ce qui est exactement ce qu'une table dans une carte
+  doit faire.
 
 ## [0.21.0] - 2026-08-29
 
