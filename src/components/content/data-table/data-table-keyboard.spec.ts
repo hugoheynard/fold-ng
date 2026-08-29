@@ -50,6 +50,29 @@ describe("data-table-keyboard helpers", () => {
     expect(document.activeElement).toBe(rows[2]);
   });
 
+  it("steps OVER a detail drawer instead of jamming on it", () => {
+    // Une rangée de tiroir n'a pas de `tabindex` : `focus()` n'y ferait rien et
+    // la navigation resterait bloquée sur la ligne qu'on vient d'ouvrir.
+    const drawer = document.createElement("tr");
+    rows[0]!.after(drawer);
+
+    focusAdjacentRow(rows[0]!, "nextElementSibling");
+    expect(document.activeElement).toBe(rows[1]);
+
+    focusAdjacentRow(rows[1]!, "previousElementSibling");
+    expect(document.activeElement).toBe(rows[0]);
+  });
+
+  it("focusEdgeRow lands on a ROW even when a drawer closes the body", () => {
+    // Le dernier enfant du `<tbody>` est le tiroir de la dernière ligne quand
+    // elle est ouverte : « Fin » viserait un élément qui ne prend pas le focus.
+    const drawer = document.createElement("tr");
+    rows[2]!.after(drawer);
+
+    focusEdgeRow(rows[0]!, "lastElementChild");
+    expect(document.activeElement).toBe(rows[2]);
+  });
+
   it("both helpers ignore a non-Element target (SSR / detached safety)", () => {
     expect(() => focusAdjacentRow(null, "nextElementSibling")).not.toThrow();
     expect(() => focusEdgeRow(null, "firstElementChild")).not.toThrow();

@@ -485,3 +485,75 @@
 .folddt-card-grid dd.right {
   font-variant-numeric: tabular-nums;
 }
+
+/* ── Le tiroir de détail ───────────────────────────────────────────────────
+   Une rangée pleine largeur sous la sienne, creusée d'un cran : le tiroir se
+   distingue de la ligne sans se détacher d'elle. Rien ici ne met en forme le
+   CONTENU — il appartient au gabarit projeté, qui porte son encapsulation. */
+.folddt-detail-row > .folddt-detail {
+  padding: 0;
+  border-top: 0;
+  background: var(--fold-color-surface-sunken);
+  box-shadow: inset 0 1px 0 var(--fold-color-border-subtle);
+}
+
+.folddt-detail {
+  padding: var(--fold-space-md) var(--fold-space-lg);
+}
+
+.folddt-cardlist .folddt-detail {
+  margin-top: var(--fold-space-sm);
+  border-radius: var(--fold-radius-md);
+  background: var(--fold-color-surface-sunken);
+  padding: var(--fold-space-md);
+}
+
+/* La colonne du bouton ne prend que sa largeur, et son en-tête est vide À
+   L'ŒIL seulement : le libellé reste dans l'arbre pour que la colonne ait un
+   nom à annoncer. */
+.folddt-expand-h {
+  width: 1%;
+}
+
+.folddt-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.folddt-cell--expand {
+  width: 1%;
+  text-align: right;
+}
+
+.folddt-expand {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--fold-color-border);
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-surface-card);
+  color: var(--fold-color-text-muted);
+  cursor: pointer;
+}
+
+.folddt-expand:hover {
+  color: var(--fold-color-text);
+}
+
+/* En carte, le bouton s'ancre au coin haut-droit : la carte est déjà une pile
+   de paires libellé/valeur, et un bouton en pied s'y lirait comme une valeur. */
+.folddt-card {
+  position: relative;
+}
+
+.folddt-expand--card {
+  position: absolute;
+  top: var(--fold-space-sm);
+  right: var(--fold-space-sm);
+}

@@ -73,6 +73,14 @@
                 }
               </th>
             }
+            @if (expandable()) {
+              <!-- Une colonne sans nom : son en-tête est vide À DESSEIN, mais
+                   pas muette — le libellé part en texte masqué, sinon la
+                   dernière colonne est annoncée « colonne 8 ». -->
+              <th scope="col" class="folddt-expand-h">
+                <span class="folddt-sr">{{ l().expandRow }}</span>
+              </th>
+            }
           </tr>
         </thead>
         <tbody>
@@ -134,7 +142,46 @@
                   </td>
                 }
               }
+              @if (expandable()) {
+                <td class="folddt-cell folddt-cell--expand">
+                  <button
+                    type="button"
+                    class="folddt-expand"
+                    [attr.aria-expanded]="isRowExpanded(row, i)"
+                    [attr.aria-controls]="detailId(row, i)"
+                    [attr.aria-label]="
+                      isRowExpanded(row, i) ? l().collapseRow : l().expandRow
+                    "
+                    (click)="$event.stopPropagation(); toggleExpand(row, i)"
+                  >
+                    <fold-icon
+                      [name]="
+                        isRowExpanded(row, i) ? 'chevron-up' : 'chevron-down'
+                      "
+                      [size]="16"
+                    />
+                  </button>
+                </td>
+              }
             </tr>
+            @if (expandable() && isRowExpanded(row, i)) {
+              <!-- La rangée du tiroir ne porte PAS de `tabindex` : elle reste
+                   hors du groupe à navigation par flèches, que les helpers
+                   savent enjamber. Une rangée focusable de plus ferait deux
+                   arrêts pour une seule ligne de tableau. -->
+              <tr class="folddt-detail-row">
+                <td
+                  class="folddt-detail"
+                  [id]="detailId(row, i)"
+                  [attr.colspan]="colCount()"
+                >
+                  <ng-container
+                    [ngTemplateOutlet]="rowDetailTemplate()!"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </td>
+              </tr>
+            }
           }
         </tbody>
       </table>
@@ -211,6 +258,34 @@
                   </div>
                 }
               </dl>
+            }
+            @if (expandable()) {
+              <button
+                type="button"
+                class="folddt-expand folddt-expand--card"
+                [attr.aria-expanded]="isRowExpanded(row, i)"
+                [attr.aria-controls]="detailId(row, i)"
+                [attr.aria-label]="
+                  isRowExpanded(row, i) ? l().collapseRow : l().expandRow
+                "
+                (click)="toggleExpand(row, i)"
+              >
+                <fold-icon
+                  [name]="isRowExpanded(row, i) ? 'chevron-up' : 'chevron-down'"
+                  [size]="16"
+                />
+              </button>
+              @if (isRowExpanded(row, i)) {
+                <!-- DANS la carte, et non sous la liste : c'est la même
+                     promesse que sur la table large — on ouvre une ligne sans
+                     quitter la place qu'on a mis du temps à trouver. -->
+                <div class="folddt-detail" [id]="detailId(row, i)">
+                  <ng-container
+                    [ngTemplateOutlet]="rowDetailTemplate()!"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </div>
+              }
             }
           </div>
         </li>

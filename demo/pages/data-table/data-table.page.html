@@ -13,6 +13,41 @@
   <gal-kind-badge titleBadge kind="component" />
   <gal-composed-of [ids]="['checkbox', 'icons', 'spinner']" />
 
+  <!-- ── row detail: a drawer opened in place, under its own row ── -->
+  <div class="gal-cell" style="max-width: 640px">
+    <span class="gal-tag">row detail · expandMode="single"</span>
+    <fold-data-table
+      caption="Roster with detail"
+      [columns]="columns"
+      [rows]="rows().slice(0, 3)"
+      [rowKey]="rowKey"
+    >
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
+      <ng-template foldCell="status" let-row>
+        <fold-badge
+          [content]="statusLabel(row.status)"
+          [variant]="statusBadge(row.status)"
+        />
+      </ng-template>
+      <ng-template foldCell="tenure" let-row>{{ row.tenure }}</ng-template>
+
+      <!-- The drawer keeps the list under the reader's eyes: they opened a row
+           to look at one thing, not to leave the place they spent time
+           finding. -->
+      <ng-template foldRowDetail let-row>
+        <div style="display: grid; gap: 4px">
+          <span style="font-weight: var(--fold-weight-semibold)"
+            >{{ row.name }}</span
+          >
+          <span style="color: var(--fold-color-text-muted)"
+            >{{ row.role }} · {{ row.tenure }} months</span
+          >
+        </div>
+      </ng-template>
+    </fold-data-table>
+  </div>
+
   <!-- ── live roster: real client-side sort + row click ── -->
   <div class="gal-cell" style="max-width: 640px">
     <span class="gal-tag"

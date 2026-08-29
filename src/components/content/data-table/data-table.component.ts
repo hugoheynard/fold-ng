@@ -17,10 +17,12 @@ import {
 import { NgClass, NgTemplateOutlet } from "@angular/common";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
+import { FoldDataTableRowDetailDirective } from "./data-table-row-detail.directive";
 import { focusAdjacentRow, focusEdgeRow } from "./data-table-keyboard";
 import { observeElementWidth } from "../../../dom/observe-element-width";
 import { foldAt } from "../../../dom/fold-at";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import { FoldIdService } from "../../../a11y/id.service";
 import { FoldSpinnerComponent } from "../../foundations/spinner/spinner.component";
 import { FoldCheckboxComponent } from "../../forms/checkbox/checkbox.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
@@ -50,6 +52,13 @@ const CARDS_AT = 600;
  * checkbox column, the header select-all (with an indeterminate state over the
  * current rows), and the selected-row tint. Bind it one-way (`[selected]`) to
  * stay fully controlled.
+ *
+ * A row can open a **detail drawer in place**: project a
+ * `<ng-template foldRowDetail let-row>` and the table grows a trailing toggle
+ * column, opening the drawer beneath its row (inside the card, in the card
+ * layout). Bind `[(expanded)]` with a set of row keys to control it, or let the
+ * table own it. `expandMode` decides whether opening one closes the others —
+ * `single` by default, because a drawer is usually read one at a time.
  *
  * The narrow-screen behaviour is the parent's choice, not an imposed one, via
  * `mobileLayout`: `scroll` (default — stay tabular, scroll horizontally),
@@ -151,6 +160,20 @@ export class FoldDataTableComponent<T> {
   readonly selectionLabel = input<(row: T) => string>();
   /** Per-instance label overrides (merged over the app-wide / English defaults). */
   readonly labels = input<Partial<FoldDataTableLabels>>();
+  /**
+   * The open rows, by key. A two-way model, exactly like `selected`: bind
+   * `[(expanded)]` and the table writes the next set on every toggle, or bind
+   * one-way to stay fully controlled.
+   */
+  readonly expanded = model<ReadonlySet<string | number>>(new Set());
+  /**
+   * Whether opening a row closes the others.
+   *
+   * `single` by default — a drawer is read, not compared, and two open at once
+   * push the rest of the list off the screen for no gain. `multi` when the
+   * drawers ARE the comparison.
+   */
+  readonly expandMode = input<"single" | "multi">("single");
 
   /** Emits the clicked sortable column's `key`. */
   readonly sortChange = output<string>();
@@ -223,6 +246,43 @@ export class FoldDataTableComponent<T> {
     }
     return map;
   });
+
+  private readonly rowDetail = contentChild(FoldDataTableRowDetailDirective);
+
+  /** The drawer template, or `null`. Its PRESENCE is the feature switch. */
+  protected readonly rowDetailTemplate = computed<TemplateRef<unknown> | null>(
+    () => this.rowDetail()?.template ?? null,
+  );
+
+  protected readonly expandable = computed(
+    () => this.rowDetailTemplate() !== null,
+  );
+
+  /** Stable prefix for the drawer ids the toggles point at with `aria-controls`. */
+  private readonly uid = inject(FoldIdService).next("fold-data-table");
+
+  protected detailId(row: T, index: number): string {
+    return `${this.uid}-detail-${this.keyOf(row, index)}`;
+  }
+
+  protected isRowExpanded(row: T, index: number): boolean {
+    return this.expanded().has(this.keyOf(row, index));
+  }
+
+  /** Toggles a row's drawer, honouring {@link expandMode}. */
+  protected toggleExpand(row: T, index: number): void {
+    const key = this.keyOf(row, index);
+    const open = this.expanded();
+    if (open.has(key)) {
+      const next = new Set(open);
+      next.delete(key);
+      this.expanded.set(next);
+      return;
+    }
+    this.expanded.set(
+      this.expandMode() === "single" ? new Set([key]) : new Set(open).add(key),
+    );
+  }
 
   private readonly rowCard = contentChild(FoldDataTableRowCardDirective);
   /**
@@ -297,7 +357,10 @@ export class FoldDataTableComponent<T> {
 
   /** Total ARIA column count (data columns + the checkbox column). */
   readonly colCount = computed(
-    () => this.columns().length + (this.selectable() ? 1 : 0),
+    () =>
+      this.columns().length +
+      (this.selectable() ? 1 : 0) +
+      (this.expandable() ? 1 : 0),
   );
 
   /** Current row keys, in order — the roving-nav anchor set. */

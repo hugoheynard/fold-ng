@@ -6,6 +6,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { FoldDataTableComponent } from "./data-table.component";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
+import { FoldDataTableRowDetailDirective } from "./data-table-row-detail.directive";
 import type {
   FoldTableColumn,
   FoldTableSort,
@@ -804,5 +805,108 @@ describe("FoldDataTableComponent i18n labels", () => {
     expect(
       el.querySelector(".folddt-th-sort")?.getAttribute("aria-label"),
     ).toBe("Trier par Name");
+  });
+});
+
+// ── Le tiroir de détail ────────────────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [
+    FoldDataTableComponent,
+    FoldDataTableCellDirective,
+    FoldDataTableRowDetailDirective,
+  ],
+  template: `
+    <fold-data-table
+      [columns]="columns"
+      [rows]="rows"
+      [rowKey]="rowKey"
+      [expandMode]="mode()"
+      [(expanded)]="open"
+    >
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="plain" let-row>plain</ng-template>
+      <ng-template foldRowDetail let-row>
+        <p class="drawer">drawer-{{ row.id }}</p>
+      </ng-template>
+    </fold-data-table>
+  `,
+})
+class DetailHost {
+  readonly columns = COLUMNS;
+  readonly rows: Row[] = [
+    { id: "a", name: "Alice", tone: null },
+    { id: "b", name: "Bob", tone: null },
+  ];
+  readonly rowKey = (row: Row): string => row.id;
+  readonly mode = signal<"single" | "multi">("single");
+  readonly open = signal<ReadonlySet<string | number>>(new Set());
+}
+
+describe("FoldDataTableComponent — row detail", () => {
+  function render() {
+    const fixture = TestBed.createComponent(DetailHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const toggles = (): HTMLButtonElement[] =>
+      Array.from(el.querySelectorAll("button.folddt-expand"));
+    return { fixture, el, toggles };
+  }
+
+  it("grows a toggle per row only when a detail template is projected", () => {
+    const { toggles } = render();
+    expect(toggles().length).toBe(2);
+  });
+
+  it("opens the drawer under its own row, and names it for assistive tech", () => {
+    const { fixture, el, toggles } = render();
+    expect(el.querySelector(".drawer")).toBeNull();
+
+    toggles()[0]!.click();
+    fixture.detectChanges();
+
+    const drawer = el.querySelector(".folddt-detail");
+    expect(drawer?.textContent).toContain("drawer-a");
+    // Le bouton POINTE le tiroir : sans `aria-controls`, un lecteur d'écran
+    // annonce « développé » sans dire ce qui s'est ouvert.
+    expect(toggles()[0]!.getAttribute("aria-expanded")).toBe("true");
+    expect(toggles()[0]!.getAttribute("aria-controls")).toBe(drawer?.id);
+    expect(drawer?.id).toBeTruthy();
+  });
+
+  it("closes the previous drawer in single mode, keeps it in multi", () => {
+    const { fixture, el, toggles } = render();
+    toggles()[0]!.click();
+    fixture.detectChanges();
+    toggles()[1]!.click();
+    fixture.detectChanges();
+    expect(el.querySelectorAll(".drawer").length).toBe(1);
+    expect(el.querySelector(".drawer")?.textContent).toContain("drawer-b");
+
+    fixture.componentInstance.mode.set("multi");
+    fixture.detectChanges();
+    toggles()[0]!.click();
+    fixture.detectChanges();
+    expect(el.querySelectorAll(".drawer").length).toBe(2);
+  });
+
+  it("writes the open set back to the parent", () => {
+    // Deux vues d'un même état qui se mesurent chacune de leur côté finissent
+    // par diverger : le tableau écrit, le parent lit.
+    const { fixture, toggles } = render();
+    toggles()[1]!.click();
+    fixture.detectChanges();
+    expect([...fixture.componentInstance.open()]).toEqual(["b"]);
+  });
+
+  it("keeps the drawer OUT of the arrow-key group", () => {
+    // Une rangée focusable de plus ferait deux arrêts pour une seule ligne.
+    const { fixture, el, toggles } = render();
+    toggles()[0]!.click();
+    fixture.detectChanges();
+    const drawerRow = el.querySelector("tr.folddt-detail-row");
+    expect(drawerRow).not.toBeNull();
+    expect(drawerRow!.hasAttribute("tabindex")).toBe(false);
   });
 });

@@ -6,7 +6,37 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-data-table` : le tiroir de détail**, ouvert EN PLACE sous sa propre
+  ligne. On projette un `<ng-template foldRowDetail let-row>` et la table fait
+  le reste : une colonne de bascule en fin de rangée, un tiroir pleine largeur
+  sous la ligne, et — en vue étroite — le même tiroir DANS la carte.
+
+  Sa présence est l'interrupteur : une table sans gabarit de détail se comporte
+  exactement comme avant. `[(expanded)]` est un modèle à double sens, comme
+  `selected` ; `expandMode` décide si ouvrir une ligne ferme les autres —
+  `single` par défaut, parce qu'un tiroir se lit et ne se compare pas, et que
+  deux tiroirs ouverts chassent le reste de la liste hors de l'écran.
+
+  Pourquoi en place plutôt qu'un panneau : on ouvre une ligne pour regarder une
+  chose, pas pour quitter l'endroit qu'on a mis du temps à trouver. C'est aussi
+  pourquoi la vue en cartes garde le tiroir dans la carte au lieu de basculer
+  vers une autre surface — même promesse, même geste, quelle que soit la
+  largeur.
+
+  Le bouton porte `aria-expanded` et **pointe** son tiroir par `aria-controls` :
+  sans lui, un lecteur d'écran annonce « développé » sans dire ce qui s'est
+  ouvert. La colonne de bascule a un en-tête vide à l'œil seulement — le
+  libellé reste dans l'arbre, sinon la dernière colonne s'annonce « colonne 8 ».
+
+### Fixed
+
+- **Navigation clavier : les flèches enjambent un tiroir ouvert.** Les aides
+  de focus prenaient le frère IMMÉDIAT ; avec un tiroir intercalé, la flèche
+  visait une rangée sans `tabindex` et le focus ne bougeait plus — la
+  navigation semblait se bloquer exactement sur les lignes qu'on venait
+  d'ouvrir. `Fin` avait le même défaut quand la dernière ligne était ouverte.
 
 ## [0.19.0] - 2026-08-28
 

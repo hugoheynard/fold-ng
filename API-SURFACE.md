@@ -262,6 +262,8 @@
 - columns: InputSignal<readonly FoldTableColumn[]> — required
 - density: InputSignal<"comfortable" | "compact">
 - empty: InputSignal<FoldTableEmpty | undefined>
+- expanded: ModelSignal<ReadonlySet<string | number>>
+- expandMode: InputSignal<"single" | "multi">
 - hover: InputSignalWithTransform<boolean, unknown>
 - labels: InputSignal<Partial<FoldDataTableLabels> | undefined>
 - loading: InputSignalWithTransform<boolean, unknown>
@@ -282,6 +284,9 @@
 - zebra: InputSignalWithTransform<boolean, unknown>
 
 #### FoldDataTableRowCardDirective
+- (no input·model·output bindings)
+
+#### FoldDataTableRowDetailDirective
 - (no input·model·output bindings)
 
 #### FoldDateComponent

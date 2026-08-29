@@ -17,6 +17,10 @@ export interface FoldDataTableLabels {
   readonly sortBy: (column: string) => string;
   /** The loading spinner's accessible label. */
   readonly loading: string;
+  /** A closed row's toggle `aria-label` — opens the detail drawer. */
+  readonly expandRow: string;
+  /** An open row's toggle `aria-label` — closes it. */
+  readonly collapseRow: string;
 }
 
 /** The English defaults — the base every override merges onto. */
@@ -25,6 +29,8 @@ export const FOLD_DATA_TABLE_DEFAULT_LABELS: FoldDataTableLabels = {
   selectRow: "Select row",
   sortBy: (column) => `Sort by ${column}`,
   loading: "Loading…",
+  expandRow: "Show details",
+  collapseRow: "Hide details",
 };
 
 /** App-wide data-table labels; defaults to English. */

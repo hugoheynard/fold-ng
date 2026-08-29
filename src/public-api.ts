@@ -82,6 +82,7 @@ export { FoldHeroCardComponent } from "./components/content/hero-card/hero-card.
 export { FoldDataTableComponent } from "./components/content/data-table/data-table.component";
 export { FoldDataTableCellDirective } from "./components/content/data-table/data-table-cell.directive";
 export { FoldDataTableRowCardDirective } from "./components/content/data-table/data-table-row-card.directive";
+export { FoldDataTableRowDetailDirective } from "./components/content/data-table/data-table-row-detail.directive";
 export {
   provideFoldDataTableLabels,
   FOLD_DATA_TABLE_LABELS,
