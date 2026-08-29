@@ -85,6 +85,29 @@
     </fold-card>
 
     <div class="demo-row">
+      <!-- The voice hooks: one declaration, every button in the scope. What is
+           shown here is exactly what an app writes once on its theme root. -->
+      <div
+        class="gal-cell"
+        style="
+          --fold-button-weight: 900;
+          --fold-button-transform: uppercase;
+          --fold-button-tracking: 0.06em;
+          --fold-button-radius: 12px;
+          --fold-button-min-height: 44px;
+        "
+      >
+        <span class="gal-tag"
+          >themed voice · weight · caps · radius · height</span
+        >
+        <div class="demo-line">
+          <button foldButton size="sm">solid</button>
+          <button foldButton size="sm" emphasis="soft">soft</button>
+          <button foldButton size="sm" emphasis="outline" intent="danger">
+            outline
+          </button>
+        </div>
+      </div>
       <div class="gal-cell">
         <span class="gal-tag">size · sm / md / lg</span>
         <div class="demo-line">

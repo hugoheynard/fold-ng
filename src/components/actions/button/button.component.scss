@@ -5,6 +5,19 @@
 // ═══════════════════════════════════════════════════════
 
 // ─── Base reset (the host is the button) ───────────────
+//
+// THE VOICE HOOKS. A brand's buttons speak in a register — a display family,
+// a weight, capitals, a corner, a minimum height — and that register is the
+// same on every button of the app. Without a hook the only way to say it is
+// from outside, and outside always loses: `:host(.md)` carries an attribute
+// AND a class, so an app's own class never outranks it. The result is a
+// screen that hand-rolls its buttons rather than one that themes them, and
+// then the design system stops being where buttons are decided.
+//
+// What is NOT here is as deliberate: `font-size` and `padding` stay with the
+// size presets. A voice is a register, not a scale — an app that overrode the
+// size from here would flatten `sm`/`md`/`lg` into one button wearing three
+// names.
 :host {
   all: unset;
   box-sizing: border-box;
@@ -15,8 +28,11 @@
   justify-content: center;
   gap: 0.4em;
   white-space: nowrap;
-  font-family: inherit;
-  font-weight: var(--fold-weight-semibold);
+  min-height: var(--fold-button-min-height, auto);
+  font-family: var(--fold-button-font, inherit);
+  font-weight: var(--fold-button-weight, var(--fold-weight-semibold));
+  letter-spacing: var(--fold-button-tracking, inherit);
+  text-transform: var(--fold-button-transform, none);
   transition:
     background var(--fold-motion-fast),
     border-color var(--fold-motion-fast),
@@ -59,13 +75,13 @@
 :host(.sm) {
   font-size: var(--fold-text-sm);
   padding: 0.3rem 0.7rem;
-  border-radius: var(--fold-radius-xs);
+  border-radius: var(--fold-button-radius, var(--fold-radius-xs));
 }
 
 :host(.md) {
   font-size: var(--fold-text-base);
   padding: 0.45rem 1rem;
-  border-radius: var(--fold-radius-sm);
+  border-radius: var(--fold-button-radius, var(--fold-radius-sm));
 }
 
 // `lg` renders one step above `md`. It used to name the same size token, so the
@@ -74,10 +90,12 @@
 :host(.lg) {
   font-size: var(--fold-text-lg);
   padding: 0.6rem 1.3rem;
-  border-radius: var(--fold-radius-sm);
+  border-radius: var(--fold-button-radius, var(--fold-radius-sm));
 }
 
 // ─── Shape ─────────────────────────────────────────────
+// `pill` overrides both the size's radius and `--fold-button-radius`: asking
+// for a pill is more specific an intent than a theme's default corner.
 // `pill` overrides the size's radius (declared after, same specificity). The
 // rounded ends eat into the label, so give it roomier horizontal padding —
 // `em`-based so it scales with the button's font-size. Vertical padding stays

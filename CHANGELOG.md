@@ -8,6 +8,26 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ### Added
 
+- **`[foldButton]` : six crochets de thème pour sa VOIX** —
+  `--fold-button-font`, `--fold-button-weight`, `--fold-button-tracking`,
+  `--fold-button-transform`, `--fold-button-radius`,
+  `--fold-button-min-height`.
+
+  Les boutons d'une marque parlent dans un registre — une famille d'affichage,
+  une graisse, des capitales, un angle, une hauteur plancher — et ce registre
+  est le même sur tous les boutons de l'app. Une app le déclare désormais UNE
+  fois sur une racine.
+
+  Ils existent parce que l'extérieur PERD toujours : `:host(.md)` porte un
+  attribut et une classe, donc une classe d'app ne peut pas le surclasser.
+  Sans crochet, l'écran qui veut son registre réécrit le bouton à la main — et
+  le système cesse d'être l'endroit où les boutons se décident.
+
+  `font-size` et `padding` ne sont volontairement PAS des crochets : ils
+  appartiennent aux préréglages de taille. Une voix est un registre, pas une
+  échelle, et une app qui écraserait la taille d'ici aplatirait `sm`/`md`/`lg`
+  en un seul bouton portant trois noms.
+
 - **`FoldTableColumn.value`** — une colonne qui ne fait qu'afficher un champ le
   DIT, au lieu de réclamer un `<ng-template foldCell>` pour une interpolation.
 

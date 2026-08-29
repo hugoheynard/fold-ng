@@ -47,6 +47,39 @@ const ICON_SIZE: Record<FoldButtonSize, FoldIconSize> = {
  * <a foldButton emphasis="outline" intent="neutral" routerLink="/contracts">Contracts</a>
  * ```
  *
+ * ## Theming its voice
+ *
+ * A brand's buttons speak in a register — a display family, a weight, capitals,
+ * a corner, a floor height — and that register is the same on every button of
+ * the app. Six custom properties carry it, all inherited, so an app states it
+ * **once** on a root and never again:
+ *
+ * - `--fold-button-font` · `--fold-button-weight` · `--fold-button-tracking` ·
+ *   `--fold-button-transform` — the type.
+ * - `--fold-button-radius` — the corner (a `shape="pill"` still wins; asking
+ *   for a pill is a more specific intent than a theme's default corner).
+ * - `--fold-button-min-height` — the floor, for a design with a touch target
+ *   taller than the label needs.
+ *
+ * They exist because outside always LOSES: `:host(.md)` carries an attribute
+ * and a class, so an app's own class cannot outrank it. Without a hook, a
+ * screen that needs its own register hand-rolls the button — and then the
+ * design system stops being where buttons are decided.
+ *
+ * `font-size` and `padding` are deliberately NOT hooks: they belong to the size
+ * presets. A voice is a register, not a scale, and an app that overrode the
+ * size from here would flatten `sm`/`md`/`lg` into one button wearing three
+ * names.
+ *
+ * ```css
+ * [data-theme='my-app'] {
+ *   --fold-button-font: 'Archivo', sans-serif;
+ *   --fold-button-weight: 900;
+ *   --fold-button-transform: uppercase;
+ *   --fold-button-tracking: 0.04em;
+ * }
+ * ```
+ *
  * A `foldButton` expects a **text label** (projected) for its accessible name.
  * For an icon-only affordance use `fold-button-icon` (which takes a `tooltip`);
  * the leading/trailing `icon` inputs here are decorations beside a label.
