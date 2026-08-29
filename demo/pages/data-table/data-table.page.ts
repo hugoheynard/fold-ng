@@ -101,9 +101,9 @@ const STATUS_META: Record<
   templateUrl: "./data-table.page.html",
 })
 export default class DataTablePage {
-  protected readonly columns: readonly FoldTableColumn[] = [
+  protected readonly columns: readonly FoldTableColumn<Member>[] = [
     { key: "name", label: "Member", sortable: true },
-    { key: "role", label: "Role" },
+    { key: "role", label: "Role", value: (m) => m.role },
     { key: "status", label: "Status" },
     { key: "tenure", label: "Months", sortable: true, align: "right" },
   ];

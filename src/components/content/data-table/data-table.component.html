@@ -121,10 +121,14 @@
                     [ngClass]="col.cellClass || ''"
                     [attr.data-label]="col.label"
                   >
-                    <ng-container
-                      [ngTemplateOutlet]="cellTemplate(col.key)"
-                      [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                    />
+                    @if (cellTemplate(col.key); as cell) {
+                      <ng-container
+                        [ngTemplateOutlet]="cell"
+                        [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                      />
+                    } @else {
+                      {{ cellText(col, row) }}
+                    }
                   </th>
                 } @else {
                   <td
@@ -135,10 +139,14 @@
                     [ngClass]="col.cellClass || ''"
                     [attr.data-label]="col.label"
                   >
-                    <ng-container
-                      [ngTemplateOutlet]="cellTemplate(col.key)"
-                      [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                    />
+                    @if (cellTemplate(col.key); as cell) {
+                      <ng-container
+                        [ngTemplateOutlet]="cell"
+                        [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                      />
+                    } @else {
+                      {{ cellText(col, row) }}
+                    }
                   </td>
                 }
               }
@@ -225,18 +233,26 @@
             } @else {
               @if (overlineColumn(); as col) {
                 <p class="folddt-card-overline">
-                  <ng-container
-                    [ngTemplateOutlet]="cellTemplate(col.key)"
-                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                  />
+                  @if (cellTemplate(col.key); as cell) {
+                    <ng-container
+                      [ngTemplateOutlet]="cell"
+                      [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                    />
+                  } @else {
+                    {{ cellText(col, row) }}
+                  }
                 </p>
               }
               @if (identityColumn(); as col) {
                 <p class="folddt-card-identity">
-                  <ng-container
-                    [ngTemplateOutlet]="cellTemplate(col.key)"
-                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                  />
+                  @if (cellTemplate(col.key); as cell) {
+                    <ng-container
+                      [ngTemplateOutlet]="cell"
+                      [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                    />
+                  } @else {
+                    {{ cellText(col, row) }}
+                  }
                 </p>
               }
               <!-- A <dl> and not a `::before { content: attr(data-label) }`:
@@ -250,10 +266,17 @@
                   <div class="folddt-card-pair">
                     <dt>{{ col.label }}</dt>
                     <dd [class.right]="col.align === 'right'">
-                      <ng-container
-                        [ngTemplateOutlet]="cellTemplate(col.key)"
-                        [ngTemplateOutletContext]="{ $implicit: row, index: i }"
-                      />
+                      @if (cellTemplate(col.key); as cell) {
+                        <ng-container
+                          [ngTemplateOutlet]="cell"
+                          [ngTemplateOutletContext]="{
+                            $implicit: row,
+                            index: i,
+                          }"
+                        />
+                      } @else {
+                        {{ cellText(col, row) }}
+                      }
                     </dd>
                   </div>
                 }

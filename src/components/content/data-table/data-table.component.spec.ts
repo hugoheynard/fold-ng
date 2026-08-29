@@ -910,3 +910,70 @@ describe("FoldDataTableComponent — row detail", () => {
     expect(drawerRow!.hasAttribute("tabindex")).toBe(false);
   });
 });
+
+// ── L'accesseur de valeur ──────────────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [FoldDataTableComponent, FoldDataTableCellDirective],
+  template: `
+    <fold-data-table [columns]="columns" [rows]="rows" [rowKey]="rowKey">
+      <!-- Seule la colonne qui a du BALISAGE réclame un gabarit. -->
+      <ng-template foldCell="plain" let-row>
+        <em class="rich">{{ row.name }}</em>
+      </ng-template>
+    </fold-data-table>
+  `,
+})
+class ValueHost {
+  readonly columns: FoldTableColumn<Row>[] = [
+    { key: "name", label: "Nom", value: (row) => row.name },
+    { key: "plain", label: "Détail", value: (row) => `texte-${row.id}` },
+  ];
+  readonly rows: Row[] = [{ id: "a", name: "Alice", tone: null }];
+  readonly rowKey = (row: Row): string => row.id;
+}
+
+@Component({
+  standalone: true,
+  imports: [FoldDataTableComponent],
+  template: `<fold-data-table [columns]="columns" [rows]="rows" />`,
+})
+class OrphanHost {
+  readonly columns: FoldTableColumn<Row>[] = [{ key: "orphan", label: "Vide" }];
+  readonly rows: Row[] = [{ id: "a", name: "Alice", tone: null }];
+}
+
+describe("FoldDataTableComponent — value accessor", () => {
+  it("prints a plain column without asking it for a template", () => {
+    // Quatre colonnes sur sept ne font qu'afficher un champ ; leur réclamer un
+    // gabarit chacune enterre les deux qui en méritent vraiment un.
+    const fixture = TestBed.createComponent(ValueHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector("th.is-primary")?.textContent?.trim()).toBe(
+      "Alice",
+    );
+  });
+
+  it("lets a template WIN over the accessor", () => {
+    // Une colonne qui porte les deux est une colonne en cours de migration, pas
+    // un conflit à arbitrer : le balisage gagne, et la définition ne bouge pas.
+    const fixture = TestBed.createComponent(ValueHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector(".rich")?.textContent?.trim()).toBe("Alice");
+    expect(el.textContent).not.toContain("texte-a");
+  });
+
+  it("warns about a column that defines neither", () => {
+    // Une cellule vide, identique sur toutes les lignes, se lit comme une
+    // DONNÉE manquante et non comme une définition manquante.
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const fixture = TestBed.createComponent(OrphanHost);
+    fixture.detectChanges();
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('column "orphan" has neither a value accessor'),
+    );
+  });
+});

@@ -89,7 +89,7 @@ const CARDS_AT = 600;
   styleUrl: "./data-table.component.scss",
 })
 export class FoldDataTableComponent<T> {
-  readonly columns = input.required<readonly FoldTableColumn[]>();
+  readonly columns = input.required<readonly FoldTableColumn<T>[]>();
   readonly rows = input.required<readonly T[]>();
   /** Stable row identity — defaults to the row index. */
   readonly rowKey = input<(row: T, index: number) => string | number>();
@@ -221,6 +221,27 @@ export class FoldDataTableComponent<T> {
       }
     });
 
+    // Dev guard: a column that neither projects a template nor carries a
+    // `value` renders an empty cell — silently, and identically for every row,
+    // which reads as missing DATA rather than as a missing definition.
+    effect(() => {
+      if (!isDevMode()) {
+        return;
+      }
+      for (const column of this.columns()) {
+        if (
+          column.value === undefined &&
+          this.cellTemplate(column.key) === null
+        ) {
+          console.warn(
+            `[fold-data-table] column "${column.key}" has neither a value ` +
+              `accessor nor a <ng-template foldCell="${column.key}">; its cells ` +
+              `render empty.`,
+          );
+        }
+      }
+    });
+
     // Dev guard: `truncate` clips against the column `width`; without one it
     // silently won't truncate. Warn so the misuse surfaces at authoring time.
     effect(() => {
@@ -306,34 +327,40 @@ export class FoldDataTableComponent<T> {
   );
 
   /** The column that names the row — `primaryKey`, else the first one. */
-  protected readonly identityColumn = computed<FoldTableColumn | null>(() => {
-    const cols = this.columns();
-    const key = this.primaryKey();
-    return cols.find((c) => c.key === key) ?? cols[0] ?? null;
-  });
+  protected readonly identityColumn = computed<FoldTableColumn<T> | null>(
+    () => {
+      const cols = this.columns();
+      const key = this.primaryKey();
+      return cols.find((c) => c.key === key) ?? cols[0] ?? null;
+    },
+  );
 
   /**
    * The small line above the identity: the second column, but only when it is
    * a `truncate` one — that flag is how a table says "this is a long, secondary
    * string" (a reference, a path), which is exactly what an overline is for.
    */
-  protected readonly overlineColumn = computed<FoldTableColumn | null>(() => {
-    const rest = this.columns().filter(
-      (c) => c.key !== this.identityColumn()?.key,
-    );
-    const second = rest[0];
-    return second?.truncate === true ? second : null;
-  });
+  protected readonly overlineColumn = computed<FoldTableColumn<T> | null>(
+    () => {
+      const rest = this.columns().filter(
+        (c) => c.key !== this.identityColumn()?.key,
+      );
+      const second = rest[0];
+      return second?.truncate === true ? second : null;
+    },
+  );
 
   /** Everything else, as label/value pairs. */
-  protected readonly gridColumns = computed<readonly FoldTableColumn[]>(() => {
-    const skip = new Set(
-      [this.identityColumn()?.key, this.overlineColumn()?.key].filter(
-        (k): k is string => k !== undefined,
-      ),
-    );
-    return this.columns().filter((c) => !skip.has(c.key));
-  });
+  protected readonly gridColumns = computed<readonly FoldTableColumn<T>[]>(
+    () => {
+      const skip = new Set(
+        [this.identityColumn()?.key, this.overlineColumn()?.key].filter(
+          (k): k is string => k !== undefined,
+        ),
+      );
+      return this.columns().filter((c) => !skip.has(c.key));
+    },
+  );
 
   /** The custom mobile-card template, only when `mobileLayout="custom"`. */
   readonly rowCardTemplate = computed<TemplateRef<unknown> | null>(
@@ -381,6 +408,18 @@ export class FoldDataTableComponent<T> {
 
   cellTemplate(key: string): TemplateRef<unknown> | null {
     return this.cellMap().get(key) ?? null;
+  }
+
+  /**
+   * What a cell prints when no template claims it.
+   *
+   * Empty rather than `undefined`: a column with neither template nor accessor
+   * is an authoring mistake, and the dev guard says so — the render's job is to
+   * stay quiet, not to print `undefined` in front of a user.
+   */
+  protected cellText(column: FoldTableColumn<T>, row: T): string {
+    const read = column.value;
+    return read === undefined ? "" : String(read(row));
   }
 
   keyOf(row: T, index: number): string | number {

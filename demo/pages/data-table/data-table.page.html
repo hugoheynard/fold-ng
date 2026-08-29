@@ -23,7 +23,6 @@
       [rowKey]="rowKey"
     >
       <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
-      <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
       <ng-template foldCell="status" let-row>
         <fold-badge
           [content]="statusLabel(row.status)"
@@ -342,7 +341,6 @@
             >
           </div>
         </ng-template>
-        <ng-template foldCell="role" let-row>{{ row.role }}</ng-template>
         <ng-template foldCell="status" let-row>
           <fold-badge
             [content]="statusLabel(row.status)"

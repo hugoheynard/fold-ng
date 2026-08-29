@@ -6,7 +6,28 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`FoldTableColumn.value`** — une colonne qui ne fait qu'afficher un champ le
+  DIT, au lieu de réclamer un `<ng-template foldCell>` pour une interpolation.
+
+  ```ts
+  { key: "date", label: "Date", value: (row) => row.date }
+  ```
+
+  Quatre colonnes sur sept sont de celles-là dans une table réelle, et leur
+  demander un gabarit chacune enterre les deux qui en méritent vraiment un. Le
+  gabarit reste la voie du BALISAGE — une pastille, deux lignes empilées, un
+  lien — et il **gagne** quand les deux sont donnés : une colonne qui porte
+  l'accesseur et le gabarit est une colonne en cours de migration, pas un
+  conflit à arbitrer.
+
+  `FoldTableColumn` devient générique sur le type de ligne pour que l'accesseur
+  soit typé ; le défaut `unknown` garde un `FoldTableColumn[]` nu valide.
+
+  Un garde de développement signale la colonne qui ne définit ni l'un ni
+  l'autre : ses cellules se rendent vides, à l'identique sur chaque ligne, ce
+  qui se lit comme une donnée manquante et non comme une définition manquante.
 
 ## [0.22.1] - 2026-08-29
 

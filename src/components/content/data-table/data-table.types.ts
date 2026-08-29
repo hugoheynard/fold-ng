@@ -14,11 +14,23 @@ export interface FoldTableSort {
 }
 
 /**
- * A column definition. Cell CONTENT is supplied by a projected
- * `<ng-template foldCell="<key>" let-row>` — this object only carries the
- * header + layout metadata.
+ * A column definition.
+ *
+ * Cell content comes from **one of two places**, and the choice is about how
+ * much the cell has to say:
+ *
+ * - {@link FoldTableColumn.value} — a plain accessor, for a column that only
+ *   prints a field. Four columns out of seven usually are, and asking each of
+ *   them for its own `<ng-template>` buries the two that actually need one.
+ * - a projected `<ng-template foldCell="<key>" let-row>` — for anything with
+ *   markup: a badge, two stacked lines, a link. It **wins** when both are
+ *   given, so a column can start as an accessor and grow a template without
+ *   its definition changing.
+ *
+ * Generic over the row type so `value` stays typed. The default `unknown` keeps
+ * a plain `FoldTableColumn[]` valid for the template-only case.
  */
-export interface FoldTableColumn {
+export interface FoldTableColumn<T = unknown> {
   /** Stable key — matches the cell template and (when sortable) the sort field. */
   readonly key: string;
   readonly label: string;
@@ -33,6 +45,14 @@ export interface FoldTableColumn {
   readonly truncate?: boolean;
   /** Extra class applied to every cell in the column. */
   readonly cellClass?: string;
+  /**
+   * Prints one value per row — the whole cell, as text.
+   *
+   * Ignored when a `foldCell` template exists for this key: markup beats text,
+   * and a column that has both is a column mid-migration, not a conflict to
+   * arbitrate.
+   */
+  readonly value?: (row: T) => string | number;
 }
 
 /** Empty-state copy shown when `rows` is empty. */

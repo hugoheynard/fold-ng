@@ -259,7 +259,7 @@
 - caption: InputSignal<string | undefined>
 - cardsAt: InputSignalWithTransform<number, unknown>
 - clickable: InputSignalWithTransform<boolean, unknown>
-- columns: InputSignal<readonly FoldTableColumn[]> — required
+- columns: InputSignal<readonly FoldTableColumn<T>[]> — required
 - density: InputSignal<"comfortable" | "compact">
 - empty: InputSignal<FoldTableEmpty | undefined>
 - expanded: ModelSignal<ReadonlySet<string | number>>
