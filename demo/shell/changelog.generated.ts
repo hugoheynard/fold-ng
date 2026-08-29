@@ -42,6 +42,200 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.23.0",
+    date: "2026-08-29",
+    unreleased: false,
+    counts: {
+      Added: 2,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "[foldButton]",
+              },
+              {
+                kind: "text",
+                value: " : six crochets de thème pour sa VOIX",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— ",
+              },
+              {
+                kind: "code",
+                value: "--fold-button-font",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "--fold-button-weight",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "--fold-button-tracking",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "--fold-button-transform",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "--fold-button-radius",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "--fold-button-min-height",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Les boutons d'une marque parlent dans un registre — une famille d'affichage, une graisse, des capitales, un angle, une hauteur plancher — et ce registre est le même sur tous les boutons de l'app. Une app le déclare désormais UNE fois sur une racine. Ils existent parce que l'extérieur PERD toujours : ",
+              },
+              {
+                kind: "code",
+                value: ":host(.md)",
+              },
+              {
+                kind: "text",
+                value:
+                  " porte un attribut et une classe, donc une classe d'app ne peut pas le surclasser. Sans crochet, l'écran qui veut son registre réécrit le bouton à la main — et le système cesse d'être l'endroit où les boutons se décident. ",
+              },
+              {
+                kind: "code",
+                value: "font-size",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "padding",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne sont volontairement PAS des crochets : ils appartiennent aux préréglages de taille. Une voix est un registre, pas une échelle, et une app qui écraserait la taille d'ici aplatirait ",
+              },
+              {
+                kind: "code",
+                value: "sm",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "md",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "lg",
+              },
+              {
+                kind: "text",
+                value: " en un seul bouton portant trois noms.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "FoldTableColumn.value",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— une colonne qui ne fait qu'afficher un champ le DIT, au lieu de réclamer un ",
+              },
+              {
+                kind: "code",
+                value: "<ng-template foldCell>",
+              },
+              {
+                kind: "text",
+                value: " pour une interpolation. ``",
+              },
+              {
+                kind: "code",
+                value:
+                  'ts { key: "date", label: "Date", value: (row) => row.date } ',
+              },
+              {
+                kind: "text",
+                value: "`",
+              },
+              {
+                kind: "code",
+                value:
+                  " Quatre colonnes sur sept sont de celles-là dans une table réelle, et leur demander un gabarit chacune enterre les deux qui en méritent vraiment un. Le gabarit reste la voie du BALISAGE — une pastille, deux lignes empilées, un lien — et il **gagne** quand les deux sont donnés : une colonne qui porte l'accesseur et le gabarit est une colonne en cours de migration, pas un conflit à arbitrer. ",
+              },
+              {
+                kind: "text",
+                value: "FoldTableColumn",
+              },
+              {
+                kind: "code",
+                value:
+                  " devient générique sur le type de ligne pour que l'accesseur soit typé ; le défaut ",
+              },
+              {
+                kind: "text",
+                value: "unknown",
+              },
+              {
+                kind: "code",
+                value: " garde un ",
+              },
+              {
+                kind: "text",
+                value:
+                  "FoldTableColumn[]` nu valide. Un garde de développement signale la colonne qui ne définit ni l'un ni l'autre : ses cellules se rendent vides, à l'identique sur chaque ligne, ce qui se lit comme une donnée manquante et non comme une définition manquante.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.22.1",
     date: "2026-08-29",
     unreleased: false,
@@ -19896,7 +20090,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.22.1...HEAD [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.23.0...HEAD [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -19908,4 +20102,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.22.1";
+export const PUBLISHED_VERSION = "0.23.0";
