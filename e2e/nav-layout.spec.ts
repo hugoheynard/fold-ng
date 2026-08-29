@@ -27,14 +27,38 @@ async function openTabNav(page: Page): Promise<FrameLocator> {
   return frame;
 }
 
-/** Click a playground control by its `params` label and the option's text. */
+/**
+ * Click a playground control by its `params` label and the option's text, and
+ * **wait for the change to land** before returning.
+ *
+ * Returning on the click alone is a race, and it bit: `size is the axis that
+ * does move type` read the label back before the preview had restyled it, saw
+ * the old 12 px twice and failed on `12 > 12`. It failed about one release in
+ * three — enough to burn a gate, rare enough to look like bad luck.
+ *
+ * Two waits, because there are two hops. `is-on` says the CONTROL committed —
+ * that is the playground's own signal. The double frame says the PREVIEW
+ * painted: the stage is a real iframe, and a style read one tick early returns
+ * the previous value with no warning that it is stale.
+ */
 async function setParam(
   page: Page,
   label: string,
   option: string,
 ): Promise<void> {
   const field = page.locator(".np-field", { hasText: label }).first();
-  await field.getByRole("button", { name: option, exact: true }).click();
+  const button = field.getByRole("button", { name: option, exact: true });
+  await button.click();
+  await expect(button).toHaveClass(/is-on/);
+  await page
+    .frameLocator(STAGE)
+    .locator("body")
+    .evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        }),
+    );
 }
 
 /**
