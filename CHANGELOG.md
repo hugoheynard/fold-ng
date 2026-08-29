@@ -34,6 +34,11 @@ _Nothing yet._
   ouvert. La colonne de bascule a un en-tête vide à l'œil seulement — le
   libellé reste dans l'arbre, sinon la dernière colonne s'annonce « colonne 8 ».
 
+- **`--fold-data-table-detail-padding`** — le rembourrage du tiroir se thème.
+  L'air d'un tiroir appartient à ce qu'on y projette : une fiche clé/valeur en
+  veut, une rangée d'actions n'en veut pas, et seul l'appelant sait ce qu'il a
+  mis dedans.
+
 ### Fixed
 
 - **Navigation clavier : les flèches enjambent un tiroir ouvert.** Les aides

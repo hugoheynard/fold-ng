@@ -497,8 +497,14 @@
   box-shadow: inset 0 1px 0 var(--fold-color-border-subtle);
 }
 
+/* Themable, because a drawer's breathing room belongs to the drawer's CONTENT:
+   a fiche of key/value rows wants air, a single line of actions wants none, and
+   only the consumer knows which one it projected. */
 .folddt-detail {
-  padding: var(--fold-space-md) var(--fold-space-lg);
+  padding: var(
+    --fold-data-table-detail-padding,
+    var(--fold-space-md) var(--fold-space-lg)
+  );
 }
 
 .folddt-cardlist .folddt-detail {
