@@ -43,7 +43,15 @@ export interface FoldTableColumn<T = unknown> {
   /** Clip overflowing text to one line with an ellipsis (pair with `width`).
    *  Cell templates should set their own `title` for the full-text tooltip. */
   readonly truncate?: boolean;
-  /** Extra class applied to every cell in the column. */
+  /**
+   * Extra class applied to every cell in the column.
+   *
+   * ⚠️ It lands on the table's OWN `<td>`/`<th>`, which wears the table's
+   * encapsulation — so a consumer's component styles cannot reach it. Only a
+   * global or utility class does anything here. To style a cell from the
+   * consumer's own stylesheet, project a `<ng-template foldCell>`: what it
+   * renders belongs to the consumer, attribute and all.
+   */
   readonly cellClass?: string;
   /**
    * Prints one value per row — the whole cell, as text.

@@ -10,6 +10,15 @@ _Nothing yet._
 
 ## [0.23.0] - 2026-08-29
 
+### Docs
+
+- **`FoldTableColumn.cellClass` dit enfin où sa classe atterrit** : sur le
+  `<td>` de la table, qui porte l'encapsulation de la TABLE. Les styles de
+  composant du consommateur ne l'atteignent donc jamais — seule une classe
+  globale y fait quelque chose. Pour habiller une cellule depuis sa propre
+  feuille de style, il faut projeter un `<ng-template foldCell>` : ce qu'il rend
+  appartient au consommateur, attribut compris.
+
 ### Added
 
 - **`[foldButton]` : six crochets de thème pour sa VOIX** —
