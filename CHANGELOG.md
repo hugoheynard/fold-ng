@@ -6,7 +6,12 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`--fold-data-table-detail-padding`** — le rembourrage du tiroir se thème.
+  L'air d'un tiroir appartient à ce qu'on y projette : une fiche clé/valeur en
+  veut, une rangée d'actions n'en veut pas, et seul l'appelant sait ce qu'il a
+  mis dedans.
 
 ## [0.20.0] - 2026-08-29
 
@@ -33,11 +38,6 @@ _Nothing yet._
   sans lui, un lecteur d'écran annonce « développé » sans dire ce qui s'est
   ouvert. La colonne de bascule a un en-tête vide à l'œil seulement — le
   libellé reste dans l'arbre, sinon la dernière colonne s'annonce « colonne 8 ».
-
-- **`--fold-data-table-detail-padding`** — le rembourrage du tiroir se thème.
-  L'air d'un tiroir appartient à ce qu'on y projette : une fiche clé/valeur en
-  veut, une rangée d'actions n'en veut pas, et seul l'appelant sait ce qu'il a
-  mis dedans.
 
 ### Fixed
 
