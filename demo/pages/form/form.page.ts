@@ -16,6 +16,7 @@ import {
   FoldTimeComponent,
   FoldViewNavComponent,
   type FoldViewNavItem,
+  FoldButtonComponent,
 } from "../../../src/public-api";
 import { DevPlaygroundComponent } from "../../components/playground.component";
 
@@ -37,6 +38,7 @@ import { DevPlaygroundComponent } from "../../components/playground.component";
     FoldDateComponent,
     FoldTimeComponent,
     FormField,
+    FoldButtonComponent,
     DevPlaygroundComponent,
   ],
   templateUrl: "./form.page.html",
@@ -52,6 +54,28 @@ export default class FormPage {
   ];
   protected readonly inputTab = signal("text");
   protected readonly searchTerm = signal("");
+
+  /** Le second exemple : la valeur EST l'état, et le filtrage suit la frappe. */
+  protected readonly searchValue = signal("");
+  private readonly fruit = [
+    "apricot",
+    "blackcurrant",
+    "cherry",
+    "fig",
+    "greengage",
+    "quince",
+  ];
+  protected readonly searchHits = computed(() => {
+    const term = this.searchValue().trim().toLowerCase();
+    return term === ""
+      ? this.fruit
+      : this.fruit.filter((name) => name.includes(term));
+  });
+
+  /** Ce qu'un `output` seul ne permettrait pas : reprendre la main sur la boîte. */
+  protected clearSearch(): void {
+    this.searchValue.set("");
+  }
 
   protected readonly selCurrency = signal("");
   protected readonly selSize = signal("");

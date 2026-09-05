@@ -2,14 +2,17 @@ import {
   booleanAttribute,
   Component,
   computed,
+  ElementRef,
   inject,
   input,
   model,
   signal,
+  viewChild,
 } from "@angular/core";
 import type { FormValueControl, ValidationError } from "@angular/forms/signals";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import { FoldInputBaseComponent } from "./input-base.component";
 import { readInputValue } from "./input-value";
 
@@ -138,6 +141,32 @@ export class FoldInputComponent implements FormValueControl<string> {
   /** Placeholder text. */
   readonly placeholder = input("");
 
+  /**
+   * An icon drawn **inside the box, before the text** — a magnifier on a search
+   * field, a currency mark on an amount.
+   *
+   * The input reserves the room itself, so the glyph never sits on the text.
+   * Purely decorative: it is `aria-hidden`, and it never replaces a `label` or
+   * an `ariaLabel` — an icon is not an accessible name.
+   */
+  readonly leadingIcon = input<FoldIconName | undefined>(undefined);
+
+  /**
+   * Show a trailing **clear** button while the field holds text.
+   *
+   * The affordance every search box grows by hand: a conditional `×` that empties
+   * the value and gives the focus back, so typing can resume without a second
+   * click. Off by default — a form field that clears itself invites the accident
+   * it cannot undo.
+   *
+   * A `revealable` password wins the trailing slot: the two never make sense
+   * together, and hiding the reveal would be the worse of the two losses.
+   */
+  readonly clearable = input(false, { transform: booleanAttribute });
+
+  /** Accessible name of the clear button. Override it to translate. */
+  readonly clearLabel = input("Clear");
+
   /** Render as read-only. Named `readOnly` (not `readonly`) to avoid the
    *  signal-forms `FormField` reserved `readonly` field-state binding. */
   readonly readOnly = input(false);
@@ -162,6 +191,9 @@ export class FoldInputComponent implements FormValueControl<string> {
 
   /** Unique, SSR-safe id for label association (see {@link FoldIdService}). */
   readonly inputId = inject(FoldIdService).next("fold-input");
+
+  /** The native control — the clear button hands the focus back to it. */
+  private readonly field = viewChild<ElementRef<HTMLInputElement>>("field");
 
   /** The message to show under the field: the first error, once touched. */
   protected readonly errorMessage = computed<string | undefined>(() => {
@@ -195,8 +227,28 @@ export class FoldInputComponent implements FormValueControl<string> {
     this.revealed() ? this.hideLabel() : this.revealLabel(),
   );
 
+  /**
+   * Whether to render the clear button: asked for, something to clear, and a
+   * field that can still be edited. A `×` over a read-only value would promise
+   * a gesture the control refuses.
+   */
+  protected readonly showClear = computed(
+    () =>
+      this.clearable() &&
+      this.value() !== "" &&
+      !this.disabled() &&
+      !this.readOnly() &&
+      !this.showReveal(),
+  );
+
   protected toggleReveal(): void {
     this.revealed.update((shown) => !shown);
+  }
+
+  /** Empties the field and returns the focus, so typing resumes in place. */
+  protected clear(): void {
+    this.value.set("");
+    this.field()?.nativeElement.focus();
   }
 
   /** Handles native input event. `value.set()` also fires the model's

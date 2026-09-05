@@ -1,0 +1,20 @@
+@if (showCount() && placement() === "top") {
+  <p class="se-count" role="status" aria-live="polite">{{ countText() }}</p>
+}
+
+<fold-input
+  type="text"
+  leadingIcon="search"
+  [clearable]="clearable()"
+  [clearLabel]="clearLabel()"
+  [placeholder]="placeholder()"
+  [ariaLabel]="ariaLabel()"
+  [size]="size()"
+  [variant]="variant()"
+  [value]="value()"
+  (valueChange)="onInput($event)"
+/>
+
+@if (showCount() && placement() !== "top") {
+  <p class="se-count" role="status" aria-live="polite">{{ countText() }}</p>
+}

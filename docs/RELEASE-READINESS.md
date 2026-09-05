@@ -115,7 +115,7 @@ and the gallery nav — **layout first**.
 | `fold-slider`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — FormValueControl, real label, focus, gallery   |
 | `fold-range-slider`  | 🟢  |  🟢   |  🟢  | **Ship-ready** — [(value)], i18n aria, disabled, gallery        |
 | `fold-file-dropzone` | 🟢  |  🟢   |  🟢  | **Ship-ready** — English defaults; keyboard + passthrough tests |
-| `fold-search`        | 🟡  |  🟢   |  🟡  | No accessible name; no clear/value                              |
+| `fold-search`        | 🟢  |  🟢   |  🟢  | **Ship-ready** — ariaLabel, clear, `[(value)]`, announced count |
 
 **Foundations** — `src/components/foundations/`
 
@@ -482,12 +482,21 @@ data-table selection column.
 `settleNumber` clamp/snap/precision, keyboard/pointer/wheel, exhaustive specs).
 Action: **it is 299/300 lines** — extract before adding anything (C-7/C-8).
 
-**`fold-search`** 🟡🟢🟡 — Clean debounce wrapper (trims, dedupes, SSR-safe
-teardown). Actions: (1) forward `label`/`aria-label` (English default) — a search
-box currently has no accessible name unless the caller wraps it; (2) `type="search"`
+**`fold-search`** 🟢🟢🟢 — **Ship-ready** since 0.25.0. It was 🟡🟢🟡 with three
+actions written here; two are done and the third is answered rather than done:
 
-- optional two-way `value` so a "clear" button can reset it; (3) destroy-teardown
-  test (no stray emit after destroy).
+1. ✅ `ariaLabel` forwards to the control — a search box no longer reaches
+   assistive tech unnamed;
+2. ✅ `value` is a `model()`, so a clear button — its own `×`, or anything
+   outside it — can reset the box;
+3. 📌 `type="search"` stays `text`. The native type buys a UA-drawn cancel
+   button we would have to hide to keep one look across browsers, and its
+   `incremental` behaviour is Safari-only. The `×` we draw is the same
+   affordance, everywhere, and it can be named in the consumer's language.
+
+Plus the piece none of the three asked for: the **result count**, announced
+(`role="status"`, `aria-live="polite"`). Every consumer wrote it beside the box
+by hand, and every one of them forgot the live region.
 
 **`fold-select`** 🟢🟢🟡 — Native `<select>` + projected options; both bindings.
 Actions: (1) README row (C-2); (2) add a `[formField]` snippet to the `@example`;

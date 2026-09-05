@@ -429,6 +429,50 @@
         </div>
         <p class="doc-p">Last emitted: “{{ searchTerm() }}”</p>
       </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">
+          fold-search · two-way value, steered from outside
+        </span>
+        <div class="fld-inputs">
+          <fold-search
+            placeholder="Filter the fruit…"
+            [(value)]="searchValue"
+            [resultCount]="searchHits().length"
+            resultLabel="fruit"
+          />
+        </div>
+        <p class="doc-p">
+          Typing filters instantly — no debounce on the value.
+          <button
+            type="button"
+            foldButton
+            variant="ghost"
+            (click)="clearSearch()"
+          >
+            Clear from outside
+          </button>
+        </p>
+        <p class="doc-p">{{ searchHits().join(" · ") || "nothing" }}</p>
+      </div>
+
+      <div class="gal-cell">
+        <span class="gal-tag">fold-search · count above, and below</span>
+        <div class="fld-inputs">
+          <fold-search
+            placeholder="Search…"
+            placement="top"
+            [resultCount]="3"
+            resultLabel="matches"
+          />
+          <fold-search
+            placeholder="Search…"
+            placement="bottom"
+            [resultCount]="0"
+            resultLabel="matches"
+          />
+        </div>
+      </div>
     </div>
     } }
   </fold-nav-layout>

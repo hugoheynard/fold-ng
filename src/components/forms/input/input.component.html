@@ -10,9 +10,14 @@
   [error]="errorMessage()"
 >
   <div class="in-field">
+    @if (leadingIcon(); as glyph) {
+      <fold-icon class="in-lead" [name]="glyph" size="sm" aria-hidden="true" />
+    }
     <input
+      #field
       [id]="inputId"
-      [class.has-reveal]="showReveal()"
+      [class.has-lead]="leadingIcon() !== undefined"
+      [class.has-reveal]="showReveal() || showClear()"
       [attr.type]="effectiveType()"
       [attr.placeholder]="placeholder()"
       [attr.readonly]="readOnly() || null"
@@ -40,6 +45,15 @@
           size="sm"
           aria-hidden="true"
         />
+      </button>
+    } @else if (showClear()) {
+      <button
+        type="button"
+        class="in-reveal"
+        [attr.aria-label]="clearLabel()"
+        (click)="clear()"
+      >
+        <fold-icon name="close" size="sm" aria-hidden="true" />
       </button>
     }
   </div>

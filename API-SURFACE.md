@@ -424,6 +424,8 @@
 - ariaLabel: InputSignal<string | undefined>
 - autocomplete: InputSignal<string | null>
 - autofocus: InputSignal<boolean>
+- clearable: InputSignalWithTransform<boolean, unknown>
+- clearLabel: InputSignal<string>
 - disabled: InputSignal<boolean>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
 - hideLabel: InputSignal<string>
@@ -431,6 +433,7 @@
 - info: InputSignal<string | undefined>
 - infoLabel: InputSignal<string | undefined>
 - label: InputSignal<string | undefined>
+- leadingIcon: InputSignal<FoldIconName | undefined>
 - optional: InputSignalWithTransform<boolean, unknown>
 - optionalLabel: InputSignal<string | undefined>
 - placeholder: InputSignal<string>
@@ -728,10 +731,17 @@
 - foldScrollRegion: InputSignalWithTransform<FoldScrollAxis, "" | FoldScrollAxis>
 
 #### FoldSearchComponent
+- ariaLabel: InputSignal<string | undefined>
+- clearable: InputSignalWithTransform<boolean, unknown>
+- clearLabel: InputSignal<string>
 - delayMs: InputSignal<number>
 - placeholder: InputSignal<string>
+- placement: InputSignal<"top" | "bottom" | "end">
+- resultCount: InputSignal<number | null>
+- resultLabel: InputSignal<string>
 - searchChange: OutputEmitterRef<string>
 - size: InputSignal<"sm" | "md" | "lg">
+- value: ModelSignal<string>
 - variant: InputSignal<"default" | "panel">
 
 #### FoldSelectComponent

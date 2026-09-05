@@ -1,0 +1,28 @@
+// The box and its count. Three placements, one rule each — the count never
+// moves the box, it only takes the space left beside or under it.
+:host {
+  display: grid;
+  gap: var(--fold-space-2xs);
+}
+
+// `end` — the count sits BESIDE the box, on the same line. `auto` and not a
+// fraction: the number owns exactly its width, and the field takes the rest.
+:host(.end) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--fold-space-sm);
+}
+
+.se-count {
+  margin: 0;
+  font-size: var(--fold-text-xs);
+  color: var(--fold-color-text-muted);
+  white-space: nowrap;
+}
+
+// Above or below, the count aligns to the trailing edge — under the eye that
+// just finished reading the field, not back at its start.
+:host(.top) .se-count,
+:host(.bottom) .se-count {
+  justify-self: end;
+}

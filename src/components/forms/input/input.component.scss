@@ -8,14 +8,32 @@
 
 @include shell.field-input-shell;
 
-// Reveal (eye) toggle for a `revealable` password — a sibling of the <input>
-// (never nested), over the trailing edge; the input reserves room for it.
+// Affixes — reveal (eye), clear (×) and the leading glyph. All are siblings of
+// the <input> (never nested), laid over its edges; the input reserves the room
+// so the text never runs under them.
 .in-field {
   position: relative;
 }
 
 :host input.has-reveal {
   padding-inline-end: 2.1rem;
+}
+
+:host input.has-lead {
+  padding-inline-start: 2.1rem;
+}
+
+// Decorative and inert: the pointer must reach the input under it, and a click
+// on the glyph should land in the field like a click on any of its padding.
+.in-lead {
+  position: absolute;
+  inset-inline-start: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  color: var(--fold-color-text-muted);
+  pointer-events: none;
 }
 
 .in-reveal {

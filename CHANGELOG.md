@@ -6,7 +6,44 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-search` devient un contrôle, et non plus un capteur.** Sa `value` est
+  un `model()` : la boîte se pilote donc de l'extérieur. C'est ce qui manquait
+  pour qu'elle remplace une recherche écrite à la main — choisir un filtre
+  ailleurs doit pouvoir VIDER le champ, et une recherche en écriture seule
+  continuait d'afficher un terme que les résultats n'honoraient plus.
+
+  Deux façons de s'en servir, et elles répondent à deux questions : `[(value)]`
+  donne le terme comme **état**, à chaque frappe — c'est ce que veut un filtrage
+  d'un tableau déjà en mémoire, où l'anti-rebond n'ajoute que de la latence ;
+  `(searchChange)` le donne comme **événement**, une fois posé — c'est ce que
+  veut une requête au serveur. Les deux se composent. Écrire `value` de
+  l'extérieur n'émet jamais : celui qui écrit sait déjà.
+
+- **`fold-search` porte enfin sa loupe, sa croix et son compte.** Les trois
+  étaient recopiés dans chaque écran, avec le même oubli à chaque fois : le
+  compte de résultats change sous une recherche, donc il doit être **annoncé**.
+  Il porte `role="status"` et `aria-live="polite"`, et un utilisateur qui ne
+  voit pas la grille apprend enfin que quatre cents lignes sont devenues trois.
+
+  `resultCount` (rien tant qu'il vaut `null`), `resultLabel` (le mot après le
+  nombre — « pièces », "rows") et `placement` : `top`, `end` ou `bottom`.
+  `end` et non `right` — la bibliothèque se pose en propriétés **logiques**, et
+  le compte doit suivre le sens de lecture plutôt qu'un côté de l'écran.
+
+- **`fold-input` gagne deux affixes**, et c'est de là que `fold-search` tire les
+  siens : `leadingIcon` dessine un glyphe DANS la boîte, avant le texte (le
+  champ réserve la place lui-même, et le glyphe ne prend pas le clic) ;
+  `clearable` + `clearLabel` posent un `×` de fin tant qu'il y a quelque chose à
+  effacer, qui vide la valeur **et rend le focus** — sans quoi il faut un second
+  clic pour reprendre la saisie.
+
+  Les deux sont à `false` par défaut : un champ de formulaire qui s'efface tout
+  seul invite l'accident qu'il ne sait pas défaire. Le `×` ne paraît ni en
+  lecture seule ni désactivé — il promettrait un geste que le contrôle refuse —
+  et un mot de passe `revealable` garde la place de fin : perdre son œil casse
+  la saisie, perdre la croix la rend seulement moins commode.
 
 ## [0.24.0] - 2026-08-29
 
