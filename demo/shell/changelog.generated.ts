@@ -42,6 +42,324 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.25.0",
+    date: "2026-09-05",
+    unreleased: false,
+    counts: {
+      Added: 3,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-search",
+              },
+              {
+                kind: "text",
+                value: " devient un contrôle, et non plus un capteur.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Sa ",
+              },
+              {
+                kind: "code",
+                value: "value",
+              },
+              {
+                kind: "text",
+                value: " est un ",
+              },
+              {
+                kind: "code",
+                value: "model()",
+              },
+              {
+                kind: "text",
+                value:
+                  " : la boîte se pilote donc de l'extérieur. C'est ce qui manquait pour qu'elle remplace une recherche écrite à la main — choisir un filtre ailleurs doit pouvoir VIDER le champ, et une recherche en écriture seule continuait d'afficher un terme que les résultats n'honoraient plus. Deux façons de s'en servir, et elles répondent à deux questions : ",
+              },
+              {
+                kind: "code",
+                value: "[(value)]",
+              },
+              {
+                kind: "text",
+                value: " donne le terme comme ",
+              },
+              {
+                kind: "strong",
+                value: "état",
+              },
+              {
+                kind: "text",
+                value:
+                  ", à chaque frappe — c'est ce que veut un filtrage d'un tableau déjà en mémoire, où l'anti-rebond n'ajoute que de la latence ; ",
+              },
+              {
+                kind: "code",
+                value: "(searchChange)",
+              },
+              {
+                kind: "text",
+                value: " le donne comme ",
+              },
+              {
+                kind: "strong",
+                value: "événement",
+              },
+              {
+                kind: "text",
+                value:
+                  ", une fois posé — c'est ce que veut une requête au serveur. Les deux se composent. Écrire ",
+              },
+              {
+                kind: "code",
+                value: "value",
+              },
+              {
+                kind: "text",
+                value:
+                  " de l'extérieur n'émet jamais : celui qui écrit sait déjà.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-search",
+              },
+              {
+                kind: "text",
+                value: " porte enfin sa loupe, sa croix et son compte.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Les trois étaient recopiés dans chaque écran, avec le même oubli à chaque fois : le compte de résultats change sous une recherche, donc il doit être ",
+              },
+              {
+                kind: "strong",
+                value: "annoncé",
+              },
+              {
+                kind: "text",
+                value: ". Il porte ",
+              },
+              {
+                kind: "code",
+                value: 'role="status"',
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: 'aria-live="polite"',
+              },
+              {
+                kind: "text",
+                value:
+                  ", et un utilisateur qui ne voit pas la grille apprend enfin que quatre cents lignes sont devenues trois. ",
+              },
+              {
+                kind: "code",
+                value: "resultCount",
+              },
+              {
+                kind: "text",
+                value: " (rien tant qu'il vaut ",
+              },
+              {
+                kind: "code",
+                value: "null",
+              },
+              {
+                kind: "text",
+                value: "), ",
+              },
+              {
+                kind: "code",
+                value: "resultLabel",
+              },
+              {
+                kind: "text",
+                value: ' (le mot après le nombre — « pièces », "rows") et ',
+              },
+              {
+                kind: "code",
+                value: "placement",
+              },
+              {
+                kind: "text",
+                value: " : ",
+              },
+              {
+                kind: "code",
+                value: "top",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "end",
+              },
+              {
+                kind: "text",
+                value: " ou ",
+              },
+              {
+                kind: "code",
+                value: "bottom",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "end",
+              },
+              {
+                kind: "text",
+                value: " et non ",
+              },
+              {
+                kind: "code",
+                value: "right",
+              },
+              {
+                kind: "text",
+                value: " — la bibliothèque se pose en propriétés ",
+              },
+              {
+                kind: "strong",
+                value: "logiques",
+              },
+              {
+                kind: "text",
+                value:
+                  ", et le compte doit suivre le sens de lecture plutôt qu'un côté de l'écran.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: " gagne deux affixes",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ", et c'est de là que ",
+              },
+              {
+                kind: "code",
+                value: "fold-search",
+              },
+              {
+                kind: "text",
+                value: " tire les siens : ",
+              },
+              {
+                kind: "code",
+                value: "leadingIcon",
+              },
+              {
+                kind: "text",
+                value:
+                  " dessine un glyphe DANS la boîte, avant le texte (le champ réserve la place lui-même, et le glyphe ne prend pas le clic) ; ",
+              },
+              {
+                kind: "code",
+                value: "clearable",
+              },
+              {
+                kind: "text",
+                value: " + ",
+              },
+              {
+                kind: "code",
+                value: "clearLabel",
+              },
+              {
+                kind: "text",
+                value: " posent un ",
+              },
+              {
+                kind: "code",
+                value: "×",
+              },
+              {
+                kind: "text",
+                value:
+                  " de fin tant qu'il y a quelque chose à effacer, qui vide la valeur ",
+              },
+              {
+                kind: "strong",
+                value: "et rend le focus",
+              },
+              {
+                kind: "text",
+                value:
+                  " — sans quoi il faut un second clic pour reprendre la saisie. Les deux sont à ",
+              },
+              {
+                kind: "code",
+                value: "false",
+              },
+              {
+                kind: "text",
+                value:
+                  " par défaut : un champ de formulaire qui s'efface tout seul invite l'accident qu'il ne sait pas défaire. Le ",
+              },
+              {
+                kind: "code",
+                value: "×",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne paraît ni en lecture seule ni désactivé — il promettrait un geste que le contrôle refuse — et un mot de passe ",
+              },
+              {
+                kind: "code",
+                value: "revealable",
+              },
+              {
+                kind: "text",
+                value:
+                  " garde la place de fin : perdre son œil casse la saisie, perdre la croix la rend seulement moins commode.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.24.0",
     date: "2026-08-29",
     unreleased: false,
@@ -20173,7 +20491,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.24.0...HEAD [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.25.0...HEAD [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -20185,4 +20503,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.24.0";
+export const PUBLISHED_VERSION = "0.25.0";
