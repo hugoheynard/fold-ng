@@ -272,6 +272,7 @@
 - rowCardChrome: InputSignal<"none" | "shell">
 - rowClick: OutputEmitterRef<T>
 - rowKey: InputSignal<((row: T, index: number) => string | number) | undefined>
+- rowNote: InputSignal<FoldTableRowNote<T> | undefined>
 - rows: InputSignal<readonly T[]> — required
 - rowTone: InputSignal<((row: T) => FoldTableTone) | undefined>
 - selectable: InputSignalWithTransform<boolean, unknown>
@@ -287,6 +288,9 @@
 - (no input·model·output bindings)
 
 #### FoldDataTableRowDetailDirective
+- (no input·model·output bindings)
+
+#### FoldDataTableRowNoteDirective
 - (no input·model·output bindings)
 
 #### FoldDateComponent
@@ -1100,6 +1104,7 @@
 - FoldTabItem (type)
 - FoldTableColumn (interface)
 - FoldTableEmpty (interface)
+- FoldTableRowNote (type)
 - FoldTableSort (interface)
 - FoldTableSortDir (type)
 - FoldTableTone (type)

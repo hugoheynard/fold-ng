@@ -7,6 +7,7 @@ import { FoldDataTableComponent } from "./data-table.component";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
 import { FoldDataTableRowDetailDirective } from "./data-table-row-detail.directive";
+import { FoldDataTableRowNoteDirective } from "./data-table-row-note.directive";
 import type {
   FoldTableColumn,
   FoldTableSort,
@@ -1009,5 +1010,128 @@ describe("FoldDataTableComponent — value accessor", () => {
     expect(warn).toHaveBeenCalledWith(
       expect.stringContaining('column "orphan" has neither a value accessor'),
     );
+  });
+});
+
+// ── La note de ligne ───────────────────────────────────────────────────────
+
+@Component({
+  standalone: true,
+  imports: [
+    FoldDataTableComponent,
+    FoldDataTableCellDirective,
+    FoldDataTableRowNoteDirective,
+  ],
+  template: `
+    <fold-data-table
+      [columns]="columns"
+      [rows]="rows"
+      [rowKey]="rowKey"
+      [rowNote]="noted()"
+    >
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="plain" let-row>plain</ng-template>
+      <ng-template foldRowNote let-row let-i="index">
+        <p class="note">note-{{ row.id }}-{{ i }}</p>
+      </ng-template>
+    </fold-data-table>
+  `,
+})
+class NoteHost {
+  readonly columns = COLUMNS;
+  readonly rows: Row[] = [
+    { id: "a", name: "Alice", tone: null },
+    { id: "b", name: "Bob", tone: null },
+  ];
+  readonly rowKey = (row: Row): string => row.id;
+  readonly noted = signal<(row: Row) => boolean>((row) => row.id === "a");
+}
+
+/** Le template SANS le prédicat : la moitié d'un câblage ne doit rien rendre. */
+@Component({
+  standalone: true,
+  imports: [
+    FoldDataTableComponent,
+    FoldDataTableCellDirective,
+    FoldDataTableRowNoteDirective,
+  ],
+  template: `
+    <fold-data-table [columns]="columns" [rows]="rows">
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="plain">plain</ng-template>
+      <ng-template foldRowNote let-row>
+        <p class="note">note-{{ row.id }}</p>
+      </ng-template>
+    </fold-data-table>
+  `,
+})
+class HalfWiredNoteHost {
+  readonly columns = COLUMNS;
+  readonly rows: Row[] = [{ id: "a", name: "Alice", tone: null }];
+}
+
+describe("FoldDataTableComponent — row note", () => {
+  function render() {
+    const fixture = TestBed.createComponent(NoteHost);
+    fixture.detectChanges();
+    return { fixture, el: fixture.nativeElement as HTMLElement };
+  }
+
+  it("draws the note under its own row, always visible", () => {
+    const { el } = render();
+    const rows = Array.from(el.querySelectorAll("tbody tr"));
+
+    expect(rows[0]?.classList.contains("folddt-row")).toBe(true);
+    expect(rows[1]?.classList.contains("folddt-note-row")).toBe(true);
+    expect(rows[1]?.querySelector(".note")?.textContent).toContain("note-a-0");
+  });
+
+  /**
+   * 🔴 The point of the feature. A drawer hides something until asked and grows
+   * a column to ask with; a note hides nothing, so there is nothing to reveal —
+   * no chevron, no `aria-expanded`, no `aria-controls`.
+   */
+  it("grows NO toggle column — a note is not a disclosure", () => {
+    const { el } = render();
+
+    expect(el.querySelector("button.folddt-expand")).toBeNull();
+    expect(el.querySelector("[aria-expanded]")).toBeNull();
+  });
+
+  /**
+   * 🔴 A row without a note emits no `<tr>` at all. An empty one is not
+   * invisible: assistive tech walks into it and announces a blank record.
+   */
+  it("emits nothing for a row the predicate leaves out", () => {
+    const { el } = render();
+
+    expect(el.querySelectorAll(".folddt-note-row").length).toBe(1);
+    expect(el.textContent).not.toContain("note-b");
+  });
+
+  it("spans the whole width, so the note reads as one line", () => {
+    const { el } = render();
+    const cell = el.querySelector("td.folddt-note");
+
+    expect(cell?.getAttribute("colspan")).toBe(String(COLUMNS.length));
+  });
+
+  it("follows the predicate when it changes", () => {
+    const { fixture, el } = render();
+
+    fixture.componentInstance.noted.set(() => false);
+    fixture.detectChanges();
+
+    expect(el.querySelector(".folddt-note-row")).toBeNull();
+  });
+
+  it("renders nothing when the template is projected without the predicate", () => {
+    // Half a wiring renders nothing rather than something wrong — the quiet
+    // behaviour a table should have while a caller is still hooking it up.
+    const fixture = TestBed.createComponent(HalfWiredNoteHost);
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(el.querySelector(".folddt-note-row")).toBeNull();
   });
 });

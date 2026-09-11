@@ -177,11 +177,18 @@
   outline-offset: -2px;
 }
 
-/* Zebra (opt-in) — skips tone rows so status tints stay pure. */
+/* Zebra (opt-in) — skips tone rows so status tints stay pure.
+
+   🔴 `even of .folddt-row` et non `even` tout court : `nth-child` compte TOUS
+   les frères, donc une rangée intercalée — un tiroir ouvert, une note toujours
+   visible — décalait la parité et retournait les stries sous elle. Avec une
+   note, qui ne se referme jamais, les lignes de données seraient toutes tombées
+   en rang impair : plus une seule strie. Le `of S` ne compte que les lignes de
+   données, ce qui est ce que la strie a toujours voulu dire. */
 .folddt--zebra
-  .folddt-row:nth-child(even):not(.tone-warning):not(.tone-alert):not(
-    .tone-success
-  )
+  .folddt-row:nth-child(even of .folddt-row):not(.tone-warning):not(
+    .tone-alert
+  ):not(.tone-success)
   .folddt-cell {
   background: var(--fold-color-surface-subtle);
 }
@@ -543,6 +550,27 @@
     --fold-data-table-detail-padding,
     var(--fold-space-md) var(--fold-space-lg)
   );
+}
+
+/* ── LA NOTE ────────────────────────────────────────────────────────────────
+   Elle prolonge sa ligne au lieu de s'en détacher : pas de fond propre, pas de
+   trait au-dessus — ce qu'elle porte (un encadré, une phrase) arrive avec sa
+   propre matière, et deux cadres emboîtés ne diraient rien de plus.
+
+   Le rembourrage est thémable comme celui du tiroir, et resserré par défaut :
+   une note se lit dans le même mouvement que sa ligne, pas comme un second
+   bloc. */
+.folddt-note {
+  padding: var(
+    --fold-data-table-note-padding,
+    0 var(--fold-space-lg) var(--fold-space-sm)
+  );
+}
+.folddt-note-row > .folddt-note {
+  border-top: 0;
+}
+.folddt-note--card {
+  margin-top: var(--fold-space-sm);
 }
 
 .folddt-cardlist .folddt-detail {

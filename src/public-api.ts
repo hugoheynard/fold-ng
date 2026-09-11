@@ -83,6 +83,7 @@ export { FoldDataTableComponent } from "./components/content/data-table/data-tab
 export { FoldDataTableCellDirective } from "./components/content/data-table/data-table-cell.directive";
 export { FoldDataTableRowCardDirective } from "./components/content/data-table/data-table-row-card.directive";
 export { FoldDataTableRowDetailDirective } from "./components/content/data-table/data-table-row-detail.directive";
+export { FoldDataTableRowNoteDirective } from "./components/content/data-table/data-table-row-note.directive";
 export {
   provideFoldDataTableLabels,
   FOLD_DATA_TABLE_LABELS,
@@ -96,6 +97,7 @@ export {
 export type {
   FoldTableColumn,
   FoldTableEmpty,
+  FoldTableRowNote,
   FoldTableSort,
   FoldTableSortDir,
   FoldTableTone,

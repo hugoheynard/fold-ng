@@ -176,6 +176,21 @@
                 </td>
               }
             </tr>
+            <!-- 🔴 **La note n'est pas un tiroir.** Elle est toujours là, donc
+                 elle ne porte ni bascule, ni `aria-expanded`, ni identifiant à
+                 contrôler : il n'y a rien à révéler. Comme la rangée du tiroir
+                 elle reste hors du groupe à navigation par flèches — un arrêt
+                 de plus pour une ligne qu'on lit sans la parcourir. -->
+            @if (hasNote(row, i)) {
+              <tr class="folddt-note-row">
+                <td class="folddt-note" [attr.colspan]="colCount()">
+                  <ng-container
+                    [ngTemplateOutlet]="rowNoteTemplate()!"
+                    [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                  />
+                </td>
+              </tr>
+            }
             @if (expandable() && isRowExpanded(row, i)) {
               <!-- La rangée du tiroir ne porte PAS de `tabindex` : elle reste
                    hors du groupe à navigation par flèches, que les helpers
@@ -288,6 +303,17 @@
                   </div>
                 }
               </dl>
+            }
+            <!-- Dans la carte, la note suit les champs de la ligne : même
+                 promesse qu'en vue large, elle se lit avec la ligne et non
+                 ailleurs. -->
+            @if (hasNote(row, i)) {
+              <div class="folddt-note folddt-note--card">
+                <ng-container
+                  [ngTemplateOutlet]="rowNoteTemplate()!"
+                  [ngTemplateOutletContext]="{ $implicit: row, index: i }"
+                />
+              </div>
             }
             @if (expandable()) {
               <button

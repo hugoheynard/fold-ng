@@ -11,6 +11,8 @@ import {
   FoldDataTableComponent,
   FoldDataTableRowCardDirective,
   FoldDataTableRowDetailDirective,
+  FoldDataTableRowNoteDirective,
+  FoldCalloutComponent,
   FoldPageLayoutComponent,
   FoldPaginatorComponent,
   type FoldTableColumn,
@@ -93,7 +95,8 @@ const STATUS_META: Record<
     FoldDataTableCellDirective,
     FoldDataTableRowCardDirective,
     FoldDataTableRowDetailDirective,
-    FoldDataTableRowDetailDirective,
+    FoldDataTableRowNoteDirective,
+    FoldCalloutComponent,
     FoldPaginatorComponent,
     FoldAvatarComponent,
     FoldBadgeComponent,
@@ -111,6 +114,12 @@ export default class DataTablePage {
   protected readonly rowKey = (row: Member): string => row.id;
   protected readonly rowTone = (row: Member): FoldTableTone =>
     STATUS_META[row.status].tone;
+
+  /* The note's OTHER half: the template says what a note looks like, this says
+     which rows have one. A row left out emits no `<tr>` at all — an empty one
+     would be announced as a blank record. */
+  protected readonly isOnLeave = (row: Member): boolean =>
+    row.status === "leave";
 
   /* Cell templates are untyped (`let-row` is `any`) by design, so the status
      column renders through these typed helpers rather than indexing in HTML. */

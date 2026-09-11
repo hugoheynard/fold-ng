@@ -5,6 +5,17 @@
 /** Per-row semantic accent — a left bar + subtle tint. */
 export type FoldTableTone = "warning" | "alert" | "success" | null;
 
+/**
+ * Which rows carry a **note** — the always-visible line a `foldRowNote`
+ * template draws under its row.
+ *
+ * A predicate and not an accessor: the note's content comes from the template,
+ * where a caller already has Angular's whole vocabulary. This only answers
+ * *which rows*, and it must answer, because a row without a note must emit no
+ * `<tr>` at all — an empty one is read aloud as a blank record.
+ */
+export type FoldTableRowNote<T = unknown> = (row: T, index: number) => boolean;
+
 export type FoldTableSortDir = "asc" | "desc";
 
 /** The active sort, or `null` when unsorted. `key` matches a column key. */

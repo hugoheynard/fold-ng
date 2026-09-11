@@ -18,6 +18,7 @@ import { NgClass, NgTemplateOutlet } from "@angular/common";
 import { FoldDataTableCellDirective } from "./data-table-cell.directive";
 import { FoldDataTableRowCardDirective } from "./data-table-row-card.directive";
 import { FoldDataTableRowDetailDirective } from "./data-table-row-detail.directive";
+import { FoldDataTableRowNoteDirective } from "./data-table-row-note.directive";
 import { focusAdjacentRow, focusEdgeRow } from "./data-table-keyboard";
 import { observeElementWidth } from "../../../dom/observe-element-width";
 import { foldAt } from "../../../dom/fold-at";
@@ -30,6 +31,7 @@ import type {
   FoldTableColumn,
   FoldTableEmpty,
   FoldTableSort,
+  FoldTableRowNote,
   FoldTableTone,
 } from "./data-table.types";
 import {
@@ -95,6 +97,15 @@ export class FoldDataTableComponent<T> {
   readonly rowKey = input<(row: T, index: number) => string | number>();
   /** Optional per-row semantic tone (left accent + tint). */
   readonly rowTone = input<(row: T) => FoldTableTone>();
+  /**
+   * Which rows carry a **note** — the always-visible line a `foldRowNote`
+   * template draws beneath its row.
+   *
+   * Both halves are required for anything to render: this says *which* rows,
+   * the template says *what*. See {@link FoldDataTableRowNoteDirective} for why
+   * a row without a note must emit no `<tr>` at all.
+   */
+  readonly rowNote = input<FoldTableRowNote<T>>();
   readonly sort = input<FoldTableSort | null>(null);
   readonly empty = input<FoldTableEmpty>();
   /** While `true`, shows a spinner instead of the empty state — a table that
@@ -268,6 +279,13 @@ export class FoldDataTableComponent<T> {
     return map;
   });
 
+  private readonly rowNoteTpl = contentChild(FoldDataTableRowNoteDirective);
+
+  /** The note template, or `null`. Paired with `rowNote` to decide each row. */
+  protected readonly rowNoteTemplate = computed<TemplateRef<unknown> | null>(
+    () => this.rowNoteTpl()?.template ?? null,
+  );
+
   private readonly rowDetail = contentChild(FoldDataTableRowDetailDirective);
 
   /** The drawer template, or `null`. Its PRESENCE is the feature switch. */
@@ -428,6 +446,17 @@ export class FoldDataTableComponent<T> {
 
   toneOf(row: T): FoldTableTone {
     return this.rowTone()?.(row) ?? null;
+  }
+
+  /**
+   * Does this row draw a note? Both halves must be there — the template and the
+   * predicate. Either alone renders nothing, which is the quiet behaviour a
+   * half-wired table should have.
+   */
+  protected hasNote(row: T, index: number): boolean {
+    return (
+      this.rowNoteTemplate() !== null && (this.rowNote()?.(row, index) ?? false)
+    );
   }
 
   isSorted(key: string): boolean {

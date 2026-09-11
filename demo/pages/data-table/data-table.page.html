@@ -47,6 +47,38 @@
     </fold-data-table>
   </div>
 
+  <!-- ── row note: a line that is simply there, under its row ── -->
+  <div class="gal-cell" style="max-width: 640px">
+    <span class="gal-tag">row note · rowNote predicate · no toggle</span>
+    <fold-data-table
+      caption="Roster with notes"
+      [columns]="columns"
+      [rows]="rows().slice(0, 3)"
+      [rowKey]="rowKey"
+      [rowTone]="rowTone"
+      [rowNote]="isOnLeave"
+    >
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="status" let-row>
+        <fold-badge
+          [content]="statusLabel(row.status)"
+          [variant]="statusBadge(row.status)"
+        />
+      </ng-template>
+      <ng-template foldCell="tenure" let-row>{{ row.tenure }}</ng-template>
+
+      <!-- A note hides nothing, so there is nothing to reveal: no chevron, no
+           aria-expanded. Reach for it when what must be read at the same moment
+           as the row does not fit in the row's own cells — a warning that comes
+           with the action answering it. -->
+      <ng-template foldRowNote let-row>
+        <fold-callout appearance="inset" variant="warning" icon="info">
+          {{ row.name }} is on leave — reassign before the next cycle.
+        </fold-callout>
+      </ng-template>
+    </fold-data-table>
+  </div>
+
   <!-- ── live roster: real client-side sort + row click ── -->
   <div class="gal-cell" style="max-width: 640px">
     <span class="gal-tag"

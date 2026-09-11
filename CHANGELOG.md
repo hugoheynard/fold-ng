@@ -6,7 +6,47 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`foldRowNote` — une ligne sous une ligne, et qui ne se replie pas.**
+  `fold-data-table` n'avait qu'une surface sous une rangée : le tiroir
+  `foldRowDetail`. Or projeter ce gabarit fait pousser une colonne de chevrons,
+  parce qu'un tiroir cache quelque chose et qu'il faut de quoi le demander. Un
+  avertissement qui doit se lire EN MÊME TEMPS que sa ligne ne cache rien : le
+  chevron n'y ouvre pas, il obstrue.
+
+  La note est donc un concept à part, pas une option du tiroir. Aucun état,
+  aucune bascule, aucun `aria-expanded` — il n'y a rien à révéler. Elle se rend
+  en pleine largeur sous sa rangée en vue large, et sous les champs de la carte
+  en vue étroite : même promesse des deux côtés.
+
+  Elle demande **deux moitiés**, et la seconde n'est pas de la cérémonie : le
+  gabarit dit à quoi une note ressemble, le prédicat `rowNote` dit **quelles**
+  lignes en portent une. Sans lui, chaque rangée émettrait un `<tr>` vide — et
+  une rangée vide n'est pas invisible : un lecteur d'écran y entre et annonce
+  une ligne blanche par enregistrement. Les deux moitiés doivent être là ; l'une
+  sans l'autre ne rend rien, ce qui est le silence qu'on attend d'un câblage à
+  moitié fait.
+
+  ```html
+  <fold-data-table [rowNote]="isLate" …>
+    <ng-template foldRowNote let-row>
+      <fold-callout variant="warning">…</fold-callout>
+    </ng-template>
+  </fold-data-table>
+  ```
+
+  Nouveau : `FoldDataTableRowNoteDirective`, le type `FoldTableRowNote<T>`,
+  l'entrée `rowNote`, et le jeton `--fold-data-table-note-padding`.
+
+### Fixed
+
+- **La zébrure se recomptait à chaque rangée intercalée.** `:nth-child(even)`
+  compte TOUS les frères : un tiroir ouvert décalait la parité et retournait les
+  stries sous lui. Le sélecteur compte désormais les seules lignes de données
+  (`:nth-child(even of .folddt-row)`), ce qui est ce que la strie a toujours
+  voulu dire — et sans quoi une note, qui ne se referme jamais, aurait fait
+  tomber toutes les lignes en rang impair : plus une seule strie.
 
 ## [0.25.0] - 2026-09-05
 
