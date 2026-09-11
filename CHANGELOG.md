@@ -6,7 +6,18 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- 🔴 **Le dialogue centré ne l'était pas.** `side="center"` posait
+  `place-items: center` sur un dock passé en `grid` — mais la règle de base du
+  dock porte `justify-content: flex-end`, pour coller une feuille latérale à son
+  bord, et `place-items` ne la remet pas : elle règle la place de l'élément DANS
+  sa piste, pas celle de la piste dans la grille. Le dialogue restait donc
+  plaqué au bord droit d'un dock pourtant large comme la fenêtre.
+
+  `place-content: center` par-dessus. Et le cas qui le tient lit la **feuille
+  compilée** : jsdom n'applique aucun style de composant, donc mesurer un
+  rectangle serait passé sur un dialogue décentré.
 
 ## [0.27.0] - 2026-09-11
 
