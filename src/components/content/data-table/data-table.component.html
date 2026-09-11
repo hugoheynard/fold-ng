@@ -223,7 +223,7 @@
       @for (row of rows(); track keyOf(row, $index); let i = $index) {
         @let tone = toneOf(row);
         <!-- A card answers the pointer and the keyboard exactly as the wide
-             row does — same handlers, same roving tabindex. Until 0.27 it
+             row does — same handlers, same roving tabindex. Until 0.26.1 it
              answered NEITHER: `clickable` reached the <tr> only, so every
              consumer that opens a detail from `rowClick` lost its primary
              gesture the moment the viewport narrowed, and nothing failed to

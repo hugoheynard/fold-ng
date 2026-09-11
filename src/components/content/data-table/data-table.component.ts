@@ -119,9 +119,9 @@ export class FoldDataTableComponent<T> {
    *
    * It covers **both layouts**: a wide `<tr>` and a narrow card answer the same
    * click, the same Enter/Space, and rove under the same arrow keys. Before
-   * 0.27 it reached the row only, so a table that opened a detail from
+   * 0.26.1 it reached the row only, so a table that opened a detail from
    * `rowClick` went inert the moment its container narrowed — silently, since
-   * a card that ignores a tap throws nothing.
+   * a card that ignores a tap throws nothing. (Fixed in 0.26.1.)
    */
   readonly clickable = input(false, { transform: booleanAttribute });
   readonly zebra = input(false, { transform: booleanAttribute });
