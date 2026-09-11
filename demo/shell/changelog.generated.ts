@@ -42,6 +42,199 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.26.1",
+    date: "2026-09-11",
+    unreleased: false,
+    counts: {
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "🔴 ",
+              },
+              {
+                kind: "strong",
+                value:
+                  "`clickable` n'atteignait que la vue large — une carte ignorait le clic.",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " branche ",
+              },
+              {
+                kind: "code",
+                value: "rowClick",
+              },
+              {
+                kind: "text",
+                value: " sur son ",
+              },
+              {
+                kind: "code",
+                value: "<tr>",
+              },
+              {
+                kind: "text",
+                value: " ; le ",
+              },
+              {
+                kind: "code",
+                value: '<li class="folddt-card">',
+              },
+              {
+                kind: "text",
+                value: " de ",
+              },
+              {
+                kind: "code",
+                value: 'narrowLayout="cards"',
+              },
+              {
+                kind: "text",
+                value: " ne portait ni gestionnaire, ni ",
+              },
+              {
+                kind: "code",
+                value: "tabindex",
+              },
+              {
+                kind: "text",
+                value: ", ni clavier. Une table qui ouvre un détail depuis ",
+              },
+              {
+                kind: "code",
+                value: "rowClick",
+              },
+              {
+                kind: "text",
+                value: " devenait donc ",
+              },
+              {
+                kind: "strong",
+                value: "inerte dès que son conteneur se resserrait",
+              },
+              {
+                kind: "text",
+                value:
+                  " : sur un téléphone, aucune ligne ne s'ouvrait plus. Et la panne était muette. Une carte qui ignore un appui ne lève rien, le typecheck ne voit pas un gabarit, et la vue large — celle qu'on développe — n'a jamais eu le problème. On ne s'en aperçoit qu'en posant le doigt sur un écran étroit. La carte reçoit exactement ce que la rangée avait : le clic, ",
+              },
+              {
+                kind: "code",
+                value: "Enter",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "Espace",
+              },
+              {
+                kind: "text",
+                value: ", le ",
+              },
+              {
+                kind: "code",
+                value: "tabindex",
+              },
+              {
+                kind: "text",
+                value:
+                  " glissant et les flèches, le curseur et le même anneau de focus à 2 px. ",
+              },
+              {
+                kind: "strong",
+                value:
+                  "Une bascule de mise en page ne doit pas changer ce que la table FAIT.",
+              },
+              {
+                kind: "text",
+                value:
+                  " Deux corollaires de la même règle, dans la carte : - le ",
+              },
+              {
+                kind: "strong",
+                value: "chevron",
+              },
+              {
+                kind: "text",
+                value: " de ",
+              },
+              {
+                kind: "code",
+                value: "foldRowDetail",
+              },
+              {
+                kind: "text",
+                value:
+                  " arrête le clic — il le faisait déjà en vue large, et sans cela déplier aurait aussi ouvert la ligne ; - la ",
+              },
+              {
+                kind: "strong",
+                value: "note",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "foldRowNote",
+              },
+              {
+                kind: "text",
+                value: ") et le ",
+              },
+              {
+                kind: "strong",
+                value: "tiroir",
+              },
+              {
+                kind: "text",
+                value: " ouvert l'arrêtent aussi. En vue large ce sont des ",
+              },
+              {
+                kind: "code",
+                value: "<tr>",
+              },
+              {
+                kind: "text",
+                value:
+                  " séparés, donc les activer n'a jamais activé la rangée ; dans une carte ils vivent à l'intérieur de la coque cliquable, et un bouton posé là aurait ouvert le détail par-dessus son propre geste. Aucun changement d'API : ",
+              },
+              {
+                kind: "code",
+                value: "clickable",
+              },
+              {
+                kind: "text",
+                value: " veut simplement dire ce qu'il disait.",
+              },
+            ],
+            rest: [],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.26.0",
     date: "2026-09-11",
     unreleased: false,
@@ -20659,7 +20852,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.26.0...HEAD [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.26.1...HEAD [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -20671,4 +20864,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.26.0";
+export const PUBLISHED_VERSION = "0.26.1";
