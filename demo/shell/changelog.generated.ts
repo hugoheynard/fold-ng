@@ -42,6 +42,174 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.26.0",
+    date: "2026-09-11",
+    unreleased: false,
+    counts: {
+      Added: 1,
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "foldRowNote",
+              },
+              {
+                kind: "text",
+                value: " — une ligne sous une ligne, et qui ne se replie pas.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " n'avait qu'une surface sous une rangée : le tiroir ",
+              },
+              {
+                kind: "code",
+                value: "foldRowDetail",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Or projeter ce gabarit fait pousser une colonne de chevrons, parce qu'un tiroir cache quelque chose et qu'il faut de quoi le demander. Un avertissement qui doit se lire EN MÊME TEMPS que sa ligne ne cache rien : le chevron n'y ouvre pas, il obstrue. La note est donc un concept à part, pas une option du tiroir. Aucun état, aucune bascule, aucun ",
+              },
+              {
+                kind: "code",
+                value: "aria-expanded",
+              },
+              {
+                kind: "text",
+                value:
+                  " — il n'y a rien à révéler. Elle se rend en pleine largeur sous sa rangée en vue large, et sous les champs de la carte en vue étroite : même promesse des deux côtés. Elle demande ",
+              },
+              {
+                kind: "strong",
+                value: "deux moitiés",
+              },
+              {
+                kind: "text",
+                value:
+                  ", et la seconde n'est pas de la cérémonie : le gabarit dit à quoi une note ressemble, le prédicat ",
+              },
+              {
+                kind: "code",
+                value: "rowNote",
+              },
+              {
+                kind: "text",
+                value: " dit ",
+              },
+              {
+                kind: "strong",
+                value: "quelles",
+              },
+              {
+                kind: "text",
+                value:
+                  " lignes en portent une. Sans lui, chaque rangée émettrait un ",
+              },
+              {
+                kind: "code",
+                value: "<tr>",
+              },
+              {
+                kind: "text",
+                value:
+                  " vide — et une rangée vide n'est pas invisible : un lecteur d'écran y entre et annonce une ligne blanche par enregistrement. Les deux moitiés doivent être là ; l'une sans l'autre ne rend rien, ce qui est le silence qu'on attend d'un câblage à moitié fait. ``",
+              },
+              {
+                kind: "code",
+                value:
+                  'html <fold-data-table [rowNote]="isLate" …> <ng-template foldRowNote let-row> <fold-callout variant="warning">…</fold-callout> </ng-template> </fold-data-table> ',
+              },
+              {
+                kind: "text",
+                value: "`",
+              },
+              {
+                kind: "code",
+                value: " Nouveau : ",
+              },
+              {
+                kind: "text",
+                value: "FoldDataTableRowNoteDirective",
+              },
+              {
+                kind: "code",
+                value: ", le type ",
+              },
+              {
+                kind: "text",
+                value: "FoldTableRowNote<T>",
+              },
+              {
+                kind: "code",
+                value: ", l'entrée ",
+              },
+              {
+                kind: "text",
+                value: "rowNote",
+              },
+              {
+                kind: "code",
+                value: ", et le jeton ",
+              },
+              {
+                kind: "text",
+                value: "--fold-data-table-note-padding`.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "La zébrure se recomptait à chaque rangée intercalée.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: ":nth-child(even)",
+              },
+              {
+                kind: "text",
+                value:
+                  " compte TOUS les frères : un tiroir ouvert décalait la parité et retournait les stries sous lui. Le sélecteur compte désormais les seules lignes de données (",
+              },
+              {
+                kind: "code",
+                value: ":nth-child(even of .folddt-row)",
+              },
+              {
+                kind: "text",
+                value:
+                  "), ce qui est ce que la strie a toujours voulu dire — et sans quoi une note, qui ne se referme jamais, aurait fait tomber toutes les lignes en rang impair : plus une seule strie.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.25.0",
     date: "2026-09-05",
     unreleased: false,
@@ -20491,7 +20659,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.25.0...HEAD [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.26.0...HEAD [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -20503,4 +20671,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.25.0";
+export const PUBLISHED_VERSION = "0.26.0";
