@@ -42,6 +42,150 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.27.0",
+    date: "2026-09-11",
+    unreleased: false,
+    counts: {
+      Added: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: 'side="center"',
+              },
+              {
+                kind: "text",
+                value: " — le dialogue modal, enfin, et sans second composant.",
+              },
+            ],
+            rest: [
+              {
+                kind: "code",
+                value: "fold-panel-host",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne savait accoster qu'un BORD. Un « êtes-vous sûr ? », un lecteur de code, un aperçu : ces surfaces-là n'appartiennent pas au bord de l'écran, elles interrompent la page. ",
+              },
+              {
+                kind: "code",
+                value: "llms.txt",
+              },
+              {
+                kind: "text",
+                value:
+                  " disait « pas encore de dialogue modal — prenez un panneau modal » ; c'est désormais le même panneau, avec un côté de plus. Un composant à part aurait fait auditer deux fois la même mécanique : le piège à focus, la barrière ",
+              },
+              {
+                kind: "code",
+                value: "inert",
+              },
+              {
+                kind: "text",
+                value: ", le verrou de défilement, le nom accessible, ",
+              },
+              {
+                kind: "code",
+                value: "Échap",
+              },
+              {
+                kind: "text",
+                value: ", la poignée typée ",
+              },
+              {
+                kind: "code",
+                value: "open<TData, TResult>()",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Tout cela vit déjà ici. Compléter l'axe coûte une valeur d'énumération ; ouvrir un second composant coûte une seconde surface publique à tenir jusqu'à la 1.0. 🔴 ",
+              },
+              {
+                kind: "strong",
+                value: "C'est le seul côté qui QUITTE la région de contenu.",
+              },
+              {
+                kind: "text",
+                value: " Les autres s'ancrent en ",
+              },
+              {
+                kind: "code",
+                value: "absolute",
+              },
+              {
+                kind: "text",
+                value:
+                  " dedans, et c'est juste : une feuille travaille à CÔTÉ de la page, donc elle reste sous la barre de l'app et ses rails. Un dialogue, lui, suspend la page — il est ",
+              },
+              {
+                kind: "code",
+                value: "fixed",
+              },
+              {
+                kind: "text",
+                value:
+                  ", il couvre le chrome, et il couvre aussi ce qu'un consommateur a lui-même épinglé par-dessus la page. Un dock ",
+              },
+              {
+                kind: "code",
+                value: "absolute",
+              },
+              {
+                kind: "text",
+                value: " à ",
+              },
+              {
+                kind: "code",
+                value: "z-index: 50",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne le pouvait pas : une application qui fait monter sa propre feuille sur un téléphone passait DEVANT le panneau censé l'interrompre. Deux conséquences de la même idée : il porte un ",
+              },
+              {
+                kind: "strong",
+                value: "scrim",
+              },
+              {
+                kind: "text",
+                value:
+                  " — c'est la seule forme d'ici qui obscurcit ce qu'elle suspend, là où une feuille latérale laisse lire la page à côté — et il n'a ",
+              },
+              {
+                kind: "strong",
+                value: "pas de poignée",
+              },
+              {
+                kind: "text",
+                value:
+                  ", puisqu'il ne vient d'aucun bord. Il arrive sur place, à peine agrandi : « ceci est maintenant devant vous », et non « ceci a voyagé ». ``",
+              },
+              {
+                kind: "code",
+                value:
+                  'ts panels.open(ScanPanel, { side: "center", width: "sm" }); ',
+              },
+              {
+                kind: "text",
+                value: "``",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.26.1",
     date: "2026-09-11",
     unreleased: false,
@@ -20852,7 +20996,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.26.1...HEAD [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.27.0...HEAD [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -20864,4 +21008,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.26.1";
+export const PUBLISHED_VERSION = "0.27.0";
