@@ -386,6 +386,7 @@ describe("FoldDataTableComponent — selection + polish", () => {
     FoldDataTableComponent,
     FoldDataTableCellDirective,
     FoldDataTableRowCardDirective,
+    FoldDataTableRowNoteDirective,
   ],
   template: `
     <fold-data-table
@@ -395,10 +396,16 @@ describe("FoldDataTableComponent — selection + polish", () => {
       [mobileLayout]="mobileLayout()"
       [narrowLayout]="narrowLayout()"
       [rowCardChrome]="rowCardChrome()"
+      [clickable]="clickable()"
+      [rowNote]="noted()"
+      (rowClick)="clicked.push($event.name)"
     >
       <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
       <ng-template foldRowCard let-row let-i="index">
         <span class="my-card">{{ i }}:{{ row.name }}</span>
+      </ng-template>
+      <ng-template foldRowNote let-row>
+        <button type="button" class="note-action">{{ row.name }}</button>
       </ng-template>
     </fold-data-table>
   `,
@@ -413,6 +420,10 @@ class MobileHostComponent {
   readonly mobileLayout = signal<"scroll" | "auto-cards" | "custom">("scroll");
   readonly narrowLayout = signal<"scroll" | "cards">("scroll");
   readonly rowCardChrome = signal<"shell" | "none">("shell");
+  readonly clickable = signal(false);
+  readonly clicked: string[] = [];
+  /** Aucune note par défaut : les autres cas de ce bloc n'en veulent pas. */
+  readonly noted = signal<(row: { id: string }) => boolean>(() => false);
 }
 
 @Component({
@@ -626,6 +637,72 @@ describe("FoldDataTableComponent — mobile layout", () => {
         ).not.toMatch(/\.folddt--/u);
       }
     }
+  });
+
+  /**
+   * Régression 0.27 : `clickable` n'atteignait QUE le `<tr>`. Une table qui
+   * ouvre un détail depuis `rowClick` devenait donc inerte dès que son
+   * conteneur se resserrait — sur un téléphone, plus rien ne s'ouvrait. Et
+   * silencieusement : une carte qui ignore un appui ne lève rien.
+   */
+  it("🔴 a card answers the pointer exactly as the wide row does", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.narrowLayout.set("cards");
+    host.clickable.set(true);
+    fixture.detectChanges();
+
+    el.querySelectorAll<HTMLElement>(".folddt-card")[1]?.click();
+
+    expect(host.clicked).toEqual(["Bob"]);
+  });
+
+  it("🔴 a card answers Enter and Space, and takes focus", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.narrowLayout.set("cards");
+    host.clickable.set(true);
+    fixture.detectChanges();
+
+    const card = el.querySelectorAll<HTMLElement>(".folddt-card")[0];
+    // Un seul arrêt de tabulation, comme sur la table : le reste est à -1 et
+    // les flèches déplacent le focus.
+    expect(card?.getAttribute("tabindex")).toBe("0");
+
+    card?.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+    );
+    card?.dispatchEvent(
+      new KeyboardEvent("keydown", { key: " ", bubbles: true }),
+    );
+
+    expect(host.clicked).toEqual(["Alice", "Alice"]);
+  });
+
+  /**
+   * En vue large, la note est une LIGNE À PART : l'activer n'a jamais activé la
+   * sienne. Dans une carte elle vit à l'intérieur de la coque cliquable — sans
+   * arrêt du clic, appuyer sur un bouton de la note ouvrirait aussi le détail.
+   * Une bascule de mise en page ne doit pas changer ce que la table FAIT.
+   */
+  it("🔴 a click inside a card's note does not activate the row", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.narrowLayout.set("cards");
+    host.clickable.set(true);
+    host.noted.set(() => true);
+    fixture.detectChanges();
+
+    el.querySelector<HTMLElement>(".folddt-card .note-action")?.click();
+
+    expect(host.clicked).toEqual([]);
+  });
+
+  it("ne rend une carte focusable que si la table est cliquable", () => {
+    const { fixture, host, el } = mobileSetup();
+    host.narrowLayout.set("cards");
+    fixture.detectChanges();
+
+    expect(el.querySelector(".folddt-card")?.hasAttribute("tabindex")).toBe(
+      false,
+    );
   });
 
   it("narrowLayout=cards keeps the table on a wide container", () => {

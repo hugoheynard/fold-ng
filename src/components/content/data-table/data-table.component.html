@@ -222,14 +222,25 @@
     <ul class="folddt-cardlist" role="list">
       @for (row of rows(); track keyOf(row, $index); let i = $index) {
         @let tone = toneOf(row);
+        <!-- A card answers the pointer and the keyboard exactly as the wide
+             row does — same handlers, same roving tabindex. Until 0.27 it
+             answered NEITHER: `clickable` reached the <tr> only, so every
+             consumer that opens a detail from `rowClick` lost its primary
+             gesture the moment the viewport narrowed, and nothing failed to
+             say so. A layout switch must not change what a table DOES. -->
         <li
           class="folddt-card"
           [class.is-bare]="rowCardChrome() === 'none' && rowCardTemplate()"
           [class.tone-warning]="tone === 'warning'"
           [class.tone-alert]="tone === 'alert'"
           [class.tone-success]="tone === 'success'"
+          [class.clickable]="clickable()"
           [class.is-selected]="selectable() && isRowSelected(row, i)"
+          [attr.tabindex]="rowTabIndex(row, i)"
           [attr.aria-selected]="selectable() ? isRowSelected(row, i) : null"
+          (click)="onRowActivate(row)"
+          (focus)="onRowFocus(row, i)"
+          (keydown)="onRowKeydown($event, row)"
         >
           @if (
             selectable() && !(rowCardChrome() === "none" && rowCardTemplate())
@@ -307,8 +318,17 @@
             <!-- Dans la carte, la note suit les champs de la ligne : même
                  promesse qu'en vue large, elle se lit avec la ligne et non
                  ailleurs. -->
+            <!-- 🔴 The note stops the click. In the wide layout it is a
+                 SEPARATE <tr>, so activating it never activated the row; in a
+                 card it lives inside the clickable shell, and without this a
+                 tap on the note — or on a button the consumer put there —
+                 would also open the row. Same table, same gesture, both
+                 layouts. -->
             @if (hasNote(row, i)) {
-              <div class="folddt-note folddt-note--card">
+              <div
+                class="folddt-note folddt-note--card"
+                (click)="$event.stopPropagation()"
+              >
                 <ng-container
                   [ngTemplateOutlet]="rowNoteTemplate()!"
                   [ngTemplateOutletContext]="{ $implicit: row, index: i }"
@@ -324,7 +344,7 @@
                 [attr.aria-label]="
                   isRowExpanded(row, i) ? l().collapseRow : l().expandRow
                 "
-                (click)="toggleExpand(row, i)"
+                (click)="$event.stopPropagation(); toggleExpand(row, i)"
               >
                 <fold-icon
                   [name]="isRowExpanded(row, i) ? 'chevron-up' : 'chevron-down'"
@@ -335,7 +355,11 @@
                 <!-- DANS la carte, et non sous la liste : c'est la même
                      promesse que sur la table large — on ouvre une ligne sans
                      quitter la place qu'on a mis du temps à trouver. -->
-                <div class="folddt-detail" [id]="detailId(row, i)">
+                <div
+                  class="folddt-detail"
+                  [id]="detailId(row, i)"
+                  (click)="$event.stopPropagation()"
+                >
                   <ng-container
                     [ngTemplateOutlet]="rowDetailTemplate()!"
                     [ngTemplateOutletContext]="{ $implicit: row, index: i }"

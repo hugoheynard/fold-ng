@@ -114,7 +114,15 @@ export class FoldDataTableComponent<T> {
   /** Accessible table name, rendered as a visually-hidden `<caption>`. Set it
    *  when the surrounding context does not already name the table for AT. */
   readonly caption = input<string>();
-  /** Makes rows focusable + clickable (emits `rowClick`). */
+  /**
+   * Makes rows focusable + clickable (emits `rowClick`).
+   *
+   * It covers **both layouts**: a wide `<tr>` and a narrow card answer the same
+   * click, the same Enter/Space, and rove under the same arrow keys. Before
+   * 0.27 it reached the row only, so a table that opened a detail from
+   * `rowClick` went inert the moment its container narrowed — silently, since
+   * a card that ignores a tap throws nothing.
+   */
   readonly clickable = input(false, { transform: booleanAttribute });
   readonly zebra = input(false, { transform: booleanAttribute });
   readonly hover = input(true, { transform: booleanAttribute });

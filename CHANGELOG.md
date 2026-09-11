@@ -6,7 +6,35 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- 🔴 **`clickable` n'atteignait que la vue large — une carte ignorait le clic.**
+  `fold-data-table` branche `rowClick` sur son `<tr>` ; le `<li class="folddt-card">`
+  de `narrowLayout="cards"` ne portait ni gestionnaire, ni `tabindex`, ni
+  clavier. Une table qui ouvre un détail depuis `rowClick` devenait donc
+  **inerte dès que son conteneur se resserrait** : sur un téléphone, aucune
+  ligne ne s'ouvrait plus.
+
+  Et la panne était muette. Une carte qui ignore un appui ne lève rien, le
+  typecheck ne voit pas un gabarit, et la vue large — celle qu'on développe —
+  n'a jamais eu le problème. On ne s'en aperçoit qu'en posant le doigt sur un
+  écran étroit.
+
+  La carte reçoit exactement ce que la rangée avait : le clic, `Enter` et
+  `Espace`, le `tabindex` glissant et les flèches, le curseur et le même anneau
+  de focus à 2 px. **Une bascule de mise en page ne doit pas changer ce que la
+  table FAIT.**
+
+  Deux corollaires de la même règle, dans la carte :
+
+  - le **chevron** de `foldRowDetail` arrête le clic — il le faisait déjà en vue
+    large, et sans cela déplier aurait aussi ouvert la ligne ;
+  - la **note** (`foldRowNote`) et le **tiroir** ouvert l'arrêtent aussi. En vue
+    large ce sont des `<tr>` séparés, donc les activer n'a jamais activé la
+    rangée ; dans une carte ils vivent à l'intérieur de la coque cliquable, et
+    un bouton posé là aurait ouvert le détail par-dessus son propre geste.
+
+  Aucun changement d'API : `clickable` veut simplement dire ce qu'il disait.
 
 ## [0.26.0] - 2026-09-11
 

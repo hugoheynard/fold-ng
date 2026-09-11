@@ -337,6 +337,16 @@
 .folddt-card.tone-success {
   border-inline-start: 3px solid var(--fold-color-success);
 }
+/* Clickable cards mirror the wide row: the pointer says so, and the focus ring
+   is the same 2px inset — a reader who tabs from table to card layout must not
+   have to relearn what focus looks like. */
+.folddt-card.clickable {
+  cursor: pointer;
+}
+.folddt-card:focus-visible {
+  outline: 2px solid var(--fold-color-primary-border);
+  outline-offset: -2px;
+}
 .folddt-card.is-selected {
   background: var(--fold-color-primary-surface);
   border-color: var(--fold-color-primary);
