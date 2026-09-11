@@ -6,7 +6,39 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`side="center"` — le dialogue modal, enfin, et sans second composant.**
+  `fold-panel-host` ne savait accoster qu'un BORD. Un « êtes-vous sûr ? », un
+  lecteur de code, un aperçu : ces surfaces-là n'appartiennent pas au bord de
+  l'écran, elles interrompent la page. `llms.txt` disait « pas encore de
+  dialogue modal — prenez un panneau modal » ; c'est désormais le même panneau,
+  avec un côté de plus.
+
+  Un composant à part aurait fait auditer deux fois la même mécanique : le
+  piège à focus, la barrière `inert`, le verrou de défilement, le nom
+  accessible, `Échap`, la poignée typée `open<TData, TResult>()`. Tout cela vit
+  déjà ici. Compléter l'axe coûte une valeur d'énumération ; ouvrir un second
+  composant coûte une seconde surface publique à tenir jusqu'à la 1.0.
+
+  🔴 **C'est le seul côté qui QUITTE la région de contenu.** Les autres
+  s'ancrent en `absolute` dedans, et c'est juste : une feuille travaille à
+  CÔTÉ de la page, donc elle reste sous la barre de l'app et ses rails. Un
+  dialogue, lui, suspend la page — il est `fixed`, il couvre le chrome, et il
+  couvre aussi ce qu'un consommateur a lui-même épinglé par-dessus la page.
+  Un dock `absolute` à `z-index: 50` ne le pouvait pas : une application qui
+  fait monter sa propre feuille sur un téléphone passait DEVANT le panneau
+  censé l'interrompre.
+
+  Deux conséquences de la même idée : il porte un **scrim** — c'est la seule
+  forme d'ici qui obscurcit ce qu'elle suspend, là où une feuille latérale
+  laisse lire la page à côté — et il n'a **pas de poignée**, puisqu'il ne vient
+  d'aucun bord. Il arrive sur place, à peine agrandi : « ceci est maintenant
+  devant vous », et non « ceci a voyagé ».
+
+  ```ts
+  panels.open(ScanPanel, { side: "center", width: "sm" });
+  ```
 
 ## [0.26.1] - 2026-09-11
 

@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { Component, type TemplateRef, ViewChild, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 
@@ -89,6 +91,73 @@ describe("FoldPanelHostComponent", () => {
     expect(root.querySelector(".panel")?.getAttribute("data-side")).toBe(
       "right",
     );
+  });
+
+  /* ── side="center" — the modal dialog ── */
+
+  it("porte data-side=center sur le dock ET sur le panneau", () => {
+    present("Dialog", "center");
+    const { root } = render();
+
+    expect(root.querySelector(".panel-dock")?.getAttribute("data-side")).toBe(
+      "center",
+    );
+    expect(root.querySelector(".panel")?.getAttribute("data-side")).toBe(
+      "center",
+    );
+  });
+
+  it("🔴 un dialogue n'a PAS de poignée : il ne vient d'aucun bord", () => {
+    present("Dialog", "center");
+    const { root } = render();
+
+    expect(root.querySelector(".panel-grabber")).toBeNull();
+  });
+
+  it("un dialogue reste un dialogue modal, nommé et piégeant le focus", () => {
+    present("Dialog", "center");
+    const { root } = render();
+    const aside = root.querySelector(".panel");
+
+    expect(aside?.getAttribute("role")).toBe("dialog");
+    expect(aside?.getAttribute("aria-modal")).toBe("true");
+    expect(aside?.getAttribute("aria-label")).toBe("Dialog");
+  });
+
+  it("cliquer le scrim d'un dialogue le referme", () => {
+    let closed = 0;
+    present("Dialog", "center", () => (closed += 1));
+    const { root } = render();
+
+    root.querySelector<HTMLElement>(".panel-dock")?.click();
+
+    expect(closed).toBe(1);
+  });
+
+  /**
+   * 🔴 La seule mise en page qui QUITTE la région de contenu. Les autres côtés
+   * s'ancrent en `absolute` dedans — juste pour une feuille qui travaille à
+   * CÔTÉ de la page. Un dialogue interrompt la page : il doit couvrir la barre
+   * de l'app, ses rails, et ce qu'un consommateur a lui-même épinglé par-dessus
+   * la page. Un dock `absolute` à `z-index: 50` ne le peut pas.
+   *
+   * Lu dans la feuille compilée : jsdom n'applique aucun style de composant,
+   * donc `getComputedStyle` passerait sur un dock resté `absolute`.
+   */
+  it("🔴 le dock d'un dialogue est FIXE, au-dessus des autres surfaces", () => {
+    const sheet = readFileSync(
+      "src/components/overlays/panel/panel-host.component.scss",
+      "utf8",
+    ).replace(/\/\*[\s\S]*?\*\//gu, "");
+    const rule =
+      sheet
+        .split("}")
+        .find((block) => block.includes('.panel-dock[data-side="center"]')) ??
+      "";
+
+    expect(rule).toMatch(/position:\s*fixed/u);
+    const z = /z-index:\s*(\d+)/u.exec(rule)?.[1];
+    expect(Number(z)).toBeGreaterThan(50);
   });
 
   it("renders a grabber for a bottom sheet (and not for a side sheet)", () => {

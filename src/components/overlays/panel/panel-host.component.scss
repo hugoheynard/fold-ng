@@ -36,6 +36,27 @@
 .panel-dock[data-side="bottom"] {
   align-items: flex-end;
 }
+
+/* 🔴 The dialog dock is the ONLY one that leaves the content region.
+
+   Every other side is `absolute` inside it, on purpose: a sheet works *beside*
+   the page, so it stays under the app's header and rails. A dialog interrupts
+   the page — it must cover that chrome, and it must also cover whatever a
+   consumer has pinned over the page itself (an app's own mobile sheet, say),
+   which an absolute dock at `z-index: 50` can never do. Hence `fixed`, and a
+   rung above the library's other overlays.
+
+   The scrim comes with the shape, for the same reason: this is the one panel
+   that SUSPENDS what is behind it, so what is behind it is dimmed. The side
+   sheets carry none — they let you keep reading the page they sit next to. */
+.panel-dock[data-side="center"] {
+  position: fixed;
+  z-index: 210;
+  display: grid;
+  place-items: center;
+  padding: var(--fold-space-lg);
+  background: var(--fold-color-scrim);
+}
 /* Non-modal panel: the dock must not capture pointer events, so the page behind
    stays fully interactive and an outside click never reaches `onBackdrop`
    (no dismiss). Only the panel itself takes clicks. */
@@ -85,6 +106,19 @@
 }
 .panel[data-side="bottom"] {
   @include bottom-sheet;
+}
+
+/* The dialog shape: a block that takes the height of what it holds, never the
+   full column. `height: 100%` is right for a sheet anchored to an edge and
+   wrong here — a two-line dialog would stand as a full-height slab. */
+.panel[data-side="center"] {
+  width: min(var(--panel-width), 100%);
+  height: auto;
+  max-height: min(85dvh, 44rem);
+  border: 1px solid var(--fold-color-glass-border);
+  border-radius: var(--fold-radius-lg);
+  box-shadow: var(--fold-shadow-lg);
+  animation-name: panel-dialog-in;
 }
 
 /* The top grabber — hidden on side sheets, a `display:grid` centred bar on
@@ -191,6 +225,20 @@
   }
   to {
     transform: translateY(0);
+  }
+}
+
+/* A dialog does not slide in from anywhere — it has no edge to come from. It
+   arrives in place, barely scaled up, which reads as "this is now in front of
+   you" rather than "this travelled". */
+@keyframes panel-dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

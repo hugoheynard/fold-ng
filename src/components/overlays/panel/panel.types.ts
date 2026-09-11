@@ -15,8 +15,20 @@ import type {
  * - `auto` — **right on a wide container, bottom on a narrow one**. The switch is
  *   container-driven (keyed off the panel host's own width via `@container`, not
  *   the viewport), honouring fold's "responsive on its own width" contract.
+ * - `center` — a **modal dialog**, centred in the VIEWPORT over a scrim. Not an
+ *   edge at all, and deliberately so: it completes this axis instead of growing
+ *   a second overlay component, because everything a dialog needs — the focus
+ *   trap, the `inert` barrier, the scroll lock, the accessible name, Escape,
+ *   the typed `open<TData, TResult>()` handle — already lives here. A dialog
+ *   that duplicated all of it would be the same machinery audited twice.
+ *
+ *   🔴 The only one that leaves the content region. The other sides dock
+ *   `absolute` inside it, so they sit under the app's header and rails, which
+ *   is right for a sheet that works *beside* the page. A dialog interrupts the
+ *   page: it is `fixed`, it covers the chrome, and it carries a scrim — the
+ *   one shape here that dims what it suspends.
  */
-export type FoldPanelSide = "left" | "right" | "bottom" | "auto";
+export type FoldPanelSide = "left" | "right" | "bottom" | "auto" | "center";
 
 /**
  * Panel surface treatment.
