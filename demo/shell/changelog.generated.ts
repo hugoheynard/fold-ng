@@ -42,6 +42,98 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.27.1",
+    date: "2026-09-11",
+    unreleased: false,
+    counts: {
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "🔴 ",
+              },
+              {
+                kind: "strong",
+                value: "Le dialogue centré ne l'était pas.",
+              },
+              {
+                kind: "text",
+                value: " ",
+              },
+              {
+                kind: "code",
+                value: 'side="center"',
+              },
+              {
+                kind: "text",
+                value: " posait ",
+              },
+              {
+                kind: "code",
+                value: "place-items: center",
+              },
+              {
+                kind: "text",
+                value: " sur un dock passé en ",
+              },
+              {
+                kind: "code",
+                value: "grid",
+              },
+              {
+                kind: "text",
+                value: " — mais la règle de base du dock porte ",
+              },
+              {
+                kind: "code",
+                value: "justify-content: flex-end",
+              },
+              {
+                kind: "text",
+                value: ", pour coller une feuille latérale à son bord, et ",
+              },
+              {
+                kind: "code",
+                value: "place-items",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne la remet pas : elle règle la place de l'élément DANS sa piste, pas celle de la piste dans la grille. Le dialogue restait donc plaqué au bord droit d'un dock pourtant large comme la fenêtre. ",
+              },
+              {
+                kind: "code",
+                value: "place-content: center",
+              },
+              {
+                kind: "text",
+                value: " par-dessus. Et le cas qui le tient lit la ",
+              },
+              {
+                kind: "strong",
+                value: "feuille compilée",
+              },
+              {
+                kind: "text",
+                value:
+                  " : jsdom n'applique aucun style de composant, donc mesurer un rectangle serait passé sur un dialogue décentré.",
+              },
+            ],
+            rest: [],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.27.0",
     date: "2026-09-11",
     unreleased: false,
@@ -20996,7 +21088,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.27.0...HEAD [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.27.1...HEAD [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -21008,4 +21100,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.27.0";
+export const PUBLISHED_VERSION = "0.27.1";
