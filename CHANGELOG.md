@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **Le scrim d'un dialogue FLOUTE, sur écran étroit seulement.** Affaire de
+  proportion, pas de goût : sur une grande fenêtre le dialogue couvre un quart
+  de la surface, et l'assombrissement suffit à dire lequel des deux plans
+  compte. Sur un téléphone il en couvre la quasi-totalité, et les deux
+  centimètres de contenu qui dépassent se lisent comme une page encore
+  atteignable. Le flou tranche : ce qui est derrière est **suspendu**, pas
+  seulement plus sombre.
+
+  `@media` et non `@container` — le dock d'un dialogue est `fixed`, donc il a la
+  taille de la fenêtre, et un élément ne peut jamais répondre à sa propre
+  requête de conteneur.
 
 ## [0.27.1] - 2026-09-11
 

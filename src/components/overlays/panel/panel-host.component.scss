@@ -65,6 +65,25 @@
   padding: var(--fold-space-lg);
   background: var(--fold-color-scrim);
 }
+
+/* 🔴 Sur écran étroit, le scrim FLOUTE en plus d'assombrir.
+
+   La raison est une affaire de proportion, pas de goût. Sur une grande fenêtre
+   le dialogue occupe un quart de la surface : l'ombre suffit à dire lequel des
+   deux plans compte. Sur un téléphone il en couvre la quasi-totalité, et ce qui
+   dépasse — deux centimètres de contenu vif sur les bords — se lit comme une
+   page qu'on peut encore atteindre. Le flou tranche : ce qui est derrière est
+   suspendu, pas seulement plus sombre.
+
+   `@media` et non `@container` : le dock d'un dialogue est `fixed`, donc il a
+   la taille de la fenêtre — et un élément ne peut jamais répondre à sa propre
+   requête de conteneur. */
+@media (max-width: 640px) {
+  .panel-dock[data-side="center"] {
+    backdrop-filter: blur(var(--fold-blur-glass));
+    -webkit-backdrop-filter: blur(var(--fold-blur-glass));
+  }
+}
 /* Non-modal panel: the dock must not capture pointer events, so the page behind
    stays fully interactive and an outside click never reaches `onBackdrop`
    (no dismiss). Only the panel itself takes clicks. */
