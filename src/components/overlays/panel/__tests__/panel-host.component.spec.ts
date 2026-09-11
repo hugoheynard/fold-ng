@@ -160,6 +160,30 @@ describe("FoldPanelHostComponent", () => {
     expect(Number(z)).toBeGreaterThan(50);
   });
 
+  /**
+   * 🔴 Régression vue à l'écran : la règle de base pose
+   * `justify-content: flex-end` pour coller une feuille au bord droit, et
+   * `place-items` ne la remet PAS — elle règle la place de l'élément dans sa
+   * piste, pas celle de la piste dans la grille. Le dialogue restait plaqué à
+   * droite d'un dock pourtant large comme la fenêtre.
+   *
+   * Le test lit la feuille : jsdom n'applique aucun style de composant, donc
+   * une mesure de rectangle passerait sur un dialogue décentré.
+   */
+  it("🔴 le dock d'un dialogue remet l'alignement du CONTENU, pas seulement des items", () => {
+    const sheet = readFileSync(
+      "src/components/overlays/panel/panel-host.component.scss",
+      "utf8",
+    ).replace(/\/\*[\s\S]*?\*\//gu, "");
+    const rule =
+      sheet
+        .split("}")
+        .find((block) => block.includes('.panel-dock[data-side="center"]')) ??
+      "";
+
+    expect(rule).toMatch(/place-content:\s*center|justify-content:\s*center/u);
+  });
+
   it("renders a grabber for a bottom sheet (and not for a side sheet)", () => {
     present("Bottom", "bottom");
     present("Side", "right");

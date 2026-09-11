@@ -53,6 +53,14 @@
   position: fixed;
   z-index: 210;
   display: grid;
+
+  /* 🔴 `place-CONTENT`, et non `place-items`. La règle de base pose
+     `justify-content: flex-end` pour coller une feuille au bord droit, et
+     `place-items` ne la remet pas : elle règle `align-items`/`justify-items`,
+     c'est-à-dire la place de l'élément DANS sa piste, pas la place de la piste
+     dans la grille. Le dialogue restait donc plaqué à droite d'un dock pourtant
+     large comme la fenêtre — un centrage qui ne centre rien, vu à l'écran. */
+  place-content: center;
   place-items: center;
   padding: var(--fold-space-lg);
   background: var(--fold-color-scrim);
