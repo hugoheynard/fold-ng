@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.27.2] - 2026-09-11
+
 ### Changed
 
 - **Le scrim d'un dialogue FLOUTE, sur écran étroit seulement.** Affaire de
@@ -2594,7 +2598,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.27.1...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.27.2...HEAD
+[0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2
 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1
 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0
 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1
