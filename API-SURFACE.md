@@ -22,6 +22,7 @@
 - headerLayout: InputSignal<"inset" | "full">
 - mobileNav: InputSignal<"drawer" | "none">
 - mobileNavOpen: ModelSignal<boolean>
+- mobileQuery: InputSignal<FoldMobileQuery>
 - railWidth: InputSignal<number | undefined>
 - scroll: InputSignal<"scroll" | "stage">
 - skipLinkLabel: InputSignal<string>
@@ -926,6 +927,7 @@
 - FOLD_INLINE_CONFIRM_LABELS (value)
 - FOLD_LEADING_TOKENS (value)
 - FOLD_MINUTES_PER_DAY (value)
+- FOLD_MOBILE_QUERIES (value)
 - FOLD_MOTION_TOKENS (value)
 - FOLD_PAGINATOR_DEFAULT_LABELS (value)
 - FOLD_PAGINATOR_LABELS (value)
@@ -1046,11 +1048,15 @@
 - FoldLeadingToken (type)
 - foldLeadingVar (function)
 - foldLocaleWeekInfo (function)
+- foldMediaQuery (function)
+- FoldMediaQuery (type)
 - FoldMenuItemBadgeTone (type)
 - FoldMenuLevel (type)
 - FoldMenuTint (type)
 - FoldMenuTogglePlacement (type)
 - FoldMeterTone (type)
+- FoldMobileQuery (type)
+- FoldMobileQueryName (type)
 - FoldMonthGridOptions (interface)
 - FoldMotionToken (type)
 - foldMotionVar (function)
@@ -1148,6 +1154,7 @@
 - provideFoldPanelDefaults (function)
 - provideFoldPanelLabels (function)
 - provideFoldToasts (function)
+- resolveFoldMobileQuery (function)
 
 ## Entry `fold-ng/devtools`
 

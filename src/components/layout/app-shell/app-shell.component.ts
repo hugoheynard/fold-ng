@@ -10,6 +10,7 @@ import {
   inject,
   input,
   model,
+  signal,
   viewChild,
 } from "@angular/core";
 import { FocusTrapDirective } from "../../../a11y/focus-trap.directive";
@@ -17,10 +18,12 @@ import { FoldIdService } from "../../../a11y/id.service";
 import { ScrollRegionRegistry } from "../../../a11y/scroll-region-registry.service";
 import { observeElementWidth } from "../../../dom/observe-element-width";
 import { FoldSurfaceDirective } from "../../../directives/surface.directive";
+import { type FoldMobileQuery, resolveFoldMobileQuery } from "./mobile-queries";
 
-/** Width (px) at or below which the rails collapse and the primary rail becomes
- *  a mobile drawer. Kept in lockstep with the `@media`/`@container` breakpoint
- *  in the stylesheet. */
+/** Shell width (px) at or below which the shell is mobile whatever
+ *  `mobileQuery` says — an embedded/narrow shell (the gallery preview) collapses
+ *  on its own width. Kept in lockstep with the `@container` breakpoint in the
+ *  stylesheet. */
 const MOBILE_BREAKPOINT = 768;
 
 /**
@@ -53,7 +56,7 @@ const MOBILE_BREAKPOINT = 768;
  * └────────┴──────────────┴─────────────────────┘
  * ```
  *
- * At ≤768px it becomes a single header + content + footer column and the rails
+ * In the mobile layout (`mobileQuery`, ≤768px by default) it becomes a single header + content + footer column and the rails
  * drop out. How the nav comes back is `mobileNav`:
  * - `"drawer"` (default) — the **primary** rail turns into an off-canvas drawer;
  *   bind `[(mobileNavOpen)]` and give the app a mobile-only hamburger to slide
@@ -66,7 +69,7 @@ const MOBILE_BREAKPOINT = 768;
  * ## Slots
  * | Attribute        | Region                                    |
  * |------------------|-------------------------------------------|
- * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--fold-shell-rail-width`). At ≤768px it becomes the mobile drawer (see `mobileNavOpen`). |
+ * | `railPrimary`    | Left rail (intrinsic width — the rail component sizes itself; `railWidth` sets its base via `--fold-shell-rail-width`). In the mobile layout (`mobileQuery`, ≤768px by default) it becomes the mobile drawer (see `mobileNavOpen`). |
  * | `railSecondary`  | Second rail (intrinsic width; a component that collapses to `0` hides itself). |
  * | `subheader`      | The band **under** the header — a nav sub-bar, a filter strip, a context ribbon. Same placement rule as the header (`subheaderLayout`: over the content column, or full width above the rails), and like the footer it is **self-collapsing**: an empty slot claims no row. Rendered as a plain `<div>`, so the band brings its own semantics (a `<nav>`, a toolbar). |
  * | `header`         | Top bar (content column, or full-width — see `headerLayout`). Rendered as `<header>` — project plain elements into it, not another `<header>`. |
@@ -78,9 +81,9 @@ const MOBILE_BREAKPOINT = 768;
  * |----------------------|------------------------------------|---------|----------------------------|
  * | `railWidth`          | `--fold-shell-rail-width`           | `64px`  | Base width the primary rail reads (column is intrinsic). |
  * | `headerHeight`       | `--fold-shell-header-height`        | `56px`  | Header row height.         |
- * | `headerHeightMobile` | `--fold-shell-header-height-mobile` | `52px`  | Header height at ≤768px.    |
+ * | `headerHeightMobile` | `--fold-shell-header-height-mobile` | `52px`  | Header height in the mobile layout.    |
  * | `subheaderHeight`    | `--fold-shell-subheader-height`     | `52px`  | Subheader band height.     |
- * | `subheaderHeightMobile` | `--fold-shell-subheader-height-mobile` | `48px` | Subheader height at ≤768px. |
+ * | `subheaderHeightMobile` | `--fold-shell-subheader-height-mobile` | `48px` | Subheader height in the mobile layout. |
  *
  * ## Layout knobs
  * | Input          | Values                | Default   | Meaning                                    |
@@ -90,6 +93,7 @@ const MOBILE_BREAKPOINT = 768;
  * | `footerLayout` | `"inset" \| "full"`   | `"inset"` | `inset` = footer sits under the content column (rails climb its side); `full` = footer spans the full width, below the rails (the usual player-bar look). Ignored when `footerBehavior="scroll"`. |
  * | `footerBehavior`| `"pinned" \| "scroll"`| `"pinned"`| `pinned` = the footer is a fixed row, **always in sight** (a player / status bar) — supports `inset` and `full`. `scroll` = the footer flows at the **end of the content**, revealed when you scroll to the bottom (a legal / support footer) — it lives in the content column (inset). A short page still pushes it to the bottom (the content grows to fill), and a tall page reveals it below the fold; you never manage that. |
  * | `scroll`       | `"scroll" \| "stage"` | `"scroll"`| **Who owns the content scroll.** `scroll` (default) = the shell's content region owns the scroll; pages flow inside it (`fold-page-layout scroll="flow"`), the chrome stays put, a `scroll` footer sits at the true end. `stage` = the content region is a fixed-height stage that does *not* scroll — the page fills it and scrolling happens inside `[foldScrollRegion]` areas (a mail-style split view). See `docs/scroll.md`. |
+ * | `mobileQuery`  | `FoldMobileQuery` | `"phone"` | **When the shell turns mobile.** A key of `FOLD_MOBILE_QUERIES` (`"phone"` ≤768px, `"phoneOrTablet"` adds touch screens up to 1366px — an iPad in landscape —, `"touchLandscape"`) or `foldMediaQuery("<raw query>")`. Followed live; the state is readable as `shell.isMobile()` and on the host as `.is-mobile` / `[data-mobile]`. A shell whose own width is ≤768px is mobile regardless. |
  *
  * ## Elevation (the floating look)
  * The shell owns **structure**, not skin — it drives no `floating` flag. To lift
@@ -149,7 +153,7 @@ const MOBILE_BREAKPOINT = 768;
  * >
  *   <app-menu railPrimary foldElevated /><!-- a floating rail; drop it for flat -->
  *   <app-workspace-rail railSecondary />
- *   <app-header header /><!-- its hamburger toggles navOpen at ≤768px -->
+ *   <app-header header /><!-- its hamburger toggles navOpen when shell.isMobile() -->
  *   <app-nav-bar subheader /><!-- optional; omit it and the band collapses -->
  *   <router-outlet />
  *   <!-- panels / overlays / banners also go in the default slot -->
@@ -175,6 +179,8 @@ const MOBILE_BREAKPOINT = 768;
     "[class.footer-scroll]": 'footerBehavior() === "scroll"',
     "[class.mobile-drawer]": 'mobileNav() === "drawer"',
     "[class.mobile-nav-open]": "drawerOpen()",
+    "[class.is-mobile]": "isMobile()",
+    "[attr.data-mobile]": 'isMobile() ? "" : null',
     "[attr.data-scroll]": "scroll()",
   },
   templateUrl: "./app-shell.component.html",
@@ -186,11 +192,11 @@ export class FoldAppShellComponent {
   readonly railWidth = input<number>();
   /** Header row height in px. Omit to inherit `--fold-shell-header-height` (56). */
   readonly headerHeight = input<number>();
-  /** Header height at ≤768px in px. Omit to inherit `--fold-shell-header-height-mobile` (52). */
+  /** Header height in the mobile layout in px. Omit to inherit `--fold-shell-header-height-mobile` (52). */
   readonly headerHeightMobile = input<number>();
   /** Subheader band height in px. Omit to inherit `--fold-shell-subheader-height` (52). */
   readonly subheaderHeight = input<number>();
-  /** Subheader band height at ≤768px in px. Omit to inherit `--fold-shell-subheader-height-mobile` (48). */
+  /** Subheader band height in the mobile layout, in px. Omit to inherit `--fold-shell-subheader-height-mobile` (48). */
   readonly subheaderHeightMobile = input<number>();
 
   /** `"full"` spans the header across every column, above the rails; `"inset"` (default) keeps it over the content column. */
@@ -257,7 +263,7 @@ export class FoldAppShellComponent {
   /**
    * Two-way: is the mobile nav open?
    *
-   * Below the mobile breakpoint the rails drop out; instead of vanishing, the
+   * In the mobile layout (see `mobileQuery`) the rails drop out; instead of vanishing, the
    * **primary** rail becomes an off-canvas drawer this flag slides in. The app
    * owns the trigger — a mobile-only hamburger in its header, bound
    * `[(mobileNavOpen)]` — and typically flips it back to `false` on navigation;
@@ -267,6 +273,20 @@ export class FoldAppShellComponent {
    * never keeps a stuck drawer.
    */
   readonly mobileNavOpen = model(false);
+
+  /**
+   * When the shell switches to its mobile layout (single column, rails out,
+   * primary rail as a drawer): a key of `FOLD_MOBILE_QUERIES` — `"phone"`
+   * (default, ≤768px), `"phoneOrTablet"` (also touch screens up to 1366px, an iPad in
+   * landscape), `"touchLandscape"` — or a raw media query wrapped in
+   * `foldMediaQuery(...)`. Followed live through `matchMedia`; SSR / no
+   * `matchMedia` reads as not matching (wide first paint). A shell whose own
+   * width is ≤768px is mobile regardless (an embedded preview).
+   */
+  readonly mobileQuery = input<FoldMobileQuery>("phone");
+
+  /** Live result of `matchMedia(mobileQuery)`. */
+  private readonly queryMatches = signal(false);
 
   /** The shell's own width, kept live by a shared `ResizeObserver` primitive. */
   private readonly width = observeElementWidth();
@@ -278,14 +298,17 @@ export class FoldAppShellComponent {
   /** The inner content scroll box (`scroll` mode) / stage (`stage` mode). */
   private readonly scrollBox = viewChild<ElementRef<HTMLElement>>("scrollBox");
 
-  /** Whether the shell is narrow enough to collapse — tracked from its **own**
-   *  width, not the viewport, so the drawer engages in step with the CSS
-   *  collapse whether that fires on `@media` (the shell fills the viewport) or
-   *  `@container` (an embedded preview). `0` (unmeasured / SSR) reads as wide —
-   *  the SSR-safe first paint. */
-  private readonly isNarrow = computed(() => {
+  /**
+   * Is the shell in its mobile layout? True when `mobileQuery` matches, or when
+   * the shell's own width is ≤768px. Drives the host's `.is-mobile` class /
+   * `data-mobile` attribute (the stylesheet keys the collapse on it) and the
+   * drawer. Public, via `#shell="foldAppShell"`, so the app shows its hamburger
+   * exactly when the drawer can open: `@if (shell.isMobile()) { … }`. `false`
+   * on the server.
+   */
+  readonly isMobile = computed(() => {
     const w = this.width();
-    return w > 0 && w <= MOBILE_BREAKPOINT;
+    return this.queryMatches() || (w > 0 && w <= MOBILE_BREAKPOINT);
   });
 
   /** The drawer is live only in `drawer` mode, when the shell is narrow **and**
@@ -293,16 +316,32 @@ export class FoldAppShellComponent {
    *  when a `none`-mode shell defers the mobile nav to a launcher. */
   protected readonly drawerOpen = computed(
     () =>
-      this.mobileNav() === "drawer" && this.isNarrow() && this.mobileNavOpen(),
+      this.mobileNav() === "drawer" && this.isMobile() && this.mobileNavOpen(),
   );
 
   constructor() {
     // Widening past the breakpoint closes the drawer so it can't linger as a
     // stuck off-canvas panel once the rails are back in view.
     effect(() => {
-      if (!this.isNarrow() && this.mobileNavOpen()) {
+      if (!this.isMobile() && this.mobileNavOpen()) {
         this.mobileNavOpen.set(false);
       }
+    });
+
+    // Follow `mobileQuery` live; a new query swaps the listener (onCleanup).
+    // No `matchMedia` (SSR, old test DOM) → stays `false`, the wide first paint.
+    const view = this.document.defaultView;
+    effect((onCleanup) => {
+      const query = resolveFoldMobileQuery(this.mobileQuery());
+      if (!view || typeof view.matchMedia !== "function") {
+        return;
+      }
+      const mql = view.matchMedia(query);
+      this.queryMatches.set(mql.matches);
+      const onChange = (e: MediaQueryListEvent): void =>
+        this.queryMatches.set(e.matches);
+      mql.addEventListener("change", onChange);
+      onCleanup(() => mql.removeEventListener("change", onChange));
     });
 
     // Register the content scroll box so overlays can freeze it. Client-only

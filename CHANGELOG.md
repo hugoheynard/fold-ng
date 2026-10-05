@@ -6,7 +6,27 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-app-shell` : `mobileQuery` — l'application choisit quand le shell
+  passe en mise en page mobile** (une colonne, rail primaire en tiroir). Une clé
+  de `FOLD_MOBILE_QUERIES` — `"phone"` (défaut, ≤768px : comportement
+  inchangé), `"phoneOrTablet"` (aussi tout écran tactile jusqu'à 1366px, un iPad en
+  paysage), `"touchLandscape"` — ou une query brute passée par
+  `foldMediaQuery(...)`, balisée pour qu'une clé mal orthographiée ne compile
+  pas comme une query qui ne matche jamais. Les presets tactiles testent
+  `any-pointer: coarse` : un iPad avec trackpad annonce un pointeur principal
+  fin.
+- L'état est lisible : signal public `isMobile()` (via
+  `#shell="foldAppShell"`, pour n'afficher le burger que quand le tiroir peut
+  s'ouvrir), classe `.is-mobile` et attribut `data-mobile` sur l'hôte.
+
+### Changed
+
+- La bascule viewport du shell n'est plus un `@media (max-width: 768px)` mais
+  `:host(.is-mobile)`, posée depuis `matchMedia(mobileQuery)` suivi en direct.
+  Le `@container` de l'aperçu de galerie reste tel quel, et un shell dont la
+  largeur propre est ≤768px est mobile quelle que soit la query.
 
 ## [0.27.2] - 2026-09-11
 

@@ -6,6 +6,14 @@
 
 export { FoldAppShellComponent } from "./components/layout/app-shell/app-shell.component";
 export {
+  FOLD_MOBILE_QUERIES,
+  foldMediaQuery,
+  resolveFoldMobileQuery,
+  type FoldMediaQuery,
+  type FoldMobileQuery,
+  type FoldMobileQueryName,
+} from "./components/layout/app-shell/mobile-queries";
+export {
   FoldAvatarComponent,
   type FoldAvatarVariant,
   type FoldAvatarRing,

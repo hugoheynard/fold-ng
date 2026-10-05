@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, viewChild } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import {
@@ -6,6 +6,12 @@ import {
   ScrollRegionRegistry,
 } from "../../../a11y/scroll-region-registry.service";
 import { FoldAppShellComponent } from "./app-shell.component";
+import {
+  FOLD_MOBILE_QUERIES,
+  type FoldMobileQuery,
+  foldMediaQuery,
+  resolveFoldMobileQuery,
+} from "./mobile-queries";
 
 @Component({
   standalone: true,
@@ -489,5 +495,137 @@ describe("FoldAppShellComponent · mobile drawer", () => {
     emitWidth?.(1200);
     fixture.detectChanges();
     expect(fixture.componentInstance.open()).toBe(false);
+  });
+});
+
+/** A controllable `matchMedia`: every query in `matching` matches; `fire`
+ *  flips one and notifies its live listeners. */
+const realMatchMedia = window.matchMedia;
+let matching = new Set<string>();
+const mqlListeners = new Map<string, Set<(e: MediaQueryListEvent) => void>>();
+function stubMatchMedia(): void {
+  matching = new Set();
+  mqlListeners.clear();
+  window.matchMedia = (query: string): MediaQueryList => {
+    const set = mqlListeners.get(query) ?? new Set();
+    mqlListeners.set(query, set);
+    const mql = {
+      media: query,
+      get matches() {
+        return matching.has(query);
+      },
+      addEventListener: (_: string, l: (e: MediaQueryListEvent) => void) =>
+        set.add(l),
+      removeEventListener: (_: string, l: (e: MediaQueryListEvent) => void) =>
+        set.delete(l),
+    };
+    return mql as unknown as MediaQueryList;
+  };
+}
+function fire(query: string, matches: boolean): void {
+  if (matches) matching.add(query);
+  else matching.delete(query);
+  for (const l of mqlListeners.get(query) ?? []) {
+    l({ matches, media: query } as MediaQueryListEvent);
+  }
+}
+
+@Component({
+  standalone: true,
+  imports: [FoldAppShellComponent],
+  template: `<fold-app-shell #shell="foldAppShell" [mobileQuery]="query()" />`,
+})
+class QueryHostComponent {
+  readonly query = signal<FoldMobileQuery>("phone");
+  readonly shell = viewChild.required<FoldAppShellComponent>("shell");
+}
+
+describe("FoldAppShellComponent · mobileQuery", () => {
+  beforeEach(() => {
+    stubResizeObserver();
+    stubMatchMedia();
+  });
+  afterEach(() => {
+    globalThis.ResizeObserver = realResizeObserver;
+    window.matchMedia = realMatchMedia;
+    emitWidth = undefined;
+  });
+
+  function render() {
+    const fixture = TestBed.createComponent(QueryHostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement.querySelector(
+      "fold-app-shell",
+    ) as HTMLElement;
+    return { fixture, el };
+  }
+
+  it("defaults to the phone query, (max-width: 768px)", () => {
+    const { fixture, el } = render();
+    expect(mqlListeners.has("(max-width: 768px)")).toBe(true);
+    expect(el.classList.contains("is-mobile")).toBe(false);
+    fire("(max-width: 768px)", true);
+    fixture.detectChanges();
+    expect(el.classList.contains("is-mobile")).toBe(true);
+    expect(el.hasAttribute("data-mobile")).toBe(true);
+    expect(fixture.componentInstance.shell().isMobile()).toBe(true);
+  });
+
+  it("resolves a named query (phoneOrTablet) to its media query", () => {
+    const { fixture, el } = render();
+    fixture.componentInstance.query.set("phoneOrTablet");
+    fixture.detectChanges();
+    fire(FOLD_MOBILE_QUERIES.phoneOrTablet, true);
+    fixture.detectChanges();
+    expect(el.classList.contains("is-mobile")).toBe(true);
+  });
+
+  it("turns mobile on a matching raw query, though the shell is wide", () => {
+    const raw = foldMediaQuery("(pointer: coarse) and (max-width: 1366px)");
+    matching.add(raw);
+    const { fixture, el } = render();
+    fixture.componentInstance.query.set(raw);
+    fixture.detectChanges();
+    emitWidth?.(1180);
+    fixture.detectChanges();
+    expect(el.classList.contains("is-mobile")).toBe(true);
+  });
+
+  it("follows a query change live, and drops the old listener", () => {
+    const { fixture, el } = render();
+    fixture.componentInstance.query.set(foldMediaQuery("(min-width: 1px)"));
+    fixture.detectChanges();
+    expect(mqlListeners.get("(max-width: 768px)")?.size).toBe(0);
+    fire("(min-width: 1px)", true);
+    fixture.detectChanges();
+    expect(el.classList.contains("is-mobile")).toBe(true);
+    fire("(min-width: 1px)", false);
+    fixture.detectChanges();
+    expect(el.classList.contains("is-mobile")).toBe(false);
+  });
+
+  it("is mobile on its own width ≤768 even if the query does not match", () => {
+    const { fixture, el } = render();
+    emitWidth?.(600);
+    fixture.detectChanges();
+    expect(el.classList.contains("is-mobile")).toBe(true);
+  });
+});
+
+describe("resolveFoldMobileQuery", () => {
+  it("maps each key to its preset", () => {
+    expect(resolveFoldMobileQuery("phone")).toBe("(max-width: 768px)");
+    expect(resolveFoldMobileQuery("phoneOrTablet")).toBe(
+      FOLD_MOBILE_QUERIES.phoneOrTablet,
+    );
+    expect(resolveFoldMobileQuery("touchLandscape")).toBe(
+      FOLD_MOBILE_QUERIES.touchLandscape,
+    );
+  });
+  it("passes a raw query through, and does not treat a prototype key as a preset", () => {
+    expect(resolveFoldMobileQuery(foldMediaQuery("(hover: none)"))).toBe(
+      "(hover: none)",
+    );
+    expect(resolveFoldMobileQuery(foldMediaQuery("toString"))).toBe("toString");
   });
 });

@@ -175,7 +175,7 @@ $fold-footer-states: (
   full: ":not(.footer-scroll):has([footer]).footer-full",
 );
 
-@mixin fold-band-grid($narrow: false) {
+@mixin fold-band-grid($narrow: false, $state: "") {
   @each $header, $header-sel in $fold-header-states {
     @each $sub, $sub-sel in $fold-sub-states {
       @each $footer, $footer-sel in $fold-footer-states {
@@ -184,7 +184,7 @@ $fold-footer-states: (
         @if $footer == none-scroll {
           $rows-for: none;
         }
-        :host(#{$header-sel}#{$sub-sel}#{$footer-sel}) {
+        :host(#{$state}#{$header-sel}#{$sub-sel}#{$footer-sel}) {
           @include fold-band-tracks($header, $sub, $rows-for, $narrow);
         }
       }
@@ -326,13 +326,22 @@ $fold-footer-states: (
    in over a scrim. The band grid is re-emitted in its narrow form — the same
    exact selectors, so each one simply overrides its wide counterpart by coming
    later; `inset` and `full` stop meaning anything in a single column. */
-@mixin narrow-collapse {
-  @include fold-band-grid($narrow: true);
+/* `:host` alone when no state is asked (the @container path), `:host(<state>)`
+   otherwise — `:host()` with an empty argument is not a valid selector. */
+@function fold-shell-host($state) {
+  @if $state == "" {
+    @return ":host";
+  }
+  @return ":host(#{$state})";
+}
+
+@mixin narrow-collapse($state: "") {
+  @include fold-band-grid($narrow: true, $state: $state);
   /* Both rails are gone on mobile by default. In `drawer` mode the primary
      comes back as an off-canvas drawer (below); in `none` mode it stays hidden
      and the app composes its own launcher. */
-  .rail-primary,
-  .rail-secondary {
+  #{fold-shell-host($state)} .rail-primary,
+  #{fold-shell-host($state)} .rail-secondary {
     display: none;
   }
   /* Off-canvas drawer (`mobileNav="drawer"`): pinned below the header (so the
@@ -341,7 +350,7 @@ $fold-footer-states: (
      edge until opened. `visibility` — not just the transform — takes it out of
      the tab order while closed, so keyboard focus can't land on an off-screen
      rail. The secondary rail stays gone. */
-  :host(.mobile-drawer) .rail-primary {
+  :host(#{$state}.mobile-drawer) .rail-primary {
     display: block;
     position: absolute;
     top: var(--fold-shell-chrome-offset);
@@ -357,13 +366,13 @@ $fold-footer-states: (
       transform 240ms cubic-bezier(0.4, 0, 0.2, 1),
       visibility 240ms;
   }
-  :host(.mobile-drawer.mobile-nav-open) .rail-primary {
+  :host(#{$state}.mobile-drawer.mobile-nav-open) .rail-primary {
     visibility: visible;
     transform: translateX(0);
   }
   /* The scrim covers the content (below the header), dimming it and catching the
      dismiss click. Only in the DOM while the drawer is open (see template). */
-  .mobile-scrim {
+  #{fold-shell-host($state)} .mobile-scrim {
     position: absolute;
     inset: var(--fold-shell-chrome-offset) 0 0 0;
     z-index: 40;
@@ -373,14 +382,17 @@ $fold-footer-states: (
     animation: fold-shell-scrim-in 240ms ease;
   }
   /* Freeze the content scroll behind an open drawer. */
-  :host(.mobile-nav-open) .content-scroll {
+  :host(#{$state}.mobile-nav-open) .content-scroll {
     overflow: hidden;
   }
 }
 
-@media (max-width: 768px) {
-  @include narrow-collapse;
-}
+/* Viewport path — keyed to the host's `.is-mobile` class, which the component
+   sets from `matchMedia(mobileQuery)` (default `(max-width: 768px)`), so the
+   app chooses what "mobile" means (e.g. a tablet in landscape) without the
+   stylesheet hard-coding a breakpoint. The `:host(.is-mobile…)` prefix also
+   outranks the wide band grid by one class, so ordering no longer matters. */
+@include narrow-collapse($state: ".is-mobile");
 
 /* Container-query responsiveness — the same collapse keyed to the shell's own
    width. Only fires inside an ancestor with `container-type` (e.g. the gallery's
