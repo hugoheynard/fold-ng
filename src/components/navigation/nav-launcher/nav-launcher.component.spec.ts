@@ -41,7 +41,7 @@ function renderCols() {
   fixture.detectChanges();
   const grid = fixture.nativeElement.querySelector(".nl-grid") as HTMLElement;
   const cols = (): string => grid.style.getPropertyValue("--nav-cols");
-  return { fixture, cols };
+  return { fixture, grid, cols };
 }
 
 describe("FoldNavLauncherComponent", () => {
@@ -134,21 +134,26 @@ describe("FoldNavLauncherComponent", () => {
     expect(root.querySelector(".nl-dialog")).toBeNull();
   });
 
-  it("scales auto columns to the tile count (≤4 → 2, more → 3)", () => {
-    const { fixture, cols } = renderCols();
-    // 3 tiles → 2 columns (few, so large flat tiles).
-    expect(cols()).toBe("2");
+  it("lets the width decide in auto mode, with large tiles for ≤4 items", () => {
+    const { fixture, grid, cols } = renderCols();
+    // No pinned count: the CSS `auto-fill` track takes over.
+    expect(cols()).toBe("");
+    expect(grid.hasAttribute("data-cols")).toBe(false);
+    // 3 tiles → few → large minimum (2 columns on a phone).
+    expect(grid.getAttribute("data-density")).toBe("few");
 
     fixture.componentInstance.tiles.set(["a", "b", "c", "d", "e"]);
     fixture.detectChanges();
-    // 5 tiles → 3 columns.
-    expect(cols()).toBe("3");
+    // 5 tiles → many → compact minimum (3 on a phone, more on a tablet).
+    expect(grid.getAttribute("data-density")).toBe("many");
   });
 
-  it("pins the column count when given a number", () => {
-    const { fixture, cols } = renderCols();
+  it("pins the column count when given a number, without a density", () => {
+    const { fixture, grid, cols } = renderCols();
     fixture.componentInstance.cols.set(4);
     fixture.detectChanges();
     expect(cols()).toBe("4");
+    expect(grid.hasAttribute("data-cols")).toBe(true);
+    expect(grid.hasAttribute("data-density")).toBe(false);
   });
 });

@@ -33,6 +33,8 @@ const DRILL_MS = 260;
 const BACK_MS = 200;
 /** When the entrance cascade is over and `:active` gets the transform back (ms). */
 const SETTLE_MS = 760;
+/** Up to this many level-1 items, `"auto"` lays out large tiles. */
+const FEW_ITEMS = 4;
 /** Horizontal travel that counts as a "swipe right" (px). */
 const SWIPE_PX = 56;
 
@@ -107,8 +109,14 @@ export class FoldNavLauncherComponent {
    */
   readonly glass = input(false, { transform: booleanAttribute });
   /**
-   * Grid column count. `"auto"` (default) scales to the number of level-1
-   * items: ≤4 → 2 columns, more → 3.
+   * Grid column count. `"auto"` (default) lets the WIDTH decide: tiles fill the
+   * row at a minimum size, so a phone keeps 2 (≤4 items) or 3 columns while a
+   * tablet gets more, smaller columns instead of four 370 px squares. The
+   * minimum depends on the item count — few items, large tiles.
+   *
+   * A number pins the count. Either way the grid never grows past
+   * `--fold-nav-launcher-max-width` (default `720px`), centred, so a pinned
+   * count cannot blow tiles up on a wide screen either.
    */
   readonly columns = input<number | "auto">("auto");
 
@@ -137,13 +145,23 @@ export class FoldNavLauncherComponent {
     () => this.openGroup() ?? this.pending(),
   );
 
-  /** The resolved column count (always a number for the grid var). */
-  protected readonly resolvedCols = computed(() => {
+  /** The pinned column count, or `null` when the width decides (`"auto"`). */
+  protected readonly fixedCols = computed(() => {
     const cols = this.columns();
-    if (cols !== "auto") {
-      return cols;
+    return cols === "auto" ? null : cols;
+  });
+
+  /**
+   * Tile density in `"auto"` mode — picks the tile's minimum width in CSS:
+   * `few` (≤4 items) → large tiles, `many` → compact ones. `null` when pinned.
+   */
+  protected readonly density = computed(() => {
+    if (this.fixedCols() !== null) {
+      return null;
     }
-    return this.tiles().length + this.groups().length <= 4 ? 2 : 3;
+    return this.tiles().length + this.groups().length <= FEW_ITEMS
+      ? "few"
+      : "many";
   });
 
   /** The sheet's subtitle — derived from the group's own children, never passed. */

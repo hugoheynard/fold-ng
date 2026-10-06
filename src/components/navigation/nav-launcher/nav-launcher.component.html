@@ -81,7 +81,12 @@
     >
       <!-- La grille porte les DEUX niveaux : un groupe ouvert sort de la
            grille et couvre ce corps, sans que rien ne bouge dans le DOM. -->
-      <div class="nl-grid" [style.--nav-cols]="resolvedCols()">
+      <div
+        class="nl-grid"
+        [style.--nav-cols]="fixedCols()"
+        [attr.data-cols]="fixedCols() === null ? null : ''"
+        [attr.data-density]="density()"
+      >
         <ng-content />
       </div>
     </div>

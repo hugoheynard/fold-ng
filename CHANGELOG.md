@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-nav-launcher` défile au niveau 1.** La grille portait les tuiles dans
+  un corps `overflow: hidden` : au-delà d'un écran, les dernières tuiles étaient
+  coupées et inatteignables (iPad). C'est la grille qui défile désormais
+  (`overflow-y: auto; overscroll-behavior: contain`) — pas le corps, sans quoi
+  la feuille du niveau 2 s'ouvrirait décalée — et le pied reste en place.
+- **`fold-nav-launcher` : des tuiles de taille bornée sur tablette.** En
+  `columns="auto"` (défaut) la largeur décide : `auto-fill` avec un minimum de
+  96 px (144 px pour ≤4 éléments). Téléphone inchangé (3 colonnes, ou 2), iPad
+  7 colonnes de ~96 px au lieu de 2 de ~370 px. La grille est plafonnée à
+  `--fold-nav-launcher-max-width` (720 px), centrée — y compris avec un
+  `columns` numérique, qui reste prioritaire.
 
 ## [0.28.0] - 2026-10-05
 

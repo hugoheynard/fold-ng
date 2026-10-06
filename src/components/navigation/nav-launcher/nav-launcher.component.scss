@@ -18,6 +18,9 @@
    là qu'on vient, et la feuille du niveau 2 prendra celui du rail secondaire. */
 .nl-dialog {
   --fold-nl-gutter: var(--fold-space-xl);
+  /* Public theming hook: the grid never grows wider than this, centred. On a
+     tablet the tiles stay tiles instead of becoming 370 px posters. */
+  --fold-nav-launcher-max-width: 720px;
   --fold-nl-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Les quatre plans du lanceur, en variables plutôt qu'en règles : elles
@@ -129,21 +132,60 @@
    Une feuille qui se croit pleine largeur et n'en peint que le milieu. */
 .nl-body {
   position: relative;
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
   margin-inline: calc(-1 * var(--fold-nl-gutter));
   overflow: hidden;
 }
+/* C'est la GRILLE qui défile, pas le corps. La feuille du niveau 2 est en
+   `position: absolute; inset: 0` contre le corps : si le corps défilait, elle
+   s'ouvrirait décalée de ce qu'on a fait défiler. La grille n'étant pas son
+   bloc conteneur, elle ne la déplace ni ne la découpe. Sans ce défilement, au
+   niveau 1 les tuiles du bas étaient coupées et inatteignables (iPad, 2026-10-06).
+
+   Largeur bornée et centrée par la GOUTTIÈRE : un `max-width` couperait la
+   barre de défilement du bord de l'écran. */
 .nl-grid {
-  padding-inline: var(--fold-nl-gutter);
+  --nav-tile-min: 96px;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-inline: max(
+    var(--fold-nl-gutter),
+    calc((100% - var(--fold-nav-launcher-max-width)) / 2)
+  );
+  padding-block-end: var(--fold-space-sm);
   display: grid;
-  grid-template-columns: repeat(var(--nav-cols, 3), 1fr);
+  /* `auto-fill` et non `auto-fit` : trois tuiles restent trois tuiles, au lieu
+     de s'étirer sur 720 px. Une colonne ne dépasse donc jamais ~2 × le minimum. */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, var(--nav-tile-min)), 1fr)
+  );
+  grid-auto-rows: max-content;
+  align-content: start;
   gap: var(--fold-space-sm);
+}
+/* Minimums choisis pour le téléphone (375 px → 335 px de contenu, gap 8) :
+   96 px → 3 colonnes (3×96+2×8 = 304 ≤ 335 < 4×96+3×8 = 408), comme avant ;
+   144 px → 2 colonnes (2×144+8 = 296 ≤ 335 < 3×144+16 = 448), comme avant.
+   Plafonné à 720 px (iPad) : 7 colonnes de ~96 px, ou 4 de ~174 px. */
+.nl-grid[data-density="few"] {
+  --nav-tile-min: 144px;
+}
+.nl-grid[data-cols] {
+  grid-template-columns: repeat(var(--nav-cols), minmax(0, 1fr));
 }
 /* Sur un téléphone très étroit, jamais plus de deux de front. */
 @media (max-width: 360px) {
-  .nl-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .nl-grid,
+  .nl-grid[data-cols] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 /* Au niveau 2 la grille sort de la vue ET du parcours clavier — mais reste en
