@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.28.1] - 2026-10-06
+
 ### Fixed
 
 - **`fold-nav-launcher` défile au niveau 1.** La grille portait les tuiles dans
@@ -2634,7 +2638,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.28.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.28.1...HEAD
+[0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1
 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0
 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2
 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1

@@ -42,6 +42,111 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.28.1",
+    date: "2026-10-06",
+    unreleased: false,
+    counts: {
+      Fixed: 2,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-nav-launcher",
+              },
+              {
+                kind: "text",
+                value: " défile au niveau 1.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "La grille portait les tuiles dans un corps ",
+              },
+              {
+                kind: "code",
+                value: "overflow: hidden",
+              },
+              {
+                kind: "text",
+                value:
+                  " : au-delà d'un écran, les dernières tuiles étaient coupées et inatteignables (iPad). C'est la grille qui défile désormais (",
+              },
+              {
+                kind: "code",
+                value: "overflow-y: auto; overscroll-behavior: contain",
+              },
+              {
+                kind: "text",
+                value:
+                  ") — pas le corps, sans quoi la feuille du niveau 2 s'ouvrirait décalée — et le pied reste en place.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-nav-launcher",
+              },
+              {
+                kind: "text",
+                value: " : des tuiles de taille bornée sur tablette.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "En ",
+              },
+              {
+                kind: "code",
+                value: 'columns="auto"',
+              },
+              {
+                kind: "text",
+                value: " (défaut) la largeur décide : ",
+              },
+              {
+                kind: "code",
+                value: "auto-fill",
+              },
+              {
+                kind: "text",
+                value:
+                  " avec un minimum de 96 px (144 px pour ≤4 éléments). Téléphone inchangé (3 colonnes, ou 2), iPad 7 colonnes de ~96 px au lieu de 2 de ~370 px. La grille est plafonnée à ",
+              },
+              {
+                kind: "code",
+                value: "--fold-nav-launcher-max-width",
+              },
+              {
+                kind: "text",
+                value: " (720 px), centrée — y compris avec un ",
+              },
+              {
+                kind: "code",
+                value: "columns",
+              },
+              {
+                kind: "text",
+                value: " numérique, qui reste prioritaire.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.28.0",
     date: "2026-10-05",
     unreleased: false,
@@ -21341,7 +21446,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.28.0...HEAD [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.28.1...HEAD [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -21353,4 +21458,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.28.0";
+export const PUBLISHED_VERSION = "0.28.1";
