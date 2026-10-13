@@ -6,7 +6,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-menu` replié défile.** Replié, le corps du menu gardait
+  `overflow: visible` pour laisser sortir les infobulles : un menu plus haut
+  que l'écran débordait et ses entrées se tassaient. Le corps défile désormais
+  dans les deux états (barre masquée replié), les entrées ne rétrécissent plus
+  (`flex-shrink: 0`), et l'infobulle passe en `position: fixed`, placée au
+  survol (`--mi-tip-x/y`), pour échapper au défilement.
 
 ## [0.28.1] - 2026-10-06
 
