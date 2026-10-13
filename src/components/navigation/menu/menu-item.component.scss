@@ -2,6 +2,8 @@
   position: relative;
   width: 40px;
   height: 36px;
+  /* A scrolling rail must scroll its items, not squash them. */
+  flex-shrink: 0;
   /* border-box so the expanded row's width:100% + padding stays inside the
      menu column instead of overflowing to the right. */
   box-sizing: border-box;
@@ -148,11 +150,13 @@
   margin-left: auto;
 }
 
-/* Hover tooltip — escapes the rail to the right (host has overflow: visible). */
+/* Hover tooltip — escapes the rail to the right. `position: fixed` at the
+   coordinates the item writes on hover (`--mi-tip-x/y`), because the rail body
+   scrolls and would clip an absolutely positioned chip. */
 .mi-tip {
-  position: absolute;
-  left: calc(100% + 8px);
-  top: 50%;
+  position: fixed;
+  left: var(--mi-tip-x, -9999px);
+  top: var(--mi-tip-y, 0);
   transform: translateY(-50%);
   padding: var(--fold-space-xs) var(--fold-space-sm);
   border-radius: var(--fold-radius-sm);

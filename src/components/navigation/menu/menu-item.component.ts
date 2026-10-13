@@ -1,4 +1,11 @@
-import { Component, booleanAttribute, computed, input } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+} from "@angular/core";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 import {
@@ -60,9 +67,25 @@ const TONE_ACCENT: Record<FoldBadgeVariant, string> = {
     "[class.is-active]": "active()",
     "[attr.aria-label]": "ariaLabel()",
     "[style.--mi-badge-accent]": "badgeAccent()",
+    "(mouseenter)": "placeTip()",
+    "(focusin)": "placeTip()",
   },
 })
 export class FoldMenuItemComponent {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  /**
+   * Pins the collapsed-rail tooltip next to the item, in viewport coordinates.
+   * The chip is `position: fixed` so the scrolling rail body cannot clip it;
+   * it therefore needs the item's on-screen position at the moment it shows.
+   */
+  protected placeTip(): void {
+    const el = this.host.nativeElement;
+    const box = el.getBoundingClientRect();
+    el.style.setProperty("--mi-tip-x", `${box.right + 8}px`);
+    el.style.setProperty("--mi-tip-y", `${box.top + box.height / 2}px`);
+  }
+
   readonly icon = input.required<FoldIconName>();
   /** The label shown in the hover tooltip (also the accessible name). */
   readonly label = input.required<string>();

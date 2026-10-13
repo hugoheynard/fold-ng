@@ -30,6 +30,29 @@ function render() {
 }
 
 describe("FoldMenuItemComponent", () => {
+  /**
+   * Regression: the collapsed rail could not scroll (its tooltips needed
+   * `overflow: visible`), so a long menu ran off the screen and squashed its
+   * items. The tooltip is now `position: fixed`, placed on hover.
+   */
+  it("pins the tooltip beside the item on hover, in viewport coordinates", () => {
+    const { item } = render();
+    item.getBoundingClientRect = () =>
+      ({
+        top: 100,
+        right: 64,
+        height: 36,
+        bottom: 136,
+        left: 24,
+        width: 40,
+      }) as DOMRect;
+
+    item.dispatchEvent(new MouseEvent("mouseenter"));
+
+    expect(item.style.getPropertyValue("--mi-tip-x")).toBe("72px");
+    expect(item.style.getPropertyValue("--mi-tip-y")).toBe("118px");
+  });
+
   it("renders the icon and the tooltip label", () => {
     const { item } = render();
     expect(item.querySelector("fold-icon")).not.toBeNull();

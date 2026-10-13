@@ -90,6 +90,19 @@
   align-items: center;
   gap: var(--fold-space-xs);
   width: 100%;
+  /* A nav taller than the rail scrolls instead of overflowing off the bottom —
+     collapsed AND expanded. `min-height: 0` lets this flex item shrink below
+     its content so the scroll can engage. The collapsed tooltips no longer need
+     `overflow: visible`: they are `position: fixed`, placed on hover by the
+     item, so the scroll box cannot clip them. Without this, a long collapsed
+     rail ran past the screen and its items were squashed. */
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.menu-body::-webkit-scrollbar {
+  display: none;
 }
 :host(.expanded) .menu-body {
   align-items: stretch;
@@ -98,14 +111,6 @@
      to min-width, overflowing the labels. */
   width: auto;
   padding: 0 var(--fold-space-sm);
-  /* A nav taller than the rail scrolls instead of overflowing off the bottom.
-     `min-height: 0` lets this flex item shrink below its content so the scroll
-     can engage; `overflow-y` does the scrolling. Expanded only — collapsed
-     keeps `overflow: visible` so hover tooltips escape the rail (setting
-     `overflow-y` would force `overflow-x` to clip them too). */
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
   scrollbar-width: thin;
 }
 
