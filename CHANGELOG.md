@@ -15,6 +15,13 @@ All notable changes to **fold-ng** are documented here. The format follows
   (`flex-shrink: 0`), et l'infobulle passe en `position: fixed`, placée au
   survol (`--mi-tip-x/y`), pour échapper au défilement.
 
+### Changed
+
+- **`fold-menu-section` déplié : un retrait et une barre de couleur.** Menu
+  déplié, les entrées d'une section ont un léger retrait derrière une barre
+  verticale à la couleur de la section, pour les distinguer du premier niveau.
+  Le rail replié ne change pas.
+
 ## [0.28.1] - 2026-10-06
 
 ### Fixed

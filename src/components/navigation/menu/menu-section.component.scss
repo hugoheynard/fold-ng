@@ -90,3 +90,21 @@
     transition: none;
   }
 }
+
+/* Expanded menu: the section's items sit slightly indented behind a vertical
+   bar in the section colour, so the label reads as their parent and
+   first-level items stay flush. Collapsed rail: unchanged (icons only). */
+:host-context(fold-menu.expanded) .section-items {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--fold-space-xs);
+  margin-left: var(--fold-space-md);
+  padding-left: var(--fold-space-xs);
+  border-left: 2px solid
+    color-mix(
+      in srgb,
+      var(--fold-menu-section-color, var(--fold-color-border)) 60%,
+      transparent
+    );
+}
