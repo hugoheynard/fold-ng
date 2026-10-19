@@ -1,0 +1,77 @@
+<fold-input-base
+  [label]="label()"
+  [for]="inputId"
+  [required]="required()"
+  [optional]="optional()"
+  [optionalLabel]="optionalLabel()"
+  [info]="info()"
+  [infoLabel]="infoLabel()"
+  [hint]="hint()"
+  [error]="errorMessage()"
+>
+  <fold-popover
+    [open]="panelOpen()"
+    (openChange)="onPopoverOpenChange($event)"
+    [autoFocus]="false"
+    [ariaControls]="listId"
+    [placement]="placement()"
+    [fallbackPlacements]="['top-start', 'bottom-end', 'top-end']"
+  >
+    <input
+      #field
+      foldPopoverTrigger="listbox"
+      type="text"
+      role="combobox"
+      aria-autocomplete="list"
+      autocomplete="off"
+      [id]="inputId"
+      [attr.placeholder]="placeholder()"
+      [attr.readonly]="readOnly() || null"
+      [attr.disabled]="disabled() || null"
+      [attr.required]="required() || null"
+      [attr.aria-invalid]="errorMessage() ? true : null"
+      [attr.aria-describedby]="describedBy()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-activedescendant]="activeId()"
+      [value]="query()"
+      (input)="onInput($event)"
+      (keydown)="onKeydown($event)"
+      (click)="onFieldClick($event)"
+      (blur)="touched.set(true)"
+    />
+
+    <div
+      foldPopoverPanel
+      class="cb-panel"
+      (mousedown)="$event.preventDefault()"
+    >
+      <div
+        class="cb-list"
+        role="listbox"
+        [id]="listId"
+        [attr.aria-label]="label() ?? ariaLabel()"
+        (click)="onListClick($event)"
+        (pointermove)="onListPointermove($event)"
+      >
+        @for (o of filtered(); track $index) {
+          <fold-option [value]="o.value" [disabled]="o.disabled ?? false">
+            @if (optionTemplate(); as tpl) {
+              <ng-container
+                [ngTemplateOutlet]="tpl"
+                [ngTemplateOutletContext]="{ $implicit: o }"
+              />
+            } @else {
+              {{ o.label }}
+            }
+          </fold-option>
+        }
+      </div>
+      @if (loading()) {
+        <fold-loading class="cb-loading" size="sm" [message]="loadingWord()" />
+      } @else if (filtered().length === 0) {
+        <p class="cb-empty">{{ emptyText() }}</p>
+      }
+    </div>
+  </fold-popover>
+  <span class="cb-status" role="status" aria-live="polite">{{ status() }}</span>
+</fold-input-base>

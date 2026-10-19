@@ -249,6 +249,10 @@ export {
 } from "./components/forms/input/date.component";
 export { FoldTimeComponent } from "./components/forms/input/time.component";
 export { FoldSearchComponent } from "./components/forms/input/search.component";
+export {
+  FoldComboboxComponent,
+  type FoldComboboxFilter,
+} from "./components/forms/combobox/combobox.component";
 export { FoldSelectComponent } from "./components/forms/input/select.component";
 export { FoldListboxComponent } from "./components/forms/listbox/listbox.component";
 export { FoldMultiselectComponent } from "./components/forms/listbox/multiselect.component";

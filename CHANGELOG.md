@@ -6,7 +6,23 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-combobox` — un seul champ où l'on tape, les propositions s'ouvrent
+  dessous.** Il remplace le couple « un `fold-search` pour filtrer + un
+  `fold-listbox` à côté pour choisir ». Deux modes de données : `[options]`
+  (`FoldSelectOption<T>[]`) filtrées localement (`filter` : `"contains"` par
+  défaut, `"startsWith"`, une fonction), ou recherche distante — `filter="none"`,
+  `(searchChange)` débouncée (`delayMs`, terme taillé et dédoublonné, comme
+  `fold-search`), `[loading]` (un `fold-loading` dans le panneau) et
+  `emptyText`. Lignes riches par `<ng-template #option let-o>`, comme
+  `fold-listbox`. `[(value)]` générique `T` (`compareWith`), `[(query)]`,
+  `[(open)]`, `(selectionChange)` ; `clearOnSelect` en fait un ajouteur
+  (émet, vide le champ, ne retient pas de valeur). Motif WAI-ARIA combobox sur
+  `fold-popover` : le focus reste dans le champ, ↑/↓, `Entrée`, `Échap`, `Tab` ;
+  le nombre de résultats est annoncé (`resultLabel`). Signal Forms
+  (`FormValueControl<T | null>`), `label`, `placeholder`, `disabled`,
+  `readOnly`, `size`, `variant`.
 
 ## [0.28.2] - 2026-10-13
 

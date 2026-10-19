@@ -238,6 +238,38 @@
 - options: InputSignal<readonly FoldChoiceOption[]> — required
 - selected: OutputEmitterRef<string>
 
+#### FoldComboboxComponent
+- ariaLabel: InputSignal<string | undefined>
+- clearOnSelect: InputSignalWithTransform<boolean, unknown>
+- compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
+- delayMs: InputSignal<number>
+- disabled: InputSignalWithTransform<boolean, unknown>
+- emptyText: InputSignal<string>
+- errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
+- filter: InputSignal<FoldComboboxFilter<T>>
+- hint: InputSignal<string | undefined>
+- info: InputSignal<string | undefined>
+- infoLabel: InputSignal<string | undefined>
+- label: InputSignal<string | undefined>
+- loading: InputSignalWithTransform<boolean, unknown>
+- loadingText: InputSignal<string | undefined>
+- open: ModelSignal<boolean>
+- optional: InputSignalWithTransform<boolean, unknown>
+- optionalLabel: InputSignal<string | undefined>
+- options: InputSignal<readonly FoldSelectOption<T>[]>
+- placeholder: InputSignal<string | undefined>
+- placement: InputSignal<FoldPopoverPlacement>
+- query: ModelSignal<string>
+- readOnly: InputSignalWithTransform<boolean, unknown>
+- required: InputSignalWithTransform<boolean, unknown>
+- resultLabel: InputSignal<string>
+- searchChange: OutputEmitterRef<string>
+- selectionChange: OutputEmitterRef<T>
+- size: InputSignal<"sm" | "md" | "lg">
+- touched: ModelSignal<boolean>
+- value: ModelSignal<T | null>
+- variant: InputSignal<"default" | "panel">
+
 #### FoldContextCardComponent
 - icon: InputSignal<FoldIconName | undefined>
 - iconTone: InputSignal<"neutral" | "primary" | "faded">
@@ -1007,6 +1039,7 @@
 - FoldChoiceOption (type)
 - foldColorProperty (function)
 - foldColorVar (function)
+- FoldComboboxFilter (type)
 - FoldCommonLabels (interface)
 - FoldComponentPanelDescriptor (interface)
 - foldCountActionable (function)

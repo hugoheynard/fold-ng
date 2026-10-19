@@ -145,6 +145,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
     items: [
       { id: "form", label: "input", icon: "edit" },
       { id: "listbox", label: "listbox (select)" },
+      { id: "combobox", label: "combobox" },
       { id: "password", label: "password field" },
       { id: "view-toggle", label: "view-toggle" },
       { id: "checkbox", label: "checkbox" },

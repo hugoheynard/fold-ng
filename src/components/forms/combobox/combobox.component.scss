@@ -1,0 +1,47 @@
+// fold-combobox: the native-input box (input-shell.scss) as the trigger of a
+// fold-popover list panel — the same panel metrics as the select family.
+@use "../input/input-shell" as shell;
+
+:host {
+  display: block;
+}
+
+@include shell.field-input-shell;
+
+.cb-panel {
+  display: flex;
+  flex-direction: column;
+  // Never narrower than the field — the popover publishes the anchor width.
+  min-width: var(--fold-popover-anchor-width, 11rem);
+}
+
+.cb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cb-list:empty {
+  display: none;
+}
+
+.cb-loading {
+  padding: var(--fold-space-sm);
+}
+
+.cb-empty {
+  margin: 0;
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}
+
+// Announced, not shown: the count lives in the panel already, visually.
+.cb-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

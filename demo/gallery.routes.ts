@@ -57,6 +57,7 @@ const PORTED: Record<string, () => Promise<{ default: Type<unknown> }>> = {
   surfaces: () => import("./pages/surfaces/surfaces.page"),
   form: () => import("./pages/form/form.page"),
   listbox: () => import("./pages/listbox/listbox.page"),
+  combobox: () => import("./pages/combobox/combobox.page"),
   password: () => import("./pages/password/password.page"),
   "view-toggle": () => import("./pages/view-toggle/view-toggle.page"),
   avatar: () => import("./pages/avatar/avatar.page"),

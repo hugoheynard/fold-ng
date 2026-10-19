@@ -832,3 +832,45 @@ fold-app-shell > .content > *:not(router-outlet) {
 .cal-pg-rail {
   --fold-calendar-agenda-height: 340px;
 }
+
+/* ── combobox page ───────────────────────────────────── */
+.cbx-demo {
+  display: grid;
+  gap: var(--fold-space-md);
+  width: min(100%, 26rem);
+}
+
+.cbx-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+}
+
+.cbx-thumb {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-primary-surface);
+  color: var(--fold-color-primary-text);
+  font-weight: var(--fold-weight-semibold);
+}
+
+.cbx-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cbx-text small,
+.cbx-basket small {
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+}
+
+.cbx-basket {
+  margin: 0;
+  padding-inline-start: var(--fold-space-lg);
+  font-size: var(--fold-text-sm);
+}

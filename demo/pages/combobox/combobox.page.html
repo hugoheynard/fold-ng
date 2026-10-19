@@ -1,0 +1,103 @@
+<fold-page-layout fluid title="combobox">
+  <gal-kind-badge titleBadge kind="component" />
+  <p description>
+    <code>fold-combobox</code> — <strong>one field</strong> you type in, the
+    propositions open under it. Local filtering over <code>[options]</code>, or
+    a server search through the debounced <code>(searchChange)</code> with
+    <code>[loading]</code> and an empty state. <code>clearOnSelect</code> makes
+    it an adder: pick, emit, empty.
+  </p>
+  <gal-composed-of [ids]="['popover', 'listbox', 'state']" />
+
+  <dev-playground [code]="code()" [responsive]="false">
+    <div class="np-field" params>
+      <span class="gal-tag">data</span>
+      <div class="ss-seg">
+        @for (m of modes; track m) {
+        <button
+          type="button"
+          [class.is-on]="mode() === m"
+          (click)="mode.set(m)"
+        >
+          {{ m }}
+        </button>
+        }
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">clearOnSelect</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!clearOnSelect()"
+          (click)="clearOnSelect.set(false)"
+        >
+          off
+        </button>
+        <button
+          type="button"
+          [class.is-on]="clearOnSelect()"
+          (click)="clearOnSelect.set(true)"
+        >
+          on
+        </button>
+      </div>
+    </div>
+    <div class="np-field" params>
+      <span class="gal-tag">size</span>
+      <div class="ss-seg">
+        @for (s of sizes; track s) {
+        <button
+          type="button"
+          [class.is-on]="size() === s"
+          (click)="size.set(s)"
+        >
+          {{ s }}
+        </button>
+        }
+      </div>
+    </div>
+
+    <div class="cbx-demo">
+      <fold-combobox
+        label="Article"
+        placeholder="Nom ou code article…"
+        emptyText="Aucun article"
+        resultLabel="articles"
+        [size]="size()"
+        [options]="options()"
+        [filter]="mode() === 'remote' ? 'none' : 'contains'"
+        [loading]="mode() === 'remote' && searching()"
+        [clearOnSelect]="clearOnSelect()"
+        [(value)]="picked"
+        (searchChange)="search($event)"
+        (selectionChange)="add($event)"
+      >
+        <ng-template #option let-o>
+          <span class="cbx-row">
+            <span class="cbx-thumb" aria-hidden="true"
+              >{{ o.value.name[0] }}</span
+            >
+            <span class="cbx-text">
+              <span>{{ o.label }}</span>
+              <small>{{ o.value.sku }} · {{ o.value.family }}</small>
+            </span>
+          </span>
+        </ng-template>
+      </fold-combobox>
+      @if (clearOnSelect()) {
+      <ul class="cbx-basket">
+        @for (a of basket(); track $index) {
+        <li>{{ a.name }} <small>{{ a.sku }}</small></li>
+        } @empty {
+        <li><small>La liste est vide — ajoutez un article.</small></li>
+        }
+      </ul>
+      } @else {
+      <p class="cbx-basket">
+        <small>value: {{ picked()?.sku ?? "null" }}</small>
+      </p>
+      }
+    </div>
+  </dev-playground>
+</fold-page-layout>
