@@ -1212,3 +1212,175 @@ describe("FoldDataTableComponent — row note", () => {
     expect(el.querySelector(".folddt-note-row")).toBeNull();
   });
 });
+
+@Component({
+  standalone: true,
+  imports: [
+    FoldDataTableComponent,
+    FoldDataTableCellDirective,
+    FoldDataTableRowDetailDirective,
+    FoldDataTableRowNoteDirective,
+  ],
+  template: `
+    <fold-data-table
+      [columns]="columns"
+      [rows]="rows"
+      [rowKey]="rowKey"
+      [columnRules]="rules()"
+      [selectable]="selectable()"
+      [stickyFirst]="sticky()"
+      [zebra]="zebra()"
+      [density]="density()"
+      [narrowLayout]="narrow()"
+      [rowNote]="hasNote"
+      [(expanded)]="open"
+    >
+      <ng-template foldCell="name" let-row>{{ row.name }}</ng-template>
+      <ng-template foldCell="price" let-row>{{ row.price }}</ng-template>
+      <ng-template foldCell="unit" let-row>{{ row.unit }}</ng-template>
+      <ng-template foldRowNote let-row>note-{{ row.id }}</ng-template>
+      <ng-template foldRowDetail let-row>drawer-{{ row.id }}</ng-template>
+    </fold-data-table>
+  `,
+})
+class RulesHost {
+  readonly columns: FoldTableColumn[] = [
+    { key: "name", label: "Article" },
+    { key: "price", label: "Prix", numeric: true },
+    { key: "unit", label: "Unité" },
+  ];
+  readonly rows = [
+    { id: "a", name: "Baguette", price: 120, unit: "pièce" },
+    { id: "b", name: "Fougasse", price: 380, unit: "pièce" },
+  ];
+  readonly rowKey = (row: { id: string }): string => row.id;
+  readonly hasNote = (row: { id: string }): boolean => row.id === "a";
+  readonly rules = signal(true);
+  readonly selectable = signal(false);
+  readonly sticky = signal(false);
+  readonly zebra = signal(false);
+  readonly density = signal<"comfortable" | "compact">("comfortable");
+  readonly narrow = signal<"scroll" | "cards">("scroll");
+  open: ReadonlySet<string | number> = new Set(["a"]);
+}
+
+describe("FoldDataTableComponent — column rules", () => {
+  const realRO = globalThis.ResizeObserver;
+
+  afterEach(() => {
+    globalThis.ResizeObserver = realRO;
+  });
+
+  function render(): {
+    fixture: ComponentFixture<RulesHost>;
+    host: RulesHost;
+    el: HTMLElement;
+  } {
+    const fixture = TestBed.createComponent(RulesHost);
+    fixture.detectChanges();
+    return {
+      fixture,
+      host: fixture.componentInstance,
+      el: fixture.nativeElement as HTMLElement,
+    };
+  }
+
+  /** The ruled flags of the first data row, cell by cell, chrome included. */
+  function firstRowRules(el: HTMLElement): boolean[] {
+    const row = el.querySelector("tr.folddt-row");
+    return Array.from(row?.children ?? []).map((cell) =>
+      cell.classList.contains("folddt-cell--ruled"),
+    );
+  }
+
+  it("is off by default — no modifier, no ruled cell", () => {
+    const { fixture, host, el } = render();
+    host.rules.set(false);
+    fixture.detectChanges();
+    expect(el.querySelector(".folddt--column-rules")).toBeNull();
+    expect(el.querySelector(".folddt-cell--ruled")).toBeNull();
+  });
+
+  it("rules every data cell but the last, the drawer toggle column untouched", () => {
+    const { el } = render();
+    expect(el.querySelector(".folddt--column-rules")).not.toBeNull();
+    // name | price | unit | toggle — the rule stops before the last DATA column.
+    expect(firstRowRules(el)).toEqual([true, true, false, false]);
+  });
+
+  it("never rules the header row", () => {
+    const { el } = render();
+    expect(el.querySelector("thead .folddt-cell--ruled")).toBeNull();
+  });
+
+  it("leaves the selection column unruled, the data cells unchanged", () => {
+    const { fixture, host, el } = render();
+    host.selectable.set(true);
+    fixture.detectChanges();
+    expect(firstRowRules(el)).toEqual([false, true, true, false, false]);
+  });
+
+  it("keeps the rule on the pinned identity cell under stickyFirst", () => {
+    const { fixture, host, el } = render();
+    host.sticky.set(true);
+    fixture.detectChanges();
+    const pinned = el.querySelector("tr.folddt-row .folddt-cell.is-primary");
+    expect(pinned?.classList.contains("folddt-cell--ruled")).toBe(true);
+  });
+
+  it("is untouched by zebra and density", () => {
+    const { fixture, host, el } = render();
+    host.zebra.set(true);
+    host.density.set("compact");
+    fixture.detectChanges();
+    expect(firstRowRules(el)).toEqual([true, true, false, false]);
+  });
+
+  it("draws nothing in the note row or the open drawer", () => {
+    const { el } = render();
+    expect(el.querySelector(".folddt-note")?.textContent).toContain("note-a");
+    expect(el.querySelector(".folddt-detail")?.textContent).toContain(
+      "drawer-a",
+    );
+    expect(el.querySelector(".folddt-note-row .folddt-cell--ruled")).toBeNull();
+    expect(
+      el.querySelector(".folddt-detail-row .folddt-cell--ruled"),
+    ).toBeNull();
+  });
+
+  it("draws nothing in the card layout", () => {
+    class NarrowObserver implements ResizeObserver {
+      constructor(private readonly cb: ResizeObserverCallback) {}
+      observe(): void {
+        this.cb(
+          [{ contentRect: { width: 480 } } as unknown as ResizeObserverEntry],
+          this,
+        );
+      }
+      unobserve(): void {}
+      disconnect(): void {}
+    }
+    globalThis.ResizeObserver = NarrowObserver;
+    const { fixture, host, el } = render();
+    host.narrow.set("cards");
+    fixture.detectChanges();
+    expect(el.querySelector(".folddt-cardlist")).not.toBeNull();
+    expect(el.querySelector(".folddt-cell--ruled")).toBeNull();
+  });
+
+  it("tints the rule with its own token, as a border that travels with a sticky cell", () => {
+    // jsdom n'applique pas la feuille : on lit la règle dans la source.
+    const sheet = readFileSync(
+      "src/components/content/data-table/data-table.component.scss",
+      "utf8",
+    ).replace(/\/\*[\s\S]*?\*\//gu, "");
+    const rule = sheet
+      .split("}")
+      .find((r) => r.includes(".folddt-cell--ruled"));
+    expect(rule).toBeDefined();
+    const [selector = "", body = ""] = (rule ?? "").split("{");
+    expect(selector).not.toMatch(/thead|th\b/u);
+    expect(body).toMatch(/border-inline-end/u);
+    expect(body).toMatch(/--fold-data-table-column-rule/u);
+  });
+});

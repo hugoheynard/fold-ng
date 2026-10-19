@@ -127,6 +127,23 @@ export class FoldDataTableComponent<T> {
   readonly zebra = input(false, { transform: booleanAttribute });
   readonly hover = input(true, { transform: booleanAttribute });
   /**
+   * Draws a vertical rule between the DATA cells of the body, so the eye that
+   * follows a row across many columns sees where each one ends.
+   *
+   * Body only, by design: the header names are already set apart by their
+   * register (capitals, small size, muted ink), and a rule between them turns
+   * the table into a grid. A plain boolean, like `zebra` and `hover`, rather
+   * than a `"body"` mode: there is no second placement to choose between.
+   * Never after the last data column, never beside the selection or
+   * drawer-toggle columns, never in the note or drawer rows, never in the card
+   * layout.
+   *
+   * Tinted by `--fold-data-table-column-rule`, lighter than the row divider by
+   * default: the two cross, and at equal weight the table reads as a
+   * spreadsheet.
+   */
+  readonly columnRules = input(false, { transform: booleanAttribute });
+  /**
    * How the table presents itself when its CONTAINER is too narrow.
    *
    * - `scroll` (default) — stay tabular; the body scrolls horizontally.

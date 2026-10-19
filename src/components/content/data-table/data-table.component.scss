@@ -200,6 +200,24 @@
   border-bottom-color: transparent;
 }
 
+/* Column rules (opt-in) — a vertical rule between the body's DATA cells only.
+   The template marks every data cell but the last with `--ruled`, so nothing
+   here has to guess which column is last, or skip the select / toggle columns.
+   A border rather than an inset shadow: the tone rail already owns the first
+   cell's `box-shadow`, and a border travels with a sticky cell, so the pinned
+   identity column keeps its rule while the body scrolls under it.
+
+   `--fold-data-table-column-rule` defaults to a lighter mix of the row divider
+   — the two cross, and at equal weight the table reads as a spreadsheet. Being
+   a mix of a themed role, it follows light and dark with nothing to redeclare. */
+.folddt--column-rules .folddt-row .folddt-cell--ruled {
+  border-inline-end: 1px solid
+    var(
+      --fold-data-table-column-rule,
+      color-mix(in srgb, var(--fold-color-border-subtle) 55%, transparent)
+    );
+}
+
 /* Hover (default on) — wins over zebra + tone tint. */
 .folddt--hover .folddt-row:hover .folddt-cell {
   background: var(

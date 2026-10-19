@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-data-table` — `columnRules`, des filets entre les colonnes.** Un
+  booléen, comme `zebra` et `hover` : il dessine un filet vertical entre les
+  cellules de DONNÉES du corps, pour que l'œil qui suit une ligne sur beaucoup
+  de colonnes voie où chacune finit. Jamais dans la rangée d'en-têtes (les noms
+  se séparent déjà par leur registre), jamais après la dernière colonne, ni à
+  côté de la colonne de sélection ou de la bascule du tiroir, ni dans la note,
+  le tiroir ou la disposition en cartes. Le filet est une bordure : la colonne
+  collée par `stickyFirst` le garde au défilement. Sa teinte a son token,
+  `--fold-data-table-column-rule`, par défaut plus clair que le séparateur de
+  ligne (`--fold-color-border-subtle` à 55 %) — les deux se croisent, et à
+  teinte égale la table devient un tableur.
 
 ## [0.29.0] - 2026-10-19
 

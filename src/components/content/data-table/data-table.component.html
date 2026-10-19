@@ -2,6 +2,7 @@
   class="folddt-wrap"
   [class.folddt--zebra]="zebra()"
   [class.folddt--hover]="hover()"
+  [class.folddt--column-rules]="columnRules()"
   [class.folddt--narrow]="isNarrow()"
   [class.folddt--compact]="density() === 'compact'"
   [class.folddt--sticky-first]="stickyFirst()"
@@ -112,11 +113,12 @@
                   />
                 </td>
               }
-              @for (col of columns(); track col.key) {
+              @for (col of columns(); track col.key; let lastCol = $last) {
                 @if (col.key === primaryKey()) {
                   <th
                     scope="row"
                     class="folddt-cell is-primary"
+                    [class.folddt-cell--ruled]="columnRules() && !lastCol"
                     [class.is-numeric]="col.numeric"
                     [class.right]="col.align === 'right'"
                     [class.center]="col.align === 'center'"
@@ -136,6 +138,7 @@
                 } @else {
                   <td
                     class="folddt-cell"
+                    [class.folddt-cell--ruled]="columnRules() && !lastCol"
                     [class.is-numeric]="col.numeric"
                     [class.right]="col.align === 'right'"
                     [class.center]="col.align === 'center'"
