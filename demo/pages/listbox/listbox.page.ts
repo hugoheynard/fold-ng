@@ -134,6 +134,32 @@ groups = [
     { value: "JPY", label: "Yen (¥)" },
   ];
 
+  /** The searchable vignette — grouped, like an allergen reference. */
+  protected readonly allergens: readonly FoldSelectItem<string>[] = [
+    { value: "gluten", label: "Gluten" },
+    { value: "milk", label: "Lait" },
+    { value: "egg", label: "Œufs" },
+    { value: "sesame", label: "Sésame" },
+    {
+      label: "Fruits à coque",
+      options: [
+        { value: "almond", label: "Amandes" },
+        { value: "hazelnut", label: "Noisettes" },
+        { value: "walnut", label: "Noix" },
+        { value: "pistachio", label: "Pistaches" },
+      ],
+    },
+    {
+      label: "Produits de la mer",
+      options: [
+        { value: "fish", label: "Poissons" },
+        { value: "crustacean", label: "Crustacés" },
+        { value: "mollusc", label: "Mollusques" },
+      ],
+    },
+  ];
+  protected readonly allergenValue = signal<readonly string[]>(["walnut"]);
+
   /** Playground knobs — shared across the tabs (only one panel shows at a time). */
   protected readonly sizes: Size[] = ["sm", "md", "lg"];
   protected readonly variants: Variant[] = ["default", "panel"];

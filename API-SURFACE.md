@@ -562,7 +562,9 @@
 - clearLabel: InputSignal<string | undefined>
 - compareWith: InputSignal<((a: T, b: T) => boolean) | undefined>
 - disabled: InputSignal<boolean>
+- emptyText: InputSignal<string>
 - errors: InputSignal<readonly ValidationError.WithOptionalFieldTree[]>
+- filter: InputSignal<FoldOptionFilter<T>>
 - hint: InputSignal<string | undefined>
 - info: InputSignal<string | undefined>
 - infoLabel: InputSignal<string | undefined>
@@ -574,6 +576,10 @@
 - placeholder: InputSignal<string | undefined>
 - placement: InputSignal<FoldPopoverPlacement>
 - required: InputSignalWithTransform<boolean, unknown>
+- resultLabel: InputSignal<string>
+- searchable: InputSignalWithTransform<boolean, unknown>
+- searchLabel: InputSignal<string>
+- searchPlaceholder: InputSignal<string | undefined>
 - selectAllLabel: InputSignal<string>
 - size: InputSignal<"sm" | "md" | "lg">
 - touched: ModelSignal<boolean>
@@ -1097,6 +1103,7 @@
 - FoldNavTileTone (type)
 - FoldNumberControls (type)
 - FoldNumberSpinner (type)
+- FoldOptionFilter (type)
 - FoldOverlapInput (interface)
 - FoldOverlapSlot (interface)
 - FoldPageItem (type)

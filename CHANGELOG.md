@@ -6,7 +6,45 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-multiselect` — `searchable`, une recherche dans le panneau.** Un
+  champ en tête de la liste filtre `[options]` à la frappe, avec le même
+  appariement que `fold-combobox` (`filter` : `"contains"` par défaut,
+  `"startsWith"`, une fonction — désormais nommé `FoldOptionFilter<T>`,
+  exporté ; `FoldComboboxFilter<T>` en devient `FoldOptionFilter<T> | "none"`,
+  sans changement pour qui l'utilise). Les groupes sont conservés, un groupe
+  vidé disparaît ; le nombre de résultats est annoncé (`role="status"`,
+  `aria-live="polite"`) et `emptyText` s'affiche quand rien ne correspond.
+  Filtrer ne désélectionne rien : le déclencheur nomme toujours un choix que la
+  recherche masque. Clavier : le focus va au champ à l'ouverture, ↓ entre dans
+  la liste, `Escape` ferme ; la recherche se vide à la fermeture. « Tout
+  sélectionner » agit sur ce que la liste montre. Libellés surchargeables :
+  `searchLabel` (`"Search options"`), `searchPlaceholder`, `emptyText`
+  (`"No results"`), `resultLabel` (`"results"`). Il faut `[options]` : des
+  `<fold-option>` projetées ne se filtrent pas (avertissement en dev).
+  `fold-listbox` ne le reçoit pas : une sélection unique qu'on cherche en
+  tapant, c'est `fold-combobox`.
+- **`--fold-text-touch-min` (16px)** — le plancher du texte des champs sur
+  écran tactile (voir plus bas).
+
+### Changed
+
+- **Plus de zoom sur mobile au focus d'un champ.** Les navigateurs mobiles
+  (Safari iOS, et les navigateurs Android qui le suivent) agrandissent la page
+  sur un champ dont le texte fait moins de 16 px, et la laissent agrandie.
+  Sur écran tactile (`@media (pointer: coarse)`, sans détection de navigateur
+  ni de plateforme), le texte de tout champ qui prend le clavier est désormais
+  porté à `max(--fold-text-touch-min, sa taille)` : `fold-input`,
+  `fold-search`, `fold-password-field`, `fold-textarea`, `fold-number-input`,
+  `fold-date`, `fold-time`, `fold-select`, `fold-combobox` et le champ de
+  recherche de `fold-multiselect`. Un seul mécanisme (le mixin de taille des
+  champs), sans `!important` ni réglage côté application ; la souris garde
+  l'échelle, et le viewport n'est pas touché (le zoom au pincement reste
+  possible). Les déclencheurs de `fold-listbox` / `fold-multiselect` sont des
+  boutons, qui ne font pas zoomer : ils gardent leur taille. Une application
+  qui portait sa propre règle (`font-size: 16px !important` sous
+  `pointer: coarse`) peut la retirer.
 
 ## [0.30.0] - 2026-10-19
 

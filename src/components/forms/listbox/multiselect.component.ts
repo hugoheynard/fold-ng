@@ -10,6 +10,7 @@ import {
   input,
   isDevMode,
   model,
+  signal,
   type TemplateRef,
   viewChild,
   viewChildren,
@@ -33,6 +34,11 @@ import {
 } from "./select-option";
 import { FoldListboxNav } from "./listbox-nav";
 import {
+  foldFilterSelectItems,
+  foldFlattenSelectItems,
+  type FoldOptionFilter,
+} from "./option-filter";
+import {
   FOLD_LISTBOX_OWNER,
   warnOnOrphanValue,
   type FoldListboxOwner,
@@ -52,6 +58,14 @@ const SUMMARY_MAX = 3;
  * `role="listbox"` + `aria-multiselectable`, full keyboard (↑/↓, `Home`/`End`,
  * type-ahead; `Enter`/`Space` toggle), and each selected row keeps its check. The
  * trigger summarises the selection (the chosen labels, joined).
+ *
+ * `searchable` puts a search field at the top of the panel that narrows
+ * `[options]` as you type (`filter`, `"contains"` by default — the same matcher
+ * as `fold-combobox`): groups are kept, an emptied group disappears, the count
+ * is announced in a polite live region, and filtering never deselects — the
+ * trigger still names every pick. Focus lands in the field on open, ↓ enters
+ * the list, `Escape` closes. It needs the `[options]` array (projected rows are
+ * markup, there is nothing to filter).
  *
  * ```html
  * <fold-multiselect label="Genres" [(value)]="genres" placeholder="Pick a few…">
@@ -141,6 +155,23 @@ export class FoldMultiselectComponent<T>
   readonly selectAllLabel = input("Select all");
   /** Label of the clear action. @default 'Clear' */
   readonly clearLabel = input<string | undefined>();
+  /** A search field at the top of the panel that filters `[options]` (groups
+   *  kept, empty ones dropped). Filtering never deselects. Needs `[options]`.
+   *  @default false */
+  readonly searchable = input(false, { transform: booleanAttribute });
+  /** How the search text narrows `[options]` — `fold-combobox`'s matcher.
+   *  @default 'contains' */
+  readonly filter = input<FoldOptionFilter<T>>("contains");
+  /** Accessible name of the search field. @default 'Search options' */
+  readonly searchLabel = input("Search options");
+  /** Placeholder of the search field. */
+  readonly searchPlaceholder = input<string>();
+  /** Shown in the panel, and announced, when the search matches nothing.
+   *  @default 'No results' */
+  readonly emptyText = input("No results");
+  /** The word after the announced count — "results", « allergènes ».
+   *  @default 'results' */
+  readonly resultLabel = input("results");
 
   private readonly common = inject(FOLD_COMMON_LABELS);
 
@@ -170,6 +201,44 @@ export class FoldMultiselectComponent<T>
     this.options() ? this.renderedOptions() : this.projectedOptions(),
   );
   private readonly list = viewChild<ElementRef<HTMLElement>>("list");
+  private readonly searchField =
+    viewChild<ElementRef<HTMLInputElement>>("search");
+
+  /** The search text. Emptied on close, so a reopen shows the whole list. */
+  protected readonly query = signal("");
+  /** Trimmed, lower-cased term — empty when the control isn't searchable. */
+  private readonly term = computed(() =>
+    this.searchable() ? this.query().trim().toLowerCase() : "",
+  );
+  /** The `[options]` the search lets through (groups kept, empty ones gone). */
+  protected readonly visibleItems = computed(() =>
+    foldFilterSelectItems(this.options() ?? [], this.filter(), this.term()),
+  );
+  /** How many options match — the announced count and the empty state. */
+  protected readonly matchCount = computed(
+    () => foldFlattenSelectItems(this.visibleItems()).length,
+  );
+  /** What the live region says — text, since `aria-live` reads text only. */
+  protected readonly status = computed(() => {
+    if (!this.open() || this.term() === "") {
+      return "";
+    }
+    const n = this.matchCount();
+    return n === 0 ? this.emptyText() : `${String(n)} ${this.resultLabel()}`;
+  });
+  /** Every option the control knows, filter or not — what the trigger summary
+   *  and the orphan check read, so a hidden pick is still named and known. */
+  private readonly knownOptions = computed<
+    readonly { value(): T; readonly label: string }[]
+  >(() => {
+    const opts = this.options();
+    return opts
+      ? foldFlattenSelectItems(opts).map((o) => ({
+          value: () => o.value,
+          label: o.label,
+        }))
+      : this.projectedOptions();
+  });
 
   /** Compare two values — the injected `compareWith`, else `Object.is`. */
   private eq(a: T, b: T): boolean {
@@ -198,7 +267,7 @@ export class FoldMultiselectComponent<T>
     if (this.value().length === 0) {
       return undefined;
     }
-    const labels = this.allOptions()
+    const labels = this.knownOptions()
       .filter((o) => this.isSelected(o.value()))
       .map((o) => o.label);
     if (labels.length === 0) {
@@ -252,13 +321,20 @@ export class FoldMultiselectComponent<T>
       if (this.open()) {
         this.hasOpened = true;
         queueMicrotask(() => {
-          if (this.open()) {
+          if (!this.open()) {
+            return;
+          }
+          const search = this.searchField();
+          if (search) {
+            search.nativeElement.focus();
+          } else {
             this.list()?.nativeElement.focus();
             this.nav.arm(this.firstSelectedIndex());
           }
         });
       } else {
         this.nav.reset();
+        this.query.set("");
         if (this.hasOpened) {
           this.touched.set(true);
         }
@@ -266,7 +342,7 @@ export class FoldMultiselectComponent<T>
     });
     warnOnOrphanValue(
       () => this.value(),
-      () => this.allOptions(),
+      () => this.knownOptions(),
       (a, b) => this.eq(a, b),
       "fold-multiselect",
     );
@@ -275,6 +351,11 @@ export class FoldMultiselectComponent<T>
         if (this.options() && this.projectedOptions().length > 0) {
           console.warn(
             "[fold-multiselect] both `[options]` and projected <fold-option> given — the array wins, the projected ones are ignored.",
+          );
+        }
+        if (this.searchable() && !this.options()) {
+          console.warn(
+            "[fold-multiselect] `searchable` needs `[options]` — projected <fold-option> rows can't be filtered.",
           );
         }
       });
@@ -306,6 +387,25 @@ export class FoldMultiselectComponent<T>
     if (["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
       event.preventDefault();
       this.open.set(true);
+    }
+  }
+
+  /** Typing in the search field narrows the list. */
+  protected onSearchInput(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.query.set(event.target.value);
+    }
+  }
+
+  /** ↓ from the search field enters the list on its first row; `Enter` there
+   *  never submits a surrounding form. `Escape` is the popover's. */
+  protected onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      this.list()?.nativeElement.focus();
+      this.nav.arm(-1);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
     }
   }
 

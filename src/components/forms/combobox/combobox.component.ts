@@ -29,17 +29,17 @@ import {
 } from "../listbox/listbox-owner";
 import { FoldOptionComponent } from "../listbox/option.component";
 import type { FoldSelectOption } from "../listbox/select-option";
+import {
+  foldOptionMatches,
+  type FoldOptionFilter,
+} from "../listbox/option-filter";
 
 /**
  * How `fold-combobox` narrows `[options]` against the typed text.
  * `"none"` hands the job to a server (the remote mode): the options are shown
  * as given. A function receives each option and the trimmed, typed term.
  */
-export type FoldComboboxFilter<T> =
-  | "contains"
-  | "startsWith"
-  | "none"
-  | ((option: FoldSelectOption<T>, term: string) => boolean);
+export type FoldComboboxFilter<T> = FoldOptionFilter<T> | "none";
 
 /**
  * `<fold-combobox>` — ONE field you type in, with the propositions opening
@@ -190,13 +190,7 @@ export class FoldComboboxComponent<T>
     ) {
       return opts;
     }
-    if (typeof f === "function") {
-      return opts.filter((o) => f(o, term));
-    }
-    return opts.filter((o) => {
-      const l = o.label.toLowerCase();
-      return f === "startsWith" ? l.startsWith(term) : l.includes(term);
-    });
+    return opts.filter((o) => foldOptionMatches(o, f, term));
   });
 
   /** Keyboard-active row; back to none whenever the list changes. */

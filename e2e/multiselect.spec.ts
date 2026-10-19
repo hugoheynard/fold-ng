@@ -10,8 +10,8 @@ test.beforeEach(async ({ page }) => {
   await page.getByRole("tab", { name: "multiselect" }).click();
 });
 
-function multiselect(page: Page) {
-  const root = page.locator("fold-multiselect");
+function multiselect(page: Page, label = "Devises") {
+  const root = page.locator("fold-multiselect").filter({ hasText: label });
   return {
     root,
     trigger: root.locator(".lb-trigger"),
@@ -57,4 +57,39 @@ test("outside-click dismisses the panel", async ({ page }) => {
   await expect(ms.list).toBeVisible();
   await page.getByRole("heading", { name: "listbox" }).click();
   await expect(ms.list).toBeHidden();
+});
+
+test("searchable: focus in the field, filter keeps groups, ↓ enters the list", async ({
+  page,
+}) => {
+  const ms = multiselect(page, "Allergènes");
+  await ms.trigger.click();
+  const search = ms.root.getByRole("searchbox", {
+    name: "Rechercher un allergène",
+  });
+  await expect(search).toBeFocused();
+  await search.fill("noi");
+  await expect(ms.root.getByRole("option")).toHaveText(["Noisettes", "Noix"]);
+  await expect(
+    ms.root.getByRole("group", { name: "Fruits à coque" }),
+  ).toBeVisible();
+  await expect(ms.root.getByRole("status")).toHaveText("2 allergènes");
+  // The pick the search hides is still selected and still named.
+  await expect(ms.trigger).toContainText("Noix");
+  await page.keyboard.press("ArrowDown");
+  await expect(ms.list).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(ms.option("Noisettes")).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("Escape");
+  await expect(ms.list).toBeHidden();
+});
+
+test("searchable: no match shows and announces the empty text", async ({
+  page,
+}) => {
+  const ms = multiselect(page, "Allergènes");
+  await ms.trigger.click();
+  await ms.root.getByRole("searchbox").fill("zzz");
+  await expect(ms.root.locator(".lb-empty")).toHaveText("Aucun allergène");
+  await expect(ms.root.getByRole("status")).toHaveText("Aucun allergène");
 });

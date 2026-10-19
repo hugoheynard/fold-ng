@@ -1,3 +1,4 @@
+@use "../field-box" as box;
 @use "listbox-shell" as shell;
 
 @include shell.listbox-shell;
@@ -51,5 +52,73 @@
 @media (forced-colors: active) {
   .lb-bulk {
     border-bottom-color: CanvasText;
+  }
+}
+
+// Search (`searchable`) — pinned above the bulk bar and the list, so the field
+// stays put while the options scroll. Sized like an `sm` field through the
+// shared box metrics, which also carry the touch text floor (no zoom on mobile).
+// One sticky head for the search and the bulk bar, so they stack instead of
+// both pinning to the same top edge.
+.lb-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.lb-search-row {
+  padding: var(--fold-space-xs);
+  background: var(--fold-color-surface-card);
+}
+
+.lb-search {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: var(--fold-popover-anchor-width, 11rem);
+  font-family: inherit;
+  color: var(--fold-color-text);
+  background: var(--fold-color-surface-card);
+  border: 1px solid var(--fold-color-border-subtle);
+  @include box.size(sm);
+
+  &::placeholder {
+    color: var(--fold-color-text-faded);
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+
+  &:focus {
+    border-color: var(--fold-color-primary);
+  }
+}
+
+.lb-empty {
+  margin: 0;
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  font-size: var(--fold-text-sm);
+  color: var(--fold-color-text-muted);
+}
+
+// Announced, not shown: the count is visible in the list already.
+.lb-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  .lb-search:focus {
+    outline: 2px solid Highlight;
   }
 }
