@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.29.0] - 2026-10-19
+
 ### Added
 
 - **`fold-combobox` — un seul champ où l'on tape, les propositions s'ouvrent
@@ -2672,7 +2676,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.28.2...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.29.0...HEAD
+[0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0
 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2
 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1
 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0
