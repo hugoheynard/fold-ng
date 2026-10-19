@@ -197,6 +197,7 @@ export default class DataTablePage {
   /* ── playground ── */
   protected readonly pgZebra = signal(false);
   protected readonly pgHover = signal(true);
+  protected readonly pgColumnRules = signal(false);
   protected readonly pgClickable = signal(true);
   protected readonly pgLoading = signal(false);
   protected readonly pgSelectable = signal(false);
@@ -237,6 +238,9 @@ export default class DataTablePage {
     }
     if (this.pgZebra()) {
       lines.push("  zebra");
+    }
+    if (this.pgColumnRules()) {
+      lines.push("  columnRules");
     }
     if (!this.pgHover()) {
       lines.push('  [hover]="false"');
