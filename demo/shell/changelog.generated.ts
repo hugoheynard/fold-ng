@@ -42,6 +42,419 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.31.0",
+    date: "2026-10-19",
+    unreleased: false,
+    counts: {
+      Added: 2,
+      Changed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: " — ",
+              },
+              {
+                kind: "code",
+                value: "searchable",
+              },
+              {
+                kind: "text",
+                value: ", une recherche dans le panneau.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Un champ en tête de la liste filtre ",
+              },
+              {
+                kind: "code",
+                value: "[options]",
+              },
+              {
+                kind: "text",
+                value: " à la frappe, avec le même appariement que ",
+              },
+              {
+                kind: "code",
+                value: "fold-combobox",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "filter",
+              },
+              {
+                kind: "text",
+                value: " : ",
+              },
+              {
+                kind: "code",
+                value: '"contains"',
+              },
+              {
+                kind: "text",
+                value: " par défaut, ",
+              },
+              {
+                kind: "code",
+                value: '"startsWith"',
+              },
+              {
+                kind: "text",
+                value: ", une fonction — désormais nommé ",
+              },
+              {
+                kind: "code",
+                value: "FoldOptionFilter<T>",
+              },
+              {
+                kind: "text",
+                value: ", exporté ; ",
+              },
+              {
+                kind: "code",
+                value: "FoldComboboxFilter<T>",
+              },
+              {
+                kind: "text",
+                value: " en devient ",
+              },
+              {
+                kind: "code",
+                value: 'FoldOptionFilter<T> | "none"',
+              },
+              {
+                kind: "text",
+                value:
+                  ", sans changement pour qui l'utilise). Les groupes sont conservés, un groupe vidé disparaît ; le nombre de résultats est annoncé (",
+              },
+              {
+                kind: "code",
+                value: 'role="status"',
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: 'aria-live="polite"',
+              },
+              {
+                kind: "text",
+                value: ") et ",
+              },
+              {
+                kind: "code",
+                value: "emptyText",
+              },
+              {
+                kind: "text",
+                value:
+                  " s'affiche quand rien ne correspond. Filtrer ne désélectionne rien : le déclencheur nomme toujours un choix que la recherche masque. Clavier : le focus va au champ à l'ouverture, ↓ entre dans la liste, ",
+              },
+              {
+                kind: "code",
+                value: "Escape",
+              },
+              {
+                kind: "text",
+                value:
+                  " ferme ; la recherche se vide à la fermeture. « Tout sélectionner » agit sur ce que la liste montre. Libellés surchargeables : ",
+              },
+              {
+                kind: "code",
+                value: "searchLabel",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: '"Search options"',
+              },
+              {
+                kind: "text",
+                value: "), ",
+              },
+              {
+                kind: "code",
+                value: "searchPlaceholder",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "emptyText",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: '"No results"',
+              },
+              {
+                kind: "text",
+                value: "), ",
+              },
+              {
+                kind: "code",
+                value: "resultLabel",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: '"results"',
+              },
+              {
+                kind: "text",
+                value: "). Il faut ",
+              },
+              {
+                kind: "code",
+                value: "[options]",
+              },
+              {
+                kind: "text",
+                value: " : des ",
+              },
+              {
+                kind: "code",
+                value: "<fold-option>",
+              },
+              {
+                kind: "text",
+                value: " projetées ne se filtrent pas (avertissement en dev). ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value:
+                  " ne le reçoit pas : une sélection unique qu'on cherche en tapant, c'est ",
+              },
+              {
+                kind: "code",
+                value: "fold-combobox",
+              },
+              {
+                kind: "text",
+                value: ".",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "--fold-text-touch-min",
+              },
+              {
+                kind: "text",
+                value: " (16px)",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— le plancher du texte des champs sur écran tactile (voir plus bas).",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Plus de zoom sur mobile au focus d'un champ.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Les navigateurs mobiles (Safari iOS, et les navigateurs Android qui le suivent) agrandissent la page sur un champ dont le texte fait moins de 16 px, et la laissent agrandie. Sur écran tactile (",
+              },
+              {
+                kind: "code",
+                value: "@media (pointer: coarse)",
+              },
+              {
+                kind: "text",
+                value:
+                  ", sans détection de navigateur ni de plateforme), le texte de tout champ qui prend le clavier est désormais porté à ",
+              },
+              {
+                kind: "code",
+                value: "max(--fold-text-touch-min, sa taille)",
+              },
+              {
+                kind: "text",
+                value: " : ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-search",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-password-field",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-textarea",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-number-input",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-date",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-time",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-select",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-combobox",
+              },
+              {
+                kind: "text",
+                value: " et le champ de recherche de ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Un seul mécanisme (le mixin de taille des champs), sans ",
+              },
+              {
+                kind: "code",
+                value: "!important",
+              },
+              {
+                kind: "text",
+                value:
+                  " ni réglage côté application ; la souris garde l'échelle, et le viewport n'est pas touché (le zoom au pincement reste possible). Les déclencheurs de ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value:
+                  " sont des boutons, qui ne font pas zoomer : ils gardent leur taille. Une application qui portait sa propre règle (",
+              },
+              {
+                kind: "code",
+                value: "font-size: 16px !important",
+              },
+              {
+                kind: "text",
+                value: " sous ",
+              },
+              {
+                kind: "code",
+                value: "pointer: coarse",
+              },
+              {
+                kind: "text",
+                value: ") peut la retirer.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.30.0",
     date: "2026-10-19",
     unreleased: false,
@@ -21942,7 +22355,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.30.0...HEAD [0.30.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.30.0 [0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.31.0...HEAD [0.31.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.31.0 [0.30.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.30.0 [0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -21954,4 +22367,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.30.0";
+export const PUBLISHED_VERSION = "0.31.0";
