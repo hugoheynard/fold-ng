@@ -40,32 +40,51 @@
     </button>
 
     <div foldPopoverPanel class="lb-panel">
-      @if (showBulk()) {
-        <div class="lb-bulk" role="group" aria-label="Bulk actions">
-          @if (allowSelectAll()) {
-            <button
-              type="button"
-              class="lb-bulk-btn"
-              [disabled]="allEnabledSelected()"
-              (click)="selectAll()"
-            >
-              <fold-icon name="check-circle" size="sm" aria-hidden="true" />
-              {{ selectAllLabel() }}
-            </button>
-          }
-          @if (allowClear()) {
-            <button
-              type="button"
-              class="lb-bulk-btn"
-              [disabled]="value().length === 0"
-              (click)="clearAll()"
-            >
-              <fold-icon name="close" size="sm" aria-hidden="true" />
-              {{ clearWord() }}
-            </button>
-          }
-        </div>
-      }
+      <div class="lb-head">
+        @if (searchable()) {
+          <div class="lb-search-row">
+            <input
+              #search
+              type="search"
+              class="lb-search"
+              autocomplete="off"
+              enterkeyhint="search"
+              [attr.aria-label]="searchLabel()"
+              [attr.aria-controls]="listId"
+              [attr.placeholder]="searchPlaceholder() ?? null"
+              [value]="query()"
+              (input)="onSearchInput($event)"
+              (keydown)="onSearchKeydown($event)"
+            />
+          </div>
+        }
+        @if (showBulk()) {
+          <div class="lb-bulk" role="group" aria-label="Bulk actions">
+            @if (allowSelectAll()) {
+              <button
+                type="button"
+                class="lb-bulk-btn"
+                [disabled]="allEnabledSelected()"
+                (click)="selectAll()"
+              >
+                <fold-icon name="check-circle" size="sm" aria-hidden="true" />
+                {{ selectAllLabel() }}
+              </button>
+            }
+            @if (allowClear()) {
+              <button
+                type="button"
+                class="lb-bulk-btn"
+                [disabled]="value().length === 0"
+                (click)="clearAll()"
+              >
+                <fold-icon name="close" size="sm" aria-hidden="true" />
+                {{ clearWord() }}
+              </button>
+            }
+          </div>
+        }
+      </div>
 
       <div
         #list
@@ -80,8 +99,8 @@
         (click)="onListClick($event)"
         (pointermove)="onListPointermove($event)"
       >
-        @if (options(); as opts) {
-          @for (item of opts; track $index) {
+        @if (options()) {
+          @for (item of visibleItems(); track $index) {
             @if (asGroup(item); as group) {
               <fold-optgroup [label]="group.label">
                 @for (o of group.options; track o.value) {
@@ -117,6 +136,14 @@
           <ng-content />
         }
       </div>
+      @if (searchable() && options() && matchCount() === 0) {
+        <p class="lb-empty">{{ emptyText() }}</p>
+      }
     </div>
   </fold-popover>
+  @if (searchable()) {
+    <span class="lb-status" role="status" aria-live="polite">{{
+      status()
+    }}</span>
+  }
 </fold-input-base>

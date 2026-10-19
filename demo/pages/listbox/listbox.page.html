@@ -171,6 +171,29 @@
           panel (select-all skips disabled rows and keeps already-picked ones).
         </p>
 
+        <fold-page-section title="Searchable" icon="search">
+          <p class="sel-prose">
+            <code>searchable</code> puts a search field at the top of the panel:
+            it narrows <code>[options]</code> as you type (<code>filter</code>,
+            <code>"contains"</code> by default — the same matcher as
+            <code>fold-combobox</code>), keeps the groups and drops an emptied
+            one, announces the count, and never deselects — the trigger still
+            names a pick the search hides. Focus lands in the field; ↓ enters
+            the list, <code>Escape</code> closes.
+          </p>
+          <fold-multiselect
+            label="Allergènes"
+            placeholder="Aucun"
+            searchable
+            searchLabel="Rechercher un allergène"
+            searchPlaceholder="Rechercher…"
+            emptyText="Aucun allergène"
+            resultLabel="allergènes"
+            [options]="allergens"
+            [(value)]="allergenValue"
+          />
+        </fold-page-section>
+
         <dev-playground [code]="msCode()" [responsive]="false">
           <div params>
             <ng-container [ngTemplateOutlet]="knobs" />

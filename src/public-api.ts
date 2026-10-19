@@ -259,6 +259,7 @@ export { FoldMultiselectComponent } from "./components/forms/listbox/multiselect
 export { FoldOptionComponent } from "./components/forms/listbox/option.component";
 export { FoldOptgroupComponent } from "./components/forms/listbox/optgroup.component";
 export { isFoldSelectOptionGroup } from "./components/forms/listbox/select-option";
+export type { FoldOptionFilter } from "./components/forms/listbox/option-filter";
 export type {
   FoldSelectItem,
   FoldSelectOption,
