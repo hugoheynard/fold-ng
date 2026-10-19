@@ -95,15 +95,15 @@
 
   // ─── Sizes + panel — shared metrics (see _field-box.scss) ───
   :host(.sm) .lb-trigger {
-    @include box.size(sm);
+    @include box.size(sm, $text-entry: false);
   }
 
   :host(.md) .lb-trigger {
-    @include box.size(md);
+    @include box.size(md, $text-entry: false);
   }
 
   :host(.lg) .lb-trigger {
-    @include box.size(lg);
+    @include box.size(lg, $text-entry: false);
   }
 
   :host(.panel) .lb-trigger {

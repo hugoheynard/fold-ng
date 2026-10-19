@@ -164,6 +164,8 @@ export type FoldFontToken = (typeof FOLD_FONT_TOKENS)[number];
 /**
  * Type (font-size) scale. `base` is body copy (14px) and sits above `md`
  * (13px): it names the reference step, not a rung on the t-shirt ladder.
+ * `touch-min` is a role, not a rung: the 16px floor every keyboard-taking
+ * field renders at on a touch screen, below which mobile browsers zoom.
  */
 export const FOLD_TEXT_TOKENS = [
   "2xs",
@@ -174,6 +176,7 @@ export const FOLD_TEXT_TOKENS = [
   "lg",
   "xl",
   "2xl",
+  "touch-min",
 ] as const;
 
 export type FoldTextToken = (typeof FOLD_TEXT_TOKENS)[number];
