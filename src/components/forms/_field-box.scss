@@ -30,14 +30,35 @@ $sizes: (
 
 /** Box dimensions for one size preset (`sm` | `md` | `lg`). Pass `$height: false`
  *  for a control whose height is content-driven (a `<textarea>`, sized by `rows`)
- *  — it still shares the font / padding / radius, only the fixed box height drops. */
-@mixin size($key, $height: true) {
+ *  — it still shares the font / padding / radius, only the fixed box height drops.
+ *
+ *  `$text-entry: true` (the default) is for a control that takes the keyboard —
+ *  an `<input>`, `<textarea>`, `<select>`. On a touch screen (`pointer: coarse`
+ *  — phones and tablets, whatever the browser; no platform sniffing) it floors
+ *  the text at `--fold-text-touch-min` (16px): mobile browsers (iOS Safari,
+ *  and Android ones that follow it) zoom the page onto a focused field whose
+ *  text is smaller, and leave it zoomed after typing. `pointer`, not
+ *  `any-pointer`: a touch-screen laptop driven by its mouse would otherwise get
+ *  phone-sized text where nothing zooms; a tablet's primary pointer stays
+ *  coarse, keyboard attached or not. The
+ *  floor lives HERE, on the same selector that sets the size, so it wins by
+ *  source order without `!important` and with no app-side rule; a mouse keeps
+ *  the scale. Never fixed in the viewport (`maximum-scale` / `user-scalable`
+ *  also block pinch-zoom, which low-vision users need). The select-family
+ *  triggers are `<button>`s — no browser zooms on those — so they pass
+ *  `false` and keep their size. */
+@mixin size($key, $height: true, $text-entry: true) {
   $s: map.get($sizes, $key);
 
   @if $height {
     height: map.get($s, height);
   }
   font-size: map.get($s, font);
+  @if $text-entry {
+    @media (pointer: coarse) {
+      font-size: max(var(--fold-text-touch-min), map.get($s, font));
+    }
+  }
   padding: map.get($s, pad);
   border-radius: map.get($s, radius);
 }

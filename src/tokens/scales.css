@@ -77,6 +77,13 @@
   --fold-text-xl: 20px;
   --fold-text-2xl: 24px;
 
+  /* Touch floor — not a rung, a role: the smallest text a keyboard-taking
+     field may render under a coarse pointer (`@media (pointer: coarse)`).
+     Mobile browsers zoom the page onto a focused field below 16px and stay
+     zoomed; every fold field floors its text here (forms/_field-box.scss).
+     Lowering it brings the zoom back. */
+  --fold-text-touch-min: 16px;
+
   /* Weight scale — the weights that actually get rendered. Named, so `600`
      stops being a number 35 files agreed on by accident. `extrabold` is the
      display weight: it appears only on hero headings, always paired with
