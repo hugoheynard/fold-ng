@@ -42,6 +42,219 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.33.0",
+    date: "2026-10-20",
+    unreleased: false,
+    counts: {
+      Added: 3,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-nav-section",
+              },
+              {
+                kind: "text",
+                value: " — des sections dans le lanceur mobile",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  ", comme les catégories d'une bibliothèque d'apps. Projetée dans ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-launcher",
+              },
+              {
+                kind: "text",
+                value: ", elle prend ",
+              },
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value: " (requis), ",
+              },
+              {
+                kind: "code",
+                value: "color",
+              },
+              {
+                kind: "text",
+                value: " (même convention que ",
+              },
+              {
+                kind: "code",
+                value: "fold-menu-section",
+              },
+              {
+                kind: "text",
+                value: " : publiée en ",
+              },
+              {
+                kind: "code",
+                value: "--fold-nav-section-color",
+              },
+              {
+                kind: "text",
+                value: " sur l'hôte) et ",
+              },
+              {
+                kind: "code",
+                value: "icon",
+              },
+              {
+                kind: "text",
+                value: " (facultatif, ",
+              },
+              {
+                kind: "code",
+                value: "FoldIconName",
+              },
+              {
+                kind: "text",
+                value:
+                  "). Elle rend un en-tête — l'icône dans une pastille teintée de la couleur, puis le libellé — et ses tuiles sur toute une rangée de la grille, colonnes reprises par ",
+              },
+              {
+                kind: "code",
+                value: "subgrid",
+              },
+              {
+                kind: "text",
+                value:
+                  ", teintées discrètement de la couleur. Une section n'est pas un niveau : un ",
+              },
+              {
+                kind: "code",
+                value: "fold-nav-group",
+              },
+              {
+                kind: "text",
+                value:
+                  " y reste un dossier qui ouvre sa feuille, et la vague, le focus, ",
+              },
+              {
+                kind: "code",
+                value: "Escape",
+              },
+              {
+                kind: "text",
+                value: ", le glissé à droite et la densité (",
+              },
+              {
+                kind: "code",
+                value: "few",
+              },
+              {
+                kind: "text",
+                value: "/",
+              },
+              {
+                kind: "code",
+                value: "many",
+              },
+              {
+                kind: "text",
+                value:
+                  ", qui ne compte que le niveau 1) traversent les sections sans changement. Des tuiles hors section restent possibles, avant comme après. Chaque section est un ",
+              },
+              {
+                kind: "code",
+                value: 'role="group"',
+              },
+              {
+                kind: "text",
+                value: " nommé par son en-tête (",
+              },
+              {
+                kind: "code",
+                value: "aria-labelledby",
+              },
+              {
+                kind: "text",
+                value: ") ; l'icône est décorative.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-menu-section",
+              },
+              {
+                kind: "text",
+                value: " (et ",
+              },
+              {
+                kind: "code",
+                value: "fold-menu-separator",
+              },
+              {
+                kind: "text",
+                value: ") — ",
+              },
+              {
+                kind: "code",
+                value: "icon",
+              },
+              {
+                kind: "text",
+                value: ", facultatif.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "Dans le menu déplié, le glyphe s'affiche avant le libellé, à la couleur de la section, et prend la place du point ; le rail replié garde sa marque. Sans ",
+              },
+              {
+                kind: "code",
+                value: "icon",
+              },
+              {
+                kind: "text",
+                value:
+                  ", le rendu ne change pas. Rail et lanceur disent ainsi la même chose.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-nav-tile.onSheet",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "— vrai pour une entrée de la feuille d'un dossier (niveau 2) ; le lanceur s'en sert pour reconnaître son niveau 1 maintenant qu'il interroge ses descendants.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.32.0",
     date: "2026-10-20",
     unreleased: false,
@@ -22407,7 +22620,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.32.0...HEAD [0.32.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.32.0 [0.31.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.31.0 [0.30.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.30.0 [0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.33.0...HEAD [0.33.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.33.0 [0.32.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.32.0 [0.31.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.31.0 [0.30.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.30.0 [0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -22419,4 +22632,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.32.0";
+export const PUBLISHED_VERSION = "0.33.0";
