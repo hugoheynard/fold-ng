@@ -117,6 +117,25 @@ describe("FoldComboboxComponent", () => {
     expect(list.getAttribute("aria-label")).toBe("Article");
   });
 
+  it("a click in the empty field opens the WHOLE list, before any letter", () => {
+    const r = render();
+    expect(r.field.getAttribute("aria-expanded")).toBe("false");
+    r.field.click();
+    r.cd();
+    expect(r.h.open()).toBe(true);
+    expect(r.field.getAttribute("aria-expanded")).toBe("true");
+    expect(r.labels().length).toBe(r.h.options().length);
+  });
+
+  it("a click does not open a readOnly or disabled field", () => {
+    const r = render();
+    r.h.readOnly.set(true);
+    r.cd();
+    r.field.click();
+    r.cd();
+    expect(r.field.getAttribute("aria-expanded")).toBe("false");
+  });
+
   it("typing opens the panel and filters locally (contains, case-insensitive)", () => {
     const r = render();
     r.type("CRO");

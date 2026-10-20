@@ -6,7 +6,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **`fold-combobox` — un clic dans le champ ouvre la liste.** Tant que rien
+  n'est tapé, c'est la liste ENTIÈRE : on voit les choix avant la première
+  lettre (avant, seule la flèche ↓ l'ouvrait, et rien ne le disait). Un
+  combobox cherché côté serveur sans options encore ne montre toujours rien —
+  le panneau attend d'avoir quelque chose à dire. Un champ `readOnly` ou
+  `disabled` ne s'ouvre pas.
 
 ## [0.31.0] - 2026-10-19
 

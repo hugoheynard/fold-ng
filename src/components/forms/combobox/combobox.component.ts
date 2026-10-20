@@ -312,9 +312,19 @@ export class FoldComboboxComponent<T>
     }
   }
 
-  /** A click in the field must not toggle the popover closed under the caret. */
+  /**
+   * A click in the field OPENS the list — the whole of it while nothing is
+   * typed, so the choices are seen before the first letter (asked by a user:
+   * « tant qu'on n'a pas tapé une lettre on n'a pas les suggestions »). A
+   * server-searched combobox with no options yet still shows nothing:
+   * `panelOpen` waits for something to say. And the click must not toggle the
+   * popover closed under the caret.
+   */
   protected onFieldClick(event: MouseEvent): void {
     event.stopPropagation();
+    if (!this.disabled() && !this.readOnly()) {
+      this.open.set(true);
+    }
   }
 
   protected onPopoverOpenChange(open: boolean): void {
