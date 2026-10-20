@@ -14,16 +14,32 @@ import {
  * breaks are precisely the ones a consumer's plain `tsc` cannot see, so without
  * this they'd ship silently and only bite at the next version bump.
  */
-describe("public API surface", () => {
-  it("matches the committed API-SURFACE.md snapshot", () => {
-    const committed = readFileSync(API_SURFACE_PATH, "utf8");
-    // ⚠️ If this fails, the public surface moved. Run `pnpm run api:surface`,
-    // review the diff, and if it is intended add a CHANGELOG entry — in 0.x a
-    // removed / renamed / retyped input·model·output is breaking (minor bump).
-    expect(buildApiSurface()).toBe(committed);
-  });
+/**
+ * Each build parses the whole public tree with the TypeScript compiler: ~2.5 s
+ * alone, and the determinism case builds twice. Under a loaded machine it
+ * crossed vitest's 5 s default on 2026-10-20 (a pre-push failure, no assertion
+ * involved) — so both cases get their own ceiling.
+ */
+const SURFACE_TEST_MS = 30_000;
 
-  it("is deterministic across runs", () => {
-    expect(buildApiSurface()).toBe(buildApiSurface());
-  });
+describe("public API surface", () => {
+  it(
+    "matches the committed API-SURFACE.md snapshot",
+    () => {
+      const committed = readFileSync(API_SURFACE_PATH, "utf8");
+      // ⚠️ If this fails, the public surface moved. Run `pnpm run api:surface`,
+      // review the diff, and if it is intended add a CHANGELOG entry — in 0.x a
+      // removed / renamed / retyped input·model·output is breaking (minor bump).
+      expect(buildApiSurface()).toBe(committed);
+    },
+    SURFACE_TEST_MS,
+  );
+
+  it(
+    "is deterministic across runs",
+    () => {
+      expect(buildApiSurface()).toBe(buildApiSurface());
+    },
+    SURFACE_TEST_MS,
+  );
 });
