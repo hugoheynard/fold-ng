@@ -1,0 +1,11 @@
+<!-- L'EN-TÊTE — il nomme le groupe (`aria-labelledby` de l'hôte). La pastille
+     est décorative : le libellé dit déjà tout. -->
+<div class="ns-head">
+  @if (icon(); as name) {
+    <span class="ns-pastille" aria-hidden="true">
+      <fold-icon [name]="name" [size]="14" />
+    </span>
+  }
+  <span class="ns-label" [id]="headId">{{ label() }}</span>
+</div>
+<ng-content />

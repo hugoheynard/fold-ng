@@ -1,4 +1,17 @@
-<span class="sep-mark" [style.background]="color() || null"></span>
+<span
+  class="sep-mark"
+  [class.has-icon]="!!icon()"
+  [style.background]="color() || null"
+></span>
+@if (icon(); as name) {
+  <fold-icon
+    class="sep-icon"
+    [name]="name"
+    [size]="12"
+    aria-hidden="true"
+    [style.color]="color() || null"
+  />
+}
 @if (label()) {
   <span class="sep-label">{{ label() }}</span>
 }

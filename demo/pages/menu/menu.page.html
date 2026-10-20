@@ -35,6 +35,7 @@
           <fold-menu-section
             [label]="s.name"
             [color]="s.color"
+            [icon]="s.icon"
             [collapsible]="menuSectionCollapsible()"
           >
             @for (icon of iconsFor(s.icons); track $index) {

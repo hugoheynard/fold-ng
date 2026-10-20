@@ -5,6 +5,7 @@ import {
   FoldCheckboxComponent,
   FoldNavGroupComponent,
   FoldNavLauncherComponent,
+  FoldNavSectionComponent,
   FoldNavTileComponent,
   FoldPageLayoutComponent,
   FoldPageSectionComponent,
@@ -32,6 +33,15 @@ interface LauncherSection {
   readonly entries?: readonly LauncherEntry[];
 }
 
+/** A `fold-nav-section` of the demo: a coloured category of level-1 items. */
+interface LauncherCategory {
+  readonly id: string;
+  readonly label: string;
+  readonly color: string;
+  readonly icon: FoldIconName;
+  readonly items: readonly LauncherSection[];
+}
+
 /** `/nav-launcher` — the `fold-nav-launcher` gallery page (live full-screen demo). */
 @Component({
   selector: "gal-nav-launcher-page",
@@ -46,6 +56,7 @@ interface LauncherSection {
     FoldCheckboxComponent,
     FoldNavLauncherComponent,
     FoldNavGroupComponent,
+    FoldNavSectionComponent,
     FoldNavTileComponent,
   ],
   templateUrl: "./nav-launcher.page.html",
@@ -58,6 +69,9 @@ export default class NavLauncherPage {
 
   /** The translucent treatment — off by default, as in the component. */
   protected readonly glass = signal(false);
+
+  /** File the level-1 items under coloured sections — the app-library look. */
+  protected readonly sectioned = signal(false);
 
   /** The current destination — the tile or row that lights up as active. */
   protected readonly active = signal("cockpit");
@@ -187,6 +201,38 @@ export default class NavLauncherPage {
     },
   ];
 
+  /**
+   * The same items, filed into three categories. Hex here is demo data, exactly
+   * as the rail's own section colours are (`/menu`).
+   */
+  protected readonly categories: readonly LauncherCategory[] = [
+    this.category("sell", "Sell", "#06a4a4", "briefcase", [
+      "commercial",
+      "delivery",
+      "analytics",
+    ]),
+    this.category("make", "Make", "#d08a2e", "package", ["production", "pim"]),
+    this.category("run", "Run", "#7c5bbf", "settings", [
+      "admin",
+      "ops",
+      "settings",
+    ]),
+  ];
+
+  /** Build a category from item ids — ids absent from `sections` are skipped. */
+  private category(
+    id: string,
+    label: string,
+    color: string,
+    icon: FoldIconName,
+    ids: readonly string[],
+  ): LauncherCategory {
+    const items = ids.flatMap((itemId) =>
+      this.sections.filter((s) => s.id === itemId),
+    );
+    return { id, label, color, icon, items };
+  }
+
   /** Pick a destination and close — what a routed tile would do on navigation. */
   protected pick(id: string): void {
     this.active.set(id);
@@ -209,6 +255,12 @@ export default class NavLauncherPage {
     <a fold-nav-tile icon="upload" label="Publishing" hint="3 waiting"
        tone="warning" routerLink="/pim/publishing"></a>
   </fold-nav-group>
+
+  <!-- Sections file level-1 items under a coloured header — categories, not
+       levels: a group inside one still opens its sheet. -->
+  <fold-nav-section label="Make" color="#d08a2e" icon="package">
+    <fold-nav-group icon="wrench" label="Production">…</fold-nav-group>
+  </fold-nav-section>
 
   <!-- Anything the app owns: the account, sign-out, a support link. -->
   <div footer>…</div>

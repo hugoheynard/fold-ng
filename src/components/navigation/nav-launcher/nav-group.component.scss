@@ -20,6 +20,14 @@
   backdrop-filter: var(--fold-nl-backdrop, none);
   -webkit-backdrop-filter: var(--fold-nl-backdrop, none);
 }
+/* Dans une `fold-nav-section` colorée, le dossier prend le même calque que ses
+   sœurs ; hors section, la variable n'existe pas. */
+.ng-face {
+  background-image: linear-gradient(
+    var(--fold-nl-section-tint, transparent),
+    var(--fold-nl-section-tint, transparent)
+  );
+}
 .ng-face:hover {
   background: var(--fold-color-surface-hover);
   border-color: var(--fold-color-primary);

@@ -114,8 +114,14 @@ export class FoldNavTileComponent {
   /** The group this tile sits on, if any — `null` means level 1. */
   private readonly group = inject(FOLD_NAV_GROUP, { optional: true });
 
+  /**
+   * Is this tile an entry on a group's sheet (level 2)? The launcher reads it to
+   * tell its level-1 tiles apart once sections make it query descendants.
+   */
+  readonly onSheet: boolean = this.group !== null;
+
   /** A row rather than a square: the tile is on a group's sheet. */
-  protected readonly isRow = computed(() => this.group !== null);
+  protected readonly isRow = computed(() => this.onSheet);
 
   /** A square tile with no icon still needs a fixed glyph — its initial. */
   protected readonly initial = computed(() => this.label().charAt(0));

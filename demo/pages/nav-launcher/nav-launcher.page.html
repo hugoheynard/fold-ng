@@ -19,6 +19,11 @@
         Open the launcher
       </button>
       <fold-checkbox
+        [(checked)]="sectioned"
+        label="sections"
+        hint="File the tiles under coloured categories"
+      />
+      <fold-checkbox
         [(checked)]="glass"
         label="glass"
         hint="Translucent planes — off by default"
@@ -113,6 +118,24 @@
   </fold-page-section>
 
   <fold-page-section
+    title="Sections"
+    icon="grid"
+    description="Categories, not levels — the way a phone's app library files its apps."
+  >
+    <p class="gal-body">
+      <code>fold-nav-section</code> files level-1 tiles under a header — a
+      pastille of the section <code>color</code> with its <code>icon</code>,
+      then the label — and tints its tiles with that colour. It says what
+      <code>fold-menu-section</code> says on the desktop rail, with the same
+      <code>label</code> / <code>color</code> / <code>icon</code>. A section is
+      not a level: its tiles keep the wave, the focus order and the density
+      count, and a group inside it still opens its sheet. Each section is a
+      <code>role="group"</code> named by its header. Tick
+      <strong>sections</strong> above and open the launcher.
+    </p>
+  </fold-page-section>
+
+  <fold-page-section
     title="The glass option"
     icon="theme-dark"
     description="Off by default, and that is a position rather than an oversight."
@@ -142,7 +165,40 @@
   eyebrow="LFC B2B"
   heading="Admin"
 >
-  @for (s of sections; track s.id) { @if (s.entries; as entries) {
+  @if (sectioned()) { @for (c of categories; track c.id) {
+  <fold-nav-section [label]="c.label" [color]="c.color" [icon]="c.icon">
+    @for (s of c.items; track s.id) { @if (s.entries; as entries) {
+    <fold-nav-group
+      [icon]="s.icon"
+      [label]="s.label"
+      [badge]="s.badge"
+      [badgeTone]="s.badgeTone ?? 'follow'"
+    >
+      @for (e of entries; track e.id) {
+      <button
+        fold-nav-tile
+        [icon]="e.icon"
+        [label]="e.label"
+        [hint]="e.hint"
+        [tone]="e.tone ?? 'neutral'"
+        [active]="active() === e.id"
+        (click)="pick(e.id)"
+      ></button>
+      }
+    </fold-nav-group>
+    } @else {
+    <button
+      fold-nav-tile
+      [icon]="s.icon"
+      [label]="s.label"
+      [badge]="s.badge"
+      [badgeTone]="s.badgeTone ?? 'follow'"
+      [active]="active() === s.id"
+      (click)="pick(s.id)"
+    ></button>
+    } }
+  </fold-nav-section>
+  } } @else { @for (s of sections; track s.id) { @if (s.entries; as entries) {
   <fold-nav-group
     [icon]="s.icon"
     [label]="s.label"
@@ -171,7 +227,7 @@
     [active]="active() === s.id"
     (click)="pick(s.id)"
   ></button>
-  } }
+  } } }
 
   <!-- The footer slot: everything the app owns and the library must not guess. -->
   <div footer class="nlp-foot">

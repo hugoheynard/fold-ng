@@ -1,0 +1,77 @@
+/* Une section occupe une RANGÉE ENTIÈRE de la grille du lanceur et reprend ses
+   colonnes par `subgrid` : ses tuiles s'alignent sur celles d'à côté, et la
+   densité (`few` / `many`) comme le nombre de colonnes épinglé restent ceux du
+   lanceur, sans rien recopier.
+
+   Jamais `position`, `transform` ni `filter` ici : la feuille d'un dossier
+   ouvert est `position: absolute; inset: 0` contre le CORPS du lanceur — un
+   bloc conteneur intermédiaire la refermerait dans la section. */
+:host {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-auto-rows: max-content;
+  gap: var(--fold-space-sm);
+  padding-block-start: var(--fold-space-sm);
+}
+
+/* La teinte des tuiles : un calque de la couleur de section, posé PAR-DESSUS
+   le fond de la tuile (verre compris) plutôt qu'à sa place. */
+:host([data-tinted]) {
+  --fold-nl-section-tint: color-mix(
+    in srgb,
+    var(--fold-nav-section-color) 14%,
+    transparent
+  );
+  --fold-nl-section-border: color-mix(
+    in srgb,
+    var(--fold-nav-section-color) 40%,
+    var(--fold-color-border)
+  );
+}
+
+.ns-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--fold-space-sm);
+  min-width: 0;
+}
+
+.ns-pastille {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--fold-radius-sm);
+  background: var(--fold-color-surface-raised);
+  color: var(--fold-color-text-secondary);
+}
+:host([data-tinted]) .ns-pastille {
+  /* Teintée, pas pleine : une encre posée sur une couleur arbitraire n'a pas de
+     contraste garanti, et la pastille est décorative. */
+  background: color-mix(
+    in srgb,
+    var(--fold-nav-section-color) 22%,
+    transparent
+  );
+  color: var(--fold-nav-section-color);
+}
+
+.ns-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-bold);
+  letter-spacing: var(--fold-tracking-caps);
+  text-transform: uppercase;
+  color: var(--fold-color-text-muted);
+}
+
+@media (forced-colors: active) {
+  .ns-pastille {
+    border: 1px solid CanvasText;
+  }
+}

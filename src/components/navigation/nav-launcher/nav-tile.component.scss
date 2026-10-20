@@ -17,6 +17,22 @@
   background: var(--fold-nl-accent-bg, var(--fold-color-primary-surface));
 }
 
+/* Dans une `fold-nav-section` colorée : un calque de sa couleur PAR-DESSUS le
+   fond (verre compris), et un bord qui la reprend au repos. Hors section, les
+   deux variables n'existent pas et rien ne change. Une tuile pleine garde sa
+   marque ; une ligne de niveau 2 n'est pas une tuile. */
+:host(:not(.is-row):not(.is-filled)) {
+  background-image: linear-gradient(
+    var(--fold-nl-section-tint, transparent),
+    var(--fold-nl-section-tint, transparent)
+  );
+}
+:host(
+  :not(.is-row):not(.is-filled):not(.is-accent):not(:hover):not(.is-active)
+) {
+  border-color: var(--fold-nl-section-border, var(--fold-color-border));
+}
+
 /* La cascade finie, le lanceur pose `data-settled` et rend la main au `:active`. */
 :host([data-settled]) {
   @include face.settled;

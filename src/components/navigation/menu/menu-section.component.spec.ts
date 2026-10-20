@@ -3,17 +3,23 @@ import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
 import { FoldMenuSectionComponent } from "./menu-section.component";
 import { FoldMenuItemComponent } from "./menu-item.component";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 @Component({
   standalone: true,
   imports: [FoldMenuSectionComponent],
-  template: `<fold-menu-section [label]="label()" [color]="color()">
+  template: `<fold-menu-section
+    [label]="label()"
+    [color]="color()"
+    [icon]="icon()"
+  >
     <button class="item">item</button>
   </fold-menu-section>`,
 })
 class HostComponent {
   readonly label = signal<string | undefined>(undefined);
   readonly color = signal<string | undefined>(undefined);
+  readonly icon = signal<FoldIconName | undefined>(undefined);
 }
 
 @Component({
@@ -111,5 +117,32 @@ describe("FoldMenuSectionComponent", () => {
     fixture.detectChanges();
     expect(head.getAttribute("aria-expanded")).toBe("true");
     expect(items.classList.contains("is-collapsed")).toBe(false);
+  });
+
+  it("renders no section icon when `icon` is absent — the dot stays alone", () => {
+    const { section } = render();
+    expect(section.querySelector("fold-icon.sep-icon")).toBeNull();
+    expect(section.querySelector(".sep-mark")).not.toBeNull();
+    expect(section.querySelector(".sep-mark.has-icon")).toBeNull();
+  });
+
+  it("renders the section icon before the label, decorative", () => {
+    const { fixture, section } = render();
+    fixture.componentInstance.label.set("Workspace");
+    fixture.componentInstance.icon.set("home");
+    fixture.componentInstance.color.set("#7c5bbf");
+    fixture.detectChanges();
+
+    const icon = section.querySelector("fold-icon.sep-icon");
+    const label = section.querySelector(".sep-label");
+    expect(icon).not.toBeNull();
+    expect(icon?.getAttribute("aria-hidden")).toBe("true");
+    expect(
+      icon && label
+        ? icon.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING
+        : 0,
+    ).toBeTruthy();
+    // The collapsed rail keeps its mark: the icon only replaces the dot when expanded.
+    expect(section.querySelector(".sep-mark.has-icon")).not.toBeNull();
   });
 });

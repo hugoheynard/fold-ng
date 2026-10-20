@@ -84,6 +84,7 @@ export { FoldMenuSeparatorComponent } from "./components/navigation/menu/menu-se
 export { FoldMenuSectionComponent } from "./components/navigation/menu/menu-section.component";
 export { FoldNavLauncherComponent } from "./components/navigation/nav-launcher/nav-launcher.component";
 export { FoldNavGroupComponent } from "./components/navigation/nav-launcher/nav-group.component";
+export { FoldNavSectionComponent } from "./components/navigation/nav-launcher/nav-section.component";
 export { FoldNavTileComponent } from "./components/navigation/nav-launcher/nav-tile.component";
 export type { FoldNavTileTone } from "./components/navigation/nav-launcher/nav-tile.component";
 export { FoldHeroCardComponent } from "./components/content/hero-card/hero-card.component";

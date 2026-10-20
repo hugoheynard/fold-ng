@@ -4,6 +4,7 @@ import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
 import { FoldNavLauncherComponent } from "./nav-launcher.component";
 import { FoldNavGroupComponent } from "./nav-group.component";
 import { FoldNavTileComponent } from "./nav-tile.component";
+import { FoldNavSectionComponent } from "./nav-section.component";
 
 @Component({
   standalone: true,
@@ -26,8 +27,42 @@ class HostComponent {
   readonly open = signal(true);
 }
 
-function render() {
-  const fixture = TestBed.createComponent(HostComponent);
+/**
+ * The same launcher with its tiles filed under sections — a loose tile before,
+ * one after, and the group inside a section. Sections are categories, not
+ * levels: everything above must hold unchanged across them.
+ */
+@Component({
+  standalone: true,
+  imports: [
+    FoldNavLauncherComponent,
+    FoldNavGroupComponent,
+    FoldNavSectionComponent,
+    FoldNavTileComponent,
+  ],
+  template: `<fold-nav-launcher [(open)]="open" heading="Admin">
+    <a fold-nav-tile icon="home" label="A" data-t="a"></a>
+    <fold-nav-section label="Sell" color="#06a4a4" icon="home">
+      <a fold-nav-tile icon="home" label="B" data-t="b"></a>
+      <fold-nav-group icon="library" label="PIM" data-g="pim">
+        <button fold-nav-tile label="Products" data-e="products"></button>
+        <button fold-nav-tile label="Categories" data-e="categories"></button>
+      </fold-nav-group>
+    </fold-nav-section>
+    <fold-nav-section label="Run">
+      <a fold-nav-tile icon="home" label="C" data-t="c"></a>
+    </fold-nav-section>
+    <a fold-nav-tile icon="home" label="D" data-t="d"></a>
+  </fold-nav-launcher>`,
+})
+class SectionedHostComponent {
+  readonly open = signal(true);
+}
+
+function render(
+  host: typeof HostComponent | typeof SectionedHostComponent = HostComponent,
+) {
+  const fixture = TestBed.createComponent(host);
   fixture.detectChanges();
   const root = fixture.nativeElement as HTMLElement;
   const el = (sel: string): HTMLElement =>
@@ -167,6 +202,98 @@ describe("fold-nav-launcher — the two levels", () => {
     fixture.detectChanges();
     fixture.componentInstance.open.set(true);
     fixture.detectChanges();
+
+    expect(root.querySelector(".nl-dialog")?.getAttribute("data-level")).toBe(
+      "1",
+    );
+  });
+});
+
+describe("fold-nav-launcher — the two levels, across sections", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    document.body.style.overflow = "";
+  });
+
+  it("runs the wave across sections, from the touched tile", () => {
+    // DOM order is A · B · PIM · C · D — the section boundaries do not reset
+    // the distance, or the wave would restart at every header.
+    const { el, step, fixture } = render(SectionedHostComponent);
+    el("[data-g='pim'] .ng-face").click();
+    fixture.detectChanges();
+
+    expect(step("[data-g='pim']")).toBe("0");
+    expect(step("[data-t='b']")).toBe("1");
+    expect(step("[data-t='c']")).toBe("1");
+    expect(step("[data-t='a']")).toBe("2");
+    expect(step("[data-t='d']")).toBe("2");
+    expect(el("[data-t='c']").hasAttribute("data-leaving")).toBe(true);
+    expect(el("[data-g='pim']").hasAttribute("data-anchor")).toBe(true);
+  });
+
+  it("leaves the sheet's rows out of the level-1 wave", () => {
+    // Querying descendants (to reach into sections) also reaches the sheet:
+    // its rows must be staged as rows, top-down, not as level-1 tiles.
+    const { step, drill } = render(SectionedHostComponent);
+    drill();
+
+    expect(step("[data-e='products']")).toBe("0");
+    expect(step("[data-e='categories']")).toBe("1");
+  });
+
+  it("counts only level-1 items for the density — five here, so compact", () => {
+    const { root } = render(SectionedHostComponent);
+    expect(root.querySelector(".nl-grid")?.getAttribute("data-density")).toBe(
+      "many",
+    );
+  });
+
+  it("opens a group that sits in a section, and focus follows down and back", () => {
+    const { el, root, drill, settle } = render(SectionedHostComponent);
+    drill();
+
+    expect(root.querySelector(".nl-dialog")?.getAttribute("data-level")).toBe(
+      "2",
+    );
+    expect(el("[data-g='pim']").hasAttribute("data-open")).toBe(true);
+    expect(document.activeElement).toBe(el("[data-e='products']"));
+
+    el(".nl-back").click();
+    settle(300);
+
+    expect(root.querySelector(".nl-dialog")?.getAttribute("data-level")).toBe(
+      "1",
+    );
+    expect(document.activeElement).toBe(el("[data-g='pim'] .ng-face"));
+  });
+
+  it("keeps Escape contextual inside a section", () => {
+    const { fixture, root, drill, escape, settle } = render(
+      SectionedHostComponent,
+    );
+    drill();
+    escape();
+    settle(300);
+    expect(fixture.componentInstance.open()).toBe(true);
+    expect(root.querySelector(".nl-dialog")?.getAttribute("data-level")).toBe(
+      "1",
+    );
+
+    escape();
+    expect(fixture.componentInstance.open()).toBe(false);
+  });
+
+  it("climbs on a swipe to the right from a sectioned sheet", () => {
+    const { root, drill, settle } = render(SectionedHostComponent);
+    drill();
+    // jsdom has no PointerEvent; the handler reads `clientX` only.
+    const body = root.querySelector(".nl-body") as HTMLElement;
+    body.dispatchEvent(new MouseEvent("pointerdown", { clientX: 10 }));
+    body.dispatchEvent(new MouseEvent("pointerup", { clientX: 120 }));
+    settle(300);
 
     expect(root.querySelector(".nl-dialog")?.getAttribute("data-level")).toBe(
       "1",
