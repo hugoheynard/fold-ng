@@ -6,7 +6,28 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-nav-section` — des sections dans le lanceur mobile**, comme les
+  catégories d'une bibliothèque d'apps. Projetée dans `fold-nav-launcher`, elle
+  prend `label` (requis), `color` (même convention que `fold-menu-section` :
+  publiée en `--fold-nav-section-color` sur l'hôte) et `icon` (facultatif,
+  `FoldIconName`). Elle rend un en-tête — l'icône dans une pastille teintée de
+  la couleur, puis le libellé — et ses tuiles sur toute une rangée de la grille,
+  colonnes reprises par `subgrid`, teintées discrètement de la couleur. Une
+  section n'est pas un niveau : un `fold-nav-group` y reste un dossier qui
+  ouvre sa feuille, et la vague, le focus, `Escape`, le glissé à droite et la
+  densité (`few`/`many`, qui ne compte que le niveau 1) traversent les sections
+  sans changement. Des tuiles hors section restent possibles, avant comme
+  après. Chaque section est un `role="group"` nommé par son en-tête
+  (`aria-labelledby`) ; l'icône est décorative.
+- **`fold-menu-section` (et `fold-menu-separator`) — `icon`, facultatif.**
+  Dans le menu déplié, le glyphe s'affiche avant le libellé, à la couleur de la
+  section, et prend la place du point ; le rail replié garde sa marque. Sans
+  `icon`, le rendu ne change pas. Rail et lanceur disent ainsi la même chose.
+- **`fold-nav-tile.onSheet`** — vrai pour une entrée de la feuille d'un dossier
+  (niveau 2) ; le lanceur s'en sert pour reconnaître son niveau 1 maintenant
+  qu'il interroge ses descendants.
 
 ## [0.32.0] - 2026-10-20
 

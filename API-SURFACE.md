@@ -542,10 +542,12 @@
 - collapsed: ModelSignal<boolean>
 - collapsible: InputSignalWithTransform<boolean, unknown>
 - color: InputSignal<string | undefined>
+- icon: InputSignal<FoldIconName | undefined>
 - label: InputSignal<string | undefined>
 
 #### FoldMenuSeparatorComponent
 - color: InputSignal<string | undefined>
+- icon: InputSignal<FoldIconName | undefined>
 - label: InputSignal<string | undefined>
 
 #### FoldMeterComponent
@@ -606,6 +608,11 @@
 #### FoldNavLayoutComponent
 - foldAt: InputSignalWithTransform<number, unknown>
 - placement: InputSignal<"top" | "side">
+
+#### FoldNavSectionComponent
+- color: InputSignal<string | undefined>
+- icon: InputSignal<FoldIconName | undefined>
+- label: InputSignal<string> — required
 
 #### FoldNavTileComponent
 - active: InputSignalWithTransform<boolean, unknown>

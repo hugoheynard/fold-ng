@@ -9,13 +9,14 @@ import {
 import { FoldMenuSeparatorComponent } from "./menu-separator.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldMenuItemComponent } from "./menu-item.component";
+import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
 /** Distinct ids for the header → items `aria-controls` link. */
 let sectionUid = 0;
 
 /**
  * `<fold-menu-section>` — a labelled group inside `<fold-menu>`. It renders a
- * `<fold-menu-separator>` (same `label` / `color` inputs) then projects the
+ * `<fold-menu-separator>` (same `label` / `color` / `icon` inputs) then projects the
  * section's `fold-menu-item`s beneath it.
  *
  * The `color` is published as the `--fold-menu-section-color` custom property on
@@ -53,6 +54,8 @@ export class FoldMenuSectionComponent {
   readonly label = input<string>();
   /** Accent colour tinting the separator and the items' hover state. */
   readonly color = input<string>();
+  /** Optional glyph before the label (expanded menu), inked in `color`. */
+  readonly icon = input<FoldIconName>();
   /** Turn the header into a fold toggle for the section's items. */
   readonly collapsible = input(false, { transform: booleanAttribute });
   /** Fold state (two-way). Starts open; ignored while the section is active. */

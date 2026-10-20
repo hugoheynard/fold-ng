@@ -18,6 +18,20 @@
 .sep-label {
   display: none;
 }
+/* L'icône de section ne vit que dans le menu déplié ; replié, le rail garde sa
+   marque neutre, comme une section sans couleur. */
+.sep-icon {
+  display: none;
+  flex-shrink: 0;
+  color: var(--fold-color-text-muted);
+}
+:host-context(fold-menu.expanded) .sep-icon {
+  display: inline-flex;
+}
+/* Déplié, l'icône prend la place du point ; replié, la marque reste seule. */
+:host-context(fold-menu.expanded) .sep-mark.has-icon {
+  display: none;
+}
 
 /* Expanded: a section header — colour dot + uppercase label. */
 :host-context(fold-menu.expanded) {

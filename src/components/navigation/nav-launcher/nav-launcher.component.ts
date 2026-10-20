@@ -42,7 +42,9 @@ const SWIPE_PX = 56;
  * `<fold-nav-launcher>` — the full-screen mobile navigation, in **two levels**.
  *
  * A grid of large tiles; a tile that contains tiles (a {@link FoldNavGroupComponent})
- * opens a second level instead of going somewhere. It owns the whole overlay
+ * opens a second level instead of going somewhere. Tiles and groups may be
+ * filed under {@link FoldNavSectionComponent} headers — categories, not levels:
+ * the wave, the focus order and the density count run across them unchanged. It owns the whole overlay
  * contract: scrim, `Escape` / close-button dismissal, focus-trap, body
  * scroll-lock — and, from v2, the descent itself.
  *
@@ -120,10 +122,21 @@ export class FoldNavLauncherComponent {
    */
   readonly columns = input<number | "auto">("auto");
 
-  /** Level-1 tiles — those written straight into the launcher. */
-  private readonly tiles = contentChildren(FoldNavTileComponent);
-  /** The groups — each one a tile that opens a level. */
-  private readonly groups = contentChildren(FoldNavGroupComponent);
+  /**
+   * Every projected tile, sections and sheets included — `descendants`, since a
+   * {@link FoldNavSectionComponent} puts level-1 tiles one element deeper.
+   */
+  private readonly allTiles = contentChildren(FoldNavTileComponent, {
+    descendants: true,
+  });
+  /** Level-1 tiles — in the grid or in a section, never on a group's sheet. */
+  private readonly tiles = computed(() =>
+    this.allTiles().filter((tile) => !tile.onSheet),
+  );
+  /** The groups — each one a tile that opens a level, in a section or not. */
+  private readonly groups = contentChildren(FoldNavGroupComponent, {
+    descendants: true,
+  });
 
   /** Which group's sheet is on screen, or `null` at level 1. */
   private readonly openGroup = signal<FoldNavGroupComponent | null>(null);
@@ -319,7 +332,8 @@ export class FoldNavLauncherComponent {
     if (
       target.classList.contains("nl-dialog") ||
       target.classList.contains("nl-body") ||
-      target.classList.contains("nl-grid")
+      target.classList.contains("nl-grid") ||
+      target.classList.contains("fold-nav-section")
     ) {
       this.close();
     }

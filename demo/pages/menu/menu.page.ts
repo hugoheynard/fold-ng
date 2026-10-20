@@ -37,6 +37,8 @@ interface MenuSection {
   name: string;
   color: string;
   icons: number;
+  /** Optional glyph before the section label — `fold-menu-section.icon`. */
+  icon?: FoldIconName;
 }
 
 /** `/menu` — the `fold-menu` live builder + token sandbox gallery page. */
@@ -145,7 +147,7 @@ export default class MenuPage {
   /** Each section = a colored separator + N simulated menu items. Editable from
    *  the Menu Settings card (+/− sections, name, color, icon count). */
   protected readonly menuSectionList = signal<MenuSection[]>([
-    { id: "s1", name: "Personal", color: "#06a4a4", icons: 3 },
+    { id: "s1", name: "Personal", color: "#06a4a4", icons: 3, icon: "user" },
     { id: "s2", name: "More", color: "#7c5bbf", icons: 2 },
   ]);
   /** Monotonic id source — no Date.now()/random (unavailable + non-deterministic). */
@@ -234,8 +236,9 @@ export default class MenuPage {
       const pad = wrap ? "    " : "  ";
       if (wrap) {
         const collapsible = this.menuSectionCollapsible() ? " collapsible" : "";
+        const icon = s.icon ? ` icon="${s.icon}"` : "";
         lines.push(
-          `  <fold-menu-section label="${s.name}" color="${s.color}"${collapsible}>`,
+          `  <fold-menu-section label="${s.name}" color="${s.color}"${icon}${collapsible}>`,
         );
       }
       const icons = this.iconsFor(s.icons);

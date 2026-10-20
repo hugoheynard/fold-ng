@@ -6,7 +6,7 @@
     [attr.aria-controls]="bodyId"
     (click)="toggle()"
   >
-    <fold-menu-separator [label]="label()" [color]="color()" />
+    <fold-menu-separator [label]="label()" [color]="color()" [icon]="icon()" />
     <fold-icon
       class="section-chevron"
       [class.is-open]="open()"
@@ -16,7 +16,7 @@
     />
   </button>
 } @else {
-  <fold-menu-separator [label]="label()" [color]="color()" />
+  <fold-menu-separator [label]="label()" [color]="color()" [icon]="icon()" />
 }
 
 <div
