@@ -42,6 +42,761 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
     groups: [],
   },
   {
+    version: "0.34.0",
+    date: "2026-10-26",
+    unreleased: false,
+    counts: {
+      Added: 3,
+      Changed: 4,
+      Fixed: 1,
+    },
+    breaking: 0,
+    groups: [
+      {
+        kind: "Added",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "provideFoldAppShellLabels",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "FOLD_APP_SHELL_LABELS",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— les deux libellés de ",
+              },
+              {
+                kind: "code",
+                value: "fold-app-shell",
+              },
+              {
+                kind: "text",
+                value: " (",
+              },
+              {
+                kind: "code",
+                value: "skipLink",
+              },
+              {
+                kind: "text",
+                value: ", le lien d'évitement ; ",
+              },
+              {
+                kind: "code",
+                value: "drawer",
+              },
+              {
+                kind: "text",
+                value:
+                  ", le nom du tiroir mobile) se règlent une fois pour toute l'application, comme ",
+              },
+              {
+                kind: "code",
+                value: "provideFoldInlineConfirmLabels",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Partiel : une clé omise garde son défaut anglais. Les entrées ",
+              },
+              {
+                kind: "code",
+                value: "skipLinkLabel",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "drawerLabel",
+              },
+              {
+                kind: "text",
+                value:
+                  " gagnent toujours par instance ; leur type ne change pas.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-checkbox",
+              },
+              {
+                kind: "text",
+                value: " — un libellé projeté riche.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Sans ",
+              },
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value: ", le contenu projeté (« J'accepte les ",
+              },
+              {
+                kind: "code",
+                value: "<a>",
+              },
+              {
+                kind: "text",
+                value: "CGV",
+              },
+              {
+                kind: "code",
+                value: "</a>",
+              },
+              {
+                kind: "text",
+                value: " ») devient le libellé : il est rendu dans le même ",
+              },
+              {
+                kind: "code",
+                value: "<label>",
+              },
+              {
+                kind: "text",
+                value:
+                  " (un clic sur le texte coche, un clic sur le lien le suit) et nomme la case par ",
+              },
+              {
+                kind: "code",
+                value: "aria-labelledby",
+              },
+              {
+                kind: "text",
+                value: ". ",
+              },
+              {
+                kind: "code",
+                value: "label",
+              },
+              {
+                kind: "text",
+                value: " gagne si les deux sont donnés ; l'astérisque de ",
+              },
+              {
+                kind: "code",
+                value: "required",
+              },
+              {
+                kind: "text",
+                value: " suit le texte projeté.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "--fold-color-border-field",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "— le contour d'un contrôle de formulaire au repos, à ",
+              },
+              {
+                kind: "strong",
+                value: "3:1 au moins",
+              },
+              {
+                kind: "text",
+                value:
+                  " contre la page, la carte et la bande dans tous les thèmes (WCAG 1.4.11, RGAA 3.3). Les filets ",
+              },
+              {
+                kind: "code",
+                value: "border",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "border-subtle",
+              },
+              {
+                kind: "text",
+                value: " (~1,2:1) restent de la décoration.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Changed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Champs au repos",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "(",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: " et tout ce qui partage son gabarit, ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: ", le champ de ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: ", les boutons de ",
+              },
+              {
+                kind: "code",
+                value: "fold-number-input",
+              },
+              {
+                kind: "text",
+                value: ", la case de ",
+              },
+              {
+                kind: "code",
+                value: "fold-checkbox",
+              },
+              {
+                kind: "text",
+                value: ", le sélecteur de taille de ",
+              },
+              {
+                kind: "code",
+                value: "fold-paginator",
+              },
+              {
+                kind: "text",
+                value: ") : contour en ",
+              },
+              {
+                kind: "code",
+                value: "border-field",
+              },
+              {
+                kind: "text",
+                value: " au lieu de ",
+              },
+              {
+                kind: "code",
+                value: "border-subtle",
+              },
+              {
+                kind: "text",
+                value: " ou ",
+              },
+              {
+                kind: "code",
+                value: "border",
+              },
+              {
+                kind: "text",
+                value: ". Le survol passe à ",
+              },
+              {
+                kind: "code",
+                value: "text-secondary",
+              },
+              {
+                kind: "text",
+                value:
+                  ", le contour de repos étant désormais plus marqué que l'ancien survol. 🔴 Un thème applicatif qui redéfinit les couleurs fold doit définir aussi ",
+              },
+              {
+                kind: "code",
+                value: "--fold-color-border-field",
+              },
+              {
+                kind: "text",
+                value:
+                  " — sinon il hérite de la valeur du thème fold sous-jacent.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "Anneaux de focus",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: ": partout où l'anneau était ",
+              },
+              {
+                kind: "code",
+                value: "--fold-color-primary-border",
+              },
+              {
+                kind: "text",
+                value: " (1,3 à 1,9:1) — ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: " (bouton de révélation), le bouton de masse de ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-panel-host",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-page-section",
+              },
+              {
+                kind: "text",
+                value: " (bascule), ",
+              },
+              {
+                kind: "code",
+                value: "fold-back-link",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-breadcrumb",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: " (ligne et carte) — il est en ",
+              },
+              {
+                kind: "code",
+                value: "--fold-color-primary",
+              },
+              {
+                kind: "text",
+                value:
+                  ", à 3:1 au moins. Les halos de focus des champs et des déclencheurs de liste passent de 2 px de teinte à 1 px plein. Le pouce de ",
+              },
+              {
+                kind: "code",
+                value: "fold-slider",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "fold-range-slider",
+              },
+              {
+                kind: "text",
+                value: ", la case de ",
+              },
+              {
+                kind: "code",
+                value: "fold-checkbox",
+              },
+              {
+                kind: "text",
+                value: " et le sélecteur de taille de ",
+              },
+              {
+                kind: "code",
+                value: "fold-paginator",
+              },
+              {
+                kind: "text",
+                value:
+                  " avaient un substitut trop pâle (halo à 30–35 %, ou une bordure teintée à la place de l'",
+              },
+              {
+                kind: "code",
+                value: "outline",
+              },
+              {
+                kind: "text",
+                value: ") : ils ont un anneau plein.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "text",
+                value: "L'échelle des gris de texte est assombrie",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "(RGAA 3.2, WCAG 1.4.3) dans umbra, lumen, bubbly et titan ; navi passait déjà. ",
+              },
+              {
+                kind: "code",
+                value: "text-muted",
+              },
+              {
+                kind: "text",
+                value: " atteint ",
+              },
+              {
+                kind: "strong",
+                value: "4,5:1 au moins",
+              },
+              {
+                kind: "text",
+                value:
+                  " sur la page et la carte dans tous les thèmes (umbra 3,35 → 5,74 sur la page, titan 2,57 → 4,75, bubbly 4,26 → 4,78) ; ",
+              },
+              {
+                kind: "code",
+                value: "text-secondary",
+              },
+              {
+                kind: "text",
+                value:
+                  " monte avec lui pour garder l'écart (≈ 7:1 au pire fond). Valeurs retouchées : ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-slate-400/500/700",
+              },
+              {
+                kind: "text",
+                value: " (umbra), ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-steel-400/500/600",
+              },
+              {
+                kind: "text",
+                value:
+                  " (titan) ; lumen et bubbly pointent sur trois primitives nouvelles, ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-slate-675/575/425",
+              },
+              {
+                kind: "text",
+                value: ", et ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-slate-550",
+              },
+              {
+                kind: "text",
+                value: " / ",
+              },
+              {
+                kind: "code",
+                value: "--fold-ref-slate-350",
+              },
+              {
+                kind: "text",
+                value: ", que plus rien ne lisait, sont ",
+              },
+              {
+                kind: "strong",
+                value: "retirées",
+              },
+              {
+                kind: "text",
+                value:
+                  " (le contrat des jetons refuse une primitive morte). 🔴 Un thème applicatif qui lit ces primitives directement change de teinte, ou perd sa valeur.",
+              },
+            ],
+            breaking: false,
+          },
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "--fold-color-text-faded",
+              },
+              {
+                kind: "text",
+                value: " atteint 3:1 et reste hors de l'information.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value: "Le monter à 4,5:1 l'aurait collé à ",
+              },
+              {
+                kind: "code",
+                value: "text-muted",
+              },
+              {
+                kind: "text",
+                value:
+                  " ; il atteint 3:1 au moins partout (texte de grande taille, éléments graphiques) et reste réservé au non-informatif. Passent en ",
+              },
+              {
+                kind: "code",
+                value: "text-muted",
+              },
+              {
+                kind: "text",
+                value:
+                  " les usages de fold qui portaient une information : placeholders de ",
+              },
+              {
+                kind: "code",
+                value: "fold-input",
+              },
+              {
+                kind: "text",
+                value: ", ",
+              },
+              {
+                kind: "code",
+                value: "fold-listbox",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "fold-multiselect",
+              },
+              {
+                kind: "text",
+                value: ", la mention « optionnel » de ",
+              },
+              {
+                kind: "code",
+                value: "fold-label",
+              },
+              {
+                kind: "text",
+                value: " et ",
+              },
+              {
+                kind: "code",
+                value: "fold-fieldset",
+              },
+              {
+                kind: "text",
+                value: ", le pas de ",
+              },
+              {
+                kind: "code",
+                value: "fold-number-input",
+              },
+              {
+                kind: "text",
+                value: ", le sous-titre de l'en-tête de ",
+              },
+              {
+                kind: "code",
+                value: "fold-panel",
+              },
+              {
+                kind: "text",
+                value: ", le séparateur de ",
+              },
+              {
+                kind: "code",
+                value: "fold-breadcrumb",
+              },
+              {
+                kind: "text",
+                value: ", l'ellipse de ",
+              },
+              {
+                kind: "code",
+                value: "fold-paginator",
+              },
+              {
+                kind: "text",
+                value: ", le compte de ",
+              },
+              {
+                kind: "code",
+                value: "fold-choice-row",
+              },
+              {
+                kind: "text",
+                value: ", la ligne secondaire de ",
+              },
+              {
+                kind: "code",
+                value: "fold-avatar-detail",
+              },
+              {
+                kind: "text",
+                value: ". Restent en ",
+              },
+              {
+                kind: "code",
+                value: "text-faded",
+              },
+              {
+                kind: "text",
+                value: " : chevrons, flèche de tri de ",
+              },
+              {
+                kind: "code",
+                value: "fold-data-table",
+              },
+              {
+                kind: "text",
+                value: ", glyphes décoratifs du calendrier et de ",
+              },
+              {
+                kind: "code",
+                value: "fold-checklist",
+              },
+              {
+                kind: "text",
+                value: ", l'icône de ",
+              },
+              {
+                kind: "code",
+                value: "fold-empty-state",
+              },
+              {
+                kind: "text",
+                value: " (son texte était déjà en ",
+              },
+              {
+                kind: "code",
+                value: "text-muted",
+              },
+              {
+                kind: "text",
+                value: ").",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+      {
+        kind: "Fixed",
+        items: [
+          {
+            lead: [
+              {
+                kind: "code",
+                value: "fold-panel-host",
+              },
+              {
+                kind: "text",
+                value: " rend le focus à son déclencheur.",
+              },
+            ],
+            rest: [
+              {
+                kind: "text",
+                value:
+                  "L'élément qui avait le focus à l'ouverture d'un panneau (ou d'un dialogue ",
+              },
+              {
+                kind: "code",
+                value: 'side: "center"',
+              },
+              {
+                kind: "text",
+                value: ") le retrouve à la fermeture, une fois la barrière ",
+              },
+              {
+                kind: "code",
+                value: "inert",
+              },
+              {
+                kind: "text",
+                value:
+                  " levée — s'il est encore dans le document et si le focus est tombé sur ",
+              },
+              {
+                kind: "code",
+                value: "<body>",
+              },
+              {
+                kind: "text",
+                value:
+                  ". Un panneau non modal ne le rendait pas du tout ; un panneau empilé le rend au panneau du dessous.",
+              },
+            ],
+            breaking: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.33.0",
     date: "2026-10-20",
     unreleased: false,
@@ -22620,7 +23375,7 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
               {
                 kind: "text",
                 value:
-                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.33.0...HEAD [0.33.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.33.0 [0.32.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.32.0 [0.31.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.31.0 [0.30.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.30.0 [0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
+                  "). [unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.34.0...HEAD [0.34.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.34.0 [0.33.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.33.0 [0.32.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.32.0 [0.31.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.31.0 [0.30.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.30.0 [0.29.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.29.0 [0.28.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.2 [0.28.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.1 [0.28.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.28.0 [0.27.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.2 [0.27.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.1 [0.27.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.27.0 [0.26.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.1 [0.26.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.26.0 [0.25.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.25.0 [0.24.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.24.0 [0.23.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.23.0 [0.22.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.1 [0.22.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.22.0 [0.21.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.21.0 [0.20.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.20.0 [0.19.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.19.0 [0.18.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.18.0 [0.17.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.1 [0.17.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.17.0 [0.16.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.16.0 [0.15.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.15.0 [0.14.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.14.0 [0.13.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.13.0 [0.12.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.1 [0.12.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.12.0 [0.11.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.1 [0.11.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.11.0 [0.10.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.3 [0.10.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.2 [0.10.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.1 [0.10.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.10.0 [0.9.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.9.0 [0.8.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.1 [0.8.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.8.0 [0.7.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.7.0 [0.6.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.1 [0.6.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.6.0 [0.5.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.2 [0.5.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.1 [0.5.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.5.0 [0.4.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.4.0 [0.3.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.3.0 [0.2.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.1 [0.2.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.2.0 [0.1.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.1.0",
               },
             ],
             breaking: false,
@@ -22632,4 +23387,4 @@ export const CHANGELOG: readonly ChangelogRelease[] = [
 ];
 
 /** The latest published version (== npm `latest`), for dev-vs-npm badges. */
-export const PUBLISHED_VERSION = "0.33.0";
+export const PUBLISHED_VERSION = "0.34.0";
