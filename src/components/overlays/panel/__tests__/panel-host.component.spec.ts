@@ -443,4 +443,100 @@ describe("FoldPanelHostComponent", () => {
     const panel = host.panels()[0]!;
     expect(cmp.shouldTrap(panel)).toBe(true);
   });
+
+  describe("focus return on close (RGAA 7.1 / 12.x)", () => {
+    function trigger(): HTMLButtonElement {
+      const button = document.createElement("button");
+      button.textContent = "Accessibilité";
+      document.body.appendChild(button);
+      button.focus();
+      return button;
+    }
+
+    async function settle(fixture: {
+      detectChanges(): void;
+      whenStable(): Promise<unknown>;
+    }): Promise<void> {
+      fixture.detectChanges();
+      await fixture.whenStable();
+    }
+
+    /** Focus something inside the open panel, as a click on its close button would. */
+    function focusInsidePanel(root: HTMLElement): void {
+      root.querySelector<HTMLElement>(".panel")?.focus();
+    }
+
+    it("gives focus back to the trigger when a non-modal panel closes", async () => {
+      const { fixture, root } = render();
+      const button = trigger();
+      const ref = host.open(DummyPanelComponent, { modal: false });
+      await settle(fixture);
+      focusInsidePanel(root);
+      expect(document.activeElement).not.toBe(button);
+
+      ref.close();
+      await settle(fixture);
+      expect(document.activeElement).toBe(button);
+      button.remove();
+    });
+
+    it("gives focus back to the trigger when a modal panel closes", async () => {
+      const { fixture, root } = render();
+      const button = trigger();
+      const ref = host.open(DummyPanelComponent);
+      await settle(fixture);
+      focusInsidePanel(root);
+
+      ref.close();
+      await settle(fixture);
+      expect(document.activeElement).toBe(button);
+      button.remove();
+    });
+
+    it("a stacked panel returns focus into the panel below it", async () => {
+      const { fixture, root } = render();
+      const button = trigger();
+      host.open(DummyPanelComponent, { modal: false });
+      await settle(fixture);
+      const lower = root.querySelector<HTMLElement>(".panel")!;
+      lower.focus();
+      const top = host.open(DummyPanelComponent, { modal: false, stack: true });
+      await settle(fixture);
+      root.querySelectorAll<HTMLElement>(".panel")[1]?.focus();
+
+      top.close();
+      await settle(fixture);
+      expect(document.activeElement).toBe(lower);
+      button.remove();
+    });
+
+    it("does nothing when the trigger has left the document", async () => {
+      const { fixture, root } = render();
+      const button = trigger();
+      const ref = host.open(DummyPanelComponent, { modal: false });
+      await settle(fixture);
+      focusInsidePanel(root);
+      button.remove();
+
+      ref.close();
+      await settle(fixture);
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it("leaves focus where the closing action put it on purpose", async () => {
+      const { fixture } = render();
+      const button = trigger();
+      const elsewhere = document.createElement("input");
+      document.body.appendChild(elsewhere);
+      const ref = host.open(DummyPanelComponent, { modal: false });
+      await settle(fixture);
+      elsewhere.focus();
+
+      ref.close();
+      await settle(fixture);
+      expect(document.activeElement).toBe(elsewhere);
+      button.remove();
+      elsewhere.remove();
+    });
+  });
 });

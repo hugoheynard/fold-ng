@@ -13,6 +13,9 @@ import { describe, expect, it } from "vitest";
  * for weekday headers, day numbers, sublines and the overflow chip until axe
  * counted 52 violations across three pages.
  *
+ * (2026-10-26: the ramp was darkened since — `text-muted` now clears 4.5:1 in
+ * every theme, text-ramp-contrast.spec.ts. This family keeps the stricter rule.)
+ *
  * Asserted at the source rather than in the browser on purpose: a rendered
  * ratio moves with the theme and the surface underneath, so a pixel measurement
  * makes a brittle test. "No text is painted with a token that cannot pass" is

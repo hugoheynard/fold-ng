@@ -94,9 +94,20 @@ export const FOLD_SEMANTIC_COLOR_TOKENS = [
   "text",
   /** De-emphasised text. */
   "text-secondary",
-  /** Faint / hint text. */
+  /**
+   * Faint / hint text that still carries information — a placeholder, a
+   * breadcrumb, a page count, an empty-state line. Clears 4.5:1 (WCAG 1.4.3 /
+   * RGAA 3.2) on the page and on a card in every theme.
+   */
   "text-muted",
-  /** Dimmest text — counts, hints. */
+  /**
+   * Dimmest text — NOT for information. It clears 3:1 on the page and on a
+   * card in every theme (the bar for large text, WCAG 1.4.3), and stays below
+   * `text-muted` so the ramp keeps three perceptible steps. Reserved for what a
+   * reader loses nothing by missing — a separator glyph, a disabled echo, a
+   * redundant count — or for large text. Anything a user needs to read takes
+   * `text-muted` or above.
+   */
   "text-faded",
 
   /* ── Neutral surfaces + border ────────────────────────────── */
@@ -121,6 +132,13 @@ export const FOLD_SEMANTIC_COLOR_TOKENS = [
   "border",
   /** Fainter hairline — row dividers, subtle edges (below `border`). */
   "border-subtle",
+  /**
+   * Outline of a form control at rest — an input, a select trigger, a checkbox
+   * box. Unlike the two hairlines above (decoration, ~1.2:1), it identifies a
+   * control, so it clears 3:1 against the page and the card in every theme
+   * (WCAG 1.4.11 / RGAA 3.3).
+   */
+  "border-field",
 
   /* ── Glass ────────────────────────────────────────────────── */
   /** Translucent frosted overlay (panels, floating menus). */

@@ -23,7 +23,7 @@
     border-color 0.1s ease;
 }
 .choice-count {
-  color: var(--fold-color-text-faded);
+  color: var(--fold-color-text-muted);
   font-variant-numeric: tabular-nums;
 }
 .choice.is-active .choice-count {

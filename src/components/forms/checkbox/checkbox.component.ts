@@ -1,12 +1,15 @@
 import {
+  afterNextRender,
   booleanAttribute,
   Component,
   computed,
-  effect,
+  type ElementRef,
   inject,
   input,
   isDevMode,
   model,
+  signal,
+  viewChild,
 } from "@angular/core";
 import type {
   FormCheckboxControl,
@@ -30,7 +33,10 @@ import { FoldIdService } from "../../../a11y/id.service";
  *
  * Accessible by construction: the box is decorative, the native input carries
  * the semantics; a visible `label` wraps the input (click-to-toggle) and names
- * it, otherwise pass `ariaLabel`. Focus-visible ring, `prefers-reduced-motion`
+ * it, otherwise pass `ariaLabel`. A label that needs markup — a sentence with a
+ * link to the terms — is PROJECTED instead of `label`: it renders inside the
+ * same `<label>` (a click on the words toggles, a click on the link follows
+ * it) and names the input through `aria-labelledby`. Focus-visible ring, `prefers-reduced-motion`
  * and `forced-colors` are all handled.
  *
  * @selector `fold-checkbox`
@@ -40,6 +46,9 @@ import { FoldIdService } from "../../../a11y/id.service";
  * <fold-checkbox label="Remember me" [(checked)]="remember" />
  * <fold-checkbox ariaLabel="Select row" [checked]="selected" (checkedChange)="toggle()" />
  * <fold-checkbox label="I accept the terms" required [formField]="form.consent" />
+ * <fold-checkbox required [(checked)]="accepted">
+ *   I accept the <a href="/terms" target="_blank">terms of sale</a>
+ * </fold-checkbox>
  * ```
  */
 @Component({
@@ -64,7 +73,9 @@ export class FoldCheckboxComponent implements FormCheckboxControl {
   /** Mixed / tri-state visual (native `indeterminate`, a property not attribute). */
   readonly indeterminate = input(false, { transform: booleanAttribute });
 
-  /** Optional visible label — wraps the box, so clicking it toggles. */
+  /** Optional visible label — wraps the box, so clicking it toggles. For a
+   *  label with markup (a link), project it as content instead; `label` wins
+   *  when both are given. */
   readonly label = input<string>();
   /** Accessible name when there is no visible `label`. */
   readonly ariaLabel = input<string>();
@@ -98,16 +109,21 @@ export class FoldCheckboxComponent implements FormCheckboxControl {
     return this.hint() ? `${this.inputId}-hint` : null;
   });
 
+  private readonly projected = viewChild<ElementRef<HTMLElement>>("projected");
+
+  /** True once projected label content is found (read after the first render:
+   *  projected text nodes are only countable in the DOM). */
+  protected readonly projectedLabel = signal(false);
+
   constructor() {
-    // Dev guard: a checkbox with no visible label and no ariaLabel has no
-    // accessible name — a hard a11y failure that is easy to miss.
-    effect(() => {
-      if (!isDevMode()) {
-        return;
-      }
-      if (!this.label() && !this.ariaLabel()) {
+    afterNextRender(() => {
+      const text = this.projected()?.nativeElement.textContent?.trim() ?? "";
+      this.projectedLabel.set(text.length > 0);
+      // Dev guard: a checkbox with no visible label (input or projected) and no
+      // ariaLabel has no accessible name — a hard a11y failure, easy to miss.
+      if (isDevMode() && !this.label() && !this.ariaLabel() && !text) {
         console.warn(
-          "[fold-checkbox] has no accessible name: set `label` or `ariaLabel`.",
+          "[fold-checkbox] has no accessible name: set `label`, project a label, or set `ariaLabel`.",
         );
       }
     });

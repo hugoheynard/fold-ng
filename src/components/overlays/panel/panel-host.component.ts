@@ -4,6 +4,8 @@ import {
   DestroyRef,
   ElementRef,
   HostListener,
+  Injector,
+  afterNextRender,
   effect,
   inject,
 } from "@angular/core";
@@ -41,6 +43,12 @@ import type {
  * cursor — the completion of the `aria-modal="true"` promise. Only the
  * top-most panel traps focus; the page scroll is frozen once, not per panel.
  *
+ * **Focus comes back.** The element that had focus when a panel appeared —
+ * its trigger, typically — is remembered, and gets focus again when the panel
+ * leaves, once the barrier is lifted (an `inert` trigger cannot take focus,
+ * which is how focus used to fall to `<body>`). Skipped when the trigger has
+ * left the document, or when focus has already landed somewhere real.
+ *
  * @selector `fold-panel-host`
  */
 @Component({
@@ -67,12 +75,18 @@ export class FoldPanelHostComponent {
   private locked = false;
   /** Elements this host made `inert`, so it removes exactly those on close. */
   private inerted: HTMLElement[] = [];
+  /** Per open panel id, the element that had focus when it appeared. */
+  private readonly openers = new Map<number, HTMLElement>();
+  private readonly injector = inject(Injector);
 
   constructor() {
     // Freeze page scroll + inert the background while a **modal** panel is open
     // — once, driven by whether any open panel is modal. A purely non-modal
     // panel leaves the page scrollable and interactive.
     effect(() => {
+      // Openers first: the barrier below inerts the trigger, and an inert
+      // element loses focus — read it before it does.
+      const closed = this.trackOpeners(this.panels());
       const barrier = this.panels().some((p) => p.modal !== false);
       if (barrier && !this.locked) {
         this.scrollLock.lock();
@@ -87,6 +101,9 @@ export class FoldPanelHostComponent {
         this.scrollRegions.unfreeze();
         this.removeBackgroundBarrier();
         this.locked = false;
+      }
+      if (closed.length > 0) {
+        this.restoreFocus(closed);
       }
     });
 
@@ -190,6 +207,51 @@ export class FoldPanelHostComponent {
     ) {
       panel.onClose();
     }
+  }
+
+  /**
+   * Remember the focused element for each newly shown panel; return the
+   * openers of the panels that just left, most recent first.
+   */
+  private trackOpeners(panels: readonly FoldPanelDescriptor[]): HTMLElement[] {
+    const live = new Set(panels.map((p) => p.id));
+    const closed: HTMLElement[] = [];
+    for (const [id, opener] of [...this.openers].reverse()) {
+      if (!live.has(id)) {
+        closed.push(opener);
+        this.openers.delete(id);
+      }
+    }
+    const active = this.document.activeElement;
+    for (const panel of panels) {
+      if (!this.openers.has(panel.id) && active instanceof HTMLElement) {
+        this.openers.set(panel.id, active);
+      }
+    }
+    return closed;
+  }
+
+  /**
+   * After the closed panels have left the DOM, give focus back to the first of
+   * their openers still in the document — only if focus was lost to `<body>`:
+   * a closing action that moved focus somewhere on purpose keeps it there.
+   */
+  private restoreFocus(openers: readonly HTMLElement[]): void {
+    afterNextRender(
+      {
+        write: () => {
+          const active = this.document.activeElement;
+          if (active !== null && active !== this.document.body) {
+            return;
+          }
+          const target = openers.find(
+            (el) => el.isConnected && el !== this.document.body,
+          );
+          target?.focus();
+        },
+      },
+      { injector: this.injector },
+    );
   }
 
   /**

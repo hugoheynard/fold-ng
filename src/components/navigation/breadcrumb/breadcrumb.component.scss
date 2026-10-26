@@ -39,7 +39,7 @@
     background: var(--fold-color-surface-hover);
   }
   &:focus-visible {
-    outline: 2px solid var(--fold-color-primary-border);
+    outline: 2px solid var(--fold-color-primary);
     outline-offset: 0;
   }
 
@@ -56,7 +56,7 @@
 
 .bc-sep {
   flex: none;
-  color: var(--fold-color-text-faded);
+  color: var(--fold-color-text-muted);
 }
 
 @media (forced-colors: active) {

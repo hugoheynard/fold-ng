@@ -6,7 +6,79 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+Lot d'accessibilité issu d'un pré-audit RGAA d'une application consommatrice :
+cinq défauts qui venaient de fold et touchaient tous ses écrans.
+
+### Added
+
+- **`provideFoldAppShellLabels` / `FOLD_APP_SHELL_LABELS`** — les deux libellés
+  de `fold-app-shell` (`skipLink`, le lien d'évitement ; `drawer`, le nom du
+  tiroir mobile) se règlent une fois pour toute l'application, comme
+  `provideFoldInlineConfirmLabels`. Partiel : une clé omise garde son défaut
+  anglais. Les entrées `skipLinkLabel` / `drawerLabel` gagnent toujours par
+  instance ; leur type ne change pas.
+- **`fold-checkbox` — un libellé projeté riche.** Sans `label`, le contenu
+  projeté (« J'accepte les `<a>`CGV`</a>` ») devient le libellé : il est rendu
+  dans le même `<label>` (un clic sur le texte coche, un clic sur le lien le
+  suit) et nomme la case par `aria-labelledby`. `label` gagne si les deux sont
+  donnés ; l'astérisque de `required` suit le texte projeté.
+- **`--fold-color-border-field`** — le contour d'un contrôle de formulaire au
+  repos, à **3:1 au moins** contre la page, la carte et la bande dans tous les
+  thèmes (WCAG 1.4.11, RGAA 3.3). Les filets `border` / `border-subtle`
+  (~1,2:1) restent de la décoration.
+
+### Changed
+
+- **Champs au repos** (`fold-input` et tout ce qui partage son gabarit,
+  `fold-listbox`, le champ de `fold-multiselect`, les boutons de
+  `fold-number-input`, la case de `fold-checkbox`, le sélecteur de taille de
+  `fold-paginator`) : contour en `border-field` au lieu de `border-subtle`
+  ou `border`. Le survol passe à `text-secondary`, le contour de repos étant
+  désormais plus marqué que l'ancien survol. 🔴 Un thème applicatif qui
+  redéfinit les couleurs fold doit définir aussi `--fold-color-border-field`
+  — sinon il hérite de la valeur du thème fold sous-jacent.
+- **Anneaux de focus** : partout où l'anneau était `--fold-color-primary-border`
+  (1,3 à 1,9:1) — `fold-input` (bouton de révélation), le bouton de masse de
+  `fold-multiselect`, `fold-panel-host`, `fold-page-section` (bascule),
+  `fold-back-link`, `fold-breadcrumb`, `fold-data-table` (ligne et carte) —
+  il est en `--fold-color-primary`, à 3:1 au moins. Les halos de focus des
+  champs et des déclencheurs de liste passent de 2 px de teinte à 1 px plein.
+  Le pouce de `fold-slider` / `fold-range-slider`, la case de `fold-checkbox`
+  et le sélecteur de taille de `fold-paginator` avaient un substitut trop pâle
+  (halo à 30–35 %, ou une bordure teintée à la place de l'`outline`) : ils ont
+  un anneau plein.
+- **L'échelle des gris de texte est assombrie** (RGAA 3.2, WCAG 1.4.3) dans
+  umbra, lumen, bubbly et titan ; navi passait déjà. `text-muted` atteint
+  **4,5:1 au moins** sur la page et la carte dans tous les thèmes (umbra 3,35
+  → 5,74 sur la page, titan 2,57 → 4,75, bubbly 4,26 → 4,78) ;
+  `text-secondary` monte avec lui pour garder l'écart (≈ 7:1 au pire fond).
+  Valeurs retouchées : `--fold-ref-slate-400/500/700` (umbra),
+  `--fold-ref-steel-400/500/600` (titan) ; lumen et bubbly pointent sur trois
+  primitives nouvelles, `--fold-ref-slate-675/575/425`, et `--fold-ref-slate-550` /
+  `--fold-ref-slate-350`, que plus rien ne lisait, sont **retirées** (le
+  contrat des jetons refuse une primitive morte). 🔴 Un thème applicatif qui
+  lit ces primitives directement change de teinte, ou perd sa valeur.
+- **`--fold-color-text-faded` atteint 3:1 et reste hors de l'information.**
+  Le monter à 4,5:1 l'aurait collé à `text-muted` ; il atteint 3:1 au moins
+  partout (texte de grande taille, éléments graphiques) et reste réservé au
+  non-informatif. Passent en `text-muted` les usages de fold qui portaient une
+  information : placeholders de `fold-input`, `fold-listbox` et
+  `fold-multiselect`, la mention « optionnel » de `fold-label` et
+  `fold-fieldset`, le pas de `fold-number-input`, le sous-titre de l'en-tête
+  de `fold-panel`, le séparateur de `fold-breadcrumb`, l'ellipse de
+  `fold-paginator`, le compte de `fold-choice-row`, la ligne secondaire de
+  `fold-avatar-detail`. Restent en `text-faded` : chevrons, flèche de tri de
+  `fold-data-table`, glyphes décoratifs du calendrier et de `fold-checklist`,
+  l'icône de `fold-empty-state` (son texte était déjà en `text-muted`).
+
+### Fixed
+
+- **`fold-panel-host` rend le focus à son déclencheur.** L'élément qui avait le
+  focus à l'ouverture d'un panneau (ou d'un dialogue `side: "center"`) le
+  retrouve à la fermeture, une fois la barrière `inert` levée — s'il est
+  encore dans le document et si le focus est tombé sur `<body>`. Un panneau
+  non modal ne le rendait pas du tout ; un panneau empilé le rend au panneau
+  du dessous.
 
 ## [0.33.0] - 2026-10-20
 

@@ -156,6 +156,10 @@
   --fold-color-text: var(--fold-ref-slate-50);
   --fold-color-text-secondary: var(--fold-ref-slate-400);
   --fold-color-text-muted: var(--fold-ref-slate-500);
+  /* The text ramp, in every theme: `text-muted` clears 4.5:1 on the page and
+     the card (RGAA 3.2) ; `text-faded` clears 3:1 and is NOT for information —
+     decoration or large text only (see tokens.catalog.ts). Pinned by
+     text-ramp-contrast.spec.ts. */
   --fold-color-text-faded: var(--fold-ref-slate-700);
 
   /* Card — a solid raised content surface (opaque, unlike the alpha overlays) */
@@ -195,6 +199,15 @@
   --fold-color-border-subtle: color-mix(
     in srgb,
     var(--fold-ref-white) 4%,
+    transparent
+  );
+  /* Outline of a form control at rest (input, select trigger, checkbox box).
+     RGAA 3.3 / WCAG 1.4.11: a control's boundary must clear 3:1 against
+     the surface it sits on — the hairlines above (~1.2:1) are decoration
+     and cannot carry it. Pinned by field-border-contrast.spec.ts. */
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--fold-ref-white) 40%,
     transparent
   );
 
@@ -279,6 +292,11 @@
   --fold-color-border-subtle: color-mix(
     in srgb,
     var(--_accent-ink) 15%,
+    transparent
+  );
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--_accent-ink) 70%,
     transparent
   );
   /* nested surfaces + raised tiles/bands → a lighter step of the ACCENT itself */
@@ -469,9 +487,9 @@
 
   /* Text */
   --fold-color-text: var(--fold-ref-slate-900);
-  --fold-color-text-secondary: var(--fold-ref-slate-600);
-  --fold-color-text-muted: var(--fold-ref-slate-550);
-  --fold-color-text-faded: var(--fold-ref-slate-350);
+  --fold-color-text-secondary: var(--fold-ref-slate-675);
+  --fold-color-text-muted: var(--fold-ref-slate-575);
+  --fold-color-text-faded: var(--fold-ref-slate-425);
 
   /* Card — a solid raised content surface (white on light) */
   --fold-color-surface-card: var(--fold-ref-white);
@@ -502,6 +520,11 @@
   --fold-color-border-subtle: color-mix(
     in srgb,
     var(--fold-ref-black) 4%,
+    transparent
+  );
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--fold-ref-black) 46%,
     transparent
   );
 
@@ -625,9 +648,9 @@
 
   /* Text — reuses slate, like light */
   --fold-color-text: var(--fold-ref-slate-900);
-  --fold-color-text-secondary: var(--fold-ref-slate-600);
-  --fold-color-text-muted: var(--fold-ref-slate-550);
-  --fold-color-text-faded: var(--fold-ref-slate-350);
+  --fold-color-text-secondary: var(--fold-ref-slate-675);
+  --fold-color-text-muted: var(--fold-ref-slate-575);
+  --fold-color-text-faded: var(--fold-ref-slate-425);
 
   /* Card — white, so it floats above the lavender page */
   --fold-color-surface-card: var(--fold-ref-bubble-0);
@@ -657,6 +680,11 @@
   --fold-color-border-subtle: color-mix(
     in srgb,
     var(--fold-ref-grape-500) 8%,
+    transparent
+  );
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--fold-ref-black) 46%,
     transparent
   );
 
@@ -824,6 +852,11 @@
      and these values did not honour. */
   --fold-color-border: var(--fold-ref-paper-300);
   --fold-color-border-subtle: var(--fold-ref-paper-200);
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--fold-ref-black) 46%,
+    transparent
+  );
 
   --fold-color-glass: color-mix(
     in srgb,
@@ -956,6 +989,11 @@
   --fold-color-border-subtle: color-mix(
     in srgb,
     var(--fold-ref-navyink-50) 5%,
+    transparent
+  );
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--fold-ref-white) 46%,
     transparent
   );
 
@@ -1121,6 +1159,11 @@
      light themes use an alpha hairline. */
   --fold-color-border: var(--fold-ref-steel-300);
   --fold-color-border-subtle: var(--fold-ref-steel-150);
+  --fold-color-border-field: color-mix(
+    in srgb,
+    var(--fold-ref-black) 46%,
+    transparent
+  );
 
   /* Glass — frosted brushed steel */
   --fold-color-glass: color-mix(

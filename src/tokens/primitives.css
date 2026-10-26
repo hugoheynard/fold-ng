@@ -61,14 +61,15 @@
 
   /* ── Slate — the neutral text family ──────────────────────── */
   --fold-ref-slate-50: #eef1ff; /* primary text (dark theme)   */
-  --fold-ref-slate-350: #9ca3af; /* faded text (light theme)    */
-  --fold-ref-slate-400: #8892b0; /* secondary text (dark)       */
+  --fold-ref-slate-400: #a9b1c6; /* secondary text (dark) — 7.0:1 on card */
+  --fold-ref-slate-425: #818690; /* faded (light) — 3.2:1 on every light ground */
   --fold-ref-slate-450: #7b8496; /* faded — a UI role, 3.5:1 on paper */
-  --fold-ref-slate-500: #5e6a86; /* muted text (dark)           */
-  --fold-ref-slate-550: #6b7280; /* muted text (light)          */
+  --fold-ref-slate-500: #8891a5; /* muted text (dark) — 4.75:1 on card    */
+  --fold-ref-slate-575: #646a78; /* muted (light) — 4.75:1 on every light ground */
   --fold-ref-slate-600: #5f6b7a; /* secondary text (light)      */
   --fold-ref-slate-650: #4a5468; /* secondary — 7.0:1 on paper        */
-  --fold-ref-slate-700: #4a5470; /* faded text (dark theme)     */
+  --fold-ref-slate-675: #48525d; /* secondary (light) — 7.0:1 on every light ground */
+  --fold-ref-slate-700: #6b748a; /* faded text (dark) — 3.2:1 on card     */
   --fold-ref-slate-900: #1a1d23; /* primary text (light theme)  */
 
   /* ── Azure — a cyan, BUBBLY's info family ──────────────────────
@@ -138,9 +139,9 @@
      bright polished cards that float on it — plus a HEAT-anodized
      titanium brand, the copper-orange the metal takes when torched. */
   --fold-ref-steel-900: #1b1f24; /* graphite body text              */
-  --fold-ref-steel-600: #566069; /* secondary text                 */
-  --fold-ref-steel-500: #7c8894; /* muted text                     */
-  --fold-ref-steel-400: #9aa6b1; /* faded text                     */
+  --fold-ref-steel-600: #3d444b; /* secondary text — 7.0:1 on the page */
+  --fold-ref-steel-500: #555d65; /* muted text — 4.75:1 on the page    */
+  --fold-ref-steel-400: #6f777f; /* faded text — 3.2:1 on the page     */
   --fold-ref-steel-300: #c0c8d0; /* solid brushed-steel border     */
   --fold-ref-steel-200: #d4dae1; /* brushed page ground            */
   --fold-ref-steel-150: #e2e7ec; /* header · rail 2 · hover · divider */

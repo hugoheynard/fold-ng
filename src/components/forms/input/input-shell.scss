@@ -17,22 +17,22 @@
     font-family: inherit;
     color: var(--fold-color-text);
     background: var(--fold-color-surface-card);
-    border: 1px solid var(--fold-color-border-subtle);
+    border: 1px solid var(--fold-color-border-field);
     transition:
       border-color var(--fold-motion-fast),
       box-shadow var(--fold-motion-fast);
 
     &::placeholder {
-      color: var(--fold-color-text-faded);
+      color: var(--fold-color-text-muted);
     }
 
     &:hover:not(:disabled):not(:read-only):not(:focus) {
-      border-color: var(--fold-color-border);
+      border-color: var(--fold-color-text-secondary);
     }
 
     &:focus {
       border-color: var(--fold-color-primary);
-      box-shadow: 0 0 0 2px var(--fold-color-primary-border);
+      box-shadow: 0 0 0 1px var(--fold-color-primary);
     }
 
     &:disabled {

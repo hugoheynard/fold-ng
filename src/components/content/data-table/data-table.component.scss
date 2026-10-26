@@ -173,7 +173,7 @@
   border-bottom: 0;
 }
 .folddt-row:focus-visible {
-  outline: 2px solid var(--fold-color-primary-border);
+  outline: 2px solid var(--fold-color-primary);
   outline-offset: -2px;
 }
 
@@ -362,7 +362,7 @@
   cursor: pointer;
 }
 .folddt-card:focus-visible {
-  outline: 2px solid var(--fold-color-primary-border);
+  outline: 2px solid var(--fold-color-primary);
   outline-offset: -2px;
 }
 .folddt-card.is-selected {

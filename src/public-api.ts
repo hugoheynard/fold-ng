@@ -6,6 +6,12 @@
 
 export { FoldAppShellComponent } from "./components/layout/app-shell/app-shell.component";
 export {
+  FOLD_APP_SHELL_LABELS,
+  FOLD_APP_SHELL_DEFAULT_LABELS,
+  provideFoldAppShellLabels,
+} from "./components/layout/app-shell/app-shell-labels";
+export type { FoldAppShellLabels } from "./components/layout/app-shell/app-shell-labels";
+export {
   FOLD_MOBILE_QUERIES,
   foldMediaQuery,
   resolveFoldMobileQuery,

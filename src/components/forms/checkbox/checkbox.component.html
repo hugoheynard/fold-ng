@@ -8,7 +8,12 @@
     [indeterminate]="indeterminate()"
     [disabled]="disabled()"
     [required]="required()"
-    [attr.aria-label]="label() ? null : (ariaLabel() ?? null)"
+    [attr.aria-label]="
+      label() || projectedLabel() ? null : (ariaLabel() ?? null)
+    "
+    [attr.aria-labelledby]="
+      !label() && projectedLabel() ? inputId + '-label' : null
+    "
     [attr.aria-describedby]="describedBy()"
     [attr.aria-invalid]="errorMessage() ? true : null"
     (change)="onChange($event)"
@@ -37,6 +42,19 @@
     <span class="cb-label"
       >{{ text }}
       @if (required()) {
+        <span class="cb-req" aria-hidden="true"> *</span>
+      }
+    </span>
+  } @else {
+    <!-- Rich label (text + a link): projected, still inside the <label>, so a
+         click on the words toggles while a click on the link follows it. -->
+    <span
+      #projected
+      class="cb-label"
+      [class.is-empty]="!projectedLabel()"
+      [id]="inputId + '-label'"
+      ><ng-content />
+      @if (required() && projectedLabel()) {
         <span class="cb-req" aria-hidden="true"> *</span>
       }
     </span>

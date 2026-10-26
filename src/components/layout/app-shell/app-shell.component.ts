@@ -18,6 +18,7 @@ import { FoldIdService } from "../../../a11y/id.service";
 import { ScrollRegionRegistry } from "../../../a11y/scroll-region-registry.service";
 import { observeElementWidth } from "../../../dom/observe-element-width";
 import { FoldSurfaceDirective } from "../../../directives/surface.directive";
+import { FOLD_APP_SHELL_LABELS } from "./app-shell-labels";
 import { type FoldMobileQuery, resolveFoldMobileQuery } from "./mobile-queries";
 
 /** Shell width (px) at or below which the shell is mobile whatever
@@ -109,7 +110,7 @@ const MOBILE_BREAKPOINT = 768;
  * ## Accessibility
  * The shell renders a **skip-link** as its first Tab stop — jumping keyboard
  * users past the rails straight to the `<main>` content (`skipLinkLabel` sets
- * its text). The `<main>` is focusable (`tabindex="-1"`) so the jump lands; the
+ * its text, `provideFoldAppShellLabels` sets it app-wide). The `<main>` is focusable (`tabindex="-1"`) so the jump lands; the
  * link moves focus directly rather than following the fragment, so it works
  * under hash routing too.
  *
@@ -226,14 +227,19 @@ export class FoldAppShellComponent {
    */
   readonly scroll = input<"scroll" | "stage">("scroll");
 
+  /** App-wide defaults for the two labels below (`provideFoldAppShellLabels`). */
+  private readonly labels = inject(FOLD_APP_SHELL_LABELS);
+
   /** The skip-link's label — the first Tab stop, jumping keyboard users past the
-   *  rails straight to `<main>`. Override for a non-English app. */
-  readonly skipLinkLabel = input("Skip to content");
+   *  rails straight to `<main>`. Defaults to `FOLD_APP_SHELL_LABELS.skipLink`
+   *  (English unless provided); set it app-wide with `provideFoldAppShellLabels`. */
+  readonly skipLinkLabel = input(this.labels.skipLink);
 
   /** The mobile drawer's accessible name — it becomes a `role="dialog"` while
    *  open, so it must be named. `"Menu"` by default (not `"Navigation"`, which
-   *  would echo the `<nav>` landmark inside). Override for a non-English app. */
-  readonly drawerLabel = input("Menu");
+   *  would echo the `<nav>` landmark inside). Defaults to
+   *  `FOLD_APP_SHELL_LABELS.drawer`; set it app-wide with `provideFoldAppShellLabels`. */
+  readonly drawerLabel = input(this.labels.drawer);
 
   private readonly document = inject(DOCUMENT);
 

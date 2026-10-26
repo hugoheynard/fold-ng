@@ -6,6 +6,7 @@ import {
   ScrollRegionRegistry,
 } from "../../../a11y/scroll-region-registry.service";
 import { FoldAppShellComponent } from "./app-shell.component";
+import { provideFoldAppShellLabels } from "./app-shell-labels";
 import {
   FOLD_MOBILE_QUERIES,
   type FoldMobileQuery,
@@ -289,6 +290,38 @@ describe("FoldAppShellComponent", () => {
     expect(skip.getAttribute("href")).toBe(`#${id}`);
     // It is the first focusable element in the shell (before the rails).
     expect(host.querySelector("a[href], button, [tabindex]")).toBe(skip);
+  });
+
+  it("provideFoldAppShellLabels translates the skip-link and the drawer name app-wide", () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideFoldAppShellLabels({
+          skipLink: "Aller au contenu",
+          drawer: "Menu principal",
+        }),
+      ],
+    });
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector("a.skip-link")?.textContent?.trim()).toBe(
+      "Aller au contenu",
+    );
+    const shell = fixture.debugElement.children[0]
+      ?.componentInstance as FoldAppShellComponent;
+    expect(shell.drawerLabel()).toBe("Menu principal");
+  });
+
+  it("a partial provider keeps the other English default", () => {
+    TestBed.configureTestingModule({
+      providers: [provideFoldAppShellLabels({ skipLink: "Aller au contenu" })],
+    });
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const shell = fixture.debugElement.children[0]
+      ?.componentInstance as FoldAppShellComponent;
+    expect(shell.skipLinkLabel()).toBe("Aller au contenu");
+    expect(shell.drawerLabel()).toBe("Menu");
   });
 
   it("skip-link moves focus to <main> and prevents the fragment navigation", () => {

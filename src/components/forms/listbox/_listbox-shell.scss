@@ -21,7 +21,7 @@
     font-family: inherit;
     color: var(--fold-color-text);
     background: var(--fold-color-surface-card);
-    border: 1px solid var(--fold-color-border-subtle);
+    border: 1px solid var(--fold-color-border-field);
     cursor: pointer;
     transition:
       border-color var(--fold-motion-fast),
@@ -32,12 +32,12 @@
     }
 
     &:hover:not(:disabled) {
-      border-color: var(--fold-color-border);
+      border-color: var(--fold-color-text-secondary);
     }
 
     &:focus-visible {
       border-color: var(--fold-color-primary);
-      box-shadow: 0 0 0 2px var(--fold-color-primary-border);
+      box-shadow: 0 0 0 1px var(--fold-color-primary);
     }
 
     &:disabled {
@@ -53,7 +53,7 @@
   }
 
   .lb-placeholder {
-    color: var(--fold-color-text-faded);
+    color: var(--fold-color-text-muted);
   }
 
   // The caret is pushed to the trailing edge; the value takes the remaining room.

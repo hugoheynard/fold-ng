@@ -162,4 +162,76 @@ describe("FoldCheckboxComponent", () => {
     );
     warn.mockRestore();
   });
+
+  describe("projected rich label", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldCheckboxComponent],
+      template: `
+        <fold-checkbox [(checked)]="checked" required>
+          J'accepte les <a href="/cgv">conditions générales de vente</a>
+        </fold-checkbox>
+      `,
+    })
+    class RichHostComponent {
+      readonly checked = signal(false);
+    }
+
+    function richSetup(): {
+      fixture: ComponentFixture<RichHostComponent>;
+      el: HTMLElement;
+      input: HTMLInputElement;
+    } {
+      const fixture = TestBed.createComponent(RichHostComponent);
+      fixture.detectChanges();
+      const el = fixture.nativeElement as HTMLElement;
+      return {
+        fixture,
+        el,
+        input: el.querySelector<HTMLInputElement>("input.cb-native")!,
+      };
+    }
+
+    it("names the input through aria-labelledby, pointing at the projected text", () => {
+      const { el, input } = richSetup();
+      const id = input.getAttribute("aria-labelledby");
+      expect(id).toBeTruthy();
+      const target = el.querySelector(`#${id}`);
+      expect(target?.textContent).toContain("conditions générales de vente");
+      expect(input.hasAttribute("aria-label")).toBe(false);
+    });
+
+    it("keeps the label inside the <label>, so a click on the words toggles", () => {
+      const { fixture, input, el } = richSetup();
+      const label = el.querySelector<HTMLElement>(".cb-label")!;
+      expect(label.closest("label")?.contains(input)).toBe(true);
+      label.click();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.checked()).toBe(true);
+    });
+
+    it("leaves the projected link a real link", () => {
+      const { el } = richSetup();
+      const link = el.querySelector<HTMLAnchorElement>(".cb-label a");
+      expect(link?.getAttribute("href")).toBe("/cgv");
+    });
+
+    it("shows the required marker after projected text, and does not warn", () => {
+      const warn = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => undefined);
+      const { el } = richSetup();
+      expect(el.querySelector(".cb-label .cb-req")).not.toBeNull();
+      expect(warn).not.toHaveBeenCalled();
+      warn.mockRestore();
+    });
+  });
+
+  it("renders no empty label span when nothing is projected and `label` is set", () => {
+    const { el } = setup();
+    expect(el.querySelectorAll(".cb-label").length).toBe(1);
+    expect(
+      el.querySelector(".cb-native")?.hasAttribute("aria-labelledby"),
+    ).toBe(false);
+  });
 });

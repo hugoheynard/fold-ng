@@ -24,6 +24,7 @@ export default class CheckboxPage {
   /* ── static state demos ── */
   protected readonly a = signal(false);
   protected readonly b = signal(true);
+  protected readonly terms = signal(false);
 
   /* ── select-all pattern (parent indeterminate over children) ── */
   protected readonly perms = signal<Record<string, boolean>>({

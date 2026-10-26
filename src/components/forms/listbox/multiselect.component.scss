@@ -40,7 +40,7 @@
     color: var(--fold-color-text);
   }
   &:focus-visible {
-    outline: 2px solid var(--fold-color-primary-border);
+    outline: 2px solid var(--fold-color-primary);
     outline-offset: -2px;
   }
   &:disabled {
@@ -84,11 +84,11 @@
   font-family: inherit;
   color: var(--fold-color-text);
   background: var(--fold-color-surface-card);
-  border: 1px solid var(--fold-color-border-subtle);
+  border: 1px solid var(--fold-color-border-field);
   @include box.size(sm);
 
   &::placeholder {
-    color: var(--fold-color-text-faded);
+    color: var(--fold-color-text-muted);
   }
 
   &::-webkit-search-cancel-button {

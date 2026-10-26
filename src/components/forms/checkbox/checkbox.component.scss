@@ -43,7 +43,7 @@
   place-items: center;
   width: var(--cb-size);
   height: var(--cb-size);
-  border: 1.5px solid var(--fold-color-border);
+  border: 1.5px solid var(--fold-color-border-field);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-card);
   color: var(--fold-color-on-primary);
@@ -63,10 +63,11 @@
   border-color: var(--fold-color-primary);
 }
 
-/* Focus ring — a soft glow on the box (the native outline is hidden). */
+/* Focus ring — a solid primary ring around the box (the native input is
+   invisible). Solid, not a tinted glow: it must clear 3:1 on the surface. */
 .cb-native:focus-visible ~ .cb-box {
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--fold-color-primary) 35%, transparent);
+  outline: 2px solid var(--fold-color-primary);
+  outline-offset: 2px;
 }
 
 /* Marks — cross-faded on state; indeterminate wins over checked. */
@@ -109,6 +110,15 @@
 
 .cb-label {
   line-height: var(--fold-leading-snug);
+}
+.cb-label.is-empty {
+  display: none;
+}
+/* A projected link keeps reading as a link inside the label. */
+.cb-label a {
+  color: var(--fold-color-primary-text);
+  text-decoration: underline;
+  cursor: pointer;
 }
 .cb-req {
   color: var(--fold-color-alert);

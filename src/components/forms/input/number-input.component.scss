@@ -80,7 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--fold-color-border-subtle);
+  border: 1px solid var(--fold-color-border-field);
   border-radius: var(--fold-radius-sm);
   background: var(--fold-color-surface-card);
   color: var(--fold-color-text);
@@ -90,7 +90,7 @@
     background var(--fold-motion-fast);
 
   &:hover:not(:disabled) {
-    border-color: var(--fold-color-border);
+    border-color: var(--fold-color-text-secondary);
     background: var(--fold-color-surface-hover);
   }
   &:disabled {
@@ -115,7 +115,7 @@
   right: 0.6rem;
   transform: translateY(-50%);
   font-size: var(--fold-text-xs);
-  color: var(--fold-color-text-faded);
+  color: var(--fold-color-text-muted);
   pointer-events: none;
 }
 // clearance so the value never sits under the suffix / stack

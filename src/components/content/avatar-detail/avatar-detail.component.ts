@@ -7,7 +7,7 @@ import {
 
 /**
  * `<fold-avatar-detail>` — an avatar next to one or two lines of text: the
- * canonical "identity cell". A bold `primary` line and an optional faded
+ * canonical "identity cell". A bold `primary` line and an optional muted
  * `secondary` line (name + email, entity + subtitle, …). One line centres
  * against the avatar; two lines stack and centre as a block.
  *

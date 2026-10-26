@@ -27,17 +27,17 @@
     pointer-events: auto;
   }
 
-  // Focus ring — a soft glow on the focused thumb (the native outline is off).
+  // Focus ring — the native outline is off (it would frame the whole track), so
+  // the thumb gets a SOLID primary ring outside its card-coloured border. A
+  // tinted glow measured ~1.5:1; the ring must clear 3:1 on the surface.
   &:focus-visible {
     outline: none;
   }
   &:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 4px
-      color-mix(in srgb, var(--fold-color-primary) 30%, transparent);
+    box-shadow: 0 0 0 2px var(--fold-color-primary);
   }
   &:focus-visible::-moz-range-thumb {
-    box-shadow: 0 0 0 4px
-      color-mix(in srgb, var(--fold-color-primary) 30%, transparent);
+    box-shadow: 0 0 0 2px var(--fold-color-primary);
   }
 
   @media (prefers-reduced-motion: reduce) {
