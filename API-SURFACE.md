@@ -848,7 +848,7 @@
 
 #### FoldTabsComponent
 - activeKey: ModelSignal<K> — required
-- activeStyle: InputSignal<"underline" | "fill">
+- activeStyle: InputSignal<"folder" | "underline" | "fill">
 - background: InputSignal<"surface" | "transparent">
 - collapsed: InputSignalWithTransform<boolean, unknown>
 - direction: InputSignal<"auto" | "vertical" | "horizontal">
