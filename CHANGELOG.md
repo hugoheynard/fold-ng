@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-meter` — mode segmenté.** Nouvelle entrée
+  `segments: readonly FoldMeterSegment[] | null` (défaut `null` : la barre
+  unique, inchangée). Un segment par étape, **large en proportion de son
+  `max`**, rempli à son propre `value / max`, séparés de `--fold-space-xs`.
+  Chaque segment porte un ton (`FoldMeterSegmentTone` : les tons du mètre plus
+  `muted`, l'étape à venir ; `alert` teinte aussi le fond du segment), peut être
+  `current` (plus épais) et porter un `label` affiché sous lui. Le mètre
+  annonce la somme des étapes (`aria-valuenow` / `aria-valuemax`) et décrit
+  chacune dans `aria-valuetext`. Largeur minimale d'un segment :
+  `--fold-meter-segment-min` (96px par défaut). Page `meter` ajoutée à la
+  galerie.
 
 ## [0.34.0] - 2026-10-26
 

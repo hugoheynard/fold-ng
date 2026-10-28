@@ -163,6 +163,7 @@ const AUTHORED_NAV: readonly GalleryNavGroup[] = [
       { id: "surfaces", label: "surfaces", icon: "palette" },
       { id: "icons", label: "icons" },
       { id: "spinner", label: "spinner" },
+      { id: "meter", label: "meter" },
       { id: "repeat-press", label: "repeat-press" },
     ],
   },

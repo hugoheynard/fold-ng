@@ -1,7 +1,7 @@
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { describe, it, expect } from "vitest";
-import { FoldMeterComponent } from "./meter.component";
+import { FoldMeterComponent, type FoldMeterSegment } from "./meter.component";
 
 @Component({
   standalone: true,
@@ -80,5 +80,109 @@ describe("FoldMeterComponent", () => {
     host.max.set(0);
     fixture.detectChanges();
     expect(fillPercent()).toBe("0%");
+  });
+
+  describe("segmented", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldMeterComponent],
+      template: `<fold-meter
+        label="Sorties"
+        [value]="0"
+        [segments]="segments()"
+        showValue
+      />`,
+    })
+    class SegmentedHost {
+      readonly segments = signal<readonly FoldMeterSegment[] | null>([
+        { value: 120, max: 120, tone: "success", label: "avant 7 h" },
+        { value: 60, max: 120, current: true, label: "avant 9 h 30" },
+        { value: 0, max: 240, tone: "muted" },
+      ]);
+    }
+
+    function renderSegmented() {
+      const fixture = TestBed.createComponent(SegmentedHost);
+      fixture.detectChanges();
+      const root = fixture.nativeElement as HTMLElement;
+      const segs = (): HTMLElement[] =>
+        Array.from(root.querySelectorAll<HTMLElement>(".m-seg"));
+      const track = (): HTMLElement =>
+        root.querySelector(".m-track") as HTMLElement;
+      return { fixture, host: fixture.componentInstance, root, segs, track };
+    }
+
+    it("draws one segment per step, as wide as its share of the total", () => {
+      const { segs } = renderSegmented();
+      expect(segs().map((s) => s.style.flexGrow)).toEqual([
+        "120",
+        "120",
+        "240",
+      ]);
+    });
+
+    it("fills each segment to its own value / max", () => {
+      const { segs } = renderSegmented();
+      const fills = segs().map(
+        (s) => (s.querySelector(".m-fill") as HTMLElement).style.inlineSize,
+      );
+      expect(fills).toEqual(["100%", "50%", "0%"]);
+    });
+
+    it("reports the sum of the steps, and ignores the single-bar value", () => {
+      const { root, track } = renderSegmented();
+      expect(track().getAttribute("role")).toBe("meter");
+      expect(track().getAttribute("aria-valuenow")).toBe("180");
+      expect(track().getAttribute("aria-valuemin")).toBe("0");
+      expect(track().getAttribute("aria-valuemax")).toBe("480");
+      expect(root.querySelector(".m-value")?.textContent?.trim()).toBe(
+        "180 / 480",
+      );
+    });
+
+    it("describes every step to assistive tech, labels included", () => {
+      const { track } = renderSegmented();
+      expect(track().getAttribute("aria-valuetext")).toBe(
+        "120 / 120 (avant 7 h) ; 60 / 120 (avant 9 h 30) ; 0 / 240",
+      );
+    });
+
+    it("carries tone, current and caption per segment", () => {
+      const { segs } = renderSegmented();
+      const [done, current, next] = segs();
+      expect(done?.classList).toContain("success");
+      expect(current?.classList).toContain("accent");
+      expect(current?.classList).toContain("is-current");
+      expect(next?.classList).toContain("muted");
+      expect(next?.classList).not.toContain("is-current");
+      expect(done?.querySelector(".m-seg-label")?.textContent?.trim()).toBe(
+        "avant 7 h",
+      );
+      expect(next?.querySelector(".m-seg-label")).toBeNull();
+    });
+
+    it("clamps an overrun and survives a step of size zero", () => {
+      const { fixture, host, segs, track } = renderSegmented();
+      host.segments.set([
+        { value: 130, max: 120, tone: "alert" },
+        { value: 5, max: 0 },
+      ]);
+      fixture.detectChanges();
+      const fills = segs().map(
+        (s) => (s.querySelector(".m-fill") as HTMLElement).style.inlineSize,
+      );
+      expect(fills).toEqual(["100%", "0%"]);
+      expect(track().getAttribute("aria-valuenow")).toBe("120");
+    });
+
+    it("returns to the single bar when segments go back to null", () => {
+      const { fixture, host, root, track } = renderSegmented();
+      host.segments.set(null);
+      fixture.detectChanges();
+      expect(root.querySelectorAll(".m-seg")).toHaveLength(0);
+      expect(root.querySelector(".m-fill")).not.toBeNull();
+      expect(track().getAttribute("aria-valuetext")).toBeNull();
+      expect(root.firstElementChild?.classList).not.toContain("segmented");
+    });
   });
 });

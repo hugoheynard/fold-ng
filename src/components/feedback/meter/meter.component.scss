@@ -55,6 +55,94 @@
   background: var(--fold-color-alert);
 }
 
+/* ── Segmented mode ─────────────────────────────────────────────────── */
+
+:host(.segmented) .m-track {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fold-space-xs);
+  block-size: auto;
+  border-radius: 0;
+  background: none;
+  /* Segments keep their minimum width; past it the meter overflows rather
+     than clipping a step out of sight. */
+  overflow: visible;
+}
+
+.m-seg {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--fold-space-xs);
+  min-inline-size: var(--fold-meter-segment-min, 96px);
+}
+
+/* Every track reserves the current segment's thickness, so a thicker
+   segment grows around its centre instead of pushing its label down. The
+   band behind the fill is a pseudo-element, so `alert` can tint it alone. */
+.m-seg-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  block-size: 10px;
+}
+
+.m-seg-track::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  block-size: 8px;
+  border-radius: var(--fold-radius-pill);
+  background: var(--fold-color-surface-raised);
+}
+
+.m-seg .m-fill {
+  position: relative;
+  z-index: 1;
+  block-size: 8px;
+}
+
+.m-seg.is-current .m-seg-track::after,
+.m-seg.is-current .m-fill {
+  block-size: 10px;
+}
+
+.m-seg.success .m-fill {
+  background: var(--fold-color-success);
+}
+.m-seg.warning .m-fill {
+  background: var(--fold-color-warning);
+}
+.m-seg.alert .m-fill {
+  background: var(--fold-color-alert);
+}
+.m-seg.alert .m-seg-track::after {
+  background: var(--fold-color-alert-surface);
+}
+.m-seg.muted .m-fill {
+  background: var(--fold-color-info-border);
+}
+
+.m-seg-label {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--fold-color-text-muted);
+  font-size: var(--fold-text-xs);
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.m-seg.success .m-seg-label {
+  color: var(--fold-color-success-text);
+}
+.m-seg.alert .m-seg-label {
+  color: var(--fold-color-alert-text);
+}
+.m-seg.is-current .m-seg-label {
+  color: var(--fold-color-text-secondary);
+  font-weight: var(--fold-weight-semibold);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .m-fill {
     transition: none;

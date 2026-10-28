@@ -1,16 +1,35 @@
 <span class="m-row">
   <span class="m-label" [id]="labelId">{{ label() }}</span>
   @if (showValue()) {
-    <span class="m-value">{{ clamped() }} / {{ max() }}</span>
+    <span class="m-value">{{ shownValue() }} / {{ shownMax() }}</span>
   }
 </span>
 <span
   class="m-track"
   role="meter"
   [attr.aria-labelledby]="labelId"
-  [attr.aria-valuenow]="clamped()"
-  [attr.aria-valuemin]="min()"
-  [attr.aria-valuemax]="max()"
+  [attr.aria-valuenow]="shownValue()"
+  [attr.aria-valuemin]="shownMin()"
+  [attr.aria-valuemax]="shownMax()"
+  [attr.aria-valuetext]="valueText()"
 >
-  <span class="m-fill" [style.inline-size.%]="percent()"></span>
+  @if (segments() === null) {
+    <span class="m-fill" [style.inline-size.%]="percent()"></span>
+  } @else {
+    @for (bar of bars(); track $index) {
+      <span
+        class="m-seg"
+        [class]="bar.tone"
+        [class.is-current]="bar.current"
+        [style.flex-grow]="bar.max"
+      >
+        <span class="m-seg-track">
+          <span class="m-fill" [style.inline-size.%]="bar.percent"></span>
+        </span>
+        @if (bar.label !== null) {
+          <span class="m-seg-label">{{ bar.label }}</span>
+        }
+      </span>
+    }
+  }
 </span>

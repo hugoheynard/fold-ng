@@ -1,0 +1,39 @@
+<fold-page-layout title="meter">
+  <gal-kind-badge titleBadge kind="component" />
+  <p description>
+    A read-only measurement within a known range, announced as
+    <code>role="meter"</code>. Pass <code>[segments]</code> to split it into
+    steps — each as wide as its <code>max</code>, filled to its own
+    <code>value</code>.
+  </p>
+  <div class="gal-stack">
+    <div class="gal-cell">
+      <span class="gal-tag">tone</span>
+      <div class="gal-stack">
+        @for (t of tones; track t) {
+        <fold-meter [label]="t" [value]="6" [max]="9" [tone]="t" showValue />
+        }
+      </div>
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag"
+        >segmented — on track (held · current · to come)</span
+      >
+      <fold-meter
+        label="Pain de campagne"
+        [value]="0"
+        [segments]="onTrack"
+        showValue
+      />
+    </div>
+    <div class="gal-cell">
+      <span class="gal-tag">segmented — current step overdue (alert)</span>
+      <fold-meter
+        label="Pain de campagne"
+        [value]="0"
+        [segments]="late"
+        showValue
+      />
+    </div>
+  </div>
+</fold-page-layout>

@@ -554,6 +554,7 @@
 - label: InputSignal<string> — required
 - max: InputSignalWithTransform<number, unknown>
 - min: InputSignalWithTransform<number, unknown>
+- segments: InputSignal<readonly FoldMeterSegment[] | null>
 - showValue: InputSignalWithTransform<boolean, unknown>
 - tone: InputSignal<FoldMeterTone>
 - value: InputSignalWithTransform<number, unknown> — required
@@ -1104,6 +1105,8 @@
 - FoldMenuLevel (type)
 - FoldMenuTint (type)
 - FoldMenuTogglePlacement (type)
+- FoldMeterSegment (interface)
+- FoldMeterSegmentTone (type)
 - FoldMeterTone (type)
 - FoldMobileQuery (type)
 - FoldMobileQueryName (type)

@@ -301,7 +301,11 @@ export type {
   FoldChecklistState,
 } from "./components/feedback/checklist/checklist.component";
 export { FoldMeterComponent } from "./components/feedback/meter/meter.component";
-export type { FoldMeterTone } from "./components/feedback/meter/meter.component";
+export type {
+  FoldMeterSegment,
+  FoldMeterSegmentTone,
+  FoldMeterTone,
+} from "./components/feedback/meter/meter.component";
 export { FoldCalloutComponent } from "./components/feedback/callout/callout.component";
 export type {
   FoldCalloutVariant,
