@@ -14,7 +14,7 @@ import {
   type FoldTabItem,
 } from "../../../src/public-api";
 
-type TabStyle = "underline" | "fill";
+type TabStyle = "underline" | "fill" | "folder";
 type TabDir = "horizontal" | "vertical";
 
 /** `/tabs` — the `fold-tabs` in-page ARIA Tabs widget gallery page. */
@@ -45,7 +45,14 @@ export default class TabsPage {
 
   protected readonly tabs: FoldTabItem[] = [
     { key: "overview", label: "Overview", icon: "grid" },
-    { key: "members", label: "Members", icon: "team", badge: 3 },
+    {
+      key: "members",
+      label: "Members",
+      icon: "team",
+      badge: 3,
+      dot: "warning",
+      dotLabel: "an invite is pending",
+    },
     { key: "settings", label: "Settings", icon: "settings" },
   ];
 

@@ -41,6 +41,13 @@
         >
           fill
         </button>
+        <button
+          type="button"
+          [class.is-on]="style() === 'folder'"
+          (click)="style.set('folder')"
+        >
+          folder
+        </button>
       </div>
     </div>
 

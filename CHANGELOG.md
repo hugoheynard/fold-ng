@@ -6,7 +6,21 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-tabs` — `activeStyle="folder"`, l'onglet de classeur.** L'onglet
+  actif prend le fond du panneau qu'il ouvre et s'y raccorde (coins hauts
+  arrondis, aucun trait) ; les autres restent en retrait sur le fond de la
+  barre. Fait pour une barre posée sur une bande sombre, juste au-dessus de son
+  contenu. Fond et encre de l'onglet actif : `--fold-tabs-folder-surface`
+  (défaut `--fold-color-surface-card`) et `--fold-tabs-folder-ink` (défaut
+  `--fold-color-text`) — sur une bande `[data-surface="chrome"]`, les rôles de
+  texte sont redéclarés clairs : capturer les valeurs de la page hors de la
+  bande et les passer. Dans ce style, le `badge` s'écrit en texte (« 1/4 »),
+  pas en pastille.
+- **`FoldTabItem.dot` / `dotLabel`** — le point d'état de `fold-view-toggle`
+  sur un onglet (« regarde ici », jamais _quoi_) ; `dotLabel` s'ajoute au nom
+  accessible de l'onglet.
 
 ## [0.35.0] - 2026-10-28
 

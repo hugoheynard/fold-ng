@@ -6,6 +6,7 @@
   "
   [class.style-underline]="activeStyle() === 'underline'"
   [class.style-fill]="activeStyle() === 'fill'"
+  [class.style-folder]="activeStyle() === 'folder'"
   [class.dir-vertical]="resolvedDirection() === 'vertical'"
   [class.size-comfortable]="size() === 'comfortable'"
   [class.justify-stretch]="justify() === 'stretch'"
@@ -23,7 +24,7 @@
       [class.is-active]="activeKey() === tab.key"
       [attr.aria-selected]="activeKey() === tab.key"
       [attr.aria-controls]="panelId(tab.key)"
-      [attr.aria-label]="isTooltip(activeKey() === tab.key) ? tab.label : null"
+      [attr.aria-label]="tabName(tab, activeKey() === tab.key)"
       [tabindex]="activeKey() === tab.key ? 0 : -1"
       (click)="select(tab.key)"
     >
@@ -40,12 +41,21 @@
         [tooltipSide]="tooltipSide()"
         >{{ tab.label }}</span
       >
-      @if (tab.badge !== undefined && tab.badge !== null) {
+      @if (
+        tab.badge !== undefined &&
+        tab.badge !== null &&
+        activeStyle() === "folder"
+      ) {
+        <span class="tab-bar-count">{{ tab.badge }}</span>
+      } @else if (tab.badge !== undefined && tab.badge !== null) {
         <fold-badge
           class="tab-bar-badge"
           [content]="tab.badge + ''"
           [variant]="activeKey() === tab.key ? 'accent' : 'neutral'"
         />
+      }
+      @if (tab.dot; as dot) {
+        <span class="tab-bar-dot" [class]="dot" aria-hidden="true"></span>
       }
     </button>
   }

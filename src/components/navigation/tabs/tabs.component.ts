@@ -13,6 +13,7 @@ import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldTabTooltipDirective } from "../tab-tooltip.directive";
 import type { FoldPopoverSide } from "../../overlays/popover/placement";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
+import type { FoldViewToggleDot } from "../../forms/view-toggle/view-toggle.component";
 import { FoldIdService } from "../../../a11y/id.service";
 import { FOLD_NAV_LAYOUT } from "../../layout/nav-layout/nav-layout.context";
 
@@ -31,8 +32,20 @@ export type FoldTabItem<K extends string = string> = {
   label: string;
   /** Optional leading icon. */
   icon?: FoldIconName;
-  /** Optional trailing count badge. `undefined`/`null` hides it. */
+  /**
+   * Optional trailing count. `undefined`/`null` hides it. A pill everywhere,
+   * except under `activeStyle="folder"`, where it is set as plain text after the
+   * label (« 1/4 ») — a pill on a folder tab reads as a second tab.
+   */
   badge?: string | number | null;
+  /**
+   * A status dot after the label — the same marker as `fold-view-toggle`'s:
+   * it says "look here", never *what*. Say what next to the content, and name
+   * it for assistive tech with {@link dotLabel}.
+   */
+  dot?: FoldViewToggleDot;
+  /** Accessible name for the {@link dot}, appended to the tab's name. */
+  dotLabel?: string;
 };
 
 /**
@@ -105,8 +118,24 @@ export class FoldTabsComponent<
    * output — the model is the one way.
    */
   readonly activeKey = model.required<K>();
-  /** How the active tab reads: accent underline, or accent fill. */
-  readonly activeStyle = input<"underline" | "fill">("underline");
+  /**
+   * How the active tab reads:
+   * - `underline` (default) — an accent rule under it;
+   * - `fill` — an accent pill;
+   * - `folder` — a **file-folder tab**: the active tab takes the ground of the
+   *   panel it opens and joins it, the others sit back on the bar's ground.
+   *   Made for a bar laid on a dark band right above its content. Horizontal
+   *   only; pair it with `background="transparent"`.
+   *
+   *   The active tab's ground and ink are two CSS custom properties,
+   *   `--fold-tabs-folder-surface` (default `--fold-color-surface-card`) and
+   *   `--fold-tabs-folder-ink` (default `--fold-color-text`). On a chrome band
+   *   (`[data-surface="chrome"]`) the text roles are redeclared light, so the
+   *   default ink would be light on a light tab: capture the page's values
+   *   OUTSIDE the band and hand them in, e.g.
+   *   `:host { --fold-tabs-folder-ink: var(--fold-color-text); }` on the page.
+   */
+  readonly activeStyle = input<"underline" | "fill" | "folder">("underline");
   /**
    * Bar orientation (drives `aria-orientation`). Defaults to `auto`: follows a
    * wrapping `fold-nav-layout`, else `horizontal`.
@@ -189,6 +218,23 @@ export class FoldTabsComponent<
   }
   panelId(key: K): string {
     return `${this.uid}-panel-${key}`;
+  }
+
+  /**
+   * The tab's accessible name when it needs one of its own: the tooltip case
+   * (label hidden), or a dot whose meaning must be heard. `null` lets the
+   * visible text name it.
+   */
+  protected tabName(tab: FoldTabItem<K>, active: boolean): string | null {
+    const base = this.isTooltip(active) ? tab.label : null;
+    if (tab.dotLabel === undefined) {
+      return base;
+    }
+    const visible =
+      tab.badge === undefined || tab.badge === null
+        ? tab.label
+        : `${tab.label} ${String(tab.badge)}`;
+    return `${base ?? visible} — ${tab.dotLabel}`;
   }
 
   protected select(key: K): void {

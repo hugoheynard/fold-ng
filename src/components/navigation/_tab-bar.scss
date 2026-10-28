@@ -369,3 +369,58 @@
   outline-offset: -2px;
   border-radius: var(--fold-radius-sm);
 }
+
+/* Folder — a file-folder tab (fold-tabs only). The active tab is a piece of the
+   panel below poking up into the bar: same ground, rounded top, no rule. Its
+   ground and ink are custom properties because the bar typically sits on a
+   chrome band, where every text role is redeclared light — see `activeStyle`. */
+.style-folder {
+  align-items: flex-end;
+  padding: 0;
+  background: none;
+}
+.style-folder .tab-bar-item {
+  padding: var(--fold-space-sm) var(--fold-space-md);
+  border-radius: var(--fold-radius-md) var(--fold-radius-md) 0 0;
+  color: var(--fold-color-text-muted);
+}
+.style-folder .tab-bar-item:hover:not(.is-active) {
+  background: var(--fold-color-surface-hover);
+  color: var(--fold-color-text);
+}
+.style-folder .tab-bar-item.is-active {
+  background: var(--fold-tabs-folder-surface, var(--fold-color-surface-card));
+  color: var(--fold-tabs-folder-ink, var(--fold-color-text));
+  font-weight: var(--fold-weight-semibold);
+}
+.style-folder .tab-bar-item:focus-visible {
+  border-radius: var(--fold-radius-md) var(--fold-radius-md) 0 0;
+}
+
+/* The count as text, not a pill — « 1/4 » after the label. */
+.tab-bar-count {
+  flex-shrink: 0;
+  font-family: var(--fold-font-mono);
+  font-size: var(--fold-text-xs);
+  font-weight: var(--fold-weight-regular);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+/* A status dot — the `fold-view-toggle` marker, same sizing and hues. */
+.tab-bar-dot {
+  flex: none;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: var(--fold-radius-round);
+  background: var(--fold-color-text-faded);
+}
+.tab-bar-dot.warning {
+  background: var(--fold-color-warning);
+}
+.tab-bar-dot.alert {
+  background: var(--fold-color-alert);
+}
+.tab-bar-dot.success {
+  background: var(--fold-color-success);
+}

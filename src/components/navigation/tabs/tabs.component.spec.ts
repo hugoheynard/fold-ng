@@ -149,3 +149,70 @@ describe("FoldTabsComponent — sticky", () => {
     expect(bar.classList.contains("is-sticky")).toBe(true);
   });
 });
+
+describe("FoldTabsComponent — folder", () => {
+  @Component({
+    standalone: true,
+    imports: [FoldTabsComponent],
+    template: `<fold-tabs
+      [tabs]="tabs"
+      activeKey="a"
+      [activeStyle]="style()"
+      background="transparent"
+    />`,
+  })
+  class FolderHost {
+    readonly tabs: readonly FoldTabItem[] = [
+      {
+        key: "a",
+        label: "Viennoiseries",
+        badge: "1/4",
+        dot: "warning",
+        dotLabel: "une commande attend",
+      },
+      { key: "b", label: "Pains", badge: "3/3" },
+    ];
+    readonly style = signal<"underline" | "folder">("folder");
+  }
+
+  function mount() {
+    const fixture = TestBed.createComponent(FolderHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const tabs = () =>
+      Array.from(host.querySelectorAll<HTMLElement>('[role="tab"]'));
+    return { fixture, host, tabs };
+  }
+
+  it("marks the bar and sets the count as text, not a pill", () => {
+    const { host, tabs } = mount();
+    expect(
+      host.querySelector(".tab-bar")?.classList.contains("style-folder"),
+    ).toBe(true);
+    expect(host.querySelector("fold-badge")).toBeNull();
+    expect(
+      tabs()[0]?.querySelector(".tab-bar-count")?.textContent?.trim(),
+    ).toBe("1/4");
+  });
+
+  it("keeps the pill outside the folder style", () => {
+    const { fixture, host } = mount();
+    fixture.componentInstance.style.set("underline");
+    fixture.detectChanges();
+    expect(host.querySelectorAll("fold-badge")).toHaveLength(2);
+    expect(host.querySelector(".tab-bar-count")).toBeNull();
+  });
+
+  it("draws the dot, decorative, and names it in the tab's accessible name", () => {
+    const { tabs } = mount();
+    const [first, second] = tabs();
+    const dot = first?.querySelector(".tab-bar-dot");
+    expect(dot?.classList.contains("warning")).toBe(true);
+    expect(dot?.getAttribute("aria-hidden")).toBe("true");
+    expect(first?.getAttribute("aria-label")).toBe(
+      "Viennoiseries 1/4 — une commande attend",
+    );
+    // No dot: the visible text names the tab, no aria-label to drift from it.
+    expect(second?.getAttribute("aria-label")).toBeNull();
+  });
+});
