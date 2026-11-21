@@ -265,4 +265,29 @@ describe("FoldAsideLayoutComponent", () => {
       expect(rule).toContain(":has([asideend])");
     }
   });
+
+  /**
+   * Régression (0.38.0) : le repli en une colonne ne listait que `:host .al-grid`,
+   * moins spécifique que les règles des colonnes — une requête de conteneur
+   * n'ajoute aucune spécificité — et la page gardait ses trois colonnes sur un
+   * téléphone.
+   */
+  it("collapses every column combination, not just the bare grid", () => {
+    const raw = readFileSync(
+      join(
+        process.cwd(),
+        "src/components/layout/aside-layout/aside-layout.component.scss",
+      ),
+      "utf-8",
+    );
+    const scss = raw.replace(/\/\*[\s\S]*?\*\//g, "");
+    const collapse = scss.slice(scss.indexOf("@container (max-width: 1040px)"));
+    const block = collapse.slice(0, collapse.indexOf("--al-areas: none"));
+    for (const combo of [
+      ":host:has([asideleft]):has([asideright]) .al-grid",
+      ":host:has([asideend]):has([asideleft]):has([asideright]) .al-grid",
+    ]) {
+      expect(block).toContain(combo);
+    }
+  });
 });

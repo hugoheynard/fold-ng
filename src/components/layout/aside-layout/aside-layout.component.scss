@@ -198,7 +198,18 @@
    slot; un-stick. Areas are dropped — a named row with nothing in it would
    still pay a gap — and every wrapper flows in that order. */
 @container (max-width: 1040px) {
-  :host .al-grid {
+  /* Every wide-mode combination is listed: a container query adds no
+     specificity, so `:host .al-grid` alone would lose to
+     `:host:has([asideleft]):has([asideright]) .al-grid` and keep the columns
+     on a phone. */
+  :host .al-grid,
+  :host:has([asideright]) .al-grid,
+  :host:has([asideleft]) .al-grid,
+  :host:has([asideleft]):has([asideright]) .al-grid,
+  :host:has([asideend]) .al-grid,
+  :host:has([asideend]):has([asideright]) .al-grid,
+  :host:has([asideend]):has([asideleft]) .al-grid,
+  :host:has([asideend]):has([asideleft]):has([asideright]) .al-grid {
     --al-cols: minmax(0, 1fr);
     --al-areas: none;
     --al-rows: auto;

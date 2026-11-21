@@ -6,7 +6,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-aside-layout` — le repli en une colonne tient de nouveau.** Depuis
+  0.38.0, la règle du repli ne visait que `:host .al-grid`, moins spécifique
+  que celles des colonnes (`:host:has([asideleft]):has([asideright]) .al-grid`)
+  — une requête de conteneur n'ajoute aucune spécificité. Sur un téléphone ou
+  une tablette en portrait, la page gardait donc ses trois colonnes. Le repli
+  reprend chaque combinaison de rails et de `[asideEnd]`.
 
 ## [0.38.0] - 2026-11-21
 
