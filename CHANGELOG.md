@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.38.1] - 2026-11-21
+
 ### Fixed
 
 - **`fold-aside-layout` — le repli en une colonne tient de nouveau.** Depuis
@@ -2913,7 +2917,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.38.0...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.38.1...HEAD
+[0.38.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.38.1
 [0.38.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.38.0
 [0.37.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.37.0
 [0.36.0]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.36.0
