@@ -306,6 +306,17 @@
   :host(.keep-side-rail) .al-end {
     grid-area: end;
   }
+  /* The side rail is the summary kept beside the content: it stays sticky, so
+     it does not scroll away with the centre. The left rail, stacked under it,
+     scrolls with the page — two sticky blocks in one column would overlap. */
+  :host(.keep-side-rail) .al-aside-right {
+    position: sticky;
+    max-height: var(
+      --fold-aside-layout-rail-max,
+      calc(100dvh - var(--al-rail-top) - 2rem)
+    );
+    overflow-y: auto;
+  }
 }
 
 @container (max-width: 700px) {

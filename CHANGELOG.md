@@ -6,7 +6,14 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-aside-layout[keepSideRail]` — le rail droit reste collant.** En
+  tablette paysage, les rails passaient non collants comme dans le repli en
+  une colonne : le résumé tenu à côté du contenu défilait avec lui. Le rail
+  droit garde maintenant sa position collante et son plafond
+  (`--fold-aside-layout-rail-max`) ; le rail gauche, empilé dessous, défile
+  avec la page.
 
 ## [0.38.1] - 2026-11-21
 

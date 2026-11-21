@@ -290,4 +290,26 @@ describe("FoldAsideLayoutComponent", () => {
       expect(block).toContain(combo);
     }
   });
+
+  it("keeps the side rail sticky in keepSideRail mode (a tablet keeps its summary in view)", () => {
+    const raw = readFileSync(
+      join(
+        process.cwd(),
+        "src/components/layout/aside-layout/aside-layout.component.scss",
+      ),
+      "utf-8",
+    );
+    const scss = raw.replace(/\/\*[\s\S]*?\*\//g, "");
+    const keep = scss.slice(
+      scss.indexOf("@container (min-width: 701px) and (max-width: 1040px)"),
+    );
+    // Several rules target the side rail there (its grid area, its stickiness):
+    // one of them must keep it sticky.
+    const rules = keep
+      .split("}")
+      .filter((rule) =>
+        rule.includes(":host(.keep-side-rail) .al-aside-right {"),
+      );
+    expect(rules.some((rule) => rule.includes("position: sticky"))).toBe(true);
+  });
 });
