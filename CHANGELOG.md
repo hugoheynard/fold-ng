@@ -6,7 +6,16 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-aside-layout` — `keepSideRail`.** Entre 700px et 1040px de
+  conteneur (une tablette en paysage), le rail droit reste à côté du centre au
+  lieu de replier en une colonne, et le rail gauche s'empile sous lui. Sous
+  700px, la colonne unique reste la règle.
+- **`fold-aside-layout` — le créneau `[asideEnd]`.** Les blocs de fin (une
+  zone de danger, une note) : sous le centre avec les colonnes, en dernier après
+  les rails une fois replié — une action destructrice ne tombe jamais entre le
+  contenu et son résumé.
 
 ## [0.37.0] - 2026-11-21
 

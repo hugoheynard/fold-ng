@@ -18,11 +18,38 @@
 
 .al-grid {
   display: grid;
-  grid-template-columns: var(--fold-aside-layout-center-width, minmax(0, 1fr));
+  grid-template-columns: var(--al-cols);
+  grid-template-areas: var(--al-areas);
+  grid-template-rows: var(--al-rows, auto);
   gap: var(--fold-aside-layout-gap, 28px);
   max-width: var(--fold-aside-layout-max, 1240px);
   margin-inline: auto;
   padding: var(--fold-aside-layout-pad, 28px 28px 64px);
+
+  /* The track widths, named once. */
+  --al-center: var(--fold-aside-layout-center-width, minmax(0, 1fr));
+  --al-side: var(--fold-aside-layout-side-width, 300px);
+  --al-rail: var(
+    --fold-aside-layout-rail-width,
+    var(--fold-rail-secondary, 220px)
+  );
+  --al-cols: var(--al-center);
+  --al-areas: "center";
+}
+
+/* Each wrapper owns a named area: the DOM order (centre, left rail, right rail,
+   end) never has to bend to the visual one. */
+.al-center {
+  grid-area: center;
+}
+.al-aside-left {
+  grid-area: rail;
+}
+.al-aside-right {
+  grid-area: side;
+}
+.al-end {
+  grid-area: end;
 }
 
 /* Columns exist only for the rails actually filled — `:has()` inspects the
@@ -31,20 +58,46 @@
    Each track is a CSS var: rails default to a fixed width, the centre flexes.
    Set all three to `minmax(0, 1fr)` (or `1fr`) for equal columns. */
 :host:has([asideright]) .al-grid {
-  grid-template-columns:
-    var(--fold-aside-layout-center-width, minmax(0, 1fr))
-    var(--fold-aside-layout-side-width, 300px);
+  --al-cols: var(--al-center) var(--al-side);
+  --al-areas: "center side";
 }
 :host:has([asideleft]) .al-grid {
-  grid-template-columns:
-    var(--fold-aside-layout-rail-width, var(--fold-rail-secondary, 220px))
-    var(--fold-aside-layout-center-width, minmax(0, 1fr));
+  --al-cols: var(--al-rail) var(--al-center);
+  --al-areas: "rail center";
 }
 :host:has([asideleft]):has([asideright]) .al-grid {
-  grid-template-columns:
-    var(--fold-aside-layout-rail-width, var(--fold-rail-secondary, 220px))
-    var(--fold-aside-layout-center-width, minmax(0, 1fr))
-    var(--fold-aside-layout-side-width, 300px);
+  --al-cols: var(--al-rail) var(--al-center) var(--al-side);
+  --al-areas: "rail center side";
+}
+
+/* `[asideEnd]`: under the centre, the rails spanning both rows. The second row
+   takes the slack (`1fr`), so a rail taller than the centre never opens a gap
+   between the centre and what closes it. Only when the slot is filled: an
+   empty row would still pay a gap. */
+:host:has([asideend]) .al-grid {
+  --al-areas: "center" "end";
+}
+:host:has([asideend]):has([asideright]) .al-grid {
+  --al-areas: "center side" "end side";
+  --al-rows: auto 1fr;
+}
+:host:has([asideend]):has([asideleft]) .al-grid {
+  --al-areas: "rail center" "rail end";
+  --al-rows: auto 1fr;
+}
+:host:has([asideend]):has([asideleft]):has([asideright]) .al-grid {
+  --al-areas: "rail center side" "rail end side";
+  --al-rows: auto 1fr;
+}
+:host:not(:has([asideend])) .al-end {
+  display: none;
+}
+.al-end {
+  align-self: start;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fold-aside-layout-stack, 18px);
 }
 
 /* An empty rail wrapper would still claim a grid cell — drop it when its slot
@@ -141,13 +194,19 @@
   padding-inline-end: var(--fold-aside-layout-gap, 28px);
 }
 
-/* Collapse to a single column: centre first, then the rails; un-stick. */
+/* Collapse to a single column: centre first, then the rails, then the end
+   slot; un-stick. Areas are dropped — a named row with nothing in it would
+   still pay a gap — and every wrapper flows in that order. */
 @container (max-width: 1040px) {
-  .al-grid,
-  :host:has([asideright]) .al-grid,
-  :host:has([asideleft]) .al-grid,
-  :host:has([asideleft]):has([asideright]) .al-grid {
-    grid-template-columns: minmax(0, 1fr);
+  :host .al-grid {
+    --al-cols: minmax(0, 1fr);
+    --al-areas: none;
+    --al-rows: auto;
+  }
+  .al-center,
+  .al-aside,
+  .al-end {
+    grid-area: auto;
   }
   .al-aside {
     position: static;
@@ -179,9 +238,62 @@
   .al-aside-right {
     order: 3;
   }
+  .al-end {
+    order: 4;
+  }
   /* Navigation rail: keep the menu above the content it drives. */
   :host(.stack-left-first) .al-aside-left {
     order: 0;
+  }
+}
+
+/* `keepSideRail` — a landscape tablet (701–1040px of container): the right
+   rail stays beside the centre, the left rail stacks under it in that side
+   column, and the end slot stays under the centre. Rails stop sticking: the
+   side column is no longer a short rail. */
+@container (min-width: 701px) and (max-width: 1040px) {
+  :host(.keep-side-rail):has([asideright]) .al-grid,
+  :host(.keep-side-rail):has([asideleft]) .al-grid {
+    --al-cols: var(--al-center) var(--al-side);
+  }
+  :host(.keep-side-rail):has([asideright]) .al-grid {
+    --al-areas: "center side";
+  }
+  :host(.keep-side-rail):has([asideleft]) .al-grid {
+    --al-areas: "center rail";
+  }
+  :host(.keep-side-rail):has([asideleft]):has([asideright]) .al-grid {
+    --al-areas: "center side" "center rail";
+    --al-rows: auto 1fr;
+  }
+  :host(.keep-side-rail):has([asideend]):has([asideright]) .al-grid {
+    --al-areas: "center side" "end side";
+    --al-rows: auto 1fr;
+  }
+  :host(.keep-side-rail):has([asideend]):has([asideleft]) .al-grid {
+    --al-areas: "center rail" "end rail";
+    --al-rows: auto 1fr;
+  }
+  /* The end slot opens the second row, beside the left rail: it follows the
+     centre at once — had the centre spanned the rail's rows, a tall timeline
+     would have stretched them and pushed the end away from the content. */
+  :host(.keep-side-rail):has([asideend]):has([asideleft]):has([asideright])
+    .al-grid {
+    --al-areas: "center side" "end rail";
+    --al-rows: auto 1fr;
+  }
+  :host(.keep-side-rail):has([asideleft]) .al-center,
+  :host(.keep-side-rail):has([asideright]) .al-center {
+    grid-area: center;
+  }
+  :host(.keep-side-rail) .al-aside-left {
+    grid-area: rail;
+  }
+  :host(.keep-side-rail) .al-aside-right {
+    grid-area: side;
+  }
+  :host(.keep-side-rail) .al-end {
+    grid-area: end;
   }
 }
 

@@ -18,6 +18,10 @@ export type FoldAsideBand = "none" | "left" | "right" | "both";
  * - `[asideLeft]` — optional left rail (e.g. a timeline); its presence turns on
  *   the third column. Tag each element that belongs in it.
  * - `[asideRight]` — the right rail (history, actions…). Tag each element.
+ * - `[asideEnd]` — optional closing blocks (a danger zone, a footer note…).
+ *   With columns they sit **under the centre**; collapsed to one column they
+ *   come **last, after the rails** — so a destructive action never lands
+ *   between the content and its summary. Tag each element.
  *
  * Rail content is tagged per-element (not wrapped in one node) so the layout
  * stacks it directly — that's what lets it style the projected blocks without
@@ -78,6 +82,7 @@ export type FoldAsideBand = "none" | "left" | "right" | "both";
   host: {
     "[style.--fold-aside-layout-top]": "topOffsetCss()",
     "[class.stack-left-first]": "stackLeftFirst()",
+    "[class.keep-side-rail]": "keepSideRail()",
     "[attr.data-band]": "band() === 'none' ? null : band()",
     "[class.is-bleed]": "bleed()",
   },
@@ -90,6 +95,20 @@ export class FoldAsideLayoutComponent {
    * companion rail (a timeline, history) where the content should come first.
    */
   readonly stackLeftFirst = input(false, { transform: booleanAttribute });
+
+  /**
+   * Between **700px and 1040px** of container (a landscape tablet), keep the
+   * right rail **beside** the centre instead of collapsing to one column, and
+   * stack the left rail **under the right one** in that side column. Under
+   * 700px the layout still collapses to a single column.
+   *
+   * Use it when the right rail is a summary the reader needs next to the
+   * content (amounts, contact) and the left rail is a companion that can move
+   * (a timeline). The side track keeps `--fold-aside-layout-side-width`. The
+   * rails stop being sticky in this range: stacked, the side column is no
+   * longer a short rail.
+   */
+  readonly keepSideRail = input(false, { transform: booleanAttribute });
 
   /**
    * Which rail(s) sit on the **band** ground — `--fold-color-surface-band`, one

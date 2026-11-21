@@ -35,6 +35,7 @@
 - asideRightLabel: InputSignal<string | undefined>
 - band: InputSignal<FoldAsideBand>
 - bleed: InputSignalWithTransform<boolean, unknown>
+- keepSideRail: InputSignalWithTransform<boolean, unknown>
 - stackLeftFirst: InputSignalWithTransform<boolean, unknown>
 - topOffset: InputSignal<string | number | undefined>
 

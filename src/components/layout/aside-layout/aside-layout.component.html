@@ -14,4 +14,7 @@
   >
     <ng-content select="[asideRight]" />
   </div>
+  <!-- Last in the DOM so reading and tab order match the collapsed column,
+       where it closes the page after the rails. -->
+  <div class="al-end"><ng-content select="[asideEnd]" /></div>
 </div>

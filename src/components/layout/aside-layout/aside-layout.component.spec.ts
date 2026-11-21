@@ -193,4 +193,76 @@ describe("FoldAsideLayoutComponent", () => {
     fixture.detectChanges();
     expect(host.classList.contains("is-bleed")).toBe(true);
   });
+
+  it("routes [asideEnd] into its own wrapper, last in the DOM", () => {
+    // Last in the DOM: in one column it closes the page after the rails, and
+    // the reading/tab order must match what the eye sees.
+    @Component({
+      standalone: true,
+      imports: [FoldAsideLayoutComponent],
+      template: `<fold-aside-layout>
+        <div asideLeft>L</div>
+        <div>C</div>
+        <div asideRight>R</div>
+        <div asideEnd>E</div>
+      </fold-aside-layout>`,
+    })
+    class EndHost {}
+
+    const fixture = TestBed.createComponent(EndHost);
+    fixture.detectChanges();
+    const grid = (fixture.nativeElement as HTMLElement).querySelector(
+      ".al-grid",
+    )!;
+    const end = grid.querySelector(".al-end")!;
+    expect(end.textContent).toContain("E");
+    expect(grid.lastElementChild).toBe(end);
+    // the end slot is not swallowed by the centre's default slot
+    expect(grid.querySelector(".al-center")!.textContent).not.toContain("E");
+  });
+
+  it("toggles the keep-side-rail host class from the input", () => {
+    @Component({
+      standalone: true,
+      imports: [FoldAsideLayoutComponent],
+      template: `<fold-aside-layout [keepSideRail]="on()">
+        <div>C</div>
+        <div asideRight>R</div>
+      </fold-aside-layout>`,
+    })
+    class KeepHost {
+      readonly on = signal(false);
+    }
+
+    const fixture = TestBed.createComponent(KeepHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector(
+      "fold-aside-layout",
+    )!;
+    expect(host.classList.contains("keep-side-rail")).toBe(false);
+    fixture.componentInstance.on.set(true);
+    fixture.detectChanges();
+    expect(host.classList.contains("keep-side-rail")).toBe(true);
+  });
+
+  it("only adds the end row when [asideEnd] is filled (no gap paid by existing pages)", () => {
+    // happy-dom can't lay out a grid; lock the SOURCE: every rule that names an
+    // `end` area is guarded by `:has([asideend])`, so a page without the slot
+    // keeps its exact grid — no empty row, no extra gap.
+    const raw = readFileSync(
+      join(
+        process.cwd(),
+        "src/components/layout/aside-layout/aside-layout.component.scss",
+      ),
+      "utf-8",
+    );
+    const scss = raw.replace(/\/\*[\s\S]*?\*\//g, "");
+    const rules = scss
+      .split("}")
+      .filter((rule) => /--al-areas:[^;]*"[^"]*\bend\b/.test(rule));
+    expect(rules.length).toBeGreaterThan(0);
+    for (const rule of rules) {
+      expect(rule).toContain(":has([asideend])");
+    }
+  });
 });

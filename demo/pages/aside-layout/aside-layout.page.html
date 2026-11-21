@@ -74,6 +74,30 @@
       </p>
     </div>
     <div class="np-field" params>
+      <span class="gal-tag">keepSideRail</span>
+      <div class="ss-seg">
+        <button
+          type="button"
+          [class.is-on]="!aslKeep()"
+          (click)="aslKeep.set(false)"
+        >
+          collapse
+        </button>
+        <button
+          type="button"
+          [class.is-on]="aslKeep()"
+          (click)="aslKeep.set(true)"
+        >
+          keep beside
+        </button>
+      </div>
+      <p class="asl-hint">
+        Between 700px and 1040px of container, the right rail stays beside the
+        centre and the left rail stacks under it. Drag the preview to a
+        landscape tablet to see it.
+      </p>
+    </div>
+    <div class="np-field" params>
       <span class="gal-tag">band</span>
       <div class="ss-seg">
         @for (b of bands; track b) {
@@ -136,6 +160,7 @@
       [topOffset]="aslOffset()"
       [band]="aslBand()"
       [bleed]="aslBleed()"
+      [keepSideRail]="aslKeep()"
       [style.--fold-aside-layout-rail-width]="
         aslEqual() ? null : aslRailWidth() + 'px'
       "
@@ -225,6 +250,13 @@
           <button type="button" class="asl-btn is-primary">Edit</button>
           <button type="button" class="asl-btn">Archive</button>
         </div>
+      </fold-card>
+      <fold-card asideEnd>
+        <span class="gal-tag">asideEnd</span>
+        <p class="gal-body">
+          Closing blocks: under the centre with columns, last after the rails
+          once collapsed.
+        </p>
       </fold-card>
     </fold-aside-layout>
   </dev-playground>
