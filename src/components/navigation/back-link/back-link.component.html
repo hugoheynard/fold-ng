@@ -1,5 +1,11 @@
 @if (routerLink(); as link) {
-  <a class="bl" [routerLink]="link">
+  <a
+    class="bl"
+    [routerLink]="link"
+    [queryParams]="queryParams()"
+    [queryParamsHandling]="queryParamsHandling()"
+    [state]="state()"
+  >
     <fold-icon class="bl-icon" [name]="icon()" size="sm" aria-hidden="true" />
     <span>{{ label() }}</span>
   </a>

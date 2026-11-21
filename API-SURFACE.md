@@ -72,7 +72,10 @@
 - href: InputSignal<string | undefined>
 - icon: InputSignal<FoldIconName>
 - label: InputSignal<string>
+- queryParams: InputSignal<Params | null | undefined>
+- queryParamsHandling: InputSignal<QueryParamsHandling | null | undefined>
 - routerLink: InputSignal<string | unknown[] | undefined>
+- state: InputSignal<Record<string, unknown> | undefined>
 
 #### FoldBadgeComponent
 - content: InputSignal<string> — required

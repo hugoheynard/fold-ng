@@ -26,7 +26,11 @@
       <a
         class="tab-bar-item"
         [routerLink]="item.link"
+        [queryParams]="item.queryParams"
+        [queryParamsHandling]="item.queryParamsHandling"
+        [state]="item.state"
         routerLinkActive="is-active"
+        [routerLinkActiveOptions]="activeOnPath"
         #rla="routerLinkActive"
         [attr.aria-current]="rla.isActive ? 'page' : null"
         [attr.aria-label]="isTooltip(rla.isActive) ? item.label : null"

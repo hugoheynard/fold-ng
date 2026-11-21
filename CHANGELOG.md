@@ -6,7 +6,16 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-back-link` — `queryParams`, `queryParamsHandling`, `state`.** En mode
+  `routerLink`, transmis tels quels à `RouterLink`. Un parcours ouvert avec
+  `?from=…` le garde en revenant sur ses pas (`queryParamsHandling="preserve"`),
+  sans store pour s'en souvenir.
+- **`FoldViewNavItem.queryParams` / `queryParamsHandling` / `state`** — les
+  mêmes, sur un item `link`. Un item reste actif sur son **chemin** seul : sa
+  chaîne de requête ne décide jamais de l'onglet ouvert (ce qui était déjà le
+  cas d'un item sans paramètres).
 
 ## [0.36.0] - 2026-10-28
 

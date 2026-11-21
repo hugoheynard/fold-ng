@@ -5,7 +5,11 @@ import {
   input,
 } from "@angular/core";
 import { Location } from "@angular/common";
-import { RouterLink } from "@angular/router";
+import {
+  RouterLink,
+  type Params,
+  type QueryParamsHandling,
+} from "@angular/router";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import type { FoldIconName } from "../../foundations/icon/builtin-icons";
 
@@ -24,7 +28,14 @@ import type { FoldIconName } from "../../foundations/icon/builtin-icons";
  * <fold-back-link routerLink="/contrats" label="Tous les contrats" />
  * <fold-back-link href="/dashboard" />
  * <fold-back-link />            <!-- history back -->
+ *
+ * <!-- carry the query string along: where the page was opened from -->
+ * <fold-back-link routerLink="/orders/new" queryParamsHandling="preserve" />
  * ```
+ *
+ * In router mode, `queryParams`, `queryParamsHandling` and `state` are passed
+ * straight to `RouterLink`, with its semantics — so a multi-step flow can keep
+ * a `?from=` (or any parameter) on its way back without a store.
  *
  * @selector `fold-back-link`
  */
@@ -44,6 +55,16 @@ export class FoldBackLinkComponent {
   /** Angular router target — takes precedence over {@link href}. When both this
    *  and `href` are unset, the control is a history-back button. */
   readonly routerLink = input<string | unknown[]>();
+  /** Router mode only: query parameters of the target, as `RouterLink.queryParams`. */
+  readonly queryParams = input<Params | null>();
+  /**
+   * Router mode only: how the current query string combines with
+   * {@link queryParams} — `'preserve'` keeps it, `'merge'` adds to it. As
+   * `RouterLink.queryParamsHandling`.
+   */
+  readonly queryParamsHandling = input<QueryParamsHandling | null>();
+  /** Router mode only: navigation state, as `RouterLink.state`. */
+  readonly state = input<Record<string, unknown>>();
   /** Plain URL target (external, or a non-router app). */
   readonly href = input<string>();
   /** Leading icon. @default 'chevron-left' */

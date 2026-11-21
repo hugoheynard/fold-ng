@@ -1,7 +1,12 @@
 import { Component, signal } from "@angular/core";
 import { Location } from "@angular/common";
 import { TestBed } from "@angular/core/testing";
-import { provideRouter } from "@angular/router";
+import {
+  provideRouter,
+  Router,
+  type Params,
+  type QueryParamsHandling,
+} from "@angular/router";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { FoldBackLinkComponent } from "./back-link.component";
 
@@ -12,12 +17,18 @@ import { FoldBackLinkComponent } from "./back-link.component";
     [label]="label()"
     [routerLink]="routerLink()"
     [href]="href()"
+    [queryParams]="queryParams()"
+    [queryParamsHandling]="handling()"
+    [state]="state()"
   />`,
 })
 class HostComponent {
   readonly label = signal("Back");
   readonly routerLink = signal<string | unknown[] | undefined>(undefined);
   readonly href = signal<string | undefined>(undefined);
+  readonly queryParams = signal<Params | null | undefined>(undefined);
+  readonly handling = signal<QueryParamsHandling | null | undefined>(undefined);
+  readonly state = signal<Record<string, unknown> | undefined>(undefined);
 }
 
 function render() {
@@ -53,6 +64,39 @@ describe("FoldBackLinkComponent", () => {
     r.fixture.detectChanges();
     expect(r.button()).toBeNull();
     expect(r.anchor()?.getAttribute("href")).toBe("/contrats");
+  });
+
+  it("puts its queryParams on the router link", () => {
+    const r = render();
+    r.cmp.routerLink.set("/contrats");
+    r.cmp.queryParams.set({ from: "/orders" });
+    r.fixture.detectChanges();
+    expect(r.anchor()?.getAttribute("href")).toBe("/contrats?from=%2Forders");
+  });
+
+  it("keeps the current query string with queryParamsHandling='preserve'", async () => {
+    await TestBed.inject(Router).navigateByUrl("/?from=%2Forders&point=p1");
+    const r = render();
+    r.cmp.routerLink.set("/contrats");
+    r.cmp.handling.set("preserve");
+    r.fixture.detectChanges();
+    expect(r.anchor()?.getAttribute("href")).toBe(
+      "/contrats?from=%2Forders&point=p1",
+    );
+  });
+
+  it("navigates with its state", async () => {
+    const router = TestBed.inject(Router);
+    // Mocked: the test reads the call, not the navigation it would start.
+    const navigate = vi.spyOn(router, "navigateByUrl").mockResolvedValue(true);
+    const r = render();
+    r.cmp.routerLink.set("/contrats");
+    r.cmp.state.set({ fromList: true });
+    r.fixture.detectChanges();
+    r.anchor()!.click();
+    expect(navigate.mock.calls[0]?.[1]).toMatchObject({
+      state: { fromList: true },
+    });
   });
 
   it("is a plain anchor when href is set", () => {

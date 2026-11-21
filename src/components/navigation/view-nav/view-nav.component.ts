@@ -8,7 +8,13 @@ import {
   input,
   model,
 } from "@angular/core";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import {
+  RouterLink,
+  RouterLinkActive,
+  type IsActiveMatchOptions,
+  type Params,
+  type QueryParamsHandling,
+} from "@angular/router";
 import { FoldBadgeComponent } from "../../content/badge/badge.component";
 import { FoldIconComponent } from "../../foundations/icon/icon.component";
 import { FoldTabTooltipDirective } from "../tab-tooltip.directive";
@@ -34,10 +40,31 @@ export type FoldViewNavItem = {
    * same value as `[routerLink]` — a path string or a commands array.
    */
   link?: string | unknown[];
+  /** With `link`: query parameters of the target, as `RouterLink.queryParams`. */
+  queryParams?: Params | null;
+  /**
+   * With `link`: how the current query string combines with `queryParams` —
+   * `'preserve'` or `'merge'`, as `RouterLink.queryParamsHandling`.
+   */
+  queryParamsHandling?: QueryParamsHandling | null;
+  /** With `link`: navigation state, as `RouterLink.state`. */
+  state?: Record<string, unknown>;
   /** External URL — renders a plain `<a href>` (no router). */
   href?: string;
   /** Disable the item: non-interactive + dimmed. */
   disabled?: boolean;
+};
+
+/**
+ * A link item is active on its PATH: the query string it carries (a `?from=`,
+ * a filter) never decides which view is open — as before the item could carry
+ * one, when an item without query parameters matched any query string.
+ */
+const ACTIVE_ON_PATH: IsActiveMatchOptions = {
+  paths: "subset",
+  queryParams: "ignored",
+  fragment: "ignored",
+  matrixParams: "ignored",
 };
 
 /**
@@ -98,6 +125,9 @@ export type FoldViewNavItem = {
   },
 })
 export class FoldViewNavComponent {
+  /** Link items are active on their path, whatever their query string. */
+  protected readonly activeOnPath = ACTIVE_ON_PATH;
+
   /** The items to render, in order. */
   readonly items = input.required<readonly FoldViewNavItem[]>();
 

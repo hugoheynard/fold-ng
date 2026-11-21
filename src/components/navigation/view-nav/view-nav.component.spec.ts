@@ -170,6 +170,37 @@ describe("FoldViewNavComponent", () => {
     expect(anchors[0]!.getAttribute("aria-current")).toBeNull();
   });
 
+  it("carries an item's queryParams, and stays active on its path alone", async () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.componentInstance.items = [
+      {
+        key: "a",
+        label: "Alpha",
+        link: "/alpha",
+        queryParams: { from: "/orders" },
+      },
+      {
+        key: "b",
+        label: "Beta",
+        link: "/beta",
+        queryParamsHandling: "preserve",
+      },
+    ];
+    fixture.detectChanges();
+    await TestBed.inject(Router).navigateByUrl("/alpha?point=p1");
+    fixture.detectChanges();
+
+    const anchors = [
+      ...(
+        fixture.nativeElement as HTMLElement
+      ).querySelectorAll<HTMLAnchorElement>(".tab-bar-item"),
+    ];
+    expect(anchors[0]!.getAttribute("href")).toBe("/alpha?from=%2Forders");
+    expect(anchors[1]!.getAttribute("href")).toBe("/beta?point=p1");
+    // `?point=p1` is not `?from=/orders`: the path alone makes Alpha active.
+    expect(anchors[0]!.classList.contains("is-active")).toBe(true);
+  });
+
   it("renders a disabled button for a disabled item", () => {
     const { buttons } = setup({
       items: [{ key: "a", label: "Alpha", disabled: true }],
