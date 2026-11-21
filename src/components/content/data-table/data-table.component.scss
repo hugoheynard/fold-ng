@@ -88,10 +88,12 @@
   border: 0;
 }
 
-/* Sticky header — opaque, subtly lifted above the body surface. */
+/* Sticky header — opaque, subtly lifted above the body surface.
+   `--fold-table-sticky-top` lets a page with its own sticky band (a masthead)
+   pin the header just below it instead of sliding behind it. */
 .folddt thead th {
   position: sticky;
-  top: 0;
+  top: var(--fold-table-sticky-top, 0);
   z-index: 2;
   padding: 0;
   text-align: left;

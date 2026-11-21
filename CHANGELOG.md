@@ -6,7 +6,12 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-data-table` — `--fold-table-sticky-top`.** L'en-tête collant se
+  collait toujours tout en haut : sous une bande elle-même collante (un
+  masthead), il glissait derrière elle. La variable décale l'endroit où il se
+  colle (défaut `0`, rien ne change sans elle).
 
 ## [0.38.2] - 2026-11-21
 
