@@ -226,14 +226,16 @@ export class FoldTabsComponent<
    * visible text name it.
    */
   protected tabName(tab: FoldTabItem<K>, active: boolean): string | null {
-    const base = this.isTooltip(active) ? tab.label : null;
-    if (tab.dotLabel === undefined) {
-      return base;
-    }
+    // The label and its count, as a sighted user reads them: an icon-only tab
+    // hides the label, not the count, so its name must carry both.
     const visible =
       tab.badge === undefined || tab.badge === null
         ? tab.label
         : `${tab.label} ${String(tab.badge)}`;
+    const base = this.isTooltip(active) ? visible : null;
+    if (tab.dotLabel === undefined) {
+      return base;
+    }
     return `${base ?? visible} — ${tab.dotLabel}`;
   }
 

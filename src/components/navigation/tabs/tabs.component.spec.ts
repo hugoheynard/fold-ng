@@ -216,3 +216,46 @@ describe("FoldTabsComponent — folder", () => {
     expect(second?.getAttribute("aria-label")).toBeNull();
   });
 });
+
+describe("FoldTabsComponent — collapsed horizontal", () => {
+  @Component({
+    standalone: true,
+    imports: [FoldTabsComponent],
+    template: `<fold-tabs
+      collapsed
+      direction="horizontal"
+      activeStyle="fill"
+      [tabs]="tabs"
+      activeKey="orders"
+    />`,
+  })
+  class CollapsedHost {
+    readonly tabs: readonly FoldTabItem[] = [
+      { key: "orders", label: "Orders", icon: "shopping-cart" },
+      { key: "review", label: "To review", icon: "check", badge: 47 },
+    ];
+  }
+
+  // The count is the reason to tap an icon-only tab: collapsing must not drop it.
+  it("keeps an inactive tab's count, and names it with the tab", () => {
+    const fixture = TestBed.createComponent(CollapsedHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const review = host.querySelectorAll<HTMLElement>('[role="tab"]')[1];
+    expect(review?.querySelector(".tab-bar-badge")?.textContent?.trim()).toBe(
+      "47",
+    );
+    expect(review?.getAttribute("aria-label")).toBe("To review 47");
+  });
+
+  // On a bare icon, a grey count reads as decoration: it takes the accent.
+  it("paints an icon-only tab's count in the accent", () => {
+    const fixture = TestBed.createComponent(CollapsedHost);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const badge = host
+      .querySelectorAll<HTMLElement>('[role="tab"]')[1]
+      ?.querySelector("fold-badge");
+    expect(badge?.classList.contains("accent")).toBe(true);
+  });
+});

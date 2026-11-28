@@ -25,6 +25,16 @@
 .folddt--select {
   --folddt-sel-w: 44px;
 }
+/* In card mode each card wears its own shell (outline, shadow, surface): the
+   frame would draw a second, sunken slab behind the whole list. It steps back,
+   and lets the cards' shadows spill past its edge instead of clipping them. */
+.folddt-wrap.folddt--cards {
+  overflow: visible;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
 
 /* The scrollable body — the toolbar (a sibling above) stays put while this
    region scrolls in both axes and the header sticks to its top. */

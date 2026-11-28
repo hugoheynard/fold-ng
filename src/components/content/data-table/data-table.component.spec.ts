@@ -512,6 +512,19 @@ describe("FoldDataTableComponent — mobile layout", () => {
     expect(el.querySelector("table.folddt")).toBeNull();
   });
 
+  // The cards carry their own shell: the frame must not paint a slab behind them.
+  it("marks the frame in card mode, so it drops its own chrome", () => {
+    const { fixture, host, el } = mobileSetup();
+    expect(
+      el.querySelector(".folddt-wrap")?.classList.contains("folddt--cards"),
+    ).toBe(false);
+    host.mobileLayout.set("auto-cards");
+    fixture.detectChanges();
+    expect(
+      el.querySelector(".folddt-wrap")?.classList.contains("folddt--cards"),
+    ).toBe(true);
+  });
+
   it("card mode renders a real LIST, with no table left in the tree", () => {
     // `auto-cards` used to be a CSS rewrite: `display: block` on the `<tr>`,
     // `flex` on the cells and the `<tbody>`. Changing the display of a table

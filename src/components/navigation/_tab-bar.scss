@@ -255,10 +255,18 @@
   flex: 0 0 auto;
   gap: 0;
 }
-/* The active item's badge is hidden while collapsed (its label is shown inline,
-   the count would crowd the row); vertical re-shows it as a corner bubble below. */
-.is-collapsed .tab-bar-item:not(.is-active) .tab-bar-badge {
-  display: none;
+/* An icon-only item keeps its count as a bubble on the icon's corner: a
+   collapsed bar is where room is short, not where a count stops mattering
+   ("3 to review" is the reason to tap that icon). HORIZONTAL is a scroll box,
+   and a scroller clips, so the bubble sits INSIDE the item's padding — no
+   negative offset. The active item shows its badge inline, after its label. */
+.is-collapsed:not(.dir-vertical) .tab-bar-item:not(.is-active) .tab-bar-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: scale(0.8);
+  transform-origin: top right;
+  pointer-events: none;
 }
 .is-collapsed .tab-bar-item.is-active {
   flex: 1 1 auto;

@@ -51,7 +51,9 @@
         <fold-badge
           class="tab-bar-badge"
           [content]="tab.badge + ''"
-          [variant]="activeKey() === tab.key ? 'accent' : 'neutral'"
+          [variant]="
+            activeKey() === tab.key || collapsed() ? 'accent' : 'neutral'
+          "
         />
       }
       @if (tab.dot; as dot) {

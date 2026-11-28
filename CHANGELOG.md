@@ -6,7 +6,19 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **`fold-tabs[collapsed]` — un onglet replié garde son compte.** Sur une
+  barre horizontale repliée, la pastille d'un onglet inactif était masquée :
+  l'icône seule ne disait plus pourquoi la toucher. Elle reste, en bulle au
+  coin de l'icône, à la couleur d'accent, à l'intérieur de l'onglet (une
+  barre repliée défile et couperait ce qui dépasse). Le nom accessible d'un
+  onglet replié porte aussi son compte (« À vérifier 47 »).
+- **`fold-data-table[narrowLayout="cards"]` — plus de cadre derrière les
+  cartes.** En mode cartes, le cadre du tableau gardait son fond, sa bordure
+  et son ombre sur toute la hauteur, derrière des cartes qui ont déjà les
+  leurs. Il s'efface (`.folddt--cards`), et l'ombre des cartes n'est plus
+  coupée sur les bords.
 
 ## [0.38.3] - 2026-11-21
 
