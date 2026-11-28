@@ -487,7 +487,7 @@
 - touched: ModelSignal<boolean>
 - type: InputSignal<"text" | "email" | "password" | "tel" | "url">
 - value: ModelSignal<string>
-- variant: InputSignal<"default" | "panel">
+- variant: InputSignal<"default" | "panel" | "underline">
 
 #### FoldLinkComponent
 - clicked: OutputEmitterRef<MouseEvent>
@@ -798,7 +798,7 @@
 - searchChange: OutputEmitterRef<string>
 - size: InputSignal<"sm" | "md" | "lg">
 - value: ModelSignal<string>
-- variant: InputSignal<"default" | "panel">
+- variant: InputSignal<"default" | "panel" | "underline">
 
 #### FoldSelectComponent
 - ariaLabel: InputSignal<string | undefined>
