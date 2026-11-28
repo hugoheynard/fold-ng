@@ -6,6 +6,10 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.38.4] - 2026-11-28
+
 ### Fixed
 
 - **`fold-tabs[collapsed]` — un onglet replié garde son compte.** Sur une
@@ -2949,7 +2953,8 @@ design-token stylesheet.
   `currentColor`; `prefers-reduced-motion` + `forced-colors` are respected;
   strings localise via inputs / providers (`provideFoldPanelLabels`).
 
-[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.38.3...HEAD
+[unreleased]: https://github.com/hugoheynard/fold-ng/compare/v0.38.4...HEAD
+[0.38.4]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.38.4
 [0.38.3]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.38.3
 [0.38.2]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.38.2
 [0.38.1]: https://github.com/hugoheynard/fold-ng/releases/tag/v0.38.1
