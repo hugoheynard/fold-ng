@@ -72,8 +72,9 @@ export class FoldSearchComponent {
   readonly placeholder = input("");
   readonly size = input<"sm" | "md" | "lg">("md");
   /** Visual variant, forwarded to the inner `fold-input` (`panel` for side-panel
-   *  forms; `default` elsewhere). */
-  readonly variant = input<"default" | "panel">("default");
+   *  forms, `underline` for a search that sits on the page; `default`
+   *  elsewhere). */
+  readonly variant = input<"default" | "panel" | "underline">("default");
 
   /**
    * Accessible name, when the design leaves no room for a visible label — the

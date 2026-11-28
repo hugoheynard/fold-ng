@@ -6,7 +6,13 @@ All notable changes to **fold-ng** are documented here. The format follows
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`fold-input` / `fold-search` — `variant="underline"`.** Le chrome le plus
+  léger : ni cadre ni fond, un seul trait sous le texte, qui prend la couleur
+  principale au focus. Pour un champ posé sur la page elle-même (une
+  recherche au-dessus d'une liste), où un champ encadré se lirait comme une
+  carte de plus. Taille, marges et icônes ne changent pas.
 
 ## [0.38.4] - 2026-11-28
 

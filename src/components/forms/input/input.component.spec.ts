@@ -26,7 +26,7 @@ class HostComponent {
   readonly type = signal<"text" | "email" | "password">("text");
   readonly size = signal<"sm" | "md" | "lg">("md");
   readonly align = signal<"start" | "center">("start");
-  readonly variant = signal<"default" | "panel">("default");
+  readonly variant = signal<"default" | "panel" | "underline">("default");
   readonly readOnly = signal(false);
   readonly hint = signal<string | undefined>(undefined);
   readonly leadingIcon = signal<string | undefined>(undefined);
@@ -94,6 +94,14 @@ describe("FoldInputComponent", () => {
     expect(host.className).toContain("sm");
     expect(host.className).toContain("center");
     expect(host.className).toContain("panel");
+  });
+
+  // The lightest chrome rides the same host class as the other variants.
+  it("marks the host for the underline variant", () => {
+    const { fixture, host } = render();
+    fixture.componentInstance.variant.set("underline");
+    fixture.detectChanges();
+    expect(host.className).toContain("underline");
   });
 
   it("passes readOnly through to the native input", () => {

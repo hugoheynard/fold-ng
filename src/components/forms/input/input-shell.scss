@@ -104,4 +104,23 @@
       box-shadow: none;
     }
   }
+
+  // `underline` — the lightest chrome: no box, no fill, a single rule under
+  // the text that takes the primary colour on focus. For a field that sits on
+  // the page itself (a search above a list) where a boxed control would read
+  // as one more card. Size, padding and icons are untouched: only the frame
+  // goes.
+  :host(.underline) input,
+  :host(.underline) select {
+    border: 0;
+    border-bottom: 1px solid var(--fold-color-border);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+
+    &:focus {
+      border-bottom-color: var(--fold-color-primary);
+      box-shadow: 0 1px 0 var(--fold-color-primary);
+    }
+  }
 }

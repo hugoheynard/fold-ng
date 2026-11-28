@@ -101,9 +101,12 @@ export class FoldInputComponent implements FormValueControl<string> {
    * - `panel` — flatter `--fold-color-surface-raised` fill, no focus glow, roomier
    *   box (own padding / `radius-sm` / content-height, so `size` only drives the
    *   font); reproduces the legacy side-panel `.field-input`.
+   * - `underline` — no box and no fill, a single rule under the text that
+   *   turns primary on focus; for a field that sits on the page itself (a
+   *   search above a list).
    * @default 'default'
    */
-  readonly variant = input<"default" | "panel">("default");
+  readonly variant = input<"default" | "panel" | "underline">("default");
 
   /** Optional label displayed above the input. */
   readonly label = input<string>();

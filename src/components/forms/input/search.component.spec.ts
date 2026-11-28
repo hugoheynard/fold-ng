@@ -31,6 +31,16 @@ function setup(delayMs?: number): {
 }
 
 describe("FoldSearchComponent", () => {
+  // A search that sits on the page passes its variant down to the field.
+  it("forwards the underline variant to the inner fold-input", () => {
+    const { fixture, host } = setup();
+    fixture.componentRef.setInput("variant", "underline");
+    fixture.detectChanges();
+    expect(
+      host.querySelector("fold-input")?.classList.contains("underline"),
+    ).toBe(true);
+  });
+
   it("emits once typing pauses for the delay", () => {
     vi.useFakeTimers();
     try {
